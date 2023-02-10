@@ -1,0 +1,155 @@
+<div class="container">
+  <div class="row mt-3">
+    <div class="column col-3">
+      <img src="assets/logo-bomberos.svg" />
+    </div>
+    <div class="column col-9 text-end">
+      <h5>Plataforma Educativa - CBDMQ</h5>
+    </div>
+  </div>
+
+  <hr class="hr hr-blurry" />
+
+  <div class="row m-3">
+    <div class="column text-center">
+      <h5>Formulario de registro</h5>
+    </div>
+  </div>
+
+  <!---------------------------->
+  <!-- Formulario de registro -->
+  <!---------------------------->
+
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+      <form
+        #form="ngForm"
+        novalidate
+        (ngSubmit)="registroSubmit(form.value, form.valid)"
+      >
+        <mdb-form-control class="my-5 ">
+          <input
+            mdbInput
+            type="text"
+            id="frmIdentificacion"
+            name="nombreUsuario"
+            class="form-control"
+            [ngModel]="usuarioFrm.nombreUsuario"
+            [ngModelOptions]="{ updateOn: 'blur' }"
+            required
+            #frmIdentificacion="ngModel"
+          />
+          <label mdbLabel class="form-label" for="frmIdentificacion"
+            >Identificación</label
+          >
+          <mdb-error
+            *ngIf="
+              frmIdentificacion?.errors?.required &&
+              (frmIdentificacion?.dirty || frmIdentificacion?.touched)
+            "
+            >Ingrese identificación</mdb-error
+          >
+          <mdb-success
+            *ngIf="
+              frmIdentificacion?.valid &&
+              (frmIdentificacion?.dirty || frmIdentificacion?.touched)
+            "
+          >
+            <i class="fas fa-check-circle"></i>
+          </mdb-success>
+        </mdb-form-control>
+
+        <mdb-form-control class="my-5 ">
+          <input
+            mdbInput
+            type="text"
+            id="frmNombres"
+            name="nombre"
+            class="form-control"
+            [ngModel]="usuarioFrm.nombre"
+            [ngModelOptions]="{ updateOn: 'blur' }"
+            required
+            #frmNombres="ngModel"
+          />
+          <label mdbLabel class="form-label" for="frmNombres">Nombres</label>
+          <mdb-error
+            *ngIf="
+              frmNombres?.errors?.required &&
+              (frmNombres?.dirty || frmNombres?.touched)
+            "
+            >Ingrese nombre</mdb-error
+          >
+        </mdb-form-control>
+
+        <mdb-form-control class="my-5 ">
+          <input
+            mdbInput
+            type="text"
+            id="frmApellidos"
+            name="apellido"
+            class="form-control"
+            [ngModel]="usuarioFrm.apellido"
+            [ngModelOptions]="{ updateOn: 'blur' }"
+            required
+            #frmApellidos="ngModel"
+          />
+          <label mdbLabel class="form-label" for="frmApellidos"
+            >Apellidos</label
+          >
+
+          <mdb-error
+            *ngIf="
+              frmApellidos?.errors?.required &&
+              (frmApellidos?.dirty || frmApellidos?.touched)
+            "
+            >Ingrese apellidos</mdb-error
+          >
+        </mdb-form-control>
+
+        <mdb-form-control class="my-5 ">
+          <input
+            mdbInput
+            type="email"
+            id="frmEmail"
+            name="correoPersonal"
+            class="form-control"
+            [ngModel]="usuarioFrm.correoPersonal"
+            [ngModelOptions]="{ updateOn: 'blur' }"
+            required
+            #frmEmail="ngModel"
+          />
+          <label mdbLabel class="form-label" for="frmEmail"
+            >Correo electrónico</label
+          >
+
+          <mdb-error
+            *ngIf="
+              frmEmail?.errors?.required &&
+              (frmEmail?.dirty || frmEmail?.touched)
+            "
+            >Ingrese dirección de email</mdb-error
+          >
+        </mdb-form-control>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.invalid || showLoading"
+        >
+          <span
+            *ngIf="showLoading"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <span *ngIf="showLoading">Espere...</span>
+          <span *ngIf="!showLoading">Registro</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-------------------------------->
+  <!-- FIN Formulario de registro -->
+  <!-------------------------------->
+</div>

@@ -1,0 +1,72 @@
+<div class="container-fluid bg-image " [ngStyle]="{ 'background-image': backgroundImage }" >
+  <div
+    class="d-flex justify-content-center align-items-center transbox"
+    style="height: 100vh"
+  >
+    <div class="card">
+      <div class="card-body">
+        <img src="assets/logo-bomberos.svg" />
+
+        <h5 class="card-title p-4">Plataforma Educativa - CBDMQ</h5>
+
+
+
+        <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+          <mdb-form-control class="m-4">
+            <!-- mdb-error
+            *ngIf="
+            nombreUsuarioInput?.invalid && (nombreUsuarioInput?.dirty || nombreUsuarioInput?.touched)
+            "
+            >Se requiere el nombre de usuario</mdb-error -->
+            <input
+              mdbInput="mdbInput"
+              id="nombreUsuario"
+              name="nombreUsuario"
+              class="form-control"
+              ngModel
+              #nombreUsuarioInput="ngModel"
+              required 
+            />
+
+            <label mdbLabel="mdbLabel" class="form-label" for="nombreUsuario"
+              >Usuario</label>           
+
+          </mdb-form-control>
+
+          <mdb-form-control class="m-4">
+            <input
+              mdbInput="mdbInput"
+              type="password"
+              name="clave"
+              id="clave"
+              class="form-control"
+              ngModel
+              #passwordInput="ngModel"
+              required
+            />
+
+            <label mdbLabel="mdbLabel" class="form-label" for="clave"
+              >Password</label
+            >
+          </mdb-form-control>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="loginForm.invalid || showLoading"
+            >
+              <span
+                *ngIf="showLoading"
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span *ngIf="showLoading">Espere...</span>
+              <span *ngIf="!showLoading">Ingresar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
