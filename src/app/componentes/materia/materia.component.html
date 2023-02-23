@@ -1,0 +1,350 @@
+<div class="row mt-3">
+  <div class="column col-3">
+    <img src="assets/logo-bomberos.svg" />
+  </div>
+  <div class="column col-9 text-end">
+    <h5>Plataforma Educativa - CBDMQ</h5>
+  </div>
+</div>
+<div class="titulo">
+  <h1>MATERIAS</h1>
+</div>
+
+<div class="tabla">
+
+<div class="d-flex justify-content-end mb-4">
+  <mdb-form-control>
+    <input
+      mdbInput
+      type="text"
+      class="form-control"
+      id="search-input"
+      [disabled]="editElementIndex !== -1"
+      (keyup)="search($event)"
+    />
+    <label mdbLabel class="form-label" for="search-input">Search</label>
+  </mdb-form-control>
+  <button
+    MdbRiple
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="editElementIndex !== -1"
+    (click)="addRow = true"
+  >
+    <i class="fa fa-plus"></i>
+  </button>
+</div>
+<hr />
+
+<div class="datatable table-editor mt-4">
+  <form #form="ngForm" novalidate  >
+  <table
+    class="table datatable-table"
+    mdbTable
+    mdbTableSort
+    #table="mdbTable"
+    #sort="mdbTableSort"
+    [dataSource]="materias"
+    [sort]="sort"
+    [pagination]="pagination"
+  >
+    <thead class="datatable-header">
+      <tr>
+        <th
+          *ngFor="let header of headers"
+          [mdbTableSortHeader]="header"
+          scope="col"
+        >
+          {{ header | titlecase }}
+        </th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody class="datatable-body">
+
+      <tr *ngIf="addRow" scope="row">
+
+        <td>
+          <!-- <mdb-form-control>
+          <input mdbInput type="text" class="form-control" [(ngModel)]="CodMateria" />
+        </mdb-form-control>
+       -->
+        </td>
+        <td>
+          <mdb-form-control>
+            <input
+              mdbInput="mdbInput"
+              id="nombreMateria"
+              name="nombreMateria"
+              type="text"
+              class="form-control"
+              [(ngModel)]="NombreMateria"
+              #nombreMateria="ngModel"
+              required
+            />
+          </mdb-form-control>
+        </td>
+        <td>
+          <mdb-form-control>
+            <input
+              mdbInput="mdbInput"
+              id="numHoras"
+              name="numHoras"
+              type="number"
+              class="form-control"
+              [(ngModel)]="NumHoras"
+              #numHoras="ngModel"
+              required
+            />
+          </mdb-form-control>
+        </td>
+        <td>
+          <mdb-form-control>
+            <input
+              mdbInput="mdbInput"
+              id="tipoMateria"
+              name="tipoMateria"
+              type="text"
+              class="form-control"
+              [(ngModel)]="TipoMateria"
+              #tipoMateria="ngModel"
+              required
+            />
+          </mdb-form-control>
+        </td>
+        <td>
+          <mdb-form-control>
+            <input
+              mdbInput="mdbInput"
+              id="observacionMateria"
+              name="observacionMateria"
+              type="text"
+              class="form-control"
+              [(ngModel)]="ObservacionMateria"
+              #observacionMateria="ngModel"
+              required
+            />
+          </mdb-form-control>
+        </td>
+        <td>
+
+          <mdb-form-control>
+            <input
+              mdbInput="mdbInput"
+              id="pesoMateria"
+              name="pesoMateria"
+              type="text"
+              class="form-control"
+              [(ngModel)]="PesoMateria"
+              #pesoMateria="ngModel"
+              required
+            />
+          </mdb-form-control>
+
+        </td>
+        <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="notaMinima"
+                name="notaMinima"
+                type="text"
+                class="form-control"
+                [(ngModel)]="NotaMinima"
+                #notaMinima="ngModel"
+                required
+              />
+            </mdb-form-control>
+        </td>
+
+
+
+        <td>
+          <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              type="submit"
+              (click)="registro(form.value); limpiar(); addRow = false"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+
+          <button
+          name="eliminar"
+            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+            (click)="addRow = false"
+          >
+            <i class="fa fa-ban"></i>
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngFor="let materia of materias; let index = index" scope="row">
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.codMateria }}
+          </ng-container>
+
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="codMateria"
+              name="codMateria"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.codMateria"
+                disabled
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.nombreMateria }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="nombreMateria"
+              name="nombreMateria"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.nombreMateria"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.numHoras }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="numHoras"
+                name="numHoras"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.numHoras"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.tipoMateria }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="tipoMateria"
+                name="tipoMateria"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.tipoMateria"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.observacionMateria }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="observacionMateria"
+              name="observacionMateria"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.observacionMateria"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.pesoMateria }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="pesoMateria"
+              name="pesoMateria"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.pesoMateria"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td style="min-width: 50px; max-width: 50px">
+          <ng-container *ngIf="editElementIndex !== index">
+            {{ materia.notaMinima }}
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <mdb-form-control>
+              <input
+                mdbInput
+                id="notaMinima"
+              name="notaMinima"
+                type="text"
+                class="form-control"
+                [(ngModel)]="materia.notaMinima"
+              />
+            </mdb-form-control>
+          </ng-container>
+        </td>
+
+        <td>
+          <ng-container
+            *ngIf="editElementIndex === -1 || editElementIndex !== index">
+            <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editElementIndex = index"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+            <button
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="eliminar(materia.codMateria); onDeleteClick(materia)"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+            >
+              <i class="fa fa-trash-alt"></i>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="editElementIndex === index">
+            <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="actualizar(materia, materia.codMateria); limpiar()"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+            <button
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editElementIndex = -1"
+            >
+              <i class="fa fa-ban"></i>
+            </button>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </form>
+  <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination>
+</div>
+</div>

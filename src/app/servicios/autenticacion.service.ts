@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../modelo/usuario';
+import { Materia} from '../modelo/materias';
 
 
 
 
 @Injectable({  providedIn: 'root'})
 export class AutenticacionService {
-  
+
 
   public host = environment.apiUrl;
   private token: string;
   private usuarioLogueado: string;
   private jwtHelper = new JwtHelperService();
-  
+
 
   constructor(private http: HttpClient) { }
 
