@@ -11,13 +11,13 @@ import { Usuario } from '../modelo/usuario';
 
 @Injectable({  providedIn: 'root'})
 export class AutenticacionService {
-  
+
 
   public host = environment.apiUrl;
   private token: string;
   private usuarioLogueado: string;
   private jwtHelper = new JwtHelperService();
-  
+
 
   constructor(private http: HttpClient) { }
 
