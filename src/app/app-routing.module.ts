@@ -9,7 +9,8 @@ import { Usuario } from './modelo/usuario';
 const routes: Routes = [
   {path: 'principal', component: PrincipalComponent, canActivate: [AutenticacionGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'registro', component: RegistroComponent},    
+  {path: 'registro', component: RegistroComponent},
+
   {path: '', redirectTo: '/login', pathMatch: 'full'},
 ];
 
