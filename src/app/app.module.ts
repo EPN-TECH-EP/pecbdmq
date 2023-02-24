@@ -53,8 +53,8 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { AlertaComponent } from './componentes/util/alerta/alerta.component';
 import { PrincipalModuleModule } from './modulos/principal-module/principal-module.module';
 import { UsuarioFrm } from './modelo/util/usuario-frm';
+import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
-
 
 @NgModule({
   declarations: [
@@ -63,8 +63,8 @@ import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gest
     PrincipalComponent,
     RegistroComponent,
     AlertaComponent,
+    MateriaComponent,
     UnidadGestionComponent,
-
   ],
   imports: [
     BrowserModule,

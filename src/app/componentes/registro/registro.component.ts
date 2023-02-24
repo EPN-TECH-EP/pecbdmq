@@ -25,11 +25,13 @@ export class RegistroComponent implements OnInit, OnDestroy {
   public showLoading: boolean;
 
   constructor(
-    public usuarioEnviar: Usuario,
+    public usuarioEnvio: Usuario,
     public usuarioFrm: UsuarioFrm,
     private autenticacionService: AutenticacionService,
     private notificationService: MdbNotificationService
   ) {}
+
+
 
   ngOnInit(): void {}
 
@@ -41,15 +43,15 @@ export class RegistroComponent implements OnInit, OnDestroy {
     if (isValid) {
       // transforma a tipo compatible para servicio
 
-      this.usuarioEnviar.nombreUsuario = this.usuarioFrm.nombreUsuario;
-      this.usuarioEnviar.codDatosPersonales.$nombre = this.usuarioFrm.nombre;
-      this.usuarioEnviar.codDatosPersonales.$apellido =
-        this.usuarioFrm.apellido;
-      this.usuarioEnviar.codDatosPersonales.$correo_personal =
-        this.usuarioFrm.correoPersonal;
+      this.usuarioEnvio.nombreUsuario = this.usuarioFrm.nombreUsuario;
+
+
+      this.usuarioEnvio.codDatosPersonales.$nombre = this.usuarioFrm.nombre;
+      this.usuarioEnvio.codDatosPersonales.$apellido = this.usuarioFrm.apellido;
+      this.usuarioEnvio.codDatosPersonales.$correo_personal =this.usuarioFrm.correoPersonal;
 
       this.subscriptions.push(
-        this.autenticacionService.registro(this.usuarioEnviar).subscribe({
+        this.autenticacionService.registro(this.usuarioEnvio).subscribe({
           next: (response: Usuario) => {
             this.notificacionOK(
               `Se ha registrado el usuario: ${usuario.nombreUsuario}. Se ha enviado la contraseña al correo proporcionado`
