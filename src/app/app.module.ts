@@ -54,6 +54,7 @@ import { AlertaComponent } from './componentes/util/alerta/alerta.component';
 import { PrincipalModuleModule } from './modulos/principal-module/principal-module.module';
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { MateriaComponent } from './componentes/materia/materia.component';
+import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 
 @NgModule({
   declarations: [
@@ -62,8 +63,8 @@ import { MateriaComponent } from './componentes/materia/materia.component';
     PrincipalComponent,
     RegistroComponent,
     AlertaComponent,
-    MateriaComponent
-
+    MateriaComponent,
+    UnidadGestionComponent,
   ],
   imports: [
     BrowserModule,

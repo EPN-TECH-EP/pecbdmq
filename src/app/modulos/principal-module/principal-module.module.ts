@@ -1,3 +1,4 @@
+import { UnidadGestionComponent } from './../../componentes/unidad-gestion/unidad-gestion.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'formacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'materia', component:  MateriaComponent},
+      { path: 'unidadGestion', component: UnidadGestionComponent }
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],
   },
