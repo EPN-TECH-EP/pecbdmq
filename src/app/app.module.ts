@@ -55,7 +55,8 @@ import { PrincipalModuleModule } from './modulos/principal-module/principal-modu
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
 import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
-
+import { MateriaComponent } from './componentes/materia/materia.component';
+import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
     RegistroComponent,
     AlertaComponent,
     CargaArchivoComponent,
-    
+    MateriaComponent,
+    UnidadGestionComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,9 +114,9 @@ import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
   providers: [
     AutenticacionGuard,
     AutenticacionService, 
-    UsuarioService, 
     //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
+    UsuarioService,
     UsuarioFrm
   ],
   bootstrap: [AppComponent]

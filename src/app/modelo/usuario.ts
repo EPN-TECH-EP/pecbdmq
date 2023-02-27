@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatoPersonal } from './admin/dato-personal';
 
-@Injectable() 
+@Injectable()
 export class Usuario {
   public codUsuario: string;
   public codModulo: string;
@@ -16,11 +16,17 @@ export class Usuario {
   public active: boolean;
   public notLocked: boolean;
 
+
+
+
+
+
+
   public codDatosPersonales: DatoPersonal;
 
   constructor(){
     this.codDatosPersonales = new DatoPersonal(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
   }
-  
+
 
 }
