@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Usuario } from '../modelo/usuario';
 import { Observable } from 'rxjs';
 import { Menu } from '../modelo/admin/menu';
-// localhost:8081/menu/lista/1
+
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {

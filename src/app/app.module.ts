@@ -53,6 +53,8 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { AlertaComponent } from './componentes/util/alerta/alerta.component';
 import { PrincipalModuleModule } from './modulos/principal-module/principal-module.module';
 import { UsuarioFrm } from './modelo/util/usuario-frm';
+import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
+import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 
 
 @NgModule({
@@ -62,6 +64,7 @@ import { UsuarioFrm } from './modelo/util/usuario-frm';
     PrincipalComponent,
     RegistroComponent,
     AlertaComponent,
+    CargaArchivoComponent,
     
   ],
   imports: [
@@ -109,7 +112,9 @@ import { UsuarioFrm } from './modelo/util/usuario-frm';
   providers: [
     AutenticacionGuard,
     AutenticacionService, 
-    UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
+    UsuarioService, 
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm
   ],
   bootstrap: [AppComponent]
