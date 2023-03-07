@@ -1,9 +1,9 @@
+import { TipoProcedencia } from './../../modelo/tipo_procedencia';
+import { TipoProcedenciaService } from './../../servicios/tipo-procedencia.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -14,14 +14,14 @@ import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-tipo-procedencia',
+  templateUrl: './tipo-procedencia.component.html',
+  styleUrls: ['./tipo-procedencia.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+export class TipoProcedenciaComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  tiposprocedencia: TipoProcedencia[];
   public showLoading: boolean;
 
   options = [
@@ -29,12 +29,11 @@ export class UnidadGestionComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+    private ApiTipoProcedencia: TipoProcedenciaService,
     private notificationService: MdbNotificationService
   ) { }
 
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
   editElementIndex = -1;
   addRow = false;
   Codigo = '';
@@ -43,20 +42,20 @@ export class UnidadGestionComponent implements OnInit {
   headers = ['Nombre', 'Estado'];
 
   addNewRow() {
-    const newRow: UnidadGestion = {
+    const newRow: TipoProcedencia = {
       codigo: this.Codigo,
       nombre: this.Nombre,
       estado: this.Estado,
     }
-    this.unidades = [...this.unidades, { ...newRow }];
+    this.tiposprocedencia = [...this.tiposprocedencia, { ...newRow }];
     this.Codigo = '';
     this.Nombre = '';
     this.Estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.ApiTipoProcedencia.getTipoProcedencia().subscribe(data => {
+      this.tiposprocedencia = data;
     })
   }
 
@@ -93,31 +92,38 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(tipoprocedencia: TipoProcedencia): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
+      this.ApiTipoProcedencia.crearTipoProcedencia(tipoprocedencia).subscribe({
+        next: (response: HttpResponse<TipoProcedencia>) => {
+          let nuevoTipoProcedencia: TipoProcedencia = response.body;
+          this.tiposprocedencia.push(nuevoTipoProcedencia);
+          this.notificacionOk('Tipo procedencia creado con éxito');
           this.Nombre = '';
+          // const token = response.headers.get(HeaderType.JWT_TOKEN);
+          // this.aut.guardaToken(token);
+          // this.autenticacionService.agregaUsuarioACache(response.body);
+
+          // this.router.navigateByUrl('/principal');
+          // this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
+          // this.showLoading = false;
         },
       })
     );
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(tipoprocedencia: TipoProcedencia, tipoprocedenciaId:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoprocedencia,tipoprocedenciaId).subscribe({
+      next: (response: HttpResponse<TipoProcedencia>) => {
+        let actualizaTipoProcedencia: TipoProcedencia = response.body;
+        this.notificacionOk('Tipo procedencia actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
         this.Nombre = '';
@@ -132,15 +138,15 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+public eliminar(tipoProcedenciaId: any, data: TipoProcedencia): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.ApiTipoProcedencia.eliminarTipoProcedencia(tipoProcedenciaId).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
+        this.notificacionOk('Tipo Procedencia eliminado con éxito');
+        const index = this.tiposprocedencia.indexOf(data);
+        this.tiposprocedencia.splice(index, 1);
+        this.tiposprocedencia = [...this.tiposprocedencia]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

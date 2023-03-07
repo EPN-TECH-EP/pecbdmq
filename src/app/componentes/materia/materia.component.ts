@@ -19,7 +19,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
   styleUrls: ['./materia.component.scss'],
 })
 export class MateriaComponent implements OnInit {
-  materias: Materia[];
+
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -47,7 +47,7 @@ export class MateriaComponent implements OnInit {
     'Nota Mínima',
   ];
 
-
+  materias: Materia[];
   constructor(
     // public materiaEnviar: Materia,
     private notificationService: MdbNotificationService,
@@ -143,7 +143,7 @@ export class MateriaComponent implements OnInit {
       this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
           let nuevaMateria: Materia = response.body;
-          this.materias.push(nuevaMateria);
+          this.table.data.push(nuevaMateria);
           this.notificacionOK('Materia creada con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -160,8 +160,9 @@ export class MateriaComponent implements OnInit {
    this.subscriptions.push(
      this.Api.actualizarMateria(materia,codMateria).subscribe({
      next: (response: HttpResponse<Materia>) => {
-       let actualizaUnidad: Materia = response.body;
-        this.notificacionOK('Unidad de gestión actualizada con éxito');
+       let actualizaMateria: Materia = response.body;
+        this.notificacionOK('Materia actualizada con éxito');
+        this.table.data.push(actualizaMateria);
         this.editElementIndex=-1;
 
      error: (errorResponse: HttpErrorResponse) => {

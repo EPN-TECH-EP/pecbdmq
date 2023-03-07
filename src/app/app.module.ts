@@ -55,6 +55,11 @@ import { PrincipalModuleModule } from './modulos/principal-module/principal-modu
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+import { ModuloComponent } from './componentes/modulo/modulo.component';
+import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
+import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
+import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
+import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +70,11 @@ import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gest
     AlertaComponent,
     MateriaComponent,
     UnidadGestionComponent,
+    ModuloComponent,
+    TipoFuncionarioComponent,
+    TipoDocumentoComponent,
+    TipoProcedenciaComponent,
+    TipoNotaComponent,
   ],
   imports: [
     BrowserModule,

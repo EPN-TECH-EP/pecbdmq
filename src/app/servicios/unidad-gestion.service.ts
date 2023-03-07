@@ -24,6 +24,7 @@ export class UnidadGestionService {
   public crearUnidad(unidad: UnidadGestion): Observable<HttpResponse<UnidadGestion>> {
     return this.http.post<UnidadGestion>(`${this.host}/unidadgestion/crear`, unidad, { observe: 'response' });
   }
+
   public actualizarUnidad(unidad: UnidadGestion, unidadId:any): Observable<HttpResponse<UnidadGestion>> {
     return this.http.put<UnidadGestion>(`${this.host}/unidadgestion/${unidadId}`, unidad, { observe: 'response' });
   }
@@ -32,3 +33,4 @@ export class UnidadGestionService {
     return this.http.delete<string>(`${this.host}/unidadgestion/${unidadId}`);
     }
 }
+

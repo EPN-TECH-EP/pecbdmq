@@ -1,6 +1,6 @@
 
 <div class="titulo">
-  <h1>Unidad de Gestión</h1>
+  <h1>Tipo de Documento</h1>
 </div>
 
 <div class="tabla">
@@ -34,7 +34,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="unidades"
+        [dataSource]="tiposdocumento"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -55,16 +55,18 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
-                  name="nombre"
+                  id="tipoDocumento"
+                  name="tipoDocumento"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="TipoDocumento"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
-
             </td>
+
+
+
             <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Estado" name="estado">
@@ -94,10 +96,10 @@
             </td>
           </tr>
 
-          <tr *ngFor="let unidad of unidades; let index = index" scope="row">
+          <tr *ngFor="let tipodocumento of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.nombre }}
+                {{ tipodocumento.tipoDocumento }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -107,18 +109,18 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="unidad.nombre"
+                    [(ngModel)]="tipodocumento.tipoDocumento"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.estado }}
+                {{ tipodocumento.estado }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="unidad.estado" name="estado">
+                  <mdb-select [(ngModel)]="tipodocumento.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -141,7 +143,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(unidad.codigo,unidad)"
+                  (click)="eliminar(tipodocumento.codigoDocumento, tipodocumento)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -152,7 +154,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(unidad, unidad.codigo);"
+                  (click)="actualizar(tipodocumento, tipodocumento.codigoDocumento)"
                 >
                   <i class="fa fa-check"></i>
                 </button>

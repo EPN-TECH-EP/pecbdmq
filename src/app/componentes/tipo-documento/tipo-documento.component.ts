@@ -1,9 +1,9 @@
+import { TipoDocumento } from './../../modelo/tipo_documento';
+import { TipoDocumentoService } from './../../servicios/tipo-documento.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -14,14 +14,14 @@ import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-tipo-documento',
+  templateUrl: './tipo-documento.component.html',
+  styleUrls: ['./tipo-documento.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+export class TipoDocumentoComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  tiposdocumento: TipoDocumento[];
   public showLoading: boolean;
 
   options = [
@@ -29,38 +29,35 @@ export class UnidadGestionComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+    private ApiTipoDocumento: TipoDocumentoService,
     private notificationService: MdbNotificationService
   ) { }
-
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<TipoDocumento>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
+  CodigoDocumento = '';
+  TipoDocumento = '';
   Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  headers = ['Tipo de Documento', 'Estado'];
 
   addNewRow() {
-    const newRow: UnidadGestion = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
+    const newRow: TipoDocumento = {
+      codigoDocumento: this.CodigoDocumento,
+      tipoDocumento: this.TipoDocumento,
       estado: this.Estado,
     }
-    this.unidades = [...this.unidades, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
+    this.tiposdocumento = [...this.tiposdocumento, { ...newRow }];
+    this.CodigoDocumento = '';
+    this.TipoDocumento = '';
     this.Estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.ApiTipoDocumento.getTipoDocumento().subscribe(data => {
+      this.tiposdocumento = data;
+      console.log(data);
     })
   }
-
-
 
   private notificacion(errorResponse: HttpErrorResponse) {
 
@@ -92,35 +89,37 @@ export class UnidadGestionComponent implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(tipodocumento: TipoDocumento): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Nombre = '';
+      this.ApiTipoDocumento.crearTipoDocumento(tipodocumento).subscribe({
+        next: (response: HttpResponse<TipoDocumento>) => {
+          let nuevoTipoDocumento: TipoDocumento = response.body;
+          this.tiposdocumento.push(nuevoTipoDocumento);
+          this.notificacionOk('Tipo de documento creado con éxito');
+          this.TipoDocumento = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
+
         },
       })
     );
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(TipoDocumento: TipoDocumento, TipoDocumentoId:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiTipoDocumento.actualizarTipoDocumento(TipoDocumento,TipoDocumentoId).subscribe({
+      next: (response: HttpResponse<TipoDocumento>) => {
+        let actualizaTipoDocumento: TipoDocumento = response.body;
+        this.notificacionOk('Tipo de documento actualizado con éxito');
         this.editElementIndex=-1;
+        this.TipoDocumento = '';
         this.showLoading = false;
-        this.Nombre = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -132,15 +131,15 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+public eliminar(TipoDocumentoId: any, data: TipoDocumento): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.ApiTipoDocumento.eliminarTipoDocumento(TipoDocumentoId).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
+        this.notificacionOk('Tipo de documento eliminado con éxito');
+        const index = this.tiposdocumento.indexOf(data);
+        this.tiposdocumento.splice(index, 1);
+        this.tiposdocumento = [...this.tiposdocumento]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -151,6 +150,5 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-
 
 }
