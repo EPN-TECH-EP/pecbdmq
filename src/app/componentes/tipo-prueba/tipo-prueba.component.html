@@ -1,6 +1,5 @@
-
 <div class="titulo">
-  <h1>Unidad de Gestión</h1>
+  <h1>Tipo Prueba</h1>
 </div>
 
 <div class="tabla">
@@ -20,9 +19,9 @@
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true"
-
   >
-    <i class="fa fa-plus"></i>
+    <i class="fa fa-plus">
+    </i>
   </button>
 
   <hr />
@@ -34,7 +33,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="unidades"
+        [dataSource]="tiposprueba"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -55,32 +54,35 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
-                  name="nombre"
+                  id="prueba"
+                  name="prueba"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Prueba"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
-
             </td>
+
+
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Estado"
+                name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
               </mdb-select>
               </mdb-form-control>
-
             </td>
 
-            <td align="center">
+
+
+            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value); addRow = false"
+                (click)="registro(form.value); limpiar(); addRow = false"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -94,31 +96,33 @@
             </td>
           </tr>
 
-          <tr *ngFor="let unidad of unidades; let index = index" scope="row">
+          <tr *ngFor="let tipoprueba of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.nombre }}
+                {{ tipoprueba.prueba }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombre"
-                    name="nombre"
+                    id="tipoPrueba"
+                    name="tipoPrueba"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="unidad.nombre"
+                    [(ngModel)]="tipoprueba.prueba"
                   />
                 </mdb-form-control>
+
               </ng-container>
             </td>
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.estado }}
+                {{ tipoprueba.estado }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="unidad.estado" name="estado">
+
+                  <mdb-select [(ngModel)]="tipoprueba.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -126,6 +130,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -139,20 +144,20 @@
                 >
                   <i class="fa fa-edit"></i>
                 </button>
-                <button
+                <!-- <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(unidad.codigo,unidad)"
+                  (click)="onDeleteClick(tipoprueba); eliminar(tipoprueba.cod_tipo_prueba)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                >
-                  <i class="fa fa-trash-alt"></i>
-                </button>
+                > -->
+                  <!-- <i class="fa fa-trash-alt"></i>
+                </button> -->
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(unidad, unidad.codigo);"
+                  (click)="actualizar(tipoprueba, tipoprueba.cod_tipo_prueba); limpiar()"
                 >
                   <i class="fa fa-check"></i>
                 </button>

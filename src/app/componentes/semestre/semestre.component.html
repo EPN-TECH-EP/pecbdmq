@@ -1,6 +1,5 @@
-
 <div class="titulo">
-  <h1>Unidad de Gestión</h1>
+  <h1>Semestre</h1>
 </div>
 
 <div class="tabla">
@@ -34,11 +33,10 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="unidades"
+        [dataSource]="semestres"
         [sort]="sort"
       >
         <thead class="datatable-header">
-          <tr align="center">
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -47,7 +45,6 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
-          </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
@@ -55,11 +52,11 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
-                  name="nombre"
+                  id="semestre"
+                  name="semestre"
                   class="form-control"
-                  [(ngModel)]="Nombre"
-                  #nombre="ngModel"
+                  [(ngModel)]="Semestre"
+                  #semestre="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -94,31 +91,31 @@
             </td>
           </tr>
 
-          <tr *ngFor="let unidad of unidades; let index = index" scope="row">
+          <tr *ngFor="let semestre of semestres; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.nombre }}
+                {{ semestre.semestre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombre"
-                    name="nombre"
+                    id="semestre"
+                    name="semestre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="unidad.nombre"
+                    [(ngModel)]="semestre.semestre"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.estado }}
+                {{ semestre.estado }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="unidad.estado" name="estado">
+                  <mdb-select [(ngModel)]="semestre.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -141,7 +138,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(unidad.codigo,unidad)"
+                  (click)="eliminar(semestre.codSemestre,semestre)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -152,7 +149,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(unidad, unidad.codigo);"
+                  (click)="actualizar(semestre, semestre.codSemestre);"
                 >
                   <i class="fa fa-check"></i>
                 </button>

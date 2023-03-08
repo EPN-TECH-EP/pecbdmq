@@ -1,3 +1,4 @@
+import { SemestreService } from './../../servicios/semestre.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -11,17 +12,18 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { Semestre } from 'src/app/modelo/semestre';
 import { HeaderType } from 'src/app/enum/header-type.enum';
-
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-semestre',
+  templateUrl: './semestre.component.html',
+  styleUrls: ['./semestre.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+export class SemestreComponent implements OnInit {
+
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  semestres: Semestre[];
   public showLoading: boolean;
 
   options = [
@@ -29,34 +31,33 @@ export class UnidadGestionComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+    private Api: SemestreService,
     private notificationService: MdbNotificationService
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
+  CodSemestre = '' as any;
+  Semestre = '';
   Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  headers = ['Semestre', 'Estado'];
 
-  addNewRow() {
-    const newRow: UnidadGestion = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
-      estado: this.Estado,
-    }
-    this.unidades = [...this.unidades, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Estado = 'ACTIVO';
-  }
+  // addNewRow() {
+  //   const newRow: Semestre = {
+  //     codSemestre: this.CodSemestre,
+  //     semestre: this.Semestre,
+  //     estado: this.Estado,
+  //   }
+  //   this.semestres = [...this.semestre, { ...newRow }];
+  //   this.CodSemestre = '' as any;
+  //   this.Semestre = '';
+  //   this.Estado = 'ACTIVO';
+  // }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.Api.getSemestre().subscribe(data => {
+      this.semestres = data;
     })
   }
 
@@ -93,15 +94,16 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(semestre: Semestre): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Nombre = '';
+      this.Api.crearSemestre(semestre).subscribe({
+        next: (response: HttpResponse<Semestre>) => {
+          let nuevaSemestre: Semestre = response.body;
+          this.semestres.push(nuevaSemestre);
+          this.notificacionOk('Semestre creada con éxito');
+          this.Semestre = '';
+          this.Estado ='';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -111,16 +113,17 @@ export class UnidadGestionComponent implements OnInit {
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(semestre: Semestre, CodSemestre:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.Api.actualizarSemestre(semestre, CodSemestre).subscribe({
+      next: (response: HttpResponse<Semestre>) => {
+        let actualizaUnidad: Semestre = response.body;
+        this.notificacionOk('Semestre actualizada con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Semestre = '';
+        this.Estado ='';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -132,15 +135,15 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+public eliminar(CodSemestre: any, data: Semestre): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.Api.eliminarSemestre(CodSemestre).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
+        this.notificacionOk('Semestre eliminada con éxito');
+        const index = this.semestres.indexOf(data);
+        this.semestres.splice(index, 1);
+        this.semestres = [...this.semestres]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -151,6 +154,5 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-
 
 }
