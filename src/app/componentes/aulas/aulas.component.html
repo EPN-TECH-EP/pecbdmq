@@ -2,7 +2,7 @@
   <div class="column col-3"></div>
 </div>
 <div class="titulo">
-  <h1>MANTENIMIENTO MATERIAS</h1>
+  <h1>AULA</h1>
 </div>
 
 <div class="tabla">
@@ -37,7 +37,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="materias"
+        [dataSource]="aulas"
         [sort]="sort"
         [pagination]="pagination"
       >
@@ -56,25 +56,24 @@
 
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
-             <!--  <td>
-               <mdb-form-control>
+            <!-- <td>
+            <mdb-form-control>
           <input mdbInput type="text"
            class="form-control"
-           [(ngModel)]="CodMateria" />
+           [(ngModel)]="Codigo" />
         </mdb-form-control>
-            </td>-->
 
-
+            </td> -->
             <td>
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombreMateria"
-                  name="nombreMateria"
+                  id="nombre"
+                  name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="NombreMateria"
-                  #nombreMateria="ngModel"
+                  [(ngModel)]="Nombre"
+                  #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -83,12 +82,12 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="numHoras"
-                  name="numHoras"
+                  id="capacidad"
+                  name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="NumHoras"
-                  #numHoras="ngModel"
+                  [(ngModel)]="Capacidad"
+                  #capacidad="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -97,12 +96,12 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="tipoMateria"
-                  name="tipoMateria"
+                  id="tipo"
+                  name="tipo"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="TipoMateria"
-                  #tipoMateria="ngModel"
+                  [(ngModel)]="Tipo"
+                  #tipo="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -111,12 +110,12 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="observacionMateria"
-                  name="observacionMateria"
-                  type="text"
+                  id="pcs"
+                  name="pcs"
+                  type="number"
                   class="form-control"
-                  [(ngModel)]="ObservacionMateria"
-                  #observacionMateria="ngModel"
+                  [(ngModel)]="Pcs"
+                  #pcs="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -125,12 +124,26 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="pesoMateria"
-                  name="pesoMateria"
+                  id="impresoras"
+                  name="impresoras"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="PesoMateria"
-                  #pesoMateria="ngModel"
+                  [(ngModel)]="Impresoras"
+                  #impresoras="ngModel"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="internet"
+                  name="internet"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="Internet"
+                  #internet="ngModel"
                   required
                 />
               </mdb-form-control>
@@ -140,17 +153,44 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="notaMinima"
-                  name="notaMinima"
+                  id="proyectores"
+                  name="proyectores"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="NotaMinima"
-                  #notaMinima="ngModel"
+                  [(ngModel)]="Proyectores"
+                  #proyectores="ngModel"
                   required
                 />
               </mdb-form-control>
             </td>
-
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="instructor"
+                  name="instructor"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="Instructor"
+                  #instructor="ngModel"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="salaOcupada"
+                  name="salaOcupada"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="SalaOcupada"
+                  #salaOcupada="ngModel"
+                  required
+                />
+              </mdb-form-control>
+            </td>
             <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Estado" name="estado">
@@ -159,7 +199,11 @@
                 }}</mdb-option>
               </mdb-select>
               </mdb-form-control>
+
             </td>
+
+
+
 
 
             <td>
@@ -180,21 +224,21 @@
             </td>
           </tr>
 
-          <tr *ngFor="let materia of table.data; let index = index" scope="row">
+          <tr *ngFor="let aula of table.data; let index = index" scope="row">
             <!-- <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.codMateria }}
+                {{ aula.codigo }}
               </ng-container>
 
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="codMateria"
-                    name="codMateria"
+                    id="codigo"
+                    name="Codigo"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.codMateria"
+                    [(ngModel)]="aula.codigo"
                     disabled
                   />
                 </mdb-form-control>
@@ -203,7 +247,7 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.nombreMateria }}
+                {{ aula.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -213,7 +257,7 @@
                     name="nombreMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.nombreMateria"
+                    [(ngModel)]="aula.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -221,17 +265,17 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.numHoras }}
+                {{ aula.capacidad }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="numHoras"
-                    name="numHoras"
+                    id="capacidad"
+                    name="capacidad"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.numHoras"
+                    [(ngModel)]="aula.capacidad"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -239,17 +283,17 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.tipoMateria }}
+                {{ aula.tipo }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="tipoMateria"
+                    id="tipo"
                     name="tipoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.tipoMateria"
+                    [(ngModel)]="aula.tipo"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -257,17 +301,17 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.observacionMateria }}
+                {{ aula.pcs }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="observacionMateria"
-                    name="observacionMateria"
+                    id="pcs"
+                    name="pcs"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.observacionMateria"
+                    [(ngModel)]="aula.pcs"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -275,17 +319,17 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.pesoMateria }}
+                {{ aula.impresoras }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="pesoMateria"
-                    name="pesoMateria"
+                    id="impresoras"
+                    name="impresoras"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.pesoMateria"
+                    [(ngModel)]="aula.impresoras"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -293,28 +337,83 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.notaMinima }}
+                {{ aula.internet }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="notaMinima"
-                    name="notaMinima"
+                    id="internet"
+                    name="internet"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.notaMinima"
+                    [(ngModel)]="aula.internet"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td  style="min-width: 10px; max-width: 10px">
+
+            <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.estado }}
+                {{ aula.proyectores }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="materia.estado" name="estado">
+                  <input
+                    mdbInput
+                    id="proyectores"
+                    name="proyectores"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aula.proyectores"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.instructor }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="instructor"
+                    name="Instructor"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aula.instructor"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.salaOcupada }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="salaOcupada"
+                    name="salaOcupada"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aula.salaOcupada"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td tyle="min-width: 10px; max-width: 10px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.estado }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <mdb-select [(ngModel)]="aula.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -322,7 +421,9 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            
+
+
+
             <td>
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -338,7 +439,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(materia.codMateria); onDeleteClick(materia)"
+                  (click)="eliminar(aula.codigo); onDeleteClick(aula)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -349,7 +450,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(materia, materia.codMateria); limpiar()"
+                  (click)="actualizar(aula, aula.codigo); limpiar()"
                 >
                   <i class="fa fa-check"></i>
                 </button>

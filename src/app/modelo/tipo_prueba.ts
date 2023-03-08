@@ -4,4 +4,5 @@ import { Injectable } from '@angular/core';
 export class TipoPrueba {
   public cod_tipo_prueba: string;
   public prueba: string;
+  public estado: string;
 }

@@ -25,6 +25,10 @@ export class MateriaComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
   public showLoading: boolean;
+  options = [
+    { value: 'ACTIVO', label: 'ACTIVO' },
+    { value: 'INACTIVO', label: 'INACTIVO' },
+  ];
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
 
@@ -37,17 +41,18 @@ export class MateriaComponent implements OnInit {
   ObservacionMateria = '';
   PesoMateria = '' as any;
   NotaMinima = '' as any;
+  Estado ='';
   headers = [
-    'Codigo Materia',
+    // 'Codigo Materia',
     'Nombre Materia',
     'Número de Horas',
     'Tipo de Materia',
     'Observacion Materia',
     'Peso Materia',
     'Nota Mínima',
+    'Estado',
   ];
 
-  materias: Materia[];
   constructor(
     // public materiaEnviar: Materia,
     private notificationService: MdbNotificationService,
@@ -63,6 +68,7 @@ export class MateriaComponent implements OnInit {
     this.ObservacionMateria = '';
     this.PesoMateria = '';
     this.NotaMinima = '';
+    this.Estado ='';
   }
 
   search(event: Event): void {
@@ -89,6 +95,8 @@ export class MateriaComponent implements OnInit {
       observacionMateria: this.ObservacionMateria,
       pesoMateria: this.PesoMateria,
       notaMinima: this.NotaMinima,
+      estado: this.Estado,
+      // estadoMateria: this.EstadoMateria,
     };
 
     this.materias = [...this.materias, { ...newRow }];
@@ -98,6 +106,7 @@ export class MateriaComponent implements OnInit {
     this.TipoMateria = '';
     this.ObservacionMateria = '';
     this.PesoMateria = '';
+    this.Estado =";"
 
   }
 
@@ -160,9 +169,9 @@ export class MateriaComponent implements OnInit {
    this.subscriptions.push(
      this.Api.actualizarMateria(materia,codMateria).subscribe({
      next: (response: HttpResponse<Materia>) => {
-       let actualizaMateria: Materia = response.body;
+       let actualizaUnidad: Materia = response.body;
         this.notificacionOK('Materia actualizada con éxito');
-        this.table.data.push(actualizaMateria);
+
         this.editElementIndex=-1;
 
      error: (errorResponse: HttpErrorResponse) => {
@@ -178,7 +187,7 @@ export class MateriaComponent implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarMateria(codMateria).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Unidad de gestión eliminada con éxito');
+          this.notificacionOK('Materia eliminada con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -187,7 +196,6 @@ export class MateriaComponent implements OnInit {
       })
     );
   }
-
 }
 
 
