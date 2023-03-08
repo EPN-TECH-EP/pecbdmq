@@ -12,7 +12,7 @@ export class TipoPruebaService {
 
   constructor(private http: HttpClient) { }
 
-  public getTipoPrueba(): Observable<TipoPrueba[]> {
+public getTipoPrueba(): Observable<TipoPrueba[]> {
     return this.http.get<TipoPrueba[]>(`${this.host}/gen_tipo_prueba/listar`);
   }
 

@@ -1,4 +1,5 @@
 import { Periodo } from './modelo/periodo_academico';
+import { TipoDocumento } from './modelo/tipo_documento';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -61,6 +62,11 @@ import { AulasComponent } from './componentes/aulas/aulas.component';
 import { PeriodoAcademicoComponent } from './componentes/periodo-academico/periodo-academico.component';
 import { SemestreComponent } from './componentes/semestre/semestre.component';
 import { SemestreTbl } from './modelo/util/semestre-tbl';
+import { ModuloComponent } from './componentes/modulo/modulo.component';
+import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
+import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
+import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
+import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +81,11 @@ import { SemestreTbl } from './modelo/util/semestre-tbl';
     AulasComponent,
     PeriodoAcademicoComponent,
     SemestreComponent,
-
+    ModuloComponent,
+    TipoFuncionarioComponent,
+    TipoDocumentoComponent,
+    TipoProcedenciaComponent,
+    TipoNotaComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,6 +136,7 @@ import { SemestreTbl } from './modelo/util/semestre-tbl';
     UsuarioFrm,
     Periodo,
     SemestreTbl
+    TipoDocumento
   ],
   bootstrap: [AppComponent]
 })

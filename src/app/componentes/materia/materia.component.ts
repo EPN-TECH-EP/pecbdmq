@@ -19,7 +19,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
   styleUrls: ['./materia.component.scss'],
 })
 export class MateriaComponent implements OnInit {
-  materias: Materia[];
+
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -52,8 +52,6 @@ export class MateriaComponent implements OnInit {
     'Nota Mínima',
     'Estado',
   ];
-
-
 
   constructor(
     // public materiaEnviar: Materia,
@@ -173,6 +171,7 @@ export class MateriaComponent implements OnInit {
      next: (response: HttpResponse<Materia>) => {
        let actualizaUnidad: Materia = response.body;
         this.notificacionOK('Materia actualizada con éxito');
+
         this.editElementIndex=-1;
 
      error: (errorResponse: HttpErrorResponse) => {

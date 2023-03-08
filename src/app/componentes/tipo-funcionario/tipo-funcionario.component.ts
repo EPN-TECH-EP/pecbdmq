@@ -1,9 +1,9 @@
+import { TipoFuncionarioService } from './../../servicios/tipo-funcionario.service';
+import { TipoFuncionario } from './../../modelo/tipo_funcionario';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -14,14 +14,15 @@ import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-tipo-funcionario',
+  templateUrl: './tipo-funcionario.component.html',
+  styleUrls: ['./tipo-funcionario.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+
+export class TipoFuncionarioComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  tiposfuncionario: TipoFuncionario[];
   public showLoading: boolean;
 
   options = [
@@ -29,12 +30,12 @@ export class UnidadGestionComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+
+    private ApiTipoFuncionario: TipoFuncionarioService,
     private notificationService: MdbNotificationService
   ) { }
 
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<TipoFuncionario>;
   editElementIndex = -1;
   addRow = false;
   Codigo = '';
@@ -43,20 +44,21 @@ export class UnidadGestionComponent implements OnInit {
   headers = ['Nombre', 'Estado'];
 
   addNewRow() {
-    const newRow: UnidadGestion = {
+    const newRow: TipoFuncionario = {
       codigo: this.Codigo,
       nombre: this.Nombre,
       estado: this.Estado,
     }
-    this.unidades = [...this.unidades, { ...newRow }];
+    this.tiposfuncionario = [...this.tiposfuncionario, { ...newRow }];
     this.Codigo = '';
     this.Nombre = '';
     this.Estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.ApiTipoFuncionario.getTipoFuncionario().subscribe(data => {
+      this.tiposfuncionario = data;
+
     })
   }
 
@@ -93,31 +95,38 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(tipofuncionario: TipoFuncionario): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
+      this.ApiTipoFuncionario.crearTipoFuncionario(tipofuncionario).subscribe({
+        next: (response: HttpResponse<TipoFuncionario>) => {
+          let nuevoTipoFuncionario: TipoFuncionario = response.body;
+          this.tiposfuncionario.push(nuevoTipoFuncionario);
+          this.notificacionOk('Tipo funcionario creado con éxito');
           this.Nombre = '';
+          // const token = response.headers.get(HeaderType.JWT_TOKEN);
+          // this.aut.guardaToken(token);
+          // this.autenticacionService.agregaUsuarioACache(response.body);
+
+          // this.router.navigateByUrl('/principal');
+          // this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
+          // this.showLoading = false;
         },
       })
     );
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(tipofuncionario: TipoFuncionario, tipofuncionarioId:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiTipoFuncionario.actualizarTipoFuncionario(tipofuncionario,tipofuncionarioId).subscribe({
+      next: (response: HttpResponse<TipoFuncionario>) => {
+        let actualizaTipoFuncionario: TipoFuncionario = response.body;
+        this.notificacionOk('Tipo funcionario actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
         this.Nombre = '';
@@ -132,15 +141,15 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+public eliminar(tipoFuncionarioId: any, data: TipoFuncionario): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.ApiTipoFuncionario.eliminarTipoFuncionario(tipoFuncionarioId).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
+        this.notificacionOk('Tipo Funcionario eliminado con éxito');
+        const index = this.tiposfuncionario.indexOf(data);
+        this.tiposfuncionario.splice(index, 1);
+        this.tiposfuncionario = [...this.tiposfuncionario]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -151,6 +160,5 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-
 
 }
