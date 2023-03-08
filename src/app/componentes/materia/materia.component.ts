@@ -25,6 +25,10 @@ export class MateriaComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
   public showLoading: boolean;
+  options = [
+    { value: 'ACTIVO', label: 'ACTIVO' },
+    { value: 'INACTIVO', label: 'INACTIVO' },
+  ];
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
 
@@ -37,15 +41,18 @@ export class MateriaComponent implements OnInit {
   ObservacionMateria = '';
   PesoMateria = '' as any;
   NotaMinima = '' as any;
+  Estado ='';
   headers = [
-    'Codigo Materia',
+    // 'Codigo Materia',
     'Nombre Materia',
     'Número de Horas',
     'Tipo de Materia',
     'Observacion Materia',
     'Peso Materia',
     'Nota Mínima',
+    'Estado',
   ];
+
 
 
   constructor(
@@ -63,6 +70,7 @@ export class MateriaComponent implements OnInit {
     this.ObservacionMateria = '';
     this.PesoMateria = '';
     this.NotaMinima = '';
+    this.Estado ='';
   }
 
   search(event: Event): void {
@@ -89,6 +97,8 @@ export class MateriaComponent implements OnInit {
       observacionMateria: this.ObservacionMateria,
       pesoMateria: this.PesoMateria,
       notaMinima: this.NotaMinima,
+      estado: this.Estado,
+      // estadoMateria: this.EstadoMateria,
     };
 
     this.materias = [...this.materias, { ...newRow }];
@@ -98,6 +108,7 @@ export class MateriaComponent implements OnInit {
     this.TipoMateria = '';
     this.ObservacionMateria = '';
     this.PesoMateria = '';
+    this.Estado =";"
 
   }
 
@@ -143,7 +154,7 @@ export class MateriaComponent implements OnInit {
       this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
           let nuevaMateria: Materia = response.body;
-          this.materias.push(nuevaMateria);
+          this.table.data.push(nuevaMateria);
           this.notificacionOK('Materia creada con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -161,7 +172,7 @@ export class MateriaComponent implements OnInit {
      this.Api.actualizarMateria(materia,codMateria).subscribe({
      next: (response: HttpResponse<Materia>) => {
        let actualizaUnidad: Materia = response.body;
-        this.notificacionOK('Unidad de gestión actualizada con éxito');
+        this.notificacionOK('Materia actualizada con éxito');
         this.editElementIndex=-1;
 
      error: (errorResponse: HttpErrorResponse) => {
@@ -177,7 +188,7 @@ export class MateriaComponent implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarMateria(codMateria).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Unidad de gestión eliminada con éxito');
+          this.notificacionOK('Materia eliminada con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -186,7 +197,6 @@ export class MateriaComponent implements OnInit {
       })
     );
   }
-
 }
 
 

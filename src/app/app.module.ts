@@ -1,3 +1,4 @@
+import { Periodo } from './modelo/periodo_academico';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -55,6 +56,11 @@ import { PrincipalModuleModule } from './modulos/principal-module/principal-modu
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
+import { AulasComponent } from './componentes/aulas/aulas.component';
+import { PeriodoAcademicoComponent } from './componentes/periodo-academico/periodo-academico.component';
+import { SemestreComponent } from './componentes/semestre/semestre.component';
+import { SemestreTbl } from './modelo/util/semestre-tbl';
 
 @NgModule({
   declarations: [
@@ -65,6 +71,11 @@ import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gest
     AlertaComponent,
     MateriaComponent,
     UnidadGestionComponent,
+    TipoPruebaComponent,
+    AulasComponent,
+    PeriodoAcademicoComponent,
+    SemestreComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -112,7 +123,9 @@ import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gest
     AutenticacionGuard,
     AutenticacionService,
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
-    UsuarioFrm
+    UsuarioFrm,
+    Periodo,
+    SemestreTbl
   ],
   bootstrap: [AppComponent]
 })

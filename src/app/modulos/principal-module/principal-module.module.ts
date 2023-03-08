@@ -1,3 +1,7 @@
+import { SemestreComponent } from './../../componentes/semestre/semestre.component';
+import { PeriodoAcademicoComponent } from './../../componentes/periodo-academico/periodo-academico.component';
+import { AulasComponent } from './../../componentes/aulas/aulas.component';
+import { TipoPruebaComponent } from './../../componentes/tipo-prueba/tipo-prueba.component';
 import { UnidadGestionComponent } from './../../componentes/unidad-gestion/unidad-gestion.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -17,7 +21,12 @@ const routes: Routes = [
       { path: 'formacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'materia', component:  MateriaComponent},
-      { path: 'unidadGestion', component: UnidadGestionComponent }
+      { path: 'unidadGestion', component: UnidadGestionComponent },
+      { path: 'tipoPrueba', component: TipoPruebaComponent },
+      { path: 'aula', component: AulasComponent },
+      { path: 'periodoAcademico', component: PeriodoAcademicoComponent},
+      { path: 'semestre', component: SemestreComponent}
+
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],
   },
