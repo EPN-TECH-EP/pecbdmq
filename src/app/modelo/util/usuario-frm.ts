@@ -3,5 +3,4 @@ export class UsuarioFrm{
     public nombre: string;
     public apellido: string;
     public correoPersonal: string;
-
 }

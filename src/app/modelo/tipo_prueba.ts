@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class UnidadGestion {
-  public codigo: string;
-  public nombre: string;
+export class TipoPrueba {
+  public cod_tipo_prueba: string;
+  public prueba: string;
   public estado: string;
 }
