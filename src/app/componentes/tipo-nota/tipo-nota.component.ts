@@ -1,9 +1,9 @@
+import { TipoNotaService } from './../../servicios/tipo-nota.service';
+import { TipoNota } from './../../modelo/tipo_nota';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -14,14 +14,14 @@ import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-tipo-nota',
+  templateUrl: './tipo-nota.component.html',
+  styleUrls: ['./tipo-nota.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+export class TipoNotaComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  tiposnota: TipoNota[];
   public showLoading: boolean;
 
   options = [
@@ -29,34 +29,32 @@ export class UnidadGestionComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+    private ApiTipoNota: TipoNotaService,
     private notificationService: MdbNotificationService
   ) { }
-
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<TipoNota>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
+  Cod_tipo_nota = '';
+  Nota = '';
   Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  headers = ['Nota', 'Estado'];
 
   addNewRow() {
-    const newRow: UnidadGestion = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
+    const newRow: TipoNota = {
+      cod_tipo_nota: this.Cod_tipo_nota,
+      nota: this.Nota,
       estado: this.Estado,
     }
-    this.unidades = [...this.unidades, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
+    this.tiposnota = [...this.tiposnota, { ...newRow }];
+    this.Cod_tipo_nota = '';
+    this.Nota = '';
     this.Estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.ApiTipoNota.getTipoNota().subscribe(data => {
+      this.tiposnota = data;
     })
   }
 
@@ -93,34 +91,41 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(tiponota: TipoNota): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Nombre = '';
+      this.ApiTipoNota.crearTipoNota(tiponota).subscribe({
+        next: (response: HttpResponse<TipoNota>) => {
+          let nuevoTipoNota: TipoNota = response.body;
+          this.tiposnota.push(nuevoTipoNota);
+          this.notificacionOk('Tipo de nota creado con éxito');
+          this.Nota = '';
+          // const token = response.headers.get(HeaderType.JWT_TOKEN);
+          // this.aut.guardaToken(token);
+          // this.autenticacionService.agregaUsuarioACache(response.body);
+
+          // this.router.navigateByUrl('/principal');
+          // this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
+          // this.showLoading = false;
         },
       })
     );
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(tiponota: TipoNota, tiponotaId:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiTipoNota.actualizarTipoNota(tiponota,tiponotaId).subscribe({
+      next: (response: HttpResponse<TipoNota>) => {
+        let actualizaTipoNota: TipoNota = response.body;
+        this.notificacionOk('Tipo de nota actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Nota = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -132,15 +137,15 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+public eliminar(tipoNotaId: any, data: TipoNota): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.ApiTipoNota.eliminarTipoNota(tipoNotaId).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
+        this.notificacionOk('Tipo de nota eliminado con éxito');
+        const index = this.tiposnota.indexOf(data);
+        this.tiposnota.splice(index, 1);
+        this.tiposnota = [...this.tiposnota]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -151,6 +156,5 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-
 
 }

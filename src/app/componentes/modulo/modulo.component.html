@@ -1,6 +1,6 @@
 
 <div class="titulo">
-  <h1>Unidad de Gestión</h1>
+  <h1>Módulo</h1>
 </div>
 
 <div class="tabla">
@@ -34,7 +34,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="unidades"
+        [dataSource]="modulos"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -55,15 +55,27 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
-                  name="nombre"
+                  id="etiqueta"
+                  name="etiqueta"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Etiqueta"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
-
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="descripcion"
+                  name="descripcion"
+                  class="form-control"
+                  [(ngModel)]="Descripcion"
+                  #nombre="ngModel"
+                  required
+                />
+              </mdb-form-control>
             </td>
             <td>
               <mdb-form-control>
@@ -73,9 +85,7 @@
                 }}</mdb-option>
               </mdb-select>
               </mdb-form-control>
-
             </td>
-
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
@@ -94,10 +104,10 @@
             </td>
           </tr>
 
-          <tr *ngFor="let unidad of unidades; let index = index" scope="row">
+          <tr *ngFor="let modulo of modulos; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.nombre }}
+                {{ modulo.etiqueta }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -107,18 +117,36 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="unidad.nombre"
+                    [(ngModel)]="modulo.etiqueta"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td align="center" style="min-width: 10px; max-width: 10px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ modulo.descripcion }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="modulo.descripcion"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.estado }}
+                {{ modulo.estado }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="unidad.estado" name="estado">
+                  <mdb-select [(ngModel)]="modulo.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -126,6 +154,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -141,7 +170,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(unidad.codigo,unidad)"
+                  (click)="eliminar(modulo.cod_modulo, modulo)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -152,7 +181,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(unidad, unidad.codigo);"
+                  (click)="actualizar(modulo, modulo.cod_modulo);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
@@ -170,3 +199,4 @@
     </form>
   </div>
 </div>
+
