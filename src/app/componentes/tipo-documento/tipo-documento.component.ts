@@ -30,26 +30,30 @@ export class TipoDocumentoComponent implements OnInit {
   ];
   constructor(
     private ApiTipoDocumento: TipoDocumentoService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valtipodocumento:TipoDocumento
   ) { }
+
   @ViewChild('table') table!: MdbTableDirective<TipoDocumento>;
   editElementIndex = -1;
   addRow = false;
-  CodigoDocumento = '';
-  TipoDocumento = '';
-  Estado = 'ACTIVO';
+
+
+  // CodigoDocumento = '';
+  // TipoDocumento = '';
+  // Estado = 'ACTIVO';
   headers = ['Tipo de Documento', 'Estado'];
 
   addNewRow() {
     const newRow: TipoDocumento = {
-      codigoDocumento: this.CodigoDocumento,
-      tipoDocumento: this.TipoDocumento,
-      estado: this.Estado,
+      codigoDocumento: this.Valtipodocumento.codigoDocumento,
+      tipoDocumento: this.Valtipodocumento.tipoDocumento,
+      estado: this.Valtipodocumento.estado,
     }
     this.tiposdocumento = [...this.tiposdocumento, { ...newRow }];
-    this.CodigoDocumento = '';
-    this.TipoDocumento = '';
-    this.Estado = 'ACTIVO';
+    this.Valtipodocumento.codigoDocumento = '';
+    this.Valtipodocumento.tipoDocumento = '';
+    this.Valtipodocumento.estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
@@ -99,7 +103,7 @@ export class TipoDocumentoComponent implements OnInit {
           let nuevoTipoDocumento: TipoDocumento = response.body;
           this.tiposdocumento.push(nuevoTipoDocumento);
           this.notificacionOk('Tipo de documento creado con éxito');
-          this.TipoDocumento = '';
+          this.Valtipodocumento.tipoDocumento = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -118,7 +122,7 @@ export class TipoDocumentoComponent implements OnInit {
         let actualizaTipoDocumento: TipoDocumento = response.body;
         this.notificacionOk('Tipo de documento actualizado con éxito');
         this.editElementIndex=-1;
-        this.TipoDocumento = '';
+        this.Valtipodocumento.tipoDocumento = '';
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

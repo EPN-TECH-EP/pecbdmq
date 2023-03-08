@@ -1,3 +1,4 @@
+import { TipoDocumento } from './modelo/tipo_documento';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -122,7 +123,8 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     AutenticacionGuard,
     AutenticacionService,
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
-    UsuarioFrm
+    UsuarioFrm,
+    TipoDocumento
   ],
   bootstrap: [AppComponent]
 })
