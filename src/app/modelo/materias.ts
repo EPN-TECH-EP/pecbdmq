@@ -10,6 +10,7 @@ export class Materia {
   public observacionMateria: string;
   public pesoMateria: number;
   public notaMinima: number;
+  public estado: string;
 
  //public paralelos: number;//
  //public active: boolean;//

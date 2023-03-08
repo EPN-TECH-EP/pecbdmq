@@ -1,3 +1,7 @@
+import { SemestreComponent } from './../../componentes/semestre/semestre.component';
+import { PeriodoAcademicoComponent } from './../../componentes/periodo-academico/periodo-academico.component';
+import { AulasComponent } from './../../componentes/aulas/aulas.component';
+import { TipoPruebaComponent } from './../../componentes/tipo-prueba/tipo-prueba.component';
 import { TipoProcedenciaComponent } from './../../componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoFuncionarioComponent } from './../../componentes/tipo-funcionario/tipo-funcionario.component';
 import { ModuloComponent } from './../../componentes/modulo/modulo.component';
@@ -22,6 +26,10 @@ const routes: Routes = [
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'materia', component:  MateriaComponent},
       { path: 'unidadGestion', component: UnidadGestionComponent },
+      { path: 'tipoPrueba', component: TipoPruebaComponent },
+      { path: 'aula', component: AulasComponent },
+      { path: 'periodoAcademico', component: PeriodoAcademicoComponent},
+      { path: 'semestre', component: SemestreComponent}
       { path: 'modulo', component:ModuloComponent},
       { path: 'tipoFuncionario', component:TipoFuncionarioComponent},
       { path: 'tipoDocumento', component:TipoDocumentoComponent},

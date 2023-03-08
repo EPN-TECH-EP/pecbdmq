@@ -1,3 +1,4 @@
+import { Periodo } from './modelo/periodo_academico';
 import { TipoDocumento } from './modelo/tipo_documento';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -56,6 +57,11 @@ import { PrincipalModuleModule } from './modulos/principal-module/principal-modu
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
+import { AulasComponent } from './componentes/aulas/aulas.component';
+import { PeriodoAcademicoComponent } from './componentes/periodo-academico/periodo-academico.component';
+import { SemestreComponent } from './componentes/semestre/semestre.component';
+import { SemestreTbl } from './modelo/util/semestre-tbl';
 import { ModuloComponent } from './componentes/modulo/modulo.component';
 import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
@@ -71,6 +77,10 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     AlertaComponent,
     MateriaComponent,
     UnidadGestionComponent,
+    TipoPruebaComponent,
+    AulasComponent,
+    PeriodoAcademicoComponent,
+    SemestreComponent,
     ModuloComponent,
     TipoFuncionarioComponent,
     TipoDocumentoComponent,
@@ -124,6 +134,8 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     AutenticacionService,
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
+    Periodo,
+    SemestreTbl
     TipoDocumento
   ],
   bootstrap: [AppComponent]
