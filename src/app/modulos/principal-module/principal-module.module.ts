@@ -29,7 +29,7 @@ const routes: Routes = [
       { path: 'tipoPrueba', component: TipoPruebaComponent },
       { path: 'aula', component: AulasComponent },
       { path: 'periodoAcademico', component: PeriodoAcademicoComponent},
-      { path: 'semestre', component: SemestreComponent}
+      { path: 'semestre', component: SemestreComponent},
       { path: 'modulo', component:ModuloComponent},
       { path: 'tipoFuncionario', component:TipoFuncionarioComponent},
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
