@@ -19,7 +19,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
   styleUrls: ['./materia.component.scss'],
 })
 export class MateriaComponent implements OnInit {
-
+  materias: Materia[];
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
