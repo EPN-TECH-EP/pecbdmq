@@ -135,7 +135,7 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,
-    SemestreTbl
+    SemestreTbl,
     TipoDocumento
   ],
   bootstrap: [AppComponent]
