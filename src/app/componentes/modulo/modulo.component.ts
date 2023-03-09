@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
+import { Modulo } from 'src/app/modelo/modulo';
+import { ModuloService } from 'src/app/servicios/modulo.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -13,54 +13,58 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
+
 @Component({
-  selector: 'app-unidad-gestion',
-  templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  selector: 'app-modulo',
+  templateUrl: './modulo.component.html',
+  styleUrls: ['./modulo.component.scss']
 })
-export class UnidadGestionComponent implements OnInit {
+export class ModuloComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  unidades: UnidadGestion[];
+  modulos: Modulo[];
   public showLoading: boolean;
 
   options = [
     { value: 'ACTIVO', label: 'ACTIVO' },
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
+
   constructor(
     // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
+    private ApiModulo: ModuloService,
     private notificationService: MdbNotificationService
   ) { }
 
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<Modulo>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
-  Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  CodModulo = '';
+  Etiqueta = '';
+  Descripcion = '';
+  Estado ='';
+  headers = ['Etiqueta','Descripción', 'Estado'];
 
   addNewRow() {
-    const newRow: UnidadGestion = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
+    const newRow: Modulo = {
+      cod_modulo: this.CodModulo,
+      etiqueta: this.Etiqueta,
+      descripcion: this.Descripcion,
       estado: this.Estado,
     }
-    this.unidades = [...this.unidades, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Estado = 'ACTIVO';
+    this.modulos = [...this.modulos, { ...newRow }];
+    this.CodModulo = '';
+    this.Etiqueta = '';
+    this.Descripcion = '';
+    this.Estado ='';
   }
+
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
-      this.unidades = data;
+    this.ApiModulo.getModulo().subscribe(data => {
+      this.modulos = data;
     })
   }
-
-
 
   private notificacion(errorResponse: HttpErrorResponse) {
 
@@ -84,7 +88,6 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
 
-
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
@@ -92,16 +95,18 @@ export class UnidadGestionComponent implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+
   //registro
-  public registro(unidad: UnidadGestion): void {
+  public registro(modulo: Modulo): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let nuevaUnidad: UnidadGestion = response.body;
-          this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Nombre = '';
+      this.ApiModulo.crearModulo(modulo).subscribe({
+        next: (response: HttpResponse<Modulo>) => {
+          let nuevoModulo: Modulo = response.body;
+          this.modulos.push(nuevoModulo);
+          this.notificacionOk('Modulo creado con éxito');
+          this.Etiqueta = '';
+          this.Descripcion = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -111,16 +116,17 @@ export class UnidadGestionComponent implements OnInit {
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
+  public actualizar(modulo: Modulo, moduloId:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiModulo.actualizarModulo(modulo,moduloId).subscribe({
+      next: (response: HttpResponse<Modulo>) => {
+        let actualizaModulo: Modulo = response.body;
+        this.notificacionOk('Módulo actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Etiqueta = '';
+        this.Descripcion = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -132,25 +138,24 @@ export class UnidadGestionComponent implements OnInit {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  );
-}
-
+ public eliminar(moduloId: any, data: Modulo): void {
+   this.showLoading = true;
+   this.subscriptions.push(
+     this.ApiModulo.eliminarModulo(moduloId).subscribe({
+       next: (response: string) => {
+         this.notificacionOk('Módulo eliminado con éxito');
+         const index = this.modulos.indexOf(data);
+         this.modulos.splice(index, 1);
+         this.modulos = [...this.modulos];
+         this.showLoading = false;
+       },
+       error: (errorResponse: HttpErrorResponse) => {
+         this.notificacion(errorResponse);
+         console.log(errorResponse);
+         this.showLoading = false;
+       },
+     })
+   );
+ }
 
 }

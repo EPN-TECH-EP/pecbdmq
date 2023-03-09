@@ -17,11 +17,6 @@ export class MateriaService {
     return this.http.get<Materia[]>(`${this.host}/materia/listar`);
   }
 
-
-  // public actualizarMaterias(formData: FormData): Observable<Materia> {
-  //   return this.http.post<Materia>(`${this.host}/materias/actualizar`, formData);
-  // }
-
   public registroMateria(materia: Materia): Observable<HttpResponse<Materia>> {
     return this.http.post<Materia>(`${this.host}/materia/crear`, materia, { observe: 'response' });
   }
@@ -39,11 +34,5 @@ export class MateriaService {
     }
     return null;
   }
-
-
-
-
-
-
-  }
+}
 

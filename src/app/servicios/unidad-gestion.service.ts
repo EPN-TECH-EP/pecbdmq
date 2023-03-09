@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpResponse,
-  HttpErrorResponse,
-  HttpEvent,
-} from '@angular/common/http';
+import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { UnidadGestion } from '../modelo/unidad_gestion';
@@ -24,6 +19,7 @@ export class UnidadGestionService {
   public crearUnidad(unidad: UnidadGestion): Observable<HttpResponse<UnidadGestion>> {
     return this.http.post<UnidadGestion>(`${this.host}/unidadgestion/crear`, unidad, { observe: 'response' });
   }
+
   public actualizarUnidad(unidad: UnidadGestion, unidadId:any): Observable<HttpResponse<UnidadGestion>> {
     return this.http.put<UnidadGestion>(`${this.host}/unidadgestion/${unidadId}`, unidad, { observe: 'response' });
   }
@@ -32,3 +28,4 @@ export class UnidadGestionService {
     return this.http.delete<string>(`${this.host}/unidadgestion/${unidadId}`);
     }
 }
+
