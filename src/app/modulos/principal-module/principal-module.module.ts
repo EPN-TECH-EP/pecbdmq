@@ -18,6 +18,7 @@ import { PrincipalComponent } from '../../componentes/principal/principal.compon
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import {ParaleloComponent} from "../../componentes/paralelo/paralelo.component";
+import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
       { path: 'paralelo', component:ParaleloComponent},
+      { path: 'tipoInstruccion', component:TipoInstruccionComponent},
 
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],

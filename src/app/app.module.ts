@@ -68,6 +68,7 @@ import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-docume
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { ParaleloComponent } from './componentes/paralelo/paralelo.component';
+import { TipoInstruccionComponent } from './componentes/tipo-instruccion/tipo-instruccion.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { ParaleloComponent } from './componentes/paralelo/paralelo.component';
     TipoProcedenciaComponent,
     TipoNotaComponent,
     ParaleloComponent,
+    TipoInstruccionComponent,
   ],
   imports: [
     BrowserModule,
