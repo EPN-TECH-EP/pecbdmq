@@ -17,6 +17,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PrincipalComponent } from '../../componentes/principal/principal.component';
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
+import {ParaleloComponent} from "../../componentes/paralelo/paralelo.component";
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
+      { path: 'paralelo', component:ParaleloComponent},
 
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],

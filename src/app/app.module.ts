@@ -67,6 +67,7 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
+import { ParaleloComponent } from './componentes/paralelo/paralelo.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    ParaleloComponent,
   ],
   imports: [
     BrowserModule,
