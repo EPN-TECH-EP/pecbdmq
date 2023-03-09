@@ -57,6 +57,8 @@ import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-ar
 import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
+import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gest
     CargaArchivoComponent,
     MateriaComponent,
     UnidadGestionComponent,
+    UsuariosComponent,
+    RolesUsuariosComponent,
   ],
   imports: [
     BrowserModule,

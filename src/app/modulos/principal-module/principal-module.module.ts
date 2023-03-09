@@ -9,6 +9,8 @@ import { MateriaComponent } from 'src/app/componentes/materia/materia.component'
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PrincipalComponent } from '../../componentes/principal/principal.component';
+import { UsuariosComponent } from '../../componentes/admin/usuarios/usuarios.component';
+import { RolesUsuariosComponent } from '../../componentes/admin/roles-usuarios/roles-usuarios.component';
 
 const routes: Routes = [
   {
@@ -17,8 +19,10 @@ const routes: Routes = [
       { path: 'formacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
       { path: 'materia', component:  MateriaComponent},
-      { path: 'unidadGestion', component: UnidadGestionComponent }
+      { path: 'unidadGestion', component: UnidadGestionComponent },
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
+      { path: 'admin/usuarios', component:  UsuariosComponent},
+      { path: 'admin/roles-usuarios', component:  RolesUsuariosComponent},
     ],
   },
 ];
