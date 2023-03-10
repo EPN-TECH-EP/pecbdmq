@@ -33,34 +33,36 @@ export class ModuloComponent implements OnInit {
   constructor(
     // public unidadEnviar:UnidadGestion,
     private ApiModulo: ModuloService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valmodulo:Modulo
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<Modulo>;
   editElementIndex = -1;
   addRow = false;
-  CodModulo = '';
-  Etiqueta = '';
-  Descripcion = '';
-  Estado ='';
+  // CodModulo = '';
+  // Etiqueta = '';
+  // Descripcion = '';
+  // Estado ='';
   headers = ['Etiqueta','Descripción', 'Estado'];
 
   addNewRow() {
     const newRow: Modulo = {
-      cod_modulo: this.CodModulo,
-      etiqueta: this.Etiqueta,
-      descripcion: this.Descripcion,
-      estado: this.Estado,
+      cod_modulo: this.Valmodulo.cod_modulo,
+      etiqueta: this.Valmodulo.etiqueta,
+      descripcion: this.Valmodulo.descripcion,
+      estado: this.Valmodulo.estado,
     }
     this.modulos = [...this.modulos, { ...newRow }];
-    this.CodModulo = '';
-    this.Etiqueta = '';
-    this.Descripcion = '';
-    this.Estado ='';
+    this.Valmodulo.cod_modulo = '';
+    this.Valmodulo.etiqueta = '';
+    this.Valmodulo.descripcion = '';
+    this.Valmodulo.estado ='';
   }
 
 
   ngOnInit(): void {
+    this.Valmodulo.estado = 'ACTIVO';
     this.ApiModulo.getModulo().subscribe(data => {
       this.modulos = data;
     })
@@ -105,8 +107,8 @@ export class ModuloComponent implements OnInit {
           let nuevoModulo: Modulo = response.body;
           this.modulos.push(nuevoModulo);
           this.notificacionOk('Modulo creado con éxito');
-          this.Etiqueta = '';
-          this.Descripcion = '';
+          this.Valmodulo.etiqueta = '';
+          this.Valmodulo.descripcion = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -125,8 +127,8 @@ export class ModuloComponent implements OnInit {
         this.notificacionOk('Módulo actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Etiqueta = '';
-        this.Descripcion = '';
+        this.Valmodulo.etiqueta = '';
+        this.Valmodulo.descripcion = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);

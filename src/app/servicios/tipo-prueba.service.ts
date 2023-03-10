@@ -1,4 +1,4 @@
-import { TipoPrueba } from './../modelo/tipo_prueba';
+import { TipoPrueba } from '../modelo/tipo-prueba';
 import { Injectable } from '@angular/core';
 import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';

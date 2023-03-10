@@ -1,4 +1,4 @@
-import { TipoPrueba } from './../../modelo/tipo_prueba';
+import { TipoPrueba } from '../../modelo/tipo-prueba';
 import { TipoPruebaService } from './../../servicios/tipo-prueba.service';
 import { Component, OnInit } from '@angular/core';
 import { MdbNotificationService, MdbNotificationRef } from 'mdb-angular-ui-kit/notification';

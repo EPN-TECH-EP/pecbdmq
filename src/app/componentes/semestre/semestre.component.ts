@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
+import { UnidadGestion } from 'src/app/modelo/unidad-gestion';
 import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';

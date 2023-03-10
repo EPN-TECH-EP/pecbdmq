@@ -1,4 +1,4 @@
-import { TipoProcedencia } from './../modelo/tipo_procedencia';
+import { TipoProcedencia } from '../modelo/tipo-procedencia';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,

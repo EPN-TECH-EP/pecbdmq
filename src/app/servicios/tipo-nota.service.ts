@@ -1,4 +1,4 @@
-import { TipoNota } from './../modelo/tipo_nota';
+import { TipoNota } from '../modelo/tipo-nota';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,

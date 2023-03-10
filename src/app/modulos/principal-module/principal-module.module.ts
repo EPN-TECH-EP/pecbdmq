@@ -1,3 +1,4 @@
+import { ComponenteNotaComponent } from './../../componentes/componente-nota/componente-nota.component';
 import { SemestreComponent } from './../../componentes/semestre/semestre.component';
 import { PeriodoAcademicoComponent } from './../../componentes/periodo-academico/periodo-academico.component';
 import { AulasComponent } from './../../componentes/aulas/aulas.component';
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
+      { path: 'componenteNota', component:ComponenteNotaComponent}
 
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],
