@@ -5,7 +5,6 @@ import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/not
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {TipoInstruccionService} from "../../servicios/tipo-instruccion.service";
-import {Materia} from "../../modelo/materias";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/custom-http-response";
 import {TipoAlerta} from "../../enum/tipo-alerta";
@@ -52,16 +51,17 @@ export class TipoInstruccionComponent implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-  onDeleteClick(data: TipoInstruccion) {
-    const index = this.tiposInstruccion.indexOf(data);
-    this.tiposInstruccion.splice(index, 1);
-    this.tiposInstruccion = [...this.tiposInstruccion]
-  }
+
 
   ngOnInit(): void {
     this.Api.getTipoInstruccion().subscribe(data => {
       this.tiposInstruccion = data;
     });
+  }
+  onDeleteClick(data: TipoInstruccion) {
+    const index = this.tiposInstruccion.indexOf(data);
+    this.tiposInstruccion.splice(index, 1);
+    this.tiposInstruccion = [...this.tiposInstruccion]
   }
   /*TODO aqui va el addNewRow()*/
   ngOnDestroy(): void {

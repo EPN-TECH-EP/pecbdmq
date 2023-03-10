@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Materia} from "../modelo/materias";
 import {Paralelo} from "../modelo/paralelo/paralelo";
+
 
 @Injectable({
   providedIn: 'root'

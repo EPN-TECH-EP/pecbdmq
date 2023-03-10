@@ -1,16 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Paralelo} from "../../modelo/paralelo/paralelo";
-import {Subscription} from "rxjs";
-import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {AlertaComponent} from "../util/alerta/alerta.component";
-import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-import {Materia} from "../../modelo/materias";
-import {MateriaService} from "../../servicios/materia.service";
 import {ParaleloService} from "../../servicios/paralelo.service";
+import {Paralelo} from "../../modelo/paralelo/paralelo";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {CustomHttpResponse} from "../../modelo/custom-http-response";
-import {TipoAlerta} from "../../enum/tipo-alerta";
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {Subscription} from "rxjs";
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+
 import {Notificacion} from "../../util/notificacion";
+import { ViewChild } from '@angular/core';
+import {MdbTableDirective} from "mdb-angular-ui-kit/table";
+
+import {AlertaComponent} from "../util/alerta/alerta.component";
 
 @Component({
   selector: 'app-paralelo',
@@ -22,11 +23,13 @@ export class ParaleloComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+
   public showLoading: boolean;
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},
     {value: 'INACTIVO', label: 'INACTIVO'},
   ];
+
   @ViewChild('table') table!: MdbTableDirective<Paralelo>;
   editElementIndex = -1;
   addRow = false;
@@ -43,8 +46,7 @@ export class ParaleloComponent implements OnInit {
   constructor(
     private notificationService: MdbNotificationService,
     private Api: ParaleloService
-  ) {
-  }
+  ) {  }
 
   limpiar() {
     this.NombreParalelo = '';
@@ -56,11 +58,6 @@ export class ParaleloComponent implements OnInit {
     this.table.search(searchTerm);
   }
 
-  onDeleteClick(data: Paralelo) {
-    const index = this.paralelos.indexOf(data);
-    this.paralelos.splice(index, 1);
-    this.paralelos = [...this.paralelos]
-  }
 
 
   ngOnInit(): void {
@@ -68,6 +65,14 @@ export class ParaleloComponent implements OnInit {
       this.paralelos = data;
     });
   }
+
+  onDeleteClick(data: Paralelo) {
+    const index = this.paralelos.indexOf(data);
+    console.log(this.paralelos)
+    this.paralelos.splice(index, 1);
+    this.paralelos = [...this.paralelos]
+  }
+
 
   addNewRow() {
     const newRow: Paralelo = {
@@ -127,7 +132,7 @@ export class ParaleloComponent implements OnInit {
         next: (response: HttpResponse<Paralelo>) => {
           let nuevoParalelo: Paralelo = response.body;
           this.table.data.push(nuevoParalelo);
-          this.notificacionOK('Materia creada con éxito');
+          this.notificacionOK('Paralelo creado con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -143,7 +148,7 @@ export class ParaleloComponent implements OnInit {
       this.Api.actualizarParalelo(paralelo, codParalelo).subscribe({
         next: (response: HttpResponse<Paralelo>) => {
           let actualizaUnidad: Paralelo = response.body;
-          this.notificacionOK('Materia actualizada con éxito');
+          this.notificacionOK('Paralelo actualizado con éxito');
 
           this.editElementIndex = -1;
 
@@ -161,7 +166,7 @@ export class ParaleloComponent implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarParalelo(codMateria).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Materia eliminada con éxito');
+          this.notificacionOK('Paralelo eliminado con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -170,6 +175,4 @@ export class ParaleloComponent implements OnInit {
       })
     );
   }
-
-
 }
