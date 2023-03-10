@@ -21,8 +21,8 @@ import {AlertaComponent} from "../util/alerta/alerta.component";
 export class ParaleloComponent implements OnInit {
   paralelos: Paralelo[];
 
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[];
+  notificationRef: MdbNotificationRef<AlertaComponent> | null;
 
   public showLoading: boolean;
   options = [
@@ -46,7 +46,11 @@ export class ParaleloComponent implements OnInit {
   constructor(
     private notificationService: MdbNotificationService,
     private Api: ParaleloService
-  ) {  }
+  ) {
+    this.paralelos=[];
+    this.subscriptions = [];
+    this.notificationRef=null;
+  }
 
   limpiar() {
     this.NombreParalelo = '';

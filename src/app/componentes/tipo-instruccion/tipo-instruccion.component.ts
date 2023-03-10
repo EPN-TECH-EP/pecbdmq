@@ -42,7 +42,11 @@ export class TipoInstruccionComponent implements OnInit {
   constructor(
     private notificationService: MdbNotificationService,
     private Api:TipoInstruccionService
-  ) { }
+  ) {
+    this.tiposInstruccion=[];
+    this.subscriptions = [];
+    this.notificationRef=null;
+  }
   limpiar() {
     this.TipoInstruccion = '';
     this.Estado ='';
