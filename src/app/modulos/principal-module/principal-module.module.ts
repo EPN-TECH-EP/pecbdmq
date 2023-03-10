@@ -15,7 +15,7 @@ import { PrincipalComponent } from '../../componentes/principal/principal.compon
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
-
+import { TipoSancionComponent } from "../../componentes/tipo-sansion/tipo-sancion.component";
 const routes: Routes = [
   {
     path: 'principal', component: PrincipalComponent,
@@ -34,6 +34,7 @@ const routes: Routes = [
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
       { path: 'tipoBaja', component:TipoBajaComponent},
+      { path: 'tipoSansion', component:TipoSancionComponent},
 
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],
