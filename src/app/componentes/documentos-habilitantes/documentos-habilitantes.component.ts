@@ -1,10 +1,8 @@
-import { SemestreService } from './../../servicios/semestre.service';
+import { DocumentosHabilitantes } from './../../modelo/documentos-habilitantes';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -12,18 +10,20 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
-import { Semestre } from 'src/app/modelo/semestre';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { DocumentosHabilitantesService } from 'src/app/servicios/documentos-habilitantes.service';
 @Component({
-  selector: 'app-semestre',
-  templateUrl: './semestre.component.html',
-  styleUrls: ['./semestre.component.scss']
+  selector: 'app-documentos-habilitantes',
+  templateUrl: './documentos-habilitantes.component.html',
+  styleUrls: ['./documentos-habilitantes.component.scss']
 })
-export class SemestreComponent implements OnInit {
+export class DocumentosHabilitantesComponent implements OnInit {
+
+
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  semestres: Semestre[];
+  documentoHabilitante: DocumentosHabilitantes[];
   public showLoading: boolean;
 
   options = [
@@ -31,33 +31,22 @@ export class SemestreComponent implements OnInit {
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
   constructor(
-    private Api: SemestreService,
+    private Api: DocumentosHabilitantesService,
     private notificationService: MdbNotificationService
   ) { }
 
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<DocumentosHabilitantes>;
   editElementIndex = -1;
   addRow = false;
-  CodSemestre = '' as any;
-  Semestre = '';
+  Nombre = '';
   Estado = 'ACTIVO';
-  headers = ['Semestre', 'Estado'];
+  headers = ['Documento Habilitante', 'Estado'];
 
-  // addNewRow() {
-  //   const newRow: Semestre = {
-  //     codSemestre: this.CodSemestre,
-  //     semestre: this.Semestre,
-  //     estado: this.Estado,
-  //   }
-  //   this.semestres = [...this.semestre, { ...newRow }];
-  //   this.CodSemestre = '' as any;
-  //   this.Semestre = '';
-  //   this.Estado = 'ACTIVO';
-  // }
+
 
   ngOnInit(): void {
-    this.Api.getSemestre().subscribe(data => {
-      this.semestres = data;
+    this.Api.getDocumentosHabilitantes().subscribe(data => {
+      this.documentoHabilitante = data;
     })
   }
 
@@ -94,15 +83,14 @@ export class SemestreComponent implements OnInit {
     );
   }
   //registro
-  public registro(semestre: Semestre): void {
+  public registro(documentosHabilitantes: DocumentosHabilitantes): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.crearSemestre(semestre).subscribe({
-        next: (response: HttpResponse<Semestre>) => {
-          let nuevaSemestre: Semestre = response.body;
-          this.semestres.push(nuevaSemestre);
-          this.notificacionOK('Semestre creada con éxito');
-          this.Semestre = '';
+      this.Api.crearDocumentosHabilitantes(documentosHabilitantes).subscribe({
+        next: (response: HttpResponse<DocumentosHabilitantes>) => {
+          let nuevadocumentosHabilitantes: DocumentosHabilitantes = response.body;
+          this.documentoHabilitante.push(nuevadocumentosHabilitantes);
+          this.notificacionOK('Documento Habilitante creada con éxito');
           this.Estado ='';
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -113,16 +101,15 @@ export class SemestreComponent implements OnInit {
   }
 
   //actualizar
-  public actualizar(semestre: Semestre, CodSemestre:any): void {
+  public actualizar(documentosHabilitantes: DocumentosHabilitantes, CodDocumentoHabilitante:any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarSemestre(semestre, CodSemestre).subscribe({
-      next: (response: HttpResponse<Semestre>) => {
-        let actualizaUnidad: Semestre = response.body;
-        this.notificacionOK('Semestre actualizada con éxito');
+      this.Api.actualizarDocumentosHabilitantes(documentosHabilitantes, CodDocumentoHabilitante).subscribe({
+      next: (response: HttpResponse<DocumentosHabilitantes>) => {
+        let actualizaDocumentoHabilitante: DocumentosHabilitantes = response.body;
+        this.notificacionOK('Documento Habilitante actualizada con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Semestre = '';
         this.Estado ='';
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -135,15 +122,15 @@ export class SemestreComponent implements OnInit {
 
   //eliminar
 
-public eliminar(CodSemestre: any, data: Semestre): void {
+public eliminar(codDocumentoHabilitante: any, data: DocumentosHabilitantes): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.Api.eliminarSemestre(CodSemestre).subscribe({
+    this.Api.eliminarDocumentosHabilitantes(codDocumentoHabilitante).subscribe({
       next: (response: string) => {
-        this.notificacionOK('Semestre eliminada con éxito');
-        const index = this.semestres.indexOf(data);
-        this.semestres.splice(index, 1);
-        this.semestres = [...this.semestres]
+        this.notificacionOK('Documento Habilitante eliminada con éxito');
+        const index = this.documentoHabilitante.indexOf(data);
+        this.documentoHabilitante.splice(index, 1);
+        this.documentoHabilitante = [...this.documentoHabilitante]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

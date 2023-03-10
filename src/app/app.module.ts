@@ -1,3 +1,5 @@
+import { Aula } from './modelo/aula';
+import { Materia } from './modelo/materias';
 import { Periodo } from './modelo/periodo_academico';
 import { TipoDocumento } from './modelo/tipo_documento';
 import { NgModule } from '@angular/core';
@@ -67,6 +69,7 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
+import { DocumentosHabilitantesComponent } from './componentes/documentos-habilitantes/documentos-habilitantes.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +89,7 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    DocumentosHabilitantesComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,7 +140,9 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     UsuarioFrm,
     Periodo,
     SemestreTbl,
-    TipoDocumento
+    TipoDocumento,
+    Materia,
+    Aula
   ],
   bootstrap: [AppComponent]
 })
