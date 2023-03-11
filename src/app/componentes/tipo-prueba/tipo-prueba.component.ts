@@ -144,6 +144,7 @@ export class TipoPruebaComponent implements OnInit {
 
 public eliminar(codPrueba: any): void {
 this.showLoading = true;
+
 this.subscriptions.push(
   this.Api.eliminarTipoPrueba(codPrueba).subscribe({
     next: (response: string) => {

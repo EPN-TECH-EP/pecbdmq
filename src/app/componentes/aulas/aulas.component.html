@@ -16,7 +16,7 @@
         [disabled]="editElementIndex !== -1"
         (keyup)="search($event)"
       />
-      <label mdbLabel class="form-label" for="search-input">Search</label>
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
     <button
       MdbRiple
@@ -39,7 +39,6 @@
         #sort="mdbTableSort"
         [dataSource]="aulas"
         [sort]="sort"
-        [pagination]="pagination"
       >
         <thead class="datatable-header">
           <tr>
@@ -55,7 +54,7 @@
         </thead>
 
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow"  scope="row">
             <!-- <td>
             <mdb-form-control>
           <input mdbInput type="text"
@@ -72,7 +71,7 @@
                   name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Valaula.nombre"
                   #nombre="ngModel"
                   required
                 />
@@ -86,7 +85,7 @@
                   name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Capacidad"
+                  [(ngModel)]="Valaula.capacidad"
                   #capacidad="ngModel"
                   required
                 />
@@ -100,7 +99,7 @@
                   name="tipo"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Tipo"
+                  [(ngModel)]="Valaula.tipo"
                   #tipo="ngModel"
                   required
                 />
@@ -114,7 +113,7 @@
                   name="pcs"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Pcs"
+                  [(ngModel)]="Valaula.pcs"
                   #pcs="ngModel"
                   required
                 />
@@ -126,9 +125,9 @@
                   mdbInput="mdbInput"
                   id="impresoras"
                   name="impresoras"
-                  type="text"
+                  type="number"
                   class="form-control"
-                  [(ngModel)]="Impresoras"
+                  [(ngModel)]="Valaula.impresoras"
                   #impresoras="ngModel"
                   required
                 />
@@ -142,7 +141,7 @@
                   name="internet"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Internet"
+                  [(ngModel)]="Valaula.internet"
                   #internet="ngModel"
                   required
                 />
@@ -155,9 +154,9 @@
                   mdbInput="mdbInput"
                   id="proyectores"
                   name="proyectores"
-                  type="text"
+                  type="number"
                   class="form-control"
-                  [(ngModel)]="Proyectores"
+                  [(ngModel)]="Valaula.proyectores"
                   #proyectores="ngModel"
                   required
                 />
@@ -171,7 +170,7 @@
                   name="instructor"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Instructor"
+                  [(ngModel)]="Valaula.instructor"
                   #instructor="ngModel"
                   required
                 />
@@ -185,7 +184,7 @@
                   name="salaOcupada"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="SalaOcupada"
+                  [(ngModel)]="Valaula.salaOcupada"
                   #salaOcupada="ngModel"
                   required
                 />
@@ -193,7 +192,7 @@
             </td>
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Valaula.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
@@ -210,7 +209,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value); limpiar(); addRow = false"
+                (click)="registro(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -235,7 +234,7 @@
                   <input
                     mdbInput
                     id="codigo"
-                    name="Codigo"
+                    name="codigo"
                     type="text"
                     class="form-control"
                     [(ngModel)]="aula.codigo"
@@ -253,11 +252,11 @@
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombreMateria"
-                    name="nombreMateria"
+                    id="nombre"
+                    name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.nombre"
+                    [(ngModel)]="Valaula.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -273,9 +272,9 @@
                     mdbInput
                     id="capacidad"
                     name="capacidad"
-                    type="text"
+                    type="number"
                     class="form-control"
-                    [(ngModel)]="aula.capacidad"
+                    [(ngModel)]="Valaula.capacidad"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -290,10 +289,10 @@
                   <input
                     mdbInput
                     id="tipo"
-                    name="tipoMateria"
+                    name="tipo"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.tipo"
+                    [(ngModel)]="Valaula.tipo"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -309,9 +308,9 @@
                     mdbInput
                     id="pcs"
                     name="pcs"
-                    type="text"
+                    type="number"
                     class="form-control"
-                    [(ngModel)]="aula.pcs"
+                    [(ngModel)]="Valaula.pcs"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -327,9 +326,9 @@
                     mdbInput
                     id="impresoras"
                     name="impresoras"
-                    type="text"
+                    type="number"
                     class="form-control"
-                    [(ngModel)]="aula.impresoras"
+                    [(ngModel)]="Valaula.impresoras"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -347,7 +346,7 @@
                     name="internet"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.internet"
+                    [(ngModel)]="Valaula.internet"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -363,9 +362,9 @@
                     mdbInput
                     id="proyectores"
                     name="proyectores"
-                    type="text"
+                    type="number"
                     class="form-control"
-                    [(ngModel)]="aula.proyectores"
+                    [(ngModel)]="Valaula.proyectores"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -384,7 +383,7 @@
                     name="Instructor"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.instructor"
+                    [(ngModel)]="Valaula.instructor"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -402,7 +401,7 @@
                     name="salaOcupada"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.salaOcupada"
+                    [(ngModel)]="Valaula.salaOcupada"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -428,18 +427,16 @@
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
-                <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-edit"></i>
-                </button>
+              <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editar(index)"
+
+            >
+              <i class="fa fa-edit"></i>
+            </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(aula.codigo); onDeleteClick(aula)"
+                  (click)="eliminar(aula.codigo,aula)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -450,7 +447,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(aula, aula.codigo); limpiar()"
+                  (click)="actualizar(aula, aula.codigo);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
@@ -466,7 +463,7 @@
         </tbody>
       </table>
     </form>
-    <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination>
+    <!-- <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination> -->
   </div>
 </div>
 

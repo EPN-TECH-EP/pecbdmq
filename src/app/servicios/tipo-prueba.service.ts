@@ -4,6 +4,8 @@ import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/c
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +14,7 @@ export class TipoPruebaService {
 
   constructor(private http: HttpClient) { }
 
-public getTipoPrueba(): Observable<TipoPrueba[]> {
+  public getTipoPrueba(): Observable<TipoPrueba[]> {
     return this.http.get<TipoPrueba[]>(`${this.host}/gen_tipo_prueba/listar`);
   }
 
