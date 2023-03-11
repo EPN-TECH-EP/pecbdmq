@@ -14,8 +14,11 @@ import { MateriaComponent } from 'src/app/componentes/materia/materia.component'
 import { PrincipalComponent } from '../../componentes/principal/principal.component';
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
+import {ParaleloComponent} from "../../componentes/paralelo/paralelo.component";
+import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
 import { TipoSancionComponent } from "../../componentes/tipo-sansion/tipo-sancion.component";
+
 const routes: Routes = [
   {
     path: 'principal', component: PrincipalComponent,
@@ -33,6 +36,8 @@ const routes: Routes = [
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
+      { path: 'paralelo', component:ParaleloComponent},
+      { path: 'tipoInstruccion', component:TipoInstruccionComponent},
       { path: 'tipoBaja', component:TipoBajaComponent},
       { path: 'tipoSansion', component:TipoSancionComponent},
 
