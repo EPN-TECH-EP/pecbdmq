@@ -68,6 +68,7 @@ import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-docume
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { TipoBajaComponent } from './componentes/tipo-baja/tipo-baja.component';
+import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { TipoBajaComponent } from './componentes/tipo-baja/tipo-baja.component';
     TipoProcedenciaComponent,
     TipoNotaComponent,
     TipoBajaComponent,
+    TipoSancionComponent,
   ],
   imports: [
     BrowserModule,

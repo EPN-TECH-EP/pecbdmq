@@ -1,26 +1,26 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ITipoBaja} from "../../modelo/tipo_baja";
-import {TipoBajaService} from "../../servicios/tipo-baja.service";
+import {ITipoSancion} from "../../modelo/tipo_sancion";
+import {TipoSancionService} from "../../servicios/tipo-sancion.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
+import {Subscription} from "rxjs";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {TipoNota} from "../../modelo/tipo_nota";
-import {Subscription} from "rxjs";
-import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
+import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/custom-http-response";
 
 @Component({
-  selector: 'app-tipo-baja',
-  templateUrl: './tipo-baja.component.html',
-  styleUrls: ['./tipo-baja.component.scss']
+  selector: 'app-tipo-sansion',
+  templateUrl: './tipo-sancion.component.html',
+  styleUrls: ['./tipo-sancion.component.scss']
 })
-export class TipoBajaComponent implements OnInit {
+export class TipoSancionComponent implements OnInit {
 
   //model
-  tiposBaja: ITipoBaja[];
-  tipoBaja: ITipoBaja;
+  tiposSancion: ITipoSancion[];
+  tipoSancion: ITipoSancion;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -39,29 +39,29 @@ export class TipoBajaComponent implements OnInit {
   addRow = false;
   headers = ['Baja', 'Estado'];
 
-  constructor(private apiTipoBaja: TipoBajaService, private notificationService: MdbNotificationService) {
-    this.tiposBaja = [];
+  constructor(private apiTipoSancion: TipoSancionService, private notificationService: MdbNotificationService) {
+    this.tiposSancion = [];
     this.subscriptions = [];
-    this.tipoBaja = {
-      cod_tipo_baja: 0,
-      estado: 'ACTIVO',
-      baja: ''
+    this.tipoSancion = {
+      cod_tipo_sancion: 0,
+      sancion: '',
+      estado: 'ACTIVO'
     }
   }
 
   ngOnInit(): void {
-    this.apiTipoBaja.getTiposBaja().subscribe(data => {
-      this.tiposBaja = data;
-    })
+    this.apiTipoSancion.getTiposSancion().subscribe(data => {
+      this.tiposSancion = data;
+    });
   }
 
   addNewRow() {
-    const newRow: ITipoBaja = this.tipoBaja;
-    this.tiposBaja = [...this.tiposBaja, {...newRow}];
-    this.tipoBaja = {
-      cod_tipo_baja: 0,
+    const newRow: ITipoSancion = this.tipoSancion;
+    this.tiposSancion = [...this.tiposSancion, {...newRow}];
+    this.tipoSancion = {
+      cod_tipo_sancion: 0,
       estado: 'ACTIVO',
-      baja: ''
+      sancion: ''
     }
   }
 
@@ -90,20 +90,20 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
-
-  //create a register of tipo baja
-  public createTipoBaja(tipoBaja: ITipoBaja): void {
+  //create a register of tipo sancion
+  public createTipoSancion(tipoSancion: ITipoSancion): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoBaja.createTipoBaja(tipoBaja).subscribe({
-        next: (response: HttpResponse<ITipoBaja>) => {
-          let newTipoBaja: ITipoBaja = response.body;
-          this.tiposBaja.push(newTipoBaja);
-          this.okNotification('Tipo de baja creado correctamente');
-          this.tipoBaja = {
-            cod_tipo_baja: 0,
+      this.apiTipoSancion.createTipoSancion(tipoSancion).subscribe({
+        next: (response: HttpResponse<ITipoSancion>) => {
+          let newTipoSancion: ITipoSancion = response.body;
+          this.tiposSancion.push(newTipoSancion);
+          this.okNotification('Tipo de sanción creado correctamente');
+          this.showLoading = false;
+          this.tipoSancion = {
+            cod_tipo_sancion: 0,
             estado: 'ACTIVO',
-            baja: ''
+            sancion: ''
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -113,40 +113,20 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
-  //update a register of tipo baja
-  public updateTipoBaja(tipoBaja: ITipoBaja): void {
+  //update a register of tipo sancion
+  public updateTipoSancion(tipoSancion: ITipoSancion): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
+      this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
         next: () => {
-          this.okNotification('Tipo de baja actualizado correctamente');
+          this.okNotification('Tipo de sanción actualizado correctamente');
           this.editElementIndex = -1;
           this.showLoading = false;
-          this.tipoBaja = {
-            cod_tipo_baja: 0,
+          this.tipoSancion = {
+            cod_tipo_sancion: 0,
             estado: 'ACTIVO',
-            baja: ''
+            sancion: ''
           }
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse);
-
-        },
-      })
-    )
-  }
-
-  //delete a register of tipo baja
-  public deleteTipoBaja(cod_tipo_baja: number): void {
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.apiTipoBaja.deleteTipoBaja(cod_tipo_baja).subscribe({
-        next: () => {
-          this.okNotification('Tipo de baja eliminado correctamente');
-          this.showLoading = false;
-          const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.cod_tipo_baja === cod_tipo_baja);
-          this.tiposBaja.splice(index, 1);
-          this.tiposBaja = [...this.tiposBaja];
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);
@@ -155,5 +135,23 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
+  //delete a register of tipo sancion
+  public deleteTipoSancion(cod_tipo_sancion: number): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.apiTipoSancion.deleteTipoSancion(cod_tipo_sancion).subscribe({
+        next: () => {
+          this.okNotification('Tipo de sanción eliminado correctamente');
+          this.showLoading = false;
+          const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.cod_tipo_sancion === cod_tipo_sancion);
+          this.tiposSancion.splice(index, 1);
+          this.tiposSancion = [...this.tiposSancion];
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.errorResponseNotification(errorResponse);
+        },
+      })
+    )
+  }
 
 }
