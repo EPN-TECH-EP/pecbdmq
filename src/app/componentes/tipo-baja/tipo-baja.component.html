@@ -1,0 +1,162 @@
+<div class="titulo">
+  <h1>Tipo de Baja</h1>
+</div>
+
+<div class="tabla">
+  <!-- Button to add a register-->
+  <button
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="editElementIndex !== -1"
+    (click)="addRow = true"
+  >
+    <i class="fa fa-plus"></i>
+  </button>
+  <hr/>
+  <!-- Table -->
+  <div class="datatable table-editor mt-4">
+    <form #form="ngForm">
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        [dataSource]="tiposBaja"
+      >
+        <!-- Table head -->
+        <thead class="datatable-header">
+        <tr>
+          <th *ngFor="let header of headers" scope="col">
+            <b> {{ header | titlecase }}</b>
+          </th>
+          <th scope="col"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <!-- Table body -->
+        <tbody class="datatable-body">
+        <!-- Add row -->
+        <tr *ngIf="addRow">
+          <!-- Input baja -->
+          <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="add_baja"
+                name="baja"
+                class="form-control"
+                [(ngModel)]="tipoBaja.baja"
+                required
+              />
+            </mdb-form-control>
+          </td>
+          <!-- Input state -->
+          <td>
+            <mdb-form-control>
+              <mdb-select [(ngModel)]="tipoBaja.estado" name="estado">
+                <mdb-option *ngFor="let option of options" [value]="option.value">
+                  {{option.label}}
+                </mdb-option>
+              </mdb-select>
+            </mdb-form-control>
+
+          </td>
+          <!-- Buttons to add or cancel a register -->
+          <td>
+            <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              type="submit"
+              (click)=" createTipoBaja(form.value); addRow = false"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+            <button
+              name="eliminar"
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="addRow = false"
+            >
+              <i class="fa fa-ban"></i>
+            </button>
+          </td>
+        </tr>
+        <!-- Edit row -->
+        <tr *ngFor="let tipoBaja of table.data; let index = index">
+          <td>
+            <!--Show baja-->
+            <ng-container *ngIf="editElementIndex !== index">
+              {{ tipoBaja.baja }}
+            </ng-container>
+
+            <!--Edit baja-->
+            <ng-container *ngIf="editElementIndex === index">
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  id="update_baja"
+                  name="update_baja"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="tipoBaja.baja"
+                />
+              </mdb-form-control>
+            </ng-container>
+          </td>
+          <td>
+            <!-- Show state -->
+            <ng-container *ngIf="editElementIndex !== index">
+              {{ tipoBaja.estado }}
+            </ng-container>
+            <!-- Edit state -->
+            <ng-container *ngIf="editElementIndex === index">
+              <mdb-form-control>
+                <mdb-select [(ngModel)]="tipoBaja.estado" name="estado">
+                  <mdb-option *ngFor="let option of options" [value]="option.value">
+                    {{ option.label }}</mdb-option>
+                </mdb-select>
+              </mdb-form-control>
+            </ng-container>
+          </td>
+          <td>
+            <!--Buttons to delete -->
+            <ng-container
+              *ngIf="editElementIndex === -1 || editElementIndex !== index"
+            >
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="editElementIndex = index"
+                [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+              >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                (click)="deleteTipoBaja(tipoBaja.cod_tipo_baja)"
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <!--Buttons to edit-->
+            <ng-container *ngIf="editElementIndex === index">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="updateTipoBaja(tipoBaja); editElementIndex = -1"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="editElementIndex = -1"
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </ng-container>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
