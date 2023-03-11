@@ -1,4 +1,4 @@
-import { TipoDocumento } from './../../modelo/tipo_documento';
+import { TipoDocumento } from '../../modelo/tipo-documento';
 import { TipoDocumentoService } from './../../servicios/tipo-documento.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -57,6 +57,7 @@ export class TipoDocumentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.Valtipodocumento.estado = 'ACTIVO';
     this.ApiTipoDocumento.getTipoDocumento().subscribe(data => {
       this.tiposdocumento = data;
       console.log(data);

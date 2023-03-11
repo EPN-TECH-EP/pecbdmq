@@ -1,7 +1,13 @@
+import { ComponenteNota } from './modelo/componente-nota';
+import { TipoProcedencia } from './modelo/tipo-procedencia';
+import { TipoNota } from './modelo/tipo-nota';
+import { TipoFuncionario } from './modelo/tipo-funcionario';
+import { UnidadGestion } from 'src/app/modelo/unidad-gestion';
+import { Modulo } from 'src/app/modelo/modulo';
 import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { Periodo } from './modelo/periodo_academico';
-import { TipoDocumento } from './modelo/tipo_documento';
+import { TipoDocumento } from './modelo/tipo-documento';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -69,6 +75,7 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
+import { ComponenteNotaComponent } from './componentes/componente-nota/componente-nota.component';
 import { DocumentosHabilitantesComponent } from './componentes/documentos-habilitantes/documentos-habilitantes.component';
 import { ParaleloComponent } from './componentes/paralelo/paralelo.component';
 import { TipoInstruccionComponent } from './componentes/tipo-instruccion/tipo-instruccion.component';
@@ -93,6 +100,7 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    ComponenteNotaComponent,
     DocumentosHabilitantesComponent,
     ParaleloComponent,
     TipoInstruccionComponent,
@@ -149,6 +157,12 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     Periodo,
     SemestreTbl,
     TipoDocumento,
+    Modulo,
+    UnidadGestion,
+    TipoFuncionario,
+    TipoNota,
+    TipoProcedencia,
+    ComponenteNota
     Materia,
     Aula
   ],

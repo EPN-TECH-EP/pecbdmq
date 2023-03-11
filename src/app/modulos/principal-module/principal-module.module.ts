@@ -1,3 +1,4 @@
+import { ComponenteNotaComponent } from './../../componentes/componente-nota/componente-nota.component';
 import { DocumentosHabilitantesComponent } from './../../componentes/documentos-habilitantes/documentos-habilitantes.component';
 import { DocumentosHabilitantes } from 'src/app/modelo/documentos-habilitantes';
 import { SemestreComponent } from './../../componentes/semestre/semestre.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
+      { path: 'componenteNota', component:ComponenteNotaComponent}
       { path: 'documentoHabilitante', component:DocumentosHabilitantesComponent}
       { path: 'paralelo', component:ParaleloComponent},
       { path: 'tipoInstruccion', component:TipoInstruccionComponent},

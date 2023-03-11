@@ -58,7 +58,7 @@
                   id="nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Valtipofuncionario.nombre"
                   #nombre="ngModel"
                   required
                 />
@@ -69,7 +69,7 @@
 
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Valtipofuncionario.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>

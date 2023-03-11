@@ -1,5 +1,5 @@
 import { TipoFuncionarioService } from './../../servicios/tipo-funcionario.service';
-import { TipoFuncionario } from './../../modelo/tipo_funcionario';
+import { TipoFuncionario } from '../../modelo/tipo-funcionario';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -32,30 +32,32 @@ export class TipoFuncionarioComponent implements OnInit {
   constructor(
 
     private ApiTipoFuncionario: TipoFuncionarioService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valtipofuncionario:TipoFuncionario
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<TipoFuncionario>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
-  Estado = 'ACTIVO';
+  // Codigo = '';
+  // Nombre = '';
+  // Estado = 'ACTIVO';
   headers = ['Nombre', 'Estado'];
 
   addNewRow() {
     const newRow: TipoFuncionario = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
-      estado: this.Estado,
+      codigo: this.Valtipofuncionario.codigo,
+      nombre: this.Valtipofuncionario.nombre,
+      estado: this.Valtipofuncionario.estado,
     }
     this.tiposfuncionario = [...this.tiposfuncionario, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Estado = 'ACTIVO';
+    this.Valtipofuncionario.codigo = '';
+    this.Valtipofuncionario.nombre = '';
+    this.Valtipofuncionario.estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
+    this.Valtipofuncionario.estado = 'ACTIVO';
     this.ApiTipoFuncionario.getTipoFuncionario().subscribe(data => {
       this.tiposfuncionario = data;
 
@@ -103,7 +105,7 @@ export class TipoFuncionarioComponent implements OnInit {
           let nuevoTipoFuncionario: TipoFuncionario = response.body;
           this.tiposfuncionario.push(nuevoTipoFuncionario);
           this.notificacionOk('Tipo funcionario creado con éxito');
-          this.Nombre = '';
+          this.Valtipofuncionario.nombre = '';
           // const token = response.headers.get(HeaderType.JWT_TOKEN);
           // this.aut.guardaToken(token);
           // this.autenticacionService.agregaUsuarioACache(response.body);
@@ -129,7 +131,7 @@ export class TipoFuncionarioComponent implements OnInit {
         this.notificacionOk('Tipo funcionario actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Valtipofuncionario.nombre = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
