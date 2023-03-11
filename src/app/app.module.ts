@@ -1,3 +1,5 @@
+import { Aula } from './modelo/aula';
+import { Materia } from './modelo/materias';
 import { Periodo } from './modelo/periodo_academico';
 import { TipoDocumento } from './modelo/tipo_documento';
 import { NgModule } from '@angular/core';
@@ -67,6 +69,7 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
+import { DocumentosHabilitantesComponent } from './componentes/documentos-habilitantes/documentos-habilitantes.component';
 import { ParaleloComponent } from './componentes/paralelo/paralelo.component';
 import { TipoInstruccionComponent } from './componentes/tipo-instruccion/tipo-instruccion.component';
 import { TipoBajaComponent } from './componentes/tipo-baja/tipo-baja.component';
@@ -90,6 +93,7 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    DocumentosHabilitantesComponent,
     ParaleloComponent,
     TipoInstruccionComponent,
     TipoBajaComponent,
@@ -144,7 +148,9 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     UsuarioFrm,
     Periodo,
     SemestreTbl,
-    TipoDocumento
+    TipoDocumento,
+    Materia,
+    Aula
   ],
   bootstrap: [AppComponent]
 })

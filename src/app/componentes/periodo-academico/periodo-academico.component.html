@@ -38,9 +38,7 @@
         #table="mdbTable"
         #sort="mdbTableSort"
         [dataSource]="periodos"
-        [sort]="sort"
-        [pagination]="pagination"
-      >
+        [sort]="sort"      >
         <thead class="datatable-header">
           <tr>
             <th
@@ -66,13 +64,6 @@
             </td> -->
             <td>
               <mdb-form-control>
-                <!-- <mdb-select [visibleOptions]="3">
-                  <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                    option.label
-                  }}</mdb-option>
-                </mdb-select>
-                <label mdbLabel class="form-label"></label> -->
-
                 <input
                   mdbInput="mdbInput"
                   id="modulo"
@@ -113,7 +104,7 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-
+                  [mdbDatepicker]="datepicker"
                   id="fechainicio"
                   name="fechainicio"
                   type="text"
@@ -122,9 +113,9 @@
                   #fechaFin="ngModel"
                   required
                 />
-                <!-- <label mdbLabel for="fechainicio" class="form-label mb-10"></label>
+              <label mdbLabel for="fechainicio" class="form-label mb-10"></label>
                 <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                <mdb-datepicker #datepicker></mdb-datepicker> -->
+                <mdb-datepicker #datepicker></mdb-datepicker>
               </mdb-form-control>
             </td>
 
@@ -134,7 +125,7 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-
+                  [mdbDatepicker]="datepicker"
                   id="fechafin"
                   name="fechafin"
                   type="text"
@@ -143,9 +134,9 @@
                   #fechaFin="ngModel"
                   required
                 />
-                <!-- <label mdbLabel for="fechafin" class="form-label mb-10"></label>
+                <label mdbLabel for="fechafin" class="form-label mb-10"></label>
                 <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                <mdb-datepicker #datepicker></mdb-datepicker> -->
+                <mdb-datepicker #datepicker></mdb-datepicker>
               </mdb-form-control>
             </td>
 
@@ -184,6 +175,7 @@
                 type="submit"
                 (click)="registro(form.value); limpiar(); addRow = false"
 
+
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -191,13 +183,14 @@
                 name="eliminar"
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                 (click)="addRow = false"
+
               >
                 <i class="fa fa-ban"></i>
               </button>
             </td>
           </tr>
 
-          <tr *ngFor="let periodo of table.data; let index = index" scope="row">
+          <tr *ngFor="let periodo of table.data; let index = index" >
             <!-- <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ periodo.codigo }}
@@ -218,22 +211,25 @@
               </ng-container>
             </td> -->
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 25px; max-width: 25px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ periodo.modulo }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <!-- <mdb-select [visibleOptions]="3"> -->
-                  <input
+                  <mdb-select>
+                    <mdb-option *ngFor="let modulos of Modulo" [value]="modulos.value">{{
+                      modulos.label
+                    }}</mdb-option>
+                   <!-- <input
                     mdbInput
                     id="modulo"
                     name="modulo"
                     type="text"
                     class="form-control"
                     [(ngModel)]="periodo.modulo"
-                  />
-                  <!-- </mdb-select> -->
+                  /> -->
+                   </mdb-select>
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -272,9 +268,9 @@
                     class="form-control"
                     [(ngModel)]="periodo.fechainicio"
                   />
-                  <!-- <label mdbLabel for="fechafnicio" class="form-label mb-10"></label>
+                  <label mdbLabel for="fechafnicio" class="form-label mb-10"></label>
                 <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                <mdb-datepicker #datepicker></mdb-datepicker> -->
+                <mdb-datepicker #datepicker></mdb-datepicker>
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -294,9 +290,9 @@
                     class="form-control"
                     [(ngModel)]="periodo.fechafin"
                   />
-                  <!-- <label mdbLabel for="fechafin" class="form-label mb-10"></label>
+                   <label mdbLabel for="fechafin" class="form-label mb-10"></label>
                   <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                  <mdb-datepicker #datepicker></mdb-datepicker> -->
+                  <mdb-datepicker #datepicker></mdb-datepicker>
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -342,15 +338,13 @@
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
-                <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-edit"></i>
-                </button>
+              <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editElementIndex=index"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
                <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="eliminar(periodo.codigo)"
@@ -365,16 +359,13 @@
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="actualizar(periodo, periodo.codigo); limpiar()"
-
-
-
-
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="editElementIndex = -1"
+
                 >
                   <i class="fa fa-ban"></i>
                 </button>
@@ -384,7 +375,7 @@
         </tbody>
       </table>
     </form>
-    <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination>
+    <!-- <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination> -->
   </div>
 </div>
 
