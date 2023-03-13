@@ -21,8 +21,8 @@ export class TipoBajaService {
     return this.http.post<ITipoBaja>(`${this.host}/gen_tipo_baja/crear`, tipoBaja, { observe: 'response' });
   }
 
-  updateTipoBaja(tipoBaja: ITipoBaja, tipoBajaId: number): Observable<HttpResponse<ITipoBaja>>{
-    return this.http.put<ITipoBaja>(`${this.host}/gen_tipo_baja/${tipoBajaId}`, tipoBaja, { observe: 'response' });
+  updateTipoBaja(tipoBaja: ITipoBaja, tipoBajaId: number): Observable<ITipoBaja>{
+    return this.http.put<ITipoBaja>(`${this.host}/gen_tipo_baja/${tipoBajaId}`, tipoBaja);
   }
 
   deleteTipoBaja(tipoBajaId: number): Observable<string>{

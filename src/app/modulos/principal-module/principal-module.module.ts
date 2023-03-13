@@ -27,6 +27,8 @@ import { ValidacionComponent } from '../../componentes/formacion/validacion/vali
 import { UnidadGestion } from '../../modelo/unidad-gestion';
 import { TipoFuncionario } from '../../modelo/tipo-funcionario';
 import { Aula } from '../../modelo/Aula';
+import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
+import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 
 const routes: Routes = [
   {
@@ -35,10 +37,10 @@ const routes: Routes = [
       //sub-menu
       { path: 'bienvenida', component:  BienvenidaComponent},
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
-      { path: 'menuFormacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
-      { path: 'menuEspecializacion', component: MenuEspecializacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
-      { path: 'menuProfesionalizacion', component: MenuProfesionalizacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
-      // componentes funcionales      
+      { path: 'menuFormacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
+      { path: 'menuEspecializacion', component: MenuEspecializacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
+      { path: 'menuProfesionalizacion', component: MenuProfesionalizacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
+      // componentes funcionales
       { path: 'materia', component:  MateriaComponent},
       { path: 'unidadGestion', component: UnidadGestionComponent },
       { path: 'tipoPrueba', component: TipoPruebaComponent },
@@ -50,6 +52,8 @@ const routes: Routes = [
       { path: 'tipoDocumento', component:TipoDocumentoComponent},
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
+      { path: 'tipoBaja', component: TipoBajaComponent},
+      { path: 'tipoSancion', component: TipoSancionComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       { path: 'admin/usuarios', component:  UsuariosComponent},
       { path: 'admin/roles-usuarios', component:  RolesUsuariosComponent},
@@ -73,7 +77,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [
-    MdbPopconfirmService    
+    MdbPopconfirmService
   ]
 })
 export class PrincipalModuleModule {}

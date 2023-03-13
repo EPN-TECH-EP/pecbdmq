@@ -84,6 +84,10 @@ import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { TipoNota } from './modelo/tipo-nota';
 import { Modulo } from './modelo/modulo';
+import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
+import { ITipoSancion} from "./modelo/tipo_sancion";
+import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.component";
+
 
 @NgModule({
   declarations: [
@@ -106,6 +110,8 @@ import { Modulo } from './modelo/modulo';
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    TipoBajaComponent,
+    TipoSancionComponent,
     PopconfirmComponent,
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
@@ -156,8 +162,8 @@ import { Modulo } from './modelo/modulo';
   ],
   providers: [
     AutenticacionGuard,
-    AutenticacionService, 
-    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},    
+    AutenticacionService,
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,
