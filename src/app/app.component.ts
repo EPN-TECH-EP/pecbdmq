@@ -14,14 +14,11 @@ export class AppComponent implements OnInit, OnChanges {
 
   constructor(private autenticacionService: AutenticacionService, private router: Router){
 
-    router.events.subscribe((val) => {
+/*     router.events.subscribe((val) => {
       // see also
-      console.log(val)
-  });
-
+      console.log(val) 
+      });*/
   }
-
-
 
   public isLoggedIn() : boolean {
     return this.autenticacionService.isUsuarioLoggedIn();

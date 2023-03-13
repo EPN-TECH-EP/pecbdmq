@@ -1,3 +1,4 @@
+import { MdbLabelDirective } from './../../../../code/mdb-angular-ui-kit/forms/label.directive';
 import { Semestre } from 'src/app/modelo/semestre';
 import { SemestreTbl } from './../../modelo/util/semestre-tbl';
 import { Periodo } from './../../modelo/periodo_academico';
@@ -34,6 +35,10 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
     { value: 'ACTIVO', label: 'ACTIVO' },
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
+  modulos = [
+    {value:'ESPECIALIZACIÓN'  ,label:'ESPECIALIZACIÓN' },
+    {value:  '7'  ,label: '7' },
+  ]
 
   @ViewChild('table') table!: MdbTableDirective<Periodo>;
 
@@ -71,9 +76,7 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
     this.FechaFin = '';
     this.Estado = '';
     this.Descripcion = '';
-
   }
-
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
@@ -86,17 +89,17 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
   // }
 
   ngOnInit(): void {
-    // this.periodover.semestre = this.semestreTbl.semestre;
-
-    // this.periodover.codSemestre.$semestre = this.semestreTbl.semestre;
 
 
     this.Api.getPeriodo().subscribe(data => {
       this.periodos = data;
-      console.log(data)
+
+
     });
   }
-   addNewRow() {
+   addNewRow(periodo: Periodo, Codigo:any) {
+    this.showLoading = true;
+
      const newRow: Periodo= {
        codigo: this.Codigo,
        modulo: this.Modulo,
@@ -105,6 +108,8 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
        fechafin: this.FechaFin,
        estado: this.Estado,
        descripcion: this.Descripcion,
+
+
      };
 
      this.periodos = [...this.periodos,  { ...newRow }];
@@ -115,6 +120,8 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
      this.FechaFin = '';
      this.Estado = '';
      this.Descripcion = '';
+     this.editElementIndex=-1;
+
 
   }
 
@@ -154,6 +161,7 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
     );
   }
 
+
  public registro(periodo: Periodo): void {
 
   console.log(periodo);
@@ -165,6 +173,9 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
           let nuevaAula: Periodo = response.body;
          this.table.data.push(nuevaAula);
          this.notificacionOK('Periodo Académico creada con éxito');
+         this.editElementIndex=-1;
+
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -193,8 +204,6 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
                });
              }
            }
-
-
 
 
 
