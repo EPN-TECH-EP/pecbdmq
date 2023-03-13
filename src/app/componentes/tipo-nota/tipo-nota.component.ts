@@ -1,5 +1,5 @@
 import { TipoNotaService } from './../../servicios/tipo-nota.service';
-import { TipoNota } from './../../modelo/tipo_nota';
+import { TipoNota } from '../../modelo/tipo-nota';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -30,29 +30,31 @@ export class TipoNotaComponent implements OnInit {
   ];
   constructor(
     private ApiTipoNota: TipoNotaService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valtiponota:TipoNota
   ) { }
   @ViewChild('table') table!: MdbTableDirective<TipoNota>;
   editElementIndex = -1;
   addRow = false;
-  Cod_tipo_nota = '';
-  Nota = '';
-  Estado = 'ACTIVO';
+  // Cod_tipo_nota = '';
+  // Nota = '';
+  // Estado = 'ACTIVO';
   headers = ['Nota', 'Estado'];
 
   addNewRow() {
     const newRow: TipoNota = {
-      cod_tipo_nota: this.Cod_tipo_nota,
-      nota: this.Nota,
-      estado: this.Estado,
+      cod_tipo_nota: this.Valtiponota.cod_tipo_nota,
+      nota: this.Valtiponota.nota,
+      estado: this.Valtiponota.estado,
     }
     this.tiposnota = [...this.tiposnota, { ...newRow }];
-    this.Cod_tipo_nota = '';
-    this.Nota = '';
-    this.Estado = 'ACTIVO';
+    this.Valtiponota.cod_tipo_nota = '';
+    this.Valtiponota.nota = '';
+    this.Valtiponota.estado = 'ACTIVO';
   }
 
   ngOnInit(): void {
+    this.Valtiponota.estado = 'ACTIVO';
     this.ApiTipoNota.getTipoNota().subscribe(data => {
       this.tiposnota = data;
     })
@@ -99,7 +101,7 @@ export class TipoNotaComponent implements OnInit {
           let nuevoTipoNota: TipoNota = response.body;
           this.tiposnota.push(nuevoTipoNota);
           this.notificacionOk('Tipo de nota creado con éxito');
-          this.Nota = '';
+          this.Valtiponota.nota = '';
           // const token = response.headers.get(HeaderType.JWT_TOKEN);
           // this.aut.guardaToken(token);
           // this.autenticacionService.agregaUsuarioACache(response.body);
@@ -125,7 +127,7 @@ export class TipoNotaComponent implements OnInit {
         this.notificacionOk('Tipo de nota actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nota = '';
+        this.Valtiponota.nota = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);

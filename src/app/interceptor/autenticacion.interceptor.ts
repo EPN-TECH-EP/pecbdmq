@@ -13,12 +13,15 @@ export class AutenticacionInterceptor implements HttpInterceptor {
 
   constructor(private autenticacionService: AutenticacionService) {}
 
-  intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<unknown>> {
     if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/login`)) {
       return httpHandler.handle(httpRequest);
     }
     if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/registro`)) {
       return httpHandler.handle(httpRequest);
+    }
+    if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/guardarArchivo`)) {
+      return httpHandler.handle(httpRequest);     
     }
     this.autenticacionService.cargaToken();
     const token = this.autenticacionService.getToken();

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { UnidadGestion } from '../modelo/unidad_gestion';
+import { UnidadGestion } from '../modelo/unidad-gestion';
 import { CustomHttpResponse } from '../modelo/custom-http-response';
 @Injectable({
   providedIn: 'root'
