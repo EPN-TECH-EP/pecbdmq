@@ -87,7 +87,8 @@ import { Modulo } from './modelo/modulo';
 import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
 import { ITipoSancion} from "./modelo/tipo_sancion";
 import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.component";
-
+import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
+import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
 
 @NgModule({
   declarations: [
@@ -117,6 +118,8 @@ import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.comp
     MenuProfesionalizacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
+    ParaleloComponent,
+    TipoInstruccionComponent
   ],
   imports: [
     BrowserModule,

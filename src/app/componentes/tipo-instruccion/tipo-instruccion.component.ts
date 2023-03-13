@@ -9,6 +9,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/custom-http-response";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {Notificacion} from "../../util/notificacion";
+import {Paralelo} from "../../modelo/paralelo/paralelo";
 
 
 @Component({
@@ -18,26 +19,23 @@ import {Notificacion} from "../../util/notificacion";
 })
 export class TipoInstruccionComponent implements OnInit {
   tiposInstruccion:TipoInstruccion[];
+  tipoInstruccion:TipoInstruccion;
+  tipoInstruccionEdit: TipoInstruccion;
 
-  private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-
+  private subscriptions: Subscription[] = [];
   public showLoading: boolean;
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
+
+
   @ViewChild('table') table!: MdbTableDirective<TipoInstruccion>;
   editElementIndex = -1;
   addRow = false;
-  CodTipoInstruccion='';
-  TipoInstruccion='';
-  Estado ='';
   headers = [
     // 'Codigo Materia',
     'Tipo de Instrucción',
-    'Estado',
+    //'Estado',
   ];
+
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -46,30 +44,39 @@ export class TipoInstruccionComponent implements OnInit {
     this.tiposInstruccion=[];
     this.subscriptions = [];
     this.notificationRef=null;
+    this.tipoInstruccion={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'ACTIVO'
+    }
+    this.tipoInstruccionEdit={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'ACTIVO'
+    }
   }
-  limpiar() {
-    this.TipoInstruccion = '';
-    this.Estado ='';
-  }
-  search(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value;
-    this.table.search(searchTerm);
-  }
-
-
   ngOnInit(): void {
     this.Api.getTipoInstruccion().subscribe(data => {
       this.tiposInstruccion = data;
     });
   }
-  onDeleteClick(data: TipoInstruccion) {
-    const index = this.tiposInstruccion.indexOf(data);
-    this.tiposInstruccion.splice(index, 1);
-    this.tiposInstruccion = [...this.tiposInstruccion]
+  addNewRow() {
+    const newRow: TipoInstruccion = this.tipoInstruccion;
+    this.tiposInstruccion=[...this.tiposInstruccion,{...newRow}]
+    this.tipoInstruccion={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'',
+    }
+
   }
-  /*TODO aqui va el addNewRow()*/
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+
+  public notificacionOK(mensaje:string){
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
   }
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -95,15 +102,8 @@ export class TipoInstruccionComponent implements OnInit {
     )
   }
 
-  public notificacionOK(mensaje:string){
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
   public registro(tipoInstruccion: TipoInstruccion): void {
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearTipoInstruccion(tipoInstruccion).subscribe({
@@ -111,6 +111,12 @@ export class TipoInstruccionComponent implements OnInit {
           let nuevoTipo: TipoInstruccion = response.body;
           this.table.data.push(nuevoTipo);
           this.notificacionOK('Tipo instrucción creada con éxito');
+          this.showLoading = false;
+          this.tipoInstruccion={
+            codigoTipoInstruccion:'',
+            tipoInstruccion:'',
+            estado:''
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -119,40 +125,67 @@ export class TipoInstruccionComponent implements OnInit {
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoInstruccionEdit = {...this.tiposInstruccion[index]};
+  }
 
-  public actualizar(tipoInstruccion: TipoInstruccion, codTipoInstruccion:any): void {
+  undoRow() {
+    this.tipoInstruccionEdit={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'',
+    }
+    this.editElementIndex = -1;
+  }
+  public actualizar(tipoInstruccion: TipoInstruccion, formValue): void {
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoInstruccion(tipoInstruccion,codTipoInstruccion).subscribe({
-        next: (response: HttpResponse<TipoInstruccion>) => {
-          let actualizaUnidad: TipoInstruccion = response.body;
+      this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
+        next: (response) => {
           this.notificacionOK('Tipo instrucción actualizada con éxito');
-
-          this.editElementIndex=-1;
+          this.tiposInstruccion[this.editElementIndex]=response.body;
+          this.editElementIndex = -1;
+          this.showLoading = false;
+          this.tipoInstruccion = {
+            codigoTipoInstruccion: '',
+            tipoInstruccion: '',
+            estado: ''
+          }
+        },
 
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             // this.showLoading = false;
-          }
-        },
+          },
+
       })
     );
   }
+
   public eliminar(codTipoInstruccion: any): void {
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.eliminarTipoInstruccion(codTipoInstruccion).subscribe({
         next: (response: string) => {
           this.notificacionOK('Tipo instrucción eliminada con éxito');
+          this.showLoading = false;
+          const index = this.tiposInstruccion.findIndex(tipoInstruccionO=>tipoInstruccionO.codigoTipoInstruccion===codTipoInstruccion)
+          this.tiposInstruccion.splice(index, 1);
+          this.tiposInstruccion = [...this.tiposInstruccion]
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          console.log(errorResponse);
         },
       })
     );
   }
-
-
-
+  search(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }
