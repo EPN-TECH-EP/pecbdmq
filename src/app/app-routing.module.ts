@@ -6,15 +6,17 @@ import { PrincipalComponent } from './componentes/principal/principal.component'
 import { AutenticacionGuard } from './guard/autenticacion.guard';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { Usuario } from './modelo/usuario';
-import { TipoNota} from "./modelo/tipo_nota";
+import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
 
 const routes: Routes = [
-  {path: 'principal', component: PrincipalComponent, canActivate: [AutenticacionGuard]},
+  {path: 'principal', component: PrincipalComponent, canActivate: [AutenticacionGuard], /*
+loadChildren: () => import('./modulos/principal-module/principal-module.module').then(m => m.PrincipalModuleModule)*/},
   {path: 'login', component: LoginComponent},
   {path: 'registro', component: RegistroComponent},
+  {path: 'cargaArchivo', component: CargaArchivoComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'},
-
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     // TODO eliminar

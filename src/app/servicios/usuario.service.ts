@@ -26,8 +26,9 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.host}/usuario/nuevo`, formData);
   }
 
-  public actualizarUsuario(formData: FormData): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.host}/usuario/actualizar`, formData);
+  public actualizarUsuario(usuario: Usuario): Observable<Usuario> {
+    console.log(usuario);
+    return this.http.post<Usuario>(`${this.host}/usuario/actualizar`, usuario);
   }
 
   public resetPassword(email: string): Observable<CustomHttpResponse> {
@@ -41,8 +42,8 @@ export class UsuarioService {
     });
   }
 
-  public eliminarUsuario(Usuarioname: string): Observable<CustomHttpResponse> {
-    return this.http.delete<CustomHttpResponse>(`${this.host}/usuario/eliminar/${Usuarioname}`);
+  public eliminarUsuario(nombreUsuario: string): Observable<CustomHttpResponse> {
+    return this.http.delete<CustomHttpResponse>(`${this.host}/usuario/eliminar/${nombreUsuario}`);
   }
 
   public agregarUsuariosACacheLocal(Usuarios: Usuario[]): void {

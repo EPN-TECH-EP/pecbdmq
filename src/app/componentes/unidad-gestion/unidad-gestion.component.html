@@ -1,5 +1,9 @@
-<div class="titulo">
-  <h1>Unidad de Gestión</h1>
+
+ <!-- Título de componente-->
+ <div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Unidad de gestión</p>
+  </div>
 </div>
 
 <div class="tabla">
@@ -28,7 +32,7 @@
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
-        class="table datatable-table"
+        class="table table-sm datatable-table"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -57,7 +61,7 @@
                   id="nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Valunidadgestion.nombre"
+                  [(ngModel)]="Nombre"
                   #nombre="ngModel"
                   required
                 />
@@ -66,7 +70,7 @@
             </td>
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Valunidadgestion.estado" name="estado">
+                <mdb-select [(ngModel)]="Estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
