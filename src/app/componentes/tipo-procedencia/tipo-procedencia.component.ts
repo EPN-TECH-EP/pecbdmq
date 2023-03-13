@@ -30,28 +30,29 @@ export class TipoProcedenciaComponent implements OnInit {
   ];
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valtipoprocedencia: TipoProcedencia
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
-  Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  // Codigo = '';
+  // Nombre = '';
+  // Estado = 'ACTIVO';
+  headers = ['Nombre'];
 
-  addNewRow() {
-    const newRow: TipoProcedencia = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
-      estado: this.Estado,
-    }
-    this.tiposprocedencia = [...this.tiposprocedencia, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Estado = 'ACTIVO';
-  }
+  // addNewRow() {
+  //   const newRow: TipoProcedencia = {
+  //     codigo: this.Codigo,
+  //     nombre: this.Nombre,
+  //     estado: this.Estado,
+  //   }
+  //   this.tiposprocedencia = [...this.tiposprocedencia, { ...newRow }];
+  //   this.Codigo = '';
+  //   this.Nombre = '';
+  //   this.Estado = 'ACTIVO';
+  // }
 
   ngOnInit(): void {
     this.ApiTipoProcedencia.getTipoProcedencia().subscribe(data => {
@@ -93,6 +94,7 @@ export class TipoProcedenciaComponent implements OnInit {
   }
   //registro
   public registro(tipoprocedencia: TipoProcedencia): void {
+    tipoprocedencia={...tipoprocedencia,estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoProcedencia.crearTipoProcedencia(tipoprocedencia).subscribe({
@@ -100,7 +102,7 @@ export class TipoProcedenciaComponent implements OnInit {
           let nuevoTipoProcedencia: TipoProcedencia = response.body;
           this.tiposprocedencia.push(nuevoTipoProcedencia);
           this.notificacionOk('Tipo procedencia creado con éxito');
-          this.Nombre = '';
+          this.Valtipoprocedencia.nombre = '';
           // const token = response.headers.get(HeaderType.JWT_TOKEN);
           // this.aut.guardaToken(token);
           // this.autenticacionService.agregaUsuarioACache(response.body);
@@ -118,6 +120,7 @@ export class TipoProcedenciaComponent implements OnInit {
 
   //actualizar
   public actualizar(tipoprocedencia: TipoProcedencia, tipoprocedenciaId:any): void {
+    tipoprocedencia={...tipoprocedencia,estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoprocedencia,tipoprocedenciaId).subscribe({
@@ -126,7 +129,7 @@ export class TipoProcedenciaComponent implements OnInit {
         this.notificacionOk('Tipo procedencia actualizado con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Valtipoprocedencia.nombre = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);

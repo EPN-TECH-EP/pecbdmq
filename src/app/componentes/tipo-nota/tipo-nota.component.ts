@@ -39,7 +39,7 @@ export class TipoNotaComponent implements OnInit {
   // Cod_tipo_nota = '';
   // Nota = '';
   // Estado = 'ACTIVO';
-  headers = ['Nota', 'Estado'];
+  headers = ['Nota'];
 
   addNewRow() {
     const newRow: TipoNota = {
@@ -94,6 +94,7 @@ export class TipoNotaComponent implements OnInit {
   }
   //registro
   public registro(tiponota: TipoNota): void {
+    tiponota={...tiponota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoNota.crearTipoNota(tiponota).subscribe({
@@ -119,6 +120,7 @@ export class TipoNotaComponent implements OnInit {
 
   //actualizar
   public actualizar(tiponota: TipoNota, tiponotaId:any): void {
+    tiponota={...tiponota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoNota.actualizarTipoNota(tiponota,tiponotaId).subscribe({

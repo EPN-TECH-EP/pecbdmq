@@ -38,10 +38,10 @@ export class UnidadGestionComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-   Codigo = '';
-   Nombre = '';
+  //  Codigo = '';
+  //  Nombre = '';
    Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  headers = ['Nombre'];
 
   // addNewRow() {
   //   const newRow: UnidadGestion = {
@@ -95,6 +95,7 @@ export class UnidadGestionComponent implements OnInit {
   }
   //registro
   public registro(unidad: UnidadGestion): void {
+    unidad = {...unidad, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiUnidad.crearUnidad(unidad).subscribe({
@@ -113,6 +114,7 @@ export class UnidadGestionComponent implements OnInit {
 
   //actualizar
   public actualizar(unidad: UnidadGestion, unidadId:any): void {
+    unidad = {...unidad, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({

@@ -5,8 +5,9 @@
     <p class="fs-4 fw-bolder">Unidad de gestión</p>
   </div>
 </div>
+<div class="row justify-content-center">
 
-<div class="tabla">
+  <div class="col-6 ">
   <!-- <mdb-form-control>
     <input
       mdbInput
@@ -32,7 +33,7 @@
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
-        class="table table-sm datatable-table"
+        class="table table-sm datatable-table text-center"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -53,7 +54,7 @@
           </tr>
         </thead>
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow" scope="row" style="min-width: 10px; max-width: 10px">
             <td>
               <mdb-form-control>
                 <input
@@ -61,14 +62,14 @@
                   id="nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Valunidadgestion.nombre"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
 
             </td>
-            <td>
+            <!-- <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
@@ -77,9 +78,9 @@
               </mdb-select>
               </mdb-form-control>
 
-            </td>
+            </td> -->
 
-            <td align="center">
+            <td class="text-start" style="min-width: 10px; max-width: 10px">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
@@ -98,7 +99,7 @@
           </tr>
 
           <tr *ngFor="let unidad of unidades; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <td align="center" style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ unidad.nombre }}
               </ng-container>
@@ -115,7 +116,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <!-- <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ unidad.estado }}
               </ng-container>
@@ -128,7 +129,7 @@
                   </mdb-select>
                 </mdb-form-control>
               </ng-container>
-            </td>
+            </td> -->
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -172,4 +173,5 @@
       </table>
     </form>
   </div>
+</div>
 </div>

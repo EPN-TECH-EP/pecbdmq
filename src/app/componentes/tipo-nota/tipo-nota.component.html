@@ -4,8 +4,8 @@
     <p class="fs-4 fw-bolder">Gestión de Tipo de Nota</p>
   </div>
 </div>
-
-<div class="tabla">
+<div class="row justify-content-center">
+  <div class="col-6 ">
   <!-- <mdb-form-control>
     <input
       mdbInput
@@ -69,7 +69,7 @@
 
 
 
-            <td>
+            <!-- <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Valtiponota.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
@@ -78,7 +78,7 @@
               </mdb-select>
               </mdb-form-control>
 
-            </td>
+            </td> -->
 
             <td align="center">
               <button
@@ -116,7 +116,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <!-- <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tiponota.estado }}
               </ng-container>
@@ -129,7 +129,7 @@
                   </mdb-select>
                 </mdb-form-control>
               </ng-container>
-            </td>
+            </td> -->
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -173,4 +173,5 @@
       </table>
     </form>
   </div>
+</div>
 </div>

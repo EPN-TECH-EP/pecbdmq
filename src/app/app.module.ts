@@ -1,3 +1,4 @@
+import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { Periodo } from './modelo/periodo_academico';
 
 import { NgModule } from '@angular/core';
@@ -156,8 +157,8 @@ import { Modulo } from './modelo/modulo';
   ],
   providers: [
     AutenticacionGuard,
-    AutenticacionService, 
-    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},    
+    AutenticacionService,
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,
@@ -169,7 +170,8 @@ import { Modulo } from './modelo/modulo';
     Materia,
     TipoNota,
     Modulo,
-    MdbPopconfirmService
+    MdbPopconfirmService,
+    TipoProcedencia
   ],
   bootstrap: [AppComponent]
 })
