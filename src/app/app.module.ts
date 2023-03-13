@@ -84,6 +84,8 @@ import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { TipoNota } from './modelo/tipo-nota';
 import { Modulo } from './modelo/modulo';
+import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
+import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
 
 @NgModule({
   declarations: [
@@ -111,6 +113,8 @@ import { Modulo } from './modelo/modulo';
     MenuProfesionalizacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
+    ParaleloComponent,
+    TipoInstruccionComponent
   ],
   imports: [
     BrowserModule,
@@ -156,8 +160,8 @@ import { Modulo } from './modelo/modulo';
   ],
   providers: [
     AutenticacionGuard,
-    AutenticacionService, 
-    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},    
+    AutenticacionService,
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,

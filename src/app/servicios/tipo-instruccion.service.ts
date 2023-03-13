@@ -3,8 +3,6 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {TipoInstruccion} from "../modelo/tipo_instruccion";
-import {TipoFuncionario} from "../modelo/tipo_funcionario";
-
 @Injectable({
   providedIn: 'root'
 })
