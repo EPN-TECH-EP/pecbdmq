@@ -35,13 +35,15 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
 
-    console.log("Usuario de cache: " + JSON.stringify(usuario));
-
     this.subscriptions.push(
       this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
         next: (response: Menu[]) => {
           this.listaMenu = response;
-          console.log(response)
+          this.menuService.menu = response;
+
+          if (this.router.url === '/principal') {
+            this.router.navigate(['/principal/bienvenida']);
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           console.error(errorResponse);
@@ -77,5 +79,5 @@ export class PrincipalComponent implements OnInit, OnDestroy {
         this.printpath(currentPath, route.children);
       }
     }
-  }*/ 
+  }*/
 }

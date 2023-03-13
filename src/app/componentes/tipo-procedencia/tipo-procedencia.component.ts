@@ -1,4 +1,4 @@
-import { TipoProcedencia } from './../../modelo/tipo_procedencia';
+import { TipoProcedencia } from '../../modelo/tipo-procedencia';
 import { TipoProcedenciaService } from './../../servicios/tipo-procedencia.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
