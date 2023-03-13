@@ -84,6 +84,9 @@ import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { TipoNota } from './modelo/tipo-nota';
 import { Modulo } from './modelo/modulo';
+import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
+import { ITipoSancion} from "./modelo/tipo_sancion";
+import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.component";
 import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
 
@@ -108,6 +111,8 @@ import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-inst
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    TipoBajaComponent,
+    TipoSancionComponent,
     PopconfirmComponent,
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,

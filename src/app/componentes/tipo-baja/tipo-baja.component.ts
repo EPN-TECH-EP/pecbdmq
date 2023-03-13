@@ -4,7 +4,6 @@ import {TipoBajaService} from "../../servicios/tipo-baja.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-import {TipoNota} from "../../modelo/tipo_nota";
 import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
@@ -21,6 +20,7 @@ export class TipoBajaComponent implements OnInit {
   //model
   tiposBaja: ITipoBaja[];
   tipoBaja: ITipoBaja;
+  tipoBajaEditForm: ITipoBaja;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -34,10 +34,10 @@ export class TipoBajaComponent implements OnInit {
   ];
 
   //table
-  @ViewChild('table') table!: MdbTableDirective<TipoNota>;
+  @ViewChild('table') table!: MdbTableDirective<ITipoBaja>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Baja', 'Estado'];
+  headers = ['Baja'];
 
   constructor(private apiTipoBaja: TipoBajaService, private notificationService: MdbNotificationService) {
     this.tiposBaja = [];
@@ -47,22 +47,17 @@ export class TipoBajaComponent implements OnInit {
       estado: 'ACTIVO',
       baja: ''
     }
+    this.tipoBajaEditForm = {
+      cod_tipo_baja: 0,
+      estado: 'ACTIVO',
+      baja: ''
+    };
   }
 
   ngOnInit(): void {
     this.apiTipoBaja.getTiposBaja().subscribe(data => {
       this.tiposBaja = data;
     })
-  }
-
-  addNewRow() {
-    const newRow: ITipoBaja = this.tipoBaja;
-    this.tiposBaja = [...this.tiposBaja, {...newRow}];
-    this.tipoBaja = {
-      cod_tipo_baja: 0,
-      estado: 'ACTIVO',
-      baja: ''
-    }
   }
 
   public okNotification(mensaje: string) {
@@ -90,9 +85,9 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
-
   //create a register of tipo baja
   public createTipoBaja(tipoBaja: ITipoBaja): void {
+    tipoBaja = {...tipoBaja, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.createTipoBaja(tipoBaja).subscribe({
@@ -113,24 +108,41 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoBajaEditForm = {...this.tiposBaja[index]};
+  }
+
+  undoRow() {
+    this.tipoBajaEditForm = {
+      cod_tipo_baja: 0,
+      estado: 'ACTIVO',
+      baja: ''
+    };
+    this.editElementIndex = -1;
+  }
+
   //update a register of tipo baja
-  public updateTipoBaja(tipoBaja: ITipoBaja): void {
+  public updateTipoBaja(tipoBaja: ITipoBaja, formValue): void {
+
+    tipoBaja = {...tipoBaja, baja: formValue.baja, estado: 'ACTIVO'}
+
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
-        next: () => {
+        next: (response) => {
           this.okNotification('Tipo de baja actualizado correctamente');
-          this.editElementIndex = -1;
+          this.tiposBaja[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoBaja = {
             cod_tipo_baja: 0,
             estado: 'ACTIVO',
             baja: ''
           }
+          this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse);
-
+          this.errorResponseNotification(errorResponse);
         },
       })
     )
@@ -154,6 +166,5 @@ export class TipoBajaComponent implements OnInit {
       })
     )
   }
-
 
 }

@@ -33,6 +33,8 @@ import {TipoFuncionario} from '../../modelo/tipo-funcionario';
 import {Aula} from '../../modelo/Aula';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
+import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
+import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 
 const routes: Routes = [
   {
@@ -62,6 +64,8 @@ const routes: Routes = [
       {path: 'tipoDocumento', component: TipoDocumentoComponent},
       {path: 'tipoProcedencia', component: TipoProcedenciaComponent},
       {path: 'tipoNota', component: TipoNotaComponent},
+      { path: 'tipoBaja', component: TipoBajaComponent},
+      { path: 'tipoSancion', component: TipoSancionComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
       {path: 'admin/roles-usuarios', component: RolesUsuariosComponent},
