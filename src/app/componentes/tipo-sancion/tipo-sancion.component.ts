@@ -20,6 +20,7 @@ export class TipoSancionComponent implements OnInit {
   //model
   tiposSancion: ITipoSancion[];
   tipoSancion: ITipoSancion;
+  tipoSancionEditForm: ITipoSancion;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -45,6 +46,11 @@ export class TipoSancionComponent implements OnInit {
       cod_tipo_sancion: 0,
       sancion: '',
       estado: 'ACTIVO'
+    }
+    this.tipoSancionEditForm = {
+      cod_tipo_sancion: 0,
+      estado: 'ACTIVO',
+      sancion: ''
     }
   }
 
@@ -103,21 +109,38 @@ export class TipoSancionComponent implements OnInit {
     )
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoSancionEditForm = {...this.tiposSancion[index]};
+  }
+
+  undoRow() {
+    this.tipoSancionEditForm = {
+      cod_tipo_sancion: 0,
+      estado: 'ACTIVO',
+      sancion: ''
+    }
+    this.editElementIndex = -1;
+  }
+
   //update a register of tipo sancion
-  public updateTipoSancion(tipoSancion: ITipoSancion): void {
-    tipoSancion = {...tipoSancion, estado: "ACTIVO"}
+  public updateTipoSancion(tipoSancion: ITipoSancion, formValue): void {
+
+    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"}
+
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
-        next: () => {
+        next: (response) => {
           this.okNotification('Tipo de sanción actualizado correctamente');
-          this.editElementIndex = -1;
           this.showLoading = false;
+          this.tiposSancion[this.editElementIndex] = response.body
           this.tipoSancion = {
             cod_tipo_sancion: 0,
             estado: 'ACTIVO',
             sancion: ''
           }
+          this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);

@@ -132,7 +132,7 @@ export class TipoBajaComponent implements OnInit {
       this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
         next: (response) => {
           this.okNotification('Tipo de baja actualizado correctamente');
-          this.tiposBaja[this.editElementIndex] = response;
+          this.tiposBaja[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoBaja = {
             cod_tipo_baja: 0,
