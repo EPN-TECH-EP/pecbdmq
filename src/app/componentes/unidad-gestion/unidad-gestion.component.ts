@@ -38,9 +38,9 @@ export class UnidadGestionComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  // Codigo = '';
-  // Nombre = '';
-  // Estado = 'ACTIVO';
+   Codigo = '';
+   Nombre = '';
+   Estado = 'ACTIVO';
   headers = ['Nombre', 'Estado'];
 
   // addNewRow() {

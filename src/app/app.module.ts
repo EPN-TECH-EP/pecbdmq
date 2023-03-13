@@ -1,5 +1,5 @@
 import { Periodo } from './modelo/periodo_academico';
-import { TipoDocumento } from './modelo/tipo_documento';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -77,6 +77,13 @@ import { MenuEspecializacionComponent } from './componentes/especializacion/menu
 import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
+import { TipoDocumento } from './modelo/tipo-documento';
+import { UnidadGestion } from './modelo/unidad-gestion';
+import { TipoFuncionario } from './modelo/tipo-funcionario';
+import { Aula } from './modelo/aula';
+import { Materia } from './modelo/materias';
+import { TipoNota } from './modelo/tipo-nota';
+import { Modulo } from './modelo/modulo';
 
 @NgModule({
   declarations: [
@@ -156,6 +163,12 @@ import { ValidacionComponent } from './componentes/formacion/validacion/validaci
     Periodo,
     SemestreTbl,
     TipoDocumento,
+    UnidadGestion,
+    TipoFuncionario,
+    Aula,
+    Materia,
+    TipoNota,
+    Modulo,
     MdbPopconfirmService
   ],
   bootstrap: [AppComponent]

@@ -24,6 +24,9 @@ import { MenuEspecializacionComponent } from '../../componentes/especializacion/
 import { MenuProfesionalizacionComponent } from '../../componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from '../../componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from '../../componentes/formacion/validacion/validacion.component';
+import { UnidadGestion } from '../../modelo/unidad-gestion';
+import { TipoFuncionario } from '../../modelo/tipo-funcionario';
+import { Aula } from '../../modelo/Aula';
 
 const routes: Routes = [
   {
@@ -70,7 +73,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [
-    MdbPopconfirmService
+    MdbPopconfirmService    
   ]
 })
 export class PrincipalModuleModule {}

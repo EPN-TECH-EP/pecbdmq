@@ -184,8 +184,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   deshacer(index: number){
-
-
+    this.usuarioFrm = new Usuario();
     this.editElementIndex = -1;
   }
 
