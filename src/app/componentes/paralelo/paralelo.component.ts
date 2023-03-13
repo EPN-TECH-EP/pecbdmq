@@ -25,19 +25,19 @@ export class ParaleloComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
   private subscriptions: Subscription[];
   public showLoading: boolean;
-
+  /*
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},
     {value: 'INACTIVO', label: 'INACTIVO'},
   ];
-
+*/
   @ViewChild('table') table!: MdbTableDirective<Paralelo>;
   editElementIndex = -1;
   addRow = false;
   headers = [
     // 'Codigo Materia',
     'Nombre Paralelo',
-    'Estado',
+    //'Estado',
   ];
 
 
@@ -51,7 +51,7 @@ export class ParaleloComponent implements OnInit {
     this.paralelo={
       codParalelo:'',
       nombreParalelo:'',
-      estado:''
+      estado:'ACTIVO'
     }
   }
   ngOnInit(): void {
@@ -102,6 +102,8 @@ export class ParaleloComponent implements OnInit {
   }
 
   public registro(paralelo: Paralelo): void {
+    paralelo={...paralelo,estado:'ACTIVO'}
+    console.log(paralelo)
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroParalelo(paralelo).subscribe({

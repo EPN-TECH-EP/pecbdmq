@@ -48,6 +48,7 @@
             </mdb-form-control>
           </td>
           <!-- Input state -->
+          <!--
           <td>
             <mdb-form-control>
               <mdb-select [(ngModel)]="tipoInstruccion.estado" name="estado">
@@ -57,7 +58,9 @@
               </mdb-select>
             </mdb-form-control>
 
+
           </td>
+                --->
           <!-- Buttons to add or cancel a register -->
           <td>
             <button
@@ -98,12 +101,13 @@
               </mdb-form-control>
             </ng-container>
           </td>
+          <!---
           <td>
-            <!-- Show state -->
+           Show state
             <ng-container *ngIf="editElementIndex !== index">
               {{ tipoInstruccion.estado }}
             </ng-container>
-            <!-- Edit state -->
+            Edit state
             <ng-container *ngIf="editElementIndex === index">
               <mdb-form-control>
                 <mdb-select [(ngModel)]="tipoInstruccion.estado" name="estado">
@@ -113,6 +117,7 @@
               </mdb-form-control>
             </ng-container>
           </td>
+          -->
           <td>
             <!--Buttons to delete -->
             <ng-container

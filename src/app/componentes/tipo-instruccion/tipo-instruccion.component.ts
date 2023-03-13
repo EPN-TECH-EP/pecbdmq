@@ -37,7 +37,7 @@ export class TipoInstruccionComponent implements OnInit {
   headers = [
     // 'Codigo Materia',
     'Tipo de Instrucción',
-    'Estado',
+    //'Estado',
   ];
 
 
@@ -51,7 +51,7 @@ export class TipoInstruccionComponent implements OnInit {
     this.tipoInstruccion={
       codigoTipoInstruccion:'',
       tipoInstruccion:'',
-      estado:''
+      estado:'ACTIVO'
     }
   }
   ngOnInit(): void {
@@ -102,6 +102,7 @@ export class TipoInstruccionComponent implements OnInit {
   }
 
   public registro(tipoInstruccion: TipoInstruccion): void {
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearTipoInstruccion(tipoInstruccion).subscribe({
@@ -124,6 +125,7 @@ export class TipoInstruccionComponent implements OnInit {
     );
   }
   public actualizar(tipoInstruccion: TipoInstruccion): void {
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
