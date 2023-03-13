@@ -1,8 +1,6 @@
- <!-- Título de componente-->
- <div class="row m-3">
-  <div class="column text-center">
-    <p class="fs-4 fw-bolder">Gestión de Semestre</p>
-  </div>
+
+<div class="titulo">
+  <h1>Componente Nota</h1>
 </div>
 
 <div class="tabla">
@@ -31,15 +29,16 @@
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
-        class="table table-sm datatable-table"
+        class="table datatable-table"
         mdbTable
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="semestres"
+        [dataSource]="componentesnota"
         [sort]="sort"
       >
         <thead class="datatable-header">
+          <tr align="center">
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -48,6 +47,7 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+          </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
@@ -55,19 +55,21 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="semestre"
-                  name="semestre"
+                  id="componentenota"
+                  name="componentenota"
                   class="form-control"
-                  [(ngModel)]="Semestre"
-                  #semestre="ngModel"
+                  [(ngModel)]="Valcomponentenota.componentenota"
+                  #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
-
             </td>
+
+
+
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Valcomponentenota.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
@@ -80,7 +82,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value); addRow = false;"
+                (click)="registro(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -94,31 +96,31 @@
             </td>
           </tr>
 
-          <tr *ngFor="let semestre of semestres; let index = index" scope="row">
+          <tr *ngFor="let componentenota of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ semestre.semestre }}
+                {{ componentenota.componentenota }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="semestre"
-                    name="semestre"
+                    id="componentenota"
+                    name="componentenota"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="semestre.semestre"
+                    [(ngModel)]="componentenota.componentenota"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ semestre.estado }}
+                {{ componentenota.estado }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
-                  <mdb-select [(ngModel)]="semestre.estado" name="estado">
+                  <mdb-select [(ngModel)]="componentenota.estado" name="estado">
                     <mdb-option *ngFor="let option of options" [value]="option.value">{{
                       option.label
                     }}</mdb-option>
@@ -141,7 +143,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(semestre.codSemestre,semestre)"
+                  (click)="eliminar(componentenota.cod_componente_nota, componentenota)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -152,7 +154,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(semestre, semestre.codSemestre);"
+                  (click)="actualizar(componentenota, componentenota.cod_componente_nota)"
                 >
                   <i class="fa fa-check"></i>
                 </button>

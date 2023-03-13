@@ -22,6 +22,7 @@
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true"
+
   >
     <i class="fa fa-plus">
     </i>
@@ -147,15 +148,15 @@
                 >
                   <i class="fa fa-edit"></i>
                 </button>
-                <!-- <button
+                <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="onDeleteClick(tipoprueba); eliminar(tipoprueba.cod_tipo_prueba)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                > -->
-                  <!-- <i class="fa fa-trash-alt"></i>
-                </button> -->
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <button

@@ -60,7 +60,7 @@
                   id="nota"
                   name="nota"
                   class="form-control"
-                  [(ngModel)]="Nota"
+                  [(ngModel)]="Valtiponota.nota"
                   #nombre="ngModel"
                   required
                 />
@@ -71,7 +71,7 @@
 
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Valtiponota.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
@@ -89,7 +89,7 @@
                 <i class="fa fa-check"></i>
               </button>
               <button
-                name="eliminar"
+                name="añadir"
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                 (click)="addRow = false"
               >

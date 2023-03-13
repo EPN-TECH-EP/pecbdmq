@@ -1,0 +1,176 @@
+<div class="row mt-3">
+  <div class="column col-3"></div>
+</div>
+<div class="titulo">
+  <h1>MANTENIMIENTO TIPO INSTRUCCIÓN</h1>
+</div>
+
+<div class="tabla">
+  <div class="d-flex justify-content-end mb-4">
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Search</label>
+    </mdb-form-control>
+    <button
+      MdbRiple
+      class="btn btn-primary btn-sm ms-3"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+  <hr />
+
+  <div class="datatable table-editor mt-4">
+    <form #form="ngForm" novalidate>
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="tiposInstruccion"
+        [sort]="sort"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header"
+            scope="col"
+          >
+            {{ header | titlecase }}
+          </th>
+          <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody class="datatable-body">
+        <tr *ngIf="addRow" scope="row">
+          <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="tipoInstruccion"
+                name="tipoInstruccion"
+                type="text"
+                class="form-control"
+                [(ngModel)]="TipoInstruccion"
+                #tipoInstruccion="ngModel"
+                required
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <mdb-form-control>
+              <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-option *ngFor="let option of options" [value]="option.value">{{
+                  option.label
+                  }}</mdb-option>
+              </mdb-select>
+            </mdb-form-control>
+          </td>
+
+          <td>
+            <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              type="submit"
+              (click)="registro(form.value); limpiar(); addRow = false"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+            <button
+              name="eliminar"
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="addRow = false"
+            >
+              <i class="fa fa-ban"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngFor="let tipoInstruccion of table.data; let index = index" scope="row">
+          <td style="min-width: 50px; max-width: 50px">
+            <ng-container *ngIf="editElementIndex !== index">
+              {{ tipoInstruccion.tipoInstruccion }}
+            </ng-container>
+            <ng-container *ngIf="editElementIndex === index">
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  id="tipoInstruccion"
+                  name="tipoInstruccion"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="tipoInstruccion.tipoInstruccion"
+                />
+              </mdb-form-control>
+            </ng-container>
+          </td>
+          <td  style="min-width: 10px; max-width: 10px">
+            <ng-container *ngIf="editElementIndex !== index">
+              {{ tipoInstruccion.estado }}
+            </ng-container>
+            <ng-container *ngIf="editElementIndex === index">
+              <mdb-form-control>
+                <mdb-select [(ngModel)]="tipoInstruccion.estado" name="estado">
+                  <mdb-option *ngFor="let option of options" [value]="option.value">{{
+                    option.label
+                    }}</mdb-option>
+                </mdb-select>
+              </mdb-form-control>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container
+              *ngIf="editElementIndex === -1 || editElementIndex !== index"
+            >
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="editElementIndex = index"
+                [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+              >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="eliminar(tipoInstruccion.codigoTipoInstruccion); onDeleteClick(tipoInstruccion)"
+                [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="editElementIndex === index">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="actualizar(tipoInstruccion, tipoInstruccion.codigoTipoInstruccion); limpiar()"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="editElementIndex = -1"
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </ng-container>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+    <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination>
+  </div>
+</div>

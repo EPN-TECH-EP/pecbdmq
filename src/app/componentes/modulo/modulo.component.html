@@ -61,7 +61,7 @@
                   id="etiqueta"
                   name="etiqueta"
                   class="form-control"
-                  [(ngModel)]="Etiqueta"
+                  [(ngModel)]="Valmodulo.etiqueta"
                   #nombre="ngModel"
                   required
                 />
@@ -74,7 +74,7 @@
                   id="descripcion"
                   name="descripcion"
                   class="form-control"
-                  [(ngModel)]="Descripcion"
+                  [(ngModel)]="Valmodulo.descripcion"
                   #nombre="ngModel"
                   required
                 />
@@ -82,7 +82,7 @@
             </td>
             <td>
               <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
+                <mdb-select [(ngModel)]="Valmodulo.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
                   option.label
                 }}</mdb-option>
