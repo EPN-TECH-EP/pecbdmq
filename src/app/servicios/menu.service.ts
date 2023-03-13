@@ -14,6 +14,8 @@ export class MenuService {
   private usuarioLogueado: string;
   private jwtHelper = new JwtHelperService();
 
+  public menu: Menu[];
+
   constructor(private http: HttpClient) {}
 
   public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{        

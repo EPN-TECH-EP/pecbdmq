@@ -71,6 +71,12 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
+import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
+import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
+import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +99,11 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    PopconfirmComponent,
+    MenuEspecializacionComponent,
+    MenuProfesionalizacionComponent,
+    BienvenidaComponent,
+    ValidacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,14 +150,13 @@ import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
   providers: [
     AutenticacionGuard,
     AutenticacionService, 
-    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
-    UsuarioService,
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},    
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,
     SemestreTbl,
-    TipoDocumento
+    TipoDocumento,
+    MdbPopconfirmService
   ],
   bootstrap: [AppComponent]
 })

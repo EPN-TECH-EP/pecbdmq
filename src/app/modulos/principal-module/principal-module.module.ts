@@ -19,13 +19,23 @@ import { UsuariosComponent } from '../../componentes/admin/usuarios/usuarios.com
 import { RolesUsuariosComponent } from '../../componentes/admin/roles-usuarios/roles-usuarios.component';
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { MenuEspecializacionComponent } from '../../componentes/especializacion/menu-especializacion/menu-especializacion.component';
+import { MenuProfesionalizacionComponent } from '../../componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+import { BienvenidaComponent } from '../../componentes/bienvenida/bienvenida.component';
+import { ValidacionComponent } from '../../componentes/formacion/validacion/validacion.component';
 
 const routes: Routes = [
   {
     path: 'principal', component: PrincipalComponent,
     children: [
-      { path: 'formacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
+      //sub-menu
+      { path: 'bienvenida', component:  BienvenidaComponent},
       { path: 'admin', component: MenuAdminComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},
+      { path: 'menuFormacion', component: MenuFormacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
+      { path: 'menuEspecializacion', component: MenuEspecializacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
+      { path: 'menuProfesionalizacion', component: MenuProfesionalizacionComponent/*, pathMatch: 'full' , outlet: 'principal-outlet'*/},      
+      // componentes funcionales      
       { path: 'materia', component:  MateriaComponent},
       { path: 'unidadGestion', component: UnidadGestionComponent },
       { path: 'tipoPrueba', component: TipoPruebaComponent },
@@ -40,6 +50,8 @@ const routes: Routes = [
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       { path: 'admin/usuarios', component:  UsuariosComponent},
       { path: 'admin/roles-usuarios', component:  RolesUsuariosComponent},
+      // flujos y procesos
+      { path: 'formacion/validacion', component:  ValidacionComponent},
     ],
   },
 ];
@@ -56,6 +68,9 @@ const routes: Routes = [
     FormsModule,*/
     RouterModule.forChild(routes),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    MdbPopconfirmService
+  ]
 })
 export class PrincipalModuleModule {}
