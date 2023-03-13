@@ -1,5 +1,5 @@
 import { Periodo } from './modelo/periodo_academico';
-import { TipoDocumento } from './modelo/tipo_documento';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -55,8 +55,12 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { AlertaComponent } from './componentes/util/alerta/alerta.component';
 import { PrincipalModuleModule } from './modulos/principal-module/principal-module.module';
 import { UsuarioFrm } from './modelo/util/usuario-frm';
+import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
+import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
 import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
+import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
 import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
 import { AulasComponent } from './componentes/aulas/aulas.component';
 import { PeriodoAcademicoComponent } from './componentes/periodo-academico/periodo-academico.component';
@@ -67,8 +71,19 @@ import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-fu
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
-import { TipoBajaComponent } from './componentes/tipo-baja/tipo-baja.component';
-import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.component';
+import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
+import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
+import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
+import { TipoDocumento } from './modelo/tipo-documento';
+import { UnidadGestion } from './modelo/unidad-gestion';
+import { TipoFuncionario } from './modelo/tipo-funcionario';
+import { Aula } from './modelo/aula';
+import { Materia } from './modelo/materias';
+import { TipoNota } from './modelo/tipo-nota';
+import { Modulo } from './modelo/modulo';
 
 @NgModule({
   declarations: [
@@ -77,8 +92,11 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     PrincipalComponent,
     RegistroComponent,
     AlertaComponent,
+    CargaArchivoComponent,
     MateriaComponent,
     UnidadGestionComponent,
+    UsuariosComponent,
+    RolesUsuariosComponent,
     TipoPruebaComponent,
     AulasComponent,
     PeriodoAcademicoComponent,
@@ -88,8 +106,11 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
-    TipoBajaComponent,
-    TipoSancionComponent,
+    PopconfirmComponent,
+    MenuEspecializacionComponent,
+    MenuProfesionalizacionComponent,
+    BienvenidaComponent,
+    ValidacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,12 +156,20 @@ import { TipoSancionComponent } from './componentes/tipo-sansion/tipo-sancion.co
   ],
   providers: [
     AutenticacionGuard,
-    AutenticacionService,
+    AutenticacionService, 
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},    
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
     UsuarioFrm,
     Periodo,
     SemestreTbl,
-    TipoDocumento
+    TipoDocumento,
+    UnidadGestion,
+    TipoFuncionario,
+    Aula,
+    Materia,
+    TipoNota,
+    Modulo,
+    MdbPopconfirmService
   ],
   bootstrap: [AppComponent]
 })

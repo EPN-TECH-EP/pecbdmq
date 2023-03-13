@@ -15,18 +15,21 @@
       href="#!"
       data-mdb-ripple-color="primary"
     >
-      <img
+      <!-- img
         src="assets/logo-bomberos.svg"
         id="logo"
         alt="Plataforma Educativa"
         draggable="false"
         height="25"
-      />
+      / -->
+
+      <h5 class="text-dark"> <i class="fas fa-bars me-2"></i>MENÚ</h5>
+
     </a>
 
     <ul class="sidenav-menu px-2 pb-5">
       <ng-container *ngFor="let item of listaMenu">
-        <p *ngIf="!item.menu_padre" class="fw-bold pt-3 d-block">
+        <p *ngIf="!item.menu_padre" class="fw-bold pt-3 d-block ms-3">
           {{ item.etiqueta }}
         </p>
         <mdb-sidenav-item>
@@ -76,7 +79,9 @@
             alt=""
             loading="lazy"
           />
-          <small class="ml-5">Plataforma Educativa</small>
+          <h4 class="ms-5">
+            <i class="fa-solid fa-user-graduate"></i>
+            Plataforma Educativa</h4>
         </a>
 
         <!-- Right links -->

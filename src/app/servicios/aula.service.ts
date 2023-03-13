@@ -1,4 +1,4 @@
-import { Aula } from './../modelo/Aula';
+import { Aula } from '../modelo/aula';
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -20,12 +20,12 @@ export class AulaService {
     return this.http.post<Aula>(`${this.host}/aula/crear`, aula, { observe: 'response' });
   }
 
-    public eliminarAula(codigo: number): Observable<string> {
-    return this.http.delete<string>(`${this.host}/aula/${codigo}`);
+    public eliminarAula(codigo: any): Observable<string> {
+    return this.http.delete<any>(`${this.host}/aula/${codigo}`);
     }
    public actualizarAula(aula: Aula, codigo:any): Observable<HttpResponse<Aula>> {
     return this.http.put<Aula>(`${this.host}/aula/${codigo}`, aula, { observe: 'response' });
-  }
+  }x
 
   // public obtenerUsuariosDeCacheLocal(): Aula[] {
   //   if (localStorage.getItem('materias')) {

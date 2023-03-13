@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
+import { UnidadGestion } from 'src/app/modelo/unidad-gestion';
 import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
@@ -86,7 +86,7 @@ export class SemestreComponent implements OnInit {
   }
 
 
-  public notificacionOk(mensaje: string) {
+  public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensaje,
@@ -101,7 +101,7 @@ export class SemestreComponent implements OnInit {
         next: (response: HttpResponse<Semestre>) => {
           let nuevaSemestre: Semestre = response.body;
           this.semestres.push(nuevaSemestre);
-          this.notificacionOk('Semestre creada con éxito');
+          this.notificacionOK('Semestre creada con éxito');
           this.Semestre = '';
           this.Estado ='';
         },
@@ -119,7 +119,7 @@ export class SemestreComponent implements OnInit {
       this.Api.actualizarSemestre(semestre, CodSemestre).subscribe({
       next: (response: HttpResponse<Semestre>) => {
         let actualizaUnidad: Semestre = response.body;
-        this.notificacionOk('Semestre actualizada con éxito');
+        this.notificacionOK('Semestre actualizada con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
         this.Semestre = '';
@@ -140,7 +140,7 @@ public eliminar(CodSemestre: any, data: Semestre): void {
   this.subscriptions.push(
     this.Api.eliminarSemestre(CodSemestre).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Semestre eliminada con éxito');
+        this.notificacionOK('Semestre eliminada con éxito');
         const index = this.semestres.indexOf(data);
         this.semestres.splice(index, 1);
         this.semestres = [...this.semestres]

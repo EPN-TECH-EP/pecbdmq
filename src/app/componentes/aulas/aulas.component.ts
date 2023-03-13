@@ -1,4 +1,4 @@
-import { Aula } from './../../modelo/Aula';
+import { Aula } from '../../modelo/aula';
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
@@ -35,17 +35,17 @@ export class AulasComponent implements OnInit {
 
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
-  Capacidad = '' as any;
-  Tipo = ''as any;
-  Pcs = '';
-  Impresoras = '' as any;
-  Internet = '' as any;
-  Proyectores = '' as any;
-  Instructor = '' as any;
-  SalaOcupada = '' as any;
-  Estado = '' as any;
+  // Codigo = '';
+  // Nombre = '';
+  // Capacidad = '' as any;
+  // Tipo = ''as any;
+  // Pcs = '';
+  // Impresoras = '' as any;
+  // Internet = '' as any;
+  // Proyectores = '' as any;
+  // Instructor = '' as any;
+  // SalaOcupada = '' as any;
+  // Estado = '' as any;
 
 
   headers = [
@@ -63,71 +63,76 @@ export class AulasComponent implements OnInit {
 
   constructor(
     private notificationService: MdbNotificationService,
-    private Api: AulaService
+    private Api: AulaService,
+    public Valaula: Aula
+
     ){}
 
-  limpiar() {
-    // this.Codigo = '';
-    this.Nombre = '';
-    this.Capacidad = '';
-    this.Tipo = '';
-    this.Pcs = '';
-    this.Impresoras = '';
-    this.Internet = '';
-    this.Proyectores = '';
-    this.Instructor = '';
-    this.SalaOcupada = '';
-    this.Estado = '';
-  }
+  // limpiar() {
+  //   this.Codigo = '';
+  //   this.Nombre = '';
+  //   this.Capacidad = '';
+  //   this.Tipo = '';
+  //   this.Pcs = '';
+  //   this.Impresoras = '';
+  //   this.Internet = '';
+  //   this.Proyectores = '';
+  //   this.Instructor = '';
+  //   this.SalaOcupada = '';
+  //   this.Estado = '';
+  // }
 
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-  onDeleteClick(data: Aula) {
-    const index = this.aulas.indexOf(data);
-    this.aulas.splice(index, 1);
-    this.aulas = [...this.aulas]
-  }
+  // onDeleteClick(data: Aula) {
+  //   const index = this.aulas.indexOf(data);
+  //   this.aulas.splice(index, 1);
+  //   this.aulas = [...this.aulas]
+  // }
 
   ngOnInit(): void {
+    this.Valaula.estado='ACTIVO';
     this.Api.getAula().subscribe(data => {
       this.aulas = data;
     });
   }
-  addNewRow() {
+
+  addNewRow(): void{
     const newRow: Aula = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
-      capacidad: this.Capacidad,
-      tipo: this.Tipo,
-      pcs: this.Pcs,
-      impresoras: this.Impresoras,
-      internet: this.Internet,
-      proyectores: this.Proyectores,
-      instructor: this.Instructor,
-      salaOcupada: this.SalaOcupada,
-      estado: this.Estado,
-
-      // estadoMateria: this.EstadoMateria,
+      codigo: this.Valaula.codigo,
+      nombre: this.Valaula.nombre,
+      capacidad: this.Valaula.capacidad,
+      tipo: this.Valaula.tipo,
+      pcs: this.Valaula.pcs,
+      impresoras: this.Valaula.impresoras,
+      internet: this.Valaula.internet,
+      proyectores: this.Valaula.proyectores,
+      instructor: this.Valaula.instructor,
+      salaOcupada: this.Valaula.salaOcupada,
+      estado: this.Valaula.estado,
     };
-
     this.aulas = [...this.aulas, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Capacidad = '';
-    this.Tipo = '';
-    this.Pcs = '';
-    this.Impresoras = '';
-    this.Internet = '';
-    this.Proyectores = '';
-    this.Instructor = '';
-    this.SalaOcupada = '';
-    this.Estado = '';
+    this.Valaula.codigo='';
+    this.Valaula.nombre= '';
+    this.Valaula.capacidad=''as any;
+    this.Valaula.tipo='' as any;
+    this.Valaula.pcs='';
+    this.Valaula.impresoras='';
+    this.Valaula.internet='';
+    this.Valaula.proyectores='' as any;
+    this.Valaula.instructor='' as any;
+    this.Valaula.salaOcupada='';
+    this.Valaula.estado='';
   }
 
+  editar(index: number){
+    this.editElementIndex = index;
+    this.Valaula={...this.aulas[index]};
 
+  }
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
@@ -165,19 +170,27 @@ export class AulasComponent implements OnInit {
 
   public registro(aula: Aula): void {
     this.showLoading = true;
-    this.subscriptions.push(
       this.Api.registroAula(aula).subscribe({
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.table.data.push(nuevaAula);
           this.notificacionOK('Aula creada con éxito');
+          this.Valaula.codigo='';
+          this.Valaula.nombre= '';
+          this.Valaula.capacidad=''as any;
+          this.Valaula.tipo='' as any;
+          this.Valaula.pcs='';
+          this.Valaula.impresoras='';
+          this.Valaula.internet='';
+          this.Valaula.proyectores='' as any;
+          this.Valaula.instructor='' as any;
+          this.Valaula.salaOcupada='';
+          this.Valaula.estado='';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          //  this.showLoading = false;
         },
       })
-    );
   }
 
 
@@ -189,28 +202,52 @@ export class AulasComponent implements OnInit {
        let actualizaUnidad: Aula = response.body;
         this.notificacionOK('Aula actualizada con éxito');
         this.editElementIndex=-1;
+        this.Valaula.codigo='';
+        this.Valaula.nombre= '';
+        this.Valaula.capacidad=''as any;
+        this.Valaula.tipo='' as any;
+        this.Valaula.pcs='';
+        this.Valaula.impresoras='';
+        this.Valaula.internet='';
+        this.Valaula.proyectores='' as any;
+        this.Valaula.instructor='' as any;
+        this.Valaula.salaOcupada='';
+        this.Valaula.estado='';
 
      error: (errorResponse: HttpErrorResponse) => {
        this.notificacion(errorResponse);
         // this.showLoading = false;
-     }
-      },
-    })
+     };
+    },
+  })
+);
+}
+
+
+
+
+
+  public eliminar(Codigo: any, data: Aula): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.eliminarAula(Codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOK('Semestre eliminada con éxito');
+          const index = this.aulas.indexOf(data);
+          this.aulas.splice(index, 1);
+          this.aulas = [...this.aulas]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
-   public eliminar(codMateria: any): void {
-     this.showLoading = true;
-     this.subscriptions.push(
-       this.Api.eliminarAula(codMateria).subscribe({
-         next: (response: string) => {
-           this.notificacionOK('Aula eliminada con éxito');
-         },
-         error: (errorResponse: HttpErrorResponse) => {
-           this.notificacion(errorResponse);
-           console.log(errorResponse);
-         },
-       })
-     );
-   }
+
 
 }
+
+
