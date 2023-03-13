@@ -20,16 +20,12 @@ import {Paralelo} from "../../modelo/paralelo/paralelo";
 export class TipoInstruccionComponent implements OnInit {
   tiposInstruccion:TipoInstruccion[];
   tipoInstruccion:TipoInstruccion;
+  tipoInstruccionEdit: TipoInstruccion;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   private subscriptions: Subscription[] = [];
   public showLoading: boolean;
 
-
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
 
   @ViewChild('table') table!: MdbTableDirective<TipoInstruccion>;
   editElementIndex = -1;
@@ -49,6 +45,11 @@ export class TipoInstruccionComponent implements OnInit {
     this.subscriptions = [];
     this.notificationRef=null;
     this.tipoInstruccion={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'ACTIVO'
+    }
+    this.tipoInstruccionEdit={
       codigoTipoInstruccion:'',
       tipoInstruccion:'',
       estado:'ACTIVO'
@@ -124,13 +125,27 @@ export class TipoInstruccionComponent implements OnInit {
       })
     );
   }
-  public actualizar(tipoInstruccion: TipoInstruccion): void {
-    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoInstruccionEdit = {...this.tiposInstruccion[index]};
+  }
+
+  undoRow() {
+    this.tipoInstruccionEdit={
+      codigoTipoInstruccion:'',
+      tipoInstruccion:'',
+      estado:'',
+    }
+    this.editElementIndex = -1;
+  }
+  public actualizar(tipoInstruccion: TipoInstruccion, formValue): void {
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
-        next: () => {
+        next: (response) => {
           this.notificacionOK('Tipo instrucción actualizada con éxito');
+          this.tiposInstruccion[this.editElementIndex]=response.body;
           this.editElementIndex = -1;
           this.showLoading = false;
           this.tipoInstruccion = {

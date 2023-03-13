@@ -95,10 +95,10 @@
                 <input
                   mdbInput
                   id="update_tipos"
-                  name="update_tipos"
+                  name="tipoInstruccion"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="tipoInstruccion.tipoInstruccion"
+                  [(ngModel)]="tipoInstruccionEdit.tipoInstruccion"
                 />
               </mdb-form-control>
             </ng-container>
@@ -127,7 +127,7 @@
             >
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="editElementIndex = index"
+                (click)="editRow(index)"
                 [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -148,13 +148,13 @@
             <ng-container *ngIf="editElementIndex === index">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="actualizar(tipoInstruccion); editElementIndex = -1"
+                (click)="actualizar(tipoInstruccion,form.value);"
               >
                 <i class="fa fa-check"></i>
               </button>
               <button
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="editElementIndex = -1"
+                (click)="undoRow()"
               >
                 <i class="fa fa-ban"></i>
               </button>

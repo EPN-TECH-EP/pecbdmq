@@ -21,6 +21,7 @@ import {AlertaComponent} from "../util/alerta/alerta.component";
 export class ParaleloComponent implements OnInit {
   paralelos: Paralelo[];
   paralelo: Paralelo;
+  paraleloEdit:Paralelo;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
   private subscriptions: Subscription[];
@@ -49,6 +50,11 @@ export class ParaleloComponent implements OnInit {
     this.subscriptions = [];
     this.notificationRef=null;
     this.paralelo={
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'ACTIVO'
+    }
+    this.paraleloEdit={
       codParalelo:'',
       nombreParalelo:'',
       estado:'ACTIVO'
@@ -103,7 +109,6 @@ export class ParaleloComponent implements OnInit {
 
   public registro(paralelo: Paralelo): void {
     paralelo={...paralelo,estado:'ACTIVO'}
-    console.log(paralelo)
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroParalelo(paralelo).subscribe({
@@ -125,12 +130,27 @@ export class ParaleloComponent implements OnInit {
       })
     );
   }
-  public actualizar(paralelo: Paralelo): void {
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.paraleloEdit = {...this.paralelos[index]};
+  }
+
+  undoRow() {
+    this.paraleloEdit = {
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+  public actualizar(paralelo: Paralelo,formValue): void {
+    paralelo={...paralelo,estado:'ACTIVO',nombreParalelo:formValue.nombreParalelo};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
-        next: () => {
+        next: (response) => {
           this.notificacionOK('Paralelo actualizado con éxito');
+          this.paralelos[this.editElementIndex]=response.body;
           this.editElementIndex = -1;
           this.showLoading = false;
           this.paralelo = {
