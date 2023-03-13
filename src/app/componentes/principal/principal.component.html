@@ -28,6 +28,9 @@
     </a>
 
     <ul class="sidenav-menu px-2 pb-5">
+
+      <div *ngIf="listaMenu === undefined || listaMenu.length === 0" class="alert alert-warning" role="alert">No tiene registrado ningún acceso a los módulos de la plataforma. Contacte al administrador.</div>
+
       <ng-container *ngFor="let item of listaMenu">
         <p *ngIf="!item.menu_padre" class="fw-bold pt-3 d-block ms-3">
           {{ item.etiqueta }}

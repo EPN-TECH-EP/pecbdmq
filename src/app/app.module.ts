@@ -84,6 +84,8 @@ import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { TipoNota } from './modelo/tipo-nota';
 import { Modulo } from './modelo/modulo';
+import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
+import { RouteReuseStrategy } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -169,7 +171,8 @@ import { Modulo } from './modelo/modulo';
     Materia,
     TipoNota,
     Modulo,
-    MdbPopconfirmService
+    MdbPopconfirmService,
+    //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

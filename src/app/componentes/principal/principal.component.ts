@@ -13,6 +13,7 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { isNull } from 'underscore';
 
 @Component({
   selector: 'app-principal',
@@ -22,7 +23,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 export class PrincipalComponent implements OnInit, OnDestroy {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
-  listaMenu: Menu[];
+  listaMenu: Menu[] = null;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -35,21 +36,27 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
 
-    this.subscriptions.push(
-      this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
-        next: (response: Menu[]) => {
-          this.listaMenu = response;
-          this.menuService.menu = response;
+    this.listaMenu = this.menuService.getMenu();
+    console.log(this.listaMenu);
+    console.log(this.menuService.getMenu());
 
-          if (this.router.url === '/principal') {
-            this.router.navigate(['/principal/bienvenida']);
-          }
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          console.error(errorResponse);
-        },
-      })
-    );
+    if (this.listaMenu === undefined || this.listaMenu.length == 0) {
+      this.subscriptions.push(
+        this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
+          next: (response: Menu[]) => {
+            this.listaMenu = response;
+            this.menuService.setMenu(response);
+
+            if (this.router.url === '/principal') {
+              this.router.navigate(['/principal/bienvenida']);
+            }
+          },
+          error: (errorResponse: HttpErrorResponse) => {
+            console.error(errorResponse);
+          },
+        })
+      );
+    }
 
     //TODO eliminar
     //this.printpath('', this.router.config);
