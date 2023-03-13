@@ -1,8 +1,8 @@
+import { UnidadGestion } from './../../modelo/unidad-gestion';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad_gestion';
 import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
@@ -31,28 +31,29 @@ export class UnidadGestionComponent implements OnInit {
   constructor(
     // public unidadEnviar:UnidadGestion,
     private ApiUnidad: UnidadGestionService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valunidadgestion:UnidadGestion
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Nombre = '';
-  Estado = 'ACTIVO';
+   Codigo = '';
+   Nombre = '';
+   Estado = 'ACTIVO';
   headers = ['Nombre', 'Estado'];
 
-  addNewRow() {
-    const newRow: UnidadGestion = {
-      codigo: this.Codigo,
-      nombre: this.Nombre,
-      estado: this.Estado,
-    }
-    this.unidades = [...this.unidades, { ...newRow }];
-    this.Codigo = '';
-    this.Nombre = '';
-    this.Estado = 'ACTIVO';
-  }
+  // addNewRow() {
+  //   const newRow: UnidadGestion = {
+  //     codigo: this.Codigo,
+  //     nombre: this.Nombre,
+  //     estado: this.Estado,
+  //   }
+  //   this.unidades = [...this.unidades, { ...newRow }];
+  //   this.Codigo = '';
+  //   this.Nombre = '';
+  //   this.Estado = 'ACTIVO';
+  // }
 
   ngOnInit(): void {
     this.ApiUnidad.getUnidadGestion().subscribe(data => {
@@ -101,7 +102,7 @@ export class UnidadGestionComponent implements OnInit {
           let nuevaUnidad: UnidadGestion = response.body;
           this.unidades.push(nuevaUnidad);
           this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Nombre = '';
+          this.Valunidadgestion.nombre = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -120,7 +121,7 @@ export class UnidadGestionComponent implements OnInit {
         this.notificacionOk('Unidad de gestión actualizada con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Nombre = '';
+        this.Valunidadgestion.nombre = '';
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -151,6 +152,9 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-
+editar(index: number){
+  this.editElementIndex = index;
+  this.Valunidadgestion={...this.unidades[index]};
+}
 
 }
