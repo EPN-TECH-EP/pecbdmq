@@ -21,6 +21,7 @@ export class TipoBajaComponent implements OnInit {
   //model
   tiposBaja: ITipoBaja[];
   tipoBaja: ITipoBaja;
+  tipoBajaForm: ITipoBaja;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -37,7 +38,7 @@ export class TipoBajaComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoNota>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Baja', 'Estado'];
+  headers = ['Baja'];
 
   constructor(private apiTipoBaja: TipoBajaService, private notificationService: MdbNotificationService) {
     this.tiposBaja = [];
@@ -47,6 +48,11 @@ export class TipoBajaComponent implements OnInit {
       estado: 'ACTIVO',
       baja: ''
     }
+    this.tipoBajaForm = {
+      cod_tipo_baja: 0,
+      estado: 'ACTIVO',
+      baja: ''
+    };
   }
 
   ngOnInit(): void {
@@ -129,8 +135,7 @@ export class TipoBajaComponent implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse);
-
+          this.errorResponseNotification(errorResponse);
         },
       })
     )
@@ -154,6 +159,5 @@ export class TipoBajaComponent implements OnInit {
       })
     )
   }
-
 
 }

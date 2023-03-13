@@ -34,7 +34,7 @@ const routes: Routes = [
       { path: 'tipoProcedencia', component:TipoProcedenciaComponent},
       { path: 'tipoNota', component:TipoNotaComponent},
       { path: 'tipoBaja', component:TipoBajaComponent},
-      { path: 'tipoSansion', component:TipoSancionComponent},
+      { path: 'tipoSancion', component:TipoSancionComponent},
 
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
     ],
