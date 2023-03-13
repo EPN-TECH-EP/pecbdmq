@@ -1,101 +1,69 @@
-<div class="row mt-3">
-  <div class="column col-3"></div>
-</div>
 <div class="titulo">
-  <h1>MANTENIMIENTO PARALELOS</h1>
+  <h1>Paralelos</h1>
 </div>
-
 <div class="tabla">
-  <div class="d-flex justify-content-end mb-4">
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        [disabled]="editElementIndex !== -1"
-        (keyup)="search($event)"
-      />
-      <label mdbLabel class="form-label" for="search-input">Search</label>
-    </mdb-form-control>
-    <button
-      MdbRiple
-      class="btn btn-primary btn-sm ms-3"
-      [disabled]="editElementIndex !== -1"
-      (click)="addRow = true"
-    >
-      <i class="fa fa-plus"></i>
-    </button>
-  </div>
+  <!-- Button to add a register-->
+  <button
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="editElementIndex !== -1"
+    (click)="addRow = true"
+  >
+    <i class="fa fa-plus"></i>
+  </button>
   <hr/>
-
+  <!-- Table -->
   <div class="datatable table-editor mt-4">
-    <form #form="ngForm" novalidate>
+    <form #form="ngForm">
       <table
         class="table datatable-table"
         mdbTable
         mdbTableSort
         #table="mdbTable"
-        #sort="mdbTableSort"
         [dataSource]="paralelos"
-        [sort]="sort"
-        [pagination]="pagination"
       >
+        <!-- Table head -->
         <thead class="datatable-header">
         <tr>
-          <th
-            *ngFor="let header of headers"
-            [mdbTableSortHeader]="header"
-            scope="col"
-          >
-            {{ header | titlecase }}
+          <th *ngFor="let header of headers" scope="col">
+            <b> {{ header | titlecase }}</b>
           </th>
-          <th scope="col">Acciones</th>
+          <th scope="col"><b>Acciones</b></th>
         </tr>
         </thead>
-
+        <!-- Table body -->
         <tbody class="datatable-body">
-        <tr *ngIf="addRow" scope="row">
-
-
-
-
-
-
-
-
-
+        <!-- Add row -->
+        <tr *ngIf="addRow">
+          <!-- Input baja -->
           <td>
             <mdb-form-control>
               <input
                 mdbInput="mdbInput"
-                id="nombreParalelo"
+                id="add_paralelo"
                 name="nombreParalelo"
-                type="text"
                 class="form-control"
-                [(ngModel)]="NombreParalelo"
-                #nombreParalelo="ngModel"
+                [(ngModel)]="paralelo.nombreParalelo"
                 required
               />
             </mdb-form-control>
           </td>
-
+          <!-- Input state -->
           <td>
             <mdb-form-control>
-              <mdb-select [(ngModel)]="Estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                  }}</mdb-option>
+              <mdb-select [(ngModel)]="paralelo.estado" name="estado">
+                <mdb-option *ngFor="let option of options" [value]="option.value">
+                  {{option.label}}
+                </mdb-option>
               </mdb-select>
             </mdb-form-control>
+
           </td>
-
-
+          <!-- Buttons to add or cancel a register -->
           <td>
             <button
               class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
               type="submit"
-              (click)="registro(form.value); limpiar(); addRow = false"
+              (click)=" registro(form.value); addRow = false"
             >
               <i class="fa fa-check"></i>
             </button>
@@ -108,38 +76,21 @@
             </button>
           </td>
         </tr>
-
-        <tr *ngFor="let paralelo of table.data; let index = index" scope="row">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <td style="min-width: 50px; max-width: 50px">
+        <!-- Edit row -->
+        <tr *ngFor="let paralelo of table.data; let index = index">
+          <td>
+            <!--Show baja-->
             <ng-container *ngIf="editElementIndex !== index">
               {{ paralelo.nombreParalelo}}
             </ng-container>
+
+            <!--Edit baja-->
             <ng-container *ngIf="editElementIndex === index">
               <mdb-form-control>
                 <input
                   mdbInput
-                  id="nombreParalelo"
-                  name="nombreParalelo"
+                  id="update_paralelo"
+                  name="update_paralelo"
                   type="text"
                   class="form-control"
                   [(ngModel)]="paralelo.nombreParalelo"
@@ -147,22 +98,23 @@
               </mdb-form-control>
             </ng-container>
           </td>
-          <td  style="min-width: 10px; max-width: 10px">
+          <td>
+            <!-- Show state -->
             <ng-container *ngIf="editElementIndex !== index">
-              {{ paralelo.estado}}
+              {{ paralelo.estado }}
             </ng-container>
+            <!-- Edit state -->
             <ng-container *ngIf="editElementIndex === index">
               <mdb-form-control>
                 <mdb-select [(ngModel)]="paralelo.estado" name="estado">
-                  <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                    option.label
-                    }}</mdb-option>
+                  <mdb-option *ngFor="let option of options" [value]="option.value">
+                    {{ option.label }}</mdb-option>
                 </mdb-select>
               </mdb-form-control>
             </ng-container>
           </td>
-
           <td>
+            <!--Buttons to delete -->
             <ng-container
               *ngIf="editElementIndex === -1 || editElementIndex !== index"
             >
@@ -177,18 +129,19 @@
               </button>
               <button
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="eliminar(paralelo.codParalelo); onDeleteClick(paralelo)"
                 [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
+                (click)="eliminar(paralelo.codParalelo)"
               >
                 <i class="fa fa-trash-alt"></i>
               </button>
             </ng-container>
+            <!--Buttons to edit-->
             <ng-container *ngIf="editElementIndex === index">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="actualizar(paralelo,paralelo.codParalelo); limpiar()"
+                (click)="actualizar(paralelo); editElementIndex = -1"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -204,9 +157,5 @@
         </tbody>
       </table>
     </form>
-    <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination>
   </div>
 </div>
-
-
-
