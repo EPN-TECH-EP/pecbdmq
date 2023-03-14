@@ -58,7 +58,7 @@ export class MateriaComponent implements OnInit {
     'Observacion Materia',
     'Peso Materia',
     'Nota Mínima',
-    'Estado',
+
   ];
 
   constructor(
@@ -150,8 +150,8 @@ export class MateriaComponent implements OnInit {
   }
 
   public registro(materia: Materia): void {
+    materia={...materia, estado:'ACTIVO'};
     this.showLoading = true;
-
       this.Api.registroMateria(materia).subscribe({
 
         next: (response: HttpResponse<Materia>) => {
@@ -166,7 +166,6 @@ export class MateriaComponent implements OnInit {
           this.Valmateria.observacionMateria = '';
           this.Valmateria.pesoMateria = '' as any;
           this.Valmateria.notaMinima = '' as any;
-          this.Valmateria.estado = '';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -176,11 +175,12 @@ export class MateriaComponent implements OnInit {
    }
 
   public actualizar(materia: Materia, codMateria: any): void {
+    materia={...materia, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarMateria(materia, codMateria).subscribe({
         next: (response: HttpResponse<Materia>) => {
-          let actualizaUnidad: Materia = response.body;
+          let actualizarMateria: Materia = response.body;
           this.notificacionOK('Materia actualizada con éxito');
 
           this.editElementIndex = -1;
@@ -191,7 +191,7 @@ export class MateriaComponent implements OnInit {
           this.Valmateria.observacionMateria = '';
           this.Valmateria.pesoMateria = '' as any;
           this.Valmateria.notaMinima = '' as any;
-          this.Valmateria.estado = '';
+
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             // this.showLoading = false;
@@ -200,25 +200,7 @@ export class MateriaComponent implements OnInit {
       })
     );
   }
-  // public eliminar(codMateria: any): void {
-  //   this.showLoading = true;
-  //   this.subscriptions.push(
-  //     this.Api.eliminarMateria(codMateria).subscribe({
-  //       next: (response: string) => {
 
-
-  //         this.notificacionOK('Materia eliminada con éxito');
-  //         const index = this.materias.indexOf(codMateria);
-  //         this.materias.splice(index, 1);
-  //         this.materias = [...this.materias];
-  //       },
-  //       error: (errorResponse: HttpErrorResponse) => {
-  //         this.notificacion(errorResponse);
-  //         console.log(errorResponse);
-  //       },
-  //     })
-  //   );
-  // }
 
   public eliminar(Codigo: any, data: Materia): void {
   this.showLoading = true;

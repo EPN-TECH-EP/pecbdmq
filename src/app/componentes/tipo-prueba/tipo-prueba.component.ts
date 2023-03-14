@@ -25,39 +25,34 @@ export class TipoPruebaComponent implements OnInit {
   tiposprueba: TipoPrueba[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
+
 
   constructor(
     private Api: TipoPruebaService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valtipo: TipoPrueba
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-  Cod_tipo_prueba = '';
-  Prueba = '';
-  Estado = 'ACTIVO';
-  headers = ['TipoPrueba', 'Estado'];
 
-  limpiar() {
-    this.Prueba = '';
-  }
+  headers = ['TipoPrueba'];
+
+
+
 
   addNewRow() {
     const newRow: TipoPrueba = {
-      cod_tipo_prueba: this.Cod_tipo_prueba,
-      prueba: this.Prueba,
-      estado: this.Estado,
+      cod_tipo_prueba: this.Valtipo.cod_tipo_prueba,
+      prueba: this.Valtipo.prueba,
+      estado: this.Valtipo.estado,
     }
 
     this.tiposprueba = [...this.tiposprueba, { ...newRow }];
-    this.Cod_tipo_prueba = '';
-    this.Prueba = '';
-    this.Estado = 'ACTIVO';
+    this.Valtipo.cod_tipo_prueba = '';
+    this.Valtipo.prueba = '';
+    this.Valtipo.estado = '';
   }
 
   onDeleteClick(data: TipoPrueba) {
@@ -106,6 +101,7 @@ export class TipoPruebaComponent implements OnInit {
       );
   }
   public registro(tipoprueba: TipoPrueba): void {
+    tipoprueba={...tipoprueba, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearTipoPrueba(tipoprueba).subscribe({
@@ -113,6 +109,8 @@ export class TipoPruebaComponent implements OnInit {
           let nuevaPrueba: TipoPrueba = response.body;
           this.tiposprueba.push(nuevaPrueba);
           this.notificacionOK('Prueba creada con éxito');
+          this.Valtipo.prueba = '';
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -125,6 +123,8 @@ export class TipoPruebaComponent implements OnInit {
 
 
   public actualizar(tipoprueba: TipoPrueba, codPrueba:any): void {
+    tipoprueba={...tipoprueba, estado:'ACTIVO'};
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoPrueba(tipoprueba,codPrueba).subscribe({
@@ -132,6 +132,7 @@ export class TipoPruebaComponent implements OnInit {
         let actualizaPrueba: TipoPrueba = response.body;
         this.notificacionOK('Prueba actualizada con éxito');
         this.editElementIndex=-1;
+        this.Valtipo.prueba = '';
 
          this.showLoading = false;
       },

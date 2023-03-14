@@ -5,7 +5,10 @@
   </div>
 </div>
 
-<div class="tabla">
+
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
   <mdb-form-control>
     <input
       mdbInput
@@ -27,8 +30,7 @@
     <i class="fa fa-plus"></i>
   </button>
 
-  <hr />
-  <div class="datatable table-editor mt-4">
+  <div class="datatable table-editor mt-3">
     <form #form="ngForm" >
       <table
         class="table table-sm datatable-table"
@@ -40,6 +42,8 @@
         [sort]="sort"
       >
         <thead class="datatable-header">
+          <tr align="center">
+
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -48,6 +52,7 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
@@ -148,3 +153,5 @@
     </form>
   </div>
 </div>
+</div>
+

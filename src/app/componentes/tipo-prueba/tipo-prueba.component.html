@@ -27,8 +27,6 @@
     <i class="fa fa-plus">
     </i>
   </button>
-
-  <hr />
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
@@ -61,7 +59,7 @@
                   id="prueba"
                   name="prueba"
                   class="form-control"
-                  [(ngModel)]="Prueba"
+                  [(ngModel)]="Valtipo.prueba"
                   #nombre="ngModel"
                   required
                 />
@@ -70,23 +68,10 @@
 
 
             <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado"
-                name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
-            </td>
-
-
-
-            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value); limpiar(); addRow = false"
+                (click)="registro(form.value);  addRow = false"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -119,21 +104,7 @@
 
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ tipoprueba.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
 
-                  <mdb-select [(ngModel)]="tipoprueba.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
 
             <td align="center">
               <ng-container
@@ -161,7 +132,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(tipoprueba, tipoprueba.cod_tipo_prueba); limpiar()"
+                  (click)="actualizar(tipoprueba, tipoprueba.cod_tipo_prueba)"
                 >
                   <i class="fa fa-check"></i>
                 </button>

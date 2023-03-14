@@ -26,10 +26,10 @@ export class AulasComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
   public showLoading: boolean;
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
+  // options = [
+  //   { value: 'ACTIVO', label: 'ACTIVO' },
+  //   { value: 'INACTIVO', label: 'INACTIVO' },
+  // ];
 
   @ViewChild('table') table!: MdbTableDirective<Aula>;
 
