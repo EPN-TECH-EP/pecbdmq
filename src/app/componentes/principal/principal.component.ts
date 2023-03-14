@@ -13,7 +13,6 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { isNull } from 'underscore';
 
 @Component({
   selector: 'app-principal',
@@ -25,6 +24,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
   listaMenu: Menu[] = null;
   private subscriptions: Subscription[] = [];
+
+  public sinMenu:boolean = false;
 
   constructor(
     private menuService: MenuService,
@@ -46,6 +47,9 @@ export class PrincipalComponent implements OnInit, OnDestroy {
           next: (response: Menu[]) => {
             this.listaMenu = response;
             this.menuService.setMenu(response);
+
+            if (this.listaMenu.length === 0)
+              this.sinMenu = true;
 
             if (this.router.url === '/principal') {
               this.router.navigate(['/principal/bienvenida']);
