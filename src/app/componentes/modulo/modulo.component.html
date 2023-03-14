@@ -1,13 +1,12 @@
-
- <!-- Título de componente-->
- <div class="row m-3">
+<!-- Título de componente-->
+<div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de módulos</p>
   </div>
 </div>
-
-<div class="tabla">
-  <!-- <mdb-form-control>
+<div class="row justify-content-center">
+  <div class="col-6">
+    <!-- <mdb-form-control>
     <input
       mdbInput
       type="text"
@@ -18,69 +17,68 @@
     />
     <label mdbLabel class="form-label" for="search-input">Buscar</label>
   </mdb-form-control> -->
-  <button
-    MdbRiple
-    class="btn btn-primary btn-sm ms-3"
-    [disabled]="editElementIndex !== -1"
-    (click)="addRow = true"
+    <button
+      MdbRiple
+      class="btn btn-primary btn-sm ms-3"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
 
-  >
-    <i class="fa fa-plus"></i>
-  </button>
-
-  <hr />
-  <div class="datatable table-editor mt-4">
-    <form #form="ngForm" >
-      <table
-        class="table table-sm datatable-table"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        #sort="mdbTableSort"
-        [dataSource]="modulos"
-        [sort]="sort"
-      >
-        <thead class="datatable-header">
-          <tr align="center">
-            <th
-              *ngFor="let header of headers"
-              scope="col"
-              style="font-size: medium"
-            >
-              <b> {{ header | titlecase }}</b>
-            </th>
-            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
-          </tr>
-        </thead>
-        <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="etiqueta"
-                  name="etiqueta"
-                  class="form-control"
-                  [(ngModel)]="Valmodulo.etiqueta"
-                  #nombre="ngModel"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="descripcion"
-                  name="descripcion"
-                  class="form-control"
-                  [(ngModel)]="Valmodulo.descripcion"
-                  #nombre="ngModel"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
+    <hr />
+    <div class="datatable table-editor mt-4">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sort="mdbTableSort"
+          [dataSource]="modulos"
+          [sort]="sort"
+        >
+          <thead class="datatable-header">
+            <tr align="center">
+              <th
+                *ngFor="let header of headers"
+                scope="col"
+                style="font-size: medium"
+              >
+                <b> {{ header | titlecase }}</b>
+              </th>
+              <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            </tr>
+          </thead>
+          <tbody class="datatable-body">
+            <tr *ngIf="addRow" scope="row">
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput="mdbInput"
+                    id="etiqueta"
+                    name="etiqueta"
+                    class="form-control"
+                    [(ngModel)]="Valmodulo.etiqueta"
+                    #nombre="ngModel"
+                    required
+                  />
+                </mdb-form-control>
+              </td>
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput="mdbInput"
+                    id="descripcion"
+                    name="descripcion"
+                    class="form-control"
+                    [(ngModel)]="Valmodulo.descripcion"
+                    #nombre="ngModel"
+                    required
+                  />
+                </mdb-form-control>
+              </td>
+              <!-- <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Valmodulo.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
@@ -88,62 +86,62 @@
                 }}</mdb-option>
               </mdb-select>
               </mdb-form-control>
-            </td>
-            <td align="center">
-              <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                type="submit"
-                (click)="registro(form.value); addRow = false"
-              >
-                <i class="fa fa-check"></i>
-              </button>
-              <button
-                name="eliminar"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="addRow = false"
-              >
-                <i class="fa fa-ban"></i>
-              </button>
-            </td>
-          </tr>
+            </td> -->
+              <td align="center">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  type="submit"
+                  (click)="registro(form.value); addRow = false"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  name="eliminar"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="addRow = false"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </td>
+            </tr>
 
-          <tr *ngFor="let modulo of modulos; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ modulo.etiqueta }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <input
-                    mdbInput
-                    id="nombre"
-                    name="nombre"
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="modulo.etiqueta"
-                  />
-                </mdb-form-control>
-              </ng-container>
-            </td>
+            <tr *ngFor="let modulo of modulos; let index = index" scope="row">
+              <td align="center" style="min-width: 10px; max-width: 10px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ modulo.etiqueta }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="nombre"
+                      name="nombre"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="modulo.etiqueta"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
 
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ modulo.descripcion }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <input
-                    mdbInput
-                    id="descripcion"
-                    name="descripcion"
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="modulo.descripcion"
-                  />
-                </mdb-form-control>
-              </ng-container>
-            </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
+              <td align="center" style="min-width: 10px; max-width: 10px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ modulo.descripcion }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="descripcion"
+                      name="descripcion"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="modulo.descripcion"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+              <!-- <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ modulo.estado }}
               </ng-container>
@@ -156,50 +154,50 @@
                   </mdb-select>
                 </mdb-form-control>
               </ng-container>
-            </td>
+            </td> -->
 
-            <td align="center">
-              <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
-              >
-                <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+              <td align="center">
+                <ng-container
+                  *ngIf="editElementIndex === -1 || editElementIndex !== index"
                 >
-                  <i class="fa fa-edit"></i>
-                </button>
-                <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(modulo.cod_modulo, modulo)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-trash-alt"></i>
-                </button>
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(modulo, modulo.cod_modulo);"
-                >
-                  <i class="fa fa-check"></i>
-                </button>
-                <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1"
-                >
-                  <i class="fa fa-ban"></i>
-                </button>
-              </ng-container>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="editElementIndex = index"
+                    [disabled]="
+                      editElementIndex !== -1 && editElementIndex !== index
+                    "
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="eliminar(modulo.cod_modulo, modulo)"
+                    [disabled]="
+                      editElementIndex !== -1 && editElementIndex !== index
+                    "
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="actualizar(modulo, modulo.cod_modulo)"
+                  >
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="editElementIndex = -1"
+                  >
+                    <i class="fa fa-ban"></i>
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
   </div>
 </div>
-

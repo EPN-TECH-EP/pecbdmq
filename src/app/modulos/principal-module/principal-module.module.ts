@@ -35,6 +35,8 @@ import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
+import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
+import { DocumentosHabilitantesComponent } from '../../componentes/documentos-habilitantes/documentos-habilitantes.component';
 
 const routes: Routes = [
   {
@@ -66,6 +68,7 @@ const routes: Routes = [
       {path: 'tipoNota', component: TipoNotaComponent},
       { path: 'tipoBaja', component: TipoBajaComponent},
       { path: 'tipoSancion', component: TipoSancionComponent},
+      { path: 'componenteNota', component: ComponenteNotaComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
       {path: 'admin/roles-usuarios', component: RolesUsuariosComponent},
@@ -73,6 +76,7 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
+      {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
     ],
   },
 ];

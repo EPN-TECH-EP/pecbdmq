@@ -42,7 +42,7 @@ export class CargaArchivoComponent implements OnInit {
           },
           error: (errorResponse) => {
 
-            console.log(errorResponse);
+            //console.log(errorResponse);
 
             this.notificacion(errorResponse);
           this.fileStatus.status = 'done';
@@ -109,7 +109,7 @@ export class CargaArchivoComponent implements OnInit {
 
   private notificacion(errorResponse?: HttpErrorResponse, mensaje?: string) {
 
-    console.log(errorResponse);
+    //console.log(errorResponse);
 
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -131,7 +131,7 @@ export class CargaArchivoComponent implements OnInit {
 
   public onProfileImageChange(event: any): void {
     
-    console.log(event.target.files[0]);
+    //console.log(event.target.files[0]);
     
     this.fileName =  event.target.files[0].name;
     this.profileImage = event.target.files[0];
