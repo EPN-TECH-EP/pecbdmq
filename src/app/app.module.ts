@@ -84,8 +84,20 @@ import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
 import { TipoNota } from './modelo/tipo-nota';
 import { Modulo } from './modelo/modulo';
+import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
+import { RouteReuseStrategy } from '@angular/router';
+import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
+import { ITipoSancion} from "./modelo/tipo_sancion";
+import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.component";
 import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
+import { ComponenteNotaComponent } from './componentes/componente-nota/componente-nota.component';
+import { ComponenteNota } from './modelo/componente-nota';
+import { DocumentosHabilitantesComponent } from './componentes/documentos-habilitantes/documentos-habilitantes.component';
+import { DocumentosHabilitantes } from './modelo/documentos-habilitantes';
+import { Paralelo } from './modelo/paralelo/paralelo';
+import { TipoProcedencia } from './modelo/tipo-procedencia';
+import { TipoInstruccion } from './modelo/tipo_instruccion';
 
 @NgModule({
   declarations: [
@@ -108,13 +120,19 @@ import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-inst
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoNotaComponent,
+    TipoBajaComponent,
+    TipoSancionComponent,
     PopconfirmComponent,
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
     ParaleloComponent,
-    TipoInstruccionComponent
+    TipoInstruccionComponent,
+    ComponenteNotaComponent,
+    DocumentosHabilitantesComponent,
+    ParaleloComponent,
+    TipoSancionComponent
   ],
   imports: [
     BrowserModule,
@@ -173,7 +191,13 @@ import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-inst
     Materia,
     TipoNota,
     Modulo,
-    MdbPopconfirmService
+    ComponenteNota,
+    DocumentosHabilitantes,
+    Paralelo,
+    TipoProcedencia,
+    TipoInstruccion,    
+    MdbPopconfirmService,
+    //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

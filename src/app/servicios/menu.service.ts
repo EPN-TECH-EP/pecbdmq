@@ -14,11 +14,19 @@ export class MenuService {
   private usuarioLogueado: string;
   private jwtHelper = new JwtHelperService();
 
-  public menu: Menu[];
+  private menu: Menu[];
 
   constructor(private http: HttpClient) {}
 
   public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{        
     return this.http.get<Menu[]>(`${this.host}/menu/lista/${usuario.nombreUsuario}`)
+  }
+
+  public getMenu(){
+    return this.menu;
+  }
+
+  public setMenu(pMenu: Menu[]){
+    this.menu = pMenu;
   }
 }
