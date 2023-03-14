@@ -5,14 +5,13 @@ import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/not
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {Subscription} from "rxjs";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-import {TipoNota} from "../../modelo/tipo_nota";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/custom-http-response";
 
 @Component({
-  selector: 'app-tipo-sansion',
+  selector: 'app-tipo-sancion',
   templateUrl: './tipo-sancion.component.html',
   styleUrls: ['./tipo-sancion.component.scss']
 })
@@ -21,6 +20,7 @@ export class TipoSancionComponent implements OnInit {
   //model
   tiposSancion: ITipoSancion[];
   tipoSancion: ITipoSancion;
+  tipoSancionEditForm: ITipoSancion;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -34,10 +34,10 @@ export class TipoSancionComponent implements OnInit {
   ];
 
   //table
-  @ViewChild('table') table!: MdbTableDirective<TipoNota>;
+  @ViewChild('table') table!: MdbTableDirective<ITipoSancion>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Baja', 'Estado'];
+  headers = ['Sanción'];
 
   constructor(private apiTipoSancion: TipoSancionService, private notificationService: MdbNotificationService) {
     this.tiposSancion = [];
@@ -47,22 +47,17 @@ export class TipoSancionComponent implements OnInit {
       sancion: '',
       estado: 'ACTIVO'
     }
+    this.tipoSancionEditForm = {
+      cod_tipo_sancion: 0,
+      estado: 'ACTIVO',
+      sancion: ''
+    }
   }
 
   ngOnInit(): void {
     this.apiTipoSancion.getTiposSancion().subscribe(data => {
       this.tiposSancion = data;
     });
-  }
-
-  addNewRow() {
-    const newRow: ITipoSancion = this.tipoSancion;
-    this.tiposSancion = [...this.tiposSancion, {...newRow}];
-    this.tipoSancion = {
-      cod_tipo_sancion: 0,
-      estado: 'ACTIVO',
-      sancion: ''
-    }
   }
 
   public okNotification(mensaje: string) {
@@ -92,6 +87,7 @@ export class TipoSancionComponent implements OnInit {
 
   //create a register of tipo sancion
   public createTipoSancion(tipoSancion: ITipoSancion): void {
+    tipoSancion = {...tipoSancion, estado:'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.createTipoSancion(tipoSancion).subscribe({
@@ -113,20 +109,38 @@ export class TipoSancionComponent implements OnInit {
     )
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoSancionEditForm = {...this.tiposSancion[index]};
+  }
+
+  undoRow() {
+    this.tipoSancionEditForm = {
+      cod_tipo_sancion: 0,
+      estado: 'ACTIVO',
+      sancion: ''
+    }
+    this.editElementIndex = -1;
+  }
+
   //update a register of tipo sancion
-  public updateTipoSancion(tipoSancion: ITipoSancion): void {
+  public updateTipoSancion(tipoSancion: ITipoSancion, formValue): void {
+
+    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"}
+
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
-        next: () => {
+        next: (response) => {
           this.okNotification('Tipo de sanción actualizado correctamente');
-          this.editElementIndex = -1;
           this.showLoading = false;
+          this.tiposSancion[this.editElementIndex] = response.body
           this.tipoSancion = {
             cod_tipo_sancion: 0,
             estado: 'ACTIVO',
             sancion: ''
           }
+          this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);
