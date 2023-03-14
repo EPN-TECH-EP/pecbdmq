@@ -20,26 +20,25 @@ import {AlertaComponent} from "../util/alerta/alerta.component";
 })
 export class ParaleloComponent implements OnInit {
   paralelos: Paralelo[];
+  paralelo: Paralelo;
+  paraleloEdit:Paralelo;
 
-  private subscriptions: Subscription[];
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
-
+  private subscriptions: Subscription[];
   public showLoading: boolean;
+  /*
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},
     {value: 'INACTIVO', label: 'INACTIVO'},
   ];
-
+*/
   @ViewChild('table') table!: MdbTableDirective<Paralelo>;
   editElementIndex = -1;
   addRow = false;
-  CodParalelo = '';
-  NombreParalelo = '';
-  Estado = '';
   headers = [
     // 'Codigo Materia',
     'Nombre Paralelo',
-    'Estado',
+    //'Estado',
   ];
 
 
@@ -50,52 +49,39 @@ export class ParaleloComponent implements OnInit {
     this.paralelos=[];
     this.subscriptions = [];
     this.notificationRef=null;
+    this.paralelo={
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'ACTIVO'
+    }
+    this.paraleloEdit={
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'ACTIVO'
+    }
   }
-
-  limpiar() {
-    this.NombreParalelo = '';
-    this.Estado = '';
-  }
-
-  search(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value;
-    this.table.search(searchTerm);
-  }
-
-
-
   ngOnInit(): void {
     this.Api.getParalelos().subscribe(data => {
       this.paralelos = data;
     });
   }
-
-  onDeleteClick(data: Paralelo) {
-    const index = this.paralelos.indexOf(data);
-    console.log(this.paralelos)
-    this.paralelos.splice(index, 1);
-    this.paralelos = [...this.paralelos]
-  }
-
-
   addNewRow() {
-    const newRow: Paralelo = {
-      codParalelo: this.CodParalelo,
-      nombreParalelo: this.NombreParalelo,
-      estado: this.Estado,
-      // estadoMateria: this.EstadoMateria,
-    };
-
-    this.paralelos = [...this.paralelos, {...newRow}];
-    this.CodParalelo = '';
-    this.NombreParalelo = '';
-    this.Estado = ";"
+    const newRow: Paralelo = this.paralelo;
+    this.paralelos=[...this.paralelos,{...newRow}]
+    this.paralelo={
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'',
+    }
 
   }
 
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  public notificacionOK(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
   }
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -121,15 +107,8 @@ export class ParaleloComponent implements OnInit {
     )
   }
 
-  public notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
   public registro(paralelo: Paralelo): void {
+    paralelo={...paralelo,estado:'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroParalelo(paralelo).subscribe({
@@ -137,6 +116,12 @@ export class ParaleloComponent implements OnInit {
           let nuevoParalelo: Paralelo = response.body;
           this.table.data.push(nuevoParalelo);
           this.notificacionOK('Paralelo creado con éxito');
+          this.showLoading = false;
+          this.paralelo={
+            codParalelo:'',
+            nombreParalelo:'',
+            estado:'',
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -145,38 +130,84 @@ export class ParaleloComponent implements OnInit {
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.paraleloEdit = {...this.paralelos[index]};
+  }
 
-  public actualizar(paralelo: Paralelo, codParalelo: any): void {
+  undoRow() {
+    this.paraleloEdit = {
+      codParalelo:'',
+      nombreParalelo:'',
+      estado:'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+  public actualizar(paralelo: Paralelo,formValue): void {
+    paralelo={...paralelo,estado:'ACTIVO',nombreParalelo:formValue.nombreParalelo};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarParalelo(paralelo, codParalelo).subscribe({
-        next: (response: HttpResponse<Paralelo>) => {
-          let actualizaUnidad: Paralelo = response.body;
+      this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
+        next: (response) => {
           this.notificacionOK('Paralelo actualizado con éxito');
-
+          this.paralelos[this.editElementIndex]=response.body;
           this.editElementIndex = -1;
+          this.showLoading = false;
+          this.paralelo = {
+            codParalelo: '',
+            nombreParalelo: '',
+            estado: '',
+          }
+        },
 
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             // this.showLoading = false;
-          }
-        },
-      })
+          },
+        }
+      )
     );
   }
 
-  public eliminar(codMateria: any): void {
+  public eliminar(codParalelo: any): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarParalelo(codMateria).subscribe({
+      this.Api.eliminarParalelo(codParalelo).subscribe({
         next: (response: string) => {
           this.notificacionOK('Paralelo eliminado con éxito');
+          this.showLoading = false;
+          const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === codParalelo);
+          this.paralelos.splice(index, 1);
+          this.paralelos = [...this.paralelos];
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          console.log(errorResponse);
         },
       })
     );
   }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,8 +4,9 @@
     <p class="fs-4 fw-bolder">Gestión de Tipo de documento</p>
   </div>
 </div>
+<div class="row justify-content-center">
 
-<div class="tabla">
+  <div class="col-6 ">
   <!-- <mdb-form-control>
     <input
       mdbInput
@@ -69,7 +70,7 @@
 
 
 
-            <td>
+            <!-- <td>
               <mdb-form-control>
                 <mdb-select [(ngModel)]="Valtipodocumento.estado" name="estado">
                 <mdb-option *ngFor="let option of options" [value]="option.value">{{
@@ -78,7 +79,7 @@
               </mdb-select>
               </mdb-form-control>
 
-            </td>
+            </td> -->
 
             <td align="center">
               <button
@@ -116,7 +117,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <!-- <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tipodocumento.estado }}
               </ng-container>
@@ -129,7 +130,7 @@
                   </mdb-select>
                 </mdb-form-control>
               </ng-container>
-            </td>
+            </td> -->
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
@@ -173,4 +174,5 @@
       </table>
     </form>
   </div>
+</div>
 </div>

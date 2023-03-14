@@ -4,7 +4,9 @@
       <img src="assets/logo-bomberos.svg" />
     </div>
     <div class="column col-9 text-end">
-      <h5>Plataforma Educativa - CBDMQ</h5>
+      <h4 class="ms-5">
+        <i class="fa-solid fa-user-graduate"></i>
+        Plataforma Educativa</h4>
     </div>
   </div>
 
@@ -79,6 +81,14 @@
             "
             >Ingrese nombre</mdb-error
           >
+          <mdb-success
+            *ngIf="
+            frmNombres?.valid &&
+              (frmNombres?.dirty || frmNombres?.touched)
+            "
+          >
+            <i class="fas fa-check-circle"></i>
+          </mdb-success>
         </mdb-form-control>
 
         <mdb-form-control class="my-5 ">
@@ -104,6 +114,15 @@
             "
             >Ingrese apellidos</mdb-error
           >
+
+          <mdb-success
+            *ngIf="
+            frmApellidos?.valid &&
+              (frmApellidos?.dirty || frmApellidos?.touched)
+            "
+          >
+            <i class="fas fa-check-circle"></i>
+          </mdb-success>
         </mdb-form-control>
 
         <mdb-form-control class="my-5 ">
@@ -129,6 +148,14 @@
             "
             >Ingrese dirección de email</mdb-error
           >
+          <mdb-success
+            *ngIf="
+            frmEmail?.valid &&
+              (frmEmail?.dirty || frmEmail?.touched)
+            "
+          >
+            <i class="fas fa-check-circle"></i>
+          </mdb-success>
         </mdb-form-control>
 
         <button
