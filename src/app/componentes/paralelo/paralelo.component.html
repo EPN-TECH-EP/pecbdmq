@@ -2,6 +2,24 @@
   <h1>Paralelo</h1>
 </div>
 <div class="row justify-content-center ">
+  <div class="input-group mb-4">
+    <input
+      type="text"
+      id="advanced-search"
+      class="form-control"
+      id="search-input"
+      #searchInput
+      placeholder="paralelo"
+    />
+    <button
+      class="btn btn-primary ripple-surface"
+      id="advanced-search-button"
+      type="button"
+      (click)="advancedSearch(searchInput.value)"
+    >
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
 
   <div class="col-6 ">
     <!-- Button to add a register-->
@@ -17,16 +35,20 @@
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
-          class="table datatable-table text-center"
+          class="table datatable-table"
           mdbTable
           mdbTableSort
           #table="mdbTable"
+          #sort="mdbTableSort"
           [dataSource]="paralelos"
+          [sort]="sort"
+          [pagination]="pagination"
+          [filterFn]="filterFn"
         >
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col">
+            <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col">
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col"><b>Acciones</b></th>
@@ -163,6 +185,7 @@
           </tr>
           </tbody>
         </table>
+        <mdb-table-pagination #pagination>5</mdb-table-pagination>
       </form>
     </div>
   </div>
