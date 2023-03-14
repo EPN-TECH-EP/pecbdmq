@@ -3,7 +3,9 @@
   <h1>Componente Nota</h1>
 </div>
 
-<div class="tabla">
+<div class="row justify-content-center">
+
+  <div class="col-6 ">
   <!-- <mdb-form-control>
     <input
       mdbInput
@@ -67,16 +69,6 @@
 
 
 
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Valcomponentenota.estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
-
-            </td>
 
             <td align="center">
               <button
@@ -171,4 +163,5 @@
       </table>
     </form>
   </div>
+</div>
 </div>

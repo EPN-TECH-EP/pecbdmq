@@ -37,7 +37,7 @@ export class ComponenteNotaComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<ComponenteNota>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Componente Nota', 'Estado'];
+  headers = ['Componente Nota'];
 
   addNewRow() {
     const newRow: ComponenteNota = {
@@ -91,6 +91,7 @@ export class ComponenteNotaComponent implements OnInit {
 
   //registro
   public registro(componentenota: ComponenteNota): void {
+    componentenota={...componentenota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.crearComponenteNota(componentenota).subscribe({
@@ -109,10 +110,11 @@ export class ComponenteNotaComponent implements OnInit {
   }
 
   //actualizar
-  public actualizar(ComponenteNota: ComponenteNota, ComponenteNotaId:any): void {
+  public actualizar(componentenota: ComponenteNota, ComponenteNotaId:any): void {
+    componentenota={...componentenota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiComponenteNota.actualizarComponenteNota(ComponenteNota,ComponenteNotaId).subscribe({
+      this.ApiComponenteNota.actualizarComponenteNota(componentenota,ComponenteNotaId).subscribe({
       next: (response: HttpResponse<ComponenteNota>) => {
         let actualizaComponenteNota: ComponenteNota = response.body;
         this.notificacionOk('Componente nota actualizado con éxito');
