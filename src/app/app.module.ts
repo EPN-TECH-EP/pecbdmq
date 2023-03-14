@@ -1,3 +1,5 @@
+import { TipoPrueba } from './modelo/tipo-prueba';
+import { Semestre } from 'src/app/modelo//semestre';
 import { Periodo } from './modelo/periodo_academico';
 
 import { NgModule } from '@angular/core';
@@ -195,8 +197,10 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     DocumentosHabilitantes,
     Paralelo,
     TipoProcedencia,
-    TipoInstruccion,    
+    TipoInstruccion,
     MdbPopconfirmService,
+    Semestre,
+    TipoPrueba
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
