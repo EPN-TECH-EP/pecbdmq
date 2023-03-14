@@ -74,6 +74,10 @@ export class TipoPruebaComponent implements OnInit {
     })
   }
 
+  search(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
+  }
 
   private notificacion(errorResponse: HttpErrorResponse) {
 

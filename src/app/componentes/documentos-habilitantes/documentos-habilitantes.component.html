@@ -1,9 +1,17 @@
-<div class="titulo">
-  <h1>Documentos Habilitantes</h1>
+<div class="row mt-3">
+  <div class="column col-3"></div>
+</div>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Documentos Habilitantes</p>
+  </div>
 </div>
 
-<div class="tabla">
-  <!-- <mdb-form-control>
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+  <mdb-form-control>
     <input
       mdbInput
       type="text"
@@ -13,20 +21,20 @@
       (keyup)="search($event)"
     />
     <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+  </mdb-form-control>
   <button
     MdbRiple
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true"
-
   >
     <i class="fa fa-plus"></i>
   </button>
 
   <hr />
   <div class="datatable table-editor mt-4">
-    <form #form="ngForm" >
+
+    <form #form="ngForm"  novalidate>
       <table
         class="table datatable-table"
         mdbTable
@@ -37,47 +45,46 @@
         [sort]="sort"
       >
         <thead class="datatable-header">
+          <tr align="center">
+
             <th
               *ngFor="let header of headers"
               scope="col"
               style="font-size: medium"
+              class="fw-bold fs-6"
             >
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+          </tr>
         </thead>
         <tbody class="datatable-body">
+
           <tr *ngIf="addRow" scope="row">
+            <div class="row justify-content-center">
+
             <td>
+
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
                   id="nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Nombre"
+                  [(ngModel)]="Valdocumento.nombre"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
-
             </td>
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
+            </div>
 
-            </td>
 
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value); addRow = false;"
+                (click)="registro(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -91,7 +98,8 @@
             </td>
           </tr>
 
-          <tr *ngFor="let documentoHabilitante of documentoHabilitante; let index = index" scope="row">
+          <tr *ngFor="let documentoHabilitante of  table.data; let index = index" scope="row">
+
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ documentoHabilitante.nombre }}
@@ -109,36 +117,20 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ documentoHabilitante.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="documentoHabilitante.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="editar(index)"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(documentoHabilitante.codDocumentoHabilitante,documentoHabilitante)"
+                  (click)="eliminar(documentoHabilitante.codDocumentoHabilitante, documentoHabilitante)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -162,9 +154,11 @@
               </ng-container>
             </td>
           </tr>
+
         </tbody>
       </table>
     </form>
+    </div>
   </div>
-</div>
+
 

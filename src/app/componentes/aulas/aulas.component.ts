@@ -35,18 +35,6 @@ export class AulasComponent implements OnInit {
 
   editElementIndex = -1;
   addRow = false;
-  // Codigo = '';
-  // Nombre = '';
-  // Capacidad = '' as any;
-  // Tipo = ''as any;
-  // Pcs = '';
-  // Impresoras = '' as any;
-  // Internet = '' as any;
-  // Proyectores = '' as any;
-  // Instructor = '' as any;
-  // SalaOcupada = '' as any;
-  // Estado = '' as any;
-
 
   headers = [
     'Nombre',
@@ -58,7 +46,7 @@ export class AulasComponent implements OnInit {
     'Proyectores',
     'Instructor',
     'Sala Ocupada',
-    'Estado',
+
   ];
 
   constructor(
@@ -169,6 +157,7 @@ export class AulasComponent implements OnInit {
   }
 
   public registro(aula: Aula): void {
+    aula={...aula, estado:'ACTIVO'};
     this.showLoading = true;
       this.Api.registroAula(aula).subscribe({
         next: (response: HttpResponse<Aula>) => {
@@ -185,7 +174,6 @@ export class AulasComponent implements OnInit {
           this.Valaula.proyectores='' as any;
           this.Valaula.instructor='' as any;
           this.Valaula.salaOcupada='';
-          this.Valaula.estado='';
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -195,6 +183,7 @@ export class AulasComponent implements OnInit {
 
 
   public actualizar(aula: Aula, Codigo:any): void {
+    aula={...aula, estado:'ACTIVO'};
    this.showLoading = true;
    this.subscriptions.push(
      this.Api.actualizarAula(aula,Codigo).subscribe({
@@ -212,7 +201,6 @@ export class AulasComponent implements OnInit {
         this.Valaula.proyectores='' as any;
         this.Valaula.instructor='' as any;
         this.Valaula.salaOcupada='';
-        this.Valaula.estado='';
 
      error: (errorResponse: HttpErrorResponse) => {
        this.notificacion(errorResponse);
@@ -222,8 +210,6 @@ export class AulasComponent implements OnInit {
   })
 );
 }
-
-
 
 
 

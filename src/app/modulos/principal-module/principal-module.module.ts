@@ -30,7 +30,6 @@ import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.compo
 import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
 import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {TipoFuncionario} from '../../modelo/tipo-funcionario';
-import {Aula} from '../../modelo/Aula';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";

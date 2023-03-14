@@ -98,7 +98,6 @@ export class MateriaComponent implements OnInit {
       pesoMateria: this.Valmateria.pesoMateria,
       notaMinima: this.Valmateria.notaMinima,
       estado: this.Valmateria.estado,
-      // estadoMateria: this.EstadoMateria,
     };
 
     this.materias = [...this.materias, { ...newRow }];
