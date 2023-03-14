@@ -42,7 +42,7 @@ export class TipoFuncionarioComponent implements OnInit {
   // Codigo = '';
   // Nombre = '';
   // Estado = 'ACTIVO';
-  headers = ['Nombre', 'Estado'];
+  headers = ['Nombre'];
 
   addNewRow() {
     const newRow: TipoFuncionario = {
@@ -98,6 +98,7 @@ export class TipoFuncionarioComponent implements OnInit {
   }
   //registro
   public registro(tipofuncionario: TipoFuncionario): void {
+    tipofuncionario={...tipofuncionario, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoFuncionario.crearTipoFuncionario(tipofuncionario).subscribe({
@@ -123,6 +124,7 @@ export class TipoFuncionarioComponent implements OnInit {
 
   //actualizar
   public actualizar(tipofuncionario: TipoFuncionario, tipofuncionarioId:any): void {
+    tipofuncionario={...tipofuncionario, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoFuncionario.actualizarTipoFuncionario(tipofuncionario,tipofuncionarioId).subscribe({
@@ -144,6 +146,7 @@ export class TipoFuncionarioComponent implements OnInit {
   //eliminar
 
 public eliminar(tipoFuncionarioId: any, data: TipoFuncionario): void {
+
   this.showLoading = true;
   this.subscriptions.push(
     this.ApiTipoFuncionario.eliminarTipoFuncionario(tipoFuncionarioId).subscribe({

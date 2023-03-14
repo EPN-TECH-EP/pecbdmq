@@ -44,7 +44,7 @@ export class ModuloComponent implements OnInit {
   // Etiqueta = '';
   // Descripcion = '';
   // Estado ='';
-  headers = ['Etiqueta','Descripción', 'Estado'];
+  headers = ['Etiqueta','Descripción'];
 
   addNewRow() {
     const newRow: Modulo = {
@@ -100,6 +100,7 @@ export class ModuloComponent implements OnInit {
 
   //registro
   public registro(modulo: Modulo): void {
+    modulo={...modulo, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiModulo.crearModulo(modulo).subscribe({
@@ -119,6 +120,7 @@ export class ModuloComponent implements OnInit {
 
   //actualizar
   public actualizar(modulo: Modulo, moduloId:any): void {
+    modulo={...modulo, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiModulo.actualizarModulo(modulo,moduloId).subscribe({

@@ -42,7 +42,7 @@ export class TipoDocumentoComponent implements OnInit {
   // CodigoDocumento = '';
   // TipoDocumento = '';
   // Estado = 'ACTIVO';
-  headers = ['Tipo de Documento', 'Estado'];
+  headers = ['Tipo de Documento'];
 
   addNewRow() {
     const newRow: TipoDocumento = {
@@ -97,6 +97,7 @@ export class TipoDocumentoComponent implements OnInit {
 
   //registro
   public registro(tipodocumento: TipoDocumento): void {
+    tipodocumento={...tipodocumento, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoDocumento.crearTipoDocumento(tipodocumento).subscribe({
@@ -116,6 +117,7 @@ export class TipoDocumentoComponent implements OnInit {
 
   //actualizar
   public actualizar(TipoDocumento: TipoDocumento, TipoDocumentoId:any): void {
+    TipoDocumento={...TipoDocumento, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoDocumento.actualizarTipoDocumento(TipoDocumento,TipoDocumentoId).subscribe({

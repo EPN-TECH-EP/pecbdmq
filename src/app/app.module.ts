@@ -1,3 +1,4 @@
+import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { Periodo } from './modelo/periodo_academico';
 
 import { NgModule } from '@angular/core';
@@ -178,7 +179,8 @@ import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-inst
     Materia,
     TipoNota,
     Modulo,
-    MdbPopconfirmService
+    MdbPopconfirmService,
+    TipoProcedencia
   ],
   bootstrap: [AppComponent]
 })
