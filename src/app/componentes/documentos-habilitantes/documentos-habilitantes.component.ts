@@ -19,35 +19,60 @@ import { DocumentosHabilitantesService } from 'src/app/servicios/documentos-habi
 })
 export class DocumentosHabilitantesComponent implements OnInit {
 
-
-
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   documentoHabilitante: DocumentosHabilitantes[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
+
   constructor(
     private Api: DocumentosHabilitantesService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valdocumento : DocumentosHabilitantes
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<DocumentosHabilitantes>;
   editElementIndex = -1;
   addRow = false;
-  Nombre = '';
-  Estado = 'ACTIVO';
-  headers = ['Documento Habilitante', 'Estado'];
+
+  headers = ['Documento Habilitante'];
 
 
+   addNewRow():void {
+     const newRow: DocumentosHabilitantes = {
+      codDocumentoHabilitante: this.Valdocumento.codDocumentoHabilitante,
+       nombre: this.Valdocumento.nombre,
+       estado: this.Valdocumento.estado,
+    };
+
+     this.documentoHabilitante = [...this.documentoHabilitante, { ...newRow }];
+     this.Valdocumento.codDocumentoHabilitante = '' as any;
+     this.Valdocumento.nombre = '';
+     this.Valdocumento.estado = '';
+ }
+
+
+
+  editar(index: number){
+    this.editElementIndex = index;
+    this.Valdocumento={...this.documentoHabilitante[index]};
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
   ngOnInit(): void {
     this.Api.getDocumentosHabilitantes().subscribe(data => {
       this.documentoHabilitante = data;
     })
+
+
+  }
+  search(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
   }
 
 
@@ -84,6 +109,7 @@ export class DocumentosHabilitantesComponent implements OnInit {
   }
   //registro
   public registro(documentosHabilitantes: DocumentosHabilitantes): void {
+    documentosHabilitantes={...documentosHabilitantes, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearDocumentosHabilitantes(documentosHabilitantes).subscribe({
@@ -91,7 +117,9 @@ export class DocumentosHabilitantesComponent implements OnInit {
           let nuevadocumentosHabilitantes: DocumentosHabilitantes = response.body;
           this.documentoHabilitante.push(nuevadocumentosHabilitantes);
           this.notificacionOK('Documento Habilitante creada con éxito');
-          this.Estado ='';
+          this.Valdocumento.nombre = '';
+
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -102,6 +130,7 @@ export class DocumentosHabilitantesComponent implements OnInit {
 
   //actualizar
   public actualizar(documentosHabilitantes: DocumentosHabilitantes, CodDocumentoHabilitante:any): void {
+    documentosHabilitantes={...documentosHabilitantes, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarDocumentosHabilitantes(documentosHabilitantes, CodDocumentoHabilitante).subscribe({
@@ -109,8 +138,10 @@ export class DocumentosHabilitantesComponent implements OnInit {
         let actualizaDocumentoHabilitante: DocumentosHabilitantes = response.body;
         this.notificacionOK('Documento Habilitante actualizada con éxito');
         this.editElementIndex=-1;
+        this.Valdocumento.nombre = '';
+
         this.showLoading = false;
-        this.Estado ='';
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);

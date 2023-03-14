@@ -13,10 +13,10 @@ export class Periodo {
 
 
 
-  public codSemestre?: Semestre;
+  // public codSemestre?: Semestre;
 
-  constructor(){
-    this.codSemestre = new Semestre(null,null,null);
-  }
+  // constructor(){
+  //   this.codSemestre = new Semestre(null,null,null);
+  // }
 
 }

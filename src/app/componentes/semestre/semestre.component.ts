@@ -26,39 +26,37 @@ export class SemestreComponent implements OnInit {
   semestres: Semestre[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
   constructor(
     private Api: SemestreService,
-    private notificationService: MdbNotificationService
+    private notificationService: MdbNotificationService,
+    public Valsemestre: Semestre
   ) { }
 
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  CodSemestre = '' as any;
-  Semestre = '';
-  Estado = 'ACTIVO';
-  headers = ['Semestre', 'Estado'];
+
+  headers = ['Semestre'];
 
   // addNewRow() {
   //   const newRow: Semestre = {
-  //     codSemestre: this.CodSemestre,
-  //     semestre: this.Semestre,
-  //     estado: this.Estado,
+  //     codSemestre: this.Valsemestre.codSemestre,
+  //     semestre: this.Valsemestre.semestre,
   //   }
-  //   this.semestres = [...this.semestre, { ...newRow }];
-  //   this.CodSemestre = '' as any;
-  //   this.Semestre = '';
-  //   this.Estado = 'ACTIVO';
+  //   this.semestres = [...this.semestres, { ...newRow }];
+  //   this.Valsemestre.codSemestre = ''as any;
+  //   this.Valsemestre.semestre = '';
   // }
 
   ngOnInit(): void {
     this.Api.getSemestre().subscribe(data => {
       this.semestres = data;
     })
+  }
+
+  search(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
   }
 
 
@@ -95,6 +93,8 @@ export class SemestreComponent implements OnInit {
   }
   //registro
   public registro(semestre: Semestre): void {
+    semestre={...semestre, estado:'ACTIVO'};
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearSemestre(semestre).subscribe({
@@ -102,8 +102,8 @@ export class SemestreComponent implements OnInit {
           let nuevaSemestre: Semestre = response.body;
           this.semestres.push(nuevaSemestre);
           this.notificacionOK('Semestre creada con éxito');
-          this.Semestre = '';
-          this.Estado ='';
+          this.Valsemestre.semestre = '';
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -114,6 +114,8 @@ export class SemestreComponent implements OnInit {
 
   //actualizar
   public actualizar(semestre: Semestre, CodSemestre:any): void {
+    semestre={...semestre, estado:'ACTIVO'};
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarSemestre(semestre, CodSemestre).subscribe({
@@ -122,8 +124,7 @@ export class SemestreComponent implements OnInit {
         this.notificacionOK('Semestre actualizada con éxito');
         this.editElementIndex=-1;
         this.showLoading = false;
-        this.Semestre = '';
-        this.Estado ='';
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
