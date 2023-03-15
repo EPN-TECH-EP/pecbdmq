@@ -19,53 +19,46 @@ import { DocumentosHabilitantesService } from 'src/app/servicios/documentos-habi
 })
 export class DocumentosHabilitantesComponent implements OnInit {
 
-  private subscriptions: Subscription[] = [];
+  documentosHabilitante: DocumentosHabilitantes[];
+  documentohabilitantes: DocumentosHabilitantes;
+  documentoHabilitanteEditForm: DocumentosHabilitantes;
+
+
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  documentoHabilitante: DocumentosHabilitantes[];
+  private subscriptions: Subscription[] = [];
   public showLoading: boolean;
 
 
-  constructor(
-    private Api: DocumentosHabilitantesService,
-    private notificationService: MdbNotificationService,
-    public Valdocumento : DocumentosHabilitantes
-  ) { }
 
   @ViewChild('table') table!: MdbTableDirective<DocumentosHabilitantes>;
   editElementIndex = -1;
   addRow = false;
-
   headers = ['Documento Habilitante'];
 
 
-   addNewRow():void {
-     const newRow: DocumentosHabilitantes = {
-      codDocumentoHabilitante: this.Valdocumento.codDocumentoHabilitante,
-       nombre: this.Valdocumento.nombre,
-       estado: this.Valdocumento.estado,
+  constructor(
+    private Api: DocumentosHabilitantesService,
+    private notificationService: MdbNotificationService) {
+    this.documentosHabilitante = [];
+    this.subscriptions = [];
+    this.documentohabilitantes = {
+      codDocumentoHabilitante: 0,
+      nombre: '',
+      estado: 'ACTIVO',
+
+    }
+    this.documentoHabilitanteEditForm = {
+      codDocumentoHabilitante: 0,
+      nombre: '',
+      estado: 'ACTIVO',
     };
 
-     this.documentoHabilitante = [...this.documentoHabilitante, { ...newRow }];
-     this.Valdocumento.codDocumentoHabilitante = '' as any;
-     this.Valdocumento.nombre = '';
-     this.Valdocumento.estado = '';
- }
 
-
-
-  editar(index: number){
-    this.editElementIndex = index;
-    this.Valdocumento={...this.documentoHabilitante[index]};
-
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   ngOnInit(): void {
     this.Api.getDocumentosHabilitantes().subscribe(data => {
-      this.documentoHabilitante = data;
+      this.documentosHabilitante = data;
     })
 
 
@@ -115,11 +108,13 @@ export class DocumentosHabilitantesComponent implements OnInit {
       this.Api.crearDocumentosHabilitantes(documentosHabilitantes).subscribe({
         next: (response: HttpResponse<DocumentosHabilitantes>) => {
           let nuevadocumentosHabilitantes: DocumentosHabilitantes = response.body;
-          this.documentoHabilitante.push(nuevadocumentosHabilitantes);
+          this.documentosHabilitante.push(nuevadocumentosHabilitantes);
           this.notificacionOK('Documento Habilitante creada con éxito');
-          this.Valdocumento.nombre = '';
-
-
+          this.documentohabilitantes = {
+            codDocumentoHabilitante: 0,
+            nombre: '',
+            estado: 'ACTIVO',
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -127,21 +122,37 @@ export class DocumentosHabilitantesComponent implements OnInit {
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.documentoHabilitanteEditForm = {...this.documentosHabilitante[index]};
+  }
+
+  undoRow() {
+    this.documentoHabilitanteEditForm = {
+      codDocumentoHabilitante: 0,
+      nombre: '',
+      estado: 'ACTIVO',
+    };
+    this.editElementIndex = -1;
+  }
+
 
   //actualizar
-  public actualizar(documentosHabilitantes: DocumentosHabilitantes, CodDocumentoHabilitante:any): void {
-    documentosHabilitantes={...documentosHabilitantes, estado:'ACTIVO'};
+  public actualizar(documentoHabilitantes: DocumentosHabilitantes, formValue): void {
+    documentoHabilitantes={...documentoHabilitantes,  nombre: formValue.nombre, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarDocumentosHabilitantes(documentosHabilitantes, CodDocumentoHabilitante).subscribe({
-      next: (response: HttpResponse<DocumentosHabilitantes>) => {
-        let actualizaDocumentoHabilitante: DocumentosHabilitantes = response.body;
+      this.Api.actualizarDocumentosHabilitantes(documentoHabilitantes, documentoHabilitantes.codDocumentoHabilitante).subscribe({
+      next: (response) => {
         this.notificacionOK('Documento Habilitante actualizada con éxito');
-        this.editElementIndex=-1;
-        this.Valdocumento.nombre = '';
-
+        this.documentosHabilitante[this.editElementIndex] = response.body;
         this.showLoading = false;
-
+        this.documentohabilitantes = {
+          codDocumentoHabilitante: 0,
+          nombre: '',
+          estado: 'ACTIVO',
+        }
+        this.editElementIndex=-1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -153,16 +164,16 @@ export class DocumentosHabilitantesComponent implements OnInit {
 
   //eliminar
 
-public eliminar(codDocumentoHabilitante: any, data: DocumentosHabilitantes): void {
+public eliminar(codDocumentoHabilitante: number): void {
   this.showLoading = true;
   this.subscriptions.push(
     this.Api.eliminarDocumentosHabilitantes(codDocumentoHabilitante).subscribe({
-      next: (response: string) => {
+      next: () => {
         this.notificacionOK('Documento Habilitante eliminada con éxito');
-        const index = this.documentoHabilitante.indexOf(data);
-        this.documentoHabilitante.splice(index, 1);
-        this.documentoHabilitante = [...this.documentoHabilitante]
         this.showLoading = false;
+        const index = this.documentosHabilitante.findIndex(documentohabilitantes => this.documentohabilitantes.codDocumentoHabilitante ===codDocumentoHabilitante);
+        this.documentosHabilitante.splice(index, 1);
+        this.documentosHabilitante = [...this.documentosHabilitante]
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);

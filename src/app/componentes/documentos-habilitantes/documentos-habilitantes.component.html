@@ -40,7 +40,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="documentoHabilitante"
+        [dataSource]="documentosHabilitante"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -70,8 +70,7 @@
                   id="nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Valdocumento.nombre"
-                  #nombre="ngModel"
+                  [(ngModel)]="documentohabilitantes.nombre"
                   required
                 />
               </mdb-form-control>
@@ -111,7 +110,7 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="documentoHabilitante.nombre"
+                    [(ngModel)]="documentoHabilitanteEditForm.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -123,13 +122,13 @@
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
+                  (click)="editRow(index)"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(documentoHabilitante.codDocumentoHabilitante, documentoHabilitante)"
+                  (click)="eliminar(documentoHabilitante.codDocumentoHabilitante)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -140,13 +139,13 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(documentoHabilitante, documentoHabilitante.codDocumentoHabilitante);"
+                  (click)="actualizar(documentoHabilitante, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i>
                 </button>

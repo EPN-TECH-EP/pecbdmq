@@ -66,8 +66,7 @@
                   name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.nombre"
-                  #nombre="ngModel"
+                  [(ngModel)]="aula.nombre"
                   required
                 />
               </mdb-form-control>
@@ -82,8 +81,7 @@
                   name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.capacidad"
-                  #capacidad="ngModel"
+                  [(ngModel)]="aula.capacidad"
                   required
                 />
               </mdb-form-control>
@@ -96,7 +94,7 @@
                   name="tipo"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.tipo"
+                  [(ngModel)]="aula.tipo"
                   #tipo="ngModel"
                   required
                 />
@@ -110,8 +108,7 @@
                   name="pcs"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.pcs"
-                  #pcs="ngModel"
+                  [(ngModel)]="aula.pcs"
                   required
                 />
               </mdb-form-control>
@@ -124,8 +121,7 @@
                   name="impresoras"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.impresoras"
-                  #impresoras="ngModel"
+                  [(ngModel)]="aula.impresoras"
                   required
                 />
               </mdb-form-control>
@@ -138,8 +134,7 @@
                   name="internet"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.internet"
-                  #internet="ngModel"
+                  [(ngModel)]="aula.internet"
                   required
                 />
               </mdb-form-control>
@@ -153,8 +148,7 @@
                   name="proyectores"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.proyectores"
-                  #proyectores="ngModel"
+                  [(ngModel)]="aula.proyectores"
                   required
                 />
               </mdb-form-control>
@@ -167,8 +161,7 @@
                   name="instructor"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.instructor"
-                  #instructor="ngModel"
+                  [(ngModel)]="aula.instructor"
                   required
                 />
               </mdb-form-control>
@@ -181,8 +174,7 @@
                   name="salaOcupada"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.salaOcupada"
-                  #salaOcupada="ngModel"
+                  [(ngModel)]="aula.salaOcupada"
                   required
                 />
               </mdb-form-control>
@@ -223,7 +215,7 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.nombre"
+                    [(ngModel)]="aulaEditForm.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -241,7 +233,7 @@
                     name="capacidad"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="aula.capacidad"
+                    [(ngModel)]="aulaEditForm.capacidad"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -259,7 +251,7 @@
                     name="tipo"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.tipo"
+                    [(ngModel)]="aulaEditForm.tipo"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -277,7 +269,7 @@
                     name="pcs"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="aula.pcs"
+                    [(ngModel)]="aulaEditForm.pcs"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -295,7 +287,7 @@
                     name="impresoras"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="aula.impresoras"
+                    [(ngModel)]="aulaEditForm.impresoras"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -313,7 +305,7 @@
                     name="internet"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.internet"
+                    [(ngModel)]="aulaEditForm.internet"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -331,7 +323,7 @@
                     name="proyectores"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="aula.proyectores"
+                    [(ngModel)]="aulaEditForm.proyectores"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -347,10 +339,10 @@
                   <input
                     mdbInput
                     id="instructor"
-                    name="Instructor"
+                    name="instructor"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.instructor"
+                    [(ngModel)]="aulaEditForm.instructor"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -368,7 +360,7 @@
                     name="salaOcupada"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aula.salaOcupada"
+                    [(ngModel)]="aulaEditForm.salaOcupada"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -384,12 +376,14 @@
               <button
               class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
               (click)="editar(index)"
-            >
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+              >
+
               <i class="fa fa-edit"></i>
             </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(aula.codigo,aula)"
+                  (click)="eliminar(aula.codigo)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -400,7 +394,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(aula, aula.codigo);"
+                  (click)="actualizar(aula, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>

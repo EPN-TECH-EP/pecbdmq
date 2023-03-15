@@ -20,51 +20,45 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
   styleUrls: ['./tipo-prueba.component.scss']
 })
 export class TipoPruebaComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   tiposprueba: TipoPrueba[];
+  tipoPrueba: TipoPrueba;
+  tipoPruebaEditForm: TipoPrueba;
+
+
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[] = [];
   public showLoading: boolean;
 
 
 
-  constructor(
-    private Api: TipoPruebaService,
-    private notificationService: MdbNotificationService,
-    public Valtipo: TipoPrueba
-  ) { }
 
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-
   headers = ['TipoPrueba'];
 
 
-
-
-  addNewRow() {
-    const newRow: TipoPrueba = {
-      cod_tipo_prueba: this.Valtipo.cod_tipo_prueba,
-      prueba: this.Valtipo.prueba,
-      estado: this.Valtipo.estado,
+  constructor(
+    private Api: TipoPruebaService,
+    private notificationService: MdbNotificationService) {
+      this.tiposprueba=[];
+      this.subscriptions =[];
+      this.tipoPrueba ={
+        cod_tipo_prueba:0,
+        prueba:'',
+        estado:'ACTIVO'
+      };
+      this.tipoPruebaEditForm = {
+        cod_tipo_prueba:0,
+        prueba:'',
+        estado:'ACTIVO'
+      };
     }
 
-    this.tiposprueba = [...this.tiposprueba, { ...newRow }];
-    this.Valtipo.cod_tipo_prueba = '';
-    this.Valtipo.prueba = '';
-    this.Valtipo.estado = '';
-  }
-
-  onDeleteClick(data: TipoPrueba) {
-    const index = this.tiposprueba.indexOf(data);
-    this.tiposprueba.splice(index, 1);
-    this.tiposprueba = [...this.tiposprueba]
-  }
 
   ngOnInit(): void {
     this.Api.getTipoPrueba().subscribe(data => {
       this.tiposprueba = data;
-      console.log(data);
 
     })
   }
@@ -100,69 +94,86 @@ export class TipoPruebaComponent implements OnInit {
         TipoAlerta.ALERTA_OK
       );
   }
-  public registro(tipoprueba: TipoPrueba): void {
-    tipoprueba={...tipoprueba, estado:'ACTIVO'};
+  public registro(tipoPrueba: TipoPrueba): void {
+    tipoPrueba={...tipoPrueba, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.crearTipoPrueba(tipoprueba).subscribe({
+      this.Api.crearTipoPrueba(tipoPrueba).subscribe({
         next: (response: HttpResponse<TipoPrueba>) => {
           let nuevaPrueba: TipoPrueba = response.body;
           this.tiposprueba.push(nuevaPrueba);
           this.notificacionOK('Prueba creada con éxito');
-          this.Valtipo.prueba = '';
-
+          this.tipoPrueba ={
+            cod_tipo_prueba:0,
+            prueba:'',
+            estado:'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          // this.showLoading = false;
         },
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoPruebaEditForm = {...this.tiposprueba[index]};
+  }
+
+  undoRow() {
+    this.tipoPruebaEditForm = {
+      cod_tipo_prueba:0,
+      prueba:'',
+      estado:'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
 
 
 
-  public actualizar(tipoprueba: TipoPrueba, codPrueba:any): void {
-    tipoprueba={...tipoprueba, estado:'ACTIVO'};
+  public actualizar(tipoPrueba: TipoPrueba, formValue): void {
 
+    tipoPrueba={...tipoPrueba, prueba: formValue.prueba ,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoPrueba(tipoprueba,codPrueba).subscribe({
-      next: (response: HttpResponse<TipoPrueba>) => {
-        let actualizaPrueba: TipoPrueba = response.body;
+      this.Api.actualizarTipoPrueba(tipoPrueba,tipoPrueba.cod_tipo_prueba).subscribe({
+      next: (response) => {
         this.notificacionOK('Prueba actualizada con éxito');
+        this.tiposprueba[this.editElementIndex] = response.body;
+        this.showLoading = false;
+        this.tipoPrueba ={
+          cod_tipo_prueba:0,
+          prueba:'',
+          estado:'ACTIVO'
+        }
         this.editElementIndex=-1;
-        this.Valtipo.prueba = '';
-
-         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
-        this.showLoading = false;
       },
     })
-    );
-  }
+  )
+}
 
 
 //eliminar
 
-public eliminar(codPrueba: any): void {
+public eliminar(cod_tipo_prueba: number): void {
 this.showLoading = true;
-
 this.subscriptions.push(
-  this.Api.eliminarTipoPrueba(codPrueba).subscribe({
-    next: (response: string) => {
+  this.Api.eliminarTipoPrueba(cod_tipo_prueba).subscribe({
+    next: () => {
       this.notificacionOK('Tipo de prueba eliminada con éxito');
       this.showLoading = false;
+      const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === cod_tipo_prueba);
+      this.tiposprueba.splice(index, 1);
+      this.tiposprueba = [...this.tiposprueba];
     },
     error: (errorResponse: HttpErrorResponse) => {
       this.notificacion(errorResponse);
-      console.log(errorResponse);
-      this.showLoading = false;
     },
   })
-);
+)
 }
 
 }
