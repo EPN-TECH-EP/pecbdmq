@@ -19,41 +19,47 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./unidad-gestion.component.scss']
 })
 export class UnidadGestionComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+
+  //model
   unidades: UnidadGestion[];
+  Unidad: UnidadGestion;
+  UnidadEditForm: UnidadGestion;
+
+  //utils
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
+ //options
   options = [
     { value: 'ACTIVO', label: 'ACTIVO' },
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
-  constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
-    private notificationService: MdbNotificationService,
-    public Valunidadgestion:UnidadGestion
-  ) { }
 
+  //table
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  //  Codigo = '';
-  //  Nombre = '';
-   Estado = 'ACTIVO';
+
   headers = ['Nombre'];
 
-  // addNewRow() {
-  //   const newRow: UnidadGestion = {
-  //     codigo: this.Codigo,
-  //     nombre: this.Nombre,
-  //     estado: this.Estado,
-  //   }
-  //   this.unidades = [...this.unidades, { ...newRow }];
-  //   this.Codigo = '';
-  //   this.Nombre = '';
-  //   this.Estado = 'ACTIVO';
-  // }
+  constructor(
+    private ApiUnidad: UnidadGestionService,
+    private notificationService: MdbNotificationService,
+  ) {
+    this.unidades = [];
+    this.subscriptions = [];
+    this.Unidad = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    }
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+  }
 
   ngOnInit(): void {
     this.ApiUnidad.getUnidadGestion().subscribe(data => {
@@ -103,7 +109,11 @@ export class UnidadGestionComponent implements OnInit {
           let nuevaUnidad: UnidadGestion = response.body;
           this.unidades.push(nuevaUnidad);
           this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Valunidadgestion.nombre = '';
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -112,18 +122,37 @@ export class UnidadGestionComponent implements OnInit {
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.UnidadEditForm = {...this.unidades[index]};
+  }
+
+  undoRow() {
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+
+
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
-    unidad = {...unidad, estado:'ACTIVO'},
+  public actualizar(Unidad: UnidadGestion, formValue): void {
+    Unidad = {...Unidad, nombre: formValue.nombre, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
+      this.ApiUnidad.actualizarUnidad(Unidad,Unidad.codigo).subscribe({
       next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
         this.notificacionOk('Unidad de gestión actualizada con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valunidadgestion.nombre = '';
+        this.unidades[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -132,6 +161,7 @@ export class UnidadGestionComponent implements OnInit {
     })
     );
   }
+
 
   //eliminar
 
@@ -154,9 +184,6 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     })
   );
 }
-editar(index: number){
-  this.editElementIndex = index;
-  this.Valunidadgestion={...this.unidades[index]};
-}
+
 
 }
