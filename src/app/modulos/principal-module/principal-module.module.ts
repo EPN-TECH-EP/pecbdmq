@@ -1,3 +1,4 @@
+import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import {SemestreComponent} from './../../componentes/semestre/semestre.component';
 import {PeriodoAcademicoComponent} from './../../componentes/periodo-academico/periodo-academico.component';
 import {AulasComponent} from './../../componentes/aulas/aulas.component';
@@ -30,7 +31,7 @@ import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.compo
 import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
 import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {TipoFuncionario} from '../../modelo/tipo-funcionario';
-import {Aula} from '../../modelo/Aula';
+
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
@@ -77,6 +78,7 @@ const routes: Routes = [
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
+      {path: 'ponderacion', component: PonderacionComponent},
     ],
   },
 ];

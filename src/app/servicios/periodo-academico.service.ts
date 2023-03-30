@@ -9,7 +9,7 @@ import { Periodo } from '../modelo/periodo_academico';
 
 @Injectable({providedIn: 'root',})
 
-export class periodoAcademico {
+export class periodoAcademicoService {
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}

@@ -98,6 +98,7 @@ import { DocumentosHabilitantes } from './modelo/documentos-habilitantes';
 import { Paralelo } from './modelo/paralelo/paralelo';
 import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { TipoInstruccion } from './modelo/tipo_instruccion';
+import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     ComponenteNotaComponent,
     DocumentosHabilitantesComponent,
     ParaleloComponent,
-    TipoSancionComponent
+    TipoSancionComponent,
+    PonderacionComponent
   ],
   imports: [
     BrowserModule,
