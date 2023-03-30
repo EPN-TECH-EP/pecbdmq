@@ -1,3 +1,6 @@
+import { CatalogoEstados } from 'src/app/modelo/catalogo-estados';
+import { CatalogoEstadosComponent } from './componentes/catalogo-estados/catalogo-estados.component';
+import { ModuloEstados } from './modelo/modulo-estados';
 import { TipoPrueba } from './modelo/tipo-prueba';
 import { Semestre } from 'src/app/modelo//semestre';
 import { Periodo } from './modelo/periodo_academico';
@@ -20,13 +23,13 @@ import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { MdbDatepickerModule } from 'mdb-angular-ui-kit/datepicker';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbFormControlComponent, MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbInfiniteScrollModule } from 'mdb-angular-ui-kit/infinite-scroll';
 import { MdbLazyLoadingModule } from 'mdb-angular-ui-kit/lazy-loading';
 import { MdbLightboxModule } from 'mdb-angular-ui-kit/lightbox';
 import { MdbLoadingModule } from 'mdb-angular-ui-kit/loading';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { MdbNotificationModule } from 'mdb-angular-ui-kit/notification';
+import { MdbNotificationModule, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
 import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
 import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
 import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
@@ -45,6 +48,7 @@ import { MdbTimepickerModule } from 'mdb-angular-ui-kit/timepicker';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbMultiRangeModule } from 'mdb-angular-ui-kit/multi-range';
+
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutenticacionService } from './servicios/autenticacion.service';
@@ -65,7 +69,6 @@ import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.compone
 import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
 import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
 import { AulasComponent } from './componentes/aulas/aulas.component';
-import { PeriodoAcademicoComponent } from './componentes/periodo-academico/periodo-academico.component';
 import { SemestreComponent } from './componentes/semestre/semestre.component';
 import { SemestreTbl } from './modelo/util/semestre-tbl';
 import { ModuloComponent } from './componentes/modulo/modulo.component';
@@ -95,11 +98,12 @@ import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
 import { ComponenteNotaComponent } from './componentes/componente-nota/componente-nota.component';
 import { ComponenteNota } from './modelo/componente-nota';
-import { DocumentosHabilitantesComponent } from './componentes/documentos-habilitantes/documentos-habilitantes.component';
 import { DocumentosHabilitantes } from './modelo/documentos-habilitantes';
 import { Paralelo } from './modelo/paralelo/paralelo';
 import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { TipoInstruccion } from './modelo/tipo_instruccion';
+import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
+import { RequisitoComponent } from './componentes/requisito/requisito.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +119,6 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     RolesUsuariosComponent,
     TipoPruebaComponent,
     AulasComponent,
-    PeriodoAcademicoComponent,
     SemestreComponent,
     ModuloComponent,
     TipoFuncionarioComponent,
@@ -132,9 +135,13 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     ParaleloComponent,
     TipoInstruccionComponent,
     ComponenteNotaComponent,
-    DocumentosHabilitantesComponent,
     ParaleloComponent,
-    TipoSancionComponent
+    TipoSancionComponent,
+    ModuloEstadosComponent,
+    RequisitoComponent,
+    CatalogoEstadosComponent
+
+
   ],
   imports: [
     BrowserModule,
@@ -176,7 +183,7 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     MdbTooltipModule,
     MdbValidationModule,
     MdbMultiRangeModule,
-    PrincipalModuleModule
+    PrincipalModuleModule,
   ],
   providers: [
     AutenticacionGuard,
@@ -200,7 +207,10 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     TipoInstruccion,
     MdbPopconfirmService,
     Semestre,
-    TipoPrueba
+    TipoPrueba,
+    ModuloEstados,
+    CatalogoEstados
+
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]

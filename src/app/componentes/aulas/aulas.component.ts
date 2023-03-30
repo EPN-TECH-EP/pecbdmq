@@ -12,6 +12,7 @@ import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef,MdbPopconfirmService,} from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { AulaService } from 'src/app/servicios/aula.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({

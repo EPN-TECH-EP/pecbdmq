@@ -1,5 +1,6 @@
+import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
+import { ModuloEstadosComponent } from './../../componentes/modulo-estados/modulo-estados.component';
 import {SemestreComponent} from './../../componentes/semestre/semestre.component';
-import {PeriodoAcademicoComponent} from './../../componentes/periodo-academico/periodo-academico.component';
 import {AulasComponent} from './../../componentes/aulas/aulas.component';
 import {TipoPruebaComponent} from './../../componentes/tipo-prueba/tipo-prueba.component';
 import {TipoProcedenciaComponent} from './../../componentes/tipo-procedencia/tipo-procedencia.component';
@@ -35,7 +36,6 @@ import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
-import { DocumentosHabilitantesComponent } from '../../componentes/documentos-habilitantes/documentos-habilitantes.component';
 
 const routes: Routes = [
   {
@@ -58,7 +58,6 @@ const routes: Routes = [
       {path: 'unidadGestion', component: UnidadGestionComponent},
       {path: 'tipoPrueba', component: TipoPruebaComponent},
       {path: 'aula', component: AulasComponent},
-      {path: 'periodoAcademico', component: PeriodoAcademicoComponent},
       {path: 'semestre', component: SemestreComponent},
       {path: 'modulo', component: ModuloComponent},
       {path: 'tipoFuncionario', component: TipoFuncionarioComponent},
@@ -75,7 +74,8 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
-      {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
+      {path: 'moduloEstados', component: ModuloEstadosComponent},
+      {path: 'catalogo', component: CatalogoEstadosComponent}
     ],
   },
 ];

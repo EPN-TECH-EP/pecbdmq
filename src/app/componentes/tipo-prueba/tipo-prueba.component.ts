@@ -132,7 +132,6 @@ export class TipoPruebaComponent implements OnInit {
 
 
   public actualizar(tipoPrueba: TipoPrueba, formValue): void {
-
     tipoPrueba={...tipoPrueba, prueba: formValue.prueba ,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(

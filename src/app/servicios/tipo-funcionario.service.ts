@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { TipoFuncionario } from '../modelo/tipo-funcionario';
 import { CustomHttpResponse } from '../modelo/custom-http-response';
+ import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +20,9 @@ export class TipoFuncionarioService {
   constructor(private http: HttpClient) {}
 
   public getTipoFuncionario(): Observable<TipoFuncionario[]> {
-    return this.http.get<TipoFuncionario[]>(`${this.host}/tipofuncionario/listar`);
+    return this.http.get<TipoFuncionario[]>(`${this.host}/tipofuncionario/listar`)
+    .pipe(map((response: any) => response.json()));
+
   }
 
   public crearTipoFuncionario(tipofuncionario: TipoFuncionario): Observable<HttpResponse<TipoFuncionario>> {

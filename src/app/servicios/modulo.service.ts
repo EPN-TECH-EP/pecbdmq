@@ -32,4 +32,8 @@ export class ModuloService {
   public eliminarModulo(moduloId: any): Observable<string> {
     return this.http.delete<string>(`${this.host}/modulo/${moduloId}`);
     }
+
+    public mostrar1Modulo(codModulo: any): Observable<string> {
+      return this.http.get<any>(`${this.host}/modulo/${codModulo}`);
+      }
 }
