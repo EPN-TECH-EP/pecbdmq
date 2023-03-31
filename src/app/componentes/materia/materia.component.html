@@ -70,8 +70,7 @@
                   name="nombreMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.nombreMateria"
-                  #nombreMateria="ngModel"
+                  [(ngModel)]="materia.nombreMateria"
                   required
                 />
               </mdb-form-control>
@@ -84,8 +83,7 @@
                   name="numHoras"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.numHoras"
-                  #numHoras="ngModel"
+                  [(ngModel)]="materia.numHoras"
                   required
                 />
               </mdb-form-control>
@@ -98,8 +96,7 @@
                   name="tipoMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.tipoMateria"
-                  #tipoMateria="ngModel"
+                  [(ngModel)]="materia.tipoMateria"
                   required
                 />
               </mdb-form-control>
@@ -112,8 +109,7 @@
                   name="observacionMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.observacionMateria"
-                  #observacionMateria="ngModel"
+                  [(ngModel)]="materia.observacionMateria"
                   required
                 />
               </mdb-form-control>
@@ -126,8 +122,7 @@
                   name="pesoMateria"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.pesoMateria"
-                  #pesoMateria="ngModel"
+                  [(ngModel)]="materia.pesoMateria"
                   required
                 />
               </mdb-form-control>
@@ -141,8 +136,7 @@
                   name="notaMinima"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.notaMinima"
-                  #notaMinima="ngModel"
+                  [(ngModel)]="materia.notaMinima"
                   required
                 />
               </mdb-form-control>
@@ -153,7 +147,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value)"
+                (click)="registro(form.value); addRow = false;"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -167,7 +161,7 @@
             </td>
           </tr>
 
-          <tr *ngFor="let materia of table.data; let index = index" scope="row">
+          <tr *ngFor="let materia of materias; let index = index" scope="row">
 
             <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
@@ -181,7 +175,7 @@
                     name="nombreMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.nombreMateria"
+                    [(ngModel)]="materiaEditForm.nombreMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -199,7 +193,7 @@
                     name="numHoras"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="materia.numHoras"
+                    [(ngModel)]="materiaEditForm.numHoras"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -217,7 +211,7 @@
                     name="tipoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.tipoMateria"
+                    [(ngModel)]="materiaEditForm.tipoMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -235,7 +229,7 @@
                     name="observacionMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.observacionMateria"
+                    [(ngModel)]="materiaEditForm.observacionMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -253,7 +247,7 @@
                     name="pesoMateria"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="materia.pesoMateria"
+                    [(ngModel)]="materiaEditForm.pesoMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -271,7 +265,7 @@
                     name="notaMinima"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="materia.notaMinima"
+                    [(ngModel)]="materiaEditForm.notaMinima"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -284,18 +278,19 @@
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-
+                  (click)="editRow(index)"
+                  [disabled]="
+                  editElementIndex !== -1 && editElementIndex !== index
+                "
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(materia.codMateria, materia)"
+                  (click)="eliminar(materia.codMateria)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
@@ -303,14 +298,14 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(materia, materia.codMateria)"
+                  (click)="actualizar(materia, form.value)"
 
                   >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1; "
+                  (click)="undoRow() "
 
                 >
                   <i class="fa fa-ban"></i>

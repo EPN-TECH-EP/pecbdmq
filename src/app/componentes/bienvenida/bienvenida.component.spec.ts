@@ -17,7 +17,7 @@ describe('BienvenidaComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Debería mostrar pantalla de bienvenida', () => {
     expect(component).toBeTruthy();
   });
 });

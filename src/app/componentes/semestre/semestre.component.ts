@@ -20,33 +20,39 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./semestre.component.scss']
 })
 export class SemestreComponent implements OnInit {
-
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   semestres: Semestre[];
+  semestre: Semestre;
+  semestreEditForm: Semestre;
+
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[] = [];
   public showLoading: boolean;
 
-  constructor(
-    private Api: SemestreService,
-    private notificationService: MdbNotificationService,
-    public Valsemestre: Semestre
-  ) { }
+
 
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-
   headers = ['Semestre'];
 
-  // addNewRow() {
-  //   const newRow: Semestre = {
-  //     codSemestre: this.Valsemestre.codSemestre,
-  //     semestre: this.Valsemestre.semestre,
-  //   }
-  //   this.semestres = [...this.semestres, { ...newRow }];
-  //   this.Valsemestre.codSemestre = ''as any;
-  //   this.Valsemestre.semestre = '';
-  // }
+
+  constructor(
+    private Api: SemestreService,
+    private notificationService: MdbNotificationService,
+  ) {
+    this.semestres= [];
+    this.subscriptions = [];
+    this.semestre = {
+      codSemestre:0,
+      semestre:'',
+      estado:'ACTIVO'
+    }
+    this.semestreEditForm = {
+      codSemestre: 0,
+      semestre:'',
+      estado:'ACTIVO'
+    };
+  }
 
   ngOnInit(): void {
     this.Api.getSemestre().subscribe(data => {
@@ -94,7 +100,6 @@ export class SemestreComponent implements OnInit {
   //registro
   public registro(semestre: Semestre): void {
     semestre={...semestre, estado:'ACTIVO'};
-
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearSemestre(semestre).subscribe({
@@ -102,8 +107,11 @@ export class SemestreComponent implements OnInit {
           let nuevaSemestre: Semestre = response.body;
           this.semestres.push(nuevaSemestre);
           this.notificacionOK('Semestre creada con éxito');
-          this.Valsemestre.semestre = '';
-
+          this.semestre ={
+          codSemestre: 0,
+          semestre:'',
+          estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -112,23 +120,42 @@ export class SemestreComponent implements OnInit {
     );
   }
 
-  //actualizar
-  public actualizar(semestre: Semestre, CodSemestre:any): void {
-    semestre={...semestre, estado:'ACTIVO'};
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.semestreEditForm = {...this.semestres[index]};
+  }
 
+  undoRow() {
+    this.semestreEditForm = {
+      codSemestre: 0,
+      semestre:'',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+
+
+
+  //actualizar
+  public actualizar(semestre: Semestre, formValue): void {
+
+    semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarSemestre(semestre, CodSemestre).subscribe({
-      next: (response: HttpResponse<Semestre>) => {
-        let actualizaUnidad: Semestre = response.body;
+      this.Api.actualizarSemestre(semestre, semestre.codSemestre).subscribe({
+      next: (response) => {
         this.notificacionOK('Semestre actualizada con éxito');
-        this.editElementIndex=-1;
+        this.semestres[this.editElementIndex] = response.body;
         this.showLoading = false;
-
+        this.semestre ={
+          codSemestre: 0,
+          semestre:'',
+          estado: 'ACTIVO'
+          }
+        this.editElementIndex=-1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
-        this.showLoading = false;
       },
     })
     );
@@ -136,21 +163,20 @@ export class SemestreComponent implements OnInit {
 
   //eliminar
 
-public eliminar(CodSemestre: any, data: Semestre): void {
+public eliminar(codSemestre: number): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.Api.eliminarSemestre(CodSemestre).subscribe({
-      next: (response: string) => {
+    this.Api.eliminarSemestre(codSemestre).subscribe({
+      next: () => {
         this.notificacionOK('Semestre eliminada con éxito');
-        const index = this.semestres.indexOf(data);
+        this.showLoading = false;
+        const index = this.semestres.findIndex(semestre => semestre.codSemestre === codSemestre);
         this.semestres.splice(index, 1);
         this.semestres = [...this.semestres]
-        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
         console.log(errorResponse);
-        this.showLoading = false;
       },
     })
   );
