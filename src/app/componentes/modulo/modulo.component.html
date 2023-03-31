@@ -6,17 +6,7 @@
 </div>
 <div class="row justify-content-center">
   <div class="col-6">
-    <!-- <mdb-form-control>
-    <input
-      mdbInput
-      type="text"
-      class="form-control"
-      id="search-input"
-      [disabled]="editElementIndex !== -1"
-      (keyup)="search($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+
     <button
       MdbRiple
       class="btn btn-primary btn-sm ms-3"
@@ -35,7 +25,7 @@
           mdbTableSort
           #table="mdbTable"
           #sort="mdbTableSort"
-          [dataSource]="modulos"
+          [dataSource]="Modulos"
           [sort]="sort"
         >
           <thead class="datatable-header">
@@ -59,7 +49,7 @@
                     id="etiqueta"
                     name="etiqueta"
                     class="form-control"
-                    [(ngModel)]="Valmodulo.etiqueta"
+                    [(ngModel)]="Modulo.etiqueta"
                     #nombre="ngModel"
                     required
                   />
@@ -72,21 +62,12 @@
                     id="descripcion"
                     name="descripcion"
                     class="form-control"
-                    [(ngModel)]="Valmodulo.descripcion"
+                    [(ngModel)]="Modulo.descripcion"
                     #nombre="ngModel"
                     required
                   />
                 </mdb-form-control>
               </td>
-              <!-- <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Valmodulo.estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
-            </td> -->
               <td align="center">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
@@ -105,20 +86,20 @@
               </td>
             </tr>
 
-            <tr *ngFor="let modulo of modulos; let index = index" scope="row">
+            <tr *ngFor="let Modulo of table.data; let index = index" scope="row">
               <td align="center" style="min-width: 10px; max-width: 10px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ modulo.etiqueta }}
+                  {{ Modulo.etiqueta }}
                 </ng-container>
                 <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
                     <input
                       mdbInput
-                      id="nombre"
-                      name="nombre"
+                      id="etiqueta"
+                      name="etiqueta"
                       type="text"
                       class="form-control"
-                      [(ngModel)]="modulo.etiqueta"
+                      [(ngModel)]="ModuloEditForm.etiqueta"
                     />
                   </mdb-form-control>
                 </ng-container>
@@ -126,7 +107,7 @@
 
               <td align="center" style="min-width: 10px; max-width: 10px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ modulo.descripcion }}
+                  {{ Modulo.descripcion }}
                 </ng-container>
                 <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
@@ -136,25 +117,11 @@
                       name="descripcion"
                       type="text"
                       class="form-control"
-                      [(ngModel)]="modulo.descripcion"
+                      [(ngModel)]="ModuloEditForm.descripcion"
                     />
                   </mdb-form-control>
                 </ng-container>
               </td>
-              <!-- <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ modulo.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="modulo.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td> -->
 
               <td align="center">
                 <ng-container
@@ -162,7 +129,7 @@
                 >
                   <button
                     class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    (click)="editElementIndex = index"
+                    (click)="editRow(index)"
                     [disabled]="
                       editElementIndex !== -1 && editElementIndex !== index
                     "
@@ -171,7 +138,7 @@
                   </button>
                   <button
                     class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    (click)="eliminar(modulo.cod_modulo, modulo)"
+                    (click)="eliminar(Modulo.cod_modulo, Modulo)"
                     [disabled]="
                       editElementIndex !== -1 && editElementIndex !== index
                     "
@@ -182,7 +149,7 @@
                 <ng-container *ngIf="editElementIndex === index">
                   <button
                     class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    (click)="actualizar(modulo, modulo.cod_modulo)"
+                    (click)="actualizar(Modulo, form.value)"
                   >
                     <i class="fa fa-check"></i>
                   </button>

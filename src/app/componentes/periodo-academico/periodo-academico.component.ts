@@ -26,102 +26,115 @@ import { MdbDatepickerComponent } from 'mdb-angular-ui-kit/datepicker';
 })
 export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
   periodos: Periodo[];
-
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-
   public showLoading: boolean;
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
-  modulos = [
-    {value:'ESPECIALIZACIÓN'  ,label:'ESPECIALIZACIÓN' },
-    {value:  '7'  ,label: '7' },
-  ]
+
+
+
+
+
+   modulos = [
+     {value:'ESPECIALIZACIÓN'  ,label:'ESPECIALIZACIÓN' },
+     {value:  '7'  ,label: '7' },
+   ]
 
   @ViewChild('table') table!: MdbTableDirective<Periodo>;
 
   editElementIndex = -1;
   addRow = false;
-  Codigo = '';
-  Modulo = '' as any;
-  Semestre = '' as string;
-  FechaInicio = ''as any;
-  FechaFin = ''as any;
-  Estado = '' as any;
-  Descripcion = '' as any;
+
 
   headers = [
     'Módulo',
     'Semestre',
-    'FechaInicio',
-    'FechaFin',
-    'Estado',
+    'Fecha de Inicio',
+    'Fecha de Fin',
     'Descripcion',
   ];
 
+  translationOptions = {
+    title: 'Seleccionar Fecha',
+    monthsFull: [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    monthsShort: [
+     'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
+    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    okBtnText: 'Ok',
+    clearBtnText: 'Listo',
+    cancelBtnText: 'Cancelar',
+  };
 
-  constructor(   private notificationService: MdbNotificationService,
+
+  constructor(
+    private notificationService: MdbNotificationService,
     private Api: periodoAcademico,
     public  periodover: Periodo,
     public semestreTbl: SemestreTbl,
+    public Valperiodo: Periodo
     ){}
 
-  limpiar() {
-    // this.Codigo = '';
-    this.Modulo = '';
-    this.Semestre = '';
-    this.FechaInicio = '';
-    this.FechaFin = '';
-    this.Estado = '';
-    this.Descripcion = '';
-  }
+
+
+    addNewRow():void {
+
+      const newRow: Periodo = {
+        codigo: this.Valperiodo.codigo,
+        modulo: this.Valperiodo.modulo,
+        semestre: this.Valperiodo.semestre,
+        fechainicio: this.Valperiodo.fechainicio,
+        fechafin: this.Valperiodo.fechafin,
+        descripcion: this.Valperiodo.descripcion,
+        estado: this.Valperiodo.estado,
+      };
+
+      this.periodos = [...this.periodos, { ...newRow }];
+      this.Valperiodo.codigo = '';
+      this.Valperiodo.modulo = '';
+      this.Valperiodo.semestre = '' as any;
+      this.Valperiodo.fechainicio = ''as any;
+      this.Valperiodo.fechafin = ''as any;
+      this.Valperiodo.descripcion = '' as any;
+      this.Valperiodo.estado=''as any;
+    }
+
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-  // onDeleteClick(data: Periodo) {
-  //   const index = this.periodos.indexOf(data);
-  //   this.periodos.splice(index, 1);
-  //   this.periodos = [...this.periodos]
-  // }
 
   ngOnInit(): void {
 
-
+    this.Valperiodo.estado='ACTIVO';
     this.Api.getPeriodo().subscribe(data => {
       this.periodos = data;
-
-
     });
-  }
-   addNewRow(periodo: Periodo, Codigo:any) {
-    this.showLoading = true;
-
-     const newRow: Periodo= {
-       codigo: this.Codigo,
-       modulo: this.Modulo,
-       semestre: this.Semestre,
-       fechainicio: this.FechaInicio,
-       fechafin: this.FechaFin,
-       estado: this.Estado,
-       descripcion: this.Descripcion,
-
-
-     };
-
-     this.periodos = [...this.periodos,  { ...newRow }];
-     this.Codigo = '';
-     this.Modulo = '';
-     this.Semestre = '';
-     this.FechaInicio = '';
-     this.FechaFin = '';
-     this.Estado = '';
-     this.Descripcion = '';
-     this.editElementIndex=-1;
-
 
   }
 
@@ -129,6 +142,7 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
 
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
@@ -163,10 +177,8 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
 
 
  public registro(periodo: Periodo): void {
-
-  console.log(periodo);
+    periodo={...periodo, estado:'ACTIVO'};
    this.showLoading = true;
-
      this.subscriptions.push(
       this.Api.registroPeriodo(periodo).subscribe({
         next: (response: HttpResponse<Periodo>) => {
@@ -175,40 +187,18 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
          this.notificacionOK('Periodo Académico creada con éxito');
          this.editElementIndex=-1;
 
-
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-         //  this.showLoading = false;
+           this.showLoading = false;
        },
      })
    );
  }
-    public  registroSubmit( periodo: Periodo, semestre: SemestreTbl, isValid: boolean) : void
-  {
-    this.showLoading = true;
-     this.semestreTbl = semestre;
-          if (isValid) {
-
-       this.Api.registroPeriodo(periodo).subscribe({
-                 next: (response: HttpResponse<Periodo>) => {
-                   let nuevaAula: Periodo = response.body;
-                   this.table.data.push(nuevaAula);
-                   this.notificacionOK('Periodo Académico creada con éxito');
-               },
-                error: (errorResponse: HttpErrorResponse) => {
-
-        this.notificacion(errorResponse);
-                     //  this.showLoading = false;
-                 },
-               });
-             }
-           }
-
-
 
 
    public actualizar(periodo: Periodo, Codigo:any): void {
+    periodo={...periodo, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarPeriodo(periodo,Codigo).subscribe({
@@ -219,12 +209,14 @@ export class PeriodoAcademicoComponent implements OnInit, OnDestroy {
 
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
-         // this.showLoading = false;
+         this.showLoading = false;
       }
        },
      })
      );
    }
+
+
     public eliminar(Codigo: any): void {
       this.showLoading = true;
       this.subscriptions.push(

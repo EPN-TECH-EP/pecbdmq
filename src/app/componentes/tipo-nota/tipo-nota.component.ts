@@ -19,44 +19,48 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./tipo-nota.component.scss']
 })
 export class TipoNotaComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+  //model
+  tiposNota: TipoNota[];
+  tipoNota: TipoNota;
+  tipoNotaEditForm: TipoNota;
+
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  tiposnota: TipoNota[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
+  //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
+//table
+@ViewChild('table') table!: MdbTableDirective<TipoNota>;
+editElementIndex = -1;
+addRow = false;
+headers = ['Nombre'];
+
   constructor(
     private ApiTipoNota: TipoNotaService,
     private notificationService: MdbNotificationService,
-    public Valtiponota:TipoNota
-  ) { }
-  @ViewChild('table') table!: MdbTableDirective<TipoNota>;
-  editElementIndex = -1;
-  addRow = false;
-  // Cod_tipo_nota = '';
-  // Nota = '';
-  // Estado = 'ACTIVO';
-  headers = ['Nota'];
-
-  addNewRow() {
-    const newRow: TipoNota = {
-      cod_tipo_nota: this.Valtiponota.cod_tipo_nota,
-      nota: this.Valtiponota.nota,
-      estado: this.Valtiponota.estado,
+  ) {
+    this.tiposNota = [];
+    this.subscriptions = [];
+    this.tipoNota = {
+      cod_tipo_nota: 0,
+      nota: '',
+      estado: 'ACTIVO'
     }
-    this.tiposnota = [...this.tiposnota, { ...newRow }];
-    this.Valtiponota.cod_tipo_nota = '';
-    this.Valtiponota.nota = '';
-    this.Valtiponota.estado = 'ACTIVO';
-  }
+    this.tipoNotaEditForm = {
+      cod_tipo_nota: 0,
+      nota: '',
+      estado: 'ACTIVO'
+    };
+   }
 
   ngOnInit(): void {
-    this.Valtiponota.estado = 'ACTIVO';
     this.ApiTipoNota.getTipoNota().subscribe(data => {
-      this.tiposnota = data;
+      this.tiposNota = data;
     })
   }
 
@@ -100,36 +104,53 @@ export class TipoNotaComponent implements OnInit {
       this.ApiTipoNota.crearTipoNota(tiponota).subscribe({
         next: (response: HttpResponse<TipoNota>) => {
           let nuevoTipoNota: TipoNota = response.body;
-          this.tiposnota.push(nuevoTipoNota);
+          this.tiposNota.push(nuevoTipoNota);
           this.notificacionOk('Tipo de nota creado con éxito');
-          this.Valtiponota.nota = '';
-          // const token = response.headers.get(HeaderType.JWT_TOKEN);
-          // this.aut.guardaToken(token);
-          // this.autenticacionService.agregaUsuarioACache(response.body);
+          this.tipoNota = {
+            cod_tipo_nota: 0,
+            nota: '',
+            estado: 'ACTIVO'
+          }
 
-          // this.router.navigateByUrl('/principal');
-          // this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          // this.showLoading = false;
+
         },
       })
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoNotaEditForm = {...this.tiposNota[index]};
+  }
+
+  undoRow() {
+    this.tipoNotaEditForm = {
+      cod_tipo_nota: 0,
+      nota: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
   //actualizar
-  public actualizar(tiponota: TipoNota, tiponotaId:any): void {
-    tiponota={...tiponota, estado:'ACTIVO'};
+  public actualizar(tipoNota: TipoNota, formValue): void {
+    tipoNota={...tipoNota, nota: formValue.nota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoNota.actualizarTipoNota(tiponota,tiponotaId).subscribe({
+      this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({
       next: (response: HttpResponse<TipoNota>) => {
-        let actualizaTipoNota: TipoNota = response.body;
         this.notificacionOk('Tipo de nota actualizado con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valtiponota.nota = '';
+        this.tiposNota[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.tipoNota = {
+            cod_tipo_nota: 0,
+            nota: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -139,6 +160,8 @@ export class TipoNotaComponent implements OnInit {
     );
   }
 
+
+
   //eliminar
 
 public eliminar(tipoNotaId: any, data: TipoNota): void {
@@ -147,9 +170,9 @@ public eliminar(tipoNotaId: any, data: TipoNota): void {
     this.ApiTipoNota.eliminarTipoNota(tipoNotaId).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo de nota eliminado con éxito');
-        const index = this.tiposnota.indexOf(data);
-        this.tiposnota.splice(index, 1);
-        this.tiposnota = [...this.tiposnota]
+        const index = this.tiposNota.indexOf(data);
+        this.tiposNota.splice(index, 1);
+        this.tiposNota = [...this.tiposNota]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

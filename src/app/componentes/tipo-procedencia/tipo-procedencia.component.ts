@@ -19,44 +19,48 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./tipo-procedencia.component.scss']
 })
 export class TipoProcedenciaComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+   //model
+   tiposProcedencia: TipoProcedencia[];
+   tipoProcedencia: TipoProcedencia;
+   tipoProcedenciaEditForm: TipoProcedencia;
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  tiposprocedencia: TipoProcedencia[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
+   //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
+//table
+@ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
+editElementIndex = -1;
+addRow = false;
+headers = ['Nombre'];
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,
     private notificationService: MdbNotificationService,
-    public Valtipoprocedencia: TipoProcedencia
-  ) { }
+  ) {
+    this.tiposProcedencia = [];
+    this.subscriptions = [];
+    this.tipoProcedencia = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    }
+    this.tipoProcedenciaEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+  }
 
-  @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
-  editElementIndex = -1;
-  addRow = false;
-  // Codigo = '';
-  // Nombre = '';
-  // Estado = 'ACTIVO';
-  headers = ['Nombre'];
 
-  // addNewRow() {
-  //   const newRow: TipoProcedencia = {
-  //     codigo: this.Codigo,
-  //     nombre: this.Nombre,
-  //     estado: this.Estado,
-  //   }
-  //   this.tiposprocedencia = [...this.tiposprocedencia, { ...newRow }];
-  //   this.Codigo = '';
-  //   this.Nombre = '';
-  //   this.Estado = 'ACTIVO';
-  // }
 
   ngOnInit(): void {
     this.ApiTipoProcedencia.getTipoProcedencia().subscribe(data => {
-      this.tiposprocedencia = data;
+      this.tiposProcedencia = data;
     })
   }
 
@@ -100,15 +104,13 @@ export class TipoProcedenciaComponent implements OnInit {
       this.ApiTipoProcedencia.crearTipoProcedencia(tipoprocedencia).subscribe({
         next: (response: HttpResponse<TipoProcedencia>) => {
           let nuevoTipoProcedencia: TipoProcedencia = response.body;
-          this.tiposprocedencia.push(nuevoTipoProcedencia);
+          this.tiposProcedencia.push(nuevoTipoProcedencia);
           this.notificacionOk('Tipo procedencia creado con éxito');
-          this.Valtipoprocedencia.nombre = '';
-          // const token = response.headers.get(HeaderType.JWT_TOKEN);
-          // this.aut.guardaToken(token);
-          // this.autenticacionService.agregaUsuarioACache(response.body);
-
-          // this.router.navigateByUrl('/principal');
-          // this.showLoading = false;
+          this.tipoProcedencia = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -118,18 +120,35 @@ export class TipoProcedenciaComponent implements OnInit {
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoProcedenciaEditForm = {...this.tiposProcedencia[index]};
+  }
+
+  undoRow() {
+    this.tipoProcedenciaEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
   //actualizar
-  public actualizar(tipoprocedencia: TipoProcedencia, tipoprocedenciaId:any): void {
-    tipoprocedencia={...tipoprocedencia,estado:'ACTIVO'},
+  public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
+    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoprocedencia,tipoprocedenciaId).subscribe({
+      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia,tipoProcedencia.codigo).subscribe({
       next: (response: HttpResponse<TipoProcedencia>) => {
-        let actualizaTipoProcedencia: TipoProcedencia = response.body;
         this.notificacionOk('Tipo procedencia actualizado con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valtipoprocedencia.nombre = '';
+        this.tiposProcedencia[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.tipoProcedencia = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -147,9 +166,9 @@ public eliminar(tipoProcedenciaId: any, data: TipoProcedencia): void {
     this.ApiTipoProcedencia.eliminarTipoProcedencia(tipoProcedenciaId).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo Procedencia eliminado con éxito');
-        const index = this.tiposprocedencia.indexOf(data);
-        this.tiposprocedencia.splice(index, 1);
-        this.tiposprocedencia = [...this.tiposprocedencia]
+        const index = this.tiposProcedencia.indexOf(data);
+        this.tiposProcedencia.splice(index, 1);
+        this.tiposProcedencia = [...this.tiposProcedencia]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

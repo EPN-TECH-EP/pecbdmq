@@ -1,22 +1,14 @@
 
-<div class="titulo">
-  <h1>Componente Nota</h1>
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión Componente Nota</p>
+  </div>
 </div>
 
 <div class="row justify-content-center">
 
   <div class="col-6 ">
-  <!-- <mdb-form-control>
-    <input
-      mdbInput
-      type="text"
-      class="form-control"
-      id="search-input"
-      [disabled]="editElementIndex !== -1"
-      (keyup)="search($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+
   <button
     MdbRiple
     class="btn btn-primary btn-sm ms-3"
@@ -36,7 +28,7 @@
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="componentesnota"
+        [dataSource]="componentesNota"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -60,7 +52,7 @@
                   id="componentenota"
                   name="componentenota"
                   class="form-control"
-                  [(ngModel)]="Valcomponentenota.componentenota"
+                  [(ngModel)]="componenteNota.componentenota"
                   #nombre="ngModel"
                   required
                 />
@@ -88,10 +80,10 @@
             </td>
           </tr>
 
-          <tr *ngFor="let componentenota of table.data; let index = index" scope="row">
+          <tr *ngFor="let componenteNota of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ componentenota.componentenota }}
+                {{ componenteNota.componentenota }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -101,32 +93,19 @@
                     name="componentenota"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="componentenota.componentenota"
+                    [(ngModel)]="componenteNotaEditForm.componentenota"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ componentenota.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="componentenota.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
+                  (click)="editRow(index)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -135,7 +114,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(componentenota.cod_componente_nota, componentenota)"
+                  (click)="eliminar(componenteNota.cod_componente_nota, componenteNota)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -146,7 +125,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(componentenota, componentenota.cod_componente_nota)"
+                  (click)="actualizar(componenteNota, form.value)"
                 >
                   <i class="fa fa-check"></i>
                 </button>

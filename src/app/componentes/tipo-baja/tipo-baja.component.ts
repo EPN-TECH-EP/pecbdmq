@@ -39,7 +39,9 @@ export class TipoBajaComponent implements OnInit {
   addRow = false;
   headers = ['Baja'];
 
-  constructor(private apiTipoBaja: TipoBajaService, private notificationService: MdbNotificationService) {
+  constructor(
+    private apiTipoBaja: TipoBajaService,
+    private notificationService: MdbNotificationService) {
     this.tiposBaja = [];
     this.subscriptions = [];
     this.tipoBaja = {

@@ -29,39 +29,45 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@ang
 export class UnidadGestionComponent implements OnInit, CambiosPendientes {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+
   unidades: UnidadGestion[];
+  Unidad: UnidadGestion;
+  UnidadEditForm: UnidadGestion;
+
+  //utils
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
+ //options
   options = [
     { value: 'ACTIVO', label: 'ACTIVO' },
     { value: 'INACTIVO', label: 'INACTIVO' },
   ];
-  constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiUnidad: UnidadGestionService,
-    private notificationService: MdbNotificationService,
-    public Valunidadgestion: UnidadGestion
-  ) {}
 
+  //table
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  //  Codigo = '';
-  //  Nombre = '';
-  Estado = 'ACTIVO';
   headers = ['Nombre'];
 
-  // addNewRow() {
-  //   const newRow: UnidadGestion = {
-  //     codigo: this.Codigo,
-  //     nombre: this.Nombre,
-  //     estado: this.Estado,
-  //   }
-  //   this.unidades = [...this.unidades, { ...newRow }];
-  //   this.Codigo = '';
-  //   this.Nombre = '';
-  //   this.Estado = 'ACTIVO';
-  // }
+  constructor(
+    private ApiUnidad: UnidadGestionService,
+    private notificationService: MdbNotificationService,
+  ) {
+    this.unidades = [];
+    this.subscriptions = [];
+    this.Unidad = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    }
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+  }
 
   ngOnInit(): void {
     this.ApiUnidad.getUnidadGestion().subscribe((data) => {
@@ -104,7 +110,11 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
           let nuevaUnidad: UnidadGestion = response.body;
           this.unidades.push(nuevaUnidad);
           this.notificacionOk('Unidad de gestión creada con éxito');
-          this.Valunidadgestion.nombre = '';
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -113,48 +123,68 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.UnidadEditForm = {...this.unidades[index]};
+  }
+
+  undoRow() {
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+
+
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId: any): void {
-    (unidad = { ...unidad, estado: 'ACTIVO' }), (this.showLoading = true);
+  public actualizar(Unidad: UnidadGestion, formValue): void {
+    Unidad = {...Unidad, nombre: formValue.nombre, estado:'ACTIVO'},
+    this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad, unidadId).subscribe({
-        next: (response: HttpResponse<UnidadGestion>) => {
-          let actualizaUnidad: UnidadGestion = response.body;
-          this.notificacionOk('Unidad de gestión actualizada con éxito');
+      this.ApiUnidad.actualizarUnidad(Unidad,Unidad.codigo).subscribe({
+      next: (response: HttpResponse<UnidadGestion>) => {
+        this.notificacionOk('Unidad de gestión actualizada con éxito');
+        this.unidades[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
           this.editElementIndex = -1;
-          this.showLoading = false;
-          this.Valunidadgestion.nombre = '';
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-          this.showLoading = false;
-        },
-      })
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.notificacion(errorResponse);
+        this.showLoading = false;
+      },
+    })
     );
   }
+
 
   //eliminar
 
-  public eliminar(unidadId: any, data: UnidadGestion): void {
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
-        next: (response: string) => {
-          this.notificacionOk('Unidad de gestión eliminada con éxito');
-          const index = this.unidades.indexOf(data);
-          this.unidades.splice(index, 1);
-          this.unidades = [...this.unidades];
-          this.showLoading = false;
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-          console.log(errorResponse);
-          this.showLoading = false;
-        },
-      })
-    );
-  }
-  editar(index: number) {
+public eliminar(unidadId: any, data: UnidadGestion): void {
+  this.showLoading = true;
+  this.subscriptions.push(
+    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+      next: (response: string) => {
+        this.notificacionOk('Unidad de gestión eliminada con éxito');
+        const index = this.unidades.indexOf(data);
+        this.unidades.splice(index, 1);
+        this.unidades = [...this.unidades]
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.notificacion(errorResponse);
+        console.log(errorResponse);
+        this.showLoading = false;
+      },
+    })
+
+editar(index: number) {
     this.editElementIndex = index;
     this.Valunidadgestion = { ...this.unidades[index] };
   }
@@ -166,4 +196,6 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
   /*canDeactivate(component: CambiosPendientes, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot): Observable<boolean> | boolean {
     return this.cambiosPendientes();
   }*/
+
+  
 }
