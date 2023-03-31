@@ -6,30 +6,20 @@
   </div>
 </div>
 <div class="row justify-content-center">
-
   <div class="col-6 ">
-  <!-- <mdb-form-control>
-    <input
-      mdbInput
-      type="text"
-      class="form-control"
-      id="search-input"
-      [disabled]="editElementIndex !== -1"
-      (keyup)="search($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+
+  <!-- Button for  add a register-->
   <button
     MdbRiple
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
-    (click)="addRow = true"
-
+    (click)="addRow = true; "
   >
     <i class="fa fa-plus"></i>
   </button>
 
   <hr />
+   <!-- Table -->
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
@@ -41,6 +31,7 @@
         [dataSource]="unidades"
         [sort]="sort"
       >
+      <!-- Table head -->
         <thead class="datatable-header">
           <tr align="center">
             <th
@@ -59,27 +50,18 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
+                  id="add_nombre"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Valunidadgestion.nombre"
+                  [(ngModel)]="Unidad.nombre"
                   #nombre="ngModel"
                   required
                 />
               </mdb-form-control>
 
             </td>
-            <!-- <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
 
-            </td> -->
-
+          <!-- Buttons for add or cancel a register -->
             <td class="text-start" style="min-width: 10px; max-width: 10px">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
@@ -97,12 +79,14 @@
               </button>
             </td>
           </tr>
-
-          <tr *ngFor="let unidad of unidades; let index = index" scope="row">
+            <!-- Edit row -->
+          <tr *ngFor="let Unidad of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 50px; max-width: 50px">
+              <!--Show unidad de gestión-->
               <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.nombre }}
+                {{ Unidad.nombre }}
               </ng-container>
+              <!--Edit unidad de gestión-->
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
@@ -111,32 +95,20 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="unidad.nombre"
+                    [(ngModel)]="UnidadEditForm.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <!-- <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ unidad.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="unidad.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td> -->
+
             <td align="center">
+              <!--Buttons to delete -->
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
+                  (click)="editRow(index);"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -145,7 +117,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(unidad.codigo,unidad)"
+                  (click)="eliminar(Unidad.codigo,Unidad)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -156,13 +128,13 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(unidad, unidad.codigo);"
+                  (click)="actualizar(Unidad, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i>
                 </button>

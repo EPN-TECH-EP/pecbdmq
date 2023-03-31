@@ -102,6 +102,7 @@ import { DocumentosHabilitantes } from './modelo/documentos-habilitantes';
 import { Paralelo } from './modelo/paralelo/paralelo';
 import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { TipoInstruccion } from './modelo/tipo_instruccion';
+import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
 
@@ -137,11 +138,10 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
     ComponenteNotaComponent,
     ParaleloComponent,
     TipoSancionComponent,
+    PonderacionComponent
     ModuloEstadosComponent,
     RequisitoComponent,
     CatalogoEstadosComponent
-
-
   ],
   imports: [
     BrowserModule,

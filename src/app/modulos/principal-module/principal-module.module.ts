@@ -1,3 +1,4 @@
+import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
 import { ModuloEstadosComponent } from './../../componentes/modulo-estados/modulo-estados.component';
 import {SemestreComponent} from './../../componentes/semestre/semestre.component';
@@ -31,6 +32,7 @@ import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.compo
 import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
 import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {TipoFuncionario} from '../../modelo/tipo-funcionario';
+
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
@@ -74,6 +76,8 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
+      {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
+      {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent}
     ],
