@@ -100,6 +100,7 @@ import { DocumentosHabilitantes } from './modelo/documentos-habilitantes';
 import { Paralelo } from './modelo/paralelo/paralelo';
 import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { TipoInstruccion } from './modelo/tipo_instruccion';
+import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 
 @NgModule({
   declarations: [
@@ -183,6 +184,11 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
     AutenticacionService,
     //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},
     UsuarioService, {provide: HTTP_INTERCEPTORS, useClass: AutenticacionInterceptor, multi: true},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TimeoutInterceptor,
+      multi: true,
+    },
     UsuarioFrm,
     Periodo,
     SemestreTbl,

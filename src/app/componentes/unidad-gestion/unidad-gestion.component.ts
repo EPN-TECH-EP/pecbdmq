@@ -2,23 +2,31 @@ import { UnidadGestion } from './../../modelo/unidad-gestion';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import {
+  MdbPopconfirmRef,
+  MdbPopconfirmService,
+} from 'mdb-angular-ui-kit/popconfirm';
 import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { Observable, Subscription } from 'rxjs';
+import {
+  MdbNotificationRef,
+  MdbNotificationService,
+} from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
+import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-unidad-gestion',
   templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class UnidadGestionComponent implements OnInit {
+export class UnidadGestionComponent implements OnInit, CambiosPendientes {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   unidades: UnidadGestion[];
@@ -32,15 +40,15 @@ export class UnidadGestionComponent implements OnInit {
     // public unidadEnviar:UnidadGestion,
     private ApiUnidad: UnidadGestionService,
     private notificationService: MdbNotificationService,
-    public Valunidadgestion:UnidadGestion
-  ) { }
+    public Valunidadgestion: UnidadGestion
+  ) {}
 
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
   //  Codigo = '';
   //  Nombre = '';
-   Estado = 'ACTIVO';
+  Estado = 'ACTIVO';
   headers = ['Nombre'];
 
   // addNewRow() {
@@ -56,15 +64,12 @@ export class UnidadGestionComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
+    this.ApiUnidad.getUnidadGestion().subscribe((data) => {
       this.unidades = data;
-    })
+    });
   }
 
-
-
   private notificacion(errorResponse: HttpErrorResponse) {
-
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -76,15 +81,12 @@ export class UnidadGestionComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
-
-
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
       tipoAlerta
     );
   }
-
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -95,8 +97,7 @@ export class UnidadGestionComponent implements OnInit {
   }
   //registro
   public registro(unidad: UnidadGestion): void {
-    unidad = {...unidad, estado:'ACTIVO'},
-    this.showLoading = true;
+    (unidad = { ...unidad, estado: 'ACTIVO' }), (this.showLoading = true);
     this.subscriptions.push(
       this.ApiUnidad.crearUnidad(unidad).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
@@ -113,50 +114,56 @@ export class UnidadGestionComponent implements OnInit {
   }
 
   //actualizar
-  public actualizar(unidad: UnidadGestion, unidadId:any): void {
-    unidad = {...unidad, estado:'ACTIVO'},
-    this.showLoading = true;
+  public actualizar(unidad: UnidadGestion, unidadId: any): void {
+    (unidad = { ...unidad, estado: 'ACTIVO' }), (this.showLoading = true);
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad,unidadId).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        let actualizaUnidad: UnidadGestion = response.body;
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valunidadgestion.nombre = '';
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+      this.ApiUnidad.actualizarUnidad(unidad, unidadId).subscribe({
+        next: (response: HttpResponse<UnidadGestion>) => {
+          let actualizaUnidad: UnidadGestion = response.body;
+          this.notificacionOk('Unidad de gestión actualizada con éxito');
+          this.editElementIndex = -1;
+          this.showLoading = false;
+          this.Valunidadgestion.nombre = '';
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  );
-}
-editar(index: number){
-  this.editElementIndex = index;
-  this.Valunidadgestion={...this.unidades[index]};
-}
+  public eliminar(unidadId: any, data: UnidadGestion): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Unidad de gestión eliminada con éxito');
+          const index = this.unidades.indexOf(data);
+          this.unidades.splice(index, 1);
+          this.unidades = [...this.unidades];
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    );
+  }
+  editar(index: number) {
+    this.editElementIndex = index;
+    this.Valunidadgestion = { ...this.unidades[index] };
+  }
 
+  cambiosPendientes(): boolean {
+    return this.editElementIndex !== -1;
+  }
+
+  /*canDeactivate(component: CambiosPendientes, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot): Observable<boolean> | boolean {
+    return this.cambiosPendientes();
+  }*/
 }

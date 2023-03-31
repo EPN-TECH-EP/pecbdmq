@@ -40,21 +40,14 @@ export class CargaArchivoService {
     }
   }
 
-/*  public cargarArchivo(formData: FormData): Observable<CustomHttpResponse>{
-    let response: Observable<CustomHttpResponse>;
-    
-    try {
-      response = this.http.post<CustomHttpResponse>(
-        `${this.host}/usuario/guardarArchivo`,
-        formData
-      ); 
-      
-      return response;
+  public maxArchivo(): Observable<number> {
+    let response: Observable<number>;
 
-    } catch (error) {
-      console.log('catch CargaArchivoService');
+    try {
+      response = this.http.get<number>(`${this.host}/usuario/maxArchivo`);
+      return response;
+    } catch (error) {      
       console.log(error);
     }
-    
-  }*/
+  }
 }

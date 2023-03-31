@@ -4,8 +4,8 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class DatoPersonal {
   private cod_datos_personales: number;
-  private cod_periodo_evaluacion: number;
-  private cod_periodo_academico: number;
+  //private cod_periodo_evaluacion: number;
+  //private cod_periodo_academico: number;
   private cedula: string;
   private nombre: string;
   private apellido: string;
@@ -21,10 +21,10 @@ export class DatoPersonal {
 
 
 
-	constructor($cod_datos_personales: number, $cod_periodo_evaluacion: number, $cod_periodo_academico: number, $cedula: string, $nombre: string, $apellido: string, $fecha_nacimiento: Date, $correo_personal: string, $validacion_correo: string, $num_telef: string, $ciudad: string, $tipo_sangre: string, $unidad: string, $estado: string, $provincia: string) {
+	constructor($cod_datos_personales: number, /*$cod_periodo_evaluacion: number, $cod_periodo_academico: number,*/ $cedula: string, $nombre: string, $apellido: string, $fecha_nacimiento: Date, $correo_personal: string, $validacion_correo: string, $num_telef: string, $ciudad: string, $tipo_sangre: string, $unidad: string, $estado: string, $provincia: string) {
 		this.cod_datos_personales = $cod_datos_personales;
-		this.cod_periodo_evaluacion = $cod_periodo_evaluacion;
-		this.cod_periodo_academico = $cod_periodo_academico;
+		//this.cod_periodo_evaluacion = $cod_periodo_evaluacion;
+		//this.cod_periodo_academico = $cod_periodo_academico;
 		this.cedula = $cedula;
 		this.nombre = $nombre;
 		this.apellido = $apellido;
@@ -52,17 +52,17 @@ export class DatoPersonal {
      * Getter $cod_periodo_evaluacion
      * @return {number}
      */
-	public get $cod_periodo_evaluacion(): number {
+	/*public get $cod_periodo_evaluacion(): number {
 		return this.cod_periodo_evaluacion;
-	}
+	}*/
 
     /**
      * Getter $cod_periodo_academico
      * @return {number}
      */
-	public get $cod_periodo_academico(): number {
+	/*public get $cod_periodo_academico(): number {
 		return this.cod_periodo_academico;
-	}
+	}*/
 
     /**
      * Getter $cedula
@@ -172,17 +172,17 @@ export class DatoPersonal {
      * Setter $cod_periodo_evaluacion
      * @param {number} value
      */
-	public set $cod_periodo_evaluacion(value: number) {
+	/*public set $cod_periodo_evaluacion(value: number) {
 		this.cod_periodo_evaluacion = value;
-	}
+	}*/
 
     /**
      * Setter $cod_periodo_academico
      * @param {number} value
      */
-	public set $cod_periodo_academico(value: number) {
+	/*public set $cod_periodo_academico(value: number) {
 		this.cod_periodo_academico = value;
-	}
+	}*/
 
     /**
      * Setter $cedula

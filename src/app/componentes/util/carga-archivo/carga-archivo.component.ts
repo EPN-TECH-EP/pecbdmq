@@ -1,6 +1,14 @@
-import { HttpEvent, HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpEventType,
+  HttpResponse,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import {
+  MdbNotificationRef,
+  MdbNotificationService,
+} from 'mdb-angular-ui-kit/notification';
 import { Subscription } from 'rxjs';
 import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';
 import { AlertaComponent } from '../alerta/alerta.component';
@@ -23,33 +31,50 @@ export class CargaArchivoComponent implements OnInit {
   public fileName: string;
   public profileImage: File;
 
-  constructor(private cargaArchivoService: CargaArchivoService,
-    private notificationService: MdbNotificationService) {}
+  private maxArchivo: number = 0;
 
-  ngOnInit(): void {}
+  constructor(
+    private cargaArchivoService: CargaArchivoService,
+    private notificationService: MdbNotificationService
+  ) {}
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.cargaArchivoService.maxArchivo().subscribe({
+        next: (result) => {
+          this.maxArchivo = result;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+        },
+      })
+    );
+  }
 
   cargarArchivo() {
+    if (this.profileImage !== undefined) {
+      if (this.profileImage.size > this.maxArchivo) {
+        this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
+      } else {
+        const formData = new FormData();
+        formData.append('nombreArchivo', this.fileName);
+        formData.append('archivo', this.profileImage);
 
-    const formData = new FormData();
-    formData.append('nombreArchivo', this.fileName);
-    formData.append('archivo', this.profileImage);
+        this.subscriptions.push(
+          this.cargaArchivoService.cargarArchivo(formData).subscribe({
+            next: (event: HttpEvent<any>) => {
+              this.reportUploadProgress(event);
+            },
+            error: (errorResponse) => {
+              //console.log(errorResponse);
 
-    this.subscriptions.push(
-      this.cargaArchivoService.cargarArchivo(formData).subscribe(
-        {
-          next: (event: HttpEvent<any>) => {
-            this.reportUploadProgress(event);
-          },
-          error: (errorResponse) => {
-
-            //console.log(errorResponse);
-
-            this.notificacion(errorResponse);
-          this.fileStatus.status = 'done';
-          }
-        }
-      )
-    )
+              this.notificacion(errorResponse);
+              this.fileStatus.status = 'done';
+            },
+          })
+        );
+      }
+    }
 
     /*this.subscriptions.push(
       this.cargaArchivoService.cargarArchivo(formData).subscribe(
@@ -68,7 +93,6 @@ export class CargaArchivoComponent implements OnInit {
           }
         }
       ))*/
-
   }
 
   private reportUploadProgress(event: HttpEvent<any>): void {
@@ -82,14 +106,12 @@ export class CargaArchivoComponent implements OnInit {
       case HttpEventType.Response:
         if (event.status === 200) {
           //this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getTime()}`;
-          this.notificacionOK(            
-            `Archivo cargado con éxito`
-          );
+          this.notificacionOK(`Archivo cargado con éxito`);
           this.fileStatus.status = 'done';
           break;
         } else {
           this.notificacion(
-            new HttpErrorResponse({error: "Error al cargar el archivo"}),            
+            new HttpErrorResponse({ error: 'Error al cargar el archivo' }),
             `Error al cargar el archivo`
           );
           break;
@@ -108,14 +130,21 @@ export class CargaArchivoComponent implements OnInit {
   }
 
   private notificacion(errorResponse?: HttpErrorResponse, mensaje?: string) {
-
     //console.log(errorResponse);
 
-    let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
+    let mensajeError = 'ERROR';
+    let codigoError = 0;
+    
+    if (errorResponse) {
+      let customError: CustomHttpResponse = errorResponse.error;
+      mensajeError = customError.mensaje;
+      codigoError = errorResponse.status;  
+    }
+    
+    if (mensaje) {
+      mensajeError = mensaje;
+    }
 
     if (!mensajeError) {
       mensajeError = 'Error inesperado: ' + codigoError;
@@ -130,10 +159,9 @@ export class CargaArchivoComponent implements OnInit {
   }
 
   public onProfileImageChange(event: any): void {
-    
     //console.log(event.target.files[0]);
-    
-    this.fileName =  event.target.files[0].name;
+
+    this.fileName = event.target.files[0].name;
     this.profileImage = event.target.files[0];
   }
 

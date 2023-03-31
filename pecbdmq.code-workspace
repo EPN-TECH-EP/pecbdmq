@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "../angular-fundamentals-src-master"
+		},
+		{
+			"path": "../../references/testing"
 		}
 	],
 	"settings": {
