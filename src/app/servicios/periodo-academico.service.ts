@@ -32,9 +32,11 @@ export class periodoAcademicoService {
   //   localStorage.setItem('semestres', JSON.stringify(Semestres));
   // }
 
-  public obtenerSemestrePorPeriodoAcademico(semestre: Semestre) : Observable<Semestre[]>{
-    return this.http.get<Semestre[]>(`${this.host}/semestre/lista/${semestre.semestre}`)
-  }
-
+  // public obtenerSemestrePorPeriodoAcademico(semestre: Semestre) : Observable<Semestre[]>{
+  //   return this.http.get<Semestre[]>(`${this.host}/semestre/lista/${semestre.semestre}`)
+  // }
+  public obtener1Periodo(codigo: number): Observable<string> {
+    return this.http.get<string>(`${this.host}/periodoacademico/${codigo}`);
+    }
 
 }

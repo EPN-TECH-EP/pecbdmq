@@ -8,8 +8,8 @@
   </div>
 </div>
 
-<div class="tabla">
-  <div class="d-flex justify-content-end mb-4">
+<div class="row justify-content">
+  <div class="col-12 ">
     <mdb-form-control>
       <input
         mdbInput
@@ -20,7 +20,7 @@
         (keyup)="search($event)"
 
       />
-      <label mdbLabel class="form-label" for="search-input">Search</label>
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
     <button
       MdbRiple
@@ -28,7 +28,8 @@
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
-      <i class="fa fa-plus"></i>
+    <i class="fa fa-plus"></i>
+
     </button>
   </div>
   <hr />
@@ -60,14 +61,6 @@
 
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
-             <!--  <td>
-               <mdb-form-control>
-          <input mdbInput type="text"
-           class="form-control"
-           [(ngModel)]="CodMateria" />
-        </mdb-form-control>
-            </td>-->
-
 
             <td>
               <mdb-form-control>
@@ -77,8 +70,7 @@
                   name="nombreMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.nombreMateria"
-                  #nombreMateria="ngModel"
+                  [(ngModel)]="materia.nombreMateria"
                   required
                 />
               </mdb-form-control>
@@ -91,8 +83,7 @@
                   name="numHoras"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.numHoras"
-                  #numHoras="ngModel"
+                  [(ngModel)]="materia.numHoras"
                   required
                 />
               </mdb-form-control>
@@ -105,8 +96,7 @@
                   name="tipoMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.tipoMateria"
-                  #tipoMateria="ngModel"
+                  [(ngModel)]="materia.tipoMateria"
                   required
                 />
               </mdb-form-control>
@@ -119,8 +109,7 @@
                   name="observacionMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valmateria.observacionMateria"
-                  #observacionMateria="ngModel"
+                  [(ngModel)]="materia.observacionMateria"
                   required
                 />
               </mdb-form-control>
@@ -133,8 +122,7 @@
                   name="pesoMateria"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.pesoMateria"
-                  #pesoMateria="ngModel"
+                  [(ngModel)]="materia.pesoMateria"
                   required
                 />
               </mdb-form-control>
@@ -148,20 +136,9 @@
                   name="notaMinima"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valmateria.notaMinima"
-                  #notaMinima="ngModel"
+                  [(ngModel)]="materia.notaMinima"
                   required
                 />
-              </mdb-form-control>
-            </td>
-
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Valmateria.estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
               </mdb-form-control>
             </td>
 
@@ -170,7 +147,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 type="submit"
-                (click)="registro(form.value)"
+                (click)="registro(form.value); addRow = false;"
               >
                 <i class="fa fa-check"></i>
               </button>
@@ -184,28 +161,9 @@
             </td>
           </tr>
 
-          <tr *ngFor="let materia of table.data; let index = index" scope="row">
-            <!-- <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.codMateria }}
-              </ng-container>
+          <tr *ngFor="let materia of materias; let index = index" scope="row">
 
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <input
-                    mdbInput
-                    id="codMateria"
-                    name="codMateria"
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="materia.codMateria"
-                    disabled
-                  />
-                </mdb-form-control>
-              </ng-container>
-            </td> -->
-
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ materia.nombreMateria }}
               </ng-container>
@@ -217,7 +175,7 @@
                     name="nombreMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valmateria.nombreMateria"
+                    [(ngModel)]="materiaEditForm.nombreMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -235,7 +193,7 @@
                     name="numHoras"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valmateria.numHoras"
+                    [(ngModel)]="materiaEditForm.numHoras"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -253,7 +211,7 @@
                     name="tipoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valmateria.tipoMateria"
+                    [(ngModel)]="materiaEditForm.tipoMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -271,7 +229,7 @@
                     name="observacionMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valmateria.observacionMateria"
+                    [(ngModel)]="materiaEditForm.observacionMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -289,7 +247,7 @@
                     name="pesoMateria"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valmateria.pesoMateria"
+                    [(ngModel)]="materiaEditForm.pesoMateria"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -307,25 +265,12 @@
                     name="notaMinima"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valmateria.notaMinima"
+                    [(ngModel)]="materiaEditForm.notaMinima"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td  style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="materia.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
+
 
             <td>
               <ng-container
@@ -333,18 +278,19 @@
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-
+                  (click)="editRow(index)"
+                  [disabled]="
+                  editElementIndex !== -1 && editElementIndex !== index
+                "
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(materia.codMateria, materia)"
+                  (click)="eliminar(materia.codMateria)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
@@ -352,14 +298,14 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(materia, materia.codMateria)"
+                  (click)="actualizar(materia, form.value)"
 
                   >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1; "
+                  (click)="undoRow() "
 
                 >
                   <i class="fa fa-ban"></i>
@@ -370,7 +316,8 @@
         </tbody>
       </table>
     </form>
-    <!-- <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination> -->
   </div>
 </div>
+
+
 

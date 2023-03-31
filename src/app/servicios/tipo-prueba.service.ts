@@ -21,6 +21,7 @@ export class TipoPruebaService {
   public crearTipoPrueba(prueba: TipoPrueba): Observable<HttpResponse< TipoPrueba>> {
     return this.http.post<TipoPrueba>(`${this.host}/gen_tipo_prueba/crear`, prueba, { observe: 'response' });
   }
+
   public actualizarTipoPrueba(prueba: TipoPrueba,  codPrueba :any): Observable<HttpResponse<TipoPrueba>> {
     return this.http.put<TipoPrueba>(`${this.host}/gen_tipo_prueba/${codPrueba}`, prueba, { observe: 'response' });
   }
@@ -28,4 +29,6 @@ export class TipoPruebaService {
   public eliminarTipoPrueba(codPrueba: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/gen_tipo_prueba/${codPrueba}`);
     }
+
+
 }

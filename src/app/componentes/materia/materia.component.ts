@@ -27,46 +27,58 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 })
 export class MateriaComponent implements OnInit {
   materias: Materia[];
+  materia: Materia;
+  materiaEditForm: Materia;
+
 
   private subscriptions: Subscription[] = [];
-
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-
   public showLoading: boolean;
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
-
   editElementIndex = -1;
   addRow = false;
-  // CodMateria = '';
-  // NombreMateria = '';
-  // NumHoras = '' as any;
-  // TipoMateria = '';
-  // ObservacionMateria = '';
-  // PesoMateria = '' as any;
-  // NotaMinima = '' as any;
-  // Estado ='';
   headers = [
-    //'Codigo Materia',
     'Nombre Materia',
     'Número de Horas',
     'Tipo de Materia',
     'Observacion Materia',
     'Peso Materia',
     'Nota Mínima',
-    'Estado',
   ];
 
   constructor(
-    // public materiaEnviar: Materia,
     private notificationService: MdbNotificationService,
-    private Api: MateriaService,
-    public Valmateria: Materia
-  ) {}
+    private Api: MateriaService) {
+    this.materias =[];
+    this.subscriptions =[];
+    this.materia ={
+      codMateria: 0,
+      nombreMateria:  '',
+      numHoras: '' as any,
+      tipoMateria: '',
+      observacionMateria: '',
+      pesoMateria: '' as any,
+      notaMinima: '' as any,
+      estado: 'ACTIVO'
+  }
+  this.materiaEditForm ={
+    codMateria: 0,
+    nombreMateria:  '',
+    numHoras: '' as any,
+    tipoMateria: '',
+    observacionMateria: '',
+    pesoMateria: '' as any,
+    notaMinima: '' as any,
+    estado: 'ACTIVO'
+  }
+
+}
+
+
+
+
+
 
 
 
@@ -77,41 +89,9 @@ export class MateriaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.Valmateria.estado='ACTIVO';
     this.Api.getMaterias().subscribe((data) => {
       this.materias = data;
     });
-  }
-  editar(index: number){
-    this.editElementIndex = index;
-    this.Valmateria={...this.materias[index]};
-
-  }
-  addNewRow():void {
-
-    const newRow: Materia = {
-      codMateria: this.Valmateria.codMateria,
-      nombreMateria: this.Valmateria.nombreMateria,
-      numHoras: this.Valmateria.numHoras,
-      tipoMateria: this.Valmateria.tipoMateria,
-      observacionMateria: this.Valmateria.observacionMateria,
-      pesoMateria: this.Valmateria.pesoMateria,
-      notaMinima: this.Valmateria.notaMinima,
-      estado: this.Valmateria.estado,
-      // estadoMateria: this.EstadoMateria,
-    };
-
-    this.materias = [...this.materias, { ...newRow }];
-    this.Valmateria.codMateria = '';
-    this.Valmateria.nombreMateria = '';
-    this.Valmateria.numHoras = '' as any;
-    this.Valmateria.tipoMateria = '';
-    this.Valmateria.observacionMateria = '';
-    this.Valmateria.pesoMateria = '' as any;
-    this.Valmateria.notaMinima=''as any;
-    this.Valmateria.estado = '';
-
-
   }
 
 
@@ -151,91 +131,105 @@ export class MateriaComponent implements OnInit {
   }
 
   public registro(materia: Materia): void {
-    this.showLoading = true;
-
-      this.Api.registroMateria(materia).subscribe({
-
-        next: (response: HttpResponse<Materia>) => {
-           let nuevaMateria: Materia = response.body;
-           this.table.data.push(nuevaMateria);
-
-          this.notificacionOK('Materia creada con éxito');
-
-          this.Valmateria.nombreMateria = '';
-          this.Valmateria.numHoras = '' as any;
-          this.Valmateria.tipoMateria = '';
-          this.Valmateria.observacionMateria = '';
-          this.Valmateria.pesoMateria = '' as any;
-          this.Valmateria.notaMinima = '' as any;
-          this.Valmateria.estado = '';
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-          //  this.showLoading = false;
-        },
-      })
-   }
-
-  public actualizar(materia: Materia, codMateria: any): void {
+    materia={...materia, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarMateria(materia, codMateria).subscribe({
+      this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
-          let actualizaUnidad: Materia = response.body;
-          this.notificacionOK('Materia actualizada con éxito');
+           let nuevaMateria: Materia = response.body;
+           this.materias.push(nuevaMateria);
+          this.notificacionOK('Materia creada con éxito');
+          this.materia ={
+            codMateria: 0,
+            nombreMateria:  '',
+            numHoras: '' as any,
+            tipoMateria: '',
+            observacionMateria: '',
+            pesoMateria: '' as any,
+            notaMinima: '' as any,
+            estado: 'ACTIVO'
+           }
+          },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+        },
+      })
+    )
+   }
 
+   editRow(index: number) {
+    this.editElementIndex = index;
+    this.materiaEditForm = {...this.materias[index]};
+  }
+
+  undoRow() {
+    this.materiaEditForm = {
+      codMateria: 0,
+      nombreMateria:  '',
+      numHoras: '' as any,
+      tipoMateria: '',
+      observacionMateria: '',
+      pesoMateria: '' as any,
+      notaMinima: '' as any,
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+
+  public actualizar(materia: Materia, formValue): void {
+    materia={...materia,
+       nombreMateria: formValue.nombreMateria,
+       numHoras: formValue.numHoras,
+       tipoMateria: formValue.tipoMateria,
+       observacionMateria: formValue.observacionMateria,
+       pesoMateria: formValue.pesoMateria,
+       notaMinima: formValue.notaMinima,
+       estado:'ACTIVO'
+
+    }
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.actualizarMateria(materia, materia.codMateria).subscribe({
+        next: (response) => {
+          this.notificacionOK('Materia actualizada con éxito');
+          this.materias[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.materia ={
+            codMateria: 0,
+            nombreMateria:  '',
+            numHoras: '' as any,
+            tipoMateria: '',
+            observacionMateria: '',
+            pesoMateria: '' as any,
+            notaMinima: '' as any,
+            estado: 'ACTIVO'
+           }
           this.editElementIndex = -1;
 
-          this.Valmateria.nombreMateria = '';
-          this.Valmateria.numHoras = '' as any;
-          this.Valmateria.tipoMateria = '';
-          this.Valmateria.observacionMateria = '';
-          this.Valmateria.pesoMateria = '' as any;
-          this.Valmateria.notaMinima = '' as any;
-          this.Valmateria.estado = '';
+
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
-            // this.showLoading = false;
           };
         },
       })
     );
   }
-  // public eliminar(codMateria: any): void {
-  //   this.showLoading = true;
-  //   this.subscriptions.push(
-  //     this.Api.eliminarMateria(codMateria).subscribe({
-  //       next: (response: string) => {
 
 
-  //         this.notificacionOK('Materia eliminada con éxito');
-  //         const index = this.materias.indexOf(codMateria);
-  //         this.materias.splice(index, 1);
-  //         this.materias = [...this.materias];
-  //       },
-  //       error: (errorResponse: HttpErrorResponse) => {
-  //         this.notificacion(errorResponse);
-  //         console.log(errorResponse);
-  //       },
-  //     })
-  //   );
-  // }
-
-  public eliminar(Codigo: any, data: Materia): void {
+  public eliminar(codMateria: number): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.Api.eliminarMateria(Codigo).subscribe({
+    this.Api.eliminarMateria(codMateria).subscribe({
       next: (response: string) => {
         this.notificacionOK('Materia eliminada con éxito');
-        const index = this.materias.indexOf(data);
+        this.showLoading = false;
+        const index = this.materias.findIndex(materia => materia.codMateria === codMateria);
         this.materias.splice(index, 1);
         this.materias = [...this.materias]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
       },
     })
   );

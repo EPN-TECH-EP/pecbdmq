@@ -3,7 +3,7 @@ import { Paralelo } from './paralelo/paralelo';
 
 @Injectable()
 export class Materia {
-  public codMateria: string;
+  public codMateria: number;
   public nombreMateria: string;
   public numHoras: number;
   public tipoMateria: string;

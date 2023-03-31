@@ -4,11 +4,11 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {Subscription} from "rxjs";
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/custom-http-response';
 
 import {Notificacion} from "../../util/notificacion";
-import { ViewChild } from '@angular/core';
+import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 
 import {AlertaComponent} from "../util/alerta/alerta.component";
@@ -21,7 +21,7 @@ import {AlertaComponent} from "../util/alerta/alerta.component";
 export class ParaleloComponent implements OnInit {
   paralelos: Paralelo[];
   paralelo: Paralelo;
-  paraleloEdit:Paralelo;
+  paraleloEdit: Paralelo;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
   private subscriptions: Subscription[];
@@ -36,42 +36,48 @@ export class ParaleloComponent implements OnInit {
   editElementIndex = -1;
   addRow = false;
   headers = [
-    // 'Codigo Materia',
     'Nombre Paralelo',
     //'Estado',
   ];
+  headersDos: string[] = [];
 
 
   constructor(
     private notificationService: MdbNotificationService,
     private Api: ParaleloService
   ) {
-    this.paralelos=[];
+    this.paralelos = [];
     this.subscriptions = [];
-    this.notificationRef=null;
-    this.paralelo={
-      codParalelo:'',
-      nombreParalelo:'',
-      estado:'ACTIVO'
+    this.notificationRef = null;
+    this.paralelo = {
+      codParalelo: '',
+      nombreParalelo: '',
+      estado: 'ACTIVO'
     }
-    this.paraleloEdit={
-      codParalelo:'',
-      nombreParalelo:'',
-      estado:'ACTIVO'
+    this.paraleloEdit = {
+      codParalelo: '',
+      nombreParalelo: '',
+      estado: 'ACTIVO'
     }
   }
+
   ngOnInit(): void {
+    this.cargarRegistros();
+  }
+
+  cargarRegistros(): void {
     this.Api.getParalelos().subscribe(data => {
       this.paralelos = data;
     });
   }
+
   addNewRow() {
     const newRow: Paralelo = this.paralelo;
-    this.paralelos=[...this.paralelos,{...newRow}]
-    this.paralelo={
-      codParalelo:'',
-      nombreParalelo:'',
-      estado:'',
+    this.paralelos = [...this.paralelos, {...newRow}]
+    this.paralelo = {
+      codParalelo: '',
+      nombreParalelo: '',
+      estado: '',
     }
 
   }
@@ -108,20 +114,21 @@ export class ParaleloComponent implements OnInit {
   }
 
   public registro(paralelo: Paralelo): void {
-    paralelo={...paralelo,estado:'ACTIVO'}
+    paralelo = {...paralelo, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroParalelo(paralelo).subscribe({
         next: (response: HttpResponse<Paralelo>) => {
           let nuevoParalelo: Paralelo = response.body;
-          this.table.data.push(nuevoParalelo);
+          this.paralelos.push(nuevoParalelo);
           this.notificacionOK('Paralelo creado con éxito');
           this.showLoading = false;
-          this.paralelo={
-            codParalelo:'',
-            nombreParalelo:'',
-            estado:'',
+          this.paralelo = {
+            codParalelo: '',
+            nombreParalelo: '',
+            estado: '',
           }
+          this.cargarRegistros();
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -130,6 +137,7 @@ export class ParaleloComponent implements OnInit {
       })
     );
   }
+
   editRow(index: number) {
     this.editElementIndex = index;
     this.paraleloEdit = {...this.paralelos[index]};
@@ -137,28 +145,29 @@ export class ParaleloComponent implements OnInit {
 
   undoRow() {
     this.paraleloEdit = {
-      codParalelo:'',
-      nombreParalelo:'',
-      estado:'ACTIVO'
+      codParalelo: '',
+      nombreParalelo: '',
+      estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
-  public actualizar(paralelo: Paralelo,formValue): void {
-    paralelo={...paralelo,estado:'ACTIVO',nombreParalelo:formValue.nombreParalelo};
+
+  public actualizar(paralelo: Paralelo, formValue): void {
+    paralelo = {...paralelo, estado: 'ACTIVO', nombreParalelo: formValue.nombreParalelo};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
-        next: (response) => {
-          this.notificacionOK('Paralelo actualizado con éxito');
-          this.paralelos[this.editElementIndex]=response.body;
-          this.editElementIndex = -1;
-          this.showLoading = false;
-          this.paralelo = {
-            codParalelo: '',
-            nombreParalelo: '',
-            estado: '',
-          }
-        },
+          next: (response) => {
+            this.notificacionOK('Paralelo actualizado con éxito');
+            this.paralelos[this.editElementIndex] = response.body;
+            this.editElementIndex = -1;
+            this.showLoading = false;
+            this.paralelo = {
+              codParalelo: '',
+              nombreParalelo: '',
+              estado: '',
+            }
+          },
 
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
@@ -186,6 +195,35 @@ export class ParaleloComponent implements OnInit {
       })
     );
   }
+
+  advancedSearch(value: string): void {
+    this.table.search(value);
+    console.log(value)
+  }
+
+  filterFn(datos: any, terminoBuscado: string): boolean {
+    let phrase = terminoBuscado.trim();
+    //El nombre de las llaves en las que quiero buscar
+    let KeysWanted = [
+      'NombreParalelo',
+    ];
+
+    return Object.keys(datos).some((key: any) => {
+      if (KeysWanted?.length) {
+        let result;
+        KeysWanted.forEach((keyWanted) => {
+          if (
+            keyWanted.toLowerCase().trim() === key.toLowerCase() &&
+            datos[key].toLowerCase().includes(phrase.toLowerCase())
+          ) {
+            result = true;
+          }
+        });
+        return result;
+      }
+    });
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }

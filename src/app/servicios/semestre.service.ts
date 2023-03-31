@@ -3,7 +3,6 @@ import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/c
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Semestre } from '../modelo/semestre';
-import { SemestreTbl } from '../modelo/util/semestre-tbl';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +25,8 @@ export class SemestreService {
   public eliminarSemestre(codSemestre: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/semestre/${codSemestre}`);
     }
-
+    public mostrar1Semestre(codSemestre: any): Observable<string> {
+      return this.http.get<any>(`${this.host}/semestre/${codSemestre}`);
+      }
 
   }

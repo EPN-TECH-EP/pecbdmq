@@ -6,7 +6,7 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable} from 'rxjs';
 import { TipoDocumento } from '../modelo/tipo-documento';
 import { CustomHttpResponse } from '../modelo/custom-http-response';
 

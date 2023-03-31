@@ -5,8 +5,11 @@
   </div>
 </div>
 
-<div class="tabla">
-  <!-- <mdb-form-control>
+
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+  <mdb-form-control>
     <input
       mdbInput
       type="text"
@@ -16,10 +19,11 @@
       (keyup)="search($event)"
     />
     <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+  </mdb-form-control>
   <button
     MdbRiple
     class="btn btn-primary btn-sm ms-3"
+    id="btnAgregarFila"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true"
 
@@ -27,11 +31,11 @@
     <i class="fa fa-plus"></i>
   </button>
 
-  <hr />
-  <div class="datatable table-editor mt-4">
+  <div class="datatable table-editor mt-3">
     <form #form="ngForm" >
       <table
         class="table table-sm datatable-table"
+        id="tblSemestre"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -40,6 +44,8 @@
         [sort]="sort"
       >
         <thead class="datatable-header">
+          <tr align="center">
+
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -48,6 +54,7 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
@@ -55,30 +62,20 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="semestre"
+                  id="semestreRegistro"
                   name="semestre"
                   class="form-control"
-                  [(ngModel)]="Semestre"
-                  #semestre="ngModel"
+                  [(ngModel)]="semestre.semestre"
                   required
                 />
               </mdb-form-control>
-
             </td>
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
 
-            </td>
 
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                id ="btnRegistrar"
                 type="submit"
                 (click)="registro(form.value); addRow = false;"
               >
@@ -96,43 +93,30 @@
 
           <tr *ngFor="let semestre of semestres; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
+              <ng-container  *ngIf="editElementIndex !== index">
                 {{ semestre.semestre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="semestre"
+                    id="semestreActualizar"
                     name="semestre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="semestre.semestre"
+                    [(ngModel)]="semestreEditForm.semestre"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ semestre.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="semestre.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
+                  (click)="editRow(index)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -141,7 +125,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(semestre.codSemestre,semestre)"
+                  (click)="eliminar(semestre.codSemestre)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -152,13 +136,13 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(semestre, semestre.codSemestre);"
+                  (click)="actualizar(semestre, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i>
                 </button>
@@ -170,3 +154,5 @@
     </form>
   </div>
 </div>
+</div>
+

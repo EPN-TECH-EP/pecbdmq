@@ -1,9 +1,15 @@
-<div class="titulo">
-  <h1>Documentos Habilitantes</h1>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Catálogo de Estados</p>
+  </div>
 </div>
 
-<div class="tabla">
-  <!-- <mdb-form-control>
+
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+  <mdb-form-control>
     <input
       mdbInput
       type="text"
@@ -13,10 +19,11 @@
       (keyup)="search($event)"
     />
     <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control> -->
+  </mdb-form-control>
   <button
     MdbRiple
     class="btn btn-primary btn-sm ms-3"
+    id="btnAgregarFila"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true"
 
@@ -24,19 +31,21 @@
     <i class="fa fa-plus"></i>
   </button>
 
-  <hr />
-  <div class="datatable table-editor mt-4">
+  <div class="datatable table-editor mt-3">
     <form #form="ngForm" >
       <table
-        class="table datatable-table"
+        class="table table-sm datatable-table"
+        id="tblSemestre"
         mdbTable
         mdbTableSort
         #table="mdbTable"
         #sort="mdbTableSort"
-        [dataSource]="documentoHabilitante"
+        [dataSource]="catalogos"
         [sort]="sort"
       >
         <thead class="datatable-header">
+          <tr align="center">
+
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -45,6 +54,7 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
@@ -52,30 +62,20 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
+                  id="nombreRegistro"
                   name="nombre"
                   class="form-control"
-                  [(ngModel)]="Nombre"
-                  #nombre="ngModel"
+                  [(ngModel)]="catalogo.nombre"
                   required
                 />
               </mdb-form-control>
-
             </td>
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
 
-            </td>
 
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                id ="btnRegistrar"
                 type="submit"
                 (click)="registro(form.value); addRow = false;"
               >
@@ -91,45 +91,32 @@
             </td>
           </tr>
 
-          <tr *ngFor="let documentoHabilitante of documentoHabilitante; let index = index" scope="row">
+          <tr *ngFor="let catalogo of catalogos let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ documentoHabilitante.nombre }}
+              <ng-container  *ngIf="editElementIndex !== index">
+                {{ catalogo.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombre"
+                    id="nombreActualizar"
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="documentoHabilitante.nombre"
+                    [(ngModel)]="catalogoEditForm.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ documentoHabilitante.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="documentoHabilitante.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
+
             <td align="center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = index"
+                  (click)="editRow(index)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -138,7 +125,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(documentoHabilitante.codDocumentoHabilitante,documentoHabilitante)"
+                  (click)="eliminar(catalogo.codigo)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -149,13 +136,13 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(documentoHabilitante, documentoHabilitante.codDocumentoHabilitante);"
+                  (click)="actualizar(catalogo, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editElementIndex = -1"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i>
                 </button>
@@ -166,5 +153,6 @@
       </table>
     </form>
   </div>
+</div>
 </div>
 

@@ -7,9 +7,8 @@
     <p class="fs-4 fw-bolder">Aulas</p>
   </div>
 </div>
-
-<div class="tabla">
-  <div class="d-flex justify-content-end mb-4">
+<div class="row justify-content">
+  <div class="col-12 ">
     <mdb-form-control>
       <input
         mdbInput
@@ -30,7 +29,7 @@
       <i class="fa fa-plus"></i>
     </button>
   </div>
-  <hr />
+
 
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" novalidate>
@@ -58,14 +57,7 @@
 
         <tbody class="datatable-body">
           <tr *ngIf="addRow"  scope="row">
-            <!-- <td>
-            <mdb-form-control>
-          <input mdbInput type="text"
-           class="form-control"
-           [(ngModel)]="Codigo" />
-        </mdb-form-control>
 
-            </td> -->
             <td>
               <mdb-form-control>
                 <input
@@ -74,12 +66,13 @@
                   name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.nombre"
-                  #nombre="ngModel"
+                  [(ngModel)]="aula.nombre"
                   required
                 />
               </mdb-form-control>
             </td>
+
+
             <td>
               <mdb-form-control>
                 <input
@@ -88,8 +81,7 @@
                   name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.capacidad"
-                  #capacidad="ngModel"
+                  [(ngModel)]="aula.capacidad"
                   required
                 />
               </mdb-form-control>
@@ -102,7 +94,7 @@
                   name="tipo"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.tipo"
+                  [(ngModel)]="aula.tipo"
                   #tipo="ngModel"
                   required
                 />
@@ -116,8 +108,7 @@
                   name="pcs"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.pcs"
-                  #pcs="ngModel"
+                  [(ngModel)]="aula.pcs"
                   required
                 />
               </mdb-form-control>
@@ -130,8 +121,7 @@
                   name="impresoras"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.impresoras"
-                  #impresoras="ngModel"
+                  [(ngModel)]="aula.impresoras"
                   required
                 />
               </mdb-form-control>
@@ -144,8 +134,7 @@
                   name="internet"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.internet"
-                  #internet="ngModel"
+                  [(ngModel)]="aula.internet"
                   required
                 />
               </mdb-form-control>
@@ -159,8 +148,7 @@
                   name="proyectores"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="Valaula.proyectores"
-                  #proyectores="ngModel"
+                  [(ngModel)]="aula.proyectores"
                   required
                 />
               </mdb-form-control>
@@ -173,8 +161,7 @@
                   name="instructor"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.instructor"
-                  #instructor="ngModel"
+                  [(ngModel)]="aula.instructor"
                   required
                 />
               </mdb-form-control>
@@ -187,24 +174,11 @@
                   name="salaOcupada"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="Valaula.salaOcupada"
-                  #salaOcupada="ngModel"
+                  [(ngModel)]="aula.salaOcupada"
                   required
                 />
               </mdb-form-control>
             </td>
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="Valaula.estado" name="estado">
-                <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                  option.label
-                }}</mdb-option>
-              </mdb-select>
-              </mdb-form-control>
-
-            </td>
-
-
 
 
 
@@ -227,27 +201,9 @@
           </tr>
 
           <tr *ngFor="let aula of table.data; let index = index" scope="row">
-            <!-- <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ aula.codigo }}
-              </ng-container>
 
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <input
-                    mdbInput
-                    id="codigo"
-                    name="codigo"
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="aula.codigo"
-                    disabled
-                  />
-                </mdb-form-control>
-              </ng-container>
-            </td> -->
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.nombre }}
               </ng-container>
@@ -259,7 +215,7 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valaula.nombre"
+                    [(ngModel)]="aulaEditForm.nombre"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -277,13 +233,13 @@
                     name="capacidad"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valaula.capacidad"
+                    [(ngModel)]="aulaEditForm.capacidad"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.tipo }}
               </ng-container>
@@ -295,13 +251,13 @@
                     name="tipo"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valaula.tipo"
+                    [(ngModel)]="aulaEditForm.tipo"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.pcs }}
               </ng-container>
@@ -313,7 +269,7 @@
                     name="pcs"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valaula.pcs"
+                    [(ngModel)]="aulaEditForm.pcs"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -331,11 +287,12 @@
                     name="impresoras"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valaula.impresoras"
+                    [(ngModel)]="aulaEditForm.impresoras"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
@@ -349,11 +306,12 @@
                     name="internet"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valaula.internet"
+                    [(ngModel)]="aulaEditForm.internet"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
@@ -367,14 +325,14 @@
                     name="proyectores"
                     type="number"
                     class="form-control"
-                    [(ngModel)]="Valaula.proyectores"
+                    [(ngModel)]="aulaEditForm.proyectores"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.instructor }}
               </ng-container>
@@ -383,14 +341,15 @@
                   <input
                     mdbInput
                     id="instructor"
-                    name="Instructor"
+                    name="instructor"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valaula.instructor"
+                    [(ngModel)]="aulaEditForm.instructor"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
@@ -404,22 +363,8 @@
                     name="salaOcupada"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="Valaula.salaOcupada"
+                    [(ngModel)]="aulaEditForm.salaOcupada"
                   />
-                </mdb-form-control>
-              </ng-container>
-            </td>
-            <td tyle="min-width: 10px; max-width: 10px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ aula.estado }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="aula.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">{{
-                      option.label
-                    }}</mdb-option>
-                  </mdb-select>
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -433,13 +378,14 @@
               <button
               class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
               (click)="editar(index)"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+              >
 
-            >
               <i class="fa fa-edit"></i>
             </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(aula.codigo,aula)"
+                  (click)="eliminar(aula.codigo)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -450,7 +396,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="actualizar(aula, aula.codigo);"
+                  (click)="actualizar(aula, form.value);"
                 >
                   <i class="fa fa-check"></i>
                 </button>
@@ -466,7 +412,8 @@
         </tbody>
       </table>
     </form>
-    <!-- <mdb-table-pagination #pagination [entries]="5"></mdb-table-pagination> -->
   </div>
 </div>
+
+
 
