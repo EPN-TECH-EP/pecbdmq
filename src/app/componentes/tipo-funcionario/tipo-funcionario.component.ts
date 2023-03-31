@@ -20,47 +20,50 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 })
 
 export class TipoFuncionarioComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+  //model
+  tiposFuncionario: TipoFuncionario[];
+  tipoFuncionario: TipoFuncionario;
+  tipoFuncionarioEditForm: TipoFuncionario;
+
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  tiposfuncionario: TipoFuncionario[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
-  constructor(
+ //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
+//table
+@ViewChild('table') table!: MdbTableDirective<TipoFuncionario>;
+editElementIndex = -1;
+addRow = false;
+headers = ['Nombre'];
 
+  constructor(
     private ApiTipoFuncionario: TipoFuncionarioService,
     private notificationService: MdbNotificationService,
-    public Valtipofuncionario:TipoFuncionario
-  ) { }
-
-  @ViewChild('table') table!: MdbTableDirective<TipoFuncionario>;
-  editElementIndex = -1;
-  addRow = false;
-  // Codigo = '';
-  // Nombre = '';
-  // Estado = 'ACTIVO';
-  headers = ['Nombre'];
-
-  addNewRow() {
-    const newRow: TipoFuncionario = {
-      codigo: this.Valtipofuncionario.codigo,
-      nombre: this.Valtipofuncionario.nombre,
-      estado: this.Valtipofuncionario.estado,
+  ) {
+    this.tiposFuncionario = [];
+    this.subscriptions = [];
+    this.tipoFuncionario = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
     }
-    this.tiposfuncionario = [...this.tiposfuncionario, { ...newRow }];
-    this.Valtipofuncionario.codigo = '';
-    this.Valtipofuncionario.nombre = '';
-    this.Valtipofuncionario.estado = 'ACTIVO';
-  }
+    this.tipoFuncionarioEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+   }
+
+
 
   ngOnInit(): void {
-    this.Valtipofuncionario.estado = 'ACTIVO';
     this.ApiTipoFuncionario.getTipoFuncionario().subscribe(data => {
-      this.tiposfuncionario = data;
-
+      this.tiposFuncionario = data;
     })
   }
 
@@ -104,36 +107,53 @@ export class TipoFuncionarioComponent implements OnInit {
       this.ApiTipoFuncionario.crearTipoFuncionario(tipofuncionario).subscribe({
         next: (response: HttpResponse<TipoFuncionario>) => {
           let nuevoTipoFuncionario: TipoFuncionario = response.body;
-          this.tiposfuncionario.push(nuevoTipoFuncionario);
+          this.tiposFuncionario.push(nuevoTipoFuncionario);
           this.notificacionOk('Tipo funcionario creado con éxito');
-          this.Valtipofuncionario.nombre = '';
-          // const token = response.headers.get(HeaderType.JWT_TOKEN);
-          // this.aut.guardaToken(token);
-          // this.autenticacionService.agregaUsuarioACache(response.body);
-
-          // this.router.navigateByUrl('/principal');
-          // this.showLoading = false;
+          this.tipoFuncionario = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-          // this.showLoading = false;
+
         },
       })
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoFuncionarioEditForm = {...this.tiposFuncionario[index]};
+  }
+
+  undoRow() {
+    this.tipoFuncionarioEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
+
   //actualizar
-  public actualizar(tipofuncionario: TipoFuncionario, tipofuncionarioId:any): void {
-    tipofuncionario={...tipofuncionario, estado:'ACTIVO'},
+  public actualizar(tipoFuncionario: TipoFuncionario, formValue): void {
+    tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoFuncionario.actualizarTipoFuncionario(tipofuncionario,tipofuncionarioId).subscribe({
+      this.ApiTipoFuncionario.actualizarTipoFuncionario(tipoFuncionario,tipoFuncionario.codigo).subscribe({
       next: (response: HttpResponse<TipoFuncionario>) => {
-        let actualizaTipoFuncionario: TipoFuncionario = response.body;
         this.notificacionOk('Tipo funcionario actualizado con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valtipofuncionario.nombre = '';
+        this.tiposFuncionario[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.tipoFuncionario = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -152,9 +172,9 @@ public eliminar(tipoFuncionarioId: any, data: TipoFuncionario): void {
     this.ApiTipoFuncionario.eliminarTipoFuncionario(tipoFuncionarioId).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo Funcionario eliminado con éxito');
-        const index = this.tiposfuncionario.indexOf(data);
-        this.tiposfuncionario.splice(index, 1);
-        this.tiposfuncionario = [...this.tiposfuncionario]
+        const index = this.tiposFuncionario.indexOf(data);
+        this.tiposFuncionario.splice(index, 1);
+        this.tiposFuncionario = [...this.tiposFuncionario]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

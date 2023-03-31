@@ -19,42 +19,49 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./componente-nota.component.scss']
 })
 export class ComponenteNotaComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+   //model
+   componentesNota: ComponenteNota[];
+   componenteNota: ComponenteNota;
+   componenteNotaEditForm: ComponenteNota;
+   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  componentesnota: ComponenteNota[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
+  //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
   ];
-  constructor(
-    private ApiComponenteNota: ComponenteNotaService,
-    private notificationService: MdbNotificationService,
-    public Valcomponentenota:ComponenteNota
-  ) { }
 
+  //table
   @ViewChild('table') table!: MdbTableDirective<ComponenteNota>;
   editElementIndex = -1;
   addRow = false;
   headers = ['Componente Nota'];
 
-  addNewRow() {
-    const newRow: ComponenteNota = {
-      cod_componente_nota: this.Valcomponentenota.cod_componente_nota,
-      componentenota: this.Valcomponentenota.componentenota,
-      estado: this.Valcomponentenota.estado,
+  constructor(
+    private ApiComponenteNota: ComponenteNotaService,
+    private notificationService: MdbNotificationService,
+  ) {
+    this.componentesNota = [];
+    this.subscriptions = [];
+    this.componenteNota = {
+      cod_componente_nota: 0,
+      componentenota: '',
+      estado: 'ACTIVO'
     }
-    this.componentesnota = [...this.componentesnota, { ...newRow }];
-    this.Valcomponentenota.cod_componente_nota = '';
-    this.Valcomponentenota.componentenota = '';
-    this.Valcomponentenota.estado = 'ACTIVO';
-  }
+    this.componenteNotaEditForm = {
+      cod_componente_nota: 0,
+      componentenota: '',
+      estado: 'ACTIVO'
+    };
+   }
+
+
   ngOnInit(): void {
-    this.Valcomponentenota.estado = 'ACTIVO';
     this.ApiComponenteNota.getComponenteNota().subscribe(data => {
-      this.componentesnota = data;
-      console.log(data);
+      this.componentesNota = data;
     })
   }
 
@@ -97,9 +104,13 @@ export class ComponenteNotaComponent implements OnInit {
       this.ApiComponenteNota.crearComponenteNota(componentenota).subscribe({
         next: (response: HttpResponse<ComponenteNota>) => {
           let nuevoComponenteNota: ComponenteNota = response.body;
-          this.componentesnota.push(nuevoComponenteNota);
+          this.componentesNota.push(nuevoComponenteNota);
           this.notificacionOk('Componente nota creado con éxito');
-          this.Valcomponentenota.componentenota = '';
+          this.componenteNota = {
+            cod_componente_nota: 0,
+            componentenota: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -109,18 +120,35 @@ export class ComponenteNotaComponent implements OnInit {
     );
   }
 
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.componenteNotaEditForm = {...this.componentesNota[index]};
+  }
+
+  undoRow() {
+    this.componenteNotaEditForm = {
+      cod_componente_nota: 0,
+      componentenota: '',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
   //actualizar
-  public actualizar(componentenota: ComponenteNota, ComponenteNotaId:any): void {
-    componentenota={...componentenota, estado:'ACTIVO'};
+  public actualizar(componenteNota: ComponenteNota, formValue): void {
+    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiComponenteNota.actualizarComponenteNota(componentenota,ComponenteNotaId).subscribe({
+      this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({
       next: (response: HttpResponse<ComponenteNota>) => {
-        let actualizaComponenteNota: ComponenteNota = response.body;
         this.notificacionOk('Componente nota actualizado con éxito');
-        this.editElementIndex=-1;
-        this.Valcomponentenota.componentenota = '';
-        this.showLoading = false;
+        this.componentesNota[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.componenteNota = {
+            cod_componente_nota: 0,
+            componentenota: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -138,9 +166,9 @@ export class ComponenteNotaComponent implements OnInit {
       this.ApiComponenteNota.eliminarComponenteNota(ComponenteNotaId).subscribe({
         next: (response: string) => {
           this.notificacionOk('Componente nota eliminado con éxito');
-          const index = this.componentesnota.indexOf(data);
-          this.componentesnota.splice(index, 1);
-          this.componentesnota = [...this.componentesnota]
+          const index = this.componentesNota.indexOf(data);
+          this.componentesNota.splice(index, 1);
+          this.componentesNota = [...this.componentesNota]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {

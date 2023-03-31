@@ -19,48 +19,49 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./tipo-documento.component.scss']
 })
 export class TipoDocumentoComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+  //model
+  tiposDocumento: TipoDocumento[];
+  tipoDocumento: TipoDocumento;
+  tipoDocumentoEditForm: TipoDocumento;
+
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  tiposdocumento: TipoDocumento[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
 
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
-  constructor(
-    private ApiTipoDocumento: TipoDocumentoService,
-    private notificationService: MdbNotificationService,
-    public Valtipodocumento:TipoDocumento
-  ) { }
+  //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
 
+  //table
   @ViewChild('table') table!: MdbTableDirective<TipoDocumento>;
   editElementIndex = -1;
   addRow = false;
+  headers = ['Nombre'];
 
-
-  // CodigoDocumento = '';
-  // TipoDocumento = '';
-  // Estado = 'ACTIVO';
-  headers = ['Tipo de Documento'];
-
-  addNewRow() {
-    const newRow: TipoDocumento = {
-      codigoDocumento: this.Valtipodocumento.codigoDocumento,
-      tipoDocumento: this.Valtipodocumento.tipoDocumento,
-      estado: this.Valtipodocumento.estado,
+  constructor(
+    private ApiTipoDocumento: TipoDocumentoService,
+    private notificationService: MdbNotificationService
+  ) {
+    this.tiposDocumento = [];
+    this.subscriptions = [];
+    this.tipoDocumento = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
     }
-    this.tiposdocumento = [...this.tiposdocumento, { ...newRow }];
-    this.Valtipodocumento.codigoDocumento = '';
-    this.Valtipodocumento.tipoDocumento = '';
-    this.Valtipodocumento.estado = 'ACTIVO';
-  }
+    this.tipoDocumentoEditForm = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
+    };
+   }
 
   ngOnInit(): void {
-    this.Valtipodocumento.estado = 'ACTIVO';
     this.ApiTipoDocumento.getTipoDocumento().subscribe(data => {
-      this.tiposdocumento = data;
-      console.log(data);
+      this.tiposDocumento = data;
     })
   }
 
@@ -103,9 +104,13 @@ export class TipoDocumentoComponent implements OnInit {
       this.ApiTipoDocumento.crearTipoDocumento(tipodocumento).subscribe({
         next: (response: HttpResponse<TipoDocumento>) => {
           let nuevoTipoDocumento: TipoDocumento = response.body;
-          this.tiposdocumento.push(nuevoTipoDocumento);
+          this.tiposDocumento.push(nuevoTipoDocumento);
           this.notificacionOk('Tipo de documento creado con éxito');
-          this.Valtipodocumento.tipoDocumento = '';
+          this.tipoDocumento = {
+            codigoDocumento: 0,
+            tipoDocumento: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -114,19 +119,35 @@ export class TipoDocumentoComponent implements OnInit {
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoDocumentoEditForm = {...this.tiposDocumento[index]};
+  }
 
+  undoRow() {
+    this.tipoDocumentoEditForm = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
+    }
+    this.editElementIndex = -1;
+  }
   //actualizar
-  public actualizar(TipoDocumento: TipoDocumento, TipoDocumentoId:any): void {
-    TipoDocumento={...TipoDocumento, estado:'ACTIVO'};
+  public actualizar(tipoDocumento: TipoDocumento, formValue): void {
+    tipoDocumento={...tipoDocumento, tipoDocumento: formValue.nombre, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoDocumento.actualizarTipoDocumento(TipoDocumento,TipoDocumentoId).subscribe({
+      this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento,tipoDocumento.codigoDocumento).subscribe({
       next: (response: HttpResponse<TipoDocumento>) => {
-        let actualizaTipoDocumento: TipoDocumento = response.body;
-        this.notificacionOk('Tipo de documento actualizado con éxito');
-        this.editElementIndex=-1;
-        this.Valtipodocumento.tipoDocumento = '';
-        this.showLoading = false;
+        this.notificacionOk('Tipo funcionario actualizado con éxito');
+        this.tiposDocumento[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.tipoDocumento = {
+            codigoDocumento: 0,
+            tipoDocumento: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -144,9 +165,9 @@ public eliminar(TipoDocumentoId: any, data: TipoDocumento): void {
     this.ApiTipoDocumento.eliminarTipoDocumento(TipoDocumentoId).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo de documento eliminado con éxito');
-        const index = this.tiposdocumento.indexOf(data);
-        this.tiposdocumento.splice(index, 1);
-        this.tiposdocumento = [...this.tiposdocumento]
+        const index = this.tiposDocumento.indexOf(data);
+        this.tiposDocumento.splice(index, 1);
+        this.tiposDocumento = [...this.tiposDocumento]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

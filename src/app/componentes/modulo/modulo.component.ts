@@ -20,51 +20,48 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./modulo.component.scss']
 })
 export class ModuloComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+  //model
+  Modulos: Modulo[];
+  Modulo: Modulo;
+  ModuloEditForm: Modulo;
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  modulos: Modulo[];
+  private subscriptions: Subscription[];
   public showLoading: boolean;
-
-  options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
-  ];
-
-  constructor(
-    // public unidadEnviar:UnidadGestion,
-    private ApiModulo: ModuloService,
-    private notificationService: MdbNotificationService,
-    public Valmodulo:Modulo
-  ) { }
-
+  //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
+  //table
   @ViewChild('table') table!: MdbTableDirective<Modulo>;
   editElementIndex = -1;
   addRow = false;
-  // CodModulo = '';
-  // Etiqueta = '';
-  // Descripcion = '';
-  // Estado ='';
   headers = ['Etiqueta','Descripción'];
 
-  addNewRow() {
-    const newRow: Modulo = {
-      cod_modulo: this.Valmodulo.cod_modulo,
-      etiqueta: this.Valmodulo.etiqueta,
-      descripcion: this.Valmodulo.descripcion,
-      estado: this.Valmodulo.estado,
+  constructor(
+    private ApiModulo: ModuloService,
+    private notificationService: MdbNotificationService,
+  ) {
+    this.Modulos = [];
+    this.subscriptions = [];
+    this.Modulo = {
+      cod_modulo: 0,
+      etiqueta: '',
+      descripcion:'',
+      estado: 'ACTIVO'
     }
-    this.modulos = [...this.modulos, { ...newRow }];
-    this.Valmodulo.cod_modulo = '';
-    this.Valmodulo.etiqueta = '';
-    this.Valmodulo.descripcion = '';
-    this.Valmodulo.estado ='';
+    this.ModuloEditForm = {
+      cod_modulo: 0,
+      etiqueta: '',
+      descripcion:'',
+      estado: 'ACTIVO'
+    };
   }
 
-
   ngOnInit(): void {
-    this.Valmodulo.estado = 'ACTIVO';
     this.ApiModulo.getModulo().subscribe(data => {
-      this.modulos = data;
+      this.Modulos = data;
     })
   }
 
@@ -106,10 +103,14 @@ export class ModuloComponent implements OnInit {
       this.ApiModulo.crearModulo(modulo).subscribe({
         next: (response: HttpResponse<Modulo>) => {
           let nuevoModulo: Modulo = response.body;
-          this.modulos.push(nuevoModulo);
+          this.Modulos.push(nuevoModulo);
           this.notificacionOk('Modulo creado con éxito');
-          this.Valmodulo.etiqueta = '';
-          this.Valmodulo.descripcion = '';
+          this.Modulo = {
+            cod_modulo: 0,
+            etiqueta: '',
+            descripcion:'',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -117,20 +118,38 @@ export class ModuloComponent implements OnInit {
       })
     );
   }
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.ModuloEditForm = {...this.Modulos[index]};
+  }
 
+  undoRow() {
+    this.ModuloEditForm = {
+      cod_modulo: 0,
+      etiqueta: '',
+      descripcion:'',
+      estado: 'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
   //actualizar
-  public actualizar(modulo: Modulo, moduloId:any): void {
-    modulo={...modulo, estado:'ACTIVO'};
+  public actualizar(Modulo: Modulo, formValue): void {
+    Modulo={...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModulo.actualizarModulo(modulo,moduloId).subscribe({
+      this.ApiModulo.actualizarModulo(Modulo,Modulo.cod_modulo).subscribe({
       next: (response: HttpResponse<Modulo>) => {
-        let actualizaModulo: Modulo = response.body;
         this.notificacionOk('Módulo actualizado con éxito');
-        this.editElementIndex=-1;
-        this.showLoading = false;
-        this.Valmodulo.etiqueta = '';
-        this.Valmodulo.descripcion = '';
+        this.Modulos[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.Modulo = {
+            cod_modulo: 0,
+            etiqueta: '',
+            descripcion:'',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.notificacion(errorResponse);
@@ -148,9 +167,9 @@ export class ModuloComponent implements OnInit {
      this.ApiModulo.eliminarModulo(moduloId).subscribe({
        next: (response: string) => {
          this.notificacionOk('Módulo eliminado con éxito');
-         const index = this.modulos.indexOf(data);
-         this.modulos.splice(index, 1);
-         this.modulos = [...this.modulos];
+         const index = this.Modulos.indexOf(data);
+         this.Modulos.splice(index, 1);
+         this.Modulos = [...this.Modulos];
          this.showLoading = false;
        },
        error: (errorResponse: HttpErrorResponse) => {
