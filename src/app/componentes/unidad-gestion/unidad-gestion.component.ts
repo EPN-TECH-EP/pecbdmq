@@ -26,10 +26,7 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@ang
   templateUrl: './unidad-gestion.component.html',
   styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class UnidadGestionComponent implements OnInit, CambiosPendientes {
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-
+export class UnidadGestionComponent implements OnInit, CambiosPendientes {  
   unidades: UnidadGestion[];
   Unidad: UnidadGestion;
   UnidadEditForm: UnidadGestion;
@@ -183,11 +180,7 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
         this.showLoading = false;
       },
     })
-
-editar(index: number) {
-    this.editElementIndex = index;
-    this.Valunidadgestion = { ...this.unidades[index] };
-  }
+  )}
 
   cambiosPendientes(): boolean {
     return this.editElementIndex !== -1;

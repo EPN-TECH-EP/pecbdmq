@@ -7,7 +7,8 @@ import {TipoPruebaComponent} from './../../componentes/tipo-prueba/tipo-prueba.c
 import {TipoProcedenciaComponent} from './../../componentes/tipo-procedencia/tipo-procedencia.component';
 import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tipo-funcionario.component';
 import {ModuloComponent} from './../../componentes/modulo/modulo.component';
-import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
+//import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
+//import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
@@ -27,14 +28,13 @@ import {
 } from '../../componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.component';
 import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
-import {UnidadGestion} from '../../modelo/unidad-gestion';
+
 import {TipoFuncionario} from '../../modelo/tipo-funcionario';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
-import { DocumentosHabilitantesComponent } from '../../componentes/documentos-habilitantes/documentos-habilitantes.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 
 const routes: Routes = [
@@ -55,9 +55,10 @@ const routes: Routes = [
       },
       // componentes funcionales
       {path: 'materia', component: MateriaComponent},
-      {path: 'unidadGestion', component: UnidadGestionComponent,
-      //loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
-      canDeactivate: [CambiosPendientesGuard],
+      {path: 'unidadGestion', 
+      //component: UnidadGestionComponent,
+      loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
+      //canDeactivate: [CambiosPendientesGuard],
     },
       {path: 'tipoPrueba', component: TipoPruebaComponent},
       {path: 'aula', component: AulasComponent},
@@ -77,7 +78,6 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
-      {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent}

@@ -64,7 +64,7 @@ import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
 import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
-import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
+//import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
 import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
 import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
@@ -83,7 +83,7 @@ import { MenuProfesionalizacionComponent } from './componentes/profesionalizacio
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
 import { TipoDocumento } from './modelo/tipo-documento';
-import { UnidadGestion } from './modelo/unidad-gestion';
+//import { UnidadGestion } from './modelo/unidad-gestion';
 import { TipoFuncionario } from './modelo/tipo-funcionario';
 import { Aula } from './modelo/aula';
 import { Materia } from './modelo/materias';
@@ -106,6 +106,7 @@ import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
+import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,7 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
     AlertaComponent,
     CargaArchivoComponent,
     MateriaComponent,
-    UnidadGestionComponent,
+    //UnidadGestionComponent,
     UsuariosComponent,
     RolesUsuariosComponent,
     TipoPruebaComponent,
@@ -139,10 +140,11 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
     ComponenteNotaComponent,
     ParaleloComponent,
     TipoSancionComponent,
-    PonderacionComponent
+    PonderacionComponent,
     ModuloEstadosComponent,
     RequisitoComponent,
-    CatalogoEstadosComponent
+    CatalogoEstadosComponent,
+    MenuItemComponent
   ],
   imports: [
     BrowserModule,
@@ -200,7 +202,7 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
     Periodo,
     SemestreTbl,
     TipoDocumento,
-    UnidadGestion,
+    //UnidadGestion,
     TipoFuncionario,
     Aula,
     Materia,
