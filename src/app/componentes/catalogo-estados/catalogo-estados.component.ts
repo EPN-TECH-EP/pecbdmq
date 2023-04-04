@@ -103,10 +103,10 @@
          next: (response: HttpResponse<CatalogoEstados>) => {
            let nuevoCatalogo: CatalogoEstados = response.body;
            this.catalogos.push(nuevoCatalogo);
-           this.notificacionOK('Semestre creada con éxito');
-            // this.Api.getCatalogo().subscribe(data => {
-            //  this.catalogos = data;
-
+           this.notificacionOK('Catálogo de Estado creado con éxito');
+             this.Api.getCatalogo().subscribe(data => {
+              this.catalogos = data;
+            });
            this.catalogo ={
            codigo: 0,
            nombre:'',
@@ -139,7 +139,8 @@
    //actualizar
    public actualizar(catalogo: CatalogoEstados, formValue): void {
 
-     catalogo={...catalogo, nombre: formValue.nombre, estado:'ACTIVO'}
+     catalogo={...catalogo, nombre: formValue.nombre,
+      estado:'ACTIVO'}
      this.showLoading = true;
      this.subscriptions.push(
        this.Api.actualizarCatalogo(catalogo, catalogo.codigo).subscribe({
@@ -160,14 +161,15 @@
      })
      );
    }
-   //eliminar
 
+
+   //eliminar
  public eliminar(codigo: number): void {
    this.showLoading = true;
    this.subscriptions.push(
      this.Api.eliminarCatalogo(codigo).subscribe({
        next: () => {
-         this.notificacionOK('Semestre eliminada con éxito');
+         this.notificacionOK('El catálogo se ha eliminado con éxito');
          this.showLoading = false;
          const index = this.catalogos.findIndex(catalogo => catalogo.codigo === codigo);
          this.catalogos.splice(index, 1);
@@ -175,11 +177,8 @@
        },
        error: (errorResponse: HttpErrorResponse) => {
          this.notificacion(errorResponse);
-         console.log(errorResponse);
        },
      })
    );
  }
-
-
  }
