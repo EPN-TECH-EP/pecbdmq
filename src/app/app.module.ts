@@ -104,7 +104,6 @@ import { TipoProcedencia } from './modelo/tipo-procedencia';
 import { TipoInstruccion } from './modelo/tipo_instruccion';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
-import { RequisitoComponent } from './componentes/requisito/requisito.component';
 
 @NgModule({
   declarations: [
@@ -138,9 +137,8 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
     ComponenteNotaComponent,
     ParaleloComponent,
     TipoSancionComponent,
-    PonderacionComponent
+    PonderacionComponent,
     ModuloEstadosComponent,
-    RequisitoComponent,
     CatalogoEstadosComponent
   ],
   imports: [

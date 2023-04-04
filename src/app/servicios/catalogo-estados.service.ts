@@ -29,5 +29,4 @@
     public mostrarCatalogo(codigo: any): Observable<string> {
        return this.http.get<any>(`${this.host}/estados/${codigo}`);
        }
-
  }

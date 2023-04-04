@@ -1,18 +1,25 @@
-import { ModuloEstadosService } from './../../servicios/modulo-estados.service';
-import { CatalogoEstados } from './../../modelo/catalogo-estados';
-import { CatalogoEstadosService } from './../../servicios/catalogo-estados.service';
 import { Modulo } from 'src/app/modelo/modulo';
-import { ModuloEstados } from './../../modelo/modulo-estados';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { ModuloService } from 'src/app/servicios/modulo.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
-import { Notificacion } from 'src/app/util/notificacion';
+
+
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { FormArray, FormControl } from '@angular/forms';
+import { ModuloEstados } from 'src/app/modelo/modulo-estados';
+import { CatalogoEstados } from 'src/app/modelo/catalogo-estados';
+import { ModuloEstadosService } from 'src/app/servicios/modulo-estados.service';
+import { CatalogoEstadosService } from 'src/app/servicios/catalogo-estados.service';
 
 @Component({
   selector: 'app-modulo-estados',
@@ -20,22 +27,19 @@ import { Notificacion } from 'src/app/util/notificacion';
   styleUrls: ['./modulo-estados.component.scss']
 })
 export class ModuloEstadosComponent implements OnInit {
-
   modulosEstados: ModuloEstados[];
-  moduloEstados: ModuloEstados;
-  moduloEstadosEditForm: ModuloEstados;
   modulos: Modulo[];
   estadosCatalogo: CatalogoEstados[];
+  moduloEstados: ModuloEstados;
+  moduloEstadosEditForm: ModuloEstados;
 
-  selectedestadoCatalogo: any = null; // variable para almacenar el registro seleccionado
 
-
-  private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[] = [];
   public showLoading: boolean;
+  public userResponse: string;
 
   @ViewChild('table') table!: MdbTableDirective<ModuloEstados>;
-
   editElementIndex = -1;
   addRow = false;
 
@@ -47,52 +51,49 @@ export class ModuloEstadosComponent implements OnInit {
   ];
 
 
-
   constructor(
-    private notificationService: MdbNotificationService,
-    private Api: ModuloEstados,
+    private Api: ModuloEstadosService,
     private ApiModulo: ModuloService,
-    private ApiModuloEstados:ModuloEstadosService,
-    private ApiCatalogoEstados: CatalogoEstados,
-    private ApiCatalogo: CatalogoEstadosService,
-    public  Modulodover: ModuloEstados,
-    ){
-      this.modulosEstados =[];
-      this.subscriptions=[];
-      this.moduloEstados ={
-        codigo: 0,
-        estadoCatalogo:0,
-        orden:0,
-        modulo:0,
-        estado:'ACTIVO'
-      }
-      this.moduloEstadosEditForm ={
-        codigo: 0,
-        estadoCatalogo:0,
-        orden:0,
-        modulo:0,
-        estado:'ACTIVO'
-      }
+    private ApiEstadosCatalogo: CatalogoEstadosService,
+    private notificationService: MdbNotificationService,
+
+  ) {
+    this.modulosEstados = [];
+    this.subscriptions = [];
+    this.moduloEstados = {
+      codigo: 0,
+      estadoCatalogo:'',
+      orden:''as any,
+      modulo:'',
+      estado:'ACTIVO'
+
     }
+    this.moduloEstadosEditForm = {
+      codigo: 0,
+      estadoCatalogo:'',
+      orden:''as any,
+      modulo:'',
+      estado:'ACTIVO'
+
+    }
+  }
+
+  ngOnInit(): void {
+    this.Api.getModuloEstados().subscribe(data => {
+      this.modulosEstados = data;
+    });
+    this.ApiModulo.getModulo().subscribe(data => {
+      this.modulos = data;
+    });
+    this.ApiEstadosCatalogo.getCatalogo().subscribe(data => {
+      this.estadosCatalogo = data;
+    });
+  }
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-
-  ngOnInit(): void {
-
-    this.ApiModuloEstados.getModuloEstados().subscribe(data => {
-      this.modulosEstados = data;
-
-    });
-
-    this.ApiCatalogo.getCatalogo().subscribe(data => {
-      this.estadosCatalogo = data;
-    });
-
-  }
-
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -100,6 +101,7 @@ export class ModuloEstadosComponent implements OnInit {
 
 
   private notificacion(errorResponse: HttpErrorResponse) {
+
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -111,160 +113,120 @@ export class ModuloEstadosComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
-    if (codigoError === 0) {
-     mensajeError = 'Error de conexión al servidor';
-     tipoAlerta = TipoAlerta.ALERTA_ERROR;
-   }
+
+
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
       tipoAlerta
-    )
-  }
-
-  public notificacionOK(mensaje:string){
-    this.notificationRef = Notificacion.notificar(
-    this.notificationService,
-    mensaje,
-    TipoAlerta.ALERTA_OK
     );
   }
 
 
- public registro(moduloEstados: ModuloEstados): void {
-  moduloEstados={...moduloEstados,
-    estadoCatalogo:0,
-    orden:0,
-    modulo:0,
-    estado:'ACTIVO'};
-   this.showLoading = true;
-     this.subscriptions.push(
-      this.ApiModuloEstados.registroModuloEstados(moduloEstados).subscribe({
+  public notificacionOK(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
+  }
+  //registro
+  public registro(moduloEstados: ModuloEstados): void {
+
+    moduloEstados = { ...moduloEstados,  estado: 'ACTIVO' };
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.registroModuloEstados(moduloEstados).subscribe({
         next: (response: HttpResponse<ModuloEstados>) => {
           let nuevoModulo: ModuloEstados = response.body;
-         this.table.data.push(nuevoModulo);
-         this.notificacionOK('...');
-         this.ApiModuloEstados.getModuloEstados().subscribe(data => {
-          this.modulosEstados = data;
-        });
+          //this.table.data.push(nuevoModulo);
+          this.notificacionOK('Modulo de Estados creada con éxito');
+          this.Api.getModuloEstados().subscribe(data => {
+            this.modulosEstados = data;
+          });
+          this.moduloEstados = {
+            codigo: 0,
+            estadoCatalogo:'',
+            orden:''as any,
+            modulo:'',
+            estado:'ACTIVO'
 
-       this.ApiModulo.getModulo().subscribe(data => {
-          this.modulos = data;
-        });
-
-         this.moduloEstados ={
-          codigo: 0,
-          estadoCatalogo:0,
-          orden:0,
-          modulo:0,
-          estado:'ACTIVO'
-        }
-
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
-           this.showLoading = false;
-       },
-     })
-   );
- }
+        },
+      })
+    );
+  }
+
+  editRow(index: number) {
+
+    this.editElementIndex = index;
+    this.moduloEstadosEditForm = {...this.modulosEstados[index]};
+
+    console.log(this.moduloEstadosEditForm);
+
+  }
+
+  undoRow() {
+    this.moduloEstadosEditForm = {
+      codigo: 0,
+      estadoCatalogo:'',
+      orden:'' as any,
+      modulo:'',
+      estado:'ACTIVO'
+    };
+    this.editElementIndex = -1;
+  }
 
 
- editRow(index: number) {
-  this.editElementIndex = index;
-  this.moduloEstadosEditForm = {...this.modulosEstados[index]};
-  this.moduloEstadosEditForm = {
-    codigo: 0,
-        estadoCatalogo:0,
-        orden:0,
-        modulo:0,
-        estado:'ACTIVO'
-};
-}
 
-undoRow() {
-  this.moduloEstadosEditForm = {
-    codigo: 0,
-        estadoCatalogo:0,
-        orden:0,
-        modulo:0,
-        estado:'ACTIVO'
-  };
-  this.editElementIndex = -1;
-}
+  //actualizar
+  public actualizar(moduloEstados: ModuloEstados, formValue): void {
 
-   public actualizar(moduloEstados: ModuloEstados, formValue): void {
-    moduloEstados={...moduloEstados,
+    moduloEstados={ ...moduloEstados,
       modulo: formValue.modulo,
-      estadoCatalogo: formValue.catalogo,
+      estadoCatalogo: formValue.estadoCatalogo,
       orden: formValue.orden,
-      estado: 'ACTIVO'
-};
+      estado: 'ACTIVO' }
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModuloEstados.actualizarModuloEstados(moduloEstados,moduloEstados.codigo).subscribe({
-      next: (response) => {
-        this.notificacionOK('....');
-        this.modulosEstados[this.editElementIndex] = response.body;
-        this.showLoading = false;
-        this.ApiModuloEstados.getModuloEstados().subscribe(data => {
-          this.modulosEstados = data;
-        });
+      this.Api.actualizarModuloEstados(moduloEstados, moduloEstados.codigo).subscribe({
+        next: (response) => {
+          this.notificacionOK('Modulo de Estados actualizada con éxito');
+          this.modulosEstados[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.Api.getModuloEstados().subscribe(data => {
+            this.modulosEstados = data;
+          });
+          this.editElementIndex=-1;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+        },
+      })
+    );
+  }
 
-        this.ApiModulo.getModulo().subscribe(data => {
-          this.modulos = data;
-        });
+  //eliminar
 
-        this.ApiCatalogo.getCatalogo().subscribe(data => {
-          this.estadosCatalogo = data;
-        });
-        this.moduloEstados ={
-          codigo: 0,
-          estadoCatalogo:0,
-          orden:0,
-          modulo:0,
-          estado:'ACTIVO'
-        }
-        this.editElementIndex = -1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-      },
-  })
-)
-}
-
-//eliminar
-    public eliminar(codigo: number): void {
-      this.showLoading = true;
-      this.subscriptions.push(
-        this.ApiModuloEstados.eliminarModuloEstados(codigo).subscribe({
-          next: (response: string) => {
-            this.notificacionOK('El módulo de estado de eliminó correctamente');
-            this.showLoading = false;
-            const index = this.modulosEstados.findIndex(moduloEstados => moduloEstados.codigo === codigo);
-            this.modulosEstados.splice(index, 1);
-            this.modulosEstados = [...this.modulosEstados]
-            this.showLoading = false;
-          },
-          error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
-          },
-        })
-      );
-    }
-
-     public mostrarModulo(): void {
-       this.ApiModulo.getModulo().subscribe(data => {
-         this.modulos = data;
-       })
-   }
-
-
-    showRecord(): void {
-      this.ApiCatalogo.getCatalogo().subscribe(data => {
-        this.selectedestadoCatalogo = data;
-      });
-    }
-
+  public eliminar(codigo: number): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.eliminarModuloEstados(codigo).subscribe({
+        next: () => {
+          this.notificacionOK('Modulo Estados eliminada con éxito');
+          this.showLoading = false;
+          const index = this.modulosEstados.findIndex(moduloEstados => moduloEstados.codigo === codigo);
+          this.modulosEstados.splice(index, 1);
+          this.modulosEstados = [...this.modulosEstados]
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+        },
+      })
+    );
+  }
 }

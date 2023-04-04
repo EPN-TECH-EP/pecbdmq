@@ -1,10 +1,8 @@
 import { SemestreService } from './../../servicios/semestre.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestion } from 'src/app/modelo/unidad-gestion';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
@@ -14,26 +12,36 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { Semestre } from 'src/app/modelo/semestre';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { FormArray, FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-semestre',
   templateUrl: './semestre.component.html',
-  styleUrls: ['./semestre.component.scss']
+  styleUrls: ['./semestre.component.scss'],
 })
+
+
+
 export class SemestreComponent implements OnInit {
   semestres: Semestre[];
   semestre: Semestre;
   semestreEditForm: Semestre;
 
+
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   private subscriptions: Subscription[] = [];
   public showLoading: boolean;
+  public userResponse: string;
 
 
 
-  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
+  @ViewChild('table') table!: MdbTableDirective<Semestre>;
   editElementIndex = -1;
   addRow = false;
   headers = ['Semestre'];
+
+
 
 
   constructor(
@@ -64,6 +72,7 @@ export class SemestreComponent implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
+
 
 
 

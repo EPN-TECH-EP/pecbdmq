@@ -76,7 +76,6 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
-      {path: 'documentosHabilitantes', component: DocumentosHabilitantesComponent},
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent}
