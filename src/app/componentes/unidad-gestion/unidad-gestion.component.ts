@@ -2,25 +2,31 @@ import { UnidadGestion } from './../../modelo/unidad-gestion';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import {
+  MdbPopconfirmRef,
+  MdbPopconfirmService,
+} from 'mdb-angular-ui-kit/popconfirm';
 import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { Observable, Subscription } from 'rxjs';
+import {
+  MdbNotificationRef,
+  MdbNotificationService,
+} from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
+import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-unidad-gestion',
   templateUrl: './unidad-gestion.component.html',
-  styleUrls: ['./unidad-gestion.component.scss']
+  styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class UnidadGestionComponent implements OnInit {
-
-  //model
+export class UnidadGestionComponent implements OnInit, CambiosPendientes {  
   unidades: UnidadGestion[];
   Unidad: UnidadGestion;
   UnidadEditForm: UnidadGestion;
@@ -40,7 +46,6 @@ export class UnidadGestionComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-
   headers = ['Nombre'];
 
   constructor(
@@ -62,15 +67,12 @@ export class UnidadGestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe(data => {
+    this.ApiUnidad.getUnidadGestion().subscribe((data) => {
       this.unidades = data;
-    })
+    });
   }
 
-
-
   private notificacion(errorResponse: HttpErrorResponse) {
-
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -82,15 +84,12 @@ export class UnidadGestionComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
-
-
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
       tipoAlerta
     );
   }
-
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -101,8 +100,7 @@ export class UnidadGestionComponent implements OnInit {
   }
   //registro
   public registro(unidad: UnidadGestion): void {
-    unidad = {...unidad, estado:'ACTIVO'},
-    this.showLoading = true;
+    (unidad = { ...unidad, estado: 'ACTIVO' }), (this.showLoading = true);
     this.subscriptions.push(
       this.ApiUnidad.crearUnidad(unidad).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
@@ -182,8 +180,15 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
         this.showLoading = false;
       },
     })
-  );
-}
+  )}
 
+  cambiosPendientes(): boolean {
+    return this.editElementIndex !== -1;
+  }
 
+  /*canDeactivate(component: CambiosPendientes, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot): Observable<boolean> | boolean {
+    return this.cambiosPendientes();
+  }*/
+
+  
 }

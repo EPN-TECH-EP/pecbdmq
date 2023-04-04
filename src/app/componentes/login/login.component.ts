@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AutenticacionService } from '../../servicios/autenticacion.service';
@@ -29,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Output()
-  emisor : EventEmitter<boolean>;
+  emisor: EventEmitter<boolean>;
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -41,9 +47,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.backgroundImage = 'url(/assets/bg.jpg)';
 
     if (this.autenticacionService.isUsuarioLoggedIn()) {
-      this.router.navigateByUrl('/principal');
+      this.router.navigate(['/principal']);
     } else {
-      this.router.navigateByUrl('/login');
+      this.router.navigate(['/login']);
     }
   }
 
@@ -57,9 +63,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.autenticacionService.agregaUsuarioACache(response.body);
 
           this.router.navigateByUrl('/principal');
-          this.showLoading = false;          
+          this.showLoading = false;
         },
-        error: (errorResponse: HttpErrorResponse) => {          
+        error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
           this.showLoading = false;
         },
@@ -68,7 +74,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private notificacion(errorResponse: HttpErrorResponse) {
-
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -85,6 +90,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
+    if (this.notificationRef) {
+      this.notificationRef.close();
+    }
+    
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
@@ -97,5 +106,4 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     window.location.reload();
   }
-  
 }

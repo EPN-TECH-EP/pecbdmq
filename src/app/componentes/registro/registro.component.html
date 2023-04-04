@@ -6,7 +6,8 @@
     <div class="column col-9 text-end">
       <h4 class="ms-5">
         <i class="fa-solid fa-user-graduate"></i>
-        Plataforma Educativa</h4>
+        Plataforma Educativa
+      </h4>
     </div>
   </div>
 
@@ -29,7 +30,7 @@
         novalidate
         (ngSubmit)="registroSubmit(form.value, form.valid)"
       >
-        <mdb-form-control class="my-5 ">
+        <mdb-form-control class="my-5">
           <input
             mdbInput
             type="text"
@@ -61,7 +62,7 @@
           </mdb-success>
         </mdb-form-control>
 
-        <mdb-form-control class="my-5 ">
+        <mdb-form-control class="my-5">
           <input
             mdbInput
             type="text"
@@ -83,15 +84,14 @@
           >
           <mdb-success
             *ngIf="
-            frmNombres?.valid &&
-              (frmNombres?.dirty || frmNombres?.touched)
+              frmNombres?.valid && (frmNombres?.dirty || frmNombres?.touched)
             "
           >
             <i class="fas fa-check-circle"></i>
           </mdb-success>
         </mdb-form-control>
 
-        <mdb-form-control class="my-5 ">
+        <mdb-form-control class="my-5">
           <input
             mdbInput
             type="text"
@@ -117,7 +117,7 @@
 
           <mdb-success
             *ngIf="
-            frmApellidos?.valid &&
+              frmApellidos?.valid &&
               (frmApellidos?.dirty || frmApellidos?.touched)
             "
           >
@@ -125,7 +125,7 @@
           </mdb-success>
         </mdb-form-control>
 
-        <mdb-form-control class="my-5 ">
+        <mdb-form-control class="my-5">
           <input
             mdbInput
             type="email"
@@ -149,10 +149,7 @@
             >Ingrese dirección de email</mdb-error
           >
           <mdb-success
-            *ngIf="
-            frmEmail?.valid &&
-              (frmEmail?.dirty || frmEmail?.touched)
-            "
+            *ngIf="frmEmail?.valid && (frmEmail?.dirty || frmEmail?.touched)"
           >
             <i class="fas fa-check-circle"></i>
           </mdb-success>
@@ -172,6 +169,7 @@
           <span *ngIf="showLoading">Espere...</span>
           <span *ngIf="!showLoading">Registro</span>
         </button>
+        
       </form>
     </div>
   </div>

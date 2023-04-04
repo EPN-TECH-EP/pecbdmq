@@ -7,15 +7,13 @@ import {TipoPruebaComponent} from './../../componentes/tipo-prueba/tipo-prueba.c
 import {TipoProcedenciaComponent} from './../../componentes/tipo-procedencia/tipo-procedencia.component';
 import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tipo-funcionario.component';
 import {ModuloComponent} from './../../componentes/modulo/modulo.component';
-import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
-import {CommonModule} from '@angular/common';
+//import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
+//import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
 import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formacion/menu-formacion.component';
 import {MateriaComponent} from 'src/app/componentes/materia/materia.component';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {PrincipalComponent} from '../../componentes/principal/principal.component';
 import {UsuariosComponent} from '../../componentes/admin/usuarios/usuarios.component';
 import {RolesUsuariosComponent} from '../../componentes/admin/roles-usuarios/roles-usuarios.component';
@@ -30,18 +28,18 @@ import {
 } from '../../componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.component';
 import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
-import {UnidadGestion} from '../../modelo/unidad-gestion';
-import {TipoFuncionario} from '../../modelo/tipo-funcionario';
 
+import {TipoFuncionario} from '../../modelo/tipo-funcionario';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
+import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 
 const routes: Routes = [
   {
-    path: 'principal', component: PrincipalComponent,
+    path: 'principal', component: PrincipalComponent, 
     children: [
       //sub-menu
       {path: 'bienvenida', component: BienvenidaComponent},
@@ -57,7 +55,11 @@ const routes: Routes = [
       },
       // componentes funcionales
       {path: 'materia', component: MateriaComponent},
-      {path: 'unidadGestion', component: UnidadGestionComponent},
+      {path: 'unidadGestion', 
+      //component: UnidadGestionComponent,
+      loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
+      //canDeactivate: [CambiosPendientesGuard],
+    },
       {path: 'tipoPrueba', component: TipoPruebaComponent},
       {path: 'aula', component: AulasComponent},
       {path: 'semestre', component: SemestreComponent},
@@ -89,15 +91,13 @@ const routes: Routes = [
     MenuAdminComponent,
 
   ],
-  imports: [
-    /*CommonModule,
-    HttpClientModule,
-    FormsModule,*/
+  imports: [    
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],
   providers: [
-    MdbPopconfirmService
+    MdbPopconfirmService,
+    CambiosPendientesGuard,
   ]
 })
 export class PrincipalModuleModule {

@@ -38,8 +38,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
 
     this.listaMenu = this.menuService.getMenu();
-    console.log(this.listaMenu);
-    console.log(this.menuService.getMenu());
+    //console.log(this.listaMenu);
+    //aconsole.log(this.menuService.getMenu());
 
     if (this.listaMenu === undefined || this.listaMenu.length == 0) {
       this.subscriptions.push(
