@@ -21,7 +21,6 @@ export class TipoFuncionarioService {
 
   public getTipoFuncionario(): Observable<TipoFuncionario[]> {
     return this.http.get<TipoFuncionario[]>(`${this.host}/tipofuncionario/listar`)
-    .pipe(map((response: any) => response.json()));
 
   }
 
