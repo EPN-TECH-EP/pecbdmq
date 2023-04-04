@@ -105,7 +105,7 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
 import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
-import { RequisitoComponent } from './componentes/requisito/requisito.component';
+//import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 
 @NgModule({
@@ -142,7 +142,7 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     TipoSancionComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
-    RequisitoComponent,
+    //RequisitoComponent,
     CatalogoEstadosComponent,
     MenuItemComponent
   ],
