@@ -27,7 +27,7 @@ export class AutenticacionService {
 
   public registro(usuario: Usuario): Observable<Usuario> {
 
-    console.log("AutenticacionService - usuario:"+ JSON.stringify(usuario));
+    //console.log("AutenticacionService - usuario:"+ JSON.stringify(usuario));
 
     return this.http.post<Usuario>(`${this.host}/usuario/registro`, usuario);
   }
@@ -78,8 +78,8 @@ export class AutenticacionService {
       respuesta = false;
     }
 
-    console.log("isUsuarioLoggedIn() ********** " + respuesta);
-    console.log(this.token);
+    //console.log("isUsuarioLoggedIn() ********** " + respuesta);
+    //console.log(this.token);
 
     return respuesta;
   }

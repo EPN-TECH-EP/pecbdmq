@@ -13,7 +13,7 @@ export class ModuloEstadosService {
   constructor(private http: HttpClient) { }
 
   public getModuloEstados(): Observable<ModuloEstados[]> {
-    return this.http.get<ModuloEstados[]>(`${this.host}/moduloestados/listar`);
+    return this.http.get<ModuloEstados[]>(`${this.host}/moduloestados/listartodo`);
   }
 
   public registroModuloEstados(moduloEstados: ModuloEstados): Observable<HttpResponse< ModuloEstados>> {
@@ -26,15 +26,8 @@ export class ModuloEstadosService {
     return this.http.delete<any>(`${this.host}/moduloestados/${codigo}`);
     }
 
-
-
-   public mostrarModuloEstados(codigo: any): Observable<string> {
-   return this.http.get<any>(`${this.host}/moduloestados/${codigo}`);
-   }
-
-
-
-
-
+    public mostrarModuloEstados(codigo: any): Observable<string> {
+    return this.http.get<any>(`${this.host}/moduloestados/${codigo}`);
+    }
 
 }

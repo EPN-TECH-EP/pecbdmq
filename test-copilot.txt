@@ -1,0 +1,235 @@
+// angular guard canDeactivate with lazy loading child modules
+
+Synthesizing 8/10 solutions
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes, CanDeactivate } from '@angular/router';
+import { AppComponent } from './app.component';
+import { CanDeactivateGuard } from './can-deactivate-guard.service';
+import { ChildComponent } from './child/child.component';
+import { HomeComponent } from './home/home.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: 'child',
+    component: ChildComponent,
+    canDeactivate: [CanDeactivateGuard],
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+
+// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+    canDeactivate: [CanDeactivateGuard]
+  },
+  {
+    path: 'lazy',
+    loadChildren: () => import('./lazy/lazy.module').then(m => m.LazyModule)
+  }
+];
+
+// lazy-routing.module.ts
+const routes: Routes = [
+  {
+    path: '',
+    component: LazyComponent,
+    canDeactivate: [CanDeactivateGuard]
+  }
+];
+
+// can-deactivate.guard.ts
+@Injectable({
+  providedIn: 'root'
+})
+export class CanDeactivateGuard implements CanDeactivate<unknown> {
+  canDeactivate(
+    component: CanDeactivateComponent,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return component.canDeactivate(currentRoute, currentState, nextState);
+  }
+}
+
+// can-deactivate.component.ts
+export interface CanDeactivateComponent {
+  canDeactivate(
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
+}
+
+// home.component.ts
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
+})
+export class HomeComponent implements CanDeactivateComponent {
+  constructor() { }
+
+  canDeactivate(
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return true;
+  }
+}
+
+// lazy.component.ts
+@Component({
+  selector: 'app-lazy',
+  templateUrl: './lazy.component.html',
+  styleUrls: ['./lazy.component.scss']
+})
+export class LazyComponent implements CanDeactivateComponent {
+  constructor() { }
+
+  canDeactivate(
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return true;
+  }
+}
+
+// lazy.module.ts
+@NgModule({
+  declarations: [LazyComponent],
+  imports: [
+    CommonModule,
+    LazyRoutingModule
+  ]
+})
+export class LazyModule { }
+
+// lazy-routing
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+// https://stackoverflow.com/questions/50408358/angular-guard-candeactivate-with-lazy-loading-child-modules
+//
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+//
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+// https://stackoverflow.com/questions/56960742/angular-guard-candeactivate-with-lazy-loading-child-modules
+// https://stackoverflow.com/questions/40012736/angular-2-router-guard-for-child-routes
+// https://stackoverflow.com/questions/35122719/angular-2-router-canactivatechild-and-canactivate
+// https://stackoverflow.com/questions/35471242/angular-2-router-canactivatechild-and-canactivate
+// https://stackoverflow.com/questions/39754954/using-canactivatechild-with-lazy-loaded-modules-in-angular-2
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36362694/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/35712328/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36362694/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/40012736/angular-2-router-canactivatechild-and-canactivate
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36362694/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/35712328/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36362694/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/40012736/angular-2-router-canactivatechild-and-canactivate
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36362694/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://stackoverflow.com/questions/36466413/angular-2-router-canactivatechild-for-lazy-loaded-modules
+// https://
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+// https://stackoverflow.com/questions/40314016/angular-guard-candeactivate-with-lazy-loading-child-modules
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/40314016/angular-guard-candeactivate-with-lazy-loading-child-modules
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router-how-to-navigate-to-a-child-route-from-a-parent-route
+// https://stackoverflow.com/questions/38500001/angular2-router-how-to-navigate-to-a-child-route
+// https://stackoverflow.com/questions/39482947/angular-2-router
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+// https://stackoverflow.com/questions/55193872/angular-guard-candeactivate-with-lazy-loading-child-modules
+// https://stackblitz.com/edit/angular-ivy-7fzjxk
+// https://angular.io/api/router/CanDeactivate
+// https://angular.io/guide/router#milestone-5-route-guards
+// https://angular.io/guide/router#milestone-6-canload-preloading
+// https://angular.io/guide/router#milestone-7-lazy-loading
+// https://angular.io/guide/router#milestone-8-code-splitting-with-lazy-loading
+// https://angular.io/guide/router#milestone-9-dynamic-components
+// https://angular.io/guide/router#milestone-10-activated-route
+// https://angular.io/guide/router#milestone-11-scroll-position-restoration
+// https://angular.io/guide/router#milestone-12-animations
+// https://angular.io/guide/router#milestone-13-preloading-strategies
+// https://angular.io/guide/router#milestone-14-resolvers
+// https://angular.io/guide/router#milestone-15-router-events
+// https://angular.io/guide/router#milestone-16-routerlink-active
+// https://angular.io/guide/router#milestone-17-routerlink-active-options
+// https://angular.io/guide/router#milestone-18-routerlink-active-class
+// https://angular.io/guide/router#milestone-19-routerlink-extras
+// https://angular.io/guide/router#milestone-20-routerlink-extras-animations
+// https://angular.io/guide/router#milestone-21-routerlink-extras-query-parameters
+// https://angular.io/guide/router#milestone-22-routerlink-extras-fragment
+// https://angular.io/guide/router#milestone-23-routerlink-extras-preserving-query-parameters
+// https://angular.io/guide/router#milestone-24-routerlink-extras-preserve-fragment
+// https://angular.io/guide/router#milestone-25-routerlink-extras-preserve-query-parameters
+// https://angular.io/guide/router#milestone-26-routerlink-extras-preserve-fragment-and-query-parameters
+// https://angular.io/guide/router#milestone-27-routerlink-extras-preserve-fragment-and-query-parameters-and-animation
+//
+
+=======
+
+// angular guard canDeactivate with lazy loading child modules
+// https://stackoverflow.com/questions/49702062/angular-guard-candeactivate-with-lazy-loading-child-modules
+// https://stackoverflow.com/questions/47120741/angular-5-lazy-loading-candeactivate
+
+// https://angular.io/guide/router#milestone-5-route-guards
+// https://angular.io/guide/router#milestone-6-lazy-loading
+
+// https://www.youtube.com/watch?v=8oIgKj7G1Hc&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=27&t=0s
+// https://www.youtube.com/watch?v=JZKjDZ6F5zI&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=28&t=0s
+// https://www.youtube.com/watch?v=2gQc8XJnTn4&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=29&t=0s
+// https://www.youtube.com/watch?v=4F4h0v1xWk0&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=30&t=0s
+
+// https://www.youtube.com/watch?v=3q3qy6Uk1hU&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=31&t=0s
+// https://www.youtube.com/watch?v=JZKjDZ6F5zI&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=28&t=0s
+// https://www.youtube.com/watch?v=2gQc8XJnTn4&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=29&t=0s
+// https://www.youtube.com/watch?v=4F4h0v1xWk0&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3

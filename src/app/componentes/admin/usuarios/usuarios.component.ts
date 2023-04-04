@@ -15,6 +15,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
 import { PopconfirmComponent } from '../../util/popconfirm/popconfirm.component';
 import { Router } from '@angular/router';
+import { MenuService } from 'src/app/servicios/menu.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -53,10 +54,13 @@ export class UsuariosComponent implements OnInit {
     private notificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private popconfirmService: MdbPopconfirmService,
-    private router: Router
+    private router: Router,
+    private menuService: MenuService,
   ) {}
 
   ngOnInit(): void {
+
+    console.log(this.menuService.getMenu());
 
     this.currentRoute = this.router.url;
 

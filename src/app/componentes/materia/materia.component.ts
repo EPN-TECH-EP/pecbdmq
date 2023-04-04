@@ -1,8 +1,7 @@
-import { Materia } from './../../modelo/materias';
+import { MateriaService } from './../../servicios/materia.service';
 import { MateriasTbl } from './../../modelo/util/materias-tbl';
-import { MateriaService } from '../../servicios/materia.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpErrorResponse, HttpResponse, HttpClient  } from '@angular/common/http';
+import { Component, OnInit, OnDestroy, Inject, Injectable  } from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
@@ -14,26 +13,36 @@ import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { Notificacion } from '../../util/notificacion';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { Materia } from 'src/app/modelo/materias';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 
+
 @Component({
   selector: 'app-materia',
   templateUrl: './materia.component.html',
   styleUrls: ['./materia.component.scss'],
 })
+// @Injectable()
+// export class MaService {
+//   constructor(private valueService: ValueService) { }
+//   getValue() { return this.valueService.getValue(); }
+// }
 export class MateriaComponent implements OnInit {
   materias: Materia[];
   materia: Materia;
   materiaEditForm: Materia;
-
+  public getMaterias:number[] = [];
+  public errorMessage:any;
 
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   public showLoading: boolean;
+  public userResponse: string;
+
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
   editElementIndex = -1;
@@ -47,7 +56,9 @@ export class MateriaComponent implements OnInit {
     'Nota Mínima',
   ];
 
+
   constructor(
+    private service: MateriaService,
     private notificationService: MdbNotificationService,
     private Api: MateriaService) {
     this.materias =[];
@@ -74,24 +85,32 @@ export class MateriaComponent implements OnInit {
   }
 
 }
-
-
-
-
-
-
-
-
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
 
   ngOnInit(): void {
-
+    this.makeAPICall();
     this.Api.getMaterias().subscribe((data) => {
       this.materias = data;
     });
+  }
+
+  makeAPICall(){
+    Promise.all([this.service.getMaterias()])
+      .then((response) => {
+        this.parseResponse(response);
+      })
+      .catch((error) => {
+        this.errorMessage = error;
+      })
+  }
+
+
+  parseResponse(response : any){
+    if(!response || !Array.isArray(response)) return;
+    this.getMaterias = response[0] ? response[0] : [];
   }
 
 
@@ -133,6 +152,7 @@ export class MateriaComponent implements OnInit {
   public registro(materia: Materia): void {
     materia={...materia, estado:'ACTIVO'};
     this.showLoading = true;
+    this.userResponse = 'Lunes';
     this.subscriptions.push(
       this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
