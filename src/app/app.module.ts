@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -107,6 +107,8 @@ import { PonderacionComponent } from './componentes/ponderacion/ponderacion.comp
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
+import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
 
 @NgModule({
   declarations: [
@@ -144,7 +146,9 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     ModuloEstadosComponent,
     //RequisitoComponent,
     CatalogoEstadosComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    EstadoPeriodoAcademicoComponent,
+    InscripcionComponent
   ],
   imports: [
     BrowserModule,
@@ -152,6 +156,7 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     // MDB
     MdbAccordionModule,
     MdbAutocompleteModule,

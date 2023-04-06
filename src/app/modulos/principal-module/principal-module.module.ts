@@ -1,3 +1,4 @@
+import { EstadoPeriodoAcademicoComponent } from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
 import { ModuloEstadosComponent } from './../../componentes/modulo-estados/modulo-estados.component';
@@ -39,7 +40,7 @@ import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 
 const routes: Routes = [
   {
-    path: 'principal', component: PrincipalComponent, 
+    path: 'principal', component: PrincipalComponent,
     children: [
       //sub-menu
       {path: 'bienvenida', component: BienvenidaComponent},
@@ -55,7 +56,7 @@ const routes: Routes = [
       },
       // componentes funcionales
       {path: 'materia', component: MateriaComponent},
-      {path: 'unidadGestion', 
+      {path: 'unidadGestion',
       //component: UnidadGestionComponent,
       loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
       //canDeactivate: [CambiosPendientesGuard],
@@ -80,7 +81,8 @@ const routes: Routes = [
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
-      {path: 'catalogo', component: CatalogoEstadosComponent}
+      {path: 'catalogo', component: CatalogoEstadosComponent},
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
     ],
   },
 ];
@@ -91,7 +93,7 @@ const routes: Routes = [
     MenuAdminComponent,
 
   ],
-  imports: [    
+  imports: [
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],

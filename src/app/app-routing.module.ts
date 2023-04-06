@@ -1,3 +1,4 @@
+import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentes/login/login.component';
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'cargaArchivo', component: CargaArchivoComponent },
+  { path: 'inscripcion', component: InscripcionComponent },
   {
     path: 'principal',
     component: PrincipalComponent,
