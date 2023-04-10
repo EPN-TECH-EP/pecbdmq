@@ -13,6 +13,7 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { Usuario } from '../../modelo/usuario';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { disableDebugTools } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-inscripcion',
@@ -23,6 +24,9 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   formularioInscripcion: FormGroup;
+  opcionSeleccionadaNacionalidad = '';
+  opcionSeleccionadaMeritoDeportivo: boolean = false;
+  opcionSeleccionadaMeritoAcademico: boolean= false;
   public radioNacidoEcuador = document.getElementById("radioNacidoEcuador");
   public radioExtranjero = document.getElementById("radioExtranjero");
   public radioComunidadFrontera = document.getElementById("radioComunidadFrontera");
@@ -44,6 +48,22 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmFechaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmTelefonoCelular: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmTelefonoConvencional: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmNacionalidad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmProvinciaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmCantonNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmProvinciaResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmCantonResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmDireccion: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmCallePrincipal: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmCalleSecundaria: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmNumeroCasa: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmTituloPais: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmTituloCiudad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmTituloColegio: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmTituloNombre: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmMerito: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmMeritoDeportivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmMeritoAcademico: new FormControl(null, { validators: Validators.required, updateOn: 'blur' })
     });}
 
     get frmCedula(): AbstractControl {
@@ -70,27 +90,59 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     get frmTelefonoConvencional(): AbstractControl {
       return this.formularioInscripcion.get('frmTelefonoConvencional')!;
     }
+    get frmNacionalidad(): AbstractControl {
+      return this.formularioInscripcion.get('frmCantonNacimiento')!;
+    }
+    get frmProvinciaNacimiento(): AbstractControl {
+      return this.formularioInscripcion.get('frmProvinciaNacimiento')!;
+    }
+    get frmCantonNacimiento(): AbstractControl {
+      return this.formularioInscripcion.get('frmCantonNacimiento')!;
+    }
+    get frmProvinciaResidencia(): AbstractControl {
+      return this.formularioInscripcion.get('frmProvinciaResidencia')!;
+    }
+    get frmCantonResidencia(): AbstractControl {
+      return this.formularioInscripcion.get('frmCantonResidencia')!;
+    }
+    get frmDireccion(): AbstractControl {
+      return this.formularioInscripcion.get('frmDireccion')!;
+    }
+    get frmCallePrincipal(): AbstractControl {
+      return this.formularioInscripcion.get('frmCallePrincipal')!;
+    }
+    get frmCalleSecundaria(): AbstractControl {
+      return this.formularioInscripcion.get('frmCalleSecundaria')!;
+    }
+    get frmNumeroCasa(): AbstractControl {
+      return this.formularioInscripcion.get('frmNumeroCasa')!;
+    }
+    get frmTituloPais(): AbstractControl {
+      return this.formularioInscripcion.get('frmTituloPais')!;
+    }
+    get frmTituloCiudad(): AbstractControl {
+      return this.formularioInscripcion.get('frmTituloCiudad')!;
+    }
+    get frmTituloColegio(): AbstractControl {
+      return this.formularioInscripcion.get('frmTituloColegio')!;
+    }
+    get frmTituloNombre(): AbstractControl {
+      return this.formularioInscripcion.get('frmTituloNombre')!;
+    }
+    get frmMerito(): AbstractControl {
+      return this.formularioInscripcion.get('frmMerito')!;
+    }
+    get frmMeritoDeportivo(): AbstractControl {
+      return this.formularioInscripcion.get('frmMeritoDeportivo')!;
+    }
+    get frmMeritoAcademico(): AbstractControl {
+      return this.formularioInscripcion.get('frmMeritoAcademico')!;
+    }
+
 
 
   ngOnInit(): void {
-    const radioNacidoEcuador = document.getElementById("radioNacidoEcuador");
-      const radioExtranjero = document.getElementById("radioExtranjero");
-      const radioComunidadFrontera = document.getElementById("radioComunidadFrontera");
-      const frmCantonNacimiento = document.getElementById("frmCantonNacimiento");
-      const frmProvinciaNacimiento = document.getElementById("frmProvinciaNacimiento");
-      // radioNacidoEcuador.addEventListener("click", () => {
-      //   frmCantonNacimiento.style.display = "block";
-      //   frmProvinciaNacimiento.style.display = "block";
-      // });
 
-      // radioComunidadFrontera.addEventListener("click", () => {
-      //   frmCantonNacimiento.style.display = "block";
-      //   frmProvinciaNacimiento.style.display = "block";
-      // });
-      // radioExtranjero.addEventListener("click", () => {
-      //   frmCantonNacimiento.style.display = "none";
-      //   frmProvinciaNacimiento.style.display = "none";
-      // });
   }
 
   myGroup = new FormGroup({
