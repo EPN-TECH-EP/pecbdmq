@@ -2,7 +2,10 @@
     <p class="fs-4 fw-bolder">Menú Profesionalización</p>
   
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
+
+      <menu-item *ngFor="let item of listaSubMenu" [menu]="item"></menu-item>
+
+      <!-- <div class="col">
         <a routerLink="/principal/semestre" class="link-dark">
           <div class="card h-100 text-center hover-shadow border">
             <i class="fa-solid fa-calendar fa-5x mt-5 text-primary text-opacity-50"></i>
@@ -12,9 +15,9 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
 
-      <div class="col">
+      <!-- <div class="col">
         <a routerLink="/principal/tipoFuncionario" class="link-dark">
           <div class="card h-100 text-center hover-shadow border">
             <i
@@ -28,9 +31,9 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
 
-      <div class="col">
+      <!-- <div class="col">
         <a routerLink="/principal/unidadGestion" class="link-dark">
           <div class="card h-100 text-center hover-shadow border">
             <i
@@ -44,9 +47,9 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
 
-      <div class="col">
+      <!-- <div class="col">
         <a routerLink="/principal/tipoBaja" class="link-dark">
           <div class="card h-100 text-center hover-shadow border">
             <i
@@ -60,7 +63,7 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
       
     </div>
   </div>

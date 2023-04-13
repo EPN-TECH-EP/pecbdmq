@@ -1,0 +1,181 @@
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Roles</p>
+  </div>
+</div>
+<div class="row justify-content">
+  <div class="col-12">
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <button
+      MdbRiple
+      class="btn btn-primary btn-sm ms-3"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+
+  <div class="datatable table-editor mt-4">
+    <form #form="ngForm" novalidate>
+      <table
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="roles"
+        [sort]="sort"
+      >
+        <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+            >
+              {{ header | titlecase }}
+            </th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody class="datatable-body">
+          <tr *ngIf="addRow" scope="row">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="nombre"
+                  name="nombre"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="rol.nombre"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="descripcion"
+                  name="descripcion"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="rol.descripcion"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                type="submit"
+                (click)="registro(form.value); addRow = false"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let rol of table.data; let index = index" scope="row">
+            <td style="min-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ rol.nombre }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="rolEditForm.nombre"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ rol.descripcion }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="rolEditForm.descripcion"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editar(index)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="eliminar(rol.codRol)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="actualizar(rol, form.value)"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editElementIndex = -1"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>

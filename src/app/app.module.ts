@@ -78,8 +78,8 @@ import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-pr
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
-import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+//import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
+//import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
 import { TipoDocumento } from './modelo/tipo-documento';
@@ -105,8 +105,11 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
 import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
+import { RolComponent } from './componentes/admin/rol/rol.component';
+import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
+
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
-import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+//import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -131,8 +134,8 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     TipoBajaComponent,
     TipoSancionComponent,
     PopconfirmComponent,
-    MenuEspecializacionComponent,
-    MenuProfesionalizacionComponent,
+    //MenuEspecializacionComponent,
+    //MenuProfesionalizacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
     ParaleloComponent,
@@ -143,8 +146,10 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     PonderacionComponent,
     ModuloEstadosComponent,
     //RequisitoComponent,
-    CatalogoEstadosComponent,
-    MenuItemComponent
+    CatalogoEstadosComponent,    
+    //MenuItemComponent
+    RolComponent,
+    MenuRolComponent,
   ],
   imports: [
     BrowserModule,

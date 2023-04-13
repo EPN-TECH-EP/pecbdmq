@@ -22,10 +22,12 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 export class PrincipalComponent implements OnInit, OnDestroy {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
+  listaMenuInicial: Menu[] = null;
   listaMenu: Menu[] = null;
+  estructuraMenu: Map<number, number[]> = new Map();
   private subscriptions: Subscription[] = [];
 
-  public sinMenu:boolean = false;
+  public sinMenu: boolean = false;
 
   constructor(
     private menuService: MenuService,
@@ -37,19 +39,25 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
 
-    this.listaMenu = this.menuService.getMenu();
+    this.listaMenuInicial = this.menuService.getMenu();
     //console.log(this.listaMenu);
-    //aconsole.log(this.menuService.getMenu());
+    //console.log(this.menuService.getMenu());
 
-    if (this.listaMenu === undefined || this.listaMenu.length == 0) {
+    if (
+      this.listaMenuInicial === undefined ||
+      this.listaMenuInicial.length == 0
+    ) {
       this.subscriptions.push(
         this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
           next: (response: Menu[]) => {
-            this.listaMenu = response;
+            this.listaMenuInicial = response;
             this.menuService.setMenu(response);
 
-            if (this.listaMenu.length === 0)
+            if (this.listaMenuInicial.length === 0) {
               this.sinMenu = true;
+            } else {
+              this.conformarMenu();
+            }
 
             if (this.router.url === '/principal') {
               this.router.navigate(['/principal/bienvenida']);
@@ -60,10 +68,51 @@ export class PrincipalComponent implements OnInit, OnDestroy {
           },
         })
       );
+    } else {
+      this.conformarMenu();
     }
 
     //TODO eliminar
     //this.printpath('', this.router.config);
+  }
+  conformarMenu() {
+    // conforma el menu, busca primero el primer nivel
+    for (let index = 0; index < this.listaMenuInicial.length; index++) {
+      const menu = this.listaMenuInicial[index];
+
+      if (menu.menu_padre === null) {
+        this.estructuraMenu.set(menu.codMenu, []);
+      } else {
+        let listaHijos = this.estructuraMenu.get(menu.menu_padre);
+        if (listaHijos !== undefined) {
+          listaHijos.push(menu.codMenu);
+          this.estructuraMenu.set(menu.menu_padre, listaHijos);
+        }
+      }
+    }
+
+    // estructura el menu definitivo
+    this.estructuraMenu.forEach((value: number[], key: number) => {
+      const menu = this.listaMenuInicial.find((m) => m.codMenu === key);
+      if (menu !== undefined) {
+        // añade el menú padre actual
+        if (this.listaMenu === null) {
+          this.listaMenu = [];          
+        }
+
+        this.listaMenu.push(menu);
+
+        // añade en orden los hijos del menú padre actual
+        const hijos: number[] = value;
+
+        hijos.forEach((id) => {
+          const menuHijo = this.listaMenuInicial.find((m) => m.codMenu === id);
+          if (menuHijo !== undefined) {
+            this.listaMenu.push(menuHijo);
+          }
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
