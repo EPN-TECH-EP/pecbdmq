@@ -55,8 +55,8 @@
 
         <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
-            <td>
-              <mdb-form-control>
+             <td>
+             <mdb-form-control>
                 <mdb-select
                   [(ngModel)]="moduloEstados.modulo"
                   id="modulo"
@@ -65,12 +65,17 @@
                   <mdb-option
                     *ngFor="let modulo of modulos"
                     [value]="modulo.cod_modulo"
-                    >{{ modulo.etiqueta }}
+                    >
                   </mdb-option>
                 </mdb-select>
                 <label mdbLabel class="form-label">Seleccione un módulo</label>
               </mdb-form-control>
             </td>
+
+
+
+
+
 
             <td>
               <mdb-form-control>

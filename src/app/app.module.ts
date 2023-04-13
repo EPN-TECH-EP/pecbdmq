@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -107,6 +107,10 @@ import { PonderacionComponent } from './componentes/ponderacion/ponderacion.comp
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { ConvocatoriaComponent } from './componentes/convocatoria/convocatoria.component';
+import { AconvocatoriaComponent } from './componentes/a-convocatoria/aconvocatoria.component';
+import { RequisitoComponent } from './componentes/requisito/requisito.component';
+import { Requisito } from './modelo/requisito';
 
 @NgModule({
   declarations: [
@@ -142,15 +146,18 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     TipoSancionComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
-    //RequisitoComponent,
     CatalogoEstadosComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    ConvocatoriaComponent,
+    AconvocatoriaComponent,
+    RequisitoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     // MDB
     MdbAccordionModule,
@@ -217,7 +224,8 @@ import { MenuItemComponent } from './componentes/util/menu-item/menu-item.compon
     Semestre,
     TipoPrueba,
     ModuloEstados,
-    CatalogoEstados
+    CatalogoEstados,
+    Requisito
 
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
