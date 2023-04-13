@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -109,7 +109,10 @@ import { RolComponent } from './componentes/admin/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
 
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
-//import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
+import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
+
 
 @NgModule({
   declarations: [
@@ -146,10 +149,14 @@ import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.componen
     PonderacionComponent,
     ModuloEstadosComponent,
     //RequisitoComponent,
-    CatalogoEstadosComponent,    
-    //MenuItemComponent
+
+    CatalogoEstadosComponent,
+    MenuItemComponent,
+    EstadoPeriodoAcademicoComponent,
+    InscripcionComponent
     RolComponent,
     MenuRolComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -157,6 +164,7 @@ import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.componen
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     // MDB
     MdbAccordionModule,
     MdbAutocompleteModule,
