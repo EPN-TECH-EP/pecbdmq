@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MenuItem } from 'src/app/modelo/admin/menu-item';
+import { Menu } from 'src/app/modelo/admin/menu';
 
 @Component({
-  selector: 'app-menu-item',
+  selector: 'menu-item',
   templateUrl: './menu-item.component.html',
   styleUrls: ['./menu-item.component.scss']
 })
 export class MenuItemComponent implements OnInit {
 
-  @Input() item!: MenuItem;
+  @Input() menu: Menu;
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.menu);
   }
 
 }
