@@ -1,3 +1,5 @@
+import { Provincia } from './../../modelo/provincia';
+import { Inscripcion } from './../../modelo/inscripcion';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
@@ -13,7 +15,10 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { Usuario } from '../../modelo/usuario';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CargaArchivoService } from 'src/app/servicios/carga-archivo';
+import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';
 import { disableDebugTools } from '@angular/platform-browser';
+import { ProvinciaService } from 'src/app/servicios/provincia.service';
 
 @Component({
   selector: 'app-inscripcion',
@@ -24,29 +29,69 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   formularioInscripcion: FormGroup;
-  opcionSeleccionadaNacionalidad = '';
+  inscripcion: Inscripcion;
+  inscripciones: Inscripcion[];
+  documentosInscripcion: File[];
+  provincias:Provincia[];
+  provincia:Provincia;
   opcionSeleccionadaMeritoDeportivo: boolean = false;
   opcionSeleccionadaMeritoAcademico: boolean= false;
+
   public radioNacidoEcuador = document.getElementById("radioNacidoEcuador");
   public radioExtranjero = document.getElementById("radioExtranjero");
   public radioComunidadFrontera = document.getElementById("radioComunidadFrontera");
   public showLoading: boolean;
+  public fileStatus = new FileUploadStatus();
+  public fileName: string;
+  public profileImage: File;
+  private maxArchivo: number = 0;
 
   constructor(
 
     public usuarioEnvio: Usuario,
     public usuarioFrm: UsuarioFrm,
     private autenticacionService: AutenticacionService,
-    private notificationService: MdbNotificationService
+    private cargaArchivoService: CargaArchivoService,
+    private notificationService: MdbNotificationService,
+    private ApiProvincia: ProvinciaService
   ) {
+
+    this.inscripcion ={
+      codigo: '' as any,
+      cedula: '' as any,
+      apellidos: '',
+      nombres: '',
+      email: '',
+      sexo: '',
+      fechaNacimiento: '' as any,
+      telCelular: '',
+      telConvencional: '' as any,
+      nacionalidad: '',
+      provinciaNacimiento: '',
+      cantonNacimiento: '',
+      provinciaResidencia: '',
+      cantonResidencia: '',
+      direccionActual: '',
+      callePrincipal: '',
+      calleSecundaria: '',
+      numeroCasa: '',
+      paisTitulo: '',
+      ciudadTitulo: '',
+      colegioTitulo: '',
+      nombreTitulo: '',
+      meritoAcademico: '',
+      meritoDeportivo: '',
+      pinSeguridad: '' as any,
+      estado: 'ACTIVO'
+  }
     this.formularioInscripcion = new FormGroup({
       frmCedula: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmApellidos: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmNombres: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmEmail: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmEmail: new FormControl(null, { validators: Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), updateOn: 'blur' }),
       frmSexo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmFechaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmTelefonoCelular: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmTelefonoCelular: new FormControl(null, { validators: Validators.pattern("[0-9]+"), updateOn: 'blur' }),
       frmTelefonoConvencional: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmNacionalidad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmProvinciaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
@@ -63,7 +108,9 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmTituloNombre: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmMerito: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmMeritoDeportivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmMeritoAcademico: new FormControl(null, { validators: Validators.required, updateOn: 'blur' })
+      frmMeritoAcademico: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmArchivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmPinSeguridad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
     });}
 
     get frmCedula(): AbstractControl {
@@ -142,12 +189,34 @@ export class InscripcionComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.ApiProvincia.getProvincias().subscribe((data) => {
+      this.provincias = data;
+    });
 
+    this.subscriptions.push(
+      this.cargaArchivoService.maxArchivo().subscribe({
+        next: (result) => {
+          this.maxArchivo = result;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+        },
+      })
+    );
   }
 
   myGroup = new FormGroup({
     frmProvinciaNacimiento: new FormControl()
 });
+
+
+public onProfileImageChange(event: any): void {
+  //console.log(event.target.files[0]);
+
+  this.fileName = event.target.files[0].name;
+  this.profileImage = event.target.files[0];
+}
+
 
   registroSubmit(usuario: UsuarioFrm, isValid: boolean) {
     this.showLoading = true;

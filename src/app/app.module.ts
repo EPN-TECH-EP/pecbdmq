@@ -109,6 +109,8 @@ import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-esta
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
+import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
+import { ValidacionInscripcionComponent } from './componentes/validacion-inscripcion/validacion-inscripcion.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +150,9 @@ import { InscripcionComponent } from './componentes/inscripcion/inscripcion.comp
     CatalogoEstadosComponent,
     MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
-    InscripcionComponent
+    InscripcionComponent,
+    ListaInscripcionComponent,
+    ValidacionInscripcionComponent
   ],
   imports: [
     BrowserModule,

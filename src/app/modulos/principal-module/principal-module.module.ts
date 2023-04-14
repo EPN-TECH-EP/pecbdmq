@@ -1,3 +1,4 @@
+import { ListaInscripcionComponent } from './../../componentes/lista-inscripcion/lista-inscripcion.component';
 import { EstadoPeriodoAcademicoComponent } from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
@@ -82,7 +83,9 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
-      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
+      {path: 'listaInscripcion', component: ListaInscripcionComponent}
+
     ],
   },
 ];
