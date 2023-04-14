@@ -63,6 +63,12 @@
                <strong>{{telConvencional}} </strong>
               </label>
             </mdb-form-control>
+            <mdb-form-control>
+              <small>Fecha inscripción: </small><br>
+              <label for="">
+               <strong>{{fechaInscripcion}} </strong>
+              </label>
+            </mdb-form-control>
           </div>
         </div>
       </div>
@@ -258,6 +264,121 @@
         <div class="row text-start">
           <h5>Lista de requisitos:</h5>
           <div class="col-md">
+            <div class="datatable table-editor mt-4">
+              <form #form="ngForm" novalidate>
+                <table
+                  class="table table-sm datatable-table"
+                  mdbTable
+                  mdbTableSort
+                  #table="mdbTable"
+                  #sortSearch="mdbTableSort"
+                  [dataSource]=""
+                  [sort]="sortSearch"
+                >
+                  <thead class="datatable-header">
+                    <tr>
+                      <th
+                        *ngFor="let header of headers"
+                        [mdbTableSortHeader]="header"
+                        scope="col"
+                        class="fw-bold fs-6"
+                      >
+                        {{ header | titlecase }}
+                      </th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody class="datatable-body">
+
+                    <tr *ngFor="let usuario of inscripciones; let index = index" scope="row">
+                      <td style="min-width: 50px; max-width: 50px">
+                        {{ usuario.nombreUsuario }}
+                      </td>
+
+                      <td style="min-width: 50px; max-width: 50px">
+                        {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
+                      </td>
+
+                      <td style="min-width: 50px; max-width: 50px">
+                        {{ usuario.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
+                      </td>
+
+                      <td style="min-width: 50px; max-width: 50px">
+                        <ng-container *ngIf="editElementIndex !== index">
+                          <input
+                            mdbCheckbox
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="active"
+                            name="active"
+                            [checked]="usuario.active"
+                            disabled="true"
+                          />
+                        </ng-container>
+                      </td>
+
+                      <td style="min-width: 50px; max-width: 50px">
+                        <ng-container *ngIf="editElementIndex !== index">
+                        <input
+                          mdbCheckbox
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="notLocked"
+                          name="notLocked"
+                          [checked]="usuario.notLocked"
+                          disabled="true"
+                        />
+                      </ng-container>
+
+                      </td>
+
+                      <td>
+                        <ng-container
+                          *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                        >
+                          <!-- <button
+                            class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="editar(index)"
+                            [disabled]="
+                              editElementIndex !== -1 && editElementIndex !== index
+                            "
+                          >
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button
+                            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="this.mensajeConfirmacion='¿Eliminar el usuario? Esta acción es irreversible'; openPopconfirm($event, index)"
+                            [disabled]="
+                              editElementIndex !== -1 && editElementIndex !== index
+                            "
+                          >
+                            <i class="fa fa-trash-alt"></i>
+                          </button> -->
+                        </ng-container>
+                        <ng-container *ngIf="editElementIndex === index">
+                          <!-- <button
+                            class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="actualizar(usuario, form.value)"
+                          >
+                            <i class="fa fa-check"></i>
+                          </button>
+                          <button
+                            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="deshacer(editElementIndex)"
+                          >
+                            <i class="fa fa-ban"></i>
+                          </button> -->
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+              <!--mdb-table-pagination #paginationSearch [entries]="10"></mdb-table-pagination -->
+            </div>
 
           </div>
 

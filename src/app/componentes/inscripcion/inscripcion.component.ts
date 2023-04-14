@@ -82,7 +82,8 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       meritoAcademico: '',
       meritoDeportivo: '',
       pinSeguridad: '' as any,
-      estado: 'ACTIVO'
+      estado: 'ACTIVO',
+      fechaInscripcion:''
   }
     this.formularioInscripcion = new FormGroup({
       frmCedula: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
@@ -111,6 +112,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmMeritoAcademico: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmArchivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmPinSeguridad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmFechaInscripcion: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
     });}
 
     get frmCedula(): AbstractControl {
@@ -185,7 +187,9 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     get frmMeritoAcademico(): AbstractControl {
       return this.formularioInscripcion.get('frmMeritoAcademico')!;
     }
-
+    get frmFechaInscripcion(): AbstractControl {
+      return this.formularioInscripcion.get('frmFechaInscripcion')!;
+    }
 
 
   ngOnInit(): void {

@@ -8,6 +8,9 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 })
 
 export class ValidacionInscripcionComponent implements OnInit {
+  editElementIndex = -1;
+  addRow = false;
+
   codigo: string | null = null;
   cedula: string | null = null;
   apellidos: string | null = null;
@@ -34,11 +37,17 @@ export class ValidacionInscripcionComponent implements OnInit {
   meritoDeportivo: string | null = null;
   pinSeguridad: string | null = null;
   estado: string | null = null;
+  fechaInscripcion: string | null = null;
 
   @Input() inscripciones: any[]; // aquí se recibe el array
   constructor(public modalRef: MdbModalRef<ValidacionInscripcionComponent>) {
   }
-
+  headers = [
+    'Requisito',
+    'Documento?',
+    'Aprodado?',
+    'Observaciones'
+  ]
   downloadFile() {
     const fileUrl = '../../../assets/EXPEDIENTE DE EJEMPLO.pdf';
     window.open(fileUrl, '_blank');

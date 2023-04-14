@@ -1,6 +1,4 @@
 import { ValidacionInscripcionComponent } from './../validacion-inscripcion/validacion-inscripcion.component';
-import { TipoDocumento } from '../../modelo/tipo-documento';
-import { TipoDocumentoService } from './../../servicios/tipo-documento.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -52,6 +50,7 @@ export class ListaInscripcionComponent implements OnInit {
     meritoDeportivo: '',
     pinSeguridad: 257612,
     estado: 'ACTIVO',
+    fechaInscripcion:'2023/14/04'
   }
 
   ];
@@ -84,6 +83,7 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
       pinSeguridad: 257612,
       estado: 'ACTIVO',
+      fechaInscripcion:'2023/15/04'
   },
   {
     codigo: 2,
@@ -112,6 +112,7 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: 'Atleta de alto rendimiento',
       pinSeguridad: 675432,
       estado: 'ACTIVO',
+      fechaInscripcion:'2023/16/04'
   },
   {
     codigo: 3,
@@ -140,6 +141,7 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
       pinSeguridad: 257612,
       estado: 'ACTIVO',
+      fechaInscripcion:'2023/17/04'
   },
   {
     codigo: 4,
@@ -168,6 +170,7 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
       pinSeguridad: 342567,
       estado: 'ACTIVO',
+      fechaInscripcion:'2023/17/04'
   },
 ];
 
@@ -186,7 +189,7 @@ options = [
  @ViewChild('table') table!: MdbTableDirective<Inscripcion>;
  editElementIndex = -1;
  addRow = false;
- headers = ['Cédula', 'Apellidos', 'Nombres', 'Sexo'];
+ headers = ['Cédula', 'Apellidos', 'Nombres', 'Sexo', 'Fecha Inscripción'];
 
  constructor( private notificationService: MdbNotificationService,
   private modalService: MdbModalService){
@@ -256,6 +259,7 @@ options = [
       meritoDeportivo: data ? data.meritoDeportivo : '',
       pinSeguridad: data ? data.pinSeguridad : '',
       estado: data ? data.estado : '',
+      fechaInscripcion: data ? data.fechaInscripcion : '',
 
       },
       ignoreBackdropClick: true,

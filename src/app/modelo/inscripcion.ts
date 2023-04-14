@@ -29,5 +29,6 @@ export class Inscripcion {
   public meritoDeportivo: string;
   public pinSeguridad: number;
   public estado: string;
+  public fechaInscripcion: string;
 
 }
