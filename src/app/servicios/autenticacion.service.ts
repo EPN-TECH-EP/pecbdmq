@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../modelo/usuario';
 import { Materia} from '../modelo/materias';
+import { LocalDataService } from './util/local-data.service';
 
 
 
@@ -19,7 +20,7 @@ export class AutenticacionService {
   private jwtHelper = new JwtHelperService();
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private lds:LocalDataService) { }
 
     public login(usuario: Usuario): Observable<HttpResponse<Usuario>> {
     return this.http.post<Usuario>(`${this.host}/usuario/login`, usuario, { observe: 'response' });
@@ -42,19 +43,19 @@ export class AutenticacionService {
 
   public guardaToken(token: string): void {
     this.token = token;
-    localStorage.setItem('token', token);
+    this.lds.saveData('token', token);
   }
 
   public agregaUsuarioACache(usuario: Usuario): void {
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    this.lds.saveData('usuario', JSON.stringify(usuario));
   }
 
   public obtieneUsuarioDeCache(): Usuario {
-    return JSON.parse(localStorage.getItem('usuario'));
+    return JSON.parse(this.lds.getData('usuario'));
   }
 
   public cargaToken(): void {
-    this.token = localStorage.getItem('token');
+    this.token = this.lds.getData('token');
   }
 
   public getToken(): string {

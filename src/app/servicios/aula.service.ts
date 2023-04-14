@@ -1,9 +1,9 @@
-import { Aula } from '../modelo/aula';
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { Aula } from '../modelo/aula';
 
 @Injectable({providedIn: 'root',})
 
@@ -25,7 +25,7 @@ export class AulaService {
     }
    public actualizarAula(aula: Aula, codigo:any): Observable<HttpResponse<Aula>> {
     return this.http.put<Aula>(`${this.host}/aula/${codigo}`, aula, { observe: 'response' });
-  }x
+  }
 
   // public obtenerUsuariosDeCacheLocal(): Aula[] {
   //   if (localStorage.getItem('materias')) {

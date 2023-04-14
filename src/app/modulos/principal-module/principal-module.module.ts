@@ -38,6 +38,12 @@ import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.compone
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
+import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
+import { CommonModule } from '@angular/common';
+import { LocalDataService } from 'src/app/servicios/util/local-data.service';
+import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
+import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+
 
 const routes: Routes = [
   {
@@ -76,6 +82,8 @@ const routes: Routes = [
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
       {path: 'admin/roles-usuarios', component: RolesUsuariosComponent},
+      {path: 'admin/rol', component: RolComponent},
+      {path: 'admin/menuRol', component: MenuRolComponent},
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'paralelo', component: ParaleloComponent},
@@ -93,16 +101,20 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MenuFormacionComponent,
+    MenuEspecializacionComponent,
+    MenuProfesionalizacionComponent,
     MenuAdminComponent,
-
+    MenuItemComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
+    CommonModule,
   ],
   exports: [RouterModule],
   providers: [
     MdbPopconfirmService,
     CambiosPendientesGuard,
+    LocalDataService,
   ]
 })
 export class PrincipalModuleModule {
