@@ -272,7 +272,7 @@
                   mdbTableSort
                   #table="mdbTable"
                   #sortSearch="mdbTableSort"
-                  [dataSource]=""
+                  [dataSource]="requisitosVal"
                   [sort]="sortSearch"
                 >
                   <thead class="datatable-header">
@@ -291,35 +291,62 @@
 
                   <tbody class="datatable-body">
 
-                    <tr *ngFor="let usuario of inscripciones; let index = index" scope="row">
+                    <tr *ngFor="let requisitoVal of requisitosVal; let index = index" scope="row">
                       <td style="min-width: 50px; max-width: 50px">
-                        {{ usuario.nombreUsuario }}
+                        {{ requisitoVal.nombre }}
                       </td>
-
-                      <td style="min-width: 50px; max-width: 50px">
-                        {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
-                      </td>
-
-                      <td style="min-width: 50px; max-width: 50px">
-                        {{ usuario.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
-                      </td>
-
                       <td style="min-width: 50px; max-width: 50px">
                         <ng-container *ngIf="editElementIndex !== index">
                           <input
                             mdbCheckbox
                             class="form-check-input"
                             type="checkbox"
-                            value=""
+                            value="requisitoVal.documento"
+                            [(ngModel)]="requisitoVal.documento"
                             id="active"
                             name="active"
-                            [checked]="usuario.active"
-                            disabled="true"
+                            [checked]="requisitoVal.documento"
+                            disabled="false"
                           />
                         </ng-container>
                       </td>
-
                       <td style="min-width: 50px; max-width: 50px">
+                        <ng-container *ngIf="editElementIndex !== index">
+                          <input
+                            mdbCheckbox
+                            class="form-check-input"
+                            type="checkbox"
+                            value="requisitoVal.aprobado"
+                            [(ngModel)]="requisitoVal.aprobado"
+                            id="active"
+                            name="active"
+                            [checked]="requisitoVal.aprobado"
+                            disabled="false"
+                          />
+                        </ng-container>
+                      </td>
+                      <td style="min-width: 50px; max-width: 50px">
+                        <ng-container *ngIf="editElementIndex !== index">
+                          <input
+                            mdbCheckbox
+                            class="form-check-input"
+                            type="checkbox"
+                            value="requisitoVal.reprobado"
+                            [(ngModel)]="requisitoVal.reprobado"
+                            id="active"
+                            name="active"
+                            [checked]="requisitoVal.reprobado"
+                            disabled="false"
+                          />
+                        </ng-container>
+                      </td>
+                      <td style="min-width: 50px; max-width: 50px">
+                        {{ requisitoVal.observacion }}
+                      </td>
+
+
+
+                      <!-- <td style="min-width: 50px; max-width: 50px">
                         <ng-container *ngIf="editElementIndex !== index">
                         <input
                           mdbCheckbox
@@ -333,7 +360,7 @@
                         />
                       </ng-container>
 
-                      </td>
+                      </td> -->
 
                       <td>
                         <ng-container
