@@ -39,7 +39,7 @@
           <!-- span
             *ngIf="!item.menu_padre"
             class="sidenav-subheading text-muted"
-            >{{ item.etiqueta }}            
+            >{{ item.etiqueta }}
           </span -->
           <a
             *ngIf="item.menu_padre"
@@ -57,7 +57,7 @@
     </ul>
   </mdb-sidenav>
 
-  <!-- 
+  <!--
     CONTENIDO
   -->
 
@@ -98,6 +98,7 @@
               role="button"
               aria-expanded="false"
             >
+              <span>{{nombreUsuario}}&nbsp;&nbsp;&nbsp;</span>
               <i class="fas fa-user"></i>
             </a>
             <ul
