@@ -42,6 +42,7 @@ import { CommonModule } from '@angular/common';
 import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
 import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
 
 
 const routes: Routes = [
@@ -102,12 +103,13 @@ const routes: Routes = [
     MenuProfesionalizacionComponent,
     MenuAdminComponent,
     MenuItemComponent,
+    BotonVolverComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
   ],
-  exports: [RouterModule],
+  exports: [RouterModule, BotonVolverComponent],
   providers: [
     MdbPopconfirmService,
     CambiosPendientesGuard,

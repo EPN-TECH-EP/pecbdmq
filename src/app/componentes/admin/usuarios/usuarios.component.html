@@ -1,3 +1,5 @@
+<app-boton-volver></app-boton-volver>
+
 <div class="container">
   <!-- Título de componente-->
   <div class="row m-3">
@@ -28,7 +30,7 @@
         #table="mdbTable"
         #sortSearch="mdbTableSort"
         [dataSource]="usuarios"
-        [sort]="sortSearch"        
+        [sort]="sortSearch"
       >
         <thead class="datatable-header">
           <tr>
@@ -183,7 +185,7 @@
                 id="notLocked"
                 name="notLocked"
                 [checked]="usuario.notLocked"
-                disabled="true"                
+                disabled="true"
               />
             </ng-container>
             <ng-container *ngIf="editElementIndex === index">
@@ -195,7 +197,7 @@
                 value=""
                 id="notLocked"
                 name="notLocked"
-                [checked]="usuarioFrm.notLocked"                
+                [checked]="usuarioFrm.notLocked"
                 [(ngModel)]="usuarioFrm.notLocked"
               />
             </ng-container>

@@ -8,16 +8,18 @@ import { MdbTableModule } from 'mdb-angular-ui-kit/table';
 import { HttpClientModule } from '@angular/common/http';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CambiosPendientesGuard } from '../guard/cambios-pendientes.guard';
+import {PrincipalModuleModule} from "./principal-module/principal-module.module";
 
 @NgModule({
-  imports: [
-    UnidadGestionRoutingModule,    
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    MdbTableModule,
-    MdbFormsModule,
-  ],
+    imports: [
+        UnidadGestionRoutingModule,
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        MdbTableModule,
+        MdbFormsModule,
+        PrincipalModuleModule,
+    ],
   declarations: [UnidadGestionComponent],
   providers: [CambiosPendientesGuard]
 })
