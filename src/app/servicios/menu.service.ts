@@ -29,4 +29,8 @@ export class MenuService {
   public setMenu(pMenu: Menu[]){
     this.menu = pMenu;
   }
+
+  public listarMenu(): Observable<Menu[]> {
+    return this.http.get<Menu[]>(`${this.host}/menu/listar`);
+  }
 }
