@@ -13,14 +13,14 @@
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
-      <i class="fa fa-plus"></i>
+      <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
     <hr/>
     <!-- Table -->
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
-          class="table datatable-table text-center"
+          class="table datatable-table"
           mdbTable
           mdbTableSort
           #table="mdbTable"
@@ -32,7 +32,7 @@
             <th *ngFor="let header of headers" scope="col">
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col"><b>Acciones</b></th>
+            <th scope="col" class="text-center"><b>Acciones</b></th>
           </tr>
           </thead>
           <!-- Table body -->
@@ -54,25 +54,23 @@
             </td>
 
             <!-- Buttons for add or cancel a register -->
-            <td>
+            <td class="text-center">
               <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
                 (click)=" createTipoBaja(form.value); addRow = false"
               >
-                <i class="fa fa-check"></i>
+                <i class="fa fa-check"></i> &nbsp;Agregar
               </button>
               <button
                 name="eliminar"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                 (click)="addRow = false"
-
               >
-                <i class="fa fa-ban"></i>
+                <i class="fa fa-ban"></i> &nbsp;Cancelar
               </button>
             </td>
           </tr>
-          <!-- Edit row -->
           <tr *ngFor="let tipoBaja of table.data; let index = index">
             <td>
               <!--Show baja-->
@@ -89,31 +87,28 @@
                     name="baja"
                     type="text"
                     class="form-control"
-
                     [(ngModel)]="tipoBajaEditForm.baja"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td class="text-center">
               <!--Buttons to delete -->
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  mdbTooltip="Editar registro"
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="editRow(index);"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
+                  mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                   (click)="deleteTipoBaja(tipoBaja.cod_tipo_baja)"
                 >
                   <i class="fa fa-trash-alt"></i>
@@ -122,16 +117,16 @@
               <!--Buttons to edit-->
               <ng-container *ngIf="editElementIndex === index">
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="updateTipoBaja(tipoBaja, form.value)"
                 >
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-check"></i> &nbsp;Guardar
                 </button>
                 <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                   (click)="undoRow()"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-ban"></i> &nbsp;Cancelar
                 </button>
               </ng-container>
             </td>
