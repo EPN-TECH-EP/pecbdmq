@@ -151,9 +151,9 @@ import { InscripcionComponent } from './componentes/inscripcion/inscripcion.comp
     //RequisitoComponent,
 
     CatalogoEstadosComponent,
-    MenuItemComponent,
+    //MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
-    InscripcionComponent
+    InscripcionComponent,
     RolComponent,
     MenuRolComponent,
 

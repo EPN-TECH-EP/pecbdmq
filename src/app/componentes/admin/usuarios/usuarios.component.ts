@@ -60,11 +60,13 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.menuService.getMenu());
+    // TODO: Quitar log
+    //console.log(this.menuService.getMenu());
 
     this.currentRoute = this.router.url;
 
-    console.log(this.currentRoute);
+    //TODO: Quitar log
+    //console.log(this.currentRoute);
 
     this.subscriptions.push(
       this.usuarioService.getUsuarios().subscribe(
