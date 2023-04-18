@@ -292,7 +292,7 @@
                   <tbody class="datatable-body">
 
                     <tr *ngFor="let requisitoVal of requisitosVal; let index = index" scope="row">
-                      <td style="min-width: 50px; max-width: 50px">
+                      <td style="min-width: 180px; max-width: 180px">
                         {{ requisitoVal.nombre }}
                       </td>
                       <td style="min-width: 50px; max-width: 50px">
@@ -310,7 +310,7 @@
                           />
                         </ng-container>
                       </td>
-                      <td style="min-width: 50px; max-width: 50px">
+                      <td style="min-width: 10px; max-width: 10px">
                         <ng-container *ngIf="editElementIndex !== index">
                           <input
                             mdbCheckbox
@@ -325,7 +325,7 @@
                           />
                         </ng-container>
                       </td>
-                      <td style="min-width: 50px; max-width: 50px">
+                      <td style="min-width: 10px; max-width: 10px">
                         <ng-container *ngIf="editElementIndex !== index">
                           <input
                             mdbCheckbox

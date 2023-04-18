@@ -14,15 +14,15 @@ export class ValidacionInscripcionComponent implements OnInit {
   requisitosVal: RequisitoVal[] = [
     {
         codigo: 1,
-        nombre: 'Cédula',
+        nombre: 'Título de Bachiller',
         documento: true,
-        aprobado: true,
-        reprobado: false,
+        aprobado: false,
+        reprobado: true,
         observacion: 'Ninguna',
     },
     {
       codigo: 2,
-      nombre: 'Cédula',
+      nombre: 'Planilla de agua o luz',
       documento: true,
       aprobado: true,
       reprobado: false,
@@ -30,15 +30,15 @@ export class ValidacionInscripcionComponent implements OnInit {
     },
     {
       codigo: 3,
-      nombre: 'Cédula',
-      documento: false,
+      nombre: 'Copia de cédula',
+      documento: true,
       aprobado: true,
       reprobado: false,
       observacion: 'Ninguna',
     },
     {
       codigo: 4,
-      nombre: 'Cédula',
+      nombre: 'Copia papeleta de votación',
       documento: true,
       aprobado: true,
       reprobado: false,

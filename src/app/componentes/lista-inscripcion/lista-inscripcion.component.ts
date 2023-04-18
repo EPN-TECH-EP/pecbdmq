@@ -48,7 +48,6 @@ export class ListaInscripcionComponent implements OnInit {
     nombreTitulo: 'Bachillerato General Unificado',
     meritoAcademico: '',
     meritoDeportivo: '',
-    pinSeguridad: 257612,
     estado: 'ACTIVO',
     fechaInscripcion:'2023/14/04'
   }
@@ -81,7 +80,7 @@ export class ListaInscripcionComponent implements OnInit {
       nombreTitulo: 'Bachillerato General Unificado',
       meritoAcademico: '',
       meritoDeportivo: '',
-      pinSeguridad: 257612,
+
       estado: 'ACTIVO',
       fechaInscripcion:'2023/15/04'
   },
@@ -110,7 +109,7 @@ export class ListaInscripcionComponent implements OnInit {
       nombreTitulo: 'Bachillerato Técnico en Contabilidad',
       meritoAcademico: '',
       meritoDeportivo: 'Atleta de alto rendimiento',
-      pinSeguridad: 675432,
+
       estado: 'ACTIVO',
       fechaInscripcion:'2023/16/04'
   },
@@ -139,7 +138,7 @@ export class ListaInscripcionComponent implements OnInit {
       nombreTitulo: 'Bachillerato Técnico en Contabilidad',
       meritoAcademico: '',
       meritoDeportivo: '',
-      pinSeguridad: 257612,
+
       estado: 'ACTIVO',
       fechaInscripcion:'2023/17/04'
   },
@@ -168,7 +167,7 @@ export class ListaInscripcionComponent implements OnInit {
       nombreTitulo: 'Bachillerato Técnico en Electricidad',
       meritoAcademico: 'Abanderado Pabellon Nacional',
       meritoDeportivo: '',
-      pinSeguridad: 342567,
+
       estado: 'ACTIVO',
       fechaInscripcion:'2023/17/04'
   },
@@ -257,7 +256,6 @@ options = [
       nombreTitulo: data ? data.nombreTitulo : '',
       meritoAcademico: data ? data.meritoAcademico : '',
       meritoDeportivo: data ? data.meritoDeportivo : '',
-      pinSeguridad: data ? data.pinSeguridad : '',
       estado: data ? data.estado : '',
       fechaInscripcion: data ? data.fechaInscripcion : '',
 

@@ -27,7 +27,7 @@ export class Inscripcion {
   public nombreTitulo: string;
   public meritoAcademico: string;
   public meritoDeportivo: string;
-  public pinSeguridad: number;
+
   public estado: string;
   public fechaInscripcion: string;
 

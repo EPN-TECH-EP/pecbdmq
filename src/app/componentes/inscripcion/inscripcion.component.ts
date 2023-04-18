@@ -1,6 +1,6 @@
 import { Provincia } from './../../modelo/provincia';
 import { Inscripcion } from './../../modelo/inscripcion';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   MdbNotificationRef,
@@ -10,22 +10,60 @@ import { Subscription } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
 import { UsuarioFrm } from 'src/app/modelo/util/usuario-frm';
-import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { Notificacion } from 'src/app/util/notificacion';
 import { Usuario } from '../../modelo/usuario';
 import { AlertaComponent } from '../util/alerta/alerta.component';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CargaArchivoService } from 'src/app/servicios/carga-archivo';
 import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';
-import { disableDebugTools } from '@angular/platform-browser';
 import { ProvinciaService } from 'src/app/servicios/provincia.service';
+import { MdbStepChangeEvent } from 'mdb-angular-ui-kit/stepper';
 
 @Component({
   selector: 'app-inscripcion',
   templateUrl: './inscripcion.component.html',
-  styleUrls: ['./inscripcion.component.scss']
+  styleUrls: ['./inscripcion.component.scss'],
 })
 export class InscripcionComponent implements OnInit, OnDestroy {
+  minDate = new Date(1994, 11, 31);
+  maxDate = new Date(2005, 12, 1);
+  translationOptions = {
+    title: 'Seleccionar Fecha',
+    monthsFull: [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    monthsShort: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
+    ],
+
+    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    weekdaysNarrow: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    okBtnText: 'Ok',
+    clearBtnText: 'Listo',
+    cancelBtnText: 'Cancelar',
+  };
   private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   formularioInscripcion: FormGroup;
@@ -43,14 +81,13 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   public showLoading: boolean;
   public fileStatus = new FileUploadStatus();
   public fileName: string;
-  public profileImage: File;
+  public docInscripcion: File;
   private maxArchivo: number = 0;
 
   constructor(
 
     public usuarioEnvio: Usuario,
     public usuarioFrm: UsuarioFrm,
-    private autenticacionService: AutenticacionService,
     private cargaArchivoService: CargaArchivoService,
     private notificationService: MdbNotificationService,
     private ApiProvincia: ProvinciaService
@@ -65,7 +102,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       sexo: '',
       fechaNacimiento: '' as any,
       telCelular: '',
-      telConvencional: '' as any,
+      telConvencional: '',
       nacionalidad: '',
       provinciaNacimiento: '',
       cantonNacimiento: '',
@@ -81,10 +118,9 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       nombreTitulo: '',
       meritoAcademico: '',
       meritoDeportivo: '',
-      pinSeguridad: '' as any,
       estado: 'ACTIVO',
       fechaInscripcion:''
-  }
+  },
     this.formularioInscripcion = new FormGroup({
       frmCedula: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmApellidos: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
@@ -92,14 +128,13 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmEmail: new FormControl(null, { validators: Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), updateOn: 'blur' }),
       frmSexo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmFechaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmTelefonoCelular: new FormControl(null, { validators: Validators.pattern("[0-9]+"), updateOn: 'blur' }),
+      frmTelefonoCelular: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmTelefonoConvencional: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmNacionalidad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+
       frmProvinciaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmCantonNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmProvinciaResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmCantonResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmDireccion: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmCallePrincipal: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmCalleSecundaria: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmNumeroCasa: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
@@ -107,11 +142,9 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmTituloCiudad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmTituloColegio: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmTituloNombre: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmMerito: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmMeritoDeportivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmMeritoAcademico: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmMeritoDeportivo: new FormControl(null, { updateOn: 'blur' }),
+      frmMeritoAcademico: new FormControl(null, { updateOn: 'blur' }),
       frmArchivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmPinSeguridad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
       frmFechaInscripcion: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
     });}
 
@@ -207,6 +240,10 @@ export class InscripcionComponent implements OnInit, OnDestroy {
         },
       })
     );
+
+
+
+
   }
 
   myGroup = new FormGroup({
@@ -214,44 +251,47 @@ export class InscripcionComponent implements OnInit, OnDestroy {
 });
 
 
-public onProfileImageChange(event: any): void {
-  //console.log(event.target.files[0]);
 
-  this.fileName = event.target.files[0].name;
-  this.profileImage = event.target.files[0];
+
+
+public subirArchivo(event: any): void {
+  let doc: File;
+  let docName: string;
+  //Para validar tamaño y extension pdf
+  const extension = '.pdf';
+  docName = event.target.files[0].name;
+  doc = event.target.files[0];
+  if (doc !== undefined) {
+    if (doc.size > this.maxArchivo) {
+      this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
+    } else if (!docName.endsWith(extension)) {
+      this.notificacion(null, 'El archivo debe ser de tipo .pdf');
+    }  else {
+      this.docInscripcion=doc;
+      this.notificacionOK('Archivo cargado');
+
+    }
+  }
 }
 
+onSubmit(): void {
+  this.formularioInscripcion.markAllAsTouched();
+}
+stepChange(event: MdbStepChangeEvent, form:NgForm){
+  const paso= event.activeStepIndex;
+    if (paso === 0 && !form.valid)
+    {
+         this.notificacion(null,'Debe Ingresar todos los valores');
+    } console.log(form);
 
-  registroSubmit(usuario: UsuarioFrm, isValid: boolean) {
+    }
+
+  inscripcionSubmit(inscripcion: Inscripcion , isValid: boolean) {
     this.showLoading = true;
 
-    this.usuarioFrm = usuario;
-
     if (isValid) {
-      // transforma a tipo compatible para servicio
-
-      this.usuarioEnvio.nombreUsuario = this.usuarioFrm.nombreUsuario;
 
 
-      this.usuarioEnvio.codDatosPersonales.$nombre = this.usuarioFrm.nombre;
-      this.usuarioEnvio.codDatosPersonales.$apellido = this.usuarioFrm.apellido;
-      this.usuarioEnvio.codDatosPersonales.$correo_personal =this.usuarioFrm.correoPersonal;
-
-      this.subscriptions.push(
-        this.autenticacionService.registro(this.usuarioEnvio).subscribe({
-          next: (response: Usuario) => {
-            this.notificacionOK(
-              `Se ha registrado el usuario: ${usuario.nombreUsuario}. Se ha enviado la contraseña al correo proporcionado`
-            );
-            this.showLoading = false;
-          },
-
-          error: (errorResp: HttpErrorResponse) => {
-            this.notificacion(errorResp);
-            this.showLoading = false;
-          },
-        })
-      );
     } else {
       console.error('Formulario inválido!!!');
     }
@@ -266,21 +306,28 @@ public onProfileImageChange(event: any): void {
   }
 
   private notificacion(errorResponse?: HttpErrorResponse, mensaje?: string) {
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
+
+    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
+    let mensajeError = 'ERROR';
+    let codigoError = 0;
+
+    if (errorResponse) {
+      let customError: CustomHttpResponse = errorResponse.error;
+      mensajeError = customError.mensaje;
+      codigoError = errorResponse.status;
+    }
+
+    if (mensaje) {
+      mensajeError = mensaje;
+    }
+
 
     if (!mensajeError) {
-      mensajeError = 'Error inesperado';
+      mensajeError = 'Error inesperado: ' + codigoError;
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
-    if (codigoError === 0) {
-      mensajeError = 'Error de conexión al servidor';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
 
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
@@ -288,6 +335,7 @@ public onProfileImageChange(event: any): void {
       tipoAlerta
     );
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
