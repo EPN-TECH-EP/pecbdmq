@@ -44,7 +44,7 @@ export class RequisitoComponent implements OnInit {
         codFuncionario:0,
         nombre:'',
         descripcion:'',
-        esDocumento:''as any,
+        esDocumento: '',
         estado:'ACTIVO'
       }
       this.requisitoEditForm = {
@@ -52,7 +52,7 @@ export class RequisitoComponent implements OnInit {
         codFuncionario:0,
         nombre:'',
         descripcion:'',
-        esDocumento:''as any,
+        esDocumento:'',
         estado:'ACTIVO'
       };
     }
@@ -109,7 +109,7 @@ export class RequisitoComponent implements OnInit {
               codFuncionario:0,
               nombre:'',
               descripcion:'',
-              esDocumento:''as any,
+              esDocumento:'',
               estado:'ACTIVO'
             }
           },
@@ -132,7 +132,7 @@ export class RequisitoComponent implements OnInit {
         codFuncionario:0,
         nombre:'',
         descripcion:'',
-        esDocumento:''as any,
+        esDocumento:'',
         estado:'ACTIVO'
       };
       this.editElementIndex = -1;
@@ -162,7 +162,7 @@ export class RequisitoComponent implements OnInit {
             codFuncionario:0,
             nombre:'',
             descripcion:'',
-            esDocumento:''as any,
+            esDocumento:'',
             estado:'ACTIVO'
             }
           this.editElementIndex=-1;

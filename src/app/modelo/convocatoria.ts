@@ -14,5 +14,7 @@ export class Convocatoria {
   public codigoUnico: number;
   public cupoHombres: number;
   public cupoMujeres: number;
-
+  public correo: string;
+  public documentos: string;
+  public requisitos: string;
 }

@@ -65,17 +65,14 @@
                   <mdb-option
                     *ngFor="let modulo of modulos"
                     [value]="modulo.cod_modulo"
+                    {{ modulo. }}
+
                     >
                   </mdb-option>
                 </mdb-select>
                 <label mdbLabel class="form-label">Seleccione un módulo</label>
               </mdb-form-control>
             </td>
-
-
-
-
-
 
             <td>
               <mdb-form-control>
@@ -111,9 +108,6 @@
                 >
               </mdb-form-control>
             </td>
-
-
-
 
 
             <td>

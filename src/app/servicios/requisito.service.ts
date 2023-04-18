@@ -19,8 +19,8 @@ export class RequisitoService {
   public crearRequisito(requisito: Requisito): Observable<HttpResponse< Requisito>> {
     return this.http.post<Requisito>(`${this.host}/requisito/crear`, requisito, { observe: 'response' });
   }
-  public actualizarRequisito(requisito: Requisito, codigo:any): Observable<HttpResponse<Requisito>> {
-    return this.http.put<Requisito>(`${this.host}/requisito/${codigo}`, requisito, { observe: 'response' });
+  public actualizarRequisito(requisito: Requisito, codigoRequisito:any): Observable<HttpResponse<Requisito>> {
+    return this.http.put<Requisito>(`${this.host}/requisito/${codigoRequisito}`, requisito, { observe: 'response' });
   }
 
   public eliminarRequisito(codigoRequisito: any): Observable<string> {

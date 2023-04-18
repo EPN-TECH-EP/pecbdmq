@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { PopconfirmComponent } from '../util/popconfirm/popconfirm.component';
-import { AbstractControl, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule  } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule, NgForm  } from '@angular/forms';
 import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';
 import { CargaArchivoService } from 'src/app/servicios/carga-archivo';
 import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
@@ -17,6 +17,9 @@ import { RequisitoService } from 'src/app/servicios/requisito.service';
 import { MdbCheckboxChange } from 'mdb-angular-ui-kit/checkbox';
 import { Convocatoria } from 'src/app/modelo/convocatoria';
 import { ConvocatoriaService } from 'src/app/servicios/convocatoria.service';
+import { DatePipe } from '@angular/common';
+import { MdbStepChangeEvent } from 'mdb-angular-ui-kit/stepper';
+
 
 @Component({
   selector: 'app-convocatoria',
@@ -32,7 +35,13 @@ export class ConvocatoriaComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   public showLoading: boolean;
   public fileName: string;
-  public profileImage: File;
+  public docConvocatoria: File;
+  inputData: string;
+  labelData: string;
+
+  private maxArchivo: number = 0;
+
+  today: number = Date.now();
 
 
   validationForm: FormGroup;
@@ -41,13 +50,13 @@ export class ConvocatoriaComponent implements OnInit {
   popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
-  convocatorias: Convocatoria [];
+  convocatorias: Convocatoria []  = [];
   convocatoria: Convocatoria;
-  requisitos: Requisito[];
+  requisitos: Requisito[]  = [];
+  requisitosConvocatoria: Requisito[]  = [];
   requisito: Requisito;
   requisitoEditForm: Requisito;
 
-  private maxArchivo: number = 0;
   datepicker1= '' as any;
   datepicker2= '' as any;
   timepicker1= '' as any;
@@ -57,7 +66,46 @@ export class ConvocatoriaComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<Requisito>;
   editElementIndex = -1;
   addRow = false;
+
   headers = ['Datos de los Requerimientos'];
+  translationOptions = {
+    title: 'Seleccionar Fecha',
+    monthsFull: [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    monthsShort: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
+    ],
+
+    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    weekdaysNarrow: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    okBtnText: 'Ok',
+    clearBtnText: 'Listo',
+    cancelBtnText: 'Cancelar',
+  };
+  docSoporte: File;
 
 
 
@@ -65,30 +113,25 @@ export class ConvocatoriaComponent implements OnInit {
     private cargaArchivoService: CargaArchivoService,
     private notificationService: MdbNotificationService,
     private popconfirmService: MdbPopconfirmService,
-    private Api: RequisitoService,
+    private ApiRequisito: RequisitoService,
     private ApiConvocatoria: ConvocatoriaService,
+    private convocatoriaService: ConvocatoriaService
 
     ) {
+      this.requisitos= [];
       this.subscriptions = [];
        this.requisito= {
-          codigoRequisito: 0,
-         codFuncionario:0,
-         nombre:'',
-         descripcion: '',
-         esDocumento:'',
-         estado: 'ACTIVO'
-         }
-       this.requisitoEditForm = {
         codigoRequisito: 0,
         codFuncionario:0,
-       nombre:'',
-         descripcion: '',
-         esDocumento:'',
-         estado: 'ACTIVO'
-       };
+        nombre:'',
+        descripcion: '',
+        esDocumento:'',
+        estado: 'ACTIVO'
+         };
+
        this.subscriptions = [];
        this.convocatoria = {
-        codConvocatoria: 0,
+        codConvocatoria: null,
         codPeriodoEvaluacion: 0,
         codPeriodoAcademico:0,
         nombre:'',
@@ -97,9 +140,12 @@ export class ConvocatoriaComponent implements OnInit {
         fechaFinConvocatoria: '',
         horaInicioConvocatoria: '',
         horaFinConvocatoria: '',
-        codigoUnico: 0,
+        codigoUnico: null,
         cupoHombres:0,
         cupoMujeres: 0,
+        correo: '',
+        documentos: '',
+        requisitos: ''
             }
 
 
@@ -107,19 +153,35 @@ export class ConvocatoriaComponent implements OnInit {
     codigo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
     cuposHombres: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
     cuposMujeres: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+    fechaInicioConvocatoria: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+
     email: new FormControl(null, { validators: Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       , updateOn: 'blur' }),
+
+
     });
 
+    const datePipe = new DatePipe('en-US');
+    const myDate = new Date();
+    console.log(datePipe.transform(myDate, 'short'));
 
-  }  newRow: Requisito = {
-        codigoRequisito: 0,
-        codFuncionario:0,
-        nombre:'',
-        descripcion: '',
-        esDocumento:'',
-        estado: 'ACTIVO'
-};
+  }
+//   newRow: Requisito = {
+//         codigoRequisito: 0,
+//         codFuncionario:0,
+//         nombre:'',
+//         descripcion: '',
+//         esDocumento:'',
+//         estado: 'ACTIVO'
+// };
+
+sendDataToService() {
+  this.convocatoriaService.setInputData(this.inputData);
+}
+
+showDataInLabel() {
+  this.labelData = this.convocatoriaService.getInputData();
+}
 
   get codigo(): AbstractControl {
     return this.validationForm.get('codigo')!;
@@ -130,22 +192,26 @@ export class ConvocatoriaComponent implements OnInit {
   get cuposMujeres(): AbstractControl {
     return this.validationForm.get('cuposMujeres')!;
   }
+  get fechaInicioConvocatoria(): AbstractControl {
+    return this.validationForm.get('email')!;
+  }
+
   get email(): AbstractControl {
     return this.validationForm.get('email')!;
   }
 
 
 
-  addNewRow(): void {
-    this.requisitos = [...this.requisitos, { ...this.newRow }];
-    this.newRow.codigoRequisito = 0;
-    this.newRow.codFuncionario = 0;
-    this.newRow.nombre = '';
-    this.newRow.descripcion = '';
-    this.newRow.estado = 'ACTIVO';
-    this.addRow = false;
+  // addNewRow(): void {
+  //   this.requisitos = [...this.requisitos, { ...this.newRow }];
+  //   this.newRow.codigoRequisito = 0;
+  //   this.newRow.codFuncionario = 0;
+  //   this.newRow.nombre = '';
+  //   this.newRow.descripcion = '';
+  //   this.newRow.estado = 'ACTIVO';
+  //   this.addRow = false;
 
-  }
+  // }
 
 
   onSubmit(): void {
@@ -155,7 +221,7 @@ export class ConvocatoriaComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.Api.getRequisito().subscribe(data => {
+    this.ApiRequisito.getRequisito().subscribe(data => {
       this.requisitos = data;
     });
     this.ApiConvocatoria.getConvocatoria().subscribe(data => {
@@ -177,27 +243,15 @@ export class ConvocatoriaComponent implements OnInit {
 
 
   cargarArchivo() {
-    if (this.profileImage !== undefined) {
-      if (this.profileImage.size > this.maxArchivo) {
+    if (this.docConvocatoria !== undefined) {
+      if (this.docConvocatoria.size > this.maxArchivo) {
         this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
       } else {
-        const formData = new FormData();
+        /* const formData = new FormData();
         formData.append('nombreArchivo', this.fileName);
-        formData.append('archivo', this.profileImage);
+        formData.append('archivo', this.docConvocatoria); */
 
-        this.subscriptions.push(
-          this.cargaArchivoService.cargarArchivo(formData).subscribe({
-            next: (event: HttpEvent<any>) => {
-              this.reportUploadProgress(event);
-            },
-            error: (errorResponse) => {
-              //console.log(errorResponse);
 
-              this.notificacion(errorResponse);
-              this.fileStatus.status = 'done';
-            },
-          })
-        );
       }
     }
   }
@@ -208,7 +262,7 @@ export class ConvocatoriaComponent implements OnInit {
     switch (event.type) {
       case HttpEventType.UploadProgress:
         this.fileStatus.percentage = Math.round(
-          (5100 * event.loaded) / event.total
+          (100 * event.loaded) / event.total
         );
         this.fileStatus.status = 'progress';
         break;
@@ -258,10 +312,10 @@ export class ConvocatoriaComponent implements OnInit {
     if (mensaje) {
       mensajeError = mensaje;
     }
-    if (codigoError === 0) {
-      mensajeError = 'Error de conexión al servidor';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
+    // if (codigoError === 0) {
+    //   mensajeError = 'Error de conexión al servidor';
+    //   tipoAlerta = TipoAlerta.ALERTA_ERROR;
+    // }
 
     if (!mensajeError) {
       mensajeError = 'Error inesperado: ' + codigoError;
@@ -275,68 +329,105 @@ export class ConvocatoriaComponent implements OnInit {
       tipoAlerta
     );
   }
-  public onProfileImageChange(event: any): void {
-    //console.log(event.target.files[0]);
+  public subirArchivo(event: any, tipo: string): void {
+    let doc: File;
+    let docName: string;
+    //Para validar tamaño y extension pdf
+    const extension = '.pdf';
+    doc = event.target.files[0].name;
+    doc = event.target.files[0];
+    if (doc !== undefined) {
+      if (doc.size > this.maxArchivo) {
+        this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
+      } else if (!docName.endsWith(extension)) {
+        this.notificacion(null, 'El archivo debe ser de tipo .pdf');
+      }  else {
+        if (tipo === 'convocatoria') {
+          this.docConvocatoria = doc;
+        } else {
+          this.docSoporte = doc;
+        }
 
-    this.fileName = event.target.files[0].name;
-    this.profileImage = event.target.files[0];
+      }
+    }
   }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
 
-  public registro(requisito: Requisito): void {
-    requisito={...requisito, estado:'ACTIVO'};
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.Api.crearRequisito(requisito).subscribe({
-        next: (response: HttpResponse<Requisito>) => {
-          let nuevoRequisito: Requisito = response.body;
-          this.requisitos.push(nuevoRequisito);
-          this.notificacionOK('Semestre creada con éxito');
-          this.requisito ={
-            codigoRequisito: 0,
-            codFuncionario:0,
-            nombre:'',
-            descripcion: '',
-            esDocumento:'',
-            estado: 'ACTIVO'
-          }
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-        },
-      })
-    );
+  openPopconfirm(event: Event) {
+    const target = event.target as HTMLElement;
+    this.popconfirmRef = this.popconfirmService.open(PopconfirmComponent, target, { popconfirmMode: 'modal' });
   }
-  public eliminar(codigo: number): void {
+//actualizar
+public actualizar(requisito: Requisito, formValue): void {
+
+  requisito={ ...requisito,
+    codFuncionario: formValue.codFuncionario,
+    nombre: formValue.nombre,
+    descripcion: formValue.descripcion,
+    esDocumento: formValue.esDocumento,
+    estado: 'ACTIVO' }
+  this.showLoading = true;
+  this.subscriptions.push(
+    this.ApiRequisito.actualizarRequisito(requisito, requisito.codigoRequisito).subscribe({
+      next: (response) => {
+        this.notificacionOK('... actualizada con éxito');
+        this.requisitoEditForm[this.editElementIndex] = response.body;
+        this.showLoading = false;
+        this.ApiRequisito.getRequisito().subscribe(data => {
+          this.requisitos = data;
+        });
+        this.editElementIndex=-1;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.notificacion(errorResponse);
+      },
+    })
+  );
+}
+
+
+  public eliminar(codigoRequisito: number): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarRequisito(codigo).subscribe({
+      this.ApiRequisito.eliminarRequisito(codigoRequisito).subscribe({
         next: () => {
           this.notificacionOK('Requisito eliminado con éxito');
           this.showLoading = false;
-          const index = this.requisitos.findIndex(convocatoria => convocatoria.codigoRequisito === codigo);
+          const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === codigoRequisito);
           this.requisitos.splice(index, 1);
           this.requisitos = [...this.requisitos]
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
+          console.log(errorResponse);
         },
       })
     );
   }
 
-  openPopconfirm(event: Event) {
-    const target = event.target as HTMLElement;
-    this.popconfirmRef = this.popconfirmService.open(PopconfirmComponent, target, { popconfirmMode: 'modal' });
+  public agregarRequisito(){
+    this.requisitosConvocatoria.push(this.requisitoEditForm);
+    this.editElementIndex = -1;
+    this.addRow = false;
+    console.log(this.requisitosConvocatoria);
   }
 
 
 
+  stepChange(event: MdbStepChangeEvent, form:NgForm){
+const paso= event.activeStepIndex;
+  if (paso === 0 && !form.invalid)
+  {
+       this.notificacion(null,'Debe Ingresar todos los valores');
+  } console.log(form);
+
+  }
+
 }
+
 
 
 

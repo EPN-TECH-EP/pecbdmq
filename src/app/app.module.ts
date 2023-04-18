@@ -111,6 +111,7 @@ import { ConvocatoriaComponent } from './componentes/convocatoria/convocatoria.c
 import { AconvocatoriaComponent } from './componentes/a-convocatoria/aconvocatoria.component';
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { Requisito } from './modelo/requisito';
+import { TablaComponent } from './tabla/tabla.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { Requisito } from './modelo/requisito';
     ConvocatoriaComponent,
     AconvocatoriaComponent,
     RequisitoComponent,
+    TablaComponent,
   ],
   imports: [
     BrowserModule,

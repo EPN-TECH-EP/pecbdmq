@@ -38,6 +38,7 @@ import { ComponenteNotaComponent } from '../../componentes/componente-nota/compo
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
 import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
+import { TablaComponent } from 'src/app/tabla/tabla.component';
 
 const routes: Routes = [
   {
@@ -84,7 +85,8 @@ const routes: Routes = [
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
       {path: 'convocatoria', component: ConvocatoriaComponent},
-      {path: 'requisito', component: RequisitoComponent}
+      {path: 'requisito', component: RequisitoComponent},
+      {path: 'tabla', component:TablaComponent}
     ],
   },
 ];

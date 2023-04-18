@@ -7,25 +7,26 @@
 
 <div class="row justify-content">
   <div class="col-12">
-
     <button
-      MdbRiple
-      class="btn btn-primary btn-sm ms-3"
-      [disabled]="editElementIndex !== -1"
-      (click)="addRow = true"
-    >
-      <i class="fa fa-plus"></i>
-    </button>
+    mdbRipple
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="addRow || editElementIndex !== -1"
+    (click)="addRow = true"
+  >
+    <i class="fa fa-plus"></i>
+  </button>
   </div>
-
   <hr />
-
-
+<div
+  class="datatable table-editor mt-4"
+  [ngClass]="{
+    'edited-table': addRow || editElementIndex !== -1
+  }"
+>
   <div class="datatable table-editor mt-3">
     <form #form="ngForm" >
       <table
         class="table table-sm datatable-table"
-        id="tblSemestre"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -37,17 +38,18 @@
           <tr align="center">
             <th
               *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
               scope="col"
               style="font-size: medium"
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            <th scope="col" ><b>Acciones</b></th>
             </tr>
         </thead>
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
-
+          <tr *ngIf="addRow" scope="row"
+          >
             <td>
               <mdb-form-control>
                 <input
@@ -74,20 +76,16 @@
             </td>
             <td align="center">
             <div class="col-md">
-              <div class="form-check form-check-inline">
+              <div class="form-check" align="center">
                 <input
                   mdbCheckbox
                   class="form-check-input"
                   type="checkbox"
-                  id="inlineCheckbox1"
-                  value="option1"
+                  [(ngModel)]="requisito.esDocumento"
                 />
-                <label class="form-check-label" for="inlineCheckbox1"></label>
               </div>
             </div>
           </td>
-
-
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
@@ -107,9 +105,10 @@
             </td>
           </tr>
 
-
-
-          <tr *ngFor="let requisito of requisitos let index = index" scope="row">
+          <tr *ngFor="let requisito of requisitos let index = index" scope="row"
+          scope="row"
+          [ngClass]="{ 'edited-row': editElementIndex === index }"
+          >
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container  *ngIf="editElementIndex !== index">
                 {{ requisito.nombre }}
@@ -128,6 +127,7 @@
               </ng-container>
             </td>
 
+
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container  *ngIf="editElementIndex !== index">
                 {{ requisito.descripcion }}
@@ -145,12 +145,12 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <td  align="center">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ requisito.esDocumento}}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
-                <div class="form-check ms-6 mt-1">
+                <div class="form-check ms-1 mt-1">
                   <input
                     mdbCheckbox
                     class="form-check-input"
@@ -160,8 +160,6 @@
                 </div>
               </ng-container>
             </td>
-
-
 
             <td align="center">
               <ng-container

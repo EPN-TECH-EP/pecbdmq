@@ -56,6 +56,10 @@ export class AconvocatoriaComponent implements OnInit {
         codigoUnico: 0,
         cupoHombres:0,
         cupoMujeres: 0,
+        correo: '',
+        documentos: '',
+        requisitos: ''
+
       }
       this.convocatoriaEditForm = {
         codConvocatoria: 0,
@@ -70,6 +74,10 @@ export class AconvocatoriaComponent implements OnInit {
         codigoUnico: 0,
         cupoHombres:0,
         cupoMujeres: 0,
+        correo: '',
+        documentos: '',
+        requisitos: ''
+
       };
      }
 
@@ -137,6 +145,10 @@ export class AconvocatoriaComponent implements OnInit {
         codigoUnico: 0,
         cupoHombres:0,
         cupoMujeres: 0,
+        correo: '',
+        documentos: '',
+        requisitos: ''
+
       }
       this.editElementIndex = -1;
     }
