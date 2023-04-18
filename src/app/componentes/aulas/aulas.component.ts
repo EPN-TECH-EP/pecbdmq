@@ -38,13 +38,7 @@ export class AulasComponent implements OnInit {
     'Nombre',
     'Capacidad',
     'Tipo',
-    'Pcs',
-    'Impresoras',
-    'Internet',
-    'Proyectores',
-    'Instructor',
     'Sala Ocupada',
-
   ];
 
   constructor(
@@ -83,6 +77,13 @@ export class AulasComponent implements OnInit {
   ngOnInit(): void {
       this.Api.getAula().subscribe(data => {
         this.aulas = data;
+        this.aulas.forEach((aula) => {
+          delete aula.pcs;
+          delete aula.impresoras;
+          delete aula.internet;
+          delete aula.proyectores;
+          delete aula.instructor;
+        })
       });
   }
   search(event: Event): void {

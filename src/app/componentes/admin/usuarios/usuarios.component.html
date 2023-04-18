@@ -208,6 +208,7 @@
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
+                  mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="editar(index)"
                   [disabled]="
@@ -217,6 +218,7 @@
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
+                  mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="this.mensajeConfirmacion='¿Eliminar el usuario? Esta acción es irreversible'; openPopconfirm($event, index)"
                   [disabled]="
@@ -228,16 +230,16 @@
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(usuario, form.value)"
                 >
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-check"></i> Guardar
                 </button>
                 <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                   (click)="deshacer(editElementIndex)"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-ban"></i> Cancelar
                 </button>
               </ng-container>
             </td>

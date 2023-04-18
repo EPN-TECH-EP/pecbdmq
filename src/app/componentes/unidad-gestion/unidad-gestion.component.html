@@ -16,7 +16,7 @@
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true; "
   >
-    <i class="fa fa-plus"></i>
+    <i class="fa fa-plus"></i> &nbsp;Agregar
   </button>
 
   <hr />
@@ -65,18 +65,18 @@
           <!-- Buttons for add or cancel a register -->
             <td class="text-start" style="min-width: 10px; max-width: 10px">
               <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
                 (click)="registro(form.value); addRow = false"
               >
-                <i class="fa fa-check"></i>
+                <i class="fa fa-check"></i> Agregar
               </button>
               <button
                 name="eliminar"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                 (click)="addRow = false"
               >
-                <i class="fa fa-ban"></i>
+                <i class="fa fa-ban"></i> Cancelar
               </button>
             </td>
           </tr>
@@ -108,6 +108,7 @@
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
                 <button
+                  mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="editRow(index);"
                   [disabled]="
@@ -117,6 +118,7 @@
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
+                  mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="eliminar(Unidad.codigo,Unidad)"
                   [disabled]="
@@ -128,16 +130,18 @@
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(Unidad, form.value);"
                 >
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-check"></i> Guardar
                 </button>
                 <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                   (click)="undoRow()"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-ban"></i> Cancelar
                 </button>
               </ng-container>
             </td>

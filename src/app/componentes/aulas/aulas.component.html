@@ -28,7 +28,7 @@
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
-      <i class="fa fa-plus"></i>
+      <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
   </div>
 
@@ -102,7 +102,7 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td *ngIf="aula.pcs">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -115,7 +115,7 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td *ngIf="aula.impresoras">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -128,7 +128,7 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td *ngIf="aula.internet">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -142,7 +142,7 @@
               </mdb-form-control>
             </td>
 
-            <td>
+            <td *ngIf="aula.proyectores">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -155,7 +155,7 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td *ngIf="aula.instructor">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -186,18 +186,18 @@
 
             <td>
               <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
                 (click)="registro(form.value); addRow = false"
               >
-                <i class="fa fa-check"></i>
+                <i class="fa fa-check"></i> Agregar
               </button>
               <button
                 name="eliminar"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                 (click)="addRow = false"
               >
-                <i class="fa fa-ban"></i>
+                <i class="fa fa-ban"></i> Cancelar
               </button>
             </td>
           </tr>
@@ -259,7 +259,7 @@
               </ng-container>
             </td>
 
-            <td style="min-width: 50px">
+            <td *ngIf="aula.pcs">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.pcs }}
               </ng-container>
@@ -277,7 +277,7 @@
               </ng-container>
             </td>
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td *ngIf="aula.impresoras">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.impresoras }}
               </ng-container>
@@ -296,7 +296,7 @@
             </td>
 
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td *ngIf="aula.internet">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.internet }}
               </ng-container>
@@ -315,7 +315,7 @@
             </td>
 
 
-            <td style="min-width: 50px; max-width: 50px">
+            <td *ngIf="aula.proyectores">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.proyectores }}
               </ng-container>
@@ -334,7 +334,7 @@
             </td>
 
 
-            <td style="min-width: 50px">
+            <td *ngIf="aula.instructor">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.instructor }}
               </ng-container>
@@ -378,6 +378,7 @@
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
               <button
+                mdbTooltip="Editar registro"
               class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
               (click)="editar(index)"
               [disabled]="editElementIndex !== -1 && editElementIndex !== index"
@@ -386,6 +387,7 @@
               <i class="fa fa-edit"></i>
             </button>
                 <button
+                  mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="eliminar(aula.codigo)"
                   [disabled]="
@@ -397,16 +399,16 @@
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(aula, form.value);"
                 >
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-check"></i> Guardar
                 </button>
                 <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                   (click)="editElementIndex = -1"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-ban"></i> Cancelar
                 </button>
               </ng-container>
             </td>
