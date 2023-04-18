@@ -8,5 +8,6 @@ export class Periodo {
   public fechaFin: Date;
   public estado: string;
   public descripcion: string;
+  public documentos: string;
 
 }

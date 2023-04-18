@@ -1,7 +1,7 @@
 <!-- Inicio de la barra de progreso -->
 <div class="row justify-content-center">
   <div class="col-md-9">
-    <mdb-stepper #stepper [linear]="false"  (stepChange)="stepChange($event, form)" >
+    <mdb-stepper #stepper [linear]="false"   >
       <mdb-step [name]="'Crear Convocatoria'">
         <ng-template mdbStepIcon id="">
           <i class="fas fa-user"></i>
@@ -331,6 +331,21 @@
                         <td style="min-width: 120px; max-width: 120px">
                           {{ requisitoConvocatoria.nombre }}
                         </td>
+                        <td>
+                          <ng-container
+                            *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                          >
+                            <button
+                              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                              (click)="eliminar(requisitoConvocatoria.codigoRequisito)"
+                              [disabled]="
+                                editElementIndex !== -1 && editElementIndex !== index
+                              "
+                            >
+                              <i class="fa fa-trash-alt"></i>
+                            </button>
+                          </ng-container>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -368,52 +383,52 @@
         <div class="container">
           <div class="row">
             <!-- Columna 1 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div>
+                Código Unico:
                 <label>{{ convocatoria.codigoUnico }}</label>
               </div>
 
               <div>
+                Cupo Hombres:
                 <label>{{ convocatoria.cupoHombres }}</label>
               </div>
 
               <div>
+                Cupo Mujeres:
                 <label>{{ convocatoria.cupoMujeres }}</label>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div>
+                Fecha Inicio:
                 <label>{{
                   convocatoria.fechaInicioConvocatoria | date : "YYYY-MM-dd"
                 }}</label>
               </div>
               <div>
-                <label>{{
-                  convocatoria.fechaFinConvocatoria | date : "YYYY-MM-dd"
-                }}</label>
+                Fecha Fin:
+                <label> {{ convocatoria.fechaFinConvocatoria | date : "YYYY-MM-dd" }}</label>
               </div>
               <div>
+                Hora Inicio:
                 <label>{{ convocatoria.horaInicioConvocatoria }}</label>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div>
-                <label>{{ convocatoria.horaInicioConvocatoria }}</label>
+                Hora Fin:
+                <label>{{ convocatoria.horaFinConvocatoria }}</label>
               </div>
               <div>
-                Documento convocatoria
+                Documento convocatoria:
                 <label>{{ docConvocatoria }}</label>
               </div>
               <div>
-                Documento soporte
+                Documento soporte:
                 <label>{{ docSoporte }}</label>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md"></div>
           </div>
         </div>
 
@@ -421,9 +436,20 @@
         <!-- Datos lista Requisitos-->
         <h5>Datos lista:</h5>
         <div class="container">
-          <div class="row">
-            <!-- Columna 1 -->
-          </div>
+
+               <div>
+                 <tr>
+                    <td *ngFor="
+                         let requisitoConvocatoria of table.data;
+                         let index = index"
+                         style="min-width: 120px; max-width: 120px
+                         ">
+                         {{ requisitoConvocatoria.nombre }}
+
+                    </td>
+                  </tr>
+              </div>
+
         </div>
 
         <!-- email -->

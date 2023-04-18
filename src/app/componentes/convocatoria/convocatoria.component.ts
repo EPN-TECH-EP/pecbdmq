@@ -19,6 +19,8 @@ import { Convocatoria } from 'src/app/modelo/convocatoria';
 import { ConvocatoriaService } from 'src/app/servicios/convocatoria.service';
 import { DatePipe } from '@angular/common';
 import { MdbStepChangeEvent } from 'mdb-angular-ui-kit/stepper';
+import { PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
+import { Periodo } from 'src/app/modelo/periodo_academico';
 
 
 @Component({
@@ -38,6 +40,7 @@ export class ConvocatoriaComponent implements OnInit {
   public docConvocatoria: File;
   inputData: string;
   labelData: string;
+  validarPeriodo: string;
 
   private maxArchivo: number = 0;
 
@@ -56,6 +59,8 @@ export class ConvocatoriaComponent implements OnInit {
   requisitosConvocatoria: Requisito[]  = [];
   requisito: Requisito;
   requisitoEditForm: Requisito;
+  estadoPeriodo: Periodo[];
+
 
   datepicker1= '' as any;
   datepicker2= '' as any;
@@ -115,7 +120,8 @@ export class ConvocatoriaComponent implements OnInit {
     private popconfirmService: MdbPopconfirmService,
     private ApiRequisito: RequisitoService,
     private ApiConvocatoria: ConvocatoriaService,
-    private convocatoriaService: ConvocatoriaService
+    private convocatoriaService: ConvocatoriaService,
+    private ApiEstadoPeriodoAcademico: PeriodoAcademicoService,
 
     ) {
       this.requisitos= [];
@@ -129,6 +135,29 @@ export class ConvocatoriaComponent implements OnInit {
         estado: 'ACTIVO'
          };
 
+         this.requisitoEditForm = {
+          codigoRequisito: 0,
+          codFuncionario:0,
+          nombre:'',
+          descripcion: '',
+          esDocumento:'',
+          estado: 'ACTIVO'
+         };
+
+
+        //  this.subscriptions =[];
+        //  this.estadoPeriodo = {
+        //  codigo: null,
+        //  moduloEstados?: 0,
+        //  fechaInicio: '',
+        //  fechaFin: '',
+        //  estado: '',
+        //  descripcion: '',
+        //  documentos: ''
+
+        //  };
+
+
        this.subscriptions = [];
        this.convocatoria = {
         codConvocatoria: null,
@@ -141,8 +170,8 @@ export class ConvocatoriaComponent implements OnInit {
         horaInicioConvocatoria: '',
         horaFinConvocatoria: '',
         codigoUnico: null,
-        cupoHombres:0,
-        cupoMujeres: 0,
+        cupoHombres:null,
+        cupoMujeres: null,
         correo: '',
         documentos: '',
         requisitos: ''
@@ -228,6 +257,10 @@ showDataInLabel() {
       this.convocatorias = data;
     });
 
+    //  this.ApiEstadoPeriodoAcademico.getEstadoPeriodoAcademico().subscribe(data =>{
+    //   this.validarEstado
+
+    //  });
 
     this.subscriptions.push(
       this.cargaArchivoService.maxArchivo().subscribe({
@@ -242,6 +275,13 @@ showDataInLabel() {
   }
 
 
+  //  validarEstado(){
+  //   if (this.estadoPeriodo !==  )
+  //   this.notificacion(null, 'No se pude crear una convocatoria. Existe un proceso de formación en curso')
+  //   }
+
+
+
   cargarArchivo() {
     if (this.docConvocatoria !== undefined) {
       if (this.docConvocatoria.size > this.maxArchivo) {
@@ -250,8 +290,6 @@ showDataInLabel() {
         /* const formData = new FormData();
         formData.append('nombreArchivo', this.fileName);
         formData.append('archivo', this.docConvocatoria); */
-
-
       }
     }
   }
@@ -285,6 +323,7 @@ showDataInLabel() {
   }
 
 
+
   notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
@@ -292,8 +331,6 @@ showDataInLabel() {
       TipoAlerta.ALERTA_OK
     );
   }
-
-
 
 
   private notificacion(errorResponse?: HttpErrorResponse, mensaje?: string) {
@@ -360,33 +397,35 @@ showDataInLabel() {
     const target = event.target as HTMLElement;
     this.popconfirmRef = this.popconfirmService.open(PopconfirmComponent, target, { popconfirmMode: 'modal' });
   }
-//actualizar
-public actualizar(requisito: Requisito, formValue): void {
 
-  requisito={ ...requisito,
-    codFuncionario: formValue.codFuncionario,
-    nombre: formValue.nombre,
-    descripcion: formValue.descripcion,
-    esDocumento: formValue.esDocumento,
-    estado: 'ACTIVO' }
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiRequisito.actualizarRequisito(requisito, requisito.codigoRequisito).subscribe({
-      next: (response) => {
-        this.notificacionOK('... actualizada con éxito');
-        this.requisitoEditForm[this.editElementIndex] = response.body;
-        this.showLoading = false;
-        this.ApiRequisito.getRequisito().subscribe(data => {
-          this.requisitos = data;
-        });
-        this.editElementIndex=-1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-      },
-    })
-  );
-}
+
+//actualizar
+// public actualizar(requisito: Requisito, formValue): void {
+
+//   requisito={ ...requisito,
+//     codFuncionario: formValue.codFuncionario,
+//     nombre: formValue.nombre,
+//     descripcion: formValue.descripcion,
+//     esDocumento: formValue.esDocumento,
+//     estado: 'ACTIVO' }
+//   this.showLoading = true;
+//   this.subscriptions.push(
+//     this.ApiRequisito.actualizarRequisito(requisito, requisito.codigoRequisito).subscribe({
+//       next: (response) => {
+//         this.notificacionOK('... actualizada con éxito');
+//         this.requisitoEditForm[this.editElementIndex] = response.body;
+//         this.showLoading = false;
+//         this.ApiRequisito.getRequisito().subscribe(data => {
+//           this.requisitos = data;
+//         });
+//         this.editElementIndex=-1;
+//       },
+//       error: (errorResponse: HttpErrorResponse) => {
+//         this.notificacion(errorResponse);
+//       },
+//     })
+//   );
+// }
 
 
   public eliminar(codigoRequisito: number): void {
@@ -396,9 +435,9 @@ public actualizar(requisito: Requisito, formValue): void {
         next: () => {
           this.notificacionOK('Requisito eliminado con éxito');
           this.showLoading = false;
-          const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === codigoRequisito);
-          this.requisitos.splice(index, 1);
-          this.requisitos = [...this.requisitos]
+          const index = this.requisitosConvocatoria.findIndex(requisitosConvocatoria => requisitosConvocatoria.codigoRequisito === codigoRequisito);
+          this.requisitosConvocatoria.splice(index, 1);
+          this.requisitosConvocatoria = [...this.requisitosConvocatoria]
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -417,14 +456,14 @@ public actualizar(requisito: Requisito, formValue): void {
 
 
 
-  stepChange(event: MdbStepChangeEvent, form:NgForm){
-const paso= event.activeStepIndex;
-  if (paso === 0 && !form.invalid)
-  {
-       this.notificacion(null,'Debe Ingresar todos los valores');
-  } console.log(form);
+//   stepChange(event: MdbStepChangeEvent, form:NgForm){
+// const paso= event.activeStepIndex;
+//   if (paso === 0 && !form.valid)
+//   {
+//        this.notificacion(null,'Debe Ingresar todos los valores');
+//   } console.log(form);
 
-  }
+//   }
 
 }
 
