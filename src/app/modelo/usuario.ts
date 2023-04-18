@@ -15,13 +15,6 @@ export class Usuario {
   //public urlImagenPerfil: string;
   public active: boolean;
   public notLocked: boolean;
-
-
-
-
-
-
-
   public codDatosPersonales: DatoPersonal;
 
   constructor(){

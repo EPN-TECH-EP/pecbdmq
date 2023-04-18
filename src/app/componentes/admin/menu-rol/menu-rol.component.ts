@@ -69,6 +69,8 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
 
   private construirListaMenusAsignados(): void {
     this.menusAsignados = [];
+
+    //inicializa lista temporal de menus asignados
     this.menus.forEach((menu) => {
       let menuAsignado = new MenuAsignado();
       menuAsignado.codMenu = menu.codMenu;
@@ -90,7 +92,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
       }
     });
 
-    console.log(this.menusAsignados);
+    // console.log(this.menusAsignados);
   }
 
   public guardarCambios(): void {

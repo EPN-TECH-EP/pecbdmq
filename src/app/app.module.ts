@@ -66,7 +66,7 @@ import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
 //import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
-import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
+import { RolUsuarioComponent } from './componentes/admin/rol-usuario/rol-usuario.component';
 import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
 import { AulasComponent } from './componentes/aulas/aulas.component';
 import { SemestreComponent } from './componentes/semestre/semestre.component';
@@ -125,7 +125,7 @@ import { InscripcionComponent } from './componentes/inscripcion/inscripcion.comp
     MateriaComponent,
     //UnidadGestionComponent,
     UsuariosComponent,
-    RolesUsuariosComponent,
+    RolUsuarioComponent,
     TipoPruebaComponent,
     AulasComponent,
     SemestreComponent,

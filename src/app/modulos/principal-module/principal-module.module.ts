@@ -17,7 +17,7 @@ import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formaci
 import {MateriaComponent} from 'src/app/componentes/materia/materia.component';
 import {PrincipalComponent} from '../../componentes/principal/principal.component';
 import {UsuariosComponent} from '../../componentes/admin/usuarios/usuarios.component';
-import {RolesUsuariosComponent} from '../../componentes/admin/roles-usuarios/roles-usuarios.component';
+import {RolUsuarioComponent} from '../../componentes/admin/rol-usuario/rol-usuario.component';
 import {TipoDocumentoComponent} from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import {TipoNotaComponent} from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
@@ -81,7 +81,7 @@ const routes: Routes = [
       { path: 'componenteNota', component: ComponenteNotaComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
-      {path: 'admin/roles-usuarios', component: RolesUsuariosComponent},
+      {path: 'admin/roles-usuarios', component: RolUsuarioComponent},
       {path: 'admin/rol', component: RolComponent},
       {path: 'admin/menuRol', component: MenuRolComponent},
       // flujos y procesos
