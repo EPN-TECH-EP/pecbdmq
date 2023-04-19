@@ -56,6 +56,7 @@ import {
 import {
   ProcesoProfesionalizacionComponent
 } from "../../componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
+import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 
 
 const routes: Routes = [
@@ -100,6 +101,7 @@ const routes: Routes = [
       {path: 'admin/menuRol', component: MenuRolComponent},
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
+      {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},
