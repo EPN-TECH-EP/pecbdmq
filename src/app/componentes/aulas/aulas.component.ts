@@ -1,14 +1,18 @@
+import { Aula } from '../../modelo/aula';
+import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
 import { Subscription } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { Aula } from 'src/app/modelo/aula';
 import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
-import { AulaService } from 'src/app/servicios/aula.service';
+import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { Notificacion } from '../../util/notificacion';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef,MdbPopconfirmService,} from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
+import { AulaService } from 'src/app/servicios/aula.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -107,6 +111,8 @@ export class AulasComponent implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+
+
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -131,6 +137,7 @@ export class AulasComponent implements OnInit {
   }
 
 
+  //(property) next?: (value: Requisito[]) => void
 
   public registro(aula: Aula): void {
     aula={...aula, estado:'ACTIVO'};

@@ -75,7 +75,7 @@ export class UsuariosComponent implements OnInit {
             this.usuarios = response;
             this.showLoading = false;
           },
-          error: (errorResponse: HttpErrorResponse) => {          
+          error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             this.showLoading = false;
           },
@@ -121,7 +121,7 @@ export class UsuariosComponent implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  // funcionalidad 
+  // funcionalidad
 
   confirmaActualizar(usuario: Usuario){
     this.mensajeConfirmacion = '¿Actualizar los datos del usuario?';
@@ -136,14 +136,14 @@ export class UsuariosComponent implements OnInit {
     this.subscriptions.push(
       this.usuarioService.eliminarUsuario(usuario.nombreUsuario).subscribe(
         {
-          next: (response) => {            
+          next: (response) => {
             this.showLoading = false;
             this.editElementIndex=-1;
             this.usuarios.splice(this.indexEliminar, 1);
             this.usuarios = [...this.usuarios];
             this.notificacionOK('Usuario eliminado con éxito');
           },
-          error: (errorResponse: HttpErrorResponse) => {          
+          error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             this.showLoading = false;
           },
@@ -175,7 +175,7 @@ export class UsuariosComponent implements OnInit {
             this.editElementIndex=-1;
             this.notificacionOK('Usuario actualizado con éxito');
           },
-          error: (errorResponse: HttpErrorResponse) => {          
+          error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
             this.showLoading = false;
           },
@@ -185,7 +185,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   editar(index: number){
-    this.editElementIndex = index; 
+    this.editElementIndex = index;
     this.usuarioFrm={...this.usuarios[index]};
   }
 
@@ -238,5 +238,5 @@ export class UsuariosComponent implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-   
+
 }

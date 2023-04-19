@@ -1,3 +1,4 @@
+import { ListaInscripcionComponent } from './../../componentes/lista-inscripcion/lista-inscripcion.component';
 import { EstadoPeriodoAcademicoComponent } from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
@@ -10,7 +11,7 @@ import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tip
 import {ModuloComponent} from './../../componentes/modulo/modulo.component';
 //import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
-import {NgModule} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
 import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formacion/menu-formacion.component';
@@ -37,13 +38,16 @@ import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.compone
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
+import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
+import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
+import { TablaComponent } from 'src/app/tabla/tabla.component';
+
 import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import { CommonModule } from '@angular/common';
 import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
 import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
-
 
 const routes: Routes = [
   {
@@ -91,7 +95,11 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
-      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
+      {path: 'convocatoria', component: ConvocatoriaComponent},
+      {path: 'requisito', component: RequisitoComponent},
+      {path: 'tabla', component:TablaComponent},
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
+      {path: 'listaInscripcion', component: ListaInscripcionComponent},
     ],
   },
 ];
@@ -99,21 +107,17 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MenuFormacionComponent,
-    MenuEspecializacionComponent,
-    MenuProfesionalizacionComponent,
     MenuAdminComponent,
     MenuItemComponent,
     BotonVolverComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
-    CommonModule,
   ],
   exports: [RouterModule, BotonVolverComponent],
   providers: [
     MdbPopconfirmService,
     CambiosPendientesGuard,
-    LocalDataService,
   ]
 })
 export class PrincipalModuleModule {
