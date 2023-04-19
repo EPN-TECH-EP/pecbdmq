@@ -145,7 +145,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       frmMeritoDeportivo: new FormControl(null, { updateOn: 'blur' }),
       frmMeritoAcademico: new FormControl(null, { updateOn: 'blur' }),
       frmArchivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      frmFechaInscripcion: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+      frmFechaInscripcion: new FormControl(null, { updateOn: 'blur' }),
     });}
 
     get frmCedula(): AbstractControl {

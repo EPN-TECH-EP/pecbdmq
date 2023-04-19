@@ -68,15 +68,6 @@ export class ConvocatoriaComponent implements OnInit {
       this.requisitos = data;
     });
 
-    // this.requisitos = [
-    //   {codFuncionario: 0, codigoRequisito: 1, estado: "Activo", nombre: "I", descripcion: "I", esDocumento: "True"},
-    //   {codFuncionario: 0, codigoRequisito: 2, estado: "Activo", nombre: "II", descripcion: "II", esDocumento: "True"},
-    //   {codFuncionario: 0, codigoRequisito: 3, estado: "Activo", nombre: "III", descripcion: "III", esDocumento: "True"},
-    //   {codFuncionario: 0, codigoRequisito: 4, estado: "Activo", nombre: "IV", descripcion: "IV", esDocumento: "True"},
-    //   {codFuncionario: 0, codigoRequisito: 5, estado: "Activo", nombre: "V", descripcion: "V", esDocumento: "True"},
-    //   {codFuncionario: 0, codigoRequisito: 6, estado: "Activo", nombre: "VI", descripcion: "VI", esDocumento: "True"},
-    // ]
-
     this.servicioConvocatoria.getConvocatoria().subscribe(data => {
       this.convocatorias = data;
     });
