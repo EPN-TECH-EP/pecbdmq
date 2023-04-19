@@ -246,7 +246,7 @@
                   Campo Correcto
                 </mdb-success>
                   <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                  <mdb-datepicker [options]="translationOptions" [inline]="true" [minDate]="minDate" [maxDate]="maxDate" #datepicker></mdb-datepicker>
+                  <mdb-datepicker [options]="translationOptions" [inline]="true" [minDate]="minDate" [maxDate]="maxDate" #datepicker [startDate]="maxDate"></mdb-datepicker>
                 </mdb-form-control>
 
               </div>
@@ -977,8 +977,7 @@
                 id="next-step"
                 (click)="stepper.next()"
                 type="submit"
-                class="btn btn-primary"
-                [disabled]="formularioInscripcion.invalid || showLoading"
+                class="btn btn-primary"                
               >
                 Siguiente
               </button>

@@ -25,8 +25,8 @@ import { MdbStepChangeEvent } from 'mdb-angular-ui-kit/stepper';
   styleUrls: ['./inscripcion.component.scss'],
 })
 export class InscripcionComponent implements OnInit, OnDestroy {
-  minDate = new Date(1994, 11, 31);
-  maxDate = new Date(2005, 12, 1);
+  minDate = new Date(1980, 1, 31);
+  maxDate = new Date(2005, 12, 31);
   translationOptions = {
     title: 'Seleccionar Fecha',
     monthsFull: [
