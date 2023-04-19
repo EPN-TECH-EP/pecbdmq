@@ -18,6 +18,7 @@ export class RolUsuarioService {
   }
 
   public getRolUsuarioPorUsuario(codUsuario: string): Observable<RolUsuario[]> {
+    console.log('getRolUsuarioPorUsuario codUsuario: ' + codUsuario);
     return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listar/${codUsuario}`);
   }
 

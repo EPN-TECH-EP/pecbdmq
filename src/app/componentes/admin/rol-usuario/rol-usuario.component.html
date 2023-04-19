@@ -12,66 +12,86 @@
 <!---------------------------->
 
 <div class="row d-flex justify-content-center">
-  <div class="col-md-6">
+  <div class="column">
     <form #form="ngForm" novalidate (ngSubmit)="buscarUsuarios(form.value)">
-      <mdb-form-control class="my-5">
-        <input
-          mdbInput
-          type="text"
-          id="frmIdentificacion"
-          name="nombreUsuario"
-          class="form-control"
-          [ngModel]="usuarioFrm.nombreUsuario"
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          #frmIdentificacion="ngModel"
-        />
-        <label mdbLabel class="form-label" for="frmIdentificacion"
-          >Identificación</label
-        >
-      </mdb-form-control>
-
-      <mdb-form-control class="my-5">
-        <input
-          mdbInput
-          type="text"
-          id="frmNombres"
-          name="nombre"
-          class="form-control"
-          [ngModel]="usuarioFrm.nombre"
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          #frmNombres="ngModel"
-        />
-        <label mdbLabel class="form-label" for="frmNombres">Nombres</label>
-      </mdb-form-control>
-
-      <mdb-form-control class="my-5">
-        <input
-          mdbInput
-          type="text"
-          id="frmApellidos"
-          name="apellido"
-          class="form-control"
-          [ngModel]="usuarioFrm.apellido"
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          #frmApellidos="ngModel"
-        />
-        <label mdbLabel class="form-label" for="frmApellidos">Apellidos</label>
-      </mdb-form-control>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="form.invalid || showLoading"
-      >
-        <span
-          *ngIf="showLoading"
-          class="spinner-border spinner-border-sm me-2"
-          role="status"
-          aria-hidden="true"
-        ></span>
-        <span *ngIf="showLoading">Espere...</span>
-        <span *ngIf="!showLoading">Buscar</span>
-      </button>
+      <div class="container">
+        <div class="row">
+          <div class="col-9">
+            <div class="alert alert-info" role="alert">
+              <i class="fa-solid fa-circle-info me-2"></i>
+              Puede buscar el usuario ingresando su número de identificación o nombre y apellidos</div>
+          </div>
+          </div>
+        <div class="row">
+          <div class="col-3">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                id="frmIdentificacion"
+                name="nombreUsuario"
+                class="form-control"
+                [ngModel]="usuarioFrm.nombreUsuario"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                #frmIdentificacion="ngModel"
+              />
+              <label mdbLabel class="form-label" for="frmIdentificacion"
+                >Identificación</label
+              >
+            </mdb-form-control>
+          </div>
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                id="frmNombres"
+                name="nombre"
+                class="form-control"
+                [ngModel]="usuarioFrm.nombre"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                #frmNombres="ngModel"
+              />
+              <label mdbLabel class="form-label" for="frmNombres"
+                >Nombres</label
+              >
+            </mdb-form-control>
+          </div>
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                id="frmApellidos"
+                name="apellido"
+                class="form-control"
+                [ngModel]="usuarioFrm.apellido"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                #frmApellidos="ngModel"
+              />
+              <label mdbLabel class="form-label" for="frmApellidos"
+                >Apellidos</label
+              >
+            </mdb-form-control>
+          </div>
+          <div class="col">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid || showLoading"
+            >
+              <span
+                *ngIf="showLoading"
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span *ngIf="showLoading">Espere...</span>
+              <span *ngIf="!showLoading">Buscar</span>
+            </button>            
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>
@@ -85,13 +105,11 @@
 <!-- Resutados de la búsqueda -->
 <div class="row d-flex justify-content-center" *ngIf="usuarios.length > 0">
   <div class="col-md-6 text-center">
-    
     <p class="fs-5 fw-bolder">Resultados</p>
-      
 
-    <div class="datatable mt-4">
+    <div class="datatable mt-4 datatable-sm table-responsive">
       <table
-        class="table datatable-table datatable-sm table-responsive"
+        class="table datatable-table"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -143,7 +161,7 @@
     <div>
       <p>
         Usuario actual:
-        <strong ms-2>{{ usuarioSeleccionado.nombreUsuario }}</strong>
+        <strong class="ms-2 text-primary" >{{ usuarioSeleccionado.nombreUsuario }}</strong>
       </p>
     </div>
 

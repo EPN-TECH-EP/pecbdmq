@@ -10,6 +10,9 @@ import { RolService } from 'src/app/servicios/rol.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { BuscarUsuarioFrm } from '../../../modelo/util/buscar-usuario-frm';
+import { switchMap } from 'rxjs';
+import { Notificacion } from 'src/app/util/notificacion';
+import { RolUsuarioId } from 'src/app/modelo/admin/rol-usuario-id';
 
 @Component({
   selector: 'app-rol-usuario',
@@ -45,8 +48,30 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     });
   }
 
-  public buscarUsuarioPorNombreUsuario(nombreUsuario: string) {    
+  public buscarUsuarioPorNombreUsuario(nombreUsuario: string) {
     this.usuarioService
+      .buscarPorNombreUsuario(nombreUsuario)
+      .pipe(
+        switchMap((usuario: Usuario) => {
+          if (usuario != null) {
+            this.usuarioSeleccionado = usuario;
+            this.showLoading = false;
+            return this.rolUsuarioService.getRolUsuarioPorUsuario(
+              usuario.codUsuario
+            );
+          } else {
+            this.showLoading = false;
+            Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'No se encontró el usuario');
+            return [];
+          }
+        })
+      )
+      .subscribe((data: RolUsuario[]) => {
+        this.rolUsuario = data;
+        this.construirListaRolesAsignados();
+      });
+
+    /* this.usuarioService
       .buscarPorNombreUsuario(nombreUsuario)
       .subscribe((data: Usuario) => {
         if (data != null) {
@@ -54,12 +79,16 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
           this.buscarRolesUsuario();
         }
-      });
+      }); */
   }
 
   public buscarUsuarioPorNombreApellido(nombre: string, apellido: string) {
+
+    const nombreEnviar = nombre?.length == 0 ? null : nombre;
+    const apellidoEnviar = apellido?.length == 0 ? null : apellido;
+
     this.usuarioService
-      .buscarPorNombreApellido({ nombre, apellido })
+      .buscarPorNombreApellido({ nombre: nombreEnviar, apellido: apellidoEnviar})
       .subscribe((data: Usuario[]) => {
         if (data != null) {
           this.usuarios = data;
@@ -73,8 +102,9 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       .getRolUsuarioPorUsuario(this.usuarioSeleccionado.codUsuario)
       .subscribe((data: RolUsuario[]) => {
         this.rolUsuario = data;
+        this.construirListaRolesAsignados();
       });
-      this.construirListaRolesAsignados();
+    
   }
 
   public construirListaRolesAsignados() {
@@ -102,7 +132,34 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     console.log(this.rolesAsignados);
   }
 
-  public guardarCambios(): void {}
+  public guardarCambios(): void {
+    if (this.cambiosPendientes) {
+      let nuevaAsignacion: RolUsuario[] = [];
+
+      this.rolesAsignados.forEach((rolAsignado) => {
+        if (rolAsignado.asignado) {
+          let rolUsuario = new RolUsuario();
+          rolUsuario.rolUsuarioId = new RolUsuarioId();
+          rolUsuario.rolUsuarioId.codRol = rolAsignado.codRol;
+          rolUsuario.rolUsuarioId.codUsuario = Number.parseInt(this.usuarioSeleccionado.codUsuario);
+          nuevaAsignacion.push(rolUsuario);
+        }
+      });
+
+      console.log(nuevaAsignacion);
+
+      this.rolUsuarioService.asignarRolUsuario(nuevaAsignacion).subscribe((data) => {
+        console.log(data);
+        this.cambiosPendientes = false;
+
+        Notificacion.notificacionOK(
+          this.notificationRef,
+          this.notificationService,
+          'Se guardaron los cambios'
+        );
+      });
+    }
+  }
 
   public hayUsuarioSeleccionado(): boolean {
     return (
@@ -112,13 +169,14 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
   }
 
   public buscarUsuarios(form: BuscarUsuarioFrm) {
-
     this.usuarioSeleccionado = null;
     this.usuarios = [];
     this.rolUsuario = [];
 
-    if ((form.nombre !== null || form.apellido !== null)
-      && (form?.nombre?.length > 0 || form?.apellido?.length > 0) )  {
+    if (
+      (form.nombre !== null || form.apellido !== null) &&
+      (form?.nombre?.trim.length > 0 || form?.apellido?.trim.length > 0)
+    ) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreApellido(form.nombre, form.apellido);
       //console.log('buscarUsuarioPorNombreApellido')
@@ -126,6 +184,8 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       this.showLoading = true;
       this.buscarUsuarioPorNombreUsuario(form.nombreUsuario);
       //console.log('buscarUsuarioPorNombreUsuario')
+    } else {
+      Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'Debe ingresar un criterio de búsqueda');
     }
 
     /* console.log(this.usuarioFrm);
@@ -138,8 +198,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     this.usuarioSeleccionado = usuario;
     this.buscarRolesUsuario();
   }
-
-
 
   // mdb
   allRowsSelected(): boolean {
