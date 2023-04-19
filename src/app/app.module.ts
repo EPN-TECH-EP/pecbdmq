@@ -112,6 +112,7 @@ import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.componen
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
+import { ProcesoFormacionComponent } from './componentes/formacion/proceso-formacion/proceso-formacion.component';
 
 
 @NgModule({
@@ -156,6 +157,7 @@ import { InscripcionComponent } from './componentes/inscripcion/inscripcion.comp
     InscripcionComponent,
     RolComponent,
     MenuRolComponent,
+    ProcesoFormacionComponent,
 
   ],
   imports: [

@@ -43,6 +43,7 @@ import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
 import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
+import {ProcesoFormacionComponent} from "../../componentes/formacion/proceso-formacion/proceso-formacion.component";
 
 
 const routes: Routes = [
@@ -91,7 +92,8 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
-      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
+      {path: 'formacion/proceso', component: ProcesoFormacionComponent},
     ],
   },
 ];
