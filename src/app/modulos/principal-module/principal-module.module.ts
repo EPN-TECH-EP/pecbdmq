@@ -10,14 +10,14 @@ import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tip
 import {ModuloComponent} from './../../componentes/modulo/modulo.component';
 //import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
-import {NgModule} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
 import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formacion/menu-formacion.component';
 import {MateriaComponent} from 'src/app/componentes/materia/materia.component';
 import {PrincipalComponent} from '../../componentes/principal/principal.component';
 import {UsuariosComponent} from '../../componentes/admin/usuarios/usuarios.component';
-import {RolesUsuariosComponent} from '../../componentes/admin/roles-usuarios/roles-usuarios.component';
+import {RolUsuarioComponent} from '../../componentes/admin/rol-usuario/rol-usuario.component';
 import {TipoDocumentoComponent} from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import {TipoNotaComponent} from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
@@ -37,13 +37,16 @@ import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.compone
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
-import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
+import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
+import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
+import { TablaComponent } from 'src/app/tabla/tabla.component';
+
+//import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import { CommonModule } from '@angular/common';
 import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
 import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
-import {ProcesoFormacionComponent} from "../../componentes/formacion/proceso-formacion/proceso-formacion.component";
 
 
 const routes: Routes = [
@@ -82,7 +85,7 @@ const routes: Routes = [
       { path: 'componenteNota', component: ComponenteNotaComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
-      {path: 'admin/roles-usuarios', component: RolesUsuariosComponent},
+      {path: 'admin/roles-usuarios', component: RolUsuarioComponent},
       {path: 'admin/rol', component: RolComponent},
       {path: 'admin/menuRol', component: MenuRolComponent},
       // flujos y procesos
@@ -92,19 +95,16 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
-      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
-      {path: 'formacion/proceso', component: ProcesoFormacionComponent},
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
     ],
   },
 ];
 
 @NgModule({
   declarations: [
-    MenuFormacionComponent,
-    MenuEspecializacionComponent,
-    MenuProfesionalizacionComponent,
+    //MenuFormacionComponent,
     MenuAdminComponent,
-    MenuItemComponent,
+    //MenuItemComponent,
     BotonVolverComponent,
   ],
   imports: [

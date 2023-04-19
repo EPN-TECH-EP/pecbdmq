@@ -7,7 +7,7 @@ import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service
 import { TipoNota } from 'src/app/modelo/tipo-nota';
 import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
 import { Periodo } from 'src/app/modelo/periodo_academico';
-import { periodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
+import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -97,7 +97,7 @@ export class PonderacionComponent implements OnInit {
     private ApiModulo: ModuloService,
     private ApiComponente: ComponenteNotaService,
     private ApiTipoNota: TipoNotaService,
-    private ApiPeriodoAcademico: periodoAcademicoService,
+    private ApiPeriodoAcademico: PeriodoAcademicoService,
     private notificationService: MdbNotificationService,
 
   ) {

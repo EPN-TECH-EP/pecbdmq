@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Usuario } from '../modelo/usuario';
 import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { NombreApellido } from '../modelo/util/nombre-apellido';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,15 @@ export class UsuarioService {
     }
     return null;
   }
+
+  public buscarPorNombreUsuario(nombreUsuario: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.host}/usuario/buscar/${nombreUsuario}`);
+  }
+
+  public buscarPorNombreApellido(nombreApellido: NombreApellido): Observable<Usuario[]> {
+    return this.http.post<Usuario[]>(`${this.host}/usuario/buscarNombreApellido`, nombreApellido);
+  }
+
 
   /*public crearUsuarioFormData(nombreUsuarioLogueado: string, usuario: Usuario, imagenPerfil: File): FormData {
     const formData = new FormData();

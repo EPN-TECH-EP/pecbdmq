@@ -90,7 +90,6 @@ export class SemestreComponent implements OnInit {
     }
 
 
-
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,

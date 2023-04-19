@@ -35,11 +35,11 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
     private menuRolService: MenuRolService,
     private rolService: RolService,
     private menuService: MenuService,
-    notificationService: MdbNotificationService) {
-      super(notificationService);
-    }    
-   
-  
+    notificationService: MdbNotificationService
+  ) {
+    super(notificationService);
+  }
+
   ngOnInit(): void {
     this.rolService.getRol().subscribe((data: Rol[]) => {
       this.roles = data;
@@ -61,16 +61,16 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
         .subscribe((data: MenuRol[]) => {
           this.menusRol = data;
 
-          if (this.menusRol.length > 0) {
-            this.construirListaMenusAsignados();
-            this.cambiosPendientes = false;
-          }
+          this.construirListaMenusAsignados();
+          this.cambiosPendientes = false;
         });
     }
   }
 
   private construirListaMenusAsignados(): void {
     this.menusAsignados = [];
+
+    //inicializa lista temporal de menus asignados
     this.menus.forEach((menu) => {
       let menuAsignado = new MenuAsignado();
       menuAsignado.codMenu = menu.codMenu;
@@ -92,7 +92,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
       }
     });
 
-    console.log(this.menusAsignados);
+    // console.log(this.menusAsignados);
   }
 
   public guardarCambios(): void {
@@ -115,10 +115,12 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
         console.log(data);
         this.cambiosPendientes = false;
 
-        Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'Se guardaron los cambios');
-
+        Notificacion.notificacionOK(
+          this.notificationRef,
+          this.notificationService,
+          'Se guardaron los cambios'
+        );
       });
-
     }
   }
 
@@ -134,7 +136,6 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
     this.cambiosPendientes = true;
 
     asignado.asignado = event.checked;
-    
   }
 
   toggleAll(event: MdbCheckboxChange): void {

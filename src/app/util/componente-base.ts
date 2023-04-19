@@ -8,8 +8,8 @@ import { Directive, OnDestroy } from '@angular/core';
 
 @Directive()
 export class ComponenteBase implements OnDestroy {
-  private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  protected subscriptions: Subscription[] = [];
+  protected notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   public showLoading: boolean = false;
 
   protected notificationService: MdbNotificationService;

@@ -66,7 +66,7 @@ import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
 //import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
-import { RolesUsuariosComponent } from './componentes/admin/roles-usuarios/roles-usuarios.component';
+import { RolUsuarioComponent } from './componentes/admin/rol-usuario/rol-usuario.component';
 import { TipoPruebaComponent } from './componentes/tipo-prueba/tipo-prueba.component';
 import { AulasComponent } from './componentes/aulas/aulas.component';
 import { SemestreComponent } from './componentes/semestre/semestre.component';
@@ -78,8 +78,8 @@ import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-pr
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-//import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
-//import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+import { MenuEspecializacionComponent } from './componentes/especializacion/menu-especializacion/menu-especializacion.component';
+import { MenuProfesionalizacionComponent } from './componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from './componentes/formacion/validacion/validacion.component';
 import { TipoDocumento } from './modelo/tipo-documento';
@@ -105,15 +105,21 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
 import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
-import { RolComponent } from './componentes/admin/rol/rol.component';
-import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
 
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { ConvocatoriaComponent } from './componentes/convocatoria/convocatoria.component';
+import { AconvocatoriaComponent } from './componentes/a-convocatoria/aconvocatoria.component';
+import { RequisitoComponent } from './componentes/requisito/requisito.component';
+import { Requisito } from './modelo/requisito';
+import { TablaComponent } from './tabla/tabla.component';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
-import { ProcesoFormacionComponent } from './componentes/formacion/proceso-formacion/proceso-formacion.component';
-
+import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
+import { ValidacionInscripcionComponent } from './componentes/validacion-inscripcion/validacion-inscripcion.component';
+import { RolComponent } from './componentes/admin/rol/rol.component';
+import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
+import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/menu-formacion.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +132,7 @@ import { ProcesoFormacionComponent } from './componentes/formacion/proceso-forma
     MateriaComponent,
     //UnidadGestionComponent,
     UsuariosComponent,
-    RolesUsuariosComponent,
+    RolUsuarioComponent,
     TipoPruebaComponent,
     AulasComponent,
     SemestreComponent,
@@ -138,8 +144,9 @@ import { ProcesoFormacionComponent } from './componentes/formacion/proceso-forma
     TipoBajaComponent,
     TipoSancionComponent,
     PopconfirmComponent,
-    //MenuEspecializacionComponent,
-    //MenuProfesionalizacionComponent,
+    MenuEspecializacionComponent,
+    MenuProfesionalizacionComponent,
+    MenuFormacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
     ParaleloComponent,
@@ -152,12 +159,17 @@ import { ProcesoFormacionComponent } from './componentes/formacion/proceso-forma
     //RequisitoComponent,
 
     CatalogoEstadosComponent,
-    //MenuItemComponent,
+    ConvocatoriaComponent,
+    AconvocatoriaComponent,
+    RequisitoComponent,
+    TablaComponent,
+    MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
+    ListaInscripcionComponent,
+    ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
-    ProcesoFormacionComponent,
 
   ],
   imports: [
@@ -165,6 +177,7 @@ import { ProcesoFormacionComponent } from './componentes/formacion/proceso-forma
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     // MDB

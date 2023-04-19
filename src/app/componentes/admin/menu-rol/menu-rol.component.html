@@ -12,20 +12,24 @@
       <i class="fas fa-user"></i>
     </ng-template>
 
-    <mdb-form-control>
-      <mdb-form-control>
-        <mdb-select [(ngModel)]="rolSeleccionado">
-          <mdb-option
-            *ngFor="let rol of roles"
-            [value]="rol"
-            [label]="rol.nombre"
-            >{{ rol.nombre }}
-            <span class="option-secondary-text">{{ rol.descripcion }}</span>
-          </mdb-option>
-        </mdb-select>
-        <label mdbLabel class="form-label">Seleccione el rol</label>
-      </mdb-form-control>
-    </mdb-form-control>
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-6">
+        <mdb-form-control>
+          <mdb-form-control>
+            <mdb-select [(ngModel)]="rolSeleccionado">
+              <mdb-option
+                *ngFor="let rol of roles"
+                [value]="rol"
+                [label]="rol.nombre"
+                >{{ rol.nombre }}
+                <span class="option-secondary-text">{{ rol.descripcion }}</span>
+              </mdb-option>
+            </mdb-select>
+            <label mdbLabel class="form-label">Seleccione el rol</label>
+          </mdb-form-control>
+        </mdb-form-control>
+      </div>
+    </div>
   </mdb-step>
 
   <mdb-step [name]="'Asignar menús'">
@@ -65,7 +69,7 @@
                 />
               </div>
                -->
-               Asignado
+              Asignado
             </th>
             <th *ngFor="let header of headers" scope="col">
               {{ header | titlecase }}
