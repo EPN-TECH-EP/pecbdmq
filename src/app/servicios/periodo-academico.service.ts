@@ -9,7 +9,7 @@ import { Periodo } from '../modelo/periodo_academico';
 
 @Injectable({providedIn: 'root',})
 
-export class periodoAcademicoService {
+export class PeriodoAcademicoService {
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -17,26 +17,23 @@ export class periodoAcademicoService {
   public getPeriodo(): Observable<Periodo[]> {
     return this.http.get<Periodo[]>(`${this.host}/periodoacademico/listar`);
   }
+  public getEstadoPeriodoAcademico(): Observable<Periodo[]> {
+    return this.http.get<Periodo[]>(`${this.host}/periodoacademico/validaestado`);
+  }
 
-  public registroPeriodo(periodo: Periodo): Observable<HttpResponse<Periodo>> {
+  public registroPeriodoAcademico(periodo: Periodo): Observable<HttpResponse<Periodo>> {
     return this.http.post<Periodo>(`${this.host}/periodoacademico/crear`, periodo, { observe: 'response' });
   }
 
-    public eliminarPeriodo(codigo: number): Observable<string> {
+    public eliminarPeriodoAcademico(codigo: number): Observable<string> {
     return this.http.delete<string>(`${this.host}/periodoacademico/${codigo}`);
     }
-   public actualizarPeriodo(periodo: Periodo, codigo:any): Observable<HttpResponse<Periodo>> {
+   public actualizarPeriodoAcademico(periodo: Periodo, codigo:any): Observable<HttpResponse<Periodo>> {
     return this.http.put<Periodo>(`${this.host}/periodoacademico/${codigo}`, periodo, { observe: 'response' });
   }
-  // public agregarSemestresACacheLocal(Semestres: Semestre[]): void {
-  //   localStorage.setItem('semestres', JSON.stringify(Semestres));
-  // }
 
-  // public obtenerSemestrePorPeriodoAcademico(semestre: Semestre) : Observable<Semestre[]>{
-  //   return this.http.get<Semestre[]>(`${this.host}/semestre/lista/${semestre.semestre}`)
-  // }
-  public obtener1Periodo(codigo: number): Observable<string> {
-    return this.http.get<string>(`${this.host}/periodoacademico/${codigo}`);
-    }
+  // public obtener1PeriodoAcademico(codigo: number): Observable<string> {
+  //   return this.http.get<string>(`${this.host}/periodoacademico/${codigo}`);
+  //   }
 
-}
+  }

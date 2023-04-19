@@ -11,7 +11,7 @@ import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tip
 import {ModuloComponent} from './../../componentes/modulo/modulo.component';
 //import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
-import {NgModule} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
 import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formacion/menu-formacion.component';
@@ -38,6 +38,9 @@ import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.compone
 import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
+import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
+import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
+import { TablaComponent } from 'src/app/tabla/tabla.component';
 
 import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import { CommonModule } from '@angular/common';
@@ -90,9 +93,11 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
+      {path: 'convocatoria', component: ConvocatoriaComponent},
+      {path: 'requisito', component: RequisitoComponent},
+      {path: 'tabla', component:TablaComponent},
       {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
-      {path: 'listaInscripcion', component: ListaInscripcionComponent}
-
+      {path: 'listaInscripcion', component: ListaInscripcionComponent},
     ],
   },
 ];

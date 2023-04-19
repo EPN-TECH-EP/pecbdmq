@@ -107,6 +107,11 @@ import { PonderacionComponent } from './componentes/ponderacion/ponderacion.comp
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
+import { ConvocatoriaComponent } from './componentes/convocatoria/convocatoria.component';
+import { AconvocatoriaComponent } from './componentes/a-convocatoria/aconvocatoria.component';
+import { RequisitoComponent } from './componentes/requisito/requisito.component';
+import { Requisito } from './modelo/requisito';
+import { TablaComponent } from './tabla/tabla.component';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
 import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
@@ -146,8 +151,11 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     TipoSancionComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
-    //RequisitoComponent,
     CatalogoEstadosComponent,
+    ConvocatoriaComponent,
+    AconvocatoriaComponent,
+    RequisitoComponent,
+    TablaComponent,
     //MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
@@ -161,6 +169,7 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     // MDB
@@ -228,7 +237,8 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     Semestre,
     TipoPrueba,
     ModuloEstados,
-    CatalogoEstados
+    CatalogoEstados,
+    Requisito
 
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],

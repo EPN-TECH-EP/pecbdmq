@@ -73,6 +73,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
+
+
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -93,7 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.notificationRef) {
       this.notificationRef.close();
     }
-    
+
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,

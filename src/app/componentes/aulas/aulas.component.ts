@@ -111,6 +111,8 @@ export class AulasComponent implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+
+
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -135,6 +137,7 @@ export class AulasComponent implements OnInit {
   }
 
 
+  //(property) next?: (value: Requisito[]) => void
 
   public registro(aula: Aula): void {
     aula={...aula, estado:'ACTIVO'};

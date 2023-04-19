@@ -1,0 +1,491 @@
+ <!-- Título de componente
+ <div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Actualización de Convocatoria</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+
+  <button
+    MdbRiple
+    class="btn btn-primary btn-sm ms-3"
+    id="btnAgregarFila"
+    [disabled]="editElementIndex !== -1"
+    (click)="addRow = true"
+
+  >
+    <i class="fa fa-plus"></i>
+  </button>
+
+  <div class="datatable table-editor mt-3">
+    <form #form="ngForm" >
+      <table
+        class="table table-sm datatable-table"
+        id="tblSemestre"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="convocatorias"
+        [sort]="sort"
+      >
+        <thead class="datatable-header">
+          <tr align="center">
+
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              style="font-size: medium"
+            >
+              <b> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            </tr>
+        </thead>
+        <tbody class="datatable-body">
+          <tr *ngIf="addRow" scope="row">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="convocatoria"
+                  name="codigo_convocatoria"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="convocatoria.codigo_convocatoria"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput1"
+                  [mdbDatepicker]="datepicker1"
+                  id="fechaInicio"
+                  name="fechaInicio"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="convocatoria.fechaInicio"
+                  required
+                />
+                <label mdbLabel="mdbLabel1" for="exampleDatepicker" class="form-label">Selecciona una fecha</label>
+                <mdb-datepicker-toggle [mdbDatepicker]="datepicker1"></mdb-datepicker-toggle>
+                <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker1 [format]="'yyyy, mmm, dd'"></mdb-datepicker>
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput2"
+                  [mdbDatepicker]="datepicker1"
+                  id="fechaFin"
+                  name="fechaFin"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="convocatoria.fechaFin"
+                  required
+                />
+                <label mdbLabel="mdbLabel2" for="exampleDatepicker" class="form-label">Selecciona una fecha</label>
+                <mdb-datepicker-toggle [mdbDatepicker]="datepicker2"></mdb-datepicker-toggle>
+                <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker2 [format]="'yyyy, mmm, dd'"></mdb-datepicker>
+              </mdb-form-control>
+            </td>
+            <td>
+               <mdb-form-control>
+                 <input
+                   mdbInput
+                   type="text"
+                   id="form1"
+                   class="form-control"
+                   [mdbTimepicker]="timepicker1"
+                 />
+                 <label mdbLabel class="form-label" for="form1">Example label</label>
+                 <mdb-timepicker-toggle [mdbTimepickerToggle]="timepicker1"></mdb-timepicker-toggle>
+                 <mdb-timepicker #timepicker1 [inline]="true"></mdb-timepicker>
+               </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  type="text"
+                  id="form1"
+                  class="form-control"
+                  [mdbTimepicker]="timepicker2"
+                />
+                <label mdbLabel class="form-label" for="form1">Example label</label>
+                <mdb-timepicker-toggle [mdbTimepickerToggle]="timepicker2"></mdb-timepicker-toggle>
+                <mdb-timepicker #timepicker2 [inline]="true"></mdb-timepicker>
+              </mdb-form-control>
+           </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="cuposHombre"
+                  name="cuposHombre"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="convocatoria.cuposHombre"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="cuposMujeres"
+                  name="cuposMujeres"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="convocatoria.cuposMujeres"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="proyectores"
+                  name="proyectores"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="aula.proyectores"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+
+
+
+            <td>
+
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let aula of table.data; let index = index" scope="row">
+
+
+            <td style="min-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.codigo_convocatoria }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="codigo_convocatoria"
+                    name="codigo_convocatoria"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="convocatoriaEditForm.codigo_convocatoria"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.fechaInicio }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <!-- <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.descripcion"
+                  />
+                  <label  class="form-control"> {{ periodo.descripcion }}
+                  </label>
+                </mdb-form-control> -->
+              <!-- </ng-container> -->
+            <!-- </td> -->
+
+            <!-- <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.fechaFin }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <!-- <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.descripcion"
+                  />
+                  <label  class="form-control"> {{ periodo.descripcion }}
+                  </label>
+                </mdb-form-control> -->
+              <!-- </ng-container>
+            </td>
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.horaInicio }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index"> -->
+                <!-- <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.descripcion"
+                  />
+                  <label  class="form-control"> {{ periodo.descripcion }}
+                  </label>
+                </mdb-form-control> -->
+              <!-- </ng-container> -->
+            <!-- </td>
+
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.horaFin }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <!-- <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.descripcion"
+                  />
+                  <label  class="form-control"> {{ periodo.descripcion }}
+                  </label>
+                </mdb-form-control> -->
+              <!-- </ng-container>
+            </td> --> -->
+
+<!--
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.cuposHombre }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="cuposHombre"
+                    name="cuposHombre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="convocatoriaEditForm.cuposHombre"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ convocatoria.cuposHombre }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="cuposHombre"
+                    name="cuposHombre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="convocatoriaEditForm.cuposHombre"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+
+            <td style="min-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.instructor }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="instructor"
+                    name="instructor"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.instructor"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.salaOcupada }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="salaOcupada"
+                    name="salaOcupada"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.salaOcupada"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+
+            <td>
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+              <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editar(index)"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+              >
+
+              <i class="fa fa-edit"></i>
+            </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="eliminar(aula.codigo)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="actualizar(aula, form.value);"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editElementIndex = -1"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+
+
+
+
+
+            <td align="center">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                id ="btnRegistrar"
+                type="submit"
+                (click)="registro(form.value); addRow = false;"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let semestre of semestres; let index = index" scope="row">
+            <td align="center" style="min-width: 10px; max-width: 10px">
+              <ng-container  *ngIf="editElementIndex !== index">
+                {{ semestre.semestre }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="semestreActualizar"
+                    name="semestre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="semestreEditForm.semestre"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td align="center">
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(index)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="eliminar(semestre.codSemestre)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="actualizar(semestre, form.value);"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+</div>
+  -->
