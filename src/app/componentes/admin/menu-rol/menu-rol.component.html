@@ -1,0 +1,149 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Asignación de menús a rol</p>
+  </div>
+</div>
+
+<mdb-stepper #stepper (stepChange)="stepChanged($event)">
+  <mdb-step [name]="'Seleccionar rol'">
+    <ng-template mdbStepIcon>
+      <i class="fas fa-user"></i>
+    </ng-template>
+
+    <mdb-form-control>
+      <mdb-form-control>
+        <mdb-select [(ngModel)]="rolSeleccionado">
+          <mdb-option
+            *ngFor="let rol of roles"
+            [value]="rol"
+            [label]="rol.nombre"
+            >{{ rol.nombre }}
+            <span class="option-secondary-text">{{ rol.descripcion }}</span>
+          </mdb-option>
+        </mdb-select>
+        <label mdbLabel class="form-label">Seleccione el rol</label>
+      </mdb-form-control>
+    </mdb-form-control>
+  </mdb-step>
+
+  <mdb-step [name]="'Asignar menús'">
+    <ng-template mdbStepIcon>
+      <i class="fas fa-check"></i>
+    </ng-template>
+
+    <!-- Rol seleccionado -->
+    <div>
+      <p class="me-2">
+        Rol seleccionado:
+        <span class="fw-bolder text-primary">
+          {{ rolSeleccionado.nombre }}
+        </span>
+      </p>
+    </div>
+
+    <!-- LISTA DE MENÚS -->
+
+    <div class="datatable datatable-sm table-responsive">
+      <table
+        class="table datatable-table"
+        mdbTable
+        #table="mdbTable"
+        [dataSource]="menusAsignados"
+      >
+        <thead class="datatable-header">
+          <tr>
+            <th scope="col">
+              <!-- <div class="form-check d-flex align-items-center mb-0">
+                <input
+                  mdbCheckbox
+                  class="datatable-header-checkbox form-check-input"
+                  type="checkbox"
+                  [checked]="allRowsSelected()"
+                  (checkboxChange)="toggleAll($event)"
+                />
+              </div>
+               -->
+               Asignado
+            </th>
+            <th *ngFor="let header of headers" scope="col">
+              {{ header | titlecase }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="datatable-body">
+          <tr *ngFor="let menuAsignado of table.data" scope="row">
+            <td>
+              <div class="form-check">
+                <input
+                  mdbCheckbox
+                  (click)="$event.stopPropagation()"
+                  (checkboxChange)="toggleSelection($event, menuAsignado)"
+                  [checked]="menuAsignado.asignado"
+                  class="datatable-row-checkbox form-check-input"
+                  type="checkbox"
+                />
+              </div>
+            </td>
+            <td>
+              {{ menuAsignado.codMenu }}
+            </td>
+            <td>
+              {{ menuAsignado.etiqueta }}
+            </td>
+            <td>
+              {{ menuAsignado.descripcion }}
+            </td>
+            <td>
+              {{ menuAsignado.menu_padre }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+      <!--button class="btn btn-primary me-md-2" type="button">Button</button -->
+      <button class="btn btn-primary" type="button" (click)="guardarCambios()">
+        Guardar cambios
+      </button>
+    </div>
+  </mdb-step>
+
+  <!-- <mdb-step [name]="'Step 3'">
+    <ng-template mdbStepIcon>
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </ng-template>
+
+    <mdb-form-control>
+      <input mdbInput mdbValidate type="text" id="icon3" class="form-control" />
+      <label mdbLabel class="form-label" for="icon3">Step 3</label>
+    </mdb-form-control>
+  </mdb-step> -->
+</mdb-stepper>
+<!-- Buttons -->
+<div class="d-flex justify-content-center px-3">
+  <button
+    *ngIf="step === 1"
+    id="form-example-prev-step"
+    class="btn btn-primary"
+    (click)="stepper.previous()"
+  >
+    Anterior
+  </button>
+  <button
+    *ngIf="step === 0"
+    id="form-example-next-step"
+    class="btn btn-primary"
+    (click)="stepper.next()"
+  >
+    Siguiente
+  </button>
+</div>
+<!-- Buttons -->

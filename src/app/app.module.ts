@@ -112,6 +112,10 @@ import { AconvocatoriaComponent } from './componentes/a-convocatoria/aconvocator
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { Requisito } from './modelo/requisito';
 import { TablaComponent } from './tabla/tabla.component';
+import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
+import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
+import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
+import { ValidacionInscripcionComponent } from './componentes/validacion-inscripcion/validacion-inscripcion.component';
 
 @NgModule({
   declarations: [
@@ -148,11 +152,17 @@ import { TablaComponent } from './tabla/tabla.component';
     PonderacionComponent,
     ModuloEstadosComponent,
     CatalogoEstadosComponent,
-    MenuItemComponent,
     ConvocatoriaComponent,
     AconvocatoriaComponent,
     RequisitoComponent,
     TablaComponent,
+    //MenuItemComponent,
+    EstadoPeriodoAcademicoComponent,
+    InscripcionComponent,
+    ListaInscripcionComponent,
+    ValidacionInscripcionComponent
+    RolComponent,
+    MenuRolComponent,
   ],
   imports: [
     BrowserModule,
@@ -161,6 +171,7 @@ import { TablaComponent } from './tabla/tabla.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     // MDB
     MdbAccordionModule,
     MdbAutocompleteModule,

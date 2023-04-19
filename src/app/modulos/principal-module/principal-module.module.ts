@@ -1,3 +1,5 @@
+import { ListaInscripcionComponent } from './../../componentes/lista-inscripcion/lista-inscripcion.component';
+import { EstadoPeriodoAcademicoComponent } from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
 import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
 import { ModuloEstadosComponent } from './../../componentes/modulo-estados/modulo-estados.component';
@@ -39,6 +41,13 @@ import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
 import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
 import { TablaComponent } from 'src/app/tabla/tabla.component';
+
+import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
+import { CommonModule } from '@angular/common';
+import { LocalDataService } from 'src/app/servicios/util/local-data.service';
+import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
+import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
 
 const routes: Routes = [
   {
@@ -86,7 +95,9 @@ const routes: Routes = [
       {path: 'catalogo', component: CatalogoEstadosComponent},
       {path: 'convocatoria', component: ConvocatoriaComponent},
       {path: 'requisito', component: RequisitoComponent},
-      {path: 'tabla', component:TablaComponent}
+      {path: 'tabla', component:TablaComponent},
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
+      {path: 'listaInscripcion', component: ListaInscripcionComponent},
     ],
   },
 ];
@@ -95,12 +106,13 @@ const routes: Routes = [
   declarations: [
     MenuFormacionComponent,
     MenuAdminComponent,
-
+    MenuItemComponent,
+    BotonVolverComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
   ],
-  exports: [RouterModule],
+  exports: [RouterModule, BotonVolverComponent],
   providers: [
     MdbPopconfirmService,
     CambiosPendientesGuard,
