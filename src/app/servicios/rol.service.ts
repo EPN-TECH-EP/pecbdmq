@@ -17,14 +17,14 @@ export class RolService {
     return this.http.get<Rol[]>(`${this.host}/rol/listar`);
   }
 
-  public registroRol(Rol: Rol): Observable<HttpResponse<Rol>> {
-    return this.http.post<Rol>(`${this.host}/rol/crear`, Rol, { observe: 'response' });
+  public registroRol(rol: Rol): Observable<HttpResponse<Rol>> {
+    return this.http.post<Rol>(`${this.host}/rol/crear`, rol, { observe: 'response' });
   }
 
     public eliminarRol(codigo: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/rol/${codigo}`);
     }
-   public actualizarRol(Rol: Rol): Observable<HttpResponse<Rol>> {
-    return this.http.put<Rol>(`${this.host}/rol/actualizar`, Rol, { observe: 'response' });
+   public actualizarRol(rol: Rol): Observable<HttpResponse<Rol>> {
+    return this.http.put<Rol>(`${this.host}/rol/actualizar`, rol, { observe: 'response' });
   }
 }

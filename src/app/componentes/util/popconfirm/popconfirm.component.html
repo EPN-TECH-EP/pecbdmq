@@ -4,11 +4,11 @@
         <span class="popconfirm-message-text">{{ mensaje }}</span>
       </p>
       <div class="popconfirm-buttons-container">
-        <button (click)="popconfirmRef.close()" type="button" aria-label="Cancel" class="btn btn-flat btn-sm">
-          Cancelar
-        </button>
-        <button (click)="popconfirmRef.confirm()" type="button" aria-label="Confirm" class="btn btn-primary btn-sm">
+        <button (click)="popconfirmRef.confirm()" type="button" aria-label="Confirm" class="btn btn-flat btn-sm">
           Confirmar
+        </button>
+        <button (click)="popconfirmRef.close()" type="button" aria-label="Cancel" class="btn btn-danger btn-sm">
+          Cancelar
         </button>
       </div>
     </div>

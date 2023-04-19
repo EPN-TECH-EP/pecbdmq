@@ -1,5 +1,6 @@
+import { MenuRolId } from "./menu-rol-id";
+
 export class MenuRol {
-    codMenu: number;
-    codRol: number;
-    permisos: string;
+  menuRolId: MenuRolId;
+  permisos: string;
 }

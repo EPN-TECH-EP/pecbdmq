@@ -39,6 +39,13 @@ import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion
 import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
 import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
 
+import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
+import { CommonModule } from '@angular/common';
+import { LocalDataService } from 'src/app/servicios/util/local-data.service';
+import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
+import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
+
 const routes: Routes = [
   {
     path: 'principal', component: PrincipalComponent,
@@ -94,12 +101,13 @@ const routes: Routes = [
   declarations: [
     MenuFormacionComponent,
     MenuAdminComponent,
-
+    MenuItemComponent,
+    BotonVolverComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
   ],
-  exports: [RouterModule],
+  exports: [RouterModule, BotonVolverComponent],
   providers: [
     MdbPopconfirmService,
     CambiosPendientesGuard,

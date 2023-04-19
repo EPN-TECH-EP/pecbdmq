@@ -148,11 +148,13 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     ModuloEstadosComponent,
     //RequisitoComponent,
     CatalogoEstadosComponent,
-    MenuItemComponent,
+    //MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
     ListaInscripcionComponent,
     ValidacionInscripcionComponent
+    RolComponent,
+    MenuRolComponent,
   ],
   imports: [
     BrowserModule,
