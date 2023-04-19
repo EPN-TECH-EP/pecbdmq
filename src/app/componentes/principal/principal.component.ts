@@ -44,19 +44,25 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
     this.nombreUsuario = usuario?.codDatosPersonales["nombre"] + " " + usuario?.codDatosPersonales["apellido"]
 
-    this.listaMenu = this.menuService.getMenu();
+    this.listaMenuInicial = this.menuService.getMenu();
     //console.log(this.listaMenu);
-    //aconsole.log(this.menuService.getMenu());
+    //console.log(this.menuService.getMenu());
 
-    if (this.listaMenu === undefined || this.listaMenu.length == 0) {
+    if (
+      this.listaMenuInicial === undefined ||
+      this.listaMenuInicial.length == 0
+    ) {
       this.subscriptions.push(
         this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
           next: (response: Menu[]) => {
-            this.listaMenu = response;
+            this.listaMenuInicial = response;
             this.menuService.setMenu(response);
 
-            if (this.listaMenu.length === 0)
+            if (this.listaMenuInicial.length === 0) {
               this.sinMenu = true;
+            } else {
+              this.conformarMenu();
+            }
 
             if (this.router.url === '/principal') {
               this.router.navigate(['/principal/bienvenida']);
@@ -67,6 +73,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
           },
         })
       );
+    } else {
+      this.conformarMenu();
     }
 
     //TODO eliminar

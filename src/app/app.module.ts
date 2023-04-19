@@ -116,6 +116,9 @@ import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-ac
 import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
 import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
 import { ValidacionInscripcionComponent } from './componentes/validacion-inscripcion/validacion-inscripcion.component';
+import { RolComponent } from './componentes/admin/rol/rol.component';
+import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
+import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/menu-formacion.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +145,7 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     PopconfirmComponent,
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
+    MenuFormacionComponent,
     BienvenidaComponent,
     ValidacionComponent,
     ParaleloComponent,
@@ -156,11 +160,11 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
     AconvocatoriaComponent,
     RequisitoComponent,
     TablaComponent,
-    //MenuItemComponent,
+    MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
     ListaInscripcionComponent,
-    ValidacionInscripcionComponent
+    ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
   ],

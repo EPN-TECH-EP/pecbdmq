@@ -42,7 +42,7 @@ import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocat
 import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
 import { TablaComponent } from 'src/app/tabla/tabla.component';
 
-import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
+//import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import { CommonModule } from '@angular/common';
 import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
@@ -106,9 +106,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    MenuFormacionComponent,
+    //MenuFormacionComponent,
     MenuAdminComponent,
-    MenuItemComponent,
+    //MenuItemComponent,
     BotonVolverComponent,
   ],
   imports: [
