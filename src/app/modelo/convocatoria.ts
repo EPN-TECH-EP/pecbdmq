@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Requisito} from "./requisito";
 
 @Injectable()
 export class Convocatoria {
@@ -16,5 +17,5 @@ export class Convocatoria {
   public cupoMujeres: number;
   public correo: string;
   public documentos: string;
-  public requisitos: string;
+  public requisitos: Requisito[] | string;
 }

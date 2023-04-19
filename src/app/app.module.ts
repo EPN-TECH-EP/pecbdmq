@@ -120,6 +120,8 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
 import { RolComponent } from './componentes/admin/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
 import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/menu-formacion.component';
+import { ProcesoEspecializacionComponent } from './componentes/especializacion/proceso-especializacion/proceso-especializacion.component';
+import { ProcesoProfesionalizacionComponent } from './componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +172,8 @@ import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/m
     ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
+    ProcesoEspecializacionComponent,
+    ProcesoProfesionalizacionComponent,
 
   ],
   imports: [

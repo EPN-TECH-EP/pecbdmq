@@ -1,7 +1,9 @@
-import { EstadoPeriodoAcademicoComponent } from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
-import { PonderacionComponent } from './../../componentes/ponderacion/ponderacion.component';
-import { CatalogoEstadosComponent } from './../../componentes/catalogo-estados/catalogo-estados.component';
-import { ModuloEstadosComponent } from './../../componentes/modulo-estados/modulo-estados.component';
+import {
+  EstadoPeriodoAcademicoComponent
+} from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
+import {PonderacionComponent} from './../../componentes/ponderacion/ponderacion.component';
+import {CatalogoEstadosComponent} from './../../componentes/catalogo-estados/catalogo-estados.component';
+import {ModuloEstadosComponent} from './../../componentes/modulo-estados/modulo-estados.component';
 import {SemestreComponent} from './../../componentes/semestre/semestre.component';
 import {AulasComponent} from './../../componentes/aulas/aulas.component';
 import {TipoPruebaComponent} from './../../componentes/tipo-prueba/tipo-prueba.component';
@@ -33,20 +35,27 @@ import {ValidacionComponent} from '../../componentes/formacion/validacion/valida
 import {TipoFuncionario} from '../../modelo/tipo-funcionario';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
-import { TipoBajaComponent } from "../../componentes/tipo-baja/tipo-baja.component";
-import { TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
-import { ComponenteNotaComponent } from '../../componentes/componente-nota/componente-nota.component';
-import { CambiosPendientesGuard } from 'src/app/guard/cambios-pendientes.guard';
-import { ConvocatoriaComponent } from 'src/app/componentes/convocatoria/convocatoria.component';
-import { RequisitoComponent } from 'src/app/componentes/requisito/requisito.component';
-import { TablaComponent } from 'src/app/tabla/tabla.component';
+import {TipoBajaComponent} from "../../componentes/tipo-baja/tipo-baja.component";
+import {TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
+import {ComponenteNotaComponent} from '../../componentes/componente-nota/componente-nota.component';
+import {CambiosPendientesGuard} from 'src/app/guard/cambios-pendientes.guard';
+import {ConvocatoriaComponent} from 'src/app/componentes/convocatoria/convocatoria.component';
+import {RequisitoComponent} from 'src/app/componentes/requisito/requisito.component';
+import {TablaComponent} from 'src/app/tabla/tabla.component';
 
 //import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
-import { CommonModule } from '@angular/common';
-import { LocalDataService } from 'src/app/servicios/util/local-data.service';
-import { RolComponent } from 'src/app/componentes/admin/rol/rol.component';
-import { MenuRolComponent } from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+import {CommonModule} from '@angular/common';
+import {LocalDataService} from 'src/app/servicios/util/local-data.service';
+import {RolComponent} from 'src/app/componentes/admin/rol/rol.component';
+import {MenuRolComponent} from 'src/app/componentes/admin/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
+import {ProcesoFormacionComponent} from "../../componentes/formacion/proceso-formacion/proceso-formacion.component";
+import {
+  ProcesoEspecializacionComponent
+} from "../../componentes/especializacion/proceso-especializacion/proceso-especializacion.component";
+import {
+  ProcesoProfesionalizacionComponent
+} from "../../componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
 
 
 const routes: Routes = [
@@ -67,11 +76,12 @@ const routes: Routes = [
       },
       // componentes funcionales
       {path: 'materia', component: MateriaComponent},
-      {path: 'unidadGestion',
-      //component: UnidadGestionComponent,
-      loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
-      //canDeactivate: [CambiosPendientesGuard],
-    },
+      {
+        path: 'unidadGestion',
+        //component: UnidadGestionComponent,
+        loadChildren: () => import('./../../modulos/unidad-gestion.module').then(m => m.UnidadGestionModule),
+        //canDeactivate: [CambiosPendientesGuard],
+      },
       {path: 'tipoPrueba', component: TipoPruebaComponent},
       {path: 'aula', component: AulasComponent},
       {path: 'semestre', component: SemestreComponent},
@@ -80,9 +90,9 @@ const routes: Routes = [
       {path: 'tipoDocumento', component: TipoDocumentoComponent},
       {path: 'tipoProcedencia', component: TipoProcedenciaComponent},
       {path: 'tipoNota', component: TipoNotaComponent},
-      { path: 'tipoBaja', component: TipoBajaComponent},
-      { path: 'tipoSancion', component: TipoSancionComponent},
-      { path: 'componenteNota', component: ComponenteNotaComponent},
+      {path: 'tipoBaja', component: TipoBajaComponent},
+      {path: 'tipoSancion', component: TipoSancionComponent},
+      {path: 'componenteNota', component: ComponenteNotaComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},
       {path: 'admin/roles-usuarios', component: RolUsuarioComponent},
@@ -95,7 +105,12 @@ const routes: Routes = [
       {path: 'ponderacion', component: PonderacionComponent},
       {path: 'moduloEstados', component: ModuloEstadosComponent},
       {path: 'catalogo', component: CatalogoEstadosComponent},
-      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent}
+      {path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent},
+      {path: 'formacion/proceso', component: ProcesoFormacionComponent},
+      {path: 'convocatoria', component: ConvocatoriaComponent},
+      {path: 'especializacion/proceso', component: ProcesoEspecializacionComponent},
+      {path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent},
+
     ],
   },
 ];
