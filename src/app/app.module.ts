@@ -105,6 +105,7 @@ import { TipoInstruccion } from './modelo/tipo_instruccion';
 import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 import { PonderacionComponent } from './componentes/ponderacion/ponderacion.component';
 import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-estados.component';
+
 //import { RequisitoComponent } from './componentes/requisito/requisito.component';
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 import { ConvocatoriaComponent } from './componentes/convocatoria/convocatoria.component';
@@ -119,6 +120,8 @@ import { ValidacionInscripcionComponent } from './componentes/validacion-inscrip
 import { RolComponent } from './componentes/admin/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.component';
 import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/menu-formacion.component';
+import { ProcesoEspecializacionComponent } from './componentes/especializacion/proceso-especializacion/proceso-especializacion.component';
+import { ProcesoProfesionalizacionComponent } from './componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +158,8 @@ import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/m
     TipoSancionComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
+    //RequisitoComponent,
+
     CatalogoEstadosComponent,
     ConvocatoriaComponent,
     AconvocatoriaComponent,
@@ -167,6 +172,9 @@ import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/m
     ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
+    ProcesoEspecializacionComponent,
+    ProcesoProfesionalizacionComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -241,8 +249,7 @@ import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/m
     Semestre,
     TipoPrueba,
     ModuloEstados,
-    CatalogoEstados,
-    Requisito
+    CatalogoEstados
 
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
