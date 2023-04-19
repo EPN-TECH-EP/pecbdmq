@@ -66,6 +66,8 @@ export class ConvocatoriaComponent implements OnInit {
 
     this.servicioRequisito.getRequisito().subscribe(data => {
       this.requisitos = data;
+      console.log(data)
+      console.log(this.requisitos);
     });
 
     this.servicioConvocatoria.getConvocatoria().subscribe(data => {
