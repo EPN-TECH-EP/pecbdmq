@@ -122,6 +122,7 @@ import { MenuRolComponent } from './componentes/admin/menu-rol/menu-rol.componen
 import { MenuFormacionComponent } from './componentes/formacion/menu-formacion/menu-formacion.component';
 import { ProcesoEspecializacionComponent } from './componentes/especializacion/proceso-especializacion/proceso-especializacion.component';
 import { ProcesoProfesionalizacionComponent } from './componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
+import {ProcesoFormacionComponent} from "./componentes/formacion/proceso-formacion/proceso-formacion.component";
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { ProcesoProfesionalizacionComponent } from './componentes/profesionaliza
     MenuRolComponent,
     ProcesoEspecializacionComponent,
     ProcesoProfesionalizacionComponent,
+    ProcesoFormacionComponent
 
   ],
   imports: [

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row mt-3">
     <div class="column col-3">
-      <img src="assets/logo-bomberos.svg" />
+      <img src="assets/logo-bomberos.svg"/>
     </div>
     <div class="column col-9 text-end">
       <h4 class="ms-5">
@@ -11,9 +11,9 @@
     </div>
   </div>
 
-  <hr class="hr hr-blurry" />
+  <hr class="hr hr-blurry"/>
   <!-- Inicio estructura de pasos -->
-  <mdb-stepper #stepper [linear]="true">
+  <mdb-stepper #stepper [linear]="false">
     <!-- Paso 1 -->
     <mdb-step [stepForm]="formularioInscripcion " [name]="'Paso 1 - Formulario de Inscripción'">
       <ng-template mdbStepIcon id="">
@@ -24,17 +24,17 @@
           <h5>Formulario de inscripción</h5>
         </div>
       </div>
-      <hr class="hr hr-blurry" />
+      <hr class="hr hr-blurry"/>
       <!---------------------------->
       <!-- Formulario de inscripción-->
       <!---------------------------->
       <form
-      [formGroup]="formularioInscripcion"
-      novalidate>
+        [formGroup]="formularioInscripcion"
+        novalidate>
         <!---------------------------->
         <!-- Definición formGroup-->
         <!---------------------------->
-        <div >
+        <div>
           <!-- Datos iniciales -->
           <h5>Datos iniciales:</h5>
 
@@ -228,25 +228,26 @@
                   />
                   <label mdbLabel for="for" class="form-label">Fecha de nacimiento:</label>
                   <mdb-error
-                  *ngIf="
+                    *ngIf="
                     frmFechaNacimiento?.invalid &&
                     (frmFechaNacimiento?.dirty || frmFechaNacimiento?.touched)
                   "
-                >
-                  <i class="fas fa-exclamation-circle mb-1"></i>
-                  Este campo es requerido
-                </mdb-error>
-                <mdb-success
-                  *ngIf="
+                  >
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="
                     frmFechaNacimiento?.valid &&
                     (frmFechaNacimiento?.dirty)
                   "
-                >
-                  <i class="fas fa-check-circle"></i>
-                  Campo Correcto
-                </mdb-success>
+                  >
+                    <i class="fas fa-check-circle"></i>
+                    Campo Correcto
+                  </mdb-success>
                   <mdb-datepicker-toggle [mdbDatepicker]="datepicker"></mdb-datepicker-toggle>
-                  <mdb-datepicker [options]="translationOptions" [inline]="true" [minDate]="minDate" [maxDate]="maxDate" #datepicker [startDate]="maxDate"></mdb-datepicker>
+                  <mdb-datepicker [options]="translationOptions" [inline]="true" [minDate]="minDate" [maxDate]="maxDate"
+                                  #datepicker [startDate]="maxDate"></mdb-datepicker>
                 </mdb-form-control>
 
               </div>
@@ -268,14 +269,14 @@
                     Teléfono Celular</label
                   >
                   <mdb-error
-                  *ngIf="
+                    *ngIf="
                   frmTelefonoCelular?.invalid &&
                     (frmTelefonoCelular?.dirty || frmTelefonoCelular?.touched)
                   "
-                >
-                  <i class="fas fa-exclamation-circle mb-1"></i>
-                  Este campo es requerido
-                </mdb-error>
+                  >
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
                   <mdb-success
                     *ngIf="
                       frmTelefonoCelular?.valid &&
@@ -302,14 +303,14 @@
                     Teléfono Convencional</label
                   >
                   <mdb-error
-                  *ngIf="
+                    *ngIf="
                   frmTelefonoConvencional?.invalid &&
                     (frmTelefonoConvencional?.dirty || frmTelefonoConvencional?.touched)
                   "
-                >
-                  <i class="fas fa-exclamation-circle mb-1"></i>
-                  Este campo es requerido
-                </mdb-error>
+                  >
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
                   <mdb-success
                     *ngIf="
                       frmTelefonoConvencional?.valid &&
@@ -324,7 +325,7 @@
               </div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Datos Nacionalidad -->
           <h5>Datos nacionalidad:</h5>
           <!-- Columna 1 -->
@@ -398,11 +399,11 @@
                     <mdb-option
                       *ngFor="let provincia of provincias"
                       [value]="provincia.codigo"
-                      >{{ provincia.nombre }}
+                    >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label"
-                    >Seleccione una provincia</label
+                  >Seleccione una provincia</label
                   >
                   <mdb-error
                     *ngIf="
@@ -473,7 +474,7 @@
             </div>
           </div>
           <!-- Residencia -->
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
 
           <h5 style="display:inline-block; margin-right: 290px;">Residencia:</h5>
           <h5 style="display:inline-block;">Dirección actual:</h5>
@@ -484,7 +485,7 @@
               <div class="col-md">
                 <mdb-form-control>
                   <mdb-select
-                  size="1"
+                    size="1"
                     [(ngModel)]="inscripcion.provinciaResidencia"
                     id="frmProvinciaResidencia"
                     formControlName="frmProvinciaResidencia"
@@ -493,11 +494,11 @@
                     <mdb-option
                       *ngFor="let provincia of provincias"
                       [value]="provincia.codigo"
-                      >{{ provincia.nombre }}
+                    >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label mb-2x"
-                    >Seleccione una provincia</label
+                  >Seleccione una provincia</label
                   >
                   <mdb-error
                     *ngIf="
@@ -669,7 +670,7 @@
               </div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Título bachiller -->
           <h5>Título bachiller:</h5>
           <div class="container">
@@ -781,7 +782,6 @@
                 </mdb-form-control>
 
 
-
                 <mdb-form-control>
                   <input
                     mdbValidate
@@ -824,7 +824,7 @@
               </div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Méritos -->
           <h5>Méritos (opcional):</h5>
           <div class="container">
@@ -933,20 +933,20 @@
               <div class="col-md"></div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Carga de documentos -->
           <h5>Carga de expediente:</h5>
           <div
-          class="alert alert-info"
-          role="alert"
-        >
-          <p>Indicaciones: </p>
-          <p>1. Cargar título de Bachiller.</p>
-          <p>2. Cargar planilla de agua o luz.</p>
-          <p>3. Cargar copia de cédula.</p>
-          <p>4. Cargar copia de papeleta de votación.</p>
-          <p>Subir el expediente en un solo archivo, en formato pdf.</p>
-        </div>
+            class="alert alert-info"
+            role="alert"
+          >
+            <p>Indicaciones: </p>
+            <p>1. Cargar título de Bachiller.</p>
+            <p>2. Cargar planilla de agua o luz.</p>
+            <p>3. Cargar copia de cédula.</p>
+            <p>4. Cargar copia de papeleta de votación.</p>
+            <p>Subir el expediente en un solo archivo, en formato pdf.</p>
+          </div>
           <div class="container">
             <div class="row">
               <!-- Columna 1 -->
@@ -977,7 +977,7 @@
                 id="next-step"
                 (click)="stepper.next()"
                 type="submit"
-                class="btn btn-primary"                
+                class="btn btn-primary"
               >
                 Siguiente
               </button>
@@ -992,14 +992,15 @@
         <i class="far fa-envelope"></i>
       </ng-template>
       <mdb-form-control>
-        <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
+        <div class="alert alert-light d-grid col-6 mx-auto" role="alert">
           <i class="far fa-envelope fa-5x"></i>
           <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
-          <hr />
+          <hr/>
           <p>
             Para poder confirmar tu inscripción digita el PIN de seguridad
             enviado a tu email
           </p>
+
           <input
             mdbValidate
             mdbInput
@@ -1013,9 +1014,6 @@
           <button type="button" class="btn btn-success btn-rounded d-grid" (click)="stepper.next()">
             CONFIRMAR
           </button>
-
-
-
         </div>
       </mdb-form-control>
     </mdb-step>
@@ -1024,20 +1022,20 @@
       <ng-template mdbStepIcon id="">
         <i class="far fa-check-circle"></i>
       </ng-template>
-      <!-- <mdb-form-control>
+      <mdb-form-control>
         <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
           <i class="far fa-check-circle fa-5x"></i>
           <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
-          <hr />
+          <hr/>
           <p>
             Ha completado la etapa de registro
           </p>
           <p></p>
           <button type="button" class="btn btn-success btn-rounded d-grid">
-           SALIR
+            SALIR
           </button>
         </div>
-      </mdb-form-control> -->
+      </mdb-form-control>
     </mdb-step>
   </mdb-stepper>
 </div>
