@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Modulo } from 'src/app/modelo/modulo';
+import { Modulo } from 'src/app/modelo/admin/modulo';
 import { ModuloService } from 'src/app/servicios/modulo.service';
 import { Subscription } from 'rxjs';
 import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
@@ -10,7 +10,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 

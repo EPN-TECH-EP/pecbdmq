@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ITipoBaja} from "../../modelo/tipo_baja";
+import {ITipoBaja} from "../../modelo/admin/tipo_baja";
 import {TipoBajaService} from "../../servicios/tipo-baja.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
@@ -8,7 +8,7 @@ import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
-import {CustomHttpResponse} from "../../modelo/custom-http-response";
+import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 
 @Component({
   selector: 'app-tipo-baja',

@@ -6,11 +6,11 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { Subscription } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { UsuarioFrm } from 'src/app/modelo/util/usuario-frm';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { Notificacion } from 'src/app/util/notificacion';
-import { Usuario } from '../../modelo/usuario';
+import { Usuario } from '../../modelo/admin/usuario';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 
 @Component({

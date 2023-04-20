@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AutenticacionService } from '../../servicios/autenticacion.service';
-import { Usuario } from '../../modelo/usuario';
+import { Usuario } from '../../modelo/admin/usuario';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HeaderType } from '../../enum/header-type.enum';
 
@@ -19,7 +19,7 @@ import {
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { TipoAlerta } from '../../enum/tipo-alerta';
 import { Notificacion } from '../../util/notificacion';
-import { CustomHttpResponse } from '../../modelo/custom-http-response';
+import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
 
 @Component({
   selector: 'app-login',

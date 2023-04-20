@@ -7,8 +7,8 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Modulo } from '../modelo/modulo';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { Modulo } from '../modelo/admin/modulo';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 @Injectable({
   providedIn: 'root'
 })

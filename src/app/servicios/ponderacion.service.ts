@@ -1,9 +1,9 @@
-import { Ponderacion } from './../modelo/ponderacion';
+import { Ponderacion } from '../modelo/admin/ponderacion';
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 
 
 @Injectable({providedIn: 'root',})

@@ -5,15 +5,15 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { Subscription } from 'rxjs';
-import { Usuario } from 'src/app/modelo/usuario';
-import { AlertaComponent } from '../../util/alerta/alerta.component';
+import { Usuario } from 'src/app/modelo/admin/usuario';
+import { AlertaComponent } from '../../../util/alerta/alerta.component';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { UsuarioService } from '../../../servicios/usuario.service';
+import { UsuarioService } from '../../../../servicios/usuario.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
-import { PopconfirmComponent } from '../../util/popconfirm/popconfirm.component';
+import { PopconfirmComponent } from '../../../util/popconfirm/popconfirm.component';
 import { Router } from '@angular/router';
 import { MenuService } from 'src/app/servicios/menu.service';
 

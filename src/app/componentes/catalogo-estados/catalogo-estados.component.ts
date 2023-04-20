@@ -4,11 +4,11 @@
  import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
  import { Subscription } from 'rxjs';
  import { TipoAlerta } from 'src/app/enum/tipo-alerta';
- import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+ import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
  import { Notificacion } from 'src/app/util/notificacion';
  import { AlertaComponent } from '../util/alerta/alerta.component';
  import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
- import { CatalogoEstados } from 'src/app/modelo/catalogo-estados';
+ import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 
  @Component({
    selector: 'app-catalogo-estados',

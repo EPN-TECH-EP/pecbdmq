@@ -5,10 +5,10 @@ import {
   import { AlertaComponent } from '../componentes/util/alerta/alerta.component';
   import { TipoAlerta } from '../enum/tipo-alerta';
   import { HttpErrorResponse } from '@angular/common/http';
-  import { CustomHttpResponse } from '../modelo/custom-http-response';
+  import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
   export class Notificacion {
     static ref: MdbNotificationRef<AlertaComponent>;
-  
+
     static notificar(
       ns: MdbNotificationService,
       mensajeError: String,
@@ -17,7 +17,7 @@ import {
       if (this.ref) {
         this.ref.close;
       }
-  
+
       this.ref = ns.open(AlertaComponent, {
         data: { mensaje: mensajeError, clase: tipoAlerta },
         autohide: true,
@@ -28,7 +28,7 @@ import {
       });
       return this.ref;
     }
-  
+
     static notificacionOK(
       notificationRef: MdbNotificationRef<AlertaComponent>,
       notificationService: MdbNotificationService,
@@ -40,7 +40,7 @@ import {
         TipoAlerta.ALERTA_OK
       );
     }
-  
+
     static notificacion(
       notificationRef: MdbNotificationRef<AlertaComponent>,
       notificationService: MdbNotificationService,
@@ -48,15 +48,15 @@ import {
     ) {
       let customError: CustomHttpResponse = errorResponse.error;
       let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-  
+
       let mensajeError = customError.mensaje;
       let codigoError = errorResponse.status;
-  
+
       if (!mensajeError) {
         mensajeError = 'Error inesperado';
         tipoAlerta = TipoAlerta.ALERTA_ERROR;
       }
-  
+
       if (codigoError === 0) {
         mensajeError = 'Error de conexión al servidor';
         tipoAlerta = TipoAlerta.ALERTA_ERROR;
@@ -68,4 +68,3 @@ import {
       );
     }
   }
-  

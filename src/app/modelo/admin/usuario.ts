@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DatoPersonal } from './admin/dato-personal';
+import { DatoPersonal } from './dato-personal';
 
 @Injectable()
 export class Usuario {

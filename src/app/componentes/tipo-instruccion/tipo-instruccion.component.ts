@@ -1,15 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TipoInstruccion} from "../../modelo/tipo_instruccion";
+import {TipoInstruccion} from "../../modelo/admin/tipo_instruccion";
 import {Subscription} from "rxjs";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {TipoInstruccionService} from "../../servicios/tipo-instruccion.service";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {CustomHttpResponse} from "../../modelo/custom-http-response";
+import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {Notificacion} from "../../util/notificacion";
-import {Paralelo} from "../../modelo/paralelo/paralelo";
+import {Paralelo} from "../../modelo/admin/paralelo";
 
 
 @Component({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient,HttpResponse, HttpErrorResponse, HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { DocumentosHabilitantes } from '../modelo/documentos-habilitantes';
+import { DocumentosHabilitantes } from '../modelo/admin/documentos-habilitantes';
 @Injectable({
   providedIn: 'root'
 })
