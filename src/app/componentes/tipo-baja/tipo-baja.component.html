@@ -211,7 +211,7 @@
                     name="baja"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="tipoBajaEditForm.baja"
+                    formControlName="baja"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -242,6 +242,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="updateTipoBaja(tipoBaja)"
 
                 >
                   <i class="fa fa-check"></i> &nbsp;Guardar

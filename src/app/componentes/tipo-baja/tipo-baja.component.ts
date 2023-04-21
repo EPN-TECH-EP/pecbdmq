@@ -108,7 +108,8 @@ export class TipoBajaComponent implements OnInit {
             cod_tipo_baja: 0,
             estado: 'ACTIVO',
             baja: ''
-          }
+          };
+          this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);
@@ -120,6 +121,9 @@ export class TipoBajaComponent implements OnInit {
   editRow(index: number) {
     this.editElementIndex = index;
     this.tipoBajaEditForm = {...this.tiposBaja[index]};
+
+    this.bajaField?.setValue(this.tipoBajaEditForm.baja);
+
   }
 
   undoRow() {
@@ -131,9 +135,9 @@ export class TipoBajaComponent implements OnInit {
     this.editElementIndex = -1;
   }
 
-  public updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
+  public updateTipoBaja(tipoBaja: TipoBaja): void {    
 
-    tipoBaja = {...tipoBaja, baja: formValue.baja, estado: 'ACTIVO'}
+    tipoBaja = {...tipoBaja, baja: this.bajaField?.getRawValue(), estado: 'ACTIVO'}
 
     this.showLoading = true;
     this.subscriptions.push(
