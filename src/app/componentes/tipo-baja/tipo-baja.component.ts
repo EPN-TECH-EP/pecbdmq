@@ -108,7 +108,8 @@ export class TipoBajaComponent implements OnInit {
             cod_tipo_baja: 0,
             estado: 'ACTIVO',
             baja: ''
-          }
+          };
+          this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);
