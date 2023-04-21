@@ -37,7 +37,7 @@ export class ModuloComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<Modulo>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Etiqueta','Descripción'];
+  headers = ['Módulo','Descripción'];
 
   constructor(
     private ApiModulo: ModuloService,
