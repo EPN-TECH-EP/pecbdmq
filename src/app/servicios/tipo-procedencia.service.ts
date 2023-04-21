@@ -1,4 +1,4 @@
-import { TipoProcedencia } from '../modelo/tipo-procedencia';
+import { TipoProcedencia } from '../modelo/admin/tipo-procedencia';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 
 @Injectable({
   providedIn: 'root'

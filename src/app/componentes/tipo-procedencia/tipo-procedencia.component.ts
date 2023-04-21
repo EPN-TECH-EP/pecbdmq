@@ -1,4 +1,4 @@
-import { TipoProcedencia } from '../../modelo/tipo-procedencia';
+import { TipoProcedencia } from '../../modelo/admin/tipo-procedencia';
 import { TipoProcedenciaService } from './../../servicios/tipo-procedencia.service';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -10,7 +10,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({

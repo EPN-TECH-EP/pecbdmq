@@ -1,5 +1,5 @@
-import { RequisitoVal } from './../../modelo/requisito-validación';
-import { Inscripcion } from './../../modelo/inscripcion';
+import { RequisitoVal } from '../../../../modelo/admin/requisito-validación';
+import { Inscripcion } from '../../../../modelo/admin/inscripcion';
 import { Component, Input, OnInit } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 

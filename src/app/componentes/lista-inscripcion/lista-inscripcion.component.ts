@@ -1,4 +1,4 @@
-import { ValidacionInscripcionComponent } from './../validacion-inscripcion/validacion-inscripcion.component';
+import { ValidacionInscripcionComponent } from '../flujos/formacion/validacion-inscripcion/validacion-inscripcion.component';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -9,8 +9,8 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
-import { Inscripcion } from 'src/app/modelo/inscripcion';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { Inscripcion } from 'src/app/modelo/admin/inscripcion';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 @Component({

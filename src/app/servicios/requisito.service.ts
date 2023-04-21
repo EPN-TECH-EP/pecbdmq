@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Requisito } from '../modelo/requisito';
+import { Requisito } from '../modelo/admin/requisito';
 
 @Injectable({
   providedIn: 'root'

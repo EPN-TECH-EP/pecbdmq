@@ -4,8 +4,8 @@ import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/n
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { Subscription } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { Aula } from 'src/app/modelo/aula';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { Aula } from 'src/app/modelo/admin/aula';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { AulaService } from 'src/app/servicios/aula.service';
 import { Notificacion } from '../../util/notificacion';
 import { AlertaComponent } from '../util/alerta/alerta.component';

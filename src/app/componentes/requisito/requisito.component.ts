@@ -1,15 +1,15 @@
 import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { Requisito } from './../../modelo/requisito';
+import { Requisito } from '../../modelo/admin/requisito';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { Subscription } from 'rxjs';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { RequisitoService } from 'src/app/servicios/requisito.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
-import { Convocatoria } from 'src/app/modelo/convocatoria';
+import { Convocatoria } from 'src/app/modelo/admin/convocatoria';
 
 @Component({
   selector: 'app-requisito',

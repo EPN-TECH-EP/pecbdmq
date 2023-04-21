@@ -1,5 +1,5 @@
 import { TipoFuncionarioService } from './../../servicios/tipo-funcionario.service';
-import { TipoFuncionario } from '../../modelo/tipo-funcionario';
+import { TipoFuncionario } from '../../modelo/admin/tipo-funcionario';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -10,7 +10,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({

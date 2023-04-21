@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Paralelo} from "../modelo/paralelo/paralelo";
+import {Paralelo} from "../modelo/admin/paralelo";
 
 
 @Injectable({

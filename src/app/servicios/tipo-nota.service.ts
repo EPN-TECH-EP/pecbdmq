@@ -1,4 +1,4 @@
-import { TipoNota } from '../modelo/tipo-nota';
+import { TipoNota } from '../modelo/admin/tipo-nota';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 @Injectable({
   providedIn: 'root'
 })

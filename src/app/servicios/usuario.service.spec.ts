@@ -6,7 +6,7 @@ import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/htt
 
 import { asyncData, asyncError } from '../../testing/async-observable-helpers';
 import { UsuarioService } from './usuario.service';
-import { Usuario } from '../modelo/usuario';
+import { Usuario } from '../modelo/admin/usuario';
 import { DatoPersonal } from '../modelo/admin/dato-personal';
 import { environment } from 'src/environments/environment';
 
@@ -80,12 +80,12 @@ describe('UsuarioService (with spies)', () => {
     httpClientSpy.post.and.returnValue(asyncData(usuario));
 
     usuarioService.actualizarUsuario(usuario).subscribe({
-      next: usuarioResp => {        
+      next: usuarioResp => {
         expect(usuarioResp).toEqual(usuario);
         done();
       } ,
       error: error  => {
-        done.fail('error not expected: ' + JSON.stringify(error));        
+        done.fail('error not expected: ' + JSON.stringify(error));
       }
     });
   });
@@ -94,7 +94,7 @@ describe('UsuarioService (with spies)', () => {
 );
 
 /* *************************
- Tests with mocks 
+ Tests with mocks
  ****************************/
 describe('UsuarioService (with mocks)', () => {
   let httpClient: HttpClient;
@@ -142,8 +142,8 @@ describe('UsuarioService (with mocks)', () => {
          null,
          "ELIMINADO",
          null);
-  
-  
+
+
       const usuario: Usuario = {
         "codUsuario": null,
         "codModulo": null,

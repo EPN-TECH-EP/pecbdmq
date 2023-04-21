@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

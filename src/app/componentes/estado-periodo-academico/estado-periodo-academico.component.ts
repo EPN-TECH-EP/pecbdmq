@@ -1,4 +1,4 @@
-import { EstadoPeriodoAcademico } from './../../modelo/estado-periodo-academico';
+import { EstadoPeriodoAcademico } from '../../modelo/admin/estado-periodo-academico';
 import { Component, OnInit } from '@angular/core';
 import { MdbNotificationRef } from 'mdb-angular-ui-kit/notification';
 import { AlertaComponent } from '../util/alerta/alerta.component';

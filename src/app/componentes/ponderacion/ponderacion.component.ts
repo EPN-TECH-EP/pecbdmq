@@ -1,12 +1,12 @@
-import { Ponderacion } from './../../modelo/ponderacion';
+import { Ponderacion } from '../../modelo/admin/ponderacion';
 import { PonderacionService } from './../../servicios/ponderacion.service';
-import { Modulo } from 'src/app/modelo/modulo';
+import { Modulo } from 'src/app/modelo/admin/modulo';
 import { ModuloService } from 'src/app/servicios/modulo.service';
-import { ComponenteNota } from 'src/app/modelo/componente-nota';
+import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
 import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
-import { TipoNota } from 'src/app/modelo/tipo-nota';
+import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
 import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
-import { Periodo } from 'src/app/modelo/periodo_academico';
+import { Periodo } from 'src/app/modelo/admin/periodo-academico';
 import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -18,7 +18,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 
 
 import { HeaderType } from 'src/app/enum/header-type.enum';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SemestreTbl } from './util/semestre-tbl';
+import { SemestreTbl } from '../util/semestre-tbl';
 
 @Injectable()
 export class Semestre {

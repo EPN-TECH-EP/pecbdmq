@@ -8,8 +8,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
-import { Convocatoria } from '../modelo/convocatoria';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
+import { Convocatoria } from '../modelo/admin/convocatoria';
 
 @Injectable({
   providedIn: 'root'
