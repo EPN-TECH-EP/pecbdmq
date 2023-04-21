@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ITipoBaja} from "../../modelo/admin/tipo_baja";
+import {TipoBaja} from "../../modelo/admin/tipo_baja";
 import {TipoBajaService} from "../../servicios/tipo-baja.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
@@ -9,6 +9,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-tipo-baja',
@@ -17,31 +18,26 @@ import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 })
 export class TipoBajaComponent implements OnInit {
 
-  //model
-  tiposBaja: ITipoBaja[];
-  tipoBaja: ITipoBaja;
-  tipoBajaEditForm: ITipoBaja;
+  tiposBaja: TipoBaja[];
+  tipoBaja: TipoBaja;
+  tipoBajaEditForm: TipoBaja;
+  tiposBajaForm: FormGroup;
 
-  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   private subscriptions: Subscription[];
   public showLoading: boolean;
 
-  //options
-  options = [
-    {value: 'ACTIVO', label: 'ACTIVO'},
-    {value: 'INACTIVO', label: 'INACTIVO'},
-  ];
-
   //table
-  @ViewChild('table') table!: MdbTableDirective<ITipoBaja>;
+  @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
   headers = ['Baja'];
 
   constructor(
     private apiTipoBaja: TipoBajaService,
-    private notificationService: MdbNotificationService) {
+    private notificationService: MdbNotificationService,
+    private formBuilder: FormBuilder
+  ) {
     this.tiposBaja = [];
     this.subscriptions = [];
     this.tipoBaja = {
@@ -54,12 +50,24 @@ export class TipoBajaComponent implements OnInit {
       estado: 'ACTIVO',
       baja: ''
     };
+    this.tiposBajaForm = new FormGroup({});
   }
 
   ngOnInit(): void {
     this.apiTipoBaja.getTiposBaja().subscribe(data => {
       this.tiposBaja = data;
     })
+    this.buildForm();
+  }
+
+  private buildForm() {
+    this.tiposBajaForm = this.formBuilder.group({
+      baja: ['', [Validators.required, Validators.minLength(5)]]
+    });
+  }
+
+  get bajaField() {
+    return this.tiposBajaForm.get('baja');
   }
 
   public okNotification(mensaje: string) {
@@ -87,14 +95,13 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
-  //create a register of tipo baja
-  public createTipoBaja(tipoBaja: ITipoBaja): void {
+  public createTipoBaja(tipoBaja: TipoBaja): void {
     tipoBaja = {...tipoBaja, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.createTipoBaja(tipoBaja).subscribe({
-        next: (response: HttpResponse<ITipoBaja>) => {
-          let newTipoBaja: ITipoBaja = response.body;
+        next: (response: HttpResponse<TipoBaja>) => {
+          let newTipoBaja: TipoBaja = response.body;
           this.tiposBaja.push(newTipoBaja);
           this.okNotification('Tipo de baja creado correctamente');
           this.tipoBaja = {
@@ -124,8 +131,7 @@ export class TipoBajaComponent implements OnInit {
     this.editElementIndex = -1;
   }
 
-  //update a register of tipo baja
-  public updateTipoBaja(tipoBaja: ITipoBaja, formValue): void {
+  public updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
 
     tipoBaja = {...tipoBaja, baja: formValue.baja, estado: 'ACTIVO'}
 
@@ -150,7 +156,6 @@ export class TipoBajaComponent implements OnInit {
     )
   }
 
-  //delete a register of tipo baja
   public deleteTipoBaja(cod_tipo_baja: number): void {
     this.showLoading = true;
     this.subscriptions.push(

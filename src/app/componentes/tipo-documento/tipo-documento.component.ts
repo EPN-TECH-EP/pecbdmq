@@ -39,7 +39,7 @@ export class TipoDocumentoComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoDocumento>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Nombre'];
+  headers = ['Tipo Documento'];
 
   constructor(
     private ApiTipoDocumento: TipoDocumentoService,
