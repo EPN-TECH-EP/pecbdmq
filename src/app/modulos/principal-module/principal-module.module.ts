@@ -41,7 +41,6 @@ import {ComponenteNotaComponent} from '../../componentes/componente-nota/compone
 import {CambiosPendientesGuard} from 'src/app/guard/cambios-pendientes.guard';
 import {ConvocatoriaComponent} from 'src/app/componentes/flujos/formacion/convocatoria/convocatoria.component';
 import {RequisitoComponent} from 'src/app/componentes/requisito/requisito.component';
-import {TablaComponent} from 'src/app/tabla/tabla.component';
 
 //import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import {CommonModule} from '@angular/common';
