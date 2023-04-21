@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';
 import { AlertaComponent } from '../alerta/alerta.component';
 import { CargaArchivoService } from '../../../servicios/carga-archivo';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
@@ -80,7 +80,7 @@ export class CargaArchivoComponent implements OnInit {
       this.cargaArchivoService.cargarArchivo(formData).subscribe(
         {
           next: (response) => {
-            this.notificacionOK(            
+            this.notificacionOK(
               response.mensaje
             );
           }
@@ -135,13 +135,13 @@ export class CargaArchivoComponent implements OnInit {
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
     let mensajeError = 'ERROR';
     let codigoError = 0;
-    
+
     if (errorResponse) {
       let customError: CustomHttpResponse = errorResponse.error;
       mensajeError = customError.mensaje;
-      codigoError = errorResponse.status;  
+      codigoError = errorResponse.status;
     }
-    
+
     if (mensaje) {
       mensajeError = mensaje;
     }

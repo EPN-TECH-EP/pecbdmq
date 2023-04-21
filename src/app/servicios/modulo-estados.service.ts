@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { ModuloEstados } from '../modelo/modulo-estados';
+import { ModuloEstados } from '../modelo/admin/modulo-estados';
 
 @Injectable({
   providedIn: 'root'

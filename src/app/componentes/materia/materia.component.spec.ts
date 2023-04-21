@@ -1,5 +1,5 @@
 import { MateriasTbl } from './../../modelo/util/materias-tbl';
-import { Materia } from './../../modelo/materias';
+import { Materia } from '../../modelo/admin/materias';
 import { MateriaComponent } from 'src/app/componentes/materia/materia.component';
 import { MateriaService } from '../../servicios/materia.service';
 import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';

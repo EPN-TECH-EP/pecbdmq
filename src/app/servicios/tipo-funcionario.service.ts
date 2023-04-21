@@ -7,8 +7,8 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { TipoFuncionario } from '../modelo/tipo-funcionario';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { TipoFuncionario } from '../modelo/admin/tipo-funcionario';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
  import { map } from 'rxjs/operators';
 
 @Injectable({

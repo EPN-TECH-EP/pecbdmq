@@ -4,12 +4,12 @@ import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
 import { Rol } from 'src/app/modelo/admin/rol';
 import { RolAsignado } from 'src/app/modelo/admin/rol-asignado';
 import { RolUsuario } from 'src/app/modelo/admin/rol-usuario';
-import { Usuario } from 'src/app/modelo/usuario';
+import { Usuario } from 'src/app/modelo/admin/usuario';
 import { RolUsuarioService } from 'src/app/servicios/rol-usuario.service';
 import { RolService } from 'src/app/servicios/rol.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { ComponenteBase } from 'src/app/util/componente-base';
-import { BuscarUsuarioFrm } from '../../../modelo/util/buscar-usuario-frm';
+import { BuscarUsuarioFrm } from '../../../../modelo/util/buscar-usuario-frm';
 import { switchMap } from 'rxjs';
 import { Notificacion } from 'src/app/util/notificacion';
 import { RolUsuarioId } from 'src/app/modelo/admin/rol-usuario-id';
@@ -104,7 +104,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
         this.rolUsuario = data;
         this.construirListaRolesAsignados();
       });
-    
+
   }
 
   public construirListaRolesAsignados() {

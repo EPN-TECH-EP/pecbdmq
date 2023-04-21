@@ -14,48 +14,48 @@ import {ModuloComponent} from './../../componentes/modulo/modulo.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
 import {Component, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {MenuAdminComponent} from 'src/app/componentes/admin/menu-admin/menu-admin.component';
-import {MenuFormacionComponent} from 'src/app/componentes/formacion/menu-formacion/menu-formacion.component';
+import {MenuAdminComponent} from 'src/app/componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
+import {MenuFormacionComponent} from 'src/app/componentes/flujos/formacion/menu-formacion/menu-formacion.component';
 import {MateriaComponent} from 'src/app/componentes/materia/materia.component';
 import {PrincipalComponent} from '../../componentes/principal/principal.component';
-import {UsuariosComponent} from '../../componentes/admin/usuarios/usuarios.component';
-import {RolUsuarioComponent} from '../../componentes/admin/rol-usuario/rol-usuario.component';
+import {UsuariosComponent} from '../../componentes/admin/administracion-plataforma/usuarios/usuarios.component';
+import {RolUsuarioComponent} from '../../componentes/admin/administracion-plataforma/rol-usuario/rol-usuario.component';
 import {TipoDocumentoComponent} from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import {TipoNotaComponent} from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 import {
   MenuEspecializacionComponent
-} from '../../componentes/especializacion/menu-especializacion/menu-especializacion.component';
+} from '../../componentes/flujos/especializacion/menu-especializacion/menu-especializacion.component';
 import {
   MenuProfesionalizacionComponent
-} from '../../componentes/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
+} from '../../componentes/flujos/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.component';
-import {ValidacionComponent} from '../../componentes/formacion/validacion/validacion.component';
+import {ValidacionComponent} from '../../componentes/flujos/formacion/validacion/validacion.component';
 
-import {TipoFuncionario} from '../../modelo/tipo-funcionario';
+import {TipoFuncionario} from '../../modelo/admin/tipo-funcionario';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import {TipoBajaComponent} from "../../componentes/tipo-baja/tipo-baja.component";
 import {TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
 import {ComponenteNotaComponent} from '../../componentes/componente-nota/componente-nota.component';
 import {CambiosPendientesGuard} from 'src/app/guard/cambios-pendientes.guard';
-import {ConvocatoriaComponent} from 'src/app/componentes/convocatoria/convocatoria.component';
+import {ConvocatoriaComponent} from 'src/app/componentes/flujos/formacion/convocatoria/convocatoria.component';
 import {RequisitoComponent} from 'src/app/componentes/requisito/requisito.component';
 import {TablaComponent} from 'src/app/tabla/tabla.component';
 
 //import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
 import {CommonModule} from '@angular/common';
 import {LocalDataService} from 'src/app/servicios/util/local-data.service';
-import {RolComponent} from 'src/app/componentes/admin/rol/rol.component';
-import {MenuRolComponent} from 'src/app/componentes/admin/menu-rol/menu-rol.component';
+import {RolComponent} from 'src/app/componentes/admin/administracion-plataforma/rol/rol.component';
+import {MenuRolComponent} from 'src/app/componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
-import {ProcesoFormacionComponent} from "../../componentes/formacion/proceso-formacion/proceso-formacion.component";
+import {ProcesoFormacionComponent} from "../../componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
 import {
   ProcesoEspecializacionComponent
-} from "../../componentes/especializacion/proceso-especializacion/proceso-especializacion.component";
+} from "../../componentes/flujos/especializacion/proceso-especializacion/proceso-especializacion.component";
 import {
   ProcesoProfesionalizacionComponent
-} from "../../componentes/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
+} from "../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
 import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 
 

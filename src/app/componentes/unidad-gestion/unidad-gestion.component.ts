@@ -1,4 +1,4 @@
-import { UnidadGestion } from './../../modelo/unidad-gestion';
+import { UnidadGestion } from '../../modelo/admin/unidad-gestion';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
@@ -16,7 +16,7 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
@@ -26,7 +26,7 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@ang
   templateUrl: './unidad-gestion.component.html',
   styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class UnidadGestionComponent implements OnInit, CambiosPendientes {  
+export class UnidadGestionComponent implements OnInit, CambiosPendientes {
   unidades: UnidadGestion[];
   Unidad: UnidadGestion;
   UnidadEditForm: UnidadGestion;
@@ -190,5 +190,5 @@ public eliminar(unidadId: any, data: UnidadGestion): void {
     return this.cambiosPendientes();
   }*/
 
-  
+
 }

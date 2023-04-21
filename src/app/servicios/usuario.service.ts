@@ -7,8 +7,8 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Usuario } from '../modelo/usuario';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { Usuario } from '../modelo/admin/usuario';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 import { NombreApellido } from '../modelo/util/nombre-apellido';
 
 @Injectable({
@@ -74,7 +74,7 @@ export class UsuarioService {
     formData.append('firstName', usuario.nombres);
     formData.append('lastName', usuario.apellidos);
     formData.append('Usuarioname', usuario.nombreUsuario);
-    formData.append('email', usuario.email);    
+    formData.append('email', usuario.email);
     formData.append('profileImage', imagenPerfil);
     formData.append('isActive', JSON.stringify(usuario.active));
     formData.append('isNonLocked', JSON.stringify(usuario.notLocked));

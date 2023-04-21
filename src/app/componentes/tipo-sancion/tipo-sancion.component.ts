@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ITipoSancion} from "../../modelo/tipo_sancion";
+import {ITipoSancion} from "../../modelo/admin/tipo_sancion";
 import {TipoSancionService} from "../../servicios/tipo-sancion.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
@@ -8,7 +8,7 @@ import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {CustomHttpResponse} from "../../modelo/custom-http-response";
+import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 
 @Component({
   selector: 'app-tipo-sancion',

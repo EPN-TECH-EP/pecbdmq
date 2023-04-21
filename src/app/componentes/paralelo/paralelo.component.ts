@@ -1,11 +1,11 @@
 import {ParaleloService} from "../../servicios/paralelo.service";
-import {Paralelo} from "../../modelo/paralelo/paralelo";
+import {Paralelo} from "../../modelo/admin/paralelo";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {Subscription} from "rxjs";
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/custom-http-response';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 
 import {Notificacion} from "../../util/notificacion";
 import {ViewChild} from '@angular/core';

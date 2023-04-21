@@ -1,4 +1,4 @@
-import { Modulo } from 'src/app/modelo/modulo';
+import { Modulo } from 'src/app/modelo/admin/modulo';
 import { ModuloService } from 'src/app/servicios/modulo.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -10,14 +10,14 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 
 
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { FormArray, FormControl } from '@angular/forms';
-import { ModuloEstados } from 'src/app/modelo/modulo-estados';
-import { CatalogoEstados } from 'src/app/modelo/catalogo-estados';
+import { ModuloEstados } from 'src/app/modelo/admin/modulo-estados';
+import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { ModuloEstadosService } from 'src/app/servicios/modulo-estados.service';
 import { CatalogoEstadosService } from 'src/app/servicios/catalogo-estados.service';
 

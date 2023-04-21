@@ -1,20 +1,20 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {OPCIONES_DATEPICKER} from "../../util/constantes/opciones-datepicker.const";
+import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
 import {Subscription} from "rxjs";
-import {FileUploadStatus} from "../../modelo/util/file-upload-status";
+import {FileUploadStatus} from "../../../../modelo/util/file-upload-status";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {AlertaComponent} from "../util/alerta/alerta.component";
+import {AlertaComponent} from "../../../util/alerta/alerta.component";
 import {HttpErrorResponse} from "@angular/common/http";
-import {TipoAlerta} from "../../enum/tipo-alerta";
-import {CustomHttpResponse} from "../../modelo/custom-http-response";
-import {Notificacion} from "../../util/notificacion";
-import {CargaArchivoService} from "../../servicios/carga-archivo";
-import {RequisitoService} from "../../servicios/requisito.service";
-import {ConvocatoriaService} from "../../servicios/convocatoria.service";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {CustomHttpResponse} from "../../../../modelo/admin/custom-http-response";
+import {Notificacion} from "../../../../util/notificacion";
+import {CargaArchivoService} from "../../../../servicios/carga-archivo";
+import {RequisitoService} from "../../../../servicios/requisito.service";
+import {ConvocatoriaService} from "../../../../servicios/convocatoria.service";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-import {Requisito} from "../../modelo/requisito";
-import {Convocatoria} from "../../modelo/convocatoria";
+import {Requisito} from "../../../../modelo/admin/requisito";
+import {Convocatoria} from "../../../../modelo/admin/convocatoria";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({

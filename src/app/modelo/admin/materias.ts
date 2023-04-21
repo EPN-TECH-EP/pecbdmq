@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Paralelo } from './paralelo/paralelo';
+import { Paralelo } from './paralelo';
 
 @Injectable()
 export class Materia {

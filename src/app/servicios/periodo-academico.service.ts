@@ -1,10 +1,10 @@
-import { Semestre } from 'src/app/modelo//semestre';
+import { Semestre } from 'src/app/modelo/admin/semestre';
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
-import { Periodo } from '../modelo/periodo_academico';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
+import { Periodo } from '../modelo/admin/periodo-academico';
 
 
 @Injectable({providedIn: 'root',})

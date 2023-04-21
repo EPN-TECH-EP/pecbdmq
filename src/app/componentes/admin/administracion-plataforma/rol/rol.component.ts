@@ -4,7 +4,7 @@ import {
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
 import { Rol } from 'src/app/modelo/admin/rol';
-import { AlertaComponent } from '../../util/alerta/alerta.component';
+import { AlertaComponent } from '../../../util/alerta/alerta.component';
 import { Subscription } from 'rxjs';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import { RolService } from 'src/app/servicios/rol.service';

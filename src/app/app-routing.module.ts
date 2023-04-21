@@ -1,11 +1,11 @@
-import { InscripcionComponent } from './componentes/inscripcion/inscripcion.component';
+import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './componentes/login/login.component';
 import { PrincipalComponent } from './componentes/principal/principal.component';
 import { AutenticacionGuard } from './guard/autenticacion.guard';
 import { RegistroComponent } from './componentes/registro/registro.component';
-import { Usuario } from './modelo/usuario';
+import { Usuario } from './modelo/admin/usuario';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
 
 const routes: Routes = [

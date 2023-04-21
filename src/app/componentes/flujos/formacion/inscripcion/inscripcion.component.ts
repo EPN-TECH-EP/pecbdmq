@@ -1,5 +1,5 @@
-import { Provincia } from './../../modelo/provincia';
-import { Inscripcion } from './../../modelo/inscripcion';
+import { Provincia } from '../../../../modelo/admin/provincia';
+import { Inscripcion } from '../../../../modelo/admin/inscripcion';
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
@@ -8,11 +8,11 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { Subscription } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/custom-http-response';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { UsuarioFrm } from 'src/app/modelo/util/usuario-frm';
 import { Notificacion } from 'src/app/util/notificacion';
-import { Usuario } from '../../modelo/usuario';
-import { AlertaComponent } from '../util/alerta/alerta.component';
+import { Usuario } from '../../../../modelo/admin/usuario';
+import { AlertaComponent } from '../../../util/alerta/alerta.component';
 import { AbstractControl, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CargaArchivoService } from 'src/app/servicios/carga-archivo';
 import { FileUploadStatus } from 'src/app/modelo/util/file-upload-status';

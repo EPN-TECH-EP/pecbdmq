@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
-import { Usuario } from '../modelo/usuario';
+import { Usuario } from '../modelo/admin/usuario';
 import { Observable } from 'rxjs';
 import { Menu } from '../modelo/admin/menu';
 
@@ -18,7 +18,7 @@ export class MenuService {
 
   constructor(private http: HttpClient) {}
 
-  public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{        
+  public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{
     return this.http.get<Menu[]>(`${this.host}/menu/lista/${usuario.nombreUsuario}`)
   }
 

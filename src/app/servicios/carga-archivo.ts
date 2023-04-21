@@ -7,7 +7,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CustomHttpResponse } from '../modelo/custom-http-response';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class CargaArchivoService {
     try {
       response = this.http.get<number>(`${this.host}/usuario/maxArchivo`);
       return response;
-    } catch (error) {      
+    } catch (error) {
       console.log(error);
     }
   }
