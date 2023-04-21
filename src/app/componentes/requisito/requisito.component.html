@@ -8,33 +8,33 @@
 <div class="row justify-content">
   <div class="col-12">
     <button
-    mdbRipple
-    class="btn btn-primary btn-sm ms-3"
-    [disabled]="addRow || editElementIndex !== -1"
-    (click)="addRow = true"
-  >
-    <i class="fa fa-plus"></i>
-  </button>
+      mdbRipple
+      class="btn btn-primary btn-sm ms-3"
+      [disabled]="addRow || editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
   </div>
-  <hr />
-<div
-  class="datatable table-editor mt-4"
-  [ngClass]="{
+  <hr/>
+  <div
+    class="datatable table-editor mt-4"
+    [ngClass]="{
     'edited-table': addRow || editElementIndex !== -1
   }"
->
-  <div class="datatable table-editor mt-3">
-    <form #form="ngForm" >
-      <table
-        class="table table-sm datatable-table"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        #sort="mdbTableSort"
-        [dataSource]="requisitos"
-        [sort]="sort"
-      >
-        <thead class="datatable-header">
+  >
+    <div class="datatable table-editor mt-3">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sort="mdbTableSort"
+          [dataSource]="requisitos"
+          [sort]="sort"
+        >
+          <thead class="datatable-header">
           <tr align="center">
             <th
               *ngFor="let header of headers"
@@ -44,10 +44,10 @@
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" ><b>Acciones</b></th>
-            </tr>
-        </thead>
-        <tbody class="datatable-body">
+            <th scope="col"><b>Acciones</b></th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row"
           >
             <td>
@@ -75,21 +75,21 @@
               </mdb-form-control>
             </td>
             <td align="center">
-            <div class="col-md">
-              <div class="form-check" align="center">
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  [(ngModel)]="requisito.esDocumento"
-                />
+              <div class="col-md">
+                <div class="form-check" align="center">
+                  <input
+                    mdbCheckbox
+                    class="form-check-input"
+                    type="checkbox"
+                    [(ngModel)]="requisito.esDocumento"
+                  />
+                </div>
               </div>
-            </div>
-          </td>
+            </td>
             <td align="center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                id ="btnRegistrar"
+                id="btnRegistrar"
                 type="submit"
                 (click)="registro(form.value); addRow = false;"
               >
@@ -106,11 +106,11 @@
           </tr>
 
           <tr *ngFor="let requisito of requisitos let index = index" scope="row"
-          scope="row"
-          [ngClass]="{ 'edited-row': editElementIndex === index }"
+              scope="row"
+              [ngClass]="{ 'edited-row': editElementIndex === index }"
           >
             <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container  *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="editElementIndex !== index">
                 {{ requisito.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
@@ -129,7 +129,7 @@
 
 
             <td align="center" style="min-width: 10px; max-width: 10px">
-              <ng-container  *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="editElementIndex !== index">
                 {{ requisito.descripcion }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
@@ -145,7 +145,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td  align="center">
+            <td align="center">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ requisito.esDocumento}}
               </ng-container>
@@ -200,9 +200,9 @@
               </ng-container>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </form>
+          </tbody>
+        </table>
+      </form>
+    </div>
   </div>
 </div>
-

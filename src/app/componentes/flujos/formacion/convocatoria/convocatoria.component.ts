@@ -16,6 +16,8 @@ import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {Requisito} from "../../../../modelo/admin/requisito";
 import {Convocatoria} from "../../../../modelo/admin/convocatoria";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
+import {ArchivoService} from "../../../../servicios/archivo.service";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-convocatoria',
@@ -36,8 +38,9 @@ export class ConvocatoriaComponent implements OnInit {
   requisitos              : Requisito[];
   convocatorias           : Convocatoria[];
   convocatoria            : Convocatoria;
+  archivo                 : File;
+  urlArchivo              : SafeResourceUrl;
 
-  //table
   @ViewChild('table') table!: MdbTableDirective<Requisito>;
   editElementIndex = -1;
   addRow = false;
@@ -46,12 +49,14 @@ export class ConvocatoriaComponent implements OnInit {
   private subscriptions: Subscription[];
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder           : FormBuilder,
     private cargaArchivoService   : CargaArchivoService,
     private notificationService   : MdbNotificationService,
     private popConfirmService     : MdbPopconfirmService,
     private servicioRequisito     : RequisitoService,
     private servicioConvocatoria  : ConvocatoriaService,
+    private archivoService        : ArchivoService,
+    private sanitizer             : DomSanitizer,
   ) {
     this.tamMaxArchivo = 0;
     this.subscriptions = [];
@@ -59,15 +64,16 @@ export class ConvocatoriaComponent implements OnInit {
     this.estadoArchivo = new FileUploadStatus();
     this.construirFormulario();
     this.email = new FormControl('', [Validators.required, Validators.email]);
+    this.urlArchivo = this.sanitizer.bypassSecurityTrustResourceUrl('');
   }
 
 
   ngOnInit() {
 
+    this.visualizarArchivo('245')
+
     this.servicioRequisito.getRequisito().subscribe(data => {
       this.requisitos = data;
-      console.log(data)
-      console.log(this.requisitos);
     });
 
     this.servicioConvocatoria.getConvocatoria().subscribe(data => {
@@ -98,39 +104,6 @@ export class ConvocatoriaComponent implements OnInit {
       documentoConvocatoria : ['', Validators.required],
       documentoSoporte      : [''],
     });
-
-  }
-
-  get codigo() {
-    return this.convocatoriaForm.get('codigo');
-  }
-
-  get cuposHombres() {
-    return this.convocatoriaForm.get('cuposHombres');
-  }
-
-  get cuposMujeres() {
-    return this.convocatoriaForm.get('cuposMujeres');
-  }
-
-  get fechaInicio() {
-    return this.convocatoriaForm.get('fechaInicio');
-  }
-
-  get fechaFin() {
-    return this.convocatoriaForm.get('fechaFin');
-  }
-
-  get horaInicio() {
-    return this.convocatoriaForm.get('horaInicio');
-  }
-
-  get horaFin() {
-    return this.convocatoriaForm.get('horaFin');
-  }
-
-  get documentoConvocatoriaForm() {
-    return this.convocatoriaForm.get('documentoConvocatoria');
   }
 
   private notificar(errorResponse?: HttpErrorResponse, mensaje?: string) {
@@ -188,7 +161,6 @@ export class ConvocatoriaComponent implements OnInit {
     this.requisitosConvocatoria.push(this.requisitoEditable);
     this.editElementIndex = -1;
     this.addRow = false;
-    console.log(this.requisitosConvocatoria);
     this.requisitoEditable = new Requisito();
   }
 
@@ -201,23 +173,65 @@ export class ConvocatoriaComponent implements OnInit {
   guardarConvocatoria() {
     this.convocatoria = {
       ...this.convocatoria,
-      codigoUnico: this.convocatoriaForm.get('codigo')?.value,
-      cupoHombres: this.convocatoriaForm.get('cuposHombres')?.value,
-      cupoMujeres: this.convocatoriaForm.get('cuposMujeres')?.value,
-      horaInicioConvocatoria: this.convocatoriaForm.get('horaInicio')?.value,
-      horaFinConvocatoria: this.convocatoriaForm.get('horaFin')?.value,
-      fechaInicioConvocatoria: this.convocatoriaForm.get('fechaInicio')?.value,
-      fechaFinConvocatoria: this.convocatoriaForm.get('fechaFin')?.value,
-      requisitos: this.requisitosConvocatoria,
-      documentos: this.documentoConvocatoria?.name + ',' + this.documentoSoporte?.name,
-      correo: this.email.value,
-      codConvocatoria: 1,
-      estado: 'Activo',
-      nombre: 'Convocatoria 1',
-      codPeriodoAcademico: 1,
-      codPeriodoEvaluacion: 1,
+      codigoUnico             : this.convocatoriaForm.get('codigo')?.value,
+      cupoHombres             : this.convocatoriaForm.get('cuposHombres')?.value,
+      cupoMujeres             : this.convocatoriaForm.get('cuposMujeres')?.value,
+      horaInicioConvocatoria  : this.convocatoriaForm.get('horaInicio')?.value,
+      horaFinConvocatoria     : this.convocatoriaForm.get('horaFin')?.value,
+      fechaInicioConvocatoria : this.convocatoriaForm.get('fechaInicio')?.value,
+      fechaFinConvocatoria    : this.convocatoriaForm.get('fechaFin')?.value,
+      requisitos              : this.requisitosConvocatoria,
+      documentos              : this.documentoConvocatoria?.name + ',' + this.documentoSoporte?.name,
+      correo                  : this.email.value,
+      codConvocatoria         : 1,
+      estado                  : 'Activo',
+      nombre                  : 'Convocatoria 1',
+      codPeriodoAcademico     : 1,
+      codPeriodoEvaluacion    : 1,
     }
     console.log("la convocatoria es:", this.convocatoria);
+  }
+
+  visualizarArchivo(id: string) {
+    this.archivoService.visualizar(id).subscribe(
+      (url) => {
+        this.urlArchivo = (url);
+      },
+      () => {
+        this.urlArchivo = null;
+      })
+  }
+
+  get codigo() {
+    return this.convocatoriaForm.get('codigo');
+  }
+
+  get cuposHombres() {
+    return this.convocatoriaForm.get('cuposHombres');
+  }
+
+  get cuposMujeres() {
+    return this.convocatoriaForm.get('cuposMujeres');
+  }
+
+  get fechaInicio() {
+    return this.convocatoriaForm.get('fechaInicio');
+  }
+
+  get fechaFin() {
+    return this.convocatoriaForm.get('fechaFin');
+  }
+
+  get horaInicio() {
+    return this.convocatoriaForm.get('horaInicio');
+  }
+
+  get horaFin() {
+    return this.convocatoriaForm.get('horaFin');
+  }
+
+  get documentoConvocatoriaForm() {
+    return this.convocatoriaForm.get('documentoConvocatoria');
   }
 
 }

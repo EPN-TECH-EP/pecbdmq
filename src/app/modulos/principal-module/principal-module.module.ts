@@ -1,18 +1,17 @@
 import {
   EstadoPeriodoAcademicoComponent
-} from './../../componentes/estado-periodo-academico/estado-periodo-academico.component';
-import {PonderacionComponent} from './../../componentes/ponderacion/ponderacion.component';
-import {CatalogoEstadosComponent} from './../../componentes/catalogo-estados/catalogo-estados.component';
-import {ModuloEstadosComponent} from './../../componentes/modulo-estados/modulo-estados.component';
-import {SemestreComponent} from './../../componentes/semestre/semestre.component';
-import {AulasComponent} from './../../componentes/aulas/aulas.component';
-import {TipoPruebaComponent} from './../../componentes/tipo-prueba/tipo-prueba.component';
-import {TipoProcedenciaComponent} from './../../componentes/tipo-procedencia/tipo-procedencia.component';
-import {TipoFuncionarioComponent} from './../../componentes/tipo-funcionario/tipo-funcionario.component';
-import {ModuloComponent} from './../../componentes/modulo/modulo.component';
+} from '../../componentes/estado-periodo-academico/estado-periodo-academico.component';
+import {PonderacionComponent} from '../../componentes/ponderacion/ponderacion.component';
+import {CatalogoEstadosComponent} from '../../componentes/catalogo-estados/catalogo-estados.component';
+import {ModuloEstadosComponent} from '../../componentes/modulo-estados/modulo-estados.component';
+import {SemestreComponent} from '../../componentes/semestre/semestre.component';
+import {AulasComponent} from '../../componentes/aulas/aulas.component';
+import {TipoPruebaComponent} from '../../componentes/tipo-prueba/tipo-prueba.component';
+import {TipoProcedenciaComponent} from '../../componentes/tipo-procedencia/tipo-procedencia.component';
+import {TipoFuncionarioComponent} from '../../componentes/tipo-funcionario/tipo-funcionario.component';
+import {ModuloComponent} from '../../componentes/modulo/modulo.component';
 //import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
-import {Component, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MenuAdminComponent} from 'src/app/componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
 import {MenuFormacionComponent} from 'src/app/componentes/flujos/formacion/menu-formacion/menu-formacion.component';
@@ -32,7 +31,6 @@ import {
 import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.component';
 import {ValidacionComponent} from '../../componentes/flujos/formacion/validacion/validacion.component';
 
-import {TipoFuncionario} from '../../modelo/admin/tipo-funcionario';
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import {TipoBajaComponent} from "../../componentes/tipo-baja/tipo-baja.component";
@@ -56,6 +54,8 @@ import {
   ProcesoProfesionalizacionComponent
 } from "../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
 import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
+import {NgModule} from "@angular/core";
+import {InscripcionComponent} from "../../componentes/flujos/formacion/inscripcion/inscripcion.component";
 
 
 const routes: Routes = [
@@ -101,6 +101,7 @@ const routes: Routes = [
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},
+      {path: 'formacion/inscripcion', component: InscripcionComponent},
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},
@@ -111,6 +112,7 @@ const routes: Routes = [
       {path: 'convocatoria', component: ConvocatoriaComponent},
       {path: 'especializacion/proceso', component: ProcesoEspecializacionComponent},
       {path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent},
+      {path: 'requisito', component: RequisitoComponent},
 
     ],
   },
