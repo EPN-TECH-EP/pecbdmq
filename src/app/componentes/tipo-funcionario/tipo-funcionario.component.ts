@@ -99,8 +99,23 @@ headers = ['Nombre'];
       TipoAlerta.ALERTA_OK
     );
   }
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //registro
   public registro(tipofuncionario: TipoFuncionario): void {
+
+    if(tipofuncionario.nombre === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipofuncionario={...tipofuncionario, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
@@ -139,6 +154,12 @@ headers = ['Nombre'];
 
   //actualizar
   public actualizar(tipoFuncionario: TipoFuncionario, formValue): void {
+
+    if (formValue.nombre === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(

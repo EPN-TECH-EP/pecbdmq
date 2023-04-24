@@ -18,28 +18,26 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class TipoBajaComponent implements OnInit, OnDestroy {
 
-  tiposBaja: TipoBaja[];
-  tipoBajaEditForm: TipoBaja;
-  tiposBajaForm: FormGroup;
-
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   private subscriptions: Subscription[];
-  public showLoading: boolean;
 
-  //table
+  tiposBaja         : TipoBaja[];
+  tipoBajaEditForm  : TipoBaja;
+  tiposBajaForm     : FormGroup;
+  notificationRef   : MdbNotificationRef<AlertaComponent> | null = null;
+  showLoading       : boolean;
+
   @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
   headers = ['Baja'];
 
   constructor(
-    private apiTipoBaja: TipoBajaService,
-    private notificationService: MdbNotificationService,
-    private formBuilder: FormBuilder
+    private apiTipoBaja         : TipoBajaService,
+    private notificationService : MdbNotificationService,
+    private formBuilder         : FormBuilder
   ) {
     this.tiposBaja = [];
     this.subscriptions = [];
-
     this.tipoBajaEditForm = {cod_tipo_baja: 0, estado: 'ACTIVO', baja: ''};
     this.tiposBajaForm = new FormGroup({});
   }
@@ -61,18 +59,6 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     });
   }
 
-  get bajaField() {
-    return this.tiposBajaForm.get('baja');
-  }
-
-  public okNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
   private errorResponseNotification(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_ERROR;
@@ -90,7 +76,29 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     )
   }
 
-  public createTipoBaja(tipoBaja: TipoBaja): void {
+  get bajaField() {
+    return this.tiposBajaForm.get('baja');
+  }
+
+  okNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
+  }
+
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.tipoBajaEditForm = {...this.tiposBaja[index]};
+    this.tiposBajaForm.patchValue(this.tipoBajaEditForm)
+  }
+
+  undoRow() {
+    this.editElementIndex = -1;
+  }
+
+  createTipoBaja(tipoBaja: TipoBaja): void {
     tipoBaja = {...tipoBaja, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
@@ -107,17 +115,7 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     )
   }
 
-  editRow(index: number) {
-    this.editElementIndex = index;
-    this.tipoBajaEditForm = {...this.tiposBaja[index]};
-    this.bajaField?.setValue(this.tipoBajaEditForm.baja);
-  }
-
-  undoRow() {
-    this.editElementIndex = -1;
-  }
-
-  public updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
+  updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
 
     tipoBaja = {...tipoBaja, baja: formValue.baja, estado: 'ACTIVO'}
 
@@ -138,7 +136,7 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     )
   }
 
-  public deleteTipoBaja(cod_tipo_baja: number): void {
+  deleteTipoBaja(cod_tipo_baja: number): void {
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.deleteTipoBaja(cod_tipo_baja).subscribe({

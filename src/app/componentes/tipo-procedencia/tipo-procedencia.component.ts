@@ -96,8 +96,23 @@ headers = ['Nombre'];
       TipoAlerta.ALERTA_OK
     );
   }
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //registro
   public registro(tipoprocedencia: TipoProcedencia): void {
+
+    if (tipoprocedencia.nombre === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoprocedencia={...tipoprocedencia,estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(
@@ -135,6 +150,12 @@ headers = ['Nombre'];
   }
   //actualizar
   public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
+
+    if (formValue.nombre === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado:'ACTIVO'},
     this.showLoading = true;
     this.subscriptions.push(

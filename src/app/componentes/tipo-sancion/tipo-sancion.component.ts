@@ -68,6 +68,14 @@ export class TipoSancionComponent implements OnInit {
     );
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   private errorResponseNotification(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_ERROR;
@@ -85,8 +93,15 @@ export class TipoSancionComponent implements OnInit {
     )
   }
 
+
   //create a register of tipo sancion
   public createTipoSancion(tipoSancion: ITipoSancion): void {
+
+    if(tipoSancion.sancion === ""){
+      this.errorNotification('El campo sanción no puede estar vacío');
+      return
+    }
+
     tipoSancion = {...tipoSancion, estado:'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
@@ -125,6 +140,11 @@ export class TipoSancionComponent implements OnInit {
 
   //update a register of tipo sancion
   public updateTipoSancion(tipoSancion: ITipoSancion, formValue): void {
+
+    if(formValue.sancion === ""){
+      this.errorNotification('El campo sanción no puede estar vacío');
+      return
+    }
 
     tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"}
 
