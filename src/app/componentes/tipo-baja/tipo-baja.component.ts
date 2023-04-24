@@ -10,15 +10,27 @@ import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-tipo-baja',
   templateUrl: './tipo-baja.component.html',
   styleUrls: ['./tipo-baja.component.scss']
 })
-export class TipoBajaComponent implements OnInit, OnDestroy {
+export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
-  private subscriptions: Subscription[];
+  tiposBaja: TipoBaja[];
+  tipoBaja: TipoBaja;
+  tipoBajaEditForm: TipoBaja;
+  tiposBajaForm: FormGroup;
+
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
   tiposBaja         : TipoBaja[];
   tipoBajaEditForm  : TipoBaja;
@@ -32,10 +44,13 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
   headers = ['Baja'];
 
   constructor(
-    private apiTipoBaja         : TipoBajaService,
-    private notificationService : MdbNotificationService,
-    private formBuilder         : FormBuilder
+    private apiTipoBaja: TipoBajaService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
+    private formBuilder: FormBuilder
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    
     this.tiposBaja = [];
     this.subscriptions = [];
     this.tipoBajaEditForm = {cod_tipo_baja: 0, estado: 'ACTIVO', baja: ''};
@@ -70,7 +85,7 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     }
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       messageError,
       tipoAlerta
     )
@@ -136,14 +151,21 @@ export class TipoBajaComponent implements OnInit, OnDestroy {
     )
   }
 
-  deleteTipoBaja(cod_tipo_baja: number): void {
+  // eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+  
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoBaja.deleteTipoBaja(cod_tipo_baja).subscribe({
+      this.apiTipoBaja.deleteTipoBaja(this.codigo).subscribe({
         next: () => {
           this.okNotification('Tipo de baja eliminado correctamente');
           this.showLoading = false;
-          const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.cod_tipo_baja === cod_tipo_baja);
+          const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.cod_tipo_baja === this.codigo);
           this.tiposBaja.splice(index, 1);
           this.tiposBaja = [...this.tiposBaja];
         },

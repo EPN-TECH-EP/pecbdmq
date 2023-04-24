@@ -165,7 +165,7 @@
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                  (click)="eliminar(paralelo.codParalelo)"
+                  (click)="confirmaEliminar($event,paralelo.codParalelo)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>

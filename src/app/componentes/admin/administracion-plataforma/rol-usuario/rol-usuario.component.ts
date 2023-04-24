@@ -13,6 +13,7 @@ import { BuscarUsuarioFrm } from '../../../../modelo/util/buscar-usuario-frm';
 import { switchMap } from 'rxjs';
 import { Notificacion } from 'src/app/util/notificacion';
 import { RolUsuarioId } from 'src/app/modelo/admin/rol-usuario-id';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-rol-usuario',
@@ -37,9 +38,10 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     private rolUsuarioService: RolUsuarioService,
     private rolService: RolService,
     private usuarioService: UsuarioService,
-    notificationService: MdbNotificationService
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
-    super(notificationService);
+    super(notificationServiceLocal, popconfirmServiceLocal);
   }
 
   ngOnInit(): void {
@@ -61,7 +63,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
             );
           } else {
             this.showLoading = false;
-            Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'No se encontró el usuario');
+            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'No se encontró el usuario');
             return [];
           }
         })
@@ -154,7 +156,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
 
         Notificacion.notificacionOK(
           this.notificationRef,
-          this.notificationService,
+          this.notificationServiceLocal,
           'Se guardaron los cambios'
         );
       });
@@ -185,7 +187,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       this.buscarUsuarioPorNombreUsuario(form.nombreUsuario);
       //console.log('buscarUsuarioPorNombreUsuario')
     } else {
-      Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'Debe ingresar un criterio de búsqueda');
+      Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Debe ingresar un criterio de búsqueda');
     }
 
     /* console.log(this.usuarioFrm);

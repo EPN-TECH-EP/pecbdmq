@@ -24,13 +24,14 @@ import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { FormArray, FormControl } from '@angular/forms';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-ponderacion',
   templateUrl: './ponderacion.component.html',
   styleUrls: ['./ponderacion.component.scss']
 })
-export class PonderacionComponent implements OnInit {
+export class PonderacionComponent extends ComponenteBase implements OnInit {
   ponderaciones: Ponderacion[];
   modulos: Modulo[];
   componentes: ComponenteNota[];
@@ -39,10 +40,12 @@ export class PonderacionComponent implements OnInit {
   ponderacion: Ponderacion;
   ponderacionEditForm: Ponderacion;
 
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];  
   public userResponse: string;
 
   @ViewChild('table') table!: MdbTableDirective<Ponderacion>;
@@ -98,9 +101,12 @@ export class PonderacionComponent implements OnInit {
     private ApiComponente: ComponenteNotaService,
     private ApiTipoNota: TipoNotaService,
     private ApiPeriodoAcademico: PeriodoAcademicoService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
 
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.ponderaciones = [];
     this.subscriptions = [];
     this.ponderacion = {
@@ -130,22 +136,31 @@ export class PonderacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.ApiPonderacion.getPonderacion().subscribe(data => {
       this.ponderaciones = data;
       console.log(data);
-    })
+    }));
+
+    this.subscriptions.push(
     this.ApiModulo.getModulo().subscribe(data => {
       this.modulos = data;
-    })
+    }));
+
+    this.subscriptions.push(
     this.ApiComponente.getComponenteNota().subscribe(data => {
       this.componentes = data;
-    })
+    }));
+
+    this.subscriptions.push(
     this.ApiTipoNota.getTipoNota().subscribe(data => {
       this.tiposNota = data;
-    })
+    }));
+
+    this.subscriptions.push(
     this.ApiPeriodoAcademico.getPeriodo().subscribe(data => {
       this.periodos = data;
-    })
+    }));
   }
 
   search(event: Event): void {
@@ -172,7 +187,7 @@ export class PonderacionComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -181,7 +196,7 @@ export class PonderacionComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -196,10 +211,7 @@ export class PonderacionComponent implements OnInit {
         next: (response: HttpResponse<Ponderacion>) => {
           let nuevaPonderacion: Ponderacion = response.body;
           this.table.data.push(nuevaPonderacion);
-          this.notificacionOK('Ponderacion creada con éxito');
-          this.ApiPonderacion.getPonderacion().subscribe(data => {
-            this.ponderaciones = data;
-          });
+          this.notificacionOK('Ponderacion creada con éxito');          
           this.ponderacion = {
             cod_ponderacion: 0,
             cod_modulo: '',
@@ -263,10 +275,7 @@ export class PonderacionComponent implements OnInit {
           this.notificacionOK('Ponderacion actualizada con éxito');
           this.ponderaciones[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.editElementIndex = -1;
-          this.ApiPonderacion.getPonderacion().subscribe(data => {
-            this.ponderaciones = data;
-          })
+          this.editElementIndex = -1;          
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -278,14 +287,20 @@ export class PonderacionComponent implements OnInit {
 
   //eliminar
 
-  public eliminar(codigo: number): void {
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiPonderacion.eliminarPonderacion(codigo).subscribe({
+      this.ApiPonderacion.eliminarPonderacion(this.codigo).subscribe({
         next: () => {
           this.notificacionOK('Ponderacion eliminada con éxito');
           this.showLoading = false;
-          const index = this.ponderaciones.findIndex(ponderacion => ponderacion.cod_ponderacion === codigo);
+          const index = this.ponderaciones.findIndex(ponderacion => ponderacion.cod_ponderacion === this.codigo);
           this.ponderaciones.splice(index, 1);
           this.ponderaciones = [...this.ponderaciones]
         },

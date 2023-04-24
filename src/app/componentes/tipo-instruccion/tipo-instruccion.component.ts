@@ -10,6 +10,8 @@ import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {Notificacion} from "../../util/notificacion";
 import {Paralelo} from "../../modelo/admin/paralelo";
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 
 @Component({
@@ -17,14 +19,17 @@ import {Paralelo} from "../../modelo/admin/paralelo";
   templateUrl: './tipo-instruccion.component.html',
   styleUrls: ['./tipo-instruccion.component.scss']
 })
-export class TipoInstruccionComponent implements OnInit {
+export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
   tiposInstruccion:TipoInstruccion[];
   tipoInstruccion:TipoInstruccion;
   tipoInstruccionEdit: TipoInstruccion;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
 
   @ViewChild('table') table!: MdbTableDirective<TipoInstruccion>;
@@ -38,19 +43,22 @@ export class TipoInstruccionComponent implements OnInit {
 
 
   constructor(
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private Api:TipoInstruccionService
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    
     this.tiposInstruccion=[];
     this.subscriptions = [];
     this.notificationRef=null;
     this.tipoInstruccion={
-      codigoTipoInstruccion:'',
+      codigoTipoInstruccion: 0,
       tipoInstruccion:'',
       estado:'ACTIVO'
     }
     this.tipoInstruccionEdit={
-      codigoTipoInstruccion:'',
+      codigoTipoInstruccion: 0,
       tipoInstruccion:'',
       estado:'ACTIVO'
     }
@@ -64,7 +72,7 @@ export class TipoInstruccionComponent implements OnInit {
     const newRow: TipoInstruccion = this.tipoInstruccion;
     this.tiposInstruccion=[...this.tiposInstruccion,{...newRow}]
     this.tipoInstruccion={
-      codigoTipoInstruccion:'',
+      codigoTipoInstruccion: 0,
       tipoInstruccion:'',
       estado:'',
     }
@@ -73,7 +81,7 @@ export class TipoInstruccionComponent implements OnInit {
 
   public notificacionOK(mensaje:string){
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -96,7 +104,7 @@ export class TipoInstruccionComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     )
@@ -127,7 +135,7 @@ export class TipoInstruccionComponent implements OnInit {
           this.notificacionOK('Tipo instrucción creada con éxito');
           this.showLoading = false;
           this.tipoInstruccion={
-            codigoTipoInstruccion:'',
+            codigoTipoInstruccion: 0,
             tipoInstruccion:'',
             estado:''
           }
@@ -146,7 +154,7 @@ export class TipoInstruccionComponent implements OnInit {
 
   undoRow() {
     this.tipoInstruccionEdit={
-      codigoTipoInstruccion:'',
+      codigoTipoInstruccion: 0,
       tipoInstruccion:'',
       estado:'',
     }
@@ -169,7 +177,7 @@ export class TipoInstruccionComponent implements OnInit {
           this.editElementIndex = -1;
           this.showLoading = false;
           this.tipoInstruccion = {
-            codigoTipoInstruccion: '',
+            codigoTipoInstruccion: 0,
             tipoInstruccion: '',
             estado: ''
           }
@@ -184,14 +192,21 @@ export class TipoInstruccionComponent implements OnInit {
     );
   }
 
-  public eliminar(codTipoInstruccion: any): void {
+  // eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarTipoInstruccion(codTipoInstruccion).subscribe({
+      this.Api.eliminarTipoInstruccion(this.codigo).subscribe({
         next: (response: string) => {
           this.notificacionOK('Tipo instrucción eliminada con éxito');
           this.showLoading = false;
-          const index = this.tiposInstruccion.findIndex(tipoInstruccionO=>tipoInstruccionO.codigoTipoInstruccion===codTipoInstruccion)
+          const index = this.tiposInstruccion.findIndex(tipoInstruccionO=>tipoInstruccionO.codigoTipoInstruccion===this.codigo)
           this.tiposInstruccion.splice(index, 1);
           this.tiposInstruccion = [...this.tiposInstruccion]
         },

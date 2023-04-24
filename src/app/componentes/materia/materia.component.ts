@@ -19,6 +19,7 @@ import {
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 
 @Component({
@@ -31,16 +32,20 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 //   constructor(private valueService: ValueService) { }
 //   getValue() { return this.valueService.getValue(); }
 // }
-export class MateriaComponent implements OnInit {
+export class MateriaComponent extends ComponenteBase implements OnInit {
   materias: Materia[];
   materia: Materia;
   materiaEditForm: Materia;
   public getMaterias:number[] = [];
   public errorMessage:any;
 
-  private subscriptions: Subscription[] = [];
+  //private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  public showLoading: boolean;
+  
+    // codigo de item a modificar o eliminar
+    codigo: number;
+    showLoading = false;
+  
   public userResponse: string;
 
 
@@ -59,8 +64,13 @@ export class MateriaComponent implements OnInit {
 
   constructor(
     private service: MateriaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private Api: MateriaService) {
+
+      super(notificationServiceLocal, popconfirmServiceLocal);
+      this.showLoading = false;
+
     this.materias =[];
     this.subscriptions =[];
     this.materia ={
@@ -135,7 +145,7 @@ export class MateriaComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -143,7 +153,7 @@ export class MateriaComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -235,15 +245,21 @@ export class MateriaComponent implements OnInit {
     );
   }
 
+  // eliminar
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
-  public eliminar(codMateria: number): void {
+  public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.Api.eliminarMateria(codMateria).subscribe({
+    this.Api.eliminarMateria(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOK('Materia eliminada con éxito');
         this.showLoading = false;
-        const index = this.materias.findIndex(materia => materia.codMateria === codMateria);
+        const index = this.materias.findIndex(materia => materia.codMateria === this.codigo);
         this.materias.splice(index, 1);
         this.materias = [...this.materias]
         this.showLoading = false;

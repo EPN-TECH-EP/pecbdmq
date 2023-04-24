@@ -12,6 +12,7 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 
 @Component({
@@ -19,16 +20,23 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   templateUrl: './modulo.component.html',
   styleUrls: ['./modulo.component.scss']
 })
-export class ModuloComponent implements OnInit {
+export class ModuloComponent extends ComponenteBase implements OnInit {
   //model
   Modulos: Modulo[];
   Modulo: Modulo;
   ModuloEditForm: Modulo;
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
-  //options
+//  private subscriptions: Subscription[];
+  
+
+// codigo de item a modificar o eliminar
+codigo: number;
+showLoading = false;
+data: Modulo;
+
+
+//options
  options = [
   { value: 'ACTIVO', label: 'ACTIVO' },
   { value: 'INACTIVO', label: 'INACTIVO' },
@@ -41,8 +49,12 @@ export class ModuloComponent implements OnInit {
 
   constructor(
     private ApiModulo: ModuloService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    
     this.Modulos = [];
     this.subscriptions = [];
     this.Modulo = {
@@ -81,7 +93,7 @@ export class ModuloComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -89,7 +101,7 @@ export class ModuloComponent implements OnInit {
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -160,14 +172,20 @@ export class ModuloComponent implements OnInit {
   }
 
   //eliminar
+  public confirmaEliminar(event: Event, codigo: number, modulo: Modulo): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = modulo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
- public eliminar(moduloId: any, data: Modulo): void {
+ public eliminar(/*moduloId: any, data: Modulo*/): void {
    this.showLoading = true;
    this.subscriptions.push(
-     this.ApiModulo.eliminarModulo(moduloId).subscribe({
+     this.ApiModulo.eliminarModulo(this.codigo).subscribe({
        next: (response: string) => {
          this.notificacionOk('Módulo eliminado con éxito');
-         const index = this.Modulos.indexOf(data);
+         const index = this.Modulos.indexOf(this.data);
          this.Modulos.splice(index, 1);
          this.Modulos = [...this.Modulos];
          this.showLoading = false;
