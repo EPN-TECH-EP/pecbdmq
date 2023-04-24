@@ -104,8 +104,22 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     );
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //registro
   public registro(tipodocumento: TipoDocumento): void {
+
+    if (tipodocumento.tipoDocumento === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipodocumento={...tipodocumento, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
@@ -142,6 +156,12 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   }
   //actualizar
   public actualizar(tipoDocumento: TipoDocumento, formValue): void {
+
+    if (formValue.nombre === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoDocumento={...tipoDocumento, tipoDocumento: formValue.nombre, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(

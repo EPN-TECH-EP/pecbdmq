@@ -1,13 +1,13 @@
-import { UnidadGestion } from '../../modelo/admin/unidad-gestion';
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import {UnidadGestion} from '../../modelo/admin/unidad-gestion';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
-import { UnidadGestionService } from 'src/app/servicios/unidad-gestion.service';
-import { Observable, Subscription } from 'rxjs';
+import {UnidadGestionService} from 'src/app/servicios/unidad-gestion.service';
+import {Observable, Subscription} from 'rxjs';
 import {
   MdbNotificationRef,
   MdbNotificationService,
@@ -41,10 +41,10 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   data: UnidadGestion;
   showLoading = false;
 
- //options
+  //options
   options = [
-    { value: 'ACTIVO', label: 'ACTIVO' },
-    { value: 'INACTIVO', label: 'INACTIVO' },
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
   ];
 
   //table
@@ -106,9 +106,10 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
       TipoAlerta.ALERTA_OK
     );
   }
+
   //registro
   public registro(unidad: UnidadGestion): void {
-    (unidad = { ...unidad, estado: 'ACTIVO' }), (this.showLoading = true);
+    (unidad = {...unidad, estado: 'ACTIVO'}), (this.showLoading = true);
     this.subscriptions.push(
       this.ApiUnidad.crearUnidad(unidad).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
@@ -145,13 +146,13 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
   //actualizar
   public actualizar(Unidad: UnidadGestion, formValue): void {
-    Unidad = {...Unidad, nombre: formValue.nombre, estado:'ACTIVO'},
-    this.showLoading = true;
+    Unidad = {...Unidad, nombre: formValue.nombre, estado: 'ACTIVO'},
+      this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(Unidad,Unidad.codigo).subscribe({
-      next: (response: HttpResponse<UnidadGestion>) => {
-        this.notificacionOk('Unidad de gestión actualizada con éxito');
-        this.unidades[this.editElementIndex] = response.body;
+      this.ApiUnidad.actualizarUnidad(Unidad, Unidad.codigo).subscribe({
+        next: (response: HttpResponse<UnidadGestion>) => {
+          this.notificacionOk('Unidad de gestión actualizada con éxito');
+          this.unidades[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Unidad = {
             codigo: 0,
@@ -159,12 +160,12 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 

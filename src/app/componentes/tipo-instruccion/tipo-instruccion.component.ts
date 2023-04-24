@@ -110,7 +110,21 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     )
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   public registro(tipoInstruccion: TipoInstruccion): void {
+
+    if (tipoInstruccion.tipoInstruccion === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
@@ -147,6 +161,12 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     this.editElementIndex = -1;
   }
   public actualizar(tipoInstruccion: TipoInstruccion, formValue): void {
+
+    if (formValue.tipoInstruccion === '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
     this.showLoading = true;
     this.subscriptions.push(

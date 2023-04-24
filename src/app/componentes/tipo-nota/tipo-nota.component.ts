@@ -35,15 +35,15 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   data: TipoNota;
 
   //options
- options = [
-  { value: 'ACTIVO', label: 'ACTIVO' },
-  { value: 'INACTIVO', label: 'INACTIVO' },
-];
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
+  ];
 //table
-@ViewChild('table') table!: MdbTableDirective<TipoNota>;
-editElementIndex = -1;
-addRow = false;
-headers = ['Nombre'];
+  @ViewChild('table') table!: MdbTableDirective<TipoNota>;
+  editElementIndex = -1;
+  addRow = false;
+  headers = ['Nombre'];
 
   constructor(
     private ApiTipoNota: TipoNotaService,
@@ -64,14 +64,13 @@ headers = ['Nombre'];
       nota: '',
       estado: 'ACTIVO'
     };
-   }
+  }
 
   ngOnInit(): void {
     this.ApiTipoNota.getTipoNota().subscribe(data => {
       this.tiposNota = data;
     })
   }
-
 
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -86,7 +85,6 @@ headers = ['Nombre'];
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
 
     this.notificationRef = Notificacion.notificar(
@@ -104,12 +102,27 @@ headers = ['Nombre'];
       TipoAlerta.ALERTA_OK
     );
   }
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //registro
-  public registro(tiponota: TipoNota): void {
-    tiponota={...tiponota, estado:'ACTIVO'};
+  public registro(tipoNota: TipoNota): void {
+
+    if(tipoNota.nota === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return
+    }
+
+    tipoNota = {...tipoNota, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoNota.crearTipoNota(tiponota).subscribe({
+      this.ApiTipoNota.crearTipoNota(tipoNota).subscribe({
         next: (response: HttpResponse<TipoNota>) => {
           let nuevoTipoNota: TipoNota = response.body;
           this.tiposNota.push(nuevoTipoNota);
@@ -142,15 +155,22 @@ headers = ['Nombre'];
     };
     this.editElementIndex = -1;
   }
+
   //actualizar
   public actualizar(tipoNota: TipoNota, formValue): void {
-    tipoNota={...tipoNota, nota: formValue.nota, estado:'ACTIVO'};
+
+    if(formValue.nota === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return
+    }
+
+    tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({
-      next: (response: HttpResponse<TipoNota>) => {
-        this.notificacionOk('Tipo de nota actualizado con éxito');
-        this.tiposNota[this.editElementIndex] = response.body;
+        next: (response: HttpResponse<TipoNota>) => {
+          this.notificacionOk('Tipo de nota actualizado con éxito');
+          this.tiposNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoNota = {
             cod_tipo_nota: 0,
@@ -159,15 +179,14 @@ headers = ['Nombre'];
           }
           this.editElementIndex = -1;
 
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
-
 
 
 // eliminar

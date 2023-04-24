@@ -103,7 +103,22 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
         TipoAlerta.ALERTA_OK
       );
   }
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   public registro(tipoPrueba: TipoPrueba): void {
+
+    if(tipoPrueba.prueba === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoPrueba={...tipoPrueba, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
@@ -141,6 +156,12 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
 
   public actualizar(tipoPrueba: TipoPrueba, formValue): void {
+
+    if(formValue.prueba === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoPrueba={...tipoPrueba, prueba: formValue.prueba ,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
