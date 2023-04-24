@@ -9,13 +9,15 @@ import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-tipo-sancion',
   templateUrl: './tipo-sancion.component.html',
   styleUrls: ['./tipo-sancion.component.scss']
 })
-export class TipoSancionComponent implements OnInit {
+export class TipoSancionComponent extends ComponenteBase implements OnInit {
 
   //model
   tiposSancion: ITipoSancion[];
@@ -24,8 +26,11 @@ export class TipoSancionComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
   //options
   options = [
@@ -39,7 +44,12 @@ export class TipoSancionComponent implements OnInit {
   addRow = false;
   headers = ['Sanción'];
 
-  constructor(private apiTipoSancion: TipoSancionService, private notificationService: MdbNotificationService) {
+  constructor(private apiTipoSancion: TipoSancionService, 
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
+    ) {
+      super(notificationServiceLocal, popconfirmServiceLocal);
+      
     this.tiposSancion = [];
     this.subscriptions = [];
     this.tipoSancion = {
@@ -62,7 +72,7 @@ export class TipoSancionComponent implements OnInit {
 
   public okNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -79,7 +89,7 @@ export class TipoSancionComponent implements OnInit {
     }
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       messageError,
       tipoAlerta
     )
@@ -149,15 +159,22 @@ export class TipoSancionComponent implements OnInit {
     )
   }
 
+  // eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+
   //delete a register of tipo sancion
-  public deleteTipoSancion(cod_tipo_sancion: number): void {
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoSancion.deleteTipoSancion(cod_tipo_sancion).subscribe({
+      this.apiTipoSancion.deleteTipoSancion(this.codigo).subscribe({
         next: () => {
           this.okNotification('Tipo de sanción eliminado correctamente');
           this.showLoading = false;
-          const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.cod_tipo_sancion === cod_tipo_sancion);
+          const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.cod_tipo_sancion === this.codigo);
           this.tiposSancion.splice(index, 1);
           this.tiposSancion = [...this.tiposSancion];
         },

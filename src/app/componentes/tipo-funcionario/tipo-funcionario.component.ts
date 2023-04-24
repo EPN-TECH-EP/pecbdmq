@@ -12,6 +12,7 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-funcionario',
@@ -19,7 +20,7 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
   styleUrls: ['./tipo-funcionario.component.scss']
 })
 
-export class TipoFuncionarioComponent implements OnInit {
+export class TipoFuncionarioComponent extends ComponenteBase implements OnInit {
   //model
   tiposFuncionario: TipoFuncionario[];
   tipoFuncionario: TipoFuncionario;
@@ -27,8 +28,12 @@ export class TipoFuncionarioComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  data: TipoFuncionario;
+  showLoading = false;
 
  //options
  options = [
@@ -43,8 +48,11 @@ headers = ['Nombre'];
 
   constructor(
     private ApiTipoFuncionario: TipoFuncionarioService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.tiposFuncionario = [];
     this.subscriptions = [];
     this.tipoFuncionario = {
@@ -85,7 +93,7 @@ headers = ['Nombre'];
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -94,7 +102,7 @@ headers = ['Nombre'];
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -165,14 +173,21 @@ headers = ['Nombre'];
 
   //eliminar
 
-public eliminar(tipoFuncionarioId: any, data: TipoFuncionario): void {
+  public confirmaEliminar(event: Event, codigo: number, data: TipoFuncionario): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = data;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+public eliminar(): void {
 
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiTipoFuncionario.eliminarTipoFuncionario(tipoFuncionarioId).subscribe({
+    this.ApiTipoFuncionario.eliminarTipoFuncionario(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo Funcionario eliminado con éxito');
-        const index = this.tiposFuncionario.indexOf(data);
+        const index = this.tiposFuncionario.indexOf(this.data);
         this.tiposFuncionario.splice(index, 1);
         this.tiposFuncionario = [...this.tiposFuncionario]
         this.showLoading = false;

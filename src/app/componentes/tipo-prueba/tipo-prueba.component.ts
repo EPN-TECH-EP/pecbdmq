@@ -10,6 +10,8 @@ import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 
 
@@ -19,15 +21,18 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
   templateUrl: './tipo-prueba.component.html',
   styleUrls: ['./tipo-prueba.component.scss']
 })
-export class TipoPruebaComponent implements OnInit {
+export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   tiposprueba: TipoPrueba[];
   tipoPrueba: TipoPrueba;
   tipoPruebaEditForm: TipoPrueba;
 
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
 
 
@@ -40,7 +45,11 @@ export class TipoPruebaComponent implements OnInit {
 
   constructor(
     private Api: TipoPruebaService,
-    private notificationService: MdbNotificationService) {
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
+    ) {
+      super(notificationServiceLocal, popconfirmServiceLocal);
+      
       this.tiposprueba=[];
       this.subscriptions =[];
       this.tipoPrueba ={
@@ -82,14 +91,14 @@ export class TipoPruebaComponent implements OnInit {
     }
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
   }
     public notificacionOK(mensaje: string) {
       this.notificationRef = Notificacion.notificar(
-        this.notificationService,
+        this.notificationServiceLocal,
         mensaje,
         TipoAlerta.ALERTA_OK
       );
@@ -157,14 +166,20 @@ export class TipoPruebaComponent implements OnInit {
 
 //eliminar
 
-public eliminar(cod_tipo_prueba: number): void {
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+
+public eliminar(): void {
 this.showLoading = true;
 this.subscriptions.push(
-  this.Api.eliminarTipoPrueba(cod_tipo_prueba).subscribe({
+  this.Api.eliminarTipoPrueba(this.codigo).subscribe({
     next: () => {
       this.notificacionOK('Tipo de prueba eliminada con éxito');
       this.showLoading = false;
-      const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === cod_tipo_prueba);
+      const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
       this.tiposprueba.splice(index, 1);
       this.tiposprueba = [...this.tiposprueba];
     },

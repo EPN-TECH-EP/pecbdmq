@@ -121,7 +121,7 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="eliminar(tipoPrueba.cod_tipo_prueba)"
+                  (click)="confirmaEliminar($event,tipoPrueba.cod_tipo_prueba)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "

@@ -12,13 +12,14 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-nota',
   templateUrl: './tipo-nota.component.html',
   styleUrls: ['./tipo-nota.component.scss']
 })
-export class TipoNotaComponent implements OnInit {
+export class TipoNotaComponent extends ComponenteBase implements OnInit {
   //model
   tiposNota: TipoNota[];
   tipoNota: TipoNota;
@@ -26,8 +27,12 @@ export class TipoNotaComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+  data: TipoNota;
 
   //options
  options = [
@@ -42,8 +47,11 @@ headers = ['Nombre'];
 
   constructor(
     private ApiTipoNota: TipoNotaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.tiposNota = [];
     this.subscriptions = [];
     this.tipoNota = {
@@ -82,7 +90,7 @@ headers = ['Nombre'];
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -91,7 +99,7 @@ headers = ['Nombre'];
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -162,15 +170,21 @@ headers = ['Nombre'];
 
 
 
-  //eliminar
+// eliminar
+public confirmaEliminar(event: Event, codigo: number, data: TipoNota): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+this.data = data;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
 
-public eliminar(tipoNotaId: any, data: TipoNota): void {
+public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiTipoNota.eliminarTipoNota(tipoNotaId).subscribe({
+    this.ApiTipoNota.eliminarTipoNota(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo de nota eliminado con éxito');
-        const index = this.tiposNota.indexOf(data);
+        const index = this.tiposNota.indexOf(this.data);
         this.tiposNota.splice(index, 1);
         this.tiposNota = [...this.tiposNota]
         this.showLoading = false;

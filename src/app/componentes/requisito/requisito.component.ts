@@ -10,6 +10,8 @@ import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { Notificacion } from 'src/app/util/notificacion';
 import { Convocatoria } from 'src/app/modelo/admin/convocatoria';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-requisito',
@@ -17,14 +19,18 @@ import { Convocatoria } from 'src/app/modelo/admin/convocatoria';
   styleUrls: ['./requisito.component.scss']
 })
 
-export class RequisitoComponent implements OnInit {
+export class RequisitoComponent extends ComponenteBase implements OnInit {
   requisitos: Requisito[];
   requisito: Requisito;
   requisitoEditForm: Requisito;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+
   public userResponse: string;
 
   @ViewChild('table') table!: MdbTableDirective<Requisito>;
@@ -35,8 +41,12 @@ export class RequisitoComponent implements OnInit {
 
   constructor(
     private Api: RequisitoService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     ) {
+
+      super(notificationServiceLocal, popconfirmServiceLocal);
+
       this.requisitos= [];
       this.subscriptions = [];
       this.requisito = {
@@ -77,7 +87,7 @@ export class RequisitoComponent implements OnInit {
       }
 
       this.notificationRef = Notificacion.notificar(
-        this.notificationService,
+        this.notificationServiceLocal,
         mensajeError,
         tipoAlerta
       );
@@ -86,7 +96,7 @@ export class RequisitoComponent implements OnInit {
 
     public notificacionOK(mensaje: string) {
       this.notificationRef = Notificacion.notificar(
-        this.notificationService,
+        this.notificationServiceLocal,
         mensaje,
         TipoAlerta.ALERTA_OK
       );
@@ -177,14 +187,21 @@ export class RequisitoComponent implements OnInit {
 
 
     //eliminar
-  public eliminar(codigoRequisito: number): void {
+
+    public confirmaEliminar(event: Event, codigo: number): void {
+      super.confirmaEliminarMensaje();
+      this.codigo = codigo;
+      super.openPopconfirm(event, this.eliminar.bind(this));
+    }
+
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarRequisito(codigoRequisito).subscribe({
+      this.Api.eliminarRequisito(this.codigo).subscribe({
         next: () => {
           this.notificacionOK('Requisito eliminado con éxito');
           this.showLoading = false;
-          const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === codigoRequisito);
+          const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === this.codigo);
           this.requisitos.splice(index, 1);
           this.requisitos = [...this.requisitos]
         },

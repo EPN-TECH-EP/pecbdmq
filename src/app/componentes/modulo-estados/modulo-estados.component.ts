@@ -20,13 +20,14 @@ import { ModuloEstados } from 'src/app/modelo/admin/modulo-estados';
 import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { ModuloEstadosService } from 'src/app/servicios/modulo-estados.service';
 import { CatalogoEstadosService } from 'src/app/servicios/catalogo-estados.service';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-modulo-estados',
   templateUrl: './modulo-estados.component.html',
   styleUrls: ['./modulo-estados.component.scss']
 })
-export class ModuloEstadosComponent implements OnInit {
+export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   modulosEstados: ModuloEstados[];
   modulos: Modulo[];
   estadosCatalogo: CatalogoEstados[];
@@ -35,9 +36,12 @@ export class ModuloEstadosComponent implements OnInit {
 
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
   public userResponse: string;
+
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
   @ViewChild('table') table!: MdbTableDirective<ModuloEstados>;
   editElementIndex = -1;
@@ -55,9 +59,13 @@ export class ModuloEstadosComponent implements OnInit {
     private Api: ModuloEstadosService,
     private ApiModulo: ModuloService,
     private ApiEstadosCatalogo: CatalogoEstadosService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
 
   ) {
+
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.modulosEstados = [];
     this.subscriptions = [];
     this.moduloEstados = {
@@ -116,7 +124,7 @@ export class ModuloEstadosComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -125,7 +133,7 @@ export class ModuloEstadosComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -209,16 +217,21 @@ export class ModuloEstadosComponent implements OnInit {
     );
   }
 
-  //eliminar
+// eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
 
-  public eliminar(codigo: number): void {
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarModuloEstados(codigo).subscribe({
+      this.Api.eliminarModuloEstados(this.codigo).subscribe({
         next: () => {
           this.notificacionOK('Modulo Estados eliminada con éxito');
           this.showLoading = false;
-          const index = this.modulosEstados.findIndex(moduloEstados => moduloEstados.codigo === codigo);
+          const index = this.modulosEstados.findIndex(moduloEstados => moduloEstados.codigo === this.codigo);
           this.modulosEstados.splice(index, 1);
           this.modulosEstados = [...this.modulosEstados]
         },

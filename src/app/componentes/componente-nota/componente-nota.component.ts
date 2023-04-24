@@ -12,21 +12,26 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-componente-nota',
   templateUrl: './componente-nota.component.html',
   styleUrls: ['./componente-nota.component.scss']
 })
-export class ComponenteNotaComponent implements OnInit {
+export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
    //model
    componentesNota: ComponenteNota[];
    componenteNota: ComponenteNota;
    componenteNotaEditForm: ComponenteNota;
    //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  data: ComponenteNota;
+  showLoading = false;
 
   //options
  options = [
@@ -42,8 +47,11 @@ export class ComponenteNotaComponent implements OnInit {
 
   constructor(
     private ApiComponenteNota: ComponenteNotaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    this.showLoading = false;
     this.componentesNota = [];
     this.subscriptions = [];
     this.componenteNota = {
@@ -81,7 +89,7 @@ export class ComponenteNotaComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -90,7 +98,7 @@ export class ComponenteNotaComponent implements OnInit {
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -160,13 +168,20 @@ export class ComponenteNotaComponent implements OnInit {
 
   //eliminar
 
-  public eliminar(ComponenteNotaId: any, data: ComponenteNota): void {
+  public confirmaEliminar(event: Event, codigo: number, componenteNota: ComponenteNota): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = componenteNota;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiComponenteNota.eliminarComponenteNota(ComponenteNotaId).subscribe({
+      this.ApiComponenteNota.eliminarComponenteNota(this.codigo).subscribe({
         next: (response: string) => {
           this.notificacionOk('Componente nota eliminado con éxito');
-          const index = this.componentesNota.indexOf(data);
+          const index = this.componentesNota.indexOf(this.data);
           this.componentesNota.splice(index, 1);
           this.componentesNota = [...this.componentesNota]
           this.showLoading = false;

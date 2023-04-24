@@ -20,21 +20,26 @@ import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-unidad-gestion',
   templateUrl: './unidad-gestion.component.html',
   styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class UnidadGestionComponent implements OnInit, CambiosPendientes {
+export class UnidadGestionComponent extends ComponenteBase implements OnInit, CambiosPendientes {
   unidades: UnidadGestion[];
   Unidad: UnidadGestion;
   UnidadEditForm: UnidadGestion;
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  data: UnidadGestion;
+  showLoading = false;
 
  //options
   options = [
@@ -50,8 +55,11 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
 
   constructor(
     private ApiUnidad: UnidadGestionService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.unidades = [];
     this.subscriptions = [];
     this.Unidad = {
@@ -85,7 +93,7 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
     }
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -93,7 +101,7 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -163,13 +171,20 @@ export class UnidadGestionComponent implements OnInit, CambiosPendientes {
 
   //eliminar
 
-public eliminar(unidadId: any, data: UnidadGestion): void {
+  public confirmaEliminar(event: Event, codigo: number, data: UnidadGestion): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = data;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(unidadId).subscribe({
+    this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(data);
+        const index = this.unidades.indexOf(this.data);
         this.unidades.splice(index, 1);
         this.unidades = [...this.unidades]
         this.showLoading = false;

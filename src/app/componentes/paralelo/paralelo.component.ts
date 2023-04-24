@@ -12,20 +12,25 @@ import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 
 import {AlertaComponent} from "../util/alerta/alerta.component";
+import { ComponenteBase } from "src/app/util/componente-base";
+import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-paralelo',
   templateUrl: './paralelo.component.html',
   styleUrls: ['./paralelo.component.scss']
 })
-export class ParaleloComponent implements OnInit {
+export class ParaleloComponent extends ComponenteBase implements OnInit {
   paralelos: Paralelo[];
   paralelo: Paralelo;
   paraleloEdit: Paralelo;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
   /*
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},
@@ -43,19 +48,22 @@ export class ParaleloComponent implements OnInit {
 
 
   constructor(
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private Api: ParaleloService
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    
     this.paralelos = [];
     this.subscriptions = [];
     this.notificationRef = null;
     this.paralelo = {
-      codParalelo: '',
+      codParalelo: 0,
       nombreParalelo: '',
       estado: 'ACTIVO'
     }
     this.paraleloEdit = {
-      codParalelo: '',
+      codParalelo: 0,
       nombreParalelo: '',
       estado: 'ACTIVO'
     }
@@ -75,7 +83,7 @@ export class ParaleloComponent implements OnInit {
     const newRow: Paralelo = this.paralelo;
     this.paralelos = [...this.paralelos, {...newRow}]
     this.paralelo = {
-      codParalelo: '',
+      codParalelo: 0,
       nombreParalelo: '',
       estado: '',
     }
@@ -84,7 +92,7 @@ export class ParaleloComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -107,7 +115,7 @@ export class ParaleloComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     )
@@ -124,7 +132,7 @@ export class ParaleloComponent implements OnInit {
           this.notificacionOK('Paralelo creado con éxito');
           this.showLoading = false;
           this.paralelo = {
-            codParalelo: '',
+            codParalelo: 0,
             nombreParalelo: '',
             estado: '',
           }
@@ -145,7 +153,7 @@ export class ParaleloComponent implements OnInit {
 
   undoRow() {
     this.paraleloEdit = {
-      codParalelo: '',
+      codParalelo: 0,
       nombreParalelo: '',
       estado: 'ACTIVO'
     };
@@ -163,7 +171,7 @@ export class ParaleloComponent implements OnInit {
             this.editElementIndex = -1;
             this.showLoading = false;
             this.paralelo = {
-              codParalelo: '',
+              codParalelo: 0,
               nombreParalelo: '',
               estado: '',
             }
@@ -178,14 +186,21 @@ export class ParaleloComponent implements OnInit {
     );
   }
 
-  public eliminar(codParalelo: any): void {
+// eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarParalelo(codParalelo).subscribe({
+      this.Api.eliminarParalelo(this.codigo).subscribe({
         next: (response: string) => {
           this.notificacionOK('Paralelo eliminado con éxito');
           this.showLoading = false;
-          const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === codParalelo);
+          const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === this.codigo);
           this.paralelos.splice(index, 1);
           this.paralelos = [...this.paralelos];
         },

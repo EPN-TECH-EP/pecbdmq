@@ -144,7 +144,7 @@
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                  (click)="eliminar(tipoInstruccion.codigoTipoInstruccion)"
+                  (click)="confirmaEliminar($event,tipoInstruccion.codigoTipoInstruccion)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>

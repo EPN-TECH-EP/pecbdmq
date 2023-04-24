@@ -14,6 +14,7 @@ import { Semestre } from 'src/app/modelo/admin/semestre';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { FormArray, FormControl } from '@angular/forms';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-semestre',
@@ -23,15 +24,19 @@ import { FormArray, FormControl } from '@angular/forms';
 
 
 
-export class SemestreComponent implements OnInit {
+export class SemestreComponent extends ComponenteBase implements OnInit {
   semestres: Semestre[];
   semestre: Semestre;
   semestreEditForm: Semestre;
 
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+
   public userResponse: string;
 
 
@@ -46,8 +51,11 @@ export class SemestreComponent implements OnInit {
 
   constructor(
     private Api: SemestreService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.semestres= [];
     this.subscriptions = [];
     this.semestre = {
@@ -91,7 +99,7 @@ export class SemestreComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -100,7 +108,7 @@ export class SemestreComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -171,14 +179,20 @@ export class SemestreComponent implements OnInit {
 
   //eliminar
 
-public eliminar(codSemestre: number): void {
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.Api.eliminarSemestre(codSemestre).subscribe({
+    this.Api.eliminarSemestre(this.codigo).subscribe({
       next: () => {
         this.notificacionOK('Semestre eliminada con éxito');
         this.showLoading = false;
-        const index = this.semestres.findIndex(semestre => semestre.codSemestre === codSemestre);
+        const index = this.semestres.findIndex(semestre => semestre.codSemestre === this.codigo);
         this.semestres.splice(index, 1);
         this.semestres = [...this.semestres]
       },

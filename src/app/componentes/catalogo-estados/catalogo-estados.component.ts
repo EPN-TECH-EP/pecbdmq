@@ -9,20 +9,25 @@
  import { AlertaComponent } from '../util/alerta/alerta.component';
  import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
  import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
  @Component({
    selector: 'app-catalogo-estados',
    templateUrl: './catalogo-estados.component.html',
    styleUrls: ['./catalogo-estados.component.scss']
  })
- export class CatalogoEstadosComponent implements OnInit {
+ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
    catalogos: CatalogoEstados[];
    catalogo: CatalogoEstados;
    catalogoEditForm: CatalogoEstados;
 
+   // codigo de item a modificar o eliminar
+  codigo: number;
+
    notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-   private subscriptions: Subscription[] = [];
-   public showLoading: boolean;
+   //private subscriptions: Subscription[] = [];
+   //public showLoading: boolean;
    public userResponse: string;
 
 
@@ -34,8 +39,10 @@
 
    constructor(
      private Api: CatalogoEstadosService,
-     private notificationService: MdbNotificationService,
+     private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
    ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
      this.catalogos= [];
      this.subscriptions = [];
      this.catalogo = {
@@ -80,7 +87,7 @@
 
 
      this.notificationRef = Notificacion.notificar(
-       this.notificationService,
+       this.notificationServiceLocal,
        mensajeError,
        tipoAlerta
      );
@@ -89,7 +96,7 @@
 
    public notificacionOK(mensaje: string) {
      this.notificationRef = Notificacion.notificar(
-       this.notificationService,
+       this.notificationServiceLocal,
        mensaje,
        TipoAlerta.ALERTA_OK
      );
@@ -164,14 +171,20 @@
 
 
    //eliminar
- public eliminar(codigo: number): void {
+   public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+ public eliminar(): void {
    this.showLoading = true;
    this.subscriptions.push(
-     this.Api.eliminarCatalogo(codigo).subscribe({
+     this.Api.eliminarCatalogo(this.codigo).subscribe({
        next: () => {
-         this.notificacionOK('El catálogo se ha eliminado con éxito');
+         this.notificacionOK('El catálogo de estado se ha eliminado con éxito');
          this.showLoading = false;
-         const index = this.catalogos.findIndex(catalogo => catalogo.codigo === codigo);
+         const index = this.catalogos.findIndex(catalogo => catalogo.codigo === this.codigo);
          this.catalogos.splice(index, 1);
          this.catalogos = [...this.catalogos]
        },
