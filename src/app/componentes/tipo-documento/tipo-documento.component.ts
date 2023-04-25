@@ -12,13 +12,14 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-documento',
   templateUrl: './tipo-documento.component.html',
   styleUrls: ['./tipo-documento.component.scss']
 })
-export class TipoDocumentoComponent implements OnInit {
+export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   //model
   tiposDocumento: TipoDocumento[];
   tipoDocumento: TipoDocumento;
@@ -26,8 +27,12 @@ export class TipoDocumentoComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  data:TipoDocumento;
+  showLoading = false;
 
   //options
  options = [
@@ -43,8 +48,11 @@ export class TipoDocumentoComponent implements OnInit {
 
   constructor(
     private ApiTipoDocumento: TipoDocumentoService,
-    private notificationService: MdbNotificationService
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.tiposDocumento = [];
     this.subscriptions = [];
     this.tipoDocumento = {
@@ -81,7 +89,7 @@ export class TipoDocumentoComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -90,7 +98,7 @@ export class TipoDocumentoComponent implements OnInit {
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -177,15 +185,21 @@ export class TipoDocumentoComponent implements OnInit {
     );
   }
 
-  //eliminar
+  // eliminar
+public confirmaEliminar(event: Event, codigo: number, data: TipoDocumento): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  this.data = data;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
 
-public eliminar(TipoDocumentoId: any, data: TipoDocumento): void {
+public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiTipoDocumento.eliminarTipoDocumento(TipoDocumentoId).subscribe({
+    this.ApiTipoDocumento.eliminarTipoDocumento(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo de documento eliminado con éxito');
-        const index = this.tiposDocumento.indexOf(data);
+        const index = this.tiposDocumento.indexOf(this.data);
         this.tiposDocumento.splice(index, 1);
         this.tiposDocumento = [...this.tiposDocumento]
         this.showLoading = false;

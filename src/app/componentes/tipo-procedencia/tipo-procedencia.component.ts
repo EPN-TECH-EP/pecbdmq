@@ -12,21 +12,26 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-procedencia',
   templateUrl: './tipo-procedencia.component.html',
   styleUrls: ['./tipo-procedencia.component.scss']
 })
-export class TipoProcedenciaComponent implements OnInit {
+export class TipoProcedenciaComponent extends ComponenteBase  implements OnInit {
    //model
    tiposProcedencia: TipoProcedencia[];
    tipoProcedencia: TipoProcedencia;
    tipoProcedenciaEditForm: TipoProcedencia;
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+  data: TipoProcedencia;
    //options
  options = [
   { value: 'ACTIVO', label: 'ACTIVO' },
@@ -40,8 +45,11 @@ headers = ['Tipo Procedencia'];
 
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.tiposProcedencia = [];
     this.subscriptions = [];
     this.tipoProcedencia = {
@@ -82,7 +90,7 @@ headers = ['Tipo Procedencia'];
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -91,7 +99,7 @@ headers = ['Tipo Procedencia'];
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -181,13 +189,20 @@ headers = ['Tipo Procedencia'];
 
   //eliminar
 
-public eliminar(tipoProcedenciaId: any, data: TipoProcedencia): void {
+  public confirmaEliminar(event: Event, codigo: number, data: TipoProcedencia): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = data;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
+public eliminar(): void {
   this.showLoading = true;
   this.subscriptions.push(
-    this.ApiTipoProcedencia.eliminarTipoProcedencia(tipoProcedenciaId).subscribe({
+    this.ApiTipoProcedencia.eliminarTipoProcedencia(this.codigo).subscribe({
       next: (response: string) => {
         this.notificacionOk('Tipo Procedencia eliminado con éxito');
-        const index = this.tiposProcedencia.indexOf(data);
+        const index = this.tiposProcedencia.indexOf(this.data);
         this.tiposProcedencia.splice(index, 1);
         this.tiposProcedencia = [...this.tiposProcedencia]
         this.showLoading = false;

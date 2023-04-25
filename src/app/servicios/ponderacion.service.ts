@@ -14,7 +14,7 @@ export class PonderacionService {
   constructor(private http: HttpClient) {}
 
   public getPonderacion(): Observable<Ponderacion[]> {
-    return this.http.get<Ponderacion[]>(`${this.host}/ponderacion/listartodo`);
+    return this.http.get<Ponderacion[]>(`${this.host}/ponderacion/listar`);
   }
 
   public registroPonderacion(ponderacion: Ponderacion): Observable<HttpResponse<Ponderacion>> {

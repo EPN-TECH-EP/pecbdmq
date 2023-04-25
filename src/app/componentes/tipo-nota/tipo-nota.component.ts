@@ -1,24 +1,25 @@
-import {TipoNotaService} from './../../servicios/tipo-nota.service';
-import {TipoNota} from '../../modelo/admin/tipo-nota';
-import {Component, OnInit} from '@angular/core';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {HeaderType} from 'src/app/enum/header-type.enum';
+import { TipoNotaService } from './../../servicios/tipo-nota.service';
+import { TipoNota } from '../../modelo/admin/tipo-nota';
+import { Component, OnInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-nota',
   templateUrl: './tipo-nota.component.html',
   styleUrls: ['./tipo-nota.component.scss']
 })
-export class TipoNotaComponent implements OnInit {
+export class TipoNotaComponent extends ComponenteBase implements OnInit {
   //model
   tiposNota: TipoNota[];
   tipoNota: TipoNota;
@@ -26,8 +27,12 @@ export class TipoNotaComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+  data: TipoNota;
 
   //options
   options = [
@@ -42,8 +47,11 @@ export class TipoNotaComponent implements OnInit {
 
   constructor(
     private ApiTipoNota: TipoNotaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
     this.tiposNota = [];
     this.subscriptions = [];
     this.tipoNota = {
@@ -80,7 +88,7 @@ export class TipoNotaComponent implements OnInit {
 
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -89,7 +97,7 @@ export class TipoNotaComponent implements OnInit {
 
   public notificacionOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -181,26 +189,32 @@ export class TipoNotaComponent implements OnInit {
   }
 
 
-  //eliminar
+// eliminar
+public confirmaEliminar(event: Event, codigo: number, data: TipoNota): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+this.data = data;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
 
-  public eliminar(tipoNotaId: any, data: TipoNota): void {
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.ApiTipoNota.eliminarTipoNota(tipoNotaId).subscribe({
-        next: (response: string) => {
-          this.notificacionOk('Tipo de nota eliminado con éxito');
-          const index = this.tiposNota.indexOf(data);
-          this.tiposNota.splice(index, 1);
-          this.tiposNota = [...this.tiposNota]
-          this.showLoading = false;
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-          console.log(errorResponse);
-          this.showLoading = false;
-        },
-      })
-    );
-  }
+public eliminar(): void {
+  this.showLoading = true;
+  this.subscriptions.push(
+    this.ApiTipoNota.eliminarTipoNota(this.codigo).subscribe({
+      next: (response: string) => {
+        this.notificacionOk('Tipo de nota eliminado con éxito');
+        const index = this.tiposNota.indexOf(this.data);
+        this.tiposNota.splice(index, 1);
+        this.tiposNota = [...this.tiposNota]
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.notificacion(errorResponse);
+        console.log(errorResponse);
+        this.showLoading = false;
+      },
+    })
+  );
+}
 
 }

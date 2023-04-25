@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MdbCheckboxChange } from 'mdb-angular-ui-kit/checkbox';
 import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { MdbStepChangeEvent } from 'mdb-angular-ui-kit/stepper';
 import { Menu } from 'src/app/modelo/admin/menu';
 import { MenuAsignado } from 'src/app/modelo/admin/menu-asignado';
@@ -35,9 +36,10 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
     private menuRolService: MenuRolService,
     private rolService: RolService,
     private menuService: MenuService,
-    notificationService: MdbNotificationService
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
-    super(notificationService);
+    super(notificationServiceLocal, popconfirmServiceLocal);
   }
 
   ngOnInit(): void {
@@ -117,7 +119,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
 
         Notificacion.notificacionOK(
           this.notificationRef,
-          this.notificationService,
+          this.notificationServiceLocal,
           'Se guardaron los cambios'
         );
       });
