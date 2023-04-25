@@ -96,12 +96,27 @@ export class ComponenteNotaComponent implements OnInit {
     );
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //registro
-  public registro(componentenota: ComponenteNota): void {
-    componentenota={...componentenota, estado:'ACTIVO'};
+  public registro(componenteNota: ComponenteNota): void {
+
+    if(componenteNota.componentenota == ''){
+      this.errorNotification('Todos los campos son obligatorios');
+      return;
+    }
+
+
+    componenteNota={...componenteNota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiComponenteNota.crearComponenteNota(componentenota).subscribe({
+      this.ApiComponenteNota.crearComponenteNota(componenteNota).subscribe({
         next: (response: HttpResponse<ComponenteNota>) => {
           let nuevoComponenteNota: ComponenteNota = response.body;
           this.componentesNota.push(nuevoComponenteNota);
@@ -135,6 +150,12 @@ export class ComponenteNotaComponent implements OnInit {
   }
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
+
+    if(formValue.componentenota == ''){
+      this.errorNotification('Todos los campos son obligatorios');
+      return;
+    }
+
     componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(

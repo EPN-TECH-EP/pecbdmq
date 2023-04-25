@@ -18,6 +18,7 @@ import {Convocatoria} from "../../../../modelo/admin/convocatoria";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 import {ArchivoService} from "../../../../servicios/archivo.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {MyValidators} from "../../../../util/validators";
 
 @Component({
   selector: 'app-convocatoria',
@@ -103,7 +104,13 @@ export class ConvocatoriaComponent implements OnInit {
       horaFin               : ['', Validators.required],
       documentoConvocatoria : ['', Validators.required],
       documentoSoporte      : [''],
+    },{
+      validators: MyValidators.validDate
     });
+
+    this.convocatoriaForm.valueChanges.subscribe(() => {
+      console.log(this.convocatoriaForm);
+    })
   }
 
   private notificar(errorResponse?: HttpErrorResponse, mensaje?: string) {

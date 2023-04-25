@@ -143,9 +143,21 @@ export class SemestreComponent implements OnInit {
   }
 
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
 
   //actualizar
   public actualizar(semestre: Semestre, formValue): void {
+
+    if(formValue.semestre == ''){
+      this.errorNotification('Todos los campos son obligatorios');
+      return;
+    }
 
     semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
     this.showLoading = true;

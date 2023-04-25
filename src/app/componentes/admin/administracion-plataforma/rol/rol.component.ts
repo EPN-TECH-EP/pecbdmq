@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { Rol } from 'src/app/modelo/admin/rol';
-import { AlertaComponent } from '../../../util/alerta/alerta.component';
-import { Subscription } from 'rxjs';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { RolService } from 'src/app/servicios/rol.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
+import {Rol} from 'src/app/modelo/admin/rol';
+import {AlertaComponent} from '../../../util/alerta/alerta.component';
+import {Subscription} from 'rxjs';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {RolService} from 'src/app/servicios/rol.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
 
 @Component({
   selector: 'app-rol',
@@ -59,8 +60,23 @@ export class RolComponent implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   public registro(rol: Rol): void {
     //rol={...rol, estado:'ACTIVO'};
+    console.log(rol);
+
+    if (rol.nombre === undefined || rol.descripcion === undefined) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     this.showLoading = true;
     this.subscriptions.push(
       this.api.registroRol(rol).subscribe({
@@ -91,7 +107,7 @@ export class RolComponent implements OnInit {
 
   editar(index: number) {
     this.editElementIndex = index;
-    this.rolEditForm = { ...this.roles[index] };
+    this.rolEditForm = {...this.roles[index]};
   }
 
   undoRow() {
@@ -104,6 +120,13 @@ export class RolComponent implements OnInit {
   }
 
   public actualizar(rol: Rol, formValue): void {
+    console.log(formValue);
+
+    if (formValue.nombre === '' || formValue.descripcion === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     rol = {
       ...rol,
       nombre: formValue.nombre,

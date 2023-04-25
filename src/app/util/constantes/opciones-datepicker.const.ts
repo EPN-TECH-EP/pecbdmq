@@ -34,4 +34,5 @@ export const OPCIONES_DATEPICKER = {
   okBtnText: 'Ok',
   clearBtnText: 'Listo',
   cancelBtnText: 'Cancelar',
+  minDate: new Date(),
 }

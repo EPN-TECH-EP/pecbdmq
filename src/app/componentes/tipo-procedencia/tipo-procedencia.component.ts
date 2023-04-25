@@ -36,7 +36,7 @@ export class TipoProcedenciaComponent implements OnInit {
 @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
 editElementIndex = -1;
 addRow = false;
-headers = ['Nombre'];
+headers = ['Tipo Procedencia'];
 
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,

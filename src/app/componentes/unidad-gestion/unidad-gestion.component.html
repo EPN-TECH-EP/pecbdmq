@@ -46,7 +46,7 @@
           </tr>
         </thead>
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row" style="min-width: 10px; max-width: 10px">
+          <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
@@ -63,7 +63,7 @@
             </td>
 
           <!-- Buttons for add or cancel a register -->
-            <td class="text-start" style="min-width: 10px; max-width: 10px">
+            <td class="text-start">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"

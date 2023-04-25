@@ -35,7 +35,7 @@ export class TipoPruebaComponent implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['TipoPrueba'];
+  headers = ['Tipo Prueba'];
 
 
   constructor(

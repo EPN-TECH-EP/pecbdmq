@@ -94,6 +94,16 @@
        TipoAlerta.ALERTA_OK
      );
    }
+
+
+   public errorNotification(mensaje: string) {
+     this.notificationRef = Notificacion.notificar(
+       this.notificationService,
+       mensaje,
+       TipoAlerta.ALERTA_ERROR
+     );
+   }
+
    //registro
    public registro(catalogo: CatalogoEstados): void {
      catalogo={...catalogo, estado:'ACTIVO'};
