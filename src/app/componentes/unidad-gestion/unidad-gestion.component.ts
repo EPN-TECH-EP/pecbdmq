@@ -35,7 +35,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   data: UnidadGestion;
@@ -145,7 +145,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );

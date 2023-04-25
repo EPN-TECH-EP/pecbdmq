@@ -1,10 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TipoBaja} from "../../modelo/admin/tipo_baja";
 import {TipoBajaService} from "../../servicios/tipo-baja.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
@@ -20,18 +19,9 @@ import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 })
 export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
-  tiposBaja: TipoBaja[];
-  tipoBaja: TipoBaja;
-  tipoBajaEditForm: TipoBaja;
-  tiposBajaForm: FormGroup;
-
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
   // codigo de item a modificar o eliminar
-  codigo: number;
-  showLoading = false;
-
+  codigo            : number;
   tiposBaja         : TipoBaja[];
   tipoBajaEditForm  : TipoBaja;
   tiposBajaForm     : FormGroup;
@@ -46,11 +36,11 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   constructor(
     private apiTipoBaja: TipoBajaService,
     private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService,
+    private popConfirmServiceLocal: MdbPopconfirmService,
     private formBuilder: FormBuilder
   ) {
-    super(notificationServiceLocal, popconfirmServiceLocal);
-    
+    super(notificationServiceLocal, popConfirmServiceLocal);
+
     this.tiposBaja = [];
     this.subscriptions = [];
     this.tipoBajaEditForm = {cod_tipo_baja: 0, estado: 'ACTIVO', baja: ''};
@@ -97,7 +87,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   okNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -152,13 +142,13 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
+  confirmarEliminar(event: Event, codigo: number): void {
   super.confirmaEliminarMensaje();
   this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
+  super.openPopconfirm(event, this.eliminarTipoBaja.bind(this));
 }
-  
-  public eliminar(): void {
+
+  eliminarTipoBaja(): void {
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.deleteTipoBaja(this.codigo).subscribe({

@@ -26,7 +26,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[] = [];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -48,7 +48,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     private Api:TipoInstruccionService
   ) {
     super(notificationServiceLocal, popconfirmServiceLocal);
-    
+
     this.tiposInstruccion=[];
     this.subscriptions = [];
     this.notificationRef=null;
@@ -112,7 +112,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );

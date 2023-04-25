@@ -105,7 +105,7 @@ import { ComponenteBase } from 'src/app/util/componente-base';
 
    public errorNotification(mensaje: string) {
      this.notificationRef = Notificacion.notificar(
-       this.notificationService,
+       this.notificationServiceLocal,
        mensaje,
        TipoAlerta.ALERTA_ERROR
      );
