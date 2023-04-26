@@ -33,7 +33,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[] = [];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -152,9 +152,21 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
   }
 
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
 
   //actualizar
   public actualizar(semestre: Semestre, formValue): void {
+
+    if(formValue.semestre == ''){
+      this.errorNotification('Todos los campos son obligatorios');
+      return;
+    }
 
     semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
     this.showLoading = true;

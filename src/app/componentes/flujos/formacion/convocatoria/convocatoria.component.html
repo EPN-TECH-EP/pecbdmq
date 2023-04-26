@@ -73,17 +73,21 @@
                 mdbValidate
                 [mdbDatepicker]="dpFechaInicio"
                 type="text"
-                id="fechaFin"
+                id="fechaInicio"
                 class="form-control mb-5"
                 formControlName="fechaInicio"
                 (click)="dpFechaInicio.open()"
               />
               <label mdbLabel class="form-label mb-2x" for="fechaInicio">Seleccionar Fecha Inicio</label>
-              <mdb-datepicker-toggle [mdbDatepicker]="dpFechaInicio"></mdb-datepicker-toggle>
+              <mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaInicio"
+                (click)="fechaInicio.markAsTouched()"
+              ></mdb-datepicker-toggle>
               <mdb-datepicker
                 #dpFechaInicio="mdbDatepicker"
                 [options]="opcionesDatepicker"
                 [inline]="true"
+                [minDate]="opcionesDatepicker.minDate"
               ></mdb-datepicker>
               <mdb-error *ngIf="fechaInicio?.invalid && fechaInicio?.touched">
                 <i class="fas fa-times-circle"></i>
@@ -101,23 +105,31 @@
                 mdbValidate
                 [mdbDatepicker]="dpFechaFin"
                 type="text"
-                id="fechaInicio"
+                id="fechaFin"
                 class="form-control mb-5"
                 formControlName="fechaFin"
                 (click)="dpFechaFin.open()"
               />
               <label mdbLabel class="form-label mb-2x" for="fechaFin">Seleccionar Fecha Fin</label>
-              <mdb-datepicker-toggle [mdbDatepicker]="dpFechaFin"></mdb-datepicker-toggle>
+              <mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaFin"
+                (click)="fechaFin.markAsTouched()"
+              ></mdb-datepicker-toggle>
               <mdb-datepicker
                 #dpFechaFin="mdbDatepicker"
                 [options]="opcionesDatepicker"
                 [inline]="true"
+                [minDate]="opcionesDatepicker.minDate"
               ></mdb-datepicker>
               <mdb-error *ngIf="fechaFin?.invalid && fechaFin?.touched">
                 <i class="fas fa-times-circle"></i>
                 Campo Obligatorio
               </mdb-error>
-              <mdb-success *ngIf="fechaFin?.valid && fechaFin?.touched">
+              <mdb-error *ngIf="convocatoriaForm.hasError('invalid_date')">
+                <i class="fas fa-times-circle"></i>
+                Fecha Fin debe ser mayor a Fecha Inicio
+              </mdb-error>
+              <mdb-success *ngIf="fechaFin?.valid && fechaFin?.touched && !convocatoriaForm.hasError('invalid_date')" >
                 <i class="fas fa-check-circle"></i>
                 Campo Correcto
               </mdb-success>
@@ -135,7 +147,10 @@
                 formControlName="horaInicio"
               />
               <label mdbLabel class="form-label mb-5" for="horaInicio">Insertar hora de incio</label>
-              <mdb-timepicker-toggle [mdbTimepickerToggle]="tpHoraInicio"></mdb-timepicker-toggle>
+              <mdb-timepicker-toggle
+                [mdbTimepickerToggle]="tpHoraInicio"
+                (click)="horaInicio.markAsTouched()"
+              ></mdb-timepicker-toggle>
               <mdb-timepicker #tpHoraInicio [inline]="true"></mdb-timepicker>
               <mdb-error *ngIf="horaInicio?.invalid && horaInicio?.touched">
                 <i class="fas fa-times-circle"></i>
@@ -159,7 +174,10 @@
                 formControlName="horaFin"
               />
               <label mdbLabel class="form-label mb-5" for="horaFin">Insertar hora de fin</label>
-              <mdb-timepicker-toggle [mdbTimepickerToggle]="tpHoraFin"></mdb-timepicker-toggle>
+              <mdb-timepicker-toggle
+                [mdbTimepickerToggle]="tpHoraFin"
+                (click)="horaFin.markAsTouched()"
+              ></mdb-timepicker-toggle>
               <mdb-timepicker #tpHoraFin [inline]="true"></mdb-timepicker>
               <mdb-error *ngIf="horaFin?.invalid && horaFin?.touched">
                 <i class="fas fa-times-circle"></i>
@@ -211,6 +229,7 @@
                 id="next-step-2"
                 class="btn btn-primary col-4"
                 (click)="stepper.next()"
+                [disabled]="convocatoriaForm.invalid"
               >
                 Siguiente
               </button>
@@ -406,5 +425,5 @@
   <embed [src]="urlArchivo" [width]="'100%'" [height]="400">
 </div>
 <ng-template #errorArchivo>
- <span>Error al cargar el archivo</span>
+  <span>Error al cargar el archivo</span>
 </ng-template>

@@ -20,7 +20,6 @@ import {
 } from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -42,13 +41,11 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   //private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  
+
     // codigo de item a modificar o eliminar
     codigo: number;
     showLoading = false;
 
-    validacionUtil = ValidacionUtil;
-  
   public userResponse: string;
 
 
@@ -162,8 +159,28 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     );
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   public registro(materia: Materia): void {
-    materia={...materia, estado:'ACTIVO'};
+
+    if (
+      materia.nombreMateria == '' ||
+      materia.numHoras == 0 || materia.numHoras < 0 ||
+      materia.tipoMateria == '' ||
+      materia.observacionMateria == '' ||
+      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
+      materia.notaMinima == 0 || materia.notaMinima < 0) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return
+    }
+
+    materia = {...materia, estado: 'ACTIVO'};
     this.showLoading = true;
     this.userResponse = 'Lunes';
     this.subscriptions.push(
@@ -210,14 +227,27 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   public actualizar(materia: Materia, formValue): void {
-    materia={...materia,
-       nombreMateria: formValue.nombreMateria,
-       numHoras: formValue.numHoras,
-       tipoMateria: formValue.tipoMateria,
-       observacionMateria: formValue.observacionMateria,
-       pesoMateria: formValue.pesoMateria,
-       notaMinima: formValue.notaMinima,
-       estado:'ACTIVO'
+
+    if(
+      materia.nombreMateria == '' ||
+      materia.numHoras == 0 || materia.numHoras < 0 ||
+      materia.tipoMateria == '' ||
+      materia.observacionMateria == '' ||
+      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
+      materia.notaMinima == 0 || materia.notaMinima < 0) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return
+    }
+
+    materia = {
+      ...materia,
+      nombreMateria: formValue.nombreMateria,
+      numHoras: formValue.numHoras,
+      tipoMateria: formValue.tipoMateria,
+      observacionMateria: formValue.observacionMateria,
+      pesoMateria: formValue.pesoMateria,
+      notaMinima: formValue.notaMinima,
+      estado: 'ACTIVO'
 
     }
     this.showLoading = true;

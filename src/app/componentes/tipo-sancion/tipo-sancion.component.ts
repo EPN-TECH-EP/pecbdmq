@@ -28,7 +28,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -47,12 +47,12 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Sanción'];
 
-  constructor(private apiTipoSancion: TipoSancionService, 
+  constructor(private apiTipoSancion: TipoSancionService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
     ) {
       super(notificationServiceLocal, popconfirmServiceLocal);
-      
+
     this.tiposSancion = [];
     this.subscriptions = [];
     this.tipoSancion = {

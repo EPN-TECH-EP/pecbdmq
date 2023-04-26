@@ -13,7 +13,6 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -29,14 +28,13 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 //  private subscriptions: Subscription[];
-  
+
 
 // codigo de item a modificar o eliminar
 codigo: number;
 showLoading = false;
 data: Modulo;
 
-validacionUtil = ValidacionUtil;
 
 //options
  options = [
@@ -56,7 +54,7 @@ validacionUtil = ValidacionUtil;
   ) {
 
     super(notificationServiceLocal, popconfirmServiceLocal);
-    
+
     this.Modulos = [];
     this.subscriptions = [];
     this.Modulo = {
@@ -146,9 +144,24 @@ validacionUtil = ValidacionUtil;
     };
     this.editElementIndex = -1;
   }
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   //actualizar
   public actualizar(Modulo: Modulo, formValue): void {
-    Modulo={...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado:'ACTIVO'};
+
+    if (this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
+    Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiModulo.actualizarModulo(Modulo,Modulo.cod_modulo).subscribe({
