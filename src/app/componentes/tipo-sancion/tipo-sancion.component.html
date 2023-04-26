@@ -48,6 +48,9 @@
                   class="form-control"
                   [(ngModel)]="tipoSancion.sancion"
                   required
+                  type="text"
+                  #tipoSancionModel="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoSancionModel)"
                 />
               </mdb-form-control>
             </td>
@@ -88,6 +91,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="tipoSancionEditForm.sancion"
+                    required
+                    #tipoSancionModel="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoSancionModel)"
                   />
                 </mdb-form-control>
               </ng-container>

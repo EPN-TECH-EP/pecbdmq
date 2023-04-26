@@ -12,6 +12,7 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 
@@ -34,7 +35,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
 
-
+  validacionUtil = ValidacionUtil;
 
 
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
@@ -106,7 +107,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );

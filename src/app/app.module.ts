@@ -121,6 +121,7 @@ import { MenuFormacionComponent } from './componentes/flujos/formacion/menu-form
 import { ProcesoEspecializacionComponent } from './componentes/flujos/especializacion/proceso-especializacion/proceso-especializacion.component';
 import { ProcesoProfesionalizacionComponent } from './componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
 import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
+import { InputValidationDirective } from './directivas/input-validation.directive';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-
     MenuRolComponent,
     ProcesoEspecializacionComponent,
     ProcesoProfesionalizacionComponent,
-    ProcesoFormacionComponent
+    ProcesoFormacionComponent,
+    InputValidationDirective
   ],
   imports: [
     BrowserModule,

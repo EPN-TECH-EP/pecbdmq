@@ -70,6 +70,9 @@
                   class="form-control"
                   [(ngModel)]="paralelo.nombreParalelo"
                   required
+                  type="text"
+                  #nombreParaleloModel="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"
                 />
               </mdb-form-control>
             </td>
@@ -107,12 +110,12 @@
           <!-- Edit row -->
           <tr *ngFor="let paralelo of table.data; let index = index">
             <td>
-              <!--Show baja-->
+              <!--Show paralelo-->
               <ng-container *ngIf="editElementIndex !== index">
                 {{ paralelo.nombreParalelo}}
               </ng-container>
 
-              <!--Edit baja-->
+              <!--Edit paralelo-->
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
@@ -122,6 +125,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="paraleloEdit.nombreParalelo"
+                    required
+                    #nombreParaleloModel="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"                    
                   />
                 </mdb-form-control>
               </ng-container>

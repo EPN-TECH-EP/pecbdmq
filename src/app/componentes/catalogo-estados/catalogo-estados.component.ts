@@ -11,6 +11,7 @@
  import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
  @Component({
    selector: 'app-catalogo-estados',
@@ -29,6 +30,8 @@ import { ComponenteBase } from 'src/app/util/componente-base';
    //private subscriptions: Subscription[] = [];
    //public showLoading: boolean;
    public userResponse: string;
+
+   validacionUtil = ValidacionUtil;
 
 
    @ViewChild('table') table!: MdbTableDirective<CatalogoEstados>;

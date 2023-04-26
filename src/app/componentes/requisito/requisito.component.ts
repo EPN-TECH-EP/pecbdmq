@@ -12,6 +12,7 @@ import { Notificacion } from 'src/app/util/notificacion';
 import { Convocatoria } from 'src/app/modelo/admin/convocatoria';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-requisito',
@@ -38,6 +39,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Nombre','Descripción','Documento'];
 
+  validacionUtil = ValidacionUtil;
 
   constructor(
     private Api: RequisitoService,

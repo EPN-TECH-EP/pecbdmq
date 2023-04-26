@@ -98,10 +98,14 @@
                   mdbInput
                   id="orden"
                   name="orden"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="moduloEstados.orden"
                   required
+                  #orden="ngModel"
+                  required min="1" max="200"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 200"
                 />
                 <label mdbLabel class="form-label" for="formControlReadonly"
                   >Ingrese el orden</label
@@ -193,6 +197,11 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="moduloEstadosEditForm.orden"
+                    required
+                    #orden="ngModel"
+                    required min="1" max="200"
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 200"                    
                   />
                   <label  class="form-control"></label>
                 </mdb-form-control>

@@ -11,7 +11,7 @@ import { Notificacion } from '../../util/notificacion';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-aulas',
@@ -30,7 +30,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;  
-  
+  validacionUtil = ValidacionUtil;
 
   //table
   @ViewChild('table') table!: MdbTableDirective<Aula>;

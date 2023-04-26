@@ -20,6 +20,7 @@ import {
 } from 'mdb-angular-ui-kit/popconfirm';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -45,6 +46,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     // codigo de item a modificar o eliminar
     codigo: number;
     showLoading = false;
+
+    validacionUtil = ValidacionUtil;
   
   public userResponse: string;
 

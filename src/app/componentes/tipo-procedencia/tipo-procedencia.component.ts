@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-procedencia',
@@ -32,6 +33,9 @@ export class TipoProcedenciaComponent extends ComponenteBase  implements OnInit 
   codigo: number;
   showLoading = false;
   data: TipoProcedencia;
+
+  validacionUtil = ValidacionUtil;
+
    //options
  options = [
   { value: 'ACTIVO', label: 'ACTIVO' },
@@ -107,7 +111,7 @@ headers = ['Nombre'];
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );

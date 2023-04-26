@@ -51,8 +51,10 @@
                     name="etiqueta"
                     class="form-control"
                     [(ngModel)]="Modulo.etiqueta"
-                    #nombre="ngModel"
                     required
+                    type="text"
+                    #etiqueta="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', etiqueta)"
                   />
                 </mdb-form-control>
               </td>
@@ -64,8 +66,10 @@
                     name="descripcion"
                     class="form-control"
                     [(ngModel)]="Modulo.descripcion"
-                    #nombre="ngModel"
+                    #descripcion="ngModel"
                     required
+                    type="text"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', descripcion)"
                   />
                 </mdb-form-control>
               </td>

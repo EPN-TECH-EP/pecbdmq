@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-documento',
@@ -33,6 +34,8 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   codigo: number;
   data:TipoDocumento;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
  options = [
@@ -106,7 +109,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );

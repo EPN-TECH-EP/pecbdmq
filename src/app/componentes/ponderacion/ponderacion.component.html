@@ -114,10 +114,14 @@
                   mdbInput
                   id="porcentajefinalponderacion"
                   name="porcentajefinalponderacion"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="ponderacion.porcentajefinalponderacion"
-                  required
+                  required 
+                  #porcentajeFinalModel="ngModel"
+                  required min="1" max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"
                 />
                 <label mdbLabel class="form-label" for="formControlReadonly"
                   >Ingrese el porcentaje final</label
@@ -130,10 +134,14 @@
                   mdbInput
                   id="porcentajenotamateria"
                   name="porcentajenotamateria"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="ponderacion.porcentajenotamateria"
                   required
+                  #porcentajeMateriaModel="ngModel"
+                  required min="1" max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"                  
                 />
                 <label mdbLabel class="form-label" for="formControlReadonly"
                   >Ingrese el porcentaje nota</label
@@ -319,10 +327,14 @@
                     mdbInput
                     id="porcentajefinalponderacion"
                     name="porcentajefinalponderacion"
-                    type="text"
+                    type="number"
                     class="form-control"
                     [(ngModel)]="ponderacionEditForm.porcentajefinalponderacion"
                     required
+                    #porcentajefinalponderacion="ngModel"
+                    required min="1" max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"                  
                   />
                   <label mdbLabel class="form-label"
                     ></label>
@@ -340,10 +352,14 @@
                     mdbInput
                     id="porcentajenotamateria"
                     name="porcentajenotamateria"
-                    type="text"
+                    type="number"
                     class="form-control"
                     [(ngModel)]="ponderacionEditForm.porcentajenotamateria"
                     required
+                    #porcentajenotamateria="ngModel"
+                    required min="1" max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"                  
                   />
                   <label mdbLabel class="form-label" for="formControlReadonly"
                     >Ingrese el porcentaje nota</label

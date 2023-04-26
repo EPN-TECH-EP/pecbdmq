@@ -55,7 +55,6 @@ import {
 } from "../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
 import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 import {NgModule} from "@angular/core";
-import {InscripcionComponent} from "../../componentes/flujos/formacion/inscripcion/inscripcion.component";
 
 
 const routes: Routes = [
@@ -100,8 +99,7 @@ const routes: Routes = [
       {path: 'admin/menuRol', component: MenuRolComponent},
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
-      {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},
-      {path: 'formacion/inscripcion', component: InscripcionComponent},
+      {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},      
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},

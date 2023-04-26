@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -35,6 +36,7 @@ codigo: number;
 showLoading = false;
 data: Modulo;
 
+validacionUtil = ValidacionUtil;
 
 //options
  options = [

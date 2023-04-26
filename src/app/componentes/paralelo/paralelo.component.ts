@@ -14,6 +14,7 @@ import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import { ComponenteBase } from "src/app/util/componente-base";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
+import { ValidacionUtil } from "src/app/util/validacion-util";
 
 @Component({
   selector: 'app-paralelo',
@@ -31,6 +32,9 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
+
   /*
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},

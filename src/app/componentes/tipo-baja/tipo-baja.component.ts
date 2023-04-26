@@ -20,11 +20,8 @@ import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 })
 export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
-  tiposBaja: TipoBaja[];
   tipoBaja: TipoBaja;
-  tipoBajaEditForm: TipoBaja;
-  tiposBajaForm: FormGroup;
-
+  
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
   
@@ -35,9 +32,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   tiposBaja         : TipoBaja[];
   tipoBajaEditForm  : TipoBaja;
   tiposBajaForm     : FormGroup;
-  notificationRef   : MdbNotificationRef<AlertaComponent> | null = null;
-  showLoading       : boolean;
-
+  
   @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
@@ -97,7 +92,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   okNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );

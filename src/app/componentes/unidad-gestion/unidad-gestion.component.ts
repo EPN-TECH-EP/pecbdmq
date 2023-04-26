@@ -21,6 +21,7 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-unidad-gestion',
@@ -40,6 +41,8 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   codigo: number;
   data: UnidadGestion;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [
