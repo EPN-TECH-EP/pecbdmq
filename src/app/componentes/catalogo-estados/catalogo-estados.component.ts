@@ -104,6 +104,16 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
        TipoAlerta.ALERTA_OK
      );
    }
+
+
+   public errorNotification(mensaje: string) {
+     this.notificationRef = Notificacion.notificar(
+       this.notificationServiceLocal,
+       mensaje,
+       TipoAlerta.ALERTA_ERROR
+     );
+   }
+
    //registro
    public registro(catalogo: CatalogoEstados): void {
      catalogo={...catalogo, estado:'ACTIVO'};

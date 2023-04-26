@@ -29,7 +29,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;

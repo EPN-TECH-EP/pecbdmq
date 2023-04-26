@@ -30,7 +30,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[] = [];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -41,7 +41,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['TipoPrueba'];
+  headers = ['Tipo Prueba'];
 
 
   constructor(
@@ -50,7 +50,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     private popconfirmServiceLocal: MdbPopconfirmService,
     ) {
       super(notificationServiceLocal, popconfirmServiceLocal);
-      
+
       this.tiposprueba=[];
       this.subscriptions =[];
       this.tipoPrueba ={

@@ -29,7 +29,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   data:TipoDocumento;
@@ -170,7 +170,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento,tipoDocumento.codigoDocumento).subscribe({
       next: (response: HttpResponse<TipoDocumento>) => {
-        this.notificacionOk('Tipo funcionario actualizado con éxito');
+        this.notificacionOk('Tipo documento actualizado con éxito');
         this.tiposDocumento[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoDocumento = {

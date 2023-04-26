@@ -36,7 +36,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   data: UnidadGestion;
@@ -146,9 +146,22 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     this.editElementIndex = -1;
   }
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
 
   //actualizar
   public actualizar(Unidad: UnidadGestion, formValue): void {
+
+    if(formValue.nombre == ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     Unidad = {...Unidad, nombre: formValue.nombre, estado: 'ACTIVO'},
       this.showLoading = true;
     this.subscriptions.push(

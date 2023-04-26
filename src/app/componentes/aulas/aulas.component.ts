@@ -11,7 +11,7 @@ import { Notificacion } from '../../util/notificacion';
 import { AlertaComponent } from '../util/alerta/alerta.component';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+
 
 @Component({
   selector: 'app-aulas',
@@ -29,8 +29,8 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   showLoading = false;
 
   //utils
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;  
-  validacionUtil = ValidacionUtil;
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+
 
   //table
   @ViewChild('table') table!: MdbTableDirective<Aula>;
@@ -131,9 +131,27 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   }
  */
 
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
 
   public registro(aula: Aula): void {
-    aula={...aula, estado:'ACTIVO'};
+
+    if (
+      aula.nombre == '' ||
+      aula.capacidad == 0 || aula.capacidad < 0 ||
+      aula.salaOcupada == '' ||
+      aula.tipo == 0
+    ) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
+    aula = {...aula, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroAula(aula).subscribe({
@@ -186,7 +204,19 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
 
   public actualizar(aula: Aula, formValue): void {
-    aula={...aula,
+
+    if (
+      formValue.nombre == '' ||
+      formValue.capacidad == 0 || formValue.capacidad < 0 ||
+      formValue.salaOcupada == '' ||
+      formValue.tipo == 0
+    ) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
+    aula = {
+      ...aula,
       nombre: formValue.nombre,
       capacidad: formValue.capacidad,
       tipo: formValue.tipo,
@@ -196,7 +226,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       proyectores: formValue.proyectores,
       instructor: formValue.instructor,
       salaOcupada: formValue.salaOcupada,
-      estado:'ACTIVO'
+      estado: 'ACTIVO'
     }
    this.showLoading = true;
    this.subscriptions.push(
@@ -224,7 +254,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
      error: (errorResponse: HttpErrorResponse) => {
        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
      }
-     
+
     })
   );
 }
@@ -238,7 +268,7 @@ public confirmaEliminar(event: Event, codigo: number): void {
 
 
   public eliminar(): void {
-    
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.eliminarAula(this.codigo).subscribe({

@@ -152,7 +152,27 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   actualizar(usuario: Usuario, formValue){
+
+    if(
+      formValue.nombreUsuario === "" ||
+      formValue.fechaRegistro === "" ||
+      formValue.fechaUltimoLogin === "" ||
+      formValue.active === undefined ||
+      formValue.notLocked === undefined
+    ){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
 
     if (formValue.active === undefined) {
       usuario.active= false;
