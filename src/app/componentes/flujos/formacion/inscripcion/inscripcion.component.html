@@ -13,7 +13,7 @@
 
   <hr class="hr hr-blurry"/>
   <!-- Inicio estructura de pasos -->
-  <mdb-stepper #stepper [linear]="true">
+  <mdb-stepper #stepper [linear]="false">
     <!-- Paso 1 -->
     <mdb-step [stepForm]="formularioInscripcion " [name]="'Paso 1 - Formulario de Inscripción'">
       <ng-template mdbStepIcon>
@@ -235,58 +235,11 @@
 
           <!-- Datos Nacionalidad -->
           <h5>Datos nacionalidad:</h5>
-
           <!-- Columna 1 -->
           <div class="container">
             <div class="row">
               <div class="col-md">
-                <div class="form-check">
-                  <input
-                    mdbRadio
-                    [(ngModel)]="inscripcion.nacionalidad"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-check-input"
-                    type="radio"
-                    value="1"
-                    id="frmNacidoEcuador"
-                  />
-                  <label class="form-check-label" for="frmNacidoEcuador">
-                    Nacido Ecuador
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    mdbRadio
-                    [(ngModel)]="inscripcion.nacionalidad"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-check-input"
-                    type="radio"
-                    value="2"
-                    id="frmNacidoExtranjero"
-                  />
-                  <label class="form-check-label" for="frmNacidoExtranjero">
-                    Extranjero
-                  </label>
-                </div>
-                <div class="form-check mb-4">
-                  <input
-                    mdbRadio
-                    [(ngModel)]="inscripcion.nacionalidad"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-check-input"
-                    type="radio"
-                    value="3"
-                    id="frmNacidoComunidadFrontera"
-                  />
-                  <label
-                    class="form-check-label"
-                    for="frmNacidoComunidadFrontera"
-                  >
-                    Comunidad frontera
-                  </label>
-                </div>
 
-                <hr>
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -294,6 +247,7 @@
                     id="nacionalidadEcuatoriana"
                     formControlName="nacionalidad"
                     value="Ecuatoriana"
+                    (change)="toggleValidationsNacionalidad()"
                   >
                   <label class="form-check-label" for="nacionalidadEcuatoriana"> Nacido en Ecuador </label>
                 </div>
@@ -305,6 +259,7 @@
                     id="extranjero"
                     formControlName="nacionalidad"
                     value="Extranjero"
+                    (change)="toggleValidationsNacionalidad()"
                   >
                   <label class="form-check-label" for="extranjero"> Extranjero </label>
                 </div>
@@ -315,17 +270,24 @@
                     type="radio"
                     id="comunidadFrontera"
                     formControlName="nacionalidad"
-                    value="comunidadFrontera"
+                    value="Comunidad Frontera"
+                    (change)="toggleValidationsNacionalidad()"
                   >
                   <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
                 </div>
 
-
+                <span
+                  class="text-danger"
+                  *ngIf="nacionalidadField?.invalid && nacionalidadField.touched">
+                  <i class="fas fa-times-circle"></i>
+                  Este valor es requerido para continuar
+                </span>
 
               </div>
               <!-- Columna 2 -->
               <div class="col-md"
-                   *ngIf="inscripcion.nacionalidad === '1' ||inscripcion.nacionalidad === '3'"
+                   *ngIf="nacionalidadField.value === 'Ecuatoriana' ||
+                          nacionalidadField.value === 'Comunidad Frontera'"
               >
                 <!-- Provincia Nacimiento -->
                 <mdb-form-control>
@@ -379,7 +341,7 @@
               <div
                 class="alert alert-info"
                 role="alert"
-                *ngIf="inscripcion.nacionalidad === '2'"
+                *ngIf="nacionalidadField.value === 'Extranjero'"
               >
                 Nota: Adjuntar cédula padre/madre/familiar hasta 4to grado
               </div>
@@ -645,19 +607,18 @@
                 <div class="form-check">
                   <input
                     mdbCheckbox
-                    [(ngModel)]="opcionSeleccionadaMeritoDeportivo"
-                    [ngModelOptions]="{ standalone: true }"
                     class="form-check-input"
                     type="checkbox"
-                    value="opcionSeleccionadaMeritoDeportivo"
-                    id="frmMeritoDeportivo"
+                    value="true"
+                    id="meritoDeportivoCheck"
+                    (change)="onMeritoDeportivoChange($event)"
                   />
-                  <label class="form-check-label fs-6" for="frmMeritoDeportivo">
+                  <label class="form-check-label fs-6" for="meritoDeportivoCheck">
                     Deportivo
                   </label>
                 </div>
                 <!-- Mérito deportivo -->
-                <mdb-form-control *ngIf="opcionSeleccionadaMeritoDeportivo">
+                <mdb-form-control *ngIf="hayMeritoDeportivo">
                   <input
                     mdbValidate
                     mdbInput
@@ -666,7 +627,7 @@
                     class="form-control mb-5"
                     formControlName="meritoDeportivo"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="meritoDeportivo">Mérito deportivo</label>
+                  <label mdbLabel class="form-label mb-2x" for="meritoDeportivoCheck">Mérito deportivo</label>
                   <mdb-error
                     *ngIf="meritoDeportivoField?.invalid && (meritoDeportivoField?.dirty || meritoDeportivoField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -684,19 +645,19 @@
                 <div class="form-check">
                   <input
                     mdbCheckbox
-                    [(ngModel)]="opcionSeleccionadaMeritoAcademico"
-                    [ngModelOptions]="{ standalone: true }"
                     class="form-check-input"
                     type="checkbox"
-                    id="checkMeritoAcademico"
+                    value="true"
+                    id="meritoAcademicoCheck"
+                    (change)="onMeritoAcademicoChange($event)"
                   />
-                  <label class="form-check-label fs-6" for="checkMeritoAcademico">
+                  <label class="form-check-label fs-6" for="meritoAcademicoCheck">
                     Académico
                   </label>
                 </div>
 
                 <!-- Mérito académico -->
-                <mdb-form-control *ngIf="opcionSeleccionadaMeritoAcademico">
+                <mdb-form-control *ngIf="hayMeritoAcademico">
                   <input
                     mdbValidate
                     mdbInput
@@ -793,7 +754,7 @@
         <i class="far fa-envelope"></i>
       </ng-template>
       <mdb-form-control>
-        <div class="alert alert-light d-grid col-6 mx-auto" role="alert">
+        <div class="alert alert-light  col-6 mx-auto" role="alert">
           <i class="far fa-envelope fa-5x"></i>
           <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
           <hr/>
@@ -802,17 +763,20 @@
             enviado a tu email
           </p>
 
-          <input
-            mdbValidate
-            mdbInput
-            type="number"
-            id="PinSeguridad"
-            value="267389"
-            class="form-control mb-5"
-            placeholder="Ingrese su PIN"
-            required
-          />
-          <button type="button" class="btn btn-success btn-rounded d-grid" (click)="stepper.next()">
+          <mdb-form-control>
+            <input
+              mdbValidate
+              mdbInput
+              type="number"
+              id="pinSeguridad"
+              value="267389"
+              class="form-control mb-5"
+              placeholder="Ingrese su PIN"
+              required
+            />
+            <label mdbLabel class="form-label mb-2x" for="pinSeguridad">PIN de seguridad</label>
+          </mdb-form-control>
+          <button type="button" class="btn btn-success btn-rounded w-100" (click)="stepper.next()">
             CONFIRMAR
           </button>
         </div>
@@ -823,18 +787,18 @@
       <ng-template mdbStepIcon>
         <i class="far fa-check-circle"></i>
       </ng-template>
-        <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
-          <i class="far fa-check-circle fa-5x"></i>
-          <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
-          <hr/>
-          <p>
-            Ha completado la etapa de registro
-          </p>
-          <p></p>
-          <button type="button" class="btn btn-success btn-rounded d-grid">
-            SALIR
-          </button>
-        </div>
+      <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
+        <i class="far fa-check-circle fa-5x"></i>
+        <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
+        <hr/>
+        <p>
+          Ha completado la etapa de registro
+        </p>
+        <p></p>
+        <button type="button" class="btn btn-success btn-rounded d-grid">
+          SALIR
+        </button>
+      </div>
     </mdb-step>
   </mdb-stepper>
 </div>

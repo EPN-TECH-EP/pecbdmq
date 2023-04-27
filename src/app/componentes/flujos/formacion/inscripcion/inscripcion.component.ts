@@ -11,7 +11,7 @@ import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {Notificacion} from 'src/app/util/notificacion';
 import {AlertaComponent} from '../../../util/alerta/alerta.component';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CargaArchivoService} from 'src/app/servicios/carga-archivo';
 import {ProvinciaService} from 'src/app/servicios/provincia.service';
 import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
@@ -22,25 +22,21 @@ import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepick
   styleUrls: ['./inscripcion.component.scss'],
 })
 export class InscripcionComponent implements OnInit, OnDestroy {
-  minDate = new Date(1980, 1, 31);
-  maxDate = new Date(2005, 12, 31);
-  formularioInscripcion: FormGroup;
-  translationOptions = OPCIONES_DATEPICKER;
-
 
   private subscriptions: Subscription[] = [];
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  inscripcion: Inscripcion;
-  provincias: Provincia[];
-  opcionSeleccionadaMeritoDeportivo: boolean = false;
-  opcionSeleccionadaMeritoAcademico: boolean = false;
 
-  public radioNacidoEcuador = document.getElementById("radioNacidoEcuador");
-  public radioExtranjero = document.getElementById("radioExtranjero");
-  public radioComunidadFrontera = document.getElementById("radioComunidadFrontera");
-  public showLoading: boolean;
-  public docInscripcion: File;
-  private maxArchivo: number = 0;
+  minDate = new Date(1980, 1, 31);
+  maxDate = new Date(2005, 12, 31);
+  translationOptions = OPCIONES_DATEPICKER;
+  formularioInscripcion : FormGroup;
+  notificationRef       : MdbNotificationRef<AlertaComponent> | null = null;
+  inscripcion           : Inscripcion;
+  provincias            : Provincia[];
+  showLoading           : boolean;
+  docInscripcion        : File;
+  tamMaxArchivo         : number = 0;
+  hayMeritoDeportivo    : boolean = false;
+  hayMeritoAcademico    : boolean = false;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
@@ -49,36 +45,25 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     private builder: FormBuilder,
   ) {
     this.inscripcion = new Inscripcion();
-
     this.formularioInscripcion = new FormGroup({})
     this.construirFormularioInscripcion();
+  }
 
-    // this.formularioInscripcion = new FormGroup({
-    //   frmCedula: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmApellidos: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmNombres: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmEmail: new FormControl(null, { validators: Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), updateOn: 'blur' }),
-    //   frmSexo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmFechaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTelefonoCelular: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTelefonoConvencional: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //
-    //   frmProvinciaNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmCantonNacimiento: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmProvinciaResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmCantonResidencia: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmCallePrincipal: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmCalleSecundaria: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmNumeroCasa: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTituloPais: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTituloCiudad: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTituloColegio: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmTituloNombre: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmMeritoDeportivo: new FormControl(null, { updateOn: 'blur' }),
-    //   frmMeritoAcademico: new FormControl(null, { updateOn: 'blur' }),
-    //   frmArchivo: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-    //   frmFechaInscripcion: new FormControl(null, { updateOn: 'blur' }),
-    // });
+  ngOnInit(): void {
+    this.provinciaService.getProvincias().subscribe((data) => {
+      this.provincias = data;
+    });
+
+    this.subscriptions.push(
+      this.cargaArchivoService.maxArchivo().subscribe({
+        next: (result) => {
+          this.tamMaxArchivo = result;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+        },
+      })
+    );
   }
 
   private construirFormularioInscripcion() {
@@ -108,11 +93,13 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       colegioTitulo       : ["", [Validators.required]],
       nombreTitulo        : ["", [Validators.required]],
       // Datos merito
-      meritoAcademico     : ["", ],
-      meritoDeportivo     : ["", ],
+      meritoAcademico     : ["", [Validators.minLength(10)]],
+      meritoDeportivo     : ["", [Validators.minLength(10)]],
       // Documentos de soporte
       docSoporte          : ["", [Validators.required]],
-    }, {updateOn: 'blur'})
+    }, {
+      updateOn: 'change'
+    });
   }
 
   get cedulaField() {
@@ -207,26 +194,41 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     return this.formularioInscripcion.get('docSoporte');
   }
 
+  onMeritoDeportivoChange(event: any) {
+    this.hayMeritoDeportivo = event.target.checked;
 
-  ngOnInit(): void {
-    this.provinciaService.getProvincias().subscribe((data) => {
-      this.provincias = data;
-    });
-
-    this.subscriptions.push(
-      this.cargaArchivoService.maxArchivo().subscribe({
-        next: (result) => {
-          this.maxArchivo = result;
-        },
-        error: (errorResponse) => {
-          console.log(errorResponse);
-        },
-      })
-    );
+    if (this.hayMeritoDeportivo) {
+      this.meritoDeportivoField.setValidators([Validators.required]);
+    } else {
+      this.meritoDeportivoField.clearValidators();
+    }
+    this.meritoDeportivoField.updateValueAndValidity();
   }
 
+  onMeritoAcademicoChange(event: any) {
+    this.hayMeritoAcademico = event.target.checked;
 
-  public subirArchivo(event: any): void {
+    if(this.hayMeritoAcademico) {
+      this.meritoAcademicoField.setValidators([Validators.required]);
+    } else {
+      this.meritoAcademicoField.clearValidators();
+    }
+    this.meritoAcademicoField.updateValueAndValidity();
+}
+
+  toggleValidationsNacionalidad() {
+    if( this.nacionalidadField.value === 'Extranjero' ) {
+      this.provinciaNacimientoField.clearValidators()
+      this.cantonNacimientoField.clearValidators()
+      this.provinciaNacimientoField.setValue('');
+      this.cantonNacimientoField.setValue('');
+    } else {
+      this.provinciaNacimientoField.setValidators([Validators.required]);
+      this.cantonNacimientoField.setValidators([Validators.required]);
+    }
+  }
+
+  subirArchivo(event: any): void {
     let doc: File;
     let docName: string;
     //Para validar tamaño y extension pdf
@@ -234,7 +236,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     docName = event.target.files[0].name;
     doc = event.target.files[0];
     if (doc !== undefined) {
-      if (doc.size > this.maxArchivo) {
+      if (doc.size > this.tamMaxArchivo) {
         this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
       } else if (!docName.endsWith(extension)) {
         this.notificacion(null, 'El archivo debe ser de tipo .pdf');
@@ -245,19 +247,6 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  onSubmit(): void {
-    this.formularioInscripcion.markAllAsTouched();
-  }
-
-  // stepChange(event: MdbStepChangeEvent, form: NgForm) {
-  //   const paso = event.activeStepIndex;
-  //   if (paso === 0 && !form.valid) {
-  //     this.notificacion(null, 'Debe Ingresar todos los valores');
-  //   }
-  //   console.log(form);
-  //
-  // }
 
   inscripcionSubmit(inscripcion: Inscripcion, isValid: boolean) {
     this.showLoading = true;
@@ -308,7 +297,6 @@ export class InscripcionComponent implements OnInit, OnDestroy {
       tipoAlerta
     );
   }
-
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
