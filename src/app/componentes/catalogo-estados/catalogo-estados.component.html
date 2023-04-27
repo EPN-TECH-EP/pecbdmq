@@ -11,39 +11,39 @@
 <div class="row justify-content-center">
   <div class="col-6 ">
 
-  <mdb-form-control>
-    <input
-      mdbInput
-      type="text"
-      class="form-control"
-      id="search-input"
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <button
+      class="btn btn-primary btn-sm ms-3"
+      id="btnAgregarFila"
       [disabled]="editElementIndex !== -1"
-      (keyup)="search($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control>
-  <button
-    class="btn btn-primary btn-sm ms-3"
-    id="btnAgregarFila"
-    [disabled]="editElementIndex !== -1"
-    (click)="addRow = true"
-  >
-    <i class="fa fa-plus"></i>&nbsp;Agregar
-  </button>
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>&nbsp;Agregar
+    </button>
 
-  <div class="datatable table-editor mt-3">
-    <form #form="ngForm" >
-      <table
-        class="table table-sm datatable-table"
-        id="tblSemestre"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        #sort="mdbTableSort"
-        [dataSource]="catalogos"
-        [sort]="sort"
-      >
-        <thead class="datatable-header">
+    <div class="datatable table-editor mt-3">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          id="tblSemestre"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sort="mdbTableSort"
+          [dataSource]="catalogos"
+          [sort]="sort"
+        >
+          <thead class="datatable-header">
           <tr>
 
             <th
@@ -54,9 +54,9 @@
               <b> {{ header | titlecase }}</b>
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
-            </tr>
-        </thead>
-        <tbody class="datatable-body">
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
           <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
@@ -74,7 +74,7 @@
             <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                id ="btnRegistrar"
+                id="btnRegistrar"
                 type="submit"
                 (click)="registro(form.value); addRow = false;"
               >
@@ -92,7 +92,7 @@
 
           <tr *ngFor="let catalogo of catalogos let index = index">
             <td>
-              <ng-container  *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="editElementIndex !== index">
                 {{ catalogo.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
@@ -150,10 +150,14 @@
               </ng-container>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </form>
+          </tbody>
+        </table>
+      </form>
+      <mdb-table-pagination
+      >
+      </mdb-table-pagination>
+    </div>
+
   </div>
-</div>
 </div>
 

@@ -10,7 +10,7 @@
 
   <!-- Tabla -->
 
-  <!--mdb-form-control>
+  <mdb-form-control>
     <input
       mdbInput
       type="text"
@@ -19,7 +19,7 @@
       (keyup)="buscar($event)"
     />
     <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control-->
+  </mdb-form-control>
 
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" novalidate>
@@ -28,161 +28,160 @@
         mdbTable
         mdbTableSort
         #table="mdbTable"
-        #sortSearch="mdbTableSort"
         [dataSource]="usuarios"
-        [sort]="sortSearch"
+        [pagination]="pagination"
       >
         <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headers"
-              [mdbTableSortHeader]="header"
-              scope="col"
-              class="fw-bold fs-6"
-            >
-              {{ header | titlecase }}
-            </th>
-            <th scope="col">Acciones</th>
-          </tr>
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+            scope="col"
+            class="fw-bold fs-6"
+          >
+            {{ header.label | titlecase }}
+          </th>
+          <th scope="col">Acciones</th>
+        </tr>
         </thead>
 
         <tbody class="datatable-body">
-          <!-- tr *ngIf="addRow" scope="row">
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="nombreUsuario"
-                  name="nombreUsuario"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="usuarioTemp.nombreUsuario"
-                  #nombreUsuario="ngModel"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="fechaRegistro"
-                  name="fechaRegistro"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="usuarioTemp.fechaRegistro"
-                  #fechaRegistro="ngModel"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="fechaUltimoLogin"
-                  name="fechaUltimoLogin"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="usuarioTemp.fechaUltimoLogin"
-                  #fechaUltimoLogin="ngModel"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  id="active"
-                  name="active"
-                  [(ngModel)]="usuarioTemp.active"
-                  #active="ngModel"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  id="notLocked"
-                  name="notLocked"
-                  [(ngModel)]="usuarioTemp.notLocked"
-                  #notLocked="ngModel"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                type="submit"
-                (click)="registro(form.value); limpiar(); addRow = false"
-              >
-                <i class="fa fa-check"></i>
-              </button>
+        <!-- tr *ngIf="addRow" scope="row">
+          <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="nombreUsuario"
+                name="nombreUsuario"
+                type="text"
+                class="form-control"
+                [(ngModel)]="usuarioTemp.nombreUsuario"
+                #nombreUsuario="ngModel"
+                required
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="fechaRegistro"
+                name="fechaRegistro"
+                type="text"
+                class="form-control"
+                [(ngModel)]="usuarioTemp.fechaRegistro"
+                #fechaRegistro="ngModel"
+                required
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <mdb-form-control>
+              <input
+                mdbInput="mdbInput"
+                id="fechaUltimoLogin"
+                name="fechaUltimoLogin"
+                type="text"
+                class="form-control"
+                [(ngModel)]="usuarioTemp.fechaUltimoLogin"
+                #fechaUltimoLogin="ngModel"
+                required
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <mdb-form-control>
+              <input
+                mdbCheckbox
+                class="form-check-input"
+                type="checkbox"
+                id="active"
+                name="active"
+                [(ngModel)]="usuarioTemp.active"
+                #active="ngModel"
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <mdb-form-control>
+              <input
+                mdbCheckbox
+                class="form-check-input"
+                type="checkbox"
+                id="notLocked"
+                name="notLocked"
+                [(ngModel)]="usuarioTemp.notLocked"
+                #notLocked="ngModel"
+              />
+            </mdb-form-control>
+          </td>
+          <td>
+            <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              type="submit"
+              (click)="registro(form.value); limpiar(); addRow = false"
+            >
+              <i class="fa fa-check"></i>
+            </button>
 
-              <button
-                name="eliminar"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="addRow = false"
-              >
-                <i class="fa fa-ban"></i>
-              </button>
-            </td>
-          </tr -->
+            <button
+              name="eliminar"
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="addRow = false"
+            >
+              <i class="fa fa-ban"></i>
+            </button>
+          </td>
+        </tr -->
 
-          <tr *ngFor="let usuario of usuarios; let index = index" scope="row">
-            <td style="min-width: 50px; max-width: 50px">
-              {{ usuario.nombreUsuario }}
-            </td>
+        <tr *ngFor="let usuario of table.data; let index = index">
+          <td>
+            {{ usuario.nombreUsuario }}
+          </td>
 
-            <td style="min-width: 50px; max-width: 50px">
-              {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
-            </td>
+          <td>
+            {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
+          </td>
 
-            <td style="min-width: 50px; max-width: 50px">
-              {{ usuario.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
-            </td>
+          <td>
+            {{ usuario.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
+          </td>
 
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="active"
-                  name="active"
-                  [checked]="usuario.active"
-                  disabled="true"
-                />
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="active"
-                  name="active"
-                  [checked]="usuarioFrm.active"
-                  [(ngModel)]="usuarioFrm.active"
-                />
-              </ng-container>
-            </td>
-
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
+          <td>
+            <ng-container *ngIf="editElementIndex !== index">
               <input
                 mdbCheckbox
                 class="form-check-input"
                 type="checkbox"
                 value=""
-                id="notLocked"
+                id="usuarioActive"
+                name="active"
+                [checked]="usuario.active"
+                disabled="true"
+              />
+            </ng-container>
+            <ng-container *ngIf="editElementIndex === index">
+              <input
+                mdbCheckbox
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="active"
+                name="active"
+                [checked]="usuarioFrm.active"
+                [(ngModel)]="usuarioFrm.active"
+              />
+            </ng-container>
+          </td>
+
+          <td>
+            <ng-container *ngIf="editElementIndex !== index">
+              <input
+                mdbCheckbox
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="usuarioNotLocked"
                 name="notLocked"
                 [checked]="usuario.notLocked"
                 disabled="true"
@@ -201,53 +200,57 @@
                 [(ngModel)]="usuarioFrm.notLocked"
               />
             </ng-container>
-            </td>
+          </td>
 
-            <td>
-              <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+          <td>
+            <ng-container
+              *ngIf="editElementIndex === -1 || editElementIndex !== index"
+            >
+              <button
+                mdbTooltip="Editar registro"
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="editar(index)"
+                [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
               >
-                <button
-                  mdbTooltip="Editar registro"
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-                  [disabled]="
+                <i class="fa fa-edit"></i>
+              </button>
+              <button
+                mdbTooltip="Eliminar registro"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="this.mensajeConfirmacion='¿Eliminar el usuario? Esta acción es irreversible'; openPopconfirm($event, index)"
+                [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                >
-                  <i class="fa fa-edit"></i>
-                </button>
-                <button
-                  mdbTooltip="Eliminar registro"
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="this.mensajeConfirmacion='¿Eliminar el usuario? Esta acción es irreversible'; openPopconfirm($event, index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-trash-alt"></i>
-                </button>
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(usuario, form.value)"
-                >
-                  <i class="fa fa-check"></i> Guardar
-                </button>
-                <button
-                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="deshacer(editElementIndex)"
-                >
-                  <i class="fa fa-ban"></i> Cancelar
-                </button>
-              </ng-container>
-            </td>
-          </tr>
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="editElementIndex === index">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                (click)="actualizar(usuario, form.value)"
+              >
+                <i class="fa fa-check"></i> Guardar
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="deshacer(editElementIndex)"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </ng-container>
+          </td>
+        </tr>
         </tbody>
       </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
     </form>
-    <!--mdb-table-pagination #paginationSearch [entries]="10"></mdb-table-pagination -->
   </div>
 
 </div>
