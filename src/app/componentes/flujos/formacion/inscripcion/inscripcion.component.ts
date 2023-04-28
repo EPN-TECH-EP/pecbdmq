@@ -1,4 +1,3 @@
-import {Provincia} from '../../../../modelo/admin/provincia';
 import {Inscripcion} from '../../../../modelo/admin/inscripcion';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit, OnDestroy} from '@angular/core';
@@ -13,8 +12,9 @@ import {Notificacion} from 'src/app/util/notificacion';
 import {AlertaComponent} from '../../../util/alerta/alerta.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CargaArchivoService} from 'src/app/servicios/carga-archivo';
-import {ProvinciaService} from 'src/app/servicios/provincia.service';
 import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
+import {MyValidators} from "../../../../util/validators";
+import {CANTONES_POR_PROVINCIA, PROVINCIAS} from "../../../../util/constantes/provincias_cuidades";
 
 @Component({
   selector: 'app-inscripcion',
@@ -27,11 +27,13 @@ export class InscripcionComponent implements OnInit, OnDestroy {
 
   minDate = new Date(1980, 1, 31);
   maxDate = new Date(2005, 12, 31);
+  provincias = PROVINCIAS;
   translationOptions = OPCIONES_DATEPICKER;
+  cantonesNacimiento    : string[];
+  cantonesResidencia    : string[];
   formularioInscripcion : FormGroup;
   notificationRef       : MdbNotificationRef<AlertaComponent> | null = null;
   inscripcion           : Inscripcion;
-  provincias            : Provincia[];
   showLoading           : boolean;
   docInscripcion        : File;
   tamMaxArchivo         : number = 0;
@@ -41,18 +43,16 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   constructor(
     private cargaArchivoService: CargaArchivoService,
     private notificationService: MdbNotificationService,
-    private provinciaService: ProvinciaService,
     private builder: FormBuilder,
   ) {
     this.inscripcion = new Inscripcion();
     this.formularioInscripcion = new FormGroup({})
     this.construirFormularioInscripcion();
+    this.cantonesNacimiento = [];
+    this.cantonesResidencia = [];
   }
 
   ngOnInit(): void {
-    this.provinciaService.getProvincias().subscribe((data) => {
-      this.provincias = data;
-    });
 
     this.subscriptions.push(
       this.cargaArchivoService.maxArchivo().subscribe({
@@ -69,9 +69,22 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   private construirFormularioInscripcion() {
     this.formularioInscripcion = this.builder.group({
       // Datos iniciales
-      cedula              : ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      nombres             : ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      apellidos           : ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      cedula              : ["", [Validators.required,
+                                  Validators.minLength(10),
+                                  Validators.maxLength(10),
+                                  MyValidators.onlyNumbers(),
+                                  MyValidators.validIdentification()]
+                            ],
+      nombres             : ["", [Validators.required,
+                                  Validators.minLength(3),
+                                  Validators.maxLength(50),
+                                  MyValidators.onlyLetters()]
+                            ],
+      apellidos           : ["", [Validators.required,
+                                  Validators.minLength(3),
+                                  Validators.maxLength(50),
+                                  MyValidators.onlyLetters()]
+                            ],
       email               : ["", [Validators.required, Validators.email]],
       sexo                : ["", [Validators.required]],
       fechaNacimiento     : ["", [Validators.required]],
@@ -248,16 +261,28 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     }
   }
 
-  inscripcionSubmit(inscripcion: Inscripcion, isValid: boolean) {
-    this.showLoading = true;
-
-    if (isValid) {
-
-
-    } else {
-      console.error('Formulario inválido!!!');
-    }
+  changeCantonNacimiento(event: any) {
+    const provincia = this.provincias.find(provincia=> provincia.id === event);
+    this.cantonesNacimiento = CANTONES_POR_PROVINCIA[provincia.nombre];
+    this.cantonNacimientoField.setValue('');
   }
+
+  changeCantonResidencia(event: any) {
+    const provincia = this.provincias.find(provincia=> provincia.id === event);
+    this.cantonesResidencia = CANTONES_POR_PROVINCIA[provincia.nombre];
+    this.cantonResidenciaField.setValue('');
+  }
+
+  // inscripcionSubmit(inscripcion: Inscripcion, isValid: boolean) {
+  //   this.showLoading = true;
+  //
+  //   if (isValid) {
+  //
+  //
+  //   } else {
+  //     console.error('Formulario inválido!!!');
+  //   }
+  // }
 
   notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -301,4 +326,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
+
+
 }

@@ -3,35 +3,28 @@
 <div class="titulo text-center">
   <p class="fs-4 fw-bolder">Paralelo</p>
 </div>
+
 <div class="row justify-content-center ">
-  <div class="input-group mb-4">
-    <input
-      type="text"
-      id="advanced-search"
-      class="form-control"
-      id="search-input"
-      #searchInput
-      placeholder="paralelo"
-    />
-    <button
-      class="btn btn-primary ripple-surface"
-      id="advanced-search-button"
-      type="button"
-      (click)="advancedSearch(searchInput.value)"
-    >
-      <i class="fa fa-search"></i>
-    </button>
-  </div>
 
   <div class="col-6 ">
     <!-- Button to add a register-->
     <button
-      class="btn btn-primary btn-sm ms-3"
+      class="btn btn-primary btn-sm mb-3"
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        (keyup)="advancedSearch($event)"
+      >
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
     <hr/>
     <!-- Table -->
     <div class="datatable table-editor mt-4">
@@ -189,7 +182,7 @@
         </table>
         <mdb-table-pagination
           #pagination
-          [entries]="2"
+          [entries]="10"
         ></mdb-table-pagination>
       </form>
     </div>

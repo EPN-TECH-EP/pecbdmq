@@ -1,18 +1,18 @@
-import { TipoDocumento } from '../../modelo/admin/tipo-documento';
-import { TipoDocumentoService } from './../../servicios/tipo-documento.service';
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { ComponenteBase } from 'src/app/util/componente-base';
+import {TipoDocumento} from '../../modelo/admin/tipo-documento';
+import {TipoDocumentoService} from './../../servicios/tipo-documento.service';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {ComponenteBase} from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-documento',
@@ -31,14 +31,14 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
 
   // codigo de item a modificar o eliminar
   codigo: number;
-  data:TipoDocumento;
+  data: TipoDocumento;
   showLoading = false;
 
   //options
- options = [
-  { value: 'ACTIVO', label: 'ACTIVO' },
-  { value: 'INACTIVO', label: 'INACTIVO' },
-];
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
+  ];
 
   //table
   @ViewChild('table') table!: MdbTableDirective<TipoDocumento>;
@@ -65,7 +65,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       tipoDocumento: '',
       estado: 'ACTIVO'
     };
-   }
+  }
 
   ngOnInit(): void {
     this.ApiTipoDocumento.getTipoDocumento().subscribe(data => {
@@ -85,7 +85,6 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
 
     this.notificationRef = Notificacion.notificar(
@@ -120,7 +119,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    tipodocumento={...tipodocumento, estado:'ACTIVO'};
+    tipodocumento = {...tipodocumento, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoDocumento.crearTipoDocumento(tipodocumento).subscribe({
@@ -141,6 +140,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       })
     );
   }
+
   editRow(index: number) {
     this.editElementIndex = index;
     this.tipoDocumentoEditForm = {...this.tiposDocumento[index]};
@@ -154,6 +154,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     }
     this.editElementIndex = -1;
   }
+
   //actualizar
   public actualizar(tipoDocumento: TipoDocumento, formValue): void {
 
@@ -162,13 +163,13 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    tipoDocumento={...tipoDocumento, tipoDocumento: formValue.nombre, estado:'ACTIVO'};
+    tipoDocumento = {...tipoDocumento, tipoDocumento: formValue.nombre, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento,tipoDocumento.codigoDocumento).subscribe({
-      next: (response: HttpResponse<TipoDocumento>) => {
-        this.notificacionOk('Tipo documento actualizado con éxito');
-        this.tiposDocumento[this.editElementIndex] = response.body;
+      this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento, tipoDocumento.codigoDocumento).subscribe({
+        next: (response: HttpResponse<TipoDocumento>) => {
+          this.notificacionOk('Tipo documento actualizado con éxito');
+          this.tiposDocumento[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoDocumento = {
             codigoDocumento: 0,
@@ -176,41 +177,47 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 
   // eliminar
-public confirmaEliminar(event: Event, codigo: number, data: TipoDocumento): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  this.data = data;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number, data: TipoDocumento): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    this.data = data;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
-public eliminar(): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiTipoDocumento.eliminarTipoDocumento(this.codigo).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Tipo de documento eliminado con éxito');
-        const index = this.tiposDocumento.indexOf(this.data);
-        this.tiposDocumento.splice(index, 1);
-        this.tiposDocumento = [...this.tiposDocumento]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  );
-}
+  public eliminar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiTipoDocumento.eliminarTipoDocumento(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Tipo de documento eliminado con éxito');
+          const index = this.tiposDocumento.indexOf(this.data);
+          this.tiposDocumento.splice(index, 1);
+          this.tiposDocumento = [...this.tiposDocumento]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    );
+  }
+
+  buscar(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    console.log(searchTerm);
+    this.table.search(searchTerm);
+  }
 
 }
