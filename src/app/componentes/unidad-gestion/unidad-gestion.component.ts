@@ -12,15 +12,15 @@ import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
-import { ComponenteBase } from 'src/app/util/componente-base';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {CambiosPendientes} from 'src/app/modelo/util/cambios-pendientes';
+import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
+import {ComponenteBase} from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-unidad-gestion',
@@ -154,7 +154,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   //actualizar
   public actualizar(Unidad: UnidadGestion, formValue): void {
 
-    if(formValue.nombre == ''){
+    if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -192,24 +192,25 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-public eliminar(): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(this.data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  )}
+  public eliminar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Unidad de gestión eliminada con éxito');
+          const index = this.unidades.indexOf(this.data);
+          this.unidades.splice(index, 1);
+          this.unidades = [...this.unidades]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    )
+  }
 
   cambiosPendientes(): boolean {
     return this.editElementIndex !== -1;

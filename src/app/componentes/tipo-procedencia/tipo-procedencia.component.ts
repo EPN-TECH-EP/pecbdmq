@@ -1,29 +1,29 @@
-import { TipoProcedencia } from '../../modelo/admin/tipo-procedencia';
-import { TipoProcedenciaService } from './../../servicios/tipo-procedencia.service';
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { ComponenteBase } from 'src/app/util/componente-base';
+import {TipoProcedencia} from '../../modelo/admin/tipo-procedencia';
+import {TipoProcedenciaService} from './../../servicios/tipo-procedencia.service';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {ComponenteBase} from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-tipo-procedencia',
   templateUrl: './tipo-procedencia.component.html',
   styleUrls: ['./tipo-procedencia.component.scss']
 })
-export class TipoProcedenciaComponent extends ComponenteBase  implements OnInit {
-   //model
-   tiposProcedencia: TipoProcedencia[];
-   tipoProcedencia: TipoProcedencia;
-   tipoProcedenciaEditForm: TipoProcedencia;
+export class TipoProcedenciaComponent extends ComponenteBase implements OnInit {
+  //model
+  tiposProcedencia: TipoProcedencia[];
+  tipoProcedencia: TipoProcedencia;
+  tipoProcedenciaEditForm: TipoProcedencia;
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
@@ -32,16 +32,16 @@ export class TipoProcedenciaComponent extends ComponenteBase  implements OnInit 
   codigo: number;
   showLoading = false;
   data: TipoProcedencia;
-   //options
- options = [
-  { value: 'ACTIVO', label: 'ACTIVO' },
-  { value: 'INACTIVO', label: 'INACTIVO' },
-];
+  //options
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
+  ];
 //table
-@ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
-editElementIndex = -1;
-addRow = false;
-headers = ['Tipo Procedencia'];
+  @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
+  editElementIndex = -1;
+  addRow = false;
+  headers = ['Tipo Procedencia'];
 
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,
@@ -65,13 +65,11 @@ headers = ['Tipo Procedencia'];
   }
 
 
-
   ngOnInit(): void {
     this.ApiTipoProcedencia.getTipoProcedencia().subscribe(data => {
       this.tiposProcedencia = data;
     })
   }
-
 
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -86,7 +84,6 @@ headers = ['Tipo Procedencia'];
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
 
     this.notificationRef = Notificacion.notificar(
@@ -121,8 +118,8 @@ headers = ['Tipo Procedencia'];
       return;
     }
 
-    tipoprocedencia={...tipoprocedencia,estado:'ACTIVO'},
-    this.showLoading = true;
+    tipoprocedencia = {...tipoprocedencia, estado: 'ACTIVO'},
+      this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoProcedencia.crearTipoProcedencia(tipoprocedencia).subscribe({
         next: (response: HttpResponse<TipoProcedencia>) => {
@@ -156,6 +153,7 @@ headers = ['Tipo Procedencia'];
     };
     this.editElementIndex = -1;
   }
+
   //actualizar
   public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
 
@@ -164,13 +162,13 @@ headers = ['Tipo Procedencia'];
       return;
     }
 
-    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado:'ACTIVO'},
-    this.showLoading = true;
+    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'},
+      this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia,tipoProcedencia.codigo).subscribe({
-      next: (response: HttpResponse<TipoProcedencia>) => {
-        this.notificacionOk('Tipo procedencia actualizado con éxito');
-        this.tiposProcedencia[this.editElementIndex] = response.body;
+      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia, tipoProcedencia.codigo).subscribe({
+        next: (response: HttpResponse<TipoProcedencia>) => {
+          this.notificacionOk('Tipo procedencia actualizado con éxito');
+          this.tiposProcedencia[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoProcedencia = {
             codigo: 0,
@@ -178,12 +176,12 @@ headers = ['Tipo Procedencia'];
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 
@@ -196,25 +194,30 @@ headers = ['Tipo Procedencia'];
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-public eliminar(): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiTipoProcedencia.eliminarTipoProcedencia(this.codigo).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Tipo Procedencia eliminado con éxito');
-        const index = this.tiposProcedencia.indexOf(this.data);
-        this.tiposProcedencia.splice(index, 1);
-        this.tiposProcedencia = [...this.tiposProcedencia]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  );
-}
+  public eliminar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiTipoProcedencia.eliminarTipoProcedencia(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Tipo Procedencia eliminado con éxito');
+          const index = this.tiposProcedencia.indexOf(this.data);
+          this.tiposProcedencia.splice(index, 1);
+          this.tiposProcedencia = [...this.tiposProcedencia]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    );
+  }
+
+  search(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
+  }
 
 
 }

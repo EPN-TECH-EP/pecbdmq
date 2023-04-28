@@ -1,40 +1,48 @@
- <!-- Título de componente-->
- <app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<app-boton-volver></app-boton-volver>
 
- <div class="row m-3">
+<div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de Tipo de procedencia</p>
   </div>
 </div>
 <div class="row justify-content-center">
-
   <div class="col-6 ">
 
-  <button
-    MdbRiple
-    class="btn btn-primary btn-sm ms-3"
-    [disabled]="editElementIndex !== -1"
-    (click)="addRow = true"
+    <button
+      MdbRiple
+      class="btn btn-primary btn-sm mb-2"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> Agregar
+    </button>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
 
-  >
-    <i class="fa fa-plus"></i> Agregar
-  </button>
 
-  <hr />
+    <hr/>
 
-  <div class="datatable table-editor mt-4">
-    <form #form="ngForm" >
-      <table
-        class="table table-sm datatable-table"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        #sort="mdbTableSort"
-        [dataSource]="tiposProcedencia"
-        [sort]="sort"
-      >
-        <thead class="datatable-header">
-          <tr align="center">
+    <div class="datatable table-editor mt-4">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="tiposProcedencia"
+        >
+          <thead class="datatable-header">
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -44,8 +52,8 @@
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
           </tr>
-        </thead>
-        <tbody class="datatable-body">
+          </thead>
+          <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
             <td>
               <mdb-form-control>
@@ -139,9 +147,9 @@
               </ng-container>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </form>
+          </tbody>
+        </table>
+      </form>
+    </div>
   </div>
-</div>
 </div>
