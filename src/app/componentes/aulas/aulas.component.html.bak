@@ -10,7 +10,7 @@
   </div>
 </div>
 <div class="row justify-content">
-  <div class="col-12">
+  <div class="col-12 ">
     <mdb-form-control>
       <input
         mdbInput
@@ -31,6 +31,7 @@
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
   </div>
+
 
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" novalidate>
@@ -57,7 +58,8 @@
         </thead>
 
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow"  scope="row">
+
             <td>
               <mdb-form-control>
                 <input
@@ -68,16 +70,9 @@
                   class="form-control"
                   [(ngModel)]="aula.nombre"
                   #nombreModel="ngModel"
-                  required
-                  (change)="
-                    validacionUtil.onInputChange(
-                      $event,
-                      'catalogo',
-                      nombreModel
-                    )
-                  "
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', nombreModel)"
                 />
-              </mdb-form-control>
+              </mdb-form-control>              
             </td>
 
             <td>
@@ -88,15 +83,13 @@
                   name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="aula.capacidad"
-                  #capacidad="ngModel"
-                  required
-                  min="1"
-                  max="20"
+                  [(ngModel)]="aula.capacidad"       
+                  #capacidad = "ngModel"           
+                  required min="1" max="20"
                   inputValidation="entero"
                   mdbTooltip="Rango: 1 - 20"
                 />
-              </mdb-form-control>
+              </mdb-form-control>              
             </td>
             <td>
               <mdb-form-control>
@@ -108,10 +101,7 @@
                   class="form-control"
                   [(ngModel)]="aula.tipo"
                   #tipo="ngModel"
-                  required
-                  (change)="
-                    validacionUtil.onInputChange($event, 'catalogo', tipo)
-                  "
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', tipo)"
                 />
               </mdb-form-control>
             </td>
@@ -124,9 +114,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.pcs"
-                  required
-                  min="1"
-                  max="100"
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -139,9 +127,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.impresoras"
-                  required
-                  min="1"
-                  max="100"
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -155,10 +141,7 @@
                   class="form-control"
                   [(ngModel)]="aula.internet"
                   #internet="ngModel"
-                  required
-                  (change)="
-                    validacionUtil.onInputChange($event, 'catalogo', internet)
-                  "
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', internet)"
                 />
               </mdb-form-control>
             </td>
@@ -172,9 +155,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.proyectores"
-                  required
-                  min="1"
-                  max="100"
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -188,16 +169,13 @@
                   class="form-control"
                   [(ngModel)]="aula.instructor"
                   #instructor="ngModel"
-                  required
-                  (change)="
-                    validacionUtil.onInputChange($event, 'catalogo', instructor)
-                  "
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', instructor)"
                 />
               </mdb-form-control>
             </td>
             <td>
               <mdb-form-control>
-                <!-- input
+                <input
                   mdbInput="mdbInput"
                   id="salaOcupada"
                   name="salaOcupada"
@@ -205,21 +183,11 @@
                   class="form-control"
                   [(ngModel)]="aula.salaOcupada"
                   required
-                / -->
-                <ng-container>
-                  <input
-                    mdbCheckbox
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="active"
-                    name="active"
-                    [checked]="aula.salaOcupada"
-                    [(ngModel)]="aula.salaOcupada"
-                  />
-                </ng-container>
+                />
               </mdb-form-control>
             </td>
+
+
 
             <td>
               <button
@@ -240,6 +208,8 @@
           </tr>
 
           <tr *ngFor="let aula of table.data; let index = index" scope="row">
+
+
             <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ aula.nombre }}
@@ -255,13 +225,7 @@
                     [(ngModel)]="aulaEditForm.nombre"
                     required
                     #nombreModel="ngModel"
-                    (change)="
-                      validacionUtil.onInputChange(
-                        $event,
-                        'catalogo',
-                        nombreModel
-                      )
-                    "
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreModel)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -280,9 +244,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.capacidad"
-                    min="1"
-                    max="100"
-                    required
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -302,10 +264,7 @@
                     class="form-control"
                     [(ngModel)]="aulaEditForm.tipo"
                     #tipo="ngModel"
-                    (change)="
-                      validacionUtil.onInputChange($event, 'catalogo', tipo)
-                    "
-                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipo)" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -324,9 +283,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.pcs"
-                    min="1"
-                    max="100"
-                    required
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -345,13 +302,12 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.impresoras"
-                    min="1"
-                    max="100"
-                    required
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td *ngIf="aula.internet">
               <ng-container *ngIf="editElementIndex !== index">
@@ -367,14 +323,12 @@
                     class="form-control"
                     [(ngModel)]="aulaEditForm.internet"
                     #internet="ngModel"
-                    (change)="
-                      validacionUtil.onInputChange($event, 'catalogo', internet)
-                    "
-                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', internet)" required
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td *ngIf="aula.proyectores">
               <ng-container *ngIf="editElementIndex !== index">
@@ -389,13 +343,12 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.proyectores"
-                    min="1"
-                    max="100"
-                    required
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
+
 
             <td *ngIf="aula.instructor">
               <ng-container *ngIf="editElementIndex !== index">
@@ -411,21 +364,20 @@
                     class="form-control"
                     [(ngModel)]="aulaEditForm.instructor"
                     #instructor="ngModel"
-                    (change)="
-                      validacionUtil.onInputChange(
-                        $event,
-                        'catalogo',
-                        instructor
-                      )
-                    "
-                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', instructor)" required
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
+
             <td style="min-width: 50px; max-width: 50px">
-              <!-- input
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ aula.salaOcupada }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
                     mdbInput
                     id="salaOcupada"
                     name="salaOcupada"
@@ -434,30 +386,8 @@
                     [(ngModel)]="aulaEditForm.salaOcupada"
                     #salaOcupada="ngModel"
                     (change)="validacionUtil.onInputChange($event, 'catalogo', salaOcupada)" required
-                  / -->
-              <ng-container *ngIf="editElementIndex !== index">
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="salaOcupada"
-                  name="salaOcupada"
-                  [checked]="aula.salaOcupada"
-                  disabled="true"
-                />
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="salaOcupada"
-                  name="salaOcupada"
-                  [checked]="aula.salaOcupada"
-                  [(ngModel)]="aula.salaOcupada"
-                />
+                  />
+                </mdb-form-control>
               </ng-container>
             </td>
 
@@ -465,20 +395,18 @@
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
-                <button
-                  mdbTooltip="Editar registro"
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-edit"></i>
-                </button>
+              <button
+                mdbTooltip="Editar registro"
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editar(index)"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+              >
+
+              <i class="fa fa-edit"></i>
+            </button>
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event, aula.codigo)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -489,7 +417,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(aula, form.value)"
+                  (click)="actualizar(aula, form.value);"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>
@@ -507,3 +435,6 @@
     </form>
   </div>
 </div>
+
+
+

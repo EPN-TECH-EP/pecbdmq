@@ -13,7 +13,6 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -36,7 +35,6 @@ codigo: number;
 showLoading = false;
 data: Modulo;
 
-validacionUtil = ValidacionUtil;
 
 //options
  options = [
@@ -118,7 +116,7 @@ validacionUtil = ValidacionUtil;
         next: (response: HttpResponse<Modulo>) => {
           let nuevoModulo: Modulo = response.body;
           this.Modulos.push(nuevoModulo);
-          this.notificacionOk('Módulo creado con éxito');
+          this.notificacionOk('Modulo creado con éxito');
           this.Modulo = {
             cod_modulo: 0,
             etiqueta: '',

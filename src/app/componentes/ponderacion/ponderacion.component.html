@@ -114,13 +114,13 @@
                   mdbInput
                   id="porcentajefinalponderacion"
                   name="porcentajefinalponderacion"
-                  type="number"
+                  type="text"
                   class="form-control"
                   [(ngModel)]="ponderacion.porcentajefinalponderacion"
                   required 
                   #porcentajeFinalModel="ngModel"
                   required min="1" max="100"
-                  inputValidation="entero"
+                  inputValidation="decimal"
                   mdbTooltip="Rango: 1 - 100"
                 />
                 <label mdbLabel class="form-label" for="formControlReadonly"
@@ -134,13 +134,13 @@
                   mdbInput
                   id="porcentajenotamateria"
                   name="porcentajenotamateria"
-                  type="number"
+                  type="text"
                   class="form-control"
                   [(ngModel)]="ponderacion.porcentajenotamateria"
                   required
                   #porcentajeMateriaModel="ngModel"
                   required min="1" max="100"
-                  inputValidation="entero"
+                  inputValidation="decimal"
                   mdbTooltip="Rango: 1 - 100"                  
                 />
                 <label mdbLabel class="form-label" for="formControlReadonly"
@@ -327,13 +327,13 @@
                     mdbInput
                     id="porcentajefinalponderacion"
                     name="porcentajefinalponderacion"
-                    type="number"
+                    type="text"
                     class="form-control"
                     [(ngModel)]="ponderacionEditForm.porcentajefinalponderacion"
                     required
                     #porcentajefinalponderacion="ngModel"
                     required min="1" max="100"
-                  inputValidation="entero"
+                  inputValidation="decimal"
                   mdbTooltip="Rango: 1 - 100"                  
                   />
                   <label mdbLabel class="form-label"
@@ -352,13 +352,13 @@
                     mdbInput
                     id="porcentajenotamateria"
                     name="porcentajenotamateria"
-                    type="number"
+                    type="text"
                     class="form-control"
                     [(ngModel)]="ponderacionEditForm.porcentajenotamateria"
                     required
                     #porcentajenotamateria="ngModel"
                     required min="1" max="100"
-                  inputValidation="entero"
+                  inputValidation="decinal"
                   mdbTooltip="Rango: 1 - 100"                  
                   />
                   <label mdbLabel class="form-label" for="formControlReadonly"
@@ -370,7 +370,7 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ ponderacion.fechainiciovigencia }}
+                {{ ponderacion.fechainiciovigencia | date:'yyyy-MM-dd'}}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -404,7 +404,7 @@
             </td>
             <td style="min-width: 50px; max-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ ponderacion.fechafinvigencia }}
+                {{ ponderacion.fechafinvigencia | date:'yyyy-MM-dd'}}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
