@@ -420,10 +420,10 @@
   </div>
 </div>
 
-<div *ngIf="urlArchivo; else errorArchivo">
-  <h1>PDF</h1>
-  <embed [src]="urlArchivo" [width]="'100%'" [height]="400">
-</div>
+<!--<div *ngIf="urlArchivo; else errorArchivo">-->
+<!--  <h1>PDF</h1>-->
+<!--  <embed [src]="urlArchivo" [width]="'100%'" [height]="400">-->
+<!--</div>-->
 <ng-template #errorArchivo>
   <span>Error al cargar el archivo</span>
 </ng-template>

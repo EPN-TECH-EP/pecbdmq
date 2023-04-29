@@ -1,22 +1,32 @@
 <app-boton-volver></app-boton-volver>
 
-<!-- Título de componente-->
 <div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de módulos</p>
   </div>
 </div>
+
 <div class="row justify-content-center">
   <div class="col-6">
-
+    <!-- Button to add a register-->
     <button
-      class="btn btn-primary btn-sm ms-3"
+      class="btn btn-primary btn-sm mb-2"
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
-
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
     <hr />
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
@@ -25,12 +35,10 @@
           mdbTable
           mdbTableSort
           #table="mdbTable"
-          #sort="mdbTableSort"
           [dataSource]="Modulos"
-          [sort]="sort"
         >
           <thead class="datatable-header">
-            <tr align="center">
+            <tr>
               <th
                 *ngFor="let header of headers"
                 scope="col"

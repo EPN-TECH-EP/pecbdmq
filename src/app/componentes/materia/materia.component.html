@@ -1,9 +1,5 @@
 <app-boton-volver></app-boton-volver>
 
-<div class="row mt-3">
-  <div class="column col-3"></div>
-</div>
- <!-- Título de componente-->
  <div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de Materias</p>
@@ -25,14 +21,12 @@
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
     <button
-      MdbRiple
       id="btnAgregarFila"
       class="btn btn-primary btn-sm ms-3"
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
     <i class="fa fa-plus"></i> &nbsp;Agregar
-
     </button>
   </div>
   <hr />
@@ -45,10 +39,8 @@
         mdbTable
         mdbTableSort
         #table="mdbTable"
-        #sort="mdbTableSort"
+        [pagination]="pagination"
         [dataSource]="materias"
-        [sort]="sort"
-
       >
         <thead class="datatable-header">
           <tr>
@@ -362,6 +354,11 @@
           </tr>
         </tbody>
       </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
     </form>
   </div>
 </div>
