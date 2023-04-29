@@ -12,6 +12,7 @@ import {Notificacion} from "../../util/notificacion";
 import {Paralelo} from "../../modelo/admin/paralelo";
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
 
   @ViewChild('table') table!: MdbTableDirective<TipoInstruccion>;

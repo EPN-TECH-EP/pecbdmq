@@ -54,6 +54,8 @@
                   [(ngModel)]="tipoNota.nota"
                   #nombre="ngModel"
                   required
+                  type="text"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                 />
               </mdb-form-control>
             </td>
@@ -90,6 +92,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="tipoNotaEditForm.nota"
+                    #nombre="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </ng-container>

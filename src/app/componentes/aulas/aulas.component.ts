@@ -1,14 +1,16 @@
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {Subscription} from 'rxjs';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {Aula} from 'src/app/modelo/admin/aula';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {AulaService} from 'src/app/servicios/aula.service';
-import {Notificacion} from '../../util/notificacion';
-import {AlertaComponent} from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { Subscription } from 'rxjs';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { Aula } from 'src/app/modelo/admin/aula';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { AulaService } from 'src/app/servicios/aula.service';
+import { Notificacion } from '../../util/notificacion';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 
 @Component({
@@ -16,16 +18,18 @@ import {AlertaComponent} from '../util/alerta/alerta.component';
   templateUrl: './aulas.component.html',
   styleUrls: ['./aulas.component.scss']
 })
-export class AulasComponent implements OnInit {
+export class AulasComponent extends ComponenteBase implements OnInit {
   //model
   aulas: Aula[];
   aula: Aula;
   aulaEditForm: Aula;
 
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
+
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
 
 
   //table
@@ -41,71 +45,69 @@ export class AulasComponent implements OnInit {
   ];
 
   constructor(
-    private notificationService: MdbNotificationService,
-    private Api: AulaService) {
-    this.aulas = [];
-    this.subscriptions = [];
-    this.aula = {
-      codigo: 0,
-      estado: '',
-      nombre: '',
-      capacidad: '' as any,
-      tipo: '' as any,
-      pcs: '',
-      impresoras: '',
-      internet: '',
-      proyectores: '' as any,
-      instructor: '' as any,
-      salaOcupada: ''
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
+    private Api: AulaService ){
+      super(notificationServiceLocal, popconfirmServiceLocal);
+      this.showLoading = false;
+
+      this.aulas = [];
+      this.subscriptions = [];
+      this.aula = {
+        codigo: 0,
+        estado: '',
+        nombre:'',
+        capacidad:'' as any,
+        tipo:''as any,
+        pcs:'',
+        impresoras:'',
+        internet:'' ,
+        proyectores:''as any,
+        instructor:''as any,
+        salaOcupada:''
+        }
+      this.aulaEditForm = {
+        codigo: 0,
+        estado: '',
+        nombre:'',
+        capacidad:'' as any,
+        tipo:''as any,
+        pcs:'',
+        impresoras:'',
+        internet:'' ,
+        proyectores:''as any,
+        instructor:''as any,
+        salaOcupada:''
+      };
     }
-    this.aulaEditForm = {
-      codigo: 0,
-      estado: '',
-      nombre: '',
-      capacidad: '' as any,
-      tipo: '' as any,
-      pcs: '',
-      impresoras: '',
-      internet: '',
-      proyectores: '' as any,
-      instructor: '' as any,
-      salaOcupada: ''
-    };
-  }
 
   ngOnInit(): void {
-    this.Api.getAula().subscribe(data => {
-      this.aulas = data;
-      this.aulas.forEach((aula) => {
-        delete aula.pcs;
-        delete aula.impresoras;
-        delete aula.internet;
-        delete aula.proyectores;
-        delete aula.instructor;
-      })
-    });
+      this.Api.getAula().subscribe(data => {
+        this.aulas = data;
+        this.aulas.forEach((aula) => {
+          delete aula.pcs;
+          delete aula.impresoras;
+          delete aula.internet;
+          delete aula.proyectores;
+          delete aula.instructor;
+        })
+      });
   }
-
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
 
 
-  public notificacionOK(mensaje: string) {
+  /* public notificacionOK(mensaje:string){
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
+    this.notificationService,
+    mensaje,
+    TipoAlerta.ALERTA_OK
     );
-  }
+  } */
 
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  private notificacion(errorResponse: HttpErrorResponse) {
+/*   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -118,19 +120,20 @@ export class AulasComponent implements OnInit {
     }
 
     if (codigoError === 0) {
-      mensajeError = 'Error de conexión al servidor';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
+     mensajeError = 'Error de conexión al servidor';
+     tipoAlerta = TipoAlerta.ALERTA_ERROR;
+   }
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
       tipoAlerta
     )
   }
+ */
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );
@@ -155,46 +158,46 @@ export class AulasComponent implements OnInit {
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.aulas.push(nuevaAula);
-          this.notificacionOK('Aula creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula creada con éxito');
           this.aula = {
             codigo: 0,
             estado: '',
-            nombre: '',
-            capacidad: '' as any,
-            tipo: '' as any,
-            pcs: '',
-            impresoras: '',
-            internet: '',
-            proyectores: '' as any,
-            instructor: '' as any,
-            salaOcupada: ''
-          }
+            nombre:'',
+            capacidad:'' as any,
+            tipo:''as any,
+            pcs:'',
+            impresoras:'',
+            internet:'' ,
+            proyectores:''as any,
+            instructor:''as any,
+            salaOcupada:''
+            }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )
   }
 
-  editar(index: number) {
+  editar(index: number){
     this.editElementIndex = index;
-    this.aulaEditForm = {...this.aulas[index]};
+    this.aulaEditForm={...this.aulas[index]};
   }
 
   undoRow() {
     this.aulaEditForm = {
-      codigo: 0,
-      estado: '',
-      nombre: '',
-      capacidad: '' as any,
-      tipo: '' as any,
-      pcs: '',
-      impresoras: '',
-      internet: '',
-      proyectores: '' as any,
-      instructor: '' as any,
-      salaOcupada: ''
+            codigo: 0,
+            estado: '',
+            nombre:'',
+            capacidad:'' as any,
+            tipo:''as any,
+            pcs:'',
+            impresoras:'',
+            internet:'' ,
+            proyectores:''as any,
+            instructor:''as any,
+            salaOcupada:''
     };
     this.editElementIndex = -1;
   }
@@ -225,50 +228,59 @@ export class AulasComponent implements OnInit {
       salaOcupada: formValue.salaOcupada,
       estado: 'ACTIVO'
     }
+   this.showLoading = true;
+   this.subscriptions.push(
+     this.Api.actualizarAula(aula, aula.codigo).subscribe({
+     next: (response) => {
+      Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal,'Aula actualizada con éxito');
+     this.aulas[this.editElementIndex] = response.body;
+        this.showLoading = false;
+        this.aula = {
+        codigo: 0,
+        nombre:'',
+        capacidad:'' as any,
+        tipo:''as any,
+        pcs:'',
+        impresoras:'',
+        internet:'' ,
+        proyectores:''as any,
+        instructor:''as any,
+        salaOcupada:'',
+        estado: 'ACTIVO'
+      }
+      this.editElementIndex=-1;
+    },
+
+     error: (errorResponse: HttpErrorResponse) => {
+       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+     }
+
+    })
+  );
+}
+
+// eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+
+
+  public eliminar(): void {
+
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarAula(aula, aula.codigo).subscribe({
-        next: (response) => {
-          this.notificacionOK('Aula actualizada con éxito');
-          this.aulas[this.editElementIndex] = response.body;
-          this.showLoading = false;
-          this.aula = {
-            codigo: 0,
-            nombre: '',
-            capacidad: '' as any,
-            tipo: '' as any,
-            pcs: '',
-            impresoras: '',
-            internet: '',
-            proyectores: '' as any,
-            instructor: '' as any,
-            salaOcupada: '',
-            estado: 'ACTIVO'
-          }
-          this.editElementIndex = -1;
-
-          error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
-          };
-        },
-      })
-    );
-  }
-
-
-  public eliminar(codigo: number): void {
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.Api.eliminarAula(codigo).subscribe({
+      this.Api.eliminarAula(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('Semestre eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal,'Aula eliminada con éxito');
           this.showLoading = false;
-          const index = this.aulas.findIndex(aula => aula.codigo === codigo);
+          const index = this.aulas.findIndex(aula => aula.codigo === this.codigo);
           this.aulas.splice(index, 1);
           this.aulas = [...this.aulas]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );

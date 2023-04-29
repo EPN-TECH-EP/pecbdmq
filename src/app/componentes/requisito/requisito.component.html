@@ -59,6 +59,9 @@
                   class="form-control"
                   [(ngModel)]="requisito.nombre"
                   required
+                  type="text"
+                  #nombre="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"                  
                 />
               </mdb-form-control>
             </td>
@@ -122,6 +125,8 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="requisitoEditForm.nombre"
+                    #nombre="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </ng-container>

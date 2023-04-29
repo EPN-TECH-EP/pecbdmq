@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-nota',
@@ -33,6 +34,8 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
   data: TipoNota;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [

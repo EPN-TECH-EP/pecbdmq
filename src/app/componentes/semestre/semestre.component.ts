@@ -15,6 +15,7 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { FormArray, FormControl } from '@angular/forms';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-semestre',
@@ -39,7 +40,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
 
   public userResponse: string;
 
-
+  validacionUtil = ValidacionUtil;
 
   @ViewChild('table') table!: MdbTableDirective<Semestre>;
   editElementIndex = -1;

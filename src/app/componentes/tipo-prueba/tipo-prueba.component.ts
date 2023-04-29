@@ -1,18 +1,18 @@
-import {TipoPrueba} from '../../modelo/admin/tipo-prueba';
-import {TipoPruebaService} from './../../servicios/tipo-prueba.service';
-import {Component, OnInit} from '@angular/core';
-import {MdbNotificationService, MdbNotificationRef} from 'mdb-angular-ui-kit/notification';
-import {Subscription} from 'rxjs';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {Notificacion} from 'src/app/util/notificacion';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-
+import { TipoPrueba } from '../../modelo/admin/tipo-prueba';
+import { TipoPruebaService } from './../../servicios/tipo-prueba.service';
+import { Component, OnInit } from '@angular/core';
+import { MdbNotificationService, MdbNotificationRef } from 'mdb-angular-ui-kit/notification';
+import { Subscription } from 'rxjs';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { Notificacion } from 'src/app/util/notificacion';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-prueba',
@@ -32,6 +32,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
 
+  validacionUtil = ValidacionUtil;
 
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;

@@ -1,24 +1,25 @@
-import {MateriaService} from './../../servicios/materia.service';
-import {MateriasTbl} from './../../modelo/util/materias-tbl';
-import {HttpErrorResponse, HttpResponse, HttpClient} from '@angular/common/http';
-import {Component, OnInit, OnDestroy, Inject, Injectable} from '@angular/core';
+import { MateriaService } from './../../servicios/materia.service';
+import { MateriasTbl } from './../../modelo/util/materias-tbl';
+import { HttpErrorResponse, HttpResponse, HttpClient  } from '@angular/common/http';
+import { Component, OnInit, OnDestroy, Inject, Injectable  } from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {Subscription} from 'rxjs';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {AutenticacionService} from 'src/app/servicios/autenticacion.service';
-import {Notificacion} from '../../util/notificacion';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {Materia} from 'src/app/modelo/admin/materias';
+import { Subscription } from 'rxjs';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
+import { Notificacion } from '../../util/notificacion';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { Materia } from 'src/app/modelo/admin/materias';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
-import {AlertaComponent} from '../util/alerta/alerta.component';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { ComponenteBase } from 'src/app/util/componente-base';
 
 
 @Component({
@@ -31,16 +32,20 @@ import {AlertaComponent} from '../util/alerta/alerta.component';
 //   constructor(private valueService: ValueService) { }
 //   getValue() { return this.valueService.getValue(); }
 // }
-export class MateriaComponent implements OnInit {
+export class MateriaComponent extends ComponenteBase implements OnInit {
   materias: Materia[];
   materia: Materia;
   materiaEditForm: Materia;
-  public getMaterias: number[] = [];
-  public errorMessage: any;
+  public getMaterias:number[] = [];
+  public errorMessage:any;
 
-  private subscriptions: Subscription[] = [];
+  //private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  public showLoading: boolean;
+
+    // codigo de item a modificar o eliminar
+    codigo: number;
+    showLoading = false;
+
   public userResponse: string;
 
 
@@ -59,33 +64,37 @@ export class MateriaComponent implements OnInit {
 
   constructor(
     private service: MateriaService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private Api: MateriaService) {
-    this.materias = [];
-    this.subscriptions = [];
-    this.materia = {
-      codMateria: 0,
-      nombreMateria: '',
-      numHoras: '' as any,
-      tipoMateria: '',
-      observacionMateria: '',
-      pesoMateria: '' as any,
-      notaMinima: '' as any,
-      estado: 'ACTIVO'
-    }
-    this.materiaEditForm = {
-      codMateria: 0,
-      nombreMateria: '',
-      numHoras: '' as any,
-      tipoMateria: '',
-      observacionMateria: '',
-      pesoMateria: '' as any,
-      notaMinima: '' as any,
-      estado: 'ACTIVO'
-    }
 
+      super(notificationServiceLocal, popconfirmServiceLocal);
+      this.showLoading = false;
+
+    this.materias =[];
+    this.subscriptions =[];
+    this.materia ={
+      codMateria: 0,
+      nombreMateria:  '',
+      numHoras: '' as any,
+      tipoMateria: '',
+      observacionMateria: '',
+      pesoMateria: '' as any,
+      notaMinima: '' as any,
+      estado: 'ACTIVO'
+  }
+  this.materiaEditForm ={
+    codMateria: 0,
+    nombreMateria:  '',
+    numHoras: '' as any,
+    tipoMateria: '',
+    observacionMateria: '',
+    pesoMateria: '' as any,
+    notaMinima: '' as any,
+    estado: 'ACTIVO'
   }
 
+}
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
@@ -98,7 +107,7 @@ export class MateriaComponent implements OnInit {
     });
   }
 
-  makeAPICall() {
+  makeAPICall(){
     Promise.all([this.service.getMaterias()])
       .then((response) => {
         this.parseResponse(response);
@@ -109,8 +118,8 @@ export class MateriaComponent implements OnInit {
   }
 
 
-  parseResponse(response: any) {
-    if (!response || !Array.isArray(response)) return;
+  parseResponse(response : any){
+    if(!response || !Array.isArray(response)) return;
     this.getMaterias = response[0] ? response[0] : [];
   }
 
@@ -136,7 +145,7 @@ export class MateriaComponent implements OnInit {
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -144,7 +153,7 @@ export class MateriaComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_OK
     );
@@ -152,7 +161,7 @@ export class MateriaComponent implements OnInit {
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );
@@ -177,28 +186,28 @@ export class MateriaComponent implements OnInit {
     this.subscriptions.push(
       this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
-          let nuevaMateria: Materia = response.body;
-          this.materias.push(nuevaMateria);
+           let nuevaMateria: Materia = response.body;
+           this.materias.push(nuevaMateria);
           this.notificacionOK('Materia creada con éxito');
-          this.materia = {
+          this.materia ={
             codMateria: 0,
-            nombreMateria: '',
+            nombreMateria:  '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
             pesoMateria: '' as any,
             notaMinima: '' as any,
             estado: 'ACTIVO'
-          }
-        },
+           }
+          },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
         },
       })
     )
-  }
+   }
 
-  editRow(index: number) {
+   editRow(index: number) {
     this.editElementIndex = index;
     this.materiaEditForm = {...this.materias[index]};
   }
@@ -206,7 +215,7 @@ export class MateriaComponent implements OnInit {
   undoRow() {
     this.materiaEditForm = {
       codMateria: 0,
-      nombreMateria: '',
+      nombreMateria:  '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
@@ -248,16 +257,16 @@ export class MateriaComponent implements OnInit {
           this.notificacionOK('Materia actualizada con éxito');
           this.materias[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.materia = {
+          this.materia ={
             codMateria: 0,
-            nombreMateria: '',
+            nombreMateria:  '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
             pesoMateria: '' as any,
             notaMinima: '' as any,
             estado: 'ACTIVO'
-          }
+           }
           this.editElementIndex = -1;
 
 
@@ -269,23 +278,29 @@ export class MateriaComponent implements OnInit {
     );
   }
 
-
-  public eliminar(codMateria: number): void {
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.Api.eliminarMateria(codMateria).subscribe({
-        next: (response: string) => {
-          this.notificacionOK('Materia eliminada con éxito');
-          this.showLoading = false;
-          const index = this.materias.findIndex(materia => materia.codMateria === codMateria);
-          this.materias.splice(index, 1);
-          this.materias = [...this.materias]
-          this.showLoading = false;
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-        },
-      })
-    );
+  // eliminar
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
   }
+
+  public eliminar(): void {
+  this.showLoading = true;
+  this.subscriptions.push(
+    this.Api.eliminarMateria(this.codigo).subscribe({
+      next: (response: string) => {
+        this.notificacionOK('Materia eliminada con éxito');
+        this.showLoading = false;
+        const index = this.materias.findIndex(materia => materia.codMateria === this.codigo);
+        this.materias.splice(index, 1);
+        this.materias = [...this.materias]
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.notificacion(errorResponse);
+      },
+    })
+  );
+}
 }

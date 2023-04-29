@@ -11,6 +11,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-sancion',
@@ -31,6 +32,8 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [

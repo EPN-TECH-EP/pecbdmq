@@ -21,6 +21,7 @@ import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { ModuloEstadosService } from 'src/app/servicios/modulo-estados.service';
 import { CatalogoEstadosService } from 'src/app/servicios/catalogo-estados.service';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-modulo-estados',
@@ -47,6 +48,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   editElementIndex = -1;
   addRow = false;
 
+  validacionUtil = ValidacionUtil;
 
   headers = [
     'Modulo',

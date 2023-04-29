@@ -67,6 +67,8 @@
                   class="form-control"
                   [(ngModel)]="materia.nombreMateria"
                   required
+                  #nombreMateria="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombreMateria)"
                 />
               </mdb-form-control>
             </td>
@@ -80,6 +82,10 @@
                   class="form-control"
                   [(ngModel)]="materia.numHoras"
                   required
+                  #numHoras="ngModel"
+                  required min="1" max="20"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 20"
                 />
               </mdb-form-control>
             </td>
@@ -93,6 +99,8 @@
                   class="form-control"
                   [(ngModel)]="materia.tipoMateria"
                   required
+                  #tipoMateria="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoMateria)"
                 />
               </mdb-form-control>
             </td>
@@ -106,6 +114,8 @@
                   class="form-control"
                   [(ngModel)]="materia.observacionMateria"
                   required
+                  #observacionMateria="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', observacionMateria)"
                 />
               </mdb-form-control>
             </td>
@@ -119,6 +129,10 @@
                   class="form-control"
                   [(ngModel)]="materia.pesoMateria"
                   required
+                  #pesoMateria="ngModel"
+                  required min="1" max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"
                 />
               </mdb-form-control>
             </td>
@@ -133,6 +147,10 @@
                   class="form-control"
                   [(ngModel)]="materia.notaMinima"
                   required
+                  #notaMinima="ngModel"
+                  required min="1" max="10"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 10"
                 />
               </mdb-form-control>
             </td>
@@ -172,6 +190,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.nombreMateria"
+                    #nombreMateria="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreMateria)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -190,6 +211,11 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.numHoras"
+                    #numHoras="ngModel"
+                    required
+                    required min="1" max="20"
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 20"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -208,6 +234,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.tipoMateria"
+                    #tipoMateria="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoMateria)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -226,6 +255,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.observacionMateria"
+                    #observacionMateria="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', observacionMateria)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -244,6 +276,11 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.pesoMateria"
+                    #pesoMateria="ngModel"
+                    required
+                    required min="1" max="100"
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 100"                    
                   />
                 </mdb-form-control>
               </ng-container>
@@ -262,6 +299,11 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.notaMinima"
+                    #notaMinima="ngModel"
+                    required
+                    required min="1" max="10"
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 10"                    
                   />
                 </mdb-form-control>
               </ng-container>

@@ -66,11 +66,11 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="aula.nombre"
-                  required
+                  #nombreModel="ngModel"
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', nombreModel)"
                 />
-              </mdb-form-control>
+              </mdb-form-control>              
             </td>
-
 
             <td>
               <mdb-form-control>
@@ -80,10 +80,13 @@
                   name="capacidad"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="aula.capacidad"
-                  required
+                  [(ngModel)]="aula.capacidad"       
+                  #capacidad = "ngModel"           
+                  required min="1" max="20"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 20"
                 />
-              </mdb-form-control>
+              </mdb-form-control>              
             </td>
             <td>
               <mdb-form-control>
@@ -95,7 +98,7 @@
                   class="form-control"
                   [(ngModel)]="aula.tipo"
                   #tipo="ngModel"
-                  required
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', tipo)"
                 />
               </mdb-form-control>
             </td>
@@ -108,7 +111,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.pcs"
-                  required
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -121,7 +124,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.impresoras"
-                  required
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -134,7 +137,8 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="aula.internet"
-                  required
+                  #internet="ngModel"
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', internet)"
                 />
               </mdb-form-control>
             </td>
@@ -148,7 +152,7 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="aula.proyectores"
-                  required
+                  required min="1" max="100"
                 />
               </mdb-form-control>
             </td>
@@ -161,7 +165,8 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="aula.instructor"
-                  required
+                  #instructor="ngModel"
+                  required (change)="validacionUtil.onInputChange($event, 'catalogo', instructor)"
                 />
               </mdb-form-control>
             </td>
@@ -215,6 +220,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.nombre"
+                    required
+                    #nombreModel="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreModel)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -233,6 +241,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.capacidad"
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -251,6 +260,8 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.tipo"
+                    #tipo="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipo)" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -269,6 +280,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.pcs"
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -287,6 +299,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.impresoras"
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -306,6 +319,8 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.internet"
+                    #internet="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', internet)" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -325,6 +340,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.proyectores"
+                    min="1" max="100" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -344,6 +360,8 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.instructor"
+                    #instructor="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', instructor)" required
                   />
                 </mdb-form-control>
               </ng-container>
@@ -363,12 +381,12 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.salaOcupada"
+                    #salaOcupada="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', salaOcupada)" required
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-
-
 
             <td>
               <ng-container
