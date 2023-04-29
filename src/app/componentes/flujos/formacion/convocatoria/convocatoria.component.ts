@@ -68,7 +68,6 @@ export class ConvocatoriaComponent implements OnInit {
     this.urlArchivo = this.sanitizer.bypassSecurityTrustResourceUrl('');
   }
 
-
   ngOnInit() {
 
     this.visualizarArchivo('245')
@@ -108,9 +107,6 @@ export class ConvocatoriaComponent implements OnInit {
       validators: MyValidators.validDate
     });
 
-    this.convocatoriaForm.valueChanges.subscribe(() => {
-      console.log(this.convocatoriaForm);
-    })
   }
 
   private notificar(errorResponse?: HttpErrorResponse, mensaje?: string) {

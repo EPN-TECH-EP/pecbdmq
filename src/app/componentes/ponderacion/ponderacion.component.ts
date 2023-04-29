@@ -26,6 +26,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { FormArray, FormControl } from '@angular/forms';
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {OPCIONES_DATEPICKER} from "../../util/constantes/opciones-datepicker.const";
 
 @Component({
   selector: 'app-ponderacion',
@@ -45,8 +46,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
 
+  fechaInicioVigencia: FormControl = new FormControl();
+  fechaFinVigencia: FormControl = new FormControl();
+
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  //private subscriptions: Subscription[] = [];  
+  //private subscriptions: Subscription[] = [];
   public userResponse: string;
 
   validacionUtil = ValidacionUtil;
@@ -54,49 +58,9 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<Ponderacion>;
   editElementIndex = -1;
   addRow = false;
-  datepicker1= '' as any;
-  datepicker2= '' as any;
-  datepicker3= '' as any;
-  datepicker4= '' as any;
 
   headers = ['Módulo', 'Componente', 'Tipo de nota', 'Porcentaje final', 'Porcentaje nota', 'Fecha de inicio Vigencia', 'Fecha de fin Vigencia', 'Periodo académico'];
-  translationOptions = {
-    title: 'Seleccionar Fecha',
-    monthsFull: [
-      'Enero',
-      'Febrero',
-      'Marzo',
-      'Abril',
-      'Mayo',
-      'Junio',
-      'Julio',
-      'Agosto',
-      'Septiembre',
-      'Octubre',
-      'Noviembre',
-      'Diciembre',
-    ],
-    monthsShort: [
-      'Ene',
-      'Feb',
-      'Mar',
-      'Abr',
-      'May',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dic',
-    ],
-
-    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-    weekdaysNarrow: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-    okBtnText: 'Ok',
-    clearBtnText: 'Listo',
-    cancelBtnText: 'Cancelar',
-  };
+  translationOptions = OPCIONES_DATEPICKER
 
   constructor(
     private ApiPonderacion: PonderacionService,
@@ -106,7 +70,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     private ApiPeriodoAcademico: PeriodoAcademicoService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
-
   ) {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
@@ -120,8 +83,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       cod_tipo_nota: '',
       porcentajefinalponderacion: 0,
       porcentajenotamateria: 0,
-      fechainiciovigencia: '' as any,
-      fechafinvigencia: '' as any,
+      fechainiciovigencia: new Date(''),
+      fechafinvigencia: new Date(''),
       estado: 'ACTIVO'
     };
     this.ponderacionEditForm = {
@@ -132,46 +95,44 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       cod_tipo_nota: '',
       porcentajefinalponderacion: 0,
       porcentajenotamateria: 0,
-      fechainiciovigencia: '' as any,
-      fechafinvigencia: '' as any,
+      fechainiciovigencia: new Date(),
+      fechafinvigencia: new Date(),
       estado: 'ACTIVO'
     };
   }
 
   ngOnInit(): void {
     this.subscriptions.push(
-    this.ApiPonderacion.getPonderacion().subscribe(data => {
-      this.ponderaciones = data;
-      console.log(data);
-    }));
+      this.ApiPonderacion.getPonderacion().subscribe(data => {
+        this.ponderaciones = data;
+        console.log(data);
+      }));
 
     this.subscriptions.push(
-    this.ApiModulo.getModulo().subscribe(data => {
-      this.modulos = data;
-    }));
+      this.ApiModulo.getModulo().subscribe(data => {
+        this.modulos = data;
+      }));
 
     this.subscriptions.push(
-    this.ApiComponente.getComponenteNota().subscribe(data => {
-      this.componentes = data;
-    }));
+      this.ApiComponente.getComponenteNota().subscribe(data => {
+        this.componentes = data;
+      }));
 
     this.subscriptions.push(
-    this.ApiTipoNota.getTipoNota().subscribe(data => {
-      this.tiposNota = data;
-    }));
+      this.ApiTipoNota.getTipoNota().subscribe(data => {
+        this.tiposNota = data;
+      }));
 
     this.subscriptions.push(
-    this.ApiPeriodoAcademico.getPeriodo().subscribe(data => {
-      this.periodos = data;
-    }));
+      this.ApiPeriodoAcademico.getPeriodo().subscribe(data => {
+        this.periodos = data;
+      }));
   }
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-
-
 
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -186,7 +147,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
 
     this.notificationRef = Notificacion.notificar(
@@ -204,17 +164,18 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+
   //registro
   public registro(ponderacion: Ponderacion): void {
 
-    ponderacion = { ...ponderacion, estado: 'ACTIVO' };
+    ponderacion = {...ponderacion, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiPonderacion.registroPonderacion(ponderacion).subscribe({
         next: (response: HttpResponse<Ponderacion>) => {
           let nuevaPonderacion: Ponderacion = response.body;
           this.table.data.push(nuevaPonderacion);
-          this.notificacionOK('Ponderacion creada con éxito');          
+          this.notificacionOK('Ponderacion creada con éxito');
           this.ponderacion = {
             cod_ponderacion: 0,
             cod_modulo: '',
@@ -223,8 +184,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
             cod_tipo_nota: '',
             porcentajefinalponderacion: 0,
             porcentajenotamateria: 0,
-            fechainiciovigencia: '' as any,
-            fechafinvigencia: '' as any,
+            fechainiciovigencia: new Date(),
+            fechafinvigencia: new Date(),
             estado: 'ACTIVO'
           }
         },
@@ -237,7 +198,9 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.ponderacionEditForm = { ...this.ponderaciones[index] };
+    this.ponderacionEditForm = {...this.ponderaciones[index]};
+    this.fechaInicioVigencia.setValue(this.ponderaciones[index].fechainiciovigencia);
+    this.fechaFinVigencia.setValue(this.ponderaciones[index].fechafinvigencia);
   }
 
   undoRow() {
@@ -249,28 +212,36 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       cod_tipo_nota: '',
       porcentajefinalponderacion: 0,
       porcentajenotamateria: 0,
-      fechainiciovigencia: '' as any,
-      fechafinvigencia: '' as any,
+      fechainiciovigencia: new Date(),
+      fechafinvigencia: new Date(),
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
 
 
-
   //actualizar
   public actualizar(ponderacion: Ponderacion, formValue): void {
 
-    ponderacion = { ...ponderacion,
+    console.log(formValue.fechainiciovigencia);
+    console.log(formValue.fechafinvigencia);
+
+    ponderacion = {
+      ...ponderacion,
       cod_modulo: formValue.cod_modulo,
       cod_componente_nota: formValue.cod_componente_nota,
       cod_tipo_nota: formValue.cod_tipo_nota,
       porcentajefinalponderacion: formValue.porcentajefinalponderacion,
       porcentajenotamateria: formValue.porcentajenotamateria,
-      fechainiciovigencia: formValue.fechainiciovigencia,
-      fechafinvigencia: formValue.fechafinvigencia,
+      fechainiciovigencia: this.fechaInicioVigencia.value,
+      fechafinvigencia: this.fechaFinVigencia.value,
       cod_periodo_academico: formValue.cod_periodo_academico,
-      estado: 'ACTIVO' }
+      estado: 'ACTIVO'
+
+    }
+
+    console.log(ponderacion);
+
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiPonderacion.actualizarPonderacion(ponderacion, ponderacion.cod_ponderacion).subscribe({
@@ -278,7 +249,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           this.notificacionOK('Ponderacion actualizada con éxito');
           this.ponderaciones[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.editElementIndex = -1;          
+          this.editElementIndex = -1;
 
         },
         error: (errorResponse: HttpErrorResponse) => {

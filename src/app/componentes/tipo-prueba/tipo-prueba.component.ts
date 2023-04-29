@@ -14,9 +14,6 @@ import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { ValidacionUtil } from 'src/app/util/validacion-util';
 
-
-
-
 @Component({
   selector: 'app-tipo-prueba',
   templateUrl: './tipo-prueba.component.html',
@@ -37,7 +34,6 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   validacionUtil = ValidacionUtil;
 
-
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
@@ -48,22 +44,22 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     private Api: TipoPruebaService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
-    ) {
-      super(notificationServiceLocal, popconfirmServiceLocal);
+  ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
 
-      this.tiposprueba=[];
-      this.subscriptions =[];
-      this.tipoPrueba ={
-        cod_tipo_prueba:0,
-        prueba:'',
-        estado:'ACTIVO'
-      };
-      this.tipoPruebaEditForm = {
-        cod_tipo_prueba:0,
-        prueba:'',
-        estado:'ACTIVO'
-      };
-    }
+    this.tiposprueba = [];
+    this.subscriptions = [];
+    this.tipoPrueba = {
+      cod_tipo_prueba: 0,
+      prueba: '',
+      estado: 'ACTIVO'
+    };
+    this.tipoPruebaEditForm = {
+      cod_tipo_prueba: 0,
+      prueba: '',
+      estado: 'ACTIVO'
+    };
+  }
 
 
   ngOnInit(): void {
@@ -97,12 +93,13 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     );
   }
-    public notificacionOK(mensaje: string) {
-      this.notificationRef = Notificacion.notificar(
-        this.notificationServiceLocal,
-        mensaje,
-        TipoAlerta.ALERTA_OK
-      );
+
+  public notificacionOK(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
   }
 
   public errorNotification(mensaje: string) {
@@ -115,12 +112,12 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public registro(tipoPrueba: TipoPrueba): void {
 
-    if(tipoPrueba.prueba === ''){
+    if (tipoPrueba.prueba === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoPrueba={...tipoPrueba, estado:'ACTIVO'};
+    tipoPrueba = {...tipoPrueba, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearTipoPrueba(tipoPrueba).subscribe({
@@ -128,10 +125,10 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           let nuevaPrueba: TipoPrueba = response.body;
           this.tiposprueba.push(nuevaPrueba);
           this.notificacionOK('Prueba creada con éxito');
-          this.tipoPrueba ={
-            cod_tipo_prueba:0,
-            prueba:'',
-            estado:'ACTIVO'
+          this.tipoPrueba = {
+            cod_tipo_prueba: 0,
+            prueba: '',
+            estado: 'ACTIVO'
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -140,6 +137,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       })
     );
   }
+
   editRow(index: number) {
     this.editElementIndex = index;
     this.tipoPruebaEditForm = {...this.tiposprueba[index]};
@@ -147,69 +145,68 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.tipoPruebaEditForm = {
-      cod_tipo_prueba:0,
-      prueba:'',
-      estado:'ACTIVO'
+      cod_tipo_prueba: 0,
+      prueba: '',
+      estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
 
 
-
   public actualizar(tipoPrueba: TipoPrueba, formValue): void {
 
-    if(formValue.prueba === ''){
+    if (formValue.prueba === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoPrueba={...tipoPrueba, prueba: formValue.prueba ,estado:'ACTIVO'};
+    tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoPrueba(tipoPrueba,tipoPrueba.cod_tipo_prueba).subscribe({
-      next: (response) => {
-        this.notificacionOK('Prueba actualizada con éxito');
-        this.tiposprueba[this.editElementIndex] = response.body;
-        this.showLoading = false;
-        this.tipoPrueba ={
-          cod_tipo_prueba:0,
-          prueba:'',
-          estado:'ACTIVO'
-        }
-        this.editElementIndex=-1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-      },
-    })
-  )
-}
+      this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.cod_tipo_prueba).subscribe({
+        next: (response) => {
+          this.notificacionOK('Prueba actualizada con éxito');
+          this.tiposprueba[this.editElementIndex] = response.body;
+          this.showLoading = false;
+          this.tipoPrueba = {
+            cod_tipo_prueba: 0,
+            prueba: '',
+            estado: 'ACTIVO'
+          }
+          this.editElementIndex = -1;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+        },
+      })
+    )
+  }
 
 
 //eliminar
 
-public confirmaEliminar(event: Event, codigo: number): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
-public eliminar(): void {
-this.showLoading = true;
-this.subscriptions.push(
-  this.Api.eliminarTipoPrueba(this.codigo).subscribe({
-    next: () => {
-      this.notificacionOK('Tipo de prueba eliminada con éxito');
-      this.showLoading = false;
-      const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
-      this.tiposprueba.splice(index, 1);
-      this.tiposprueba = [...this.tiposprueba];
-    },
-    error: (errorResponse: HttpErrorResponse) => {
-      this.notificacion(errorResponse);
-    },
-  })
-)
-}
+  public eliminar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.eliminarTipoPrueba(this.codigo).subscribe({
+        next: () => {
+          this.notificacionOK('Tipo de prueba eliminada con éxito');
+          this.showLoading = false;
+          const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
+          this.tiposprueba.splice(index, 1);
+          this.tiposprueba = [...this.tiposprueba];
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+        },
+      })
+    )
+  }
 
 }

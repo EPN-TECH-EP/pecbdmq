@@ -28,7 +28,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
   //private subscriptions: Subscription[];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -57,7 +57,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     private Api: ParaleloService
   ) {
     super(notificationServiceLocal, popconfirmServiceLocal);
-    
+
     this.paralelos = [];
     this.subscriptions = [];
     this.notificationRef = null;
@@ -215,9 +215,9 @@ public confirmaEliminar(event: Event, codigo: number): void {
     );
   }
 
-  advancedSearch(value: string): void {
-    this.table.search(value);
-    console.log(value)
+  advancedSearch(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
   }
 
   filterFn(datos: any, terminoBuscado: string): boolean {

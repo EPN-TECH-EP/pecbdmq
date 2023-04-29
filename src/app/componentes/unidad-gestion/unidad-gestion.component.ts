@@ -157,7 +157,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   //actualizar
   public actualizar(Unidad: UnidadGestion, formValue): void {
 
-    if(formValue.nombre == ''){
+    if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -195,24 +195,25 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-public eliminar(): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
-      next: (response: string) => {
-        this.notificacionOk('Unidad de gestión eliminada con éxito');
-        const index = this.unidades.indexOf(this.data);
-        this.unidades.splice(index, 1);
-        this.unidades = [...this.unidades]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        console.log(errorResponse);
-        this.showLoading = false;
-      },
-    })
-  )}
+  public eliminar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Unidad de gestión eliminada con éxito');
+          const index = this.unidades.indexOf(this.data);
+          this.unidades.splice(index, 1);
+          this.unidades = [...this.unidades]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    )
+  }
 
   cambiosPendientes(): boolean {
     return this.editElementIndex !== -1;

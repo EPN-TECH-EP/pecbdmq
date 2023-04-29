@@ -36,13 +36,12 @@ export class UsuariosComponent implements OnInit {
 
   editElementIndex = -1;
   addRow = false;
-
   headers = [
-    'Identificación',
-    'Fecha de registro',
-    'Fecha último ingreso',
-    'Activo?',
-    'Habilitado?'
+    {key: 'nombreUsuario', label: 'Identificación'},
+    {key: 'fechaRegistro', label: 'Fecha de registro'},
+    {key: 'fechaUltimoLogin', label: 'Fecha último ingreso'},
+    {key: 'active', label: 'Activo?'},
+    {key: 'notLocked', label: 'Habilitado?'}
   ]
   mensajeConfirmacion: string;
   mostrarConfirmacion:boolean = false;
@@ -55,24 +54,17 @@ export class UsuariosComponent implements OnInit {
     private usuarioService: UsuarioService,
     private popconfirmService: MdbPopconfirmService,
     private router: Router,
-    private menuService: MenuService,
   ) {}
 
   ngOnInit(): void {
-
-    // TODO: Quitar log
-    //console.log(this.menuService.getMenu());
-
     this.currentRoute = this.router.url;
-
-    //TODO: Quitar log
-    //console.log(this.currentRoute);
 
     this.subscriptions.push(
       this.usuarioService.getUsuarios().subscribe(
         {
           next: (response) => {
             this.usuarios = response;
+            console.log(this.usuarios);
             this.showLoading = false;
           },
           error: (errorResponse: HttpErrorResponse) => {
@@ -254,8 +246,8 @@ export class UsuariosComponent implements OnInit {
   }*/
 
   buscar(event: Event): void {
-    //console.log((event.target as HTMLInputElement).value);
     const searchTerm = (event.target as HTMLInputElement).value;
+    console.log(searchTerm);
     this.table.search(searchTerm);
   }
 

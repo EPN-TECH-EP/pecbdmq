@@ -11,7 +11,6 @@
 
   <!-- Button for  add a register-->
   <button
-    MdbRiple
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
     (click)="addRow = true; "
@@ -34,7 +33,7 @@
       >
       <!-- Table head -->
         <thead class="datatable-header">
-          <tr align="center">
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -51,11 +50,9 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
                   name="nombre"
                   class="form-control"
                   [(ngModel)]="Unidad.nombre"
-                  #nombre="ngModel"
                   required
                   type="text"
                   (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
@@ -83,8 +80,8 @@
             </td>
           </tr>
             <!-- Edit row -->
-          <tr *ngFor="let Unidad of table.data; let index = index" scope="row">
-            <td align="center" style="min-width: 50px; max-width: 50px">
+          <tr *ngFor="let Unidad of table.data; let index = index">
+            <td>
               <!--Show unidad de gestión-->
               <ng-container *ngIf="editElementIndex !== index">
                 {{ Unidad.nombre }}
@@ -107,7 +104,7 @@
               </ng-container>
             </td>
 
-            <td align="center">
+            <td>
               <!--Buttons to delete -->
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"

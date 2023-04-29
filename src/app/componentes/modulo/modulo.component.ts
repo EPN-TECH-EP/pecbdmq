@@ -216,4 +216,9 @@ validacionUtil = ValidacionUtil;
    );
  }
 
+  search(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.table.search(searchTerm);
+  }
+
 }
