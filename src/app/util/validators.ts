@@ -60,4 +60,18 @@ export class MyValidators {
     }
   }
 
+  static validAge() {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      const date = new Date(value);
+      const now = new Date();
+      const age = now.getFullYear() - date.getFullYear();
+
+      if (age < 18 || age > 28) {
+        return {invalid_age: true};
+      }
+
+      return null;
+    };
+  }
 }
