@@ -122,6 +122,7 @@ import { ProcesoEspecializacionComponent } from './componentes/flujos/especializ
 import { ProcesoProfesionalizacionComponent } from './componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
 import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
 import { InputValidationDirective } from './directivas/input-validation.directive';
+import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
 
 @NgModule({
   declarations: [
@@ -227,6 +228,11 @@ import { InputValidationDirective } from './directivas/input-validation.directiv
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TimeoutInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ExpiredTokenInterceptor,
       multi: true,
     },
     UsuarioFrm,
