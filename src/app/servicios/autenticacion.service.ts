@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { Usuario } from '../modelo/admin/usuario';
 import { Materia} from '../modelo/admin/materias';
 import { LocalDataService } from './util/local-data.service';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 
 
 
@@ -21,17 +22,18 @@ export class AutenticacionService {
 
 
   constructor(private http: HttpClient, private lds:LocalDataService) { }
-
     public login(usuario: Usuario): Observable<HttpResponse<Usuario>> {
     return this.http.post<Usuario>(`${this.host}/usuario/login`, usuario, { observe: 'response' });
   }
 
   public registro(usuario: Usuario): Observable<Usuario> {
-
-    //console.log("AutenticacionService - usuario:"+ JSON.stringify(usuario));
-
     return this.http.post<Usuario>(`${this.host}/usuario/registro`, usuario);
   }
+
+  public resetPassword(nombreUsuario: string): Observable<string> {
+    return this.http.post<string>(`${this.host}/usuario/resetpassword/${nombreUsuario}`, null);
+  }
+
 
   public logOut(): void {
     this.token = null;
@@ -79,8 +81,7 @@ export class AutenticacionService {
       respuesta = false;
     }
 
-    //console.log("isUsuarioLoggedIn() ********** " + respuesta);
-    //console.log(this.token);
+
 
     return respuesta;
   }
