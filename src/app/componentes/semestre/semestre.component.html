@@ -41,7 +41,6 @@
           mdbTable
           mdbTableSort
           #table="mdbTable"
-          #sort="mdbTableSort"
           [dataSource]="semestres"
         >
           <thead class="datatable-header">
@@ -58,7 +57,7 @@
           </tr>
           </thead>
           <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
@@ -76,7 +75,7 @@
             </td>
 
 
-            <td align="center">
+            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 id="btnRegistrar"
@@ -95,8 +94,8 @@
             </td>
           </tr>
 
-          <tr *ngFor="let semestre of semestres; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+          <tr *ngFor="let semestre of table.data; let index = index">
+            <td style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ semestre.semestre }}
               </ng-container>
@@ -117,7 +116,7 @@
               </ng-container>
             </td>
 
-            <td align="center">
+            <td class="text-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
