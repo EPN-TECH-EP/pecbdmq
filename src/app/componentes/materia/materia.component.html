@@ -1,6 +1,6 @@
 <app-boton-volver></app-boton-volver>
 
- <div class="row m-3">
+<div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de Materias</p>
   </div>
@@ -8,6 +8,14 @@
 
 <div class="row justify-content">
   <div class="col-12 ">
+    <button
+      id="btnAgregarFila"
+      class="btn btn-primary btn-sm mb-3"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
     <mdb-form-control>
       <input
         mdbInput
@@ -20,29 +28,20 @@
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
-    <button
-      id="btnAgregarFila"
-      class="btn btn-primary btn-sm ms-3"
-      [disabled]="editElementIndex !== -1"
-      (click)="addRow = true"
-    >
-    <i class="fa fa-plus"></i> &nbsp;Agregar
-    </button>
-  </div>
-  <hr />
+    <hr/>
 
-  <div class="datatable table-editor mt-4">
-    <form #form="ngForm" novalidate>
-      <table
-        class="table table-sm datatable-table"
-        id="materiaTbl"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        [pagination]="pagination"
-        [dataSource]="materias"
-      >
-        <thead class="datatable-header">
+    <div class="datatable table-editor mt-4">
+      <form #form="ngForm" novalidate>
+        <table
+          class="table table-sm datatable-table"
+          id="materiaTbl"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [pagination]="pagination"
+          [dataSource]="materias"
+        >
+          <thead class="datatable-header">
           <tr>
             <th
               *ngFor="let header of headers"
@@ -53,9 +52,9 @@
             </th>
             <th scope="col">Acciones</th>
           </tr>
-        </thead>
+          </thead>
 
-        <tbody class="datatable-body">
+          <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
             <td>
               <mdb-form-control>
@@ -159,7 +158,7 @@
             <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                id ="btnRegistrar"
+                id="btnRegistrar"
                 type="submit"
                 (click)="registro(form.value); addRow = false;"
               >
@@ -280,7 +279,7 @@
                     required min="1" max="100"
                     inputValidation="decimal"
                     mdbTooltip="Rango: 1 - 100"
-                                     
+
                   />
                 </mdb-form-control>
               </ng-container>
@@ -299,11 +298,11 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.notaMinima"
-                    #notaMinima="ngModel"                    
+                    #notaMinima="ngModel"
                     required min="1" max="10"
                     inputValidation="decimal"
-                    mdbTooltip="Rango: 1 - 10"                    
-                    
+                    mdbTooltip="Rango: 1 - 10"
+
                   />
                 </mdb-form-control>
               </ng-container>
@@ -340,7 +339,7 @@
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(materia, form.value)"
 
-                  >
+                >
                   <i class="fa fa-check"></i> Guardar
                 </button>
                 <button
@@ -353,14 +352,15 @@
               </ng-container>
             </td>
           </tr>
-        </tbody>
-      </table>
-      <mdb-table-pagination
-        #pagination
-        [entries]="10"
-        [rowsPerPageText]="'Registros por página'"
-      ></mdb-table-pagination>
-    </form>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
   </div>
 </div>
 
