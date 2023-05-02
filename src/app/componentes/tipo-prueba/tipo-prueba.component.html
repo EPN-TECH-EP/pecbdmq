@@ -1,45 +1,46 @@
- <!-- Título de componente-->
- <app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<app-boton-volver></app-boton-volver>
 
- <div class="row m-3">
+<div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de Tipo de prueba</p>
   </div>
 </div>
 
-<div class="tabla">
-  <mdb-form-control>
-    <input
-      mdbInput
-      type="text"
-      class="form-control"
-      id="search-input"
+<div class="row justify-content-center">
+  <div class="col-6 ">
+    <button
+      class="btn btn-primary btn-sm mb-3"
       [disabled]="editElementIndex !== -1"
-      (keyup)="search($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
-  </mdb-form-control>
-  <button
-    class="btn btn-primary btn-sm ms-3"
-    [disabled]="editElementIndex !== -1"
-    (click)="addRow = true"
-
-  >
-    <i class="fa fa-plus"></i> &nbsp;Agregar
-  </button>
-  <div class="datatable table-editor mt-4">
-    <form #form="ngForm" >
-      <table
-        class="table table-sm datatable-table"
-        mdbTable
-        mdbTableSort
-        #table="mdbTable"
-        #sort="mdbTableSort"
-        [dataSource]="tiposprueba"
-        [sort]="sort"
-      >
-        <thead class="datatable-header">
-          <tr align="center">
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <hr>
+    <div class="datatable table-editor mt-4">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sort="mdbTableSort"
+          [dataSource]="tiposprueba"
+          [sort]="sort"
+        >
+          <thead class="datatable-header">
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -49,8 +50,8 @@
             </th>
             <th scope="col" style="font-size: medium"><b>Acciones</b></th>
           </tr>
-        </thead>
-        <tbody class="datatable-body">
+          </thead>
+          <tbody class="datatable-body">
           <tr *ngIf="addRow" scope="row">
             <td>
               <mdb-form-control>
@@ -87,7 +88,7 @@
           </tr>
 
           <tr *ngFor="let tipoPrueba of table.data; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <td>
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tipoPrueba.prueba }}
               </ng-container>
@@ -109,7 +110,7 @@
             </td>
 
 
-            <td align="center">
+            <td class="justify-content-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
@@ -150,8 +151,9 @@
               </ng-container>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </form>
+          </tbody>
+        </table>
+      </form>
+    </div>
   </div>
 </div>

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Modulo } from 'src/app/modelo/admin/modulo';
-import { ModuloService } from 'src/app/servicios/modulo.service';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Modulo} from 'src/app/modelo/admin/modulo';
+import {ModuloService} from 'src/app/servicios/modulo.service';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -32,22 +32,22 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
 
 // codigo de item a modificar o eliminar
-codigo: number;
-showLoading = false;
-data: Modulo;
+  codigo: number;
+  showLoading = false;
+  data: Modulo;
 
-validacionUtil = ValidacionUtil;
+  validacionUtil = ValidacionUtil;
 
 //options
- options = [
-  { value: 'ACTIVO', label: 'ACTIVO' },
-  { value: 'INACTIVO', label: 'INACTIVO' },
-];
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
+  ];
   //table
   @ViewChild('table') table!: MdbTableDirective<Modulo>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Módulo','Descripción'];
+  headers = ['Módulo', 'Descripción'];
 
   constructor(
     private ApiModulo: ModuloService,
@@ -62,13 +62,13 @@ validacionUtil = ValidacionUtil;
     this.Modulo = {
       cod_modulo: 0,
       etiqueta: '',
-      descripcion:'',
+      descripcion: '',
       estado: 'ACTIVO'
     }
     this.ModuloEditForm = {
       cod_modulo: 0,
       etiqueta: '',
-      descripcion:'',
+      descripcion: '',
       estado: 'ACTIVO'
     };
   }
@@ -93,7 +93,6 @@ validacionUtil = ValidacionUtil;
     }
 
 
-
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
       mensajeError,
@@ -111,7 +110,13 @@ validacionUtil = ValidacionUtil;
 
   //registro
   public registro(modulo: Modulo): void {
-    modulo={...modulo, estado:'ACTIVO'};
+
+    if(this.Modulo.etiqueta == '' || this.Modulo.descripcion == ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
+    modulo = {...modulo, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiModulo.crearModulo(modulo).subscribe({
@@ -122,7 +127,7 @@ validacionUtil = ValidacionUtil;
           this.Modulo = {
             cod_modulo: 0,
             etiqueta: '',
-            descripcion:'',
+            descripcion: '',
             estado: 'ACTIVO'
           }
         },
@@ -132,6 +137,7 @@ validacionUtil = ValidacionUtil;
       })
     );
   }
+
   editRow(index: number) {
     this.editElementIndex = index;
     this.ModuloEditForm = {...this.Modulos[index]};
@@ -141,7 +147,7 @@ validacionUtil = ValidacionUtil;
     this.ModuloEditForm = {
       cod_modulo: 0,
       etiqueta: '',
-      descripcion:'',
+      descripcion: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
@@ -158,35 +164,40 @@ validacionUtil = ValidacionUtil;
   //actualizar
   public actualizar(Modulo: Modulo, formValue): void {
 
+    if(this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
-    
+
     if (this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    
+
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModulo.actualizarModulo(Modulo,Modulo.cod_modulo).subscribe({
-      next: (response: HttpResponse<Modulo>) => {
-        this.notificacionOk('Módulo actualizado con éxito');
-        this.Modulos[this.editElementIndex] = response.body;
+      this.ApiModulo.actualizarModulo(Modulo, Modulo.cod_modulo).subscribe({
+        next: (response: HttpResponse<Modulo>) => {
+          this.notificacionOk('Módulo actualizado con éxito');
+          this.Modulos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Modulo = {
             cod_modulo: 0,
             etiqueta: '',
-            descripcion:'',
+            descripcion: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
 
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 
@@ -198,25 +209,25 @@ validacionUtil = ValidacionUtil;
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
- public eliminar(/*moduloId: any, data: Modulo*/): void {
-   this.showLoading = true;
-   this.subscriptions.push(
-     this.ApiModulo.eliminarModulo(this.codigo).subscribe({
-       next: (response: string) => {
-         this.notificacionOk('Módulo eliminado con éxito');
-         const index = this.Modulos.indexOf(this.data);
-         this.Modulos.splice(index, 1);
-         this.Modulos = [...this.Modulos];
-         this.showLoading = false;
-       },
-       error: (errorResponse: HttpErrorResponse) => {
-         this.notificacion(errorResponse);
-         console.log(errorResponse);
-         this.showLoading = false;
-       },
-     })
-   );
- }
+  public eliminar(/*moduloId: any, data: Modulo*/): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.ApiModulo.eliminarModulo(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOk('Módulo eliminado con éxito');
+          const index = this.Modulos.indexOf(this.data);
+          this.Modulos.splice(index, 1);
+          this.Modulos = [...this.Modulos];
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          console.log(errorResponse);
+          this.showLoading = false;
+        },
+      })
+    );
+  }
 
   search(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value;

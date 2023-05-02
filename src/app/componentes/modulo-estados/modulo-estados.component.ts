@@ -1,27 +1,27 @@
-import { Modulo } from 'src/app/modelo/admin/modulo';
-import { ModuloService } from 'src/app/servicios/modulo.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import {Modulo} from 'src/app/modelo/admin/modulo';
+import {ModuloService} from 'src/app/servicios/modulo.service';
+import {Component, OnInit, Input} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 
 
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
-import { FormArray, FormControl } from '@angular/forms';
-import { ModuloEstados } from 'src/app/modelo/admin/modulo-estados';
-import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
-import { ModuloEstadosService } from 'src/app/servicios/modulo-estados.service';
-import { CatalogoEstadosService } from 'src/app/servicios/catalogo-estados.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/compiler';
+import {FormArray, FormControl} from '@angular/forms';
+import {ModuloEstados} from 'src/app/modelo/admin/modulo-estados';
+import {CatalogoEstados} from 'src/app/modelo/admin/catalogo-estados';
+import {ModuloEstadosService} from 'src/app/servicios/modulo-estados.service';
+import {CatalogoEstadosService} from 'src/app/servicios/catalogo-estados.service';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-modulo-estados',
@@ -63,7 +63,6 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     private ApiEstadosCatalogo: CatalogoEstadosService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
-
   ) {
 
     super(notificationServiceLocal, popconfirmServiceLocal);
@@ -72,18 +71,18 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.moduloEstados = {
       codigo: 0,
-      estadoCatalogo:'',
-      orden:''as any,
-      modulo:'',
-      estado:'ACTIVO'
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
 
     }
     this.moduloEstadosEditForm = {
       codigo: 0,
-      estadoCatalogo:'',
-      orden:''as any,
-      modulo:'',
-      estado:'ACTIVO'
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
 
     }
   }
@@ -124,7 +123,6 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     }
 
 
-
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
       mensajeError,
@@ -140,10 +138,16 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+
   //registro
   public registro(moduloEstados: ModuloEstados): void {
 
-    moduloEstados = { ...moduloEstados,  estado: 'ACTIVO' };
+    if (moduloEstados.modulo == '' || moduloEstados.estadoCatalogo == '' ){
+      this.notificacionOK('Debe llenar todos los campos');
+      return;
+    }
+
+    moduloEstados = {...moduloEstados, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.registroModuloEstados(moduloEstados).subscribe({
@@ -156,10 +160,10 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           });
           this.moduloEstados = {
             codigo: 0,
-            estadoCatalogo:'',
-            orden:''as any,
-            modulo:'',
-            estado:'ACTIVO'
+            estadoCatalogo: '',
+            orden: '' as any,
+            modulo: '',
+            estado: 'ACTIVO'
 
           }
         },
@@ -182,24 +186,30 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.moduloEstadosEditForm = {
       codigo: 0,
-      estadoCatalogo:'',
-      orden:'' as any,
-      modulo:'',
-      estado:'ACTIVO'
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
 
 
-
   //actualizar
   public actualizar(moduloEstados: ModuloEstados, formValue): void {
 
-    moduloEstados={ ...moduloEstados,
+    if (moduloEstados.modulo == '' || moduloEstados.estadoCatalogo == '' ){
+      this.notificacionOK('Debe llenar todos los campos');
+      return;
+    }
+
+    moduloEstados = {
+      ...moduloEstados,
       modulo: formValue.modulo,
       estadoCatalogo: formValue.estadoCatalogo,
       orden: formValue.orden,
-      estado: 'ACTIVO' }
+      estado: 'ACTIVO'
+    }
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarModuloEstados(moduloEstados, moduloEstados.codigo).subscribe({
@@ -210,7 +220,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           this.Api.getModuloEstados().subscribe(data => {
             this.modulosEstados = data;
           });
-          this.editElementIndex=-1;
+          this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -220,11 +230,11 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   }
 
 // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
   public eliminar(): void {
     this.showLoading = true;

@@ -12,9 +12,9 @@ import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 
 import {AlertaComponent} from "../util/alerta/alerta.component";
-import { ComponenteBase } from "src/app/util/componente-base";
-import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
-import { ValidacionUtil } from "src/app/util/validacion-util";
+import {ComponenteBase} from "src/app/util/componente-base";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
+import {ValidacionUtil} from "src/app/util/validacion-util";
 
 @Component({
   selector: 'app-paralelo',
@@ -126,6 +126,12 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   }
 
   public registro(paralelo: Paralelo): void {
+
+    if(paralelo.nombreParalelo == ''){
+      this.notificacionOK('Ingrese un nombre de paralelo');
+      return;
+    }
+
     paralelo = {...paralelo, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
@@ -165,6 +171,12 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   }
 
   public actualizar(paralelo: Paralelo, formValue): void {
+
+    if(formValue.nombreParalelo == ''){
+      this.notificacionOK('Ingrese un nombre de paralelo');
+      return;
+    }
+
     paralelo = {...paralelo, estado: 'ACTIVO', nombreParalelo: formValue.nombreParalelo};
     this.showLoading = true;
     this.subscriptions.push(
@@ -191,11 +203,11 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   }
 
 // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
   public eliminar(): void {
     this.showLoading = true;
