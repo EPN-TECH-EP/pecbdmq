@@ -162,12 +162,14 @@ validacionUtil = ValidacionUtil;
   //actualizar
   public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
 
+    
+    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'};
+    
     if (formValue.nombre === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'},
       this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia, tipoProcedencia.codigo).subscribe({

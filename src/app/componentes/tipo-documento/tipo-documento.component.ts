@@ -161,12 +161,14 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(tipoDocumento: TipoDocumento, formValue): void {
 
+    tipoDocumento = {...tipoDocumento, tipoDocumento: formValue.nombre, estado: 'ACTIVO'};
+    
     if (formValue.nombre === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoDocumento = {...tipoDocumento, tipoDocumento: formValue.nombre, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento, tipoDocumento.codigoDocumento).subscribe({

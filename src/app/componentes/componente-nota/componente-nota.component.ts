@@ -162,12 +162,14 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 
+    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
+    
     if(formValue.componentenota == ''){
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
 
-    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({

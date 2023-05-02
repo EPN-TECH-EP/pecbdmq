@@ -55,6 +55,7 @@
                   [(ngModel)]="Unidad.nombre"
                   required
                   type="text"
+                  #nombre="ngModel"                  
                   (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                 />
               </mdb-form-control>

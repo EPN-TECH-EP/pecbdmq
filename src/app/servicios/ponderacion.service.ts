@@ -4,6 +4,7 @@ import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/c
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
+import { PonderacionTodo } from '../modelo/admin/ponderacion-todo';
 
 
 @Injectable({providedIn: 'root',})
@@ -27,11 +28,10 @@ export class PonderacionService {
    public actualizarPonderacion(ponderacion: Ponderacion, codigo:any): Observable<HttpResponse<Ponderacion>> {
     return this.http.put<Ponderacion>(`${this.host}/ponderacion/${codigo}`, ponderacion, { observe: 'response' });
   }
-  // public agregarSemestresACacheLocal(Semestres: Semestre[]): void {
-  //   localStorage.setItem('semestres', JSON.stringify(Semestres));
-  // }
-
-
+  
+  public getPonderacionTodo(): Observable<PonderacionTodo[]> {
+    return this.http.get<PonderacionTodo[]>(`${this.host}/ponderacion/listartodo`);
+  }
 
 
 }

@@ -155,12 +155,14 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(tipoPrueba: TipoPrueba, formValue): void {
 
+    tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
+    
     if (formValue.prueba === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.cod_tipo_prueba).subscribe({

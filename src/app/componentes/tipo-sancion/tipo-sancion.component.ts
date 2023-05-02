@@ -154,14 +154,14 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   //update a register of tipo sancion
   public updateTipoSancion(tipoSancion: ITipoSancion, formValue): void {
 
+    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"};
+
     if(formValue.sancion === ""){
       this.errorNotification('El campo sanción no puede estar vacío');
       return
     }
 
-    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"}
-
-    this.showLoading = true;
+        this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
         next: (response) => {

@@ -158,12 +158,14 @@ validacionUtil = ValidacionUtil;
   //actualizar
   public actualizar(Modulo: Modulo, formValue): void {
 
+    Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
+    
     if (this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiModulo.actualizarModulo(Modulo,Modulo.cod_modulo).subscribe({

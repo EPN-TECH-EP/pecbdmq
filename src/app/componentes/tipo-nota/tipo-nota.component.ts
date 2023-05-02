@@ -162,12 +162,14 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(tipoNota: TipoNota, formValue): void {
 
+    tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
+    
     if(formValue.nota === ''){
       this.errorNotification('Todos los campos deben estar llenos');
       return
     }
 
-    tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({
