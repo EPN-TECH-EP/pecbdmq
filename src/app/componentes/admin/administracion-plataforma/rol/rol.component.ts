@@ -11,13 +11,15 @@ import {RolService} from 'src/app/servicios/rol.service';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Notificacion} from 'src/app/util/notificacion';
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-rol',
   templateUrl: './rol.component.html',
   styleUrls: ['./rol.component.scss'],
 })
-export class RolComponent implements OnInit {
+export class RolComponent extends ComponenteBase implements OnInit {
   //modelo
   roles: Rol[];
   rol: Rol;
@@ -25,8 +27,11 @@ export class RolComponent implements OnInit {
 
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  private subscriptions: Subscription[] = [];
-  public showLoading: boolean;
+  //private subscriptions: Subscription[] = [];
+  
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
   //table
   @ViewChild('table') table!: MdbTableDirective<Rol>;
@@ -36,9 +41,12 @@ export class RolComponent implements OnInit {
   headers = ['Nombre', 'Descripcion'];
 
   constructor(
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private api: RolService
   ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    
     this.roles = [];
     this.subscriptions = [];
     this.rol = new Rol();
@@ -62,7 +70,7 @@ export class RolComponent implements OnInit {
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensaje,
       TipoAlerta.ALERTA_ERROR
     );
@@ -85,7 +93,7 @@ export class RolComponent implements OnInit {
           this.roles.push(nuevaRol);
           Notificacion.notificacionOK(
             this.notificationRef,
-            this.notificationService,
+            this.notificationServiceLocal,
             'Rol creado con éxito'
           );
           this.rol = {
@@ -97,7 +105,7 @@ export class RolComponent implements OnInit {
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
             this.notificationRef,
-            this.notificationService,
+            this.notificationServiceLocal,
             errorResponse
           );
         },
@@ -138,7 +146,7 @@ export class RolComponent implements OnInit {
         next: (response) => {
           Notificacion.notificacionOK(
             this.notificationRef,
-            this.notificationService,
+            this.notificationServiceLocal,
             'Rol actualizado con éxito'
           );
           this.roles[this.editElementIndex] = response.body;
@@ -153,7 +161,7 @@ export class RolComponent implements OnInit {
           error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificacion(
               this.notificationRef,
-              this.notificationService,
+              this.notificationServiceLocal,
               errorResponse
             );
           };
@@ -162,25 +170,31 @@ export class RolComponent implements OnInit {
     );
   }
 
-  public eliminar(codigo: number): void {
+  // eliminar
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.api.eliminarRol(codigo).subscribe({
+      this.api.eliminarRol(this.codigo).subscribe({
         next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,
-            this.notificationService,
+            this.notificationServiceLocal,
             'Rol eliminado con éxito'
           );
           this.showLoading = false;
-          const index = this.roles.findIndex((rol) => rol.codRol === codigo);
+          const index = this.roles.findIndex((rol) => rol.codRol === this.codigo);
           this.roles.splice(index, 1);
           this.roles = [...this.roles];
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
             this.notificationRef,
-            this.notificationService,
+            this.notificationServiceLocal,
             errorResponse
           );
         },

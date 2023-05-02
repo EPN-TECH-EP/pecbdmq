@@ -166,12 +166,14 @@ headers = ['Nombre'];
   //actualizar
   public actualizar(tipoFuncionario: TipoFuncionario, formValue): void {
 
+    tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'};
+    
     if (formValue.nombre === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'},
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoFuncionario.actualizarTipoFuncionario(tipoFuncionario,tipoFuncionario.codigo).subscribe({

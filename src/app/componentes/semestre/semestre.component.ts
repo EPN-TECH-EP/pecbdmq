@@ -163,12 +163,14 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(semestre: Semestre, formValue): void {
 
+    semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
+    
     if(formValue.semestre == ''){
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
 
-    semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarSemestre(semestre, semestre.codSemestre).subscribe({

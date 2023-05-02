@@ -1,5 +1,9 @@
 <app-boton-volver></app-boton-volver>
 
+<div class="row mt-3">
+  <div class="column col-3"></div>
+</div>
+ <!-- Título de componente-->
  <div class="row m-3">
   <div class="column text-center">
     <p class="fs-4 fw-bolder">Gestión de Materias</p>
@@ -21,12 +25,14 @@
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
     <button
+      MdbRiple
       id="btnAgregarFila"
       class="btn btn-primary btn-sm ms-3"
       [disabled]="editElementIndex !== -1"
       (click)="addRow = true"
     >
     <i class="fa fa-plus"></i> &nbsp;Agregar
+
     </button>
   </div>
   <hr />
@@ -39,8 +45,10 @@
         mdbTable
         mdbTableSort
         #table="mdbTable"
-        [pagination]="pagination"
+        #sort="mdbTableSort"
         [dataSource]="materias"
+        [sort]="sort"
+
       >
         <thead class="datatable-header">
           <tr>
@@ -78,7 +86,7 @@
                   mdbInput="mdbInput"
                   id="registroNumHoras"
                   name="numHoras"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="materia.numHoras"
                   required
@@ -125,13 +133,13 @@
                   mdbInput="mdbInput"
                   id="registroPesoMateria"
                   name="pesoMateria"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="materia.pesoMateria"
                   required
                   #pesoMateria="ngModel"
                   required min="1" max="100"
-                  inputValidation="decimal"
+                  inputValidation="entero"
                   mdbTooltip="Rango: 1 - 100"
                 />
               </mdb-form-control>
@@ -143,13 +151,13 @@
                   mdbInput="mdbInput"
                   id="registroNotaMinima"
                   name="notaMinima"
-                  type="text"
+                  type="number"
                   class="form-control"
                   [(ngModel)]="materia.notaMinima"
                   required
                   #notaMinima="ngModel"
                   required min="1" max="10"
-                  inputValidation="decimal"
+                  inputValidation="entero"
                   mdbTooltip="Rango: 1 - 10"
                 />
               </mdb-form-control>
@@ -273,14 +281,14 @@
                     mdbInput
                     id="pesoMateria"
                     name="pesoMateria"
-                    type="text"
+                    type="number"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.pesoMateria"
                     #pesoMateria="ngModel"
+                    required
                     required min="1" max="100"
-                    inputValidation="decimal"
-                    mdbTooltip="Rango: 1 - 100"
-                                     
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 100"                    
                   />
                 </mdb-form-control>
               </ng-container>
@@ -296,14 +304,14 @@
                     mdbInput
                     id="notaMinima"
                     name="notaMinima"
-                    type="text"
+                    type="number"
                     class="form-control"
                     [(ngModel)]="materiaEditForm.notaMinima"
-                    #notaMinima="ngModel"                    
+                    #notaMinima="ngModel"
+                    required
                     required min="1" max="10"
-                    inputValidation="decimal"
+                    inputValidation="entero"
                     mdbTooltip="Rango: 1 - 10"                    
-                    
                   />
                 </mdb-form-control>
               </ng-container>
@@ -327,7 +335,6 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event,materia.codMateria)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -355,11 +362,6 @@
           </tr>
         </tbody>
       </table>
-      <mdb-table-pagination
-        #pagination
-        [entries]="10"
-        [rowsPerPageText]="'Registros por página'"
-      ></mdb-table-pagination>
     </form>
   </div>
 </div>

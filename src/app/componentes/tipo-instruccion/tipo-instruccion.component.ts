@@ -165,12 +165,14 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
   }
   public actualizar(tipoInstruccion: TipoInstruccion, formValue): void {
 
+    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
+
     if (formValue.tipoInstruccion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({

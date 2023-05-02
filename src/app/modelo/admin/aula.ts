@@ -11,7 +11,7 @@ export class Aula {
   public internet: string;
   public proyectores: number;
   public instructor: number;
-  public salaOcupada: string;
+  public salaOcupada: boolean;
   public estado: string;
 
 

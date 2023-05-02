@@ -1,8 +1,12 @@
-import { NgModel } from "@angular/forms";
+import { NgModel } from '@angular/forms';
 
 export class ValidacionUtil {
   // valores permitidos de tipo: 'catalogo', 'entero', 'decimal' 'alfanumerico'
-  public static onInputChange(event: Event, tipo: string, nombreModel: NgModel) {
+  public static onInputChange(
+    event: Event,
+    tipo: string,
+    nombreModel: NgModel
+  ) {
     const input = event.target as HTMLInputElement;
 
     let min = input.min !== undefined ? parseInt(input.min) : 0;
@@ -43,9 +47,46 @@ export class ValidacionUtil {
     nombreModel.update.emit(newValue);
   }
 
-
   public static onInputChangeNumber(input: HTMLInputElement, tipo: string) {
     // rest of the method code...
     console.log('value: ' + input.value);
+  }
+
+  // validación campos vacíos
+  public static isNullOrEmpty(value: string): boolean {
+    return  value === undefined || value === null 
+    || ( typeof value === 'string' ? value.trim() === '' : false);
+  }
+
+  public static isNullOrEmptyObject(value: any): boolean {
+    return value === undefined || value === null;
+  }
+
+  public static isNullOrEmptyArray(value: any[]): boolean {
+    return value === undefined || value === null || value.length === 0;
+  }
+
+  public static isNullOrEmptyObjectArray(value: any[]): boolean {
+    return (
+      value === undefined ||
+      value === null ||
+      value.length === 0 ||
+      value[0] === undefined ||
+      value[0] === null
+    );
+  }
+
+  public static tienePropiedadesVacías(value: any): string[] {
+    let retval: string[] = [];
+
+    if (!this.isNullOrEmptyObject(value)) {
+      for (let key in value) {
+        if (this.isNullOrEmpty(value[key])) {
+          retval.push(key);
+        }
+      }
+    }
+
+    return retval;
   }
 }
