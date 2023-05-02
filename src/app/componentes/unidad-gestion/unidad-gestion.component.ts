@@ -12,16 +12,16 @@ import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {CambiosPendientes} from 'src/app/modelo/util/cambios-pendientes';
+import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-unidad-gestion',
@@ -112,6 +112,12 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
   //registro
   public registro(unidad: UnidadGestion): void {
+
+    if (unidad.nombre == '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     (unidad = {...unidad, estado: 'ACTIVO'}), (this.showLoading = true);
     this.subscriptions.push(
       this.ApiUnidad.crearUnidad(unidad).subscribe({
@@ -155,19 +161,24 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   }
 
   //actualizar
-  public actualizar(Unidad: UnidadGestion, formValue): void {
+  public actualizar(unidad: UnidadGestion, formValue): void {
 
-    Unidad = {...Unidad, nombre: formValue.nombre, estado: 'ACTIVO'};
-    
     if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    
-      this.showLoading = true;
+    unidad = {...unidad, nombre: formValue.nombre, estado: 'ACTIVO'};
+
+    if (formValue.nombre == '') {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
+
+    this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(Unidad, Unidad.codigo).subscribe({
+      this.ApiUnidad.actualizarUnidad(unidad, unidad.codigo).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
           this.notificacionOk('Unidad de gestión actualizada con éxito');
           this.unidades[this.editElementIndex] = response.body;

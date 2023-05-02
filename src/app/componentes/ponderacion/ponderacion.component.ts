@@ -1,38 +1,38 @@
-import { Ponderacion } from '../../modelo/admin/ponderacion';
-import { PonderacionService } from './../../servicios/ponderacion.service';
-import { Modulo } from 'src/app/modelo/admin/modulo';
-import { ModuloService } from 'src/app/servicios/modulo.service';
-import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
-import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
-import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
-import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
-import { Periodo } from 'src/app/modelo/admin/periodo-academico';
-import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import {Ponderacion} from '../../modelo/admin/ponderacion';
+import {PonderacionService} from './../../servicios/ponderacion.service';
+import {Modulo} from 'src/app/modelo/admin/modulo';
+import {ModuloService} from 'src/app/servicios/modulo.service';
+import {ComponenteNota} from 'src/app/modelo/admin/componente-nota';
+import {ComponenteNotaService} from 'src/app/servicios/componente-nota.service';
+import {TipoNota} from 'src/app/modelo/admin/tipo-nota';
+import {TipoNotaService} from 'src/app/servicios/tipo-nota.service';
+import {Periodo} from 'src/app/modelo/admin/periodo-academico';
+import {PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
+import {Component, OnInit, Input} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
-import { FormArray, FormControl } from '@angular/forms';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
-import { OPCIONES_DATEPICKER } from '../../util/constantes/opciones-datepicker.const';
-import { PonderacionTodo } from 'src/app/modelo/admin/ponderacion-todo';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/compiler';
+import {FormArray, FormControl} from '@angular/forms';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
+import {OPCIONES_DATEPICKER} from '../../util/constantes/opciones-datepicker.const';
+import {PonderacionTodo} from 'src/app/modelo/admin/ponderacion-todo';
 
 @Component({
   selector: 'app-ponderacion',
@@ -183,7 +183,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   //registro
   public registro(ponderacion: Ponderacion): void {
-    ponderacion = { ...ponderacion, estado: 'ACTIVO' };
+    ponderacion = {...ponderacion, estado: 'ACTIVO'};
     this.showLoading = true;
 
     // validación vacíos
@@ -197,7 +197,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.registroPonderacion(ponderacion).subscribe({
         next: (response: HttpResponse<Ponderacion>) => {
-          
+
           // guardar en array el nuevo objeto
           let nuevaPonderacion: Ponderacion = response.body;
 
@@ -244,7 +244,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.ponderacionEditForm = { ...this.ponderaciones[index] };
+    this.ponderacionEditForm = {...this.ponderaciones[index]};
 
     this.ponderacionEditForm.fechainiciovigencia = new Date(
       this.ponderacionEditForm.fechainiciovigencia);
@@ -365,15 +365,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       })
     );
   }
-
-
-
-
-
-
-
-
-
 
 
   value = new Date();

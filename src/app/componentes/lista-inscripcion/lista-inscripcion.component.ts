@@ -1,29 +1,32 @@
-import { ValidacionInscripcionComponent } from '../flujos/formacion/validacion-inscripcion/validacion-inscripcion.component';
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { Inscripcion } from 'src/app/modelo/admin/inscripcion';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import {
+  ValidacionInscripcionComponent
+} from '../flujos/formacion/validacion-inscripcion/validacion-inscripcion.component';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {Inscripcion} from 'src/app/modelo/admin/inscripcion';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {MdbModalRef, MdbModalService} from 'mdb-angular-ui-kit/modal';
+
 @Component({
   selector: 'app-lista-inscripcion',
   templateUrl: './lista-inscripcion.component.html',
   styleUrls: ['./lista-inscripcion.component.scss']
 })
 export class ListaInscripcionComponent implements OnInit {
- //modal
- modalRef: MdbModalRef<ValidacionInscripcionComponent> | null = null;
+  //modal
+  modalRef: MdbModalRef<ValidacionInscripcionComponent> | null = null;
 
   //model
-  inscripcion:Inscripcion[] =[{
+  inscripcion: Inscripcion[] = [{
     codigo: 1,
     cedula: 1234567891,
     apellidos: 'Campos Torres',
@@ -36,7 +39,7 @@ export class ListaInscripcionComponent implements OnInit {
     nacionalidad: 'Nacido',
     provinciaNacimiento: 'Pichincha',
     cantonNacimiento: 'Quito',
-    provinciaResidencia:  'Pichincha',
+    provinciaResidencia: 'Pichincha',
     cantonResidencia: 'Quito',
     direccionActual: 'Pasaje 15, Juan Camacaro',
     callePrincipal: 'Juan Camacaro',
@@ -49,13 +52,13 @@ export class ListaInscripcionComponent implements OnInit {
     meritoAcademico: '',
     meritoDeportivo: '',
     estado: 'ACTIVO',
-    fechaInscripcion:'2023/14/04'
+    fechaInscripcion: '2023/14/04'
   }
 
   ];
 
   inscripciones: Inscripcion[] = [
-  {
+    {
       codigo: 1,
       cedula: 1234567891,
       apellidos: 'Campos Torres',
@@ -68,7 +71,7 @@ export class ListaInscripcionComponent implements OnInit {
       nacionalidad: 'Nacido Ecuador',
       provinciaNacimiento: 'Pichincha',
       cantonNacimiento: 'Quito',
-      provinciaResidencia:  'Pichincha',
+      provinciaResidencia: 'Pichincha',
       cantonResidencia: 'Quito',
       direccionActual: 'Pasaje 15, Juan Camacaro',
       callePrincipal: 'Juan Camacaro',
@@ -82,10 +85,10 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
 
       estado: 'ACTIVO',
-      fechaInscripcion:'2023/15/04'
-  },
-  {
-    codigo: 2,
+      fechaInscripcion: '2023/15/04'
+    },
+    {
+      codigo: 2,
       cedula: 1633425561,
       apellidos: 'Nuñez Velásquez',
       nombres: 'Guadalupe Lucía',
@@ -97,7 +100,7 @@ export class ListaInscripcionComponent implements OnInit {
       nacionalidad: 'Nacido Ecuador',
       provinciaNacimiento: 'Esmeraldas',
       cantonNacimiento: 'Esmeraldas',
-      provinciaResidencia:  'Guayas',
+      provinciaResidencia: 'Guayas',
       cantonResidencia: 'Duran',
       direccionActual: 'Avenida de la Virgen, Pt.42',
       callePrincipal: 'Avenidad de la Virgen',
@@ -111,10 +114,10 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: 'Atleta de alto rendimiento',
 
       estado: 'ACTIVO',
-      fechaInscripcion:'2023/16/04'
-  },
-  {
-    codigo: 3,
+      fechaInscripcion: '2023/16/04'
+    },
+    {
+      codigo: 3,
       cedula: 1556789342,
       apellidos: 'Andrade Jácome',
       nombres: 'Nicole Mikaela',
@@ -126,7 +129,7 @@ export class ListaInscripcionComponent implements OnInit {
       nacionalidad: 'Nacido Ecuador ',
       provinciaNacimiento: 'Guayas',
       cantonNacimiento: 'Guayaquil',
-      provinciaResidencia:  'Pichincha',
+      provinciaResidencia: 'Pichincha',
       cantonResidencia: 'Quito',
       direccionActual: 'Quitumbe, Condor Ñam, Pasaje 12',
       callePrincipal: 'Condor Ñam',
@@ -140,10 +143,10 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
 
       estado: 'ACTIVO',
-      fechaInscripcion:'2023/17/04'
-  },
-  {
-    codigo: 4,
+      fechaInscripcion: '2023/17/04'
+    },
+    {
+      codigo: 4,
       cedula: 1945367238,
       apellidos: 'Arreaga Caicedo',
       nombres: 'Daniel Steven',
@@ -155,7 +158,7 @@ export class ListaInscripcionComponent implements OnInit {
       nacionalidad: 'Nacido Ecuador',
       provinciaNacimiento: 'Azuay',
       cantonNacimiento: 'Cuenca',
-      provinciaResidencia:  'Pichincha',
+      provinciaResidencia: 'Pichincha',
       cantonResidencia: 'Quito',
       direccionActual: 'Solanda, Pasaje 0e356',
       callePrincipal: 'Solanda',
@@ -169,29 +172,29 @@ export class ListaInscripcionComponent implements OnInit {
       meritoDeportivo: '',
 
       estado: 'ACTIVO',
-      fechaInscripcion:'2023/17/04'
-  },
-];
+      fechaInscripcion: '2023/17/04'
+    },
+  ];
 
- //utils
- notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
- private subscriptions: Subscription[];
- public showLoading: boolean;
+  //utils
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  private subscriptions: Subscription[];
+  public showLoading: boolean;
 
- //options
-options = [
- { value: 'ACTIVO', label: 'ACTIVO' },
- { value: 'INACTIVO', label: 'INACTIVO' },
-];
+  //options
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
+  ];
 
- //table
- @ViewChild('table') table!: MdbTableDirective<Inscripcion>;
- editElementIndex = -1;
- addRow = false;
- headers = ['Cédula', 'Apellidos', 'Nombres', 'Sexo', 'Fecha Inscripción'];
+  //table
+  @ViewChild('table') table!: MdbTableDirective<Inscripcion>;
+  editElementIndex = -1;
+  addRow = false;
+  headers = ['Cédula', 'Apellidos', 'Nombres', 'Sexo', 'Fecha Inscripción'];
 
- constructor( private notificationService: MdbNotificationService,
-  private modalService: MdbModalService){
+  constructor(private notificationService: MdbNotificationService,
+              private modalService: MdbModalService) {
 
 
   }
@@ -200,6 +203,7 @@ options = [
   ngOnInit(): void {
 
   }
+
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -214,13 +218,13 @@ options = [
     }
 
 
-
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensajeError,
       tipoAlerta
     );
   }
+
 //Funcion para abrir modal
   // openModal() {
   //   this.modalRef = this.modalService.open(ValidacionInscripcionComponent, {
@@ -232,32 +236,32 @@ options = [
     this.modalRef = this.modalService.open(ValidacionInscripcionComponent, {
       modalClass: 'modal-xl',
       data: {
-      codigo: data ? data.codigo : '',
-      cedula: data ? data.cedula : '',
-      apellidos: data ? data.apellidos : '',
-      nombres: data ? data.nombres : '',
-      email: data ? data.email : '',
-      sexo: data ? data.sexo : '',
-      fechaNacimiento: data ? data.fechaNacimiento : '',
-      telCelular: data ? data.telCelular : '',
-      telConvencional: data ? data.telConvencional : '',
-      nacionalidad: data ? data.nacionalidad : '',
-      provinciaNacimiento: data ? data.provinciaNacimiento : '',
-      cantonNacimiento: data ? data.cantonNacimiento : '',
-      provinciaResidencia: data ? data.provinciaResidencia : '',
-      cantonResidencia: data ? data.cantonResidencia : '',
-      direccionActual: data ? data.direccionActual : '',
-      callePrincipal: data ? data.callePrincipal : '',
-      calleSecundaria: data ? data.calleSecundaria : '',
-      numeroCasa: data ? data.numeroCasa : '',
-      paisTitulo: data ? data.paisTitulo : '',
-      ciudadTitulo: data ? data.ciudadTitulo : '',
-      colegioTitulo: data ? data.colegioTitulo : '',
-      nombreTitulo: data ? data.nombreTitulo : '',
-      meritoAcademico: data ? data.meritoAcademico : '',
-      meritoDeportivo: data ? data.meritoDeportivo : '',
-      estado: data ? data.estado : '',
-      fechaInscripcion: data ? data.fechaInscripcion : '',
+        codigo: data ? data.codigo : '',
+        cedula: data ? data.cedula : '',
+        apellidos: data ? data.apellidos : '',
+        nombres: data ? data.nombres : '',
+        email: data ? data.email : '',
+        sexo: data ? data.sexo : '',
+        fechaNacimiento: data ? data.fechaNacimiento : '',
+        telCelular: data ? data.telCelular : '',
+        telConvencional: data ? data.telConvencional : '',
+        nacionalidad: data ? data.nacionalidad : '',
+        provinciaNacimiento: data ? data.provinciaNacimiento : '',
+        cantonNacimiento: data ? data.cantonNacimiento : '',
+        provinciaResidencia: data ? data.provinciaResidencia : '',
+        cantonResidencia: data ? data.cantonResidencia : '',
+        direccionActual: data ? data.direccionActual : '',
+        callePrincipal: data ? data.callePrincipal : '',
+        calleSecundaria: data ? data.calleSecundaria : '',
+        numeroCasa: data ? data.numeroCasa : '',
+        paisTitulo: data ? data.paisTitulo : '',
+        ciudadTitulo: data ? data.ciudadTitulo : '',
+        colegioTitulo: data ? data.colegioTitulo : '',
+        nombreTitulo: data ? data.nombreTitulo : '',
+        meritoAcademico: data ? data.meritoAcademico : '',
+        meritoDeportivo: data ? data.meritoDeportivo : '',
+        estado: data ? data.estado : '',
+        fechaInscripcion: data ? data.fechaInscripcion : '',
 
       },
       ignoreBackdropClick: true,
@@ -267,7 +271,7 @@ options = [
         return;
       }
       if (mode === 'add') {
-        this.inscripciones = [...this.inscripciones, { ...modalData }];
+        this.inscripciones = [...this.inscripciones, {...modalData}];
       } else if (mode === 'edit' && data) {
         const index = this.inscripciones.indexOf(data);
         this.inscripciones[index] = modalData;

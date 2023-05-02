@@ -11,8 +11,8 @@ import {RolService} from 'src/app/servicios/rol.service';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Notificacion} from 'src/app/util/notificacion';
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-rol',
@@ -28,7 +28,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[] = [];
-  
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -46,7 +46,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
     private api: RolService
   ) {
     super(notificationServiceLocal, popconfirmServiceLocal);
-    
+
     this.roles = [];
     this.subscriptions = [];
     this.rol = new Rol();
@@ -78,6 +78,11 @@ export class RolComponent extends ComponenteBase implements OnInit {
 
   public registro(rol: Rol): void {
     //rol={...rol, estado:'ACTIVO'};
+    if(rol.nombre === '' || rol.descripcion === ''){
+      this.errorNotification('Todos los campos deben estar llenos');
+      return;
+    }
+
     console.log(rol);
 
     if (rol.nombre === undefined || rol.descripcion === undefined) {
@@ -130,7 +135,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
   public actualizar(rol: Rol, formValue): void {
     console.log(formValue);
 
-    if (formValue.nombre === '' || formValue.descripcion === ''){
+    if (formValue.nombre === '' || formValue.descripcion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -171,11 +176,12 @@ export class RolComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
+
   public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(

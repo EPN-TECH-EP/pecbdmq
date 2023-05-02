@@ -1,26 +1,26 @@
-import { MateriaService } from './../../servicios/materia.service';
-import { MateriasTbl } from './../../modelo/util/materias-tbl';
-import { HttpErrorResponse, HttpResponse, HttpClient  } from '@angular/common/http';
-import { Component, OnInit, OnDestroy, Inject, Injectable  } from '@angular/core';
+import {MateriaService} from './../../servicios/materia.service';
+import {MateriasTbl} from './../../modelo/util/materias-tbl';
+import {HttpErrorResponse, HttpResponse, HttpClient} from '@angular/common/http';
+import {Component, OnInit, OnDestroy, Inject, Injectable} from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { Subscription } from 'rxjs';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
-import { Notificacion } from '../../util/notificacion';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { Materia } from 'src/app/modelo/admin/materias';
+import {Subscription} from 'rxjs';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {AutenticacionService} from 'src/app/servicios/autenticacion.service';
+import {Notificacion} from '../../util/notificacion';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {Materia} from 'src/app/modelo/admin/materias';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 
 @Component({
@@ -37,18 +37,18 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   materias: Materia[];
   materia: Materia;
   materiaEditForm: Materia;
-  public getMaterias:number[] = [];
-  public errorMessage:any;
+  public getMaterias: number[] = [];
+  public errorMessage: any;
 
   //private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
-    // codigo de item a modificar o eliminar
-    codigo: number;
-    showLoading = false;
+  // codigo de item a modificar o eliminar
+  codigo: number;
+  showLoading = false;
 
-    validacionUtil = ValidacionUtil;
-  
+  validacionUtil = ValidacionUtil;
+
   public userResponse: string;
 
 
@@ -71,33 +71,34 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     private popconfirmServiceLocal: MdbPopconfirmService,
     private Api: MateriaService) {
 
-      super(notificationServiceLocal, popconfirmServiceLocal);
-      this.showLoading = false;
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    this.showLoading = false;
 
-    this.materias =[];
-    this.subscriptions =[];
-    this.materia ={
+    this.materias = [];
+    this.subscriptions = [];
+    this.materia = {
       codMateria: 0,
-      nombreMateria:  '',
+      nombreMateria: '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
       pesoMateria: '' as any,
       notaMinima: '' as any,
       estado: 'ACTIVO'
-  }
-  this.materiaEditForm ={
-    codMateria: 0,
-    nombreMateria:  '',
-    numHoras: '' as any,
-    tipoMateria: '',
-    observacionMateria: '',
-    pesoMateria: '' as any,
-    notaMinima: '' as any,
-    estado: 'ACTIVO'
+    }
+    this.materiaEditForm = {
+      codMateria: 0,
+      nombreMateria: '',
+      numHoras: '' as any,
+      tipoMateria: '',
+      observacionMateria: '',
+      pesoMateria: '' as any,
+      notaMinima: '' as any,
+      estado: 'ACTIVO'
+    }
+
   }
 
-}
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
@@ -110,7 +111,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     });
   }
 
-  makeAPICall(){
+  makeAPICall() {
     Promise.all([this.service.getMaterias()])
       .then((response) => {
         this.parseResponse(response);
@@ -121,8 +122,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
 
-  parseResponse(response : any){
-    if(!response || !Array.isArray(response)) return;
+  parseResponse(response: any) {
+    if (!response || !Array.isArray(response)) return;
     this.getMaterias = response[0] ? response[0] : [];
   }
 
@@ -189,28 +190,28 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.registroMateria(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
-           let nuevaMateria: Materia = response.body;
-           this.materias.push(nuevaMateria);
+          let nuevaMateria: Materia = response.body;
+          this.materias.push(nuevaMateria);
           this.notificacionOK('Materia creada con éxito');
-          this.materia ={
+          this.materia = {
             codMateria: 0,
-            nombreMateria:  '',
+            nombreMateria: '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
             pesoMateria: '' as any,
             notaMinima: '' as any,
             estado: 'ACTIVO'
-           }
-          },
+          }
+        },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
         },
       })
     )
-   }
+  }
 
-   editRow(index: number) {
+  editRow(index: number) {
     this.editElementIndex = index;
     this.materiaEditForm = {...this.materias[index]};
   }
@@ -218,7 +219,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.materiaEditForm = {
       codMateria: 0,
-      nombreMateria:  '',
+      nombreMateria: '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
@@ -231,6 +232,17 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(materia: Materia, formValue): void {
 
+    if (
+      materia.nombreMateria == '' ||
+      materia.numHoras == 0 || materia.numHoras < 0 ||
+      materia.tipoMateria == '' ||
+      materia.observacionMateria == '' ||
+      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
+      materia.notaMinima == 0 || materia.notaMinima < 0) {
+      this.errorNotification('Todos los campos deben estar llenos');
+      return
+    }
+
     materia = {
       ...materia,
       nombreMateria: formValue.nombreMateria,
@@ -241,18 +253,6 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       notaMinima: formValue.notaMinima,
       estado: 'ACTIVO'
     }
-
-    if(
-      materia.nombreMateria == '' ||
-      materia.numHoras == 0 || materia.numHoras < 0 ||
-      materia.tipoMateria == '' ||
-      materia.observacionMateria == '' ||
-      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
-      materia.notaMinima == 0 || materia.notaMinima < 0) {
-      this.errorNotification('Todos los campos deben estar llenos');
-      return
-    }    
-    
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarMateria(materia, materia.codMateria).subscribe({
@@ -260,16 +260,16 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           this.notificacionOK('Materia actualizada con éxito');
           this.materias[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.materia ={
+          this.materia = {
             codMateria: 0,
-            nombreMateria:  '',
+            nombreMateria: '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
             pesoMateria: '' as any,
             notaMinima: '' as any,
             estado: 'ACTIVO'
-           }
+          }
           this.editElementIndex = -1;
 
 
@@ -289,21 +289,21 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   public eliminar(): void {
-  this.showLoading = true;
-  this.subscriptions.push(
-    this.Api.eliminarMateria(this.codigo).subscribe({
-      next: (response: string) => {
-        this.notificacionOK('Materia eliminada con éxito');
-        this.showLoading = false;
-        const index = this.materias.findIndex(materia => materia.codMateria === this.codigo);
-        this.materias.splice(index, 1);
-        this.materias = [...this.materias]
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-      },
-    })
-  );
-}
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.Api.eliminarMateria(this.codigo).subscribe({
+        next: (response: string) => {
+          this.notificacionOK('Materia eliminada con éxito');
+          this.showLoading = false;
+          const index = this.materias.findIndex(materia => materia.codMateria === this.codigo);
+          this.materias.splice(index, 1);
+          this.materias = [...this.materias]
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+        },
+      })
+    );
+  }
 }
