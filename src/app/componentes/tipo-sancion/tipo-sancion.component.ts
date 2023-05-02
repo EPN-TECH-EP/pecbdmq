@@ -11,6 +11,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import { ComponenteBase } from 'src/app/util/componente-base';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-sancion',
@@ -31,6 +32,8 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [
@@ -151,14 +154,14 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
   //update a register of tipo sancion
   public updateTipoSancion(tipoSancion: ITipoSancion, formValue): void {
 
+    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"};
+
     if(formValue.sancion === ""){
       this.errorNotification('El campo sanción no puede estar vacío');
       return
     }
 
-    tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"}
-
-    this.showLoading = true;
+        this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
         next: (response) => {

@@ -49,6 +49,9 @@
                   class="form-control"
                   [(ngModel)]="tipoInstruccion.tipoInstruccion"
                   required
+                  type="text"
+                  #tipoInstruccionModel="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoInstruccionModel)"
                 />
               </mdb-form-control>
             </td>
@@ -102,6 +105,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="tipoInstruccionEdit.tipoInstruccion"
+                    required
+                    #tipoInstruccionModel="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoInstruccionModel)"
                   />
                 </mdb-form-control>
               </ng-container>

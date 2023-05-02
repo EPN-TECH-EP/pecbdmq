@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-componente-nota',
@@ -32,6 +33,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   data: ComponenteNota;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
  options = [
@@ -159,12 +162,14 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 
+    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
+    
     if(formValue.componentenota == ''){
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
 
-    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({

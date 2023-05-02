@@ -67,6 +67,9 @@
                   class="form-control"
                   [(ngModel)]="semestre.semestre"
                   required
+                  #semestreRegistro="ngModel"
+                  type="text"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', semestreRegistro)"
                 />
               </mdb-form-control>
             </td>
@@ -105,6 +108,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="semestreEditForm.semestre"
+                    required
+                    #semestreActualizar="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', semestreActualizar)"                    
                   />
                 </mdb-form-control>
               </ng-container>

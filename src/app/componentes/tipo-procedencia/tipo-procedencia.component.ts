@@ -1,18 +1,19 @@
-import {TipoProcedencia} from '../../modelo/admin/tipo-procedencia';
-import {TipoProcedenciaService} from './../../servicios/tipo-procedencia.service';
-import {Component, OnInit} from '@angular/core';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {HeaderType} from 'src/app/enum/header-type.enum';
-import {ComponenteBase} from 'src/app/util/componente-base';
+import { TipoProcedencia } from '../../modelo/admin/tipo-procedencia';
+import { TipoProcedenciaService } from './../../servicios/tipo-procedencia.service';
+import { Component, OnInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-procedencia',
@@ -32,11 +33,15 @@ export class TipoProcedenciaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
   data: TipoProcedencia;
-  //options
-  options = [
-    {value: 'ACTIVO', label: 'ACTIVO'},
-    {value: 'INACTIVO', label: 'INACTIVO'},
-  ];
+
+validacionUtil = ValidacionUtil;
+
+   //options
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
+];
+
 //table
   @ViewChild('table') table!: MdbTableDirective<TipoProcedencia>;
   editElementIndex = -1;
@@ -157,12 +162,14 @@ export class TipoProcedenciaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
 
+    
+    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'};
+    
     if (formValue.nombre === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'},
       this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia, tipoProcedencia.codigo).subscribe({

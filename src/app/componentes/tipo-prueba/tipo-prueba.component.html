@@ -61,6 +61,8 @@
                   class="form-control"
                   [(ngModel)]="tipoPrueba.prueba"
                   required
+                  #prueba="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', prueba)"
                 />
               </mdb-form-control>
             </td>
@@ -98,6 +100,9 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="tipoPruebaEditForm.prueba"
+                    required
+                    #prueba="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', prueba)"
                   />
                 </mdb-form-control>
               </ng-container>

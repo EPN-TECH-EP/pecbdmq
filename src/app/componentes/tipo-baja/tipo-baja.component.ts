@@ -19,9 +19,7 @@ import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 })
 export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
-  //private subscriptions: Subscription[];
-  // codigo de item a modificar o eliminar
-  codigo            : number;
+  codigo: number;
   tiposBaja         : TipoBaja[];
   tipoBajaEditForm  : TipoBaja;
   tiposBajaForm     : FormGroup;
@@ -142,13 +140,13 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-  confirmarEliminar(event: Event, codigo: number): void {
+public confirmaEliminar(event: Event, codigo: number): void {
   super.confirmaEliminarMensaje();
   this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminarTipoBaja.bind(this));
+  super.openPopconfirm(event, this.eliminar.bind(this));
 }
 
-  eliminarTipoBaja(): void {
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoBaja.deleteTipoBaja(this.codigo).subscribe({

@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-funcionario',
@@ -34,6 +35,8 @@ export class TipoFuncionarioComponent extends ComponenteBase implements OnInit {
   codigo: number;
   data: TipoFuncionario;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
  //options
  options = [
@@ -163,12 +166,14 @@ headers = ['Nombre'];
   //actualizar
   public actualizar(tipoFuncionario: TipoFuncionario, formValue): void {
 
+    tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'};
+    
     if (formValue.nombre === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'},
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoFuncionario.actualizarTipoFuncionario(tipoFuncionario,tipoFuncionario.codigo).subscribe({

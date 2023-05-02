@@ -13,6 +13,7 @@ import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-nota',
@@ -33,6 +34,8 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
   data: TipoNota;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [
@@ -159,12 +162,14 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(tipoNota: TipoNota, formValue): void {
 
+    tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
+    
     if(formValue.nota === ''){
       this.errorNotification('Todos los campos deben estar llenos');
       return
     }
 
-    tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({

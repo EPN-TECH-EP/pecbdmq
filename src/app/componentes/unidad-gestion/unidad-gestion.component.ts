@@ -12,15 +12,16 @@ import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {HeaderType} from 'src/app/enum/header-type.enum';
-import {CambiosPendientes} from 'src/app/modelo/util/cambios-pendientes';
-import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
-import {ComponenteBase} from 'src/app/util/componente-base';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CambiosPendientes } from 'src/app/modelo/util/cambios-pendientes';
+import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-unidad-gestion',
@@ -40,6 +41,8 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   codigo: number;
   data: UnidadGestion;
   showLoading = false;
+
+  validacionUtil = ValidacionUtil;
 
   //options
   options = [
@@ -154,12 +157,14 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   //actualizar
   public actualizar(Unidad: UnidadGestion, formValue): void {
 
+    Unidad = {...Unidad, nombre: formValue.nombre, estado: 'ACTIVO'};
+    
     if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    Unidad = {...Unidad, nombre: formValue.nombre, estado: 'ACTIVO'},
+    
       this.showLoading = true;
     this.subscriptions.push(
       this.ApiUnidad.actualizarUnidad(Unidad, Unidad.codigo).subscribe({
