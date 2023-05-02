@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
   <div class="row mt-3">
     <div class="column col-3">
-      <img src="../../../../../assets/logo-bomberos.svg" alt=""/>
+      <img src="assets/logo-bomberos.svg" alt=""/>
     </div>
     <div class="column col-9 text-end">
       <h4 class="ms-5">
@@ -21,7 +21,10 @@
       </ng-template>
       <div class="row m-3">
         <div class="column text-center">
-          <h5>Formulario de inscripción</h5>
+          <h4>Formulario de inscripción</h4>
+        </div>
+        <div class="alert alert-success w-auto" role="alert">
+          Fecha de postulación: {{ fechaActual | date: 'dd/MM/yyyy' }}
         </div>
       </div>
       <hr class="hr hr-blurry"/>
@@ -184,10 +187,15 @@
                     [maxDate]="maxDate"
                     [startDate]="maxDate"
                   ></mdb-datepicker>
-                  <mdb-error
-                    *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
-                    <i class="fas fa-exclamation-circle mb-1"></i>
-                    Este campo es requerido
+                  <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
+                    <div *ngIf="fechaNacimientoField?.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </div>
+                    <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      La edad requerida es entre 18 y 28 años
+                    </div>
                   </mdb-error>
                   <mdb-success
                     *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched">
@@ -786,38 +794,61 @@
       </form>
     </mdb-step>
     <!-- Paso 2 -->
-    <mdb-step [name]="'Paso 2 - Validacion de Email'">
+    <mdb-step [name]="'Paso 2 - Validacion de Email'" [stepForm]="formularioPinSeguridad">
       <ng-template mdbStepIcon>
         <i class="far fa-envelope"></i>
       </ng-template>
-      <mdb-form-control>
-        <div class="alert alert-light  col-6 mx-auto" role="alert">
-          <i class="far fa-envelope fa-5x"></i>
-          <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
-          <hr/>
-          <p>
-            Para poder confirmar tu inscripción digita el PIN de seguridad
-            enviado a tu email
-          </p>
-
+      <div class="alert alert-light  col-6 mx-auto" role="alert">
+        <i class="far fa-envelope fa-5x"></i>
+        <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
+        <hr/>
+        <p>
+          Para poder confirmar tu inscripción digita el PIN de seguridad
+          enviado a tu email
+        </p>
+        <form [formGroup]="formularioPinSeguridad">
           <mdb-form-control>
             <input
               mdbValidate
               mdbInput
-              type="number"
+              type="text"
               id="pinSeguridad"
-              value="267389"
               class="form-control mb-5"
               placeholder="Ingrese su PIN"
-              required
+              formControlName="pin"
+              [maxlength]="6"
             />
             <label mdbLabel class="form-label mb-2x" for="pinSeguridad">PIN de seguridad</label>
+            <mdb-error *ngIf="pinField?.invalid && (pinField?.dirty || pinField?.touched)">
+              <div *ngIf="pinField?.hasError('required')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </div>
+              <div *ngIf="pinField?.hasError('invalid_numbers')">
+                <i class=" fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido y solo acepta números
+              </div>
+              <div *ngIf="pinField?.hasError('minlength')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo debe tener al menos 6 caracteres
+              </div>
+            </mdb-error>
+            <mdb-success *ngIf="pinField?.valid && (pinField?.dirty || pinField?.touched)">
+              <i class="fas fa-check-circle"></i>
+              Campo Correcto
+            </mdb-success>
+
           </mdb-form-control>
-          <button type="button" class="btn btn-success btn-rounded w-100" (click)="stepper.next()">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded w-100"
+            [disabled]="formularioPinSeguridad.invalid"
+            (click)="stepper.next()"
+          >
             CONFIRMAR
           </button>
-        </div>
-      </mdb-form-control>
+        </form>
+      </div>
     </mdb-step>
     <!-- Paso 3 -->
     <mdb-step [name]="'Paso 3 - Confirmación de registro'">
@@ -832,7 +863,11 @@
           Ha completado la etapa de registro
         </p>
         <p></p>
-        <button type="button" class="btn btn-success btn-rounded d-grid">
+        <button
+          type="button"
+          class="btn btn-success btn-rounded d-grid"
+          routerLink="/principal"
+        >
           SALIR
         </button>
       </div>

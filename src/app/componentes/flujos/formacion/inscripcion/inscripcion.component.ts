@@ -29,16 +29,18 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   maxDate = new Date(2005, 12, 31);
   provincias = PROVINCIAS;
   translationOptions = OPCIONES_DATEPICKER;
-  cantonesNacimiento    : string[];
-  cantonesResidencia    : string[];
-  formularioInscripcion : FormGroup;
-  notificationRef       : MdbNotificationRef<AlertaComponent> | null = null;
-  inscripcion           : Inscripcion;
-  showLoading           : boolean;
-  docInscripcion        : File;
-  tamMaxArchivo         : number = 0;
-  hayMeritoDeportivo    : boolean = false;
-  hayMeritoAcademico    : boolean = false;
+  cantonesNacimiento     : string[];
+  cantonesResidencia     : string[];
+  formularioInscripcion  : FormGroup;
+  formularioPinSeguridad : FormGroup;
+  notificationRef        : MdbNotificationRef<AlertaComponent> | null = null;
+  inscripcion            : Inscripcion;
+  showLoading            : boolean;
+  docInscripcion         : File;
+  tamMaxArchivo          : number = 0;
+  hayMeritoDeportivo     : boolean = false;
+  hayMeritoAcademico     : boolean = false;
+  fechaActual            : Date;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
@@ -47,26 +49,22 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   ) {
     this.inscripcion = new Inscripcion();
     this.formularioInscripcion = new FormGroup({})
-    this.construirFormularioInscripcion();
+    this.construirFormularios();
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
+    this.fechaActual = new Date();
   }
 
   ngOnInit(): void {
 
     this.subscriptions.push(
       this.cargaArchivoService.maxArchivo().subscribe({
-        next: (result) => {
-          this.tamMaxArchivo = result;
-        },
-        error: (errorResponse) => {
-          console.log(errorResponse);
-        },
-      })
-    );
+        next: (result) => {this.tamMaxArchivo = result},
+        error: (errorResponse) => {console.log(errorResponse)},
+      }));
   }
 
-  private construirFormularioInscripcion() {
+  private construirFormularios() {
     this.formularioInscripcion = this.builder.group({
       // Datos iniciales
       cedula              : ["", [Validators.required,
@@ -87,7 +85,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
                             ],
       email               : ["", [Validators.required, Validators.email]],
       sexo                : ["", [Validators.required]],
-      fechaNacimiento     : ["", [Validators.required]],
+      fechaNacimiento     : ["", [Validators.required, MyValidators.validAge()]],
       telCelular          : ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       telConvencional     : ["", [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       // Datos nacionalidad
@@ -113,6 +111,13 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     }, {
       updateOn: 'change'
     });
+    this.formularioPinSeguridad = this.builder.group({
+      pin: ["267389", [Validators.required,
+                Validators.minLength(6),
+                Validators.maxLength(6),
+                MyValidators.onlyNumbers()]
+      ]
+    })
   }
 
   get cedulaField() {
@@ -207,6 +212,10 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     return this.formularioInscripcion.get('docSoporte');
   }
 
+  get pinField() {
+    return this.formularioPinSeguridad.get('pin');
+  }
+
   onMeritoDeportivoChange(event: any) {
     this.hayMeritoDeportivo = event.target.checked;
 
@@ -273,17 +282,6 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     this.cantonResidenciaField.setValue('');
   }
 
-  // inscripcionSubmit(inscripcion: Inscripcion, isValid: boolean) {
-  //   this.showLoading = true;
-  //
-  //   if (isValid) {
-  //
-  //
-  //   } else {
-  //     console.error('Formulario inválido!!!');
-  //   }
-  // }
-
   notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
@@ -326,7 +324,5 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-
-
 
 }
