@@ -93,7 +93,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     }
 
   }
-/*
+
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -124,11 +124,11 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
-*/
+
   public registro(paralelo: Paralelo): void {
 
     if(paralelo.nombreParalelo == ''){
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Ingrese un nombre de paralelo');
+      this.notificacionOK('Ingrese un nombre de paralelo');
       return;
     }
 
@@ -139,8 +139,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Paralelo>) => {
           let nuevoParalelo: Paralelo = response.body;
           this.paralelos.push(nuevoParalelo);
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo creado con éxito');
-
+          this.notificacionOK('Paralelo creado con éxito');
           this.showLoading = false;
           this.paralelo = {
             codParalelo: 0,
@@ -150,7 +149,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           this.cargarRegistros();
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
           //  this.showLoading = false;
         },
       })
@@ -174,7 +173,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   public actualizar(paralelo: Paralelo, formValue): void {
 
     if(formValue.nombreParalelo == ''){
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Ingrese un nombre de paralelo');
+      this.notificacionOK('Ingrese un nombre de paralelo');
       return;
     }
 
@@ -183,7 +182,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
           next: (response) => {
-            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo actualizado con éxito');
+            this.notificacionOK('Paralelo actualizado con éxito');
             this.paralelos[this.editElementIndex] = response.body;
             this.editElementIndex = -1;
             this.showLoading = false;
@@ -195,7 +194,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           },
 
           error: (errorResponse: HttpErrorResponse) => {
-            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+            this.notificacion(errorResponse);
             // this.showLoading = false;
           },
         }
@@ -215,14 +214,14 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarParalelo(this.codigo).subscribe({
         next: (response: string) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo eliminado con éxito');
+          this.notificacionOK('Paralelo eliminado con éxito');
           this.showLoading = false;
           const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === this.codigo);
           this.paralelos.splice(index, 1);
           this.paralelos = [...this.paralelos];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
         },
       })
     );

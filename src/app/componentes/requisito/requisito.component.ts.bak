@@ -74,7 +74,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
       this.requisitos = data;
     })
   }
-/*
+
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -103,12 +103,12 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
-    */
+
   //registro
   public registro(requisito: Requisito): void {
 
     if (requisito.nombre == '' || requisito.descripcion == '' || requisito.esDocumento == '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe llenar todos los campos');
+      this.notificacionOK('Debe llenar todos los campos');
       return;
     }
 
@@ -119,8 +119,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Requisito>) => {
           let nuevoRequisito: Requisito = response.body;
           this.requisitos.push(nuevoRequisito);
-            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito creado con éxito');
-
+          this.notificacionOK('Requisito creado con éxito');
           this.Api.getRequisito().subscribe(data => {
             this.requisitos = data;
           });
@@ -134,7 +133,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
         },
       })
     );
@@ -163,7 +162,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
   public actualizar(requisito: Requisito, formValue): void {
 
     if (formValue.nombre == '' || formValue.descripcion == '' || formValue.esDocumento == '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe llenar todos los campos');
+      this.notificacionOK('Debe llenar todos los campos');
       return;
     }
 
@@ -179,7 +178,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarRequisito(requisito, requisito.codigoRequisito).subscribe({
         next: (response) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito actualizado con éxito');
+          this.notificacionOK('Requisito actualizado con éxito');
           this.requisitos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.requisito = {
@@ -193,7 +192,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
 
           error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+            this.notificacion(errorResponse);
           };
         },
       })
@@ -214,14 +213,14 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarRequisito(this.codigo).subscribe({
         next: () => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito eliminado con éxito');
+          this.notificacionOK('Requisito eliminado con éxito');
           this.showLoading = false;
           const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === this.codigo);
           this.requisitos.splice(index, 1);
           this.requisitos = [...this.requisitos]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
         },
       })
     );

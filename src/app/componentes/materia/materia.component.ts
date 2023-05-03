@@ -131,7 +131,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-
+  /*
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -170,7 +170,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
-
+  */
   public registro(materia: Materia): void {
 
     if (
@@ -180,7 +180,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       materia.observacionMateria == '' ||
       materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
       materia.notaMinima == 0 || materia.notaMinima < 0) {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
     }
 
@@ -192,7 +192,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Materia>) => {
           let nuevaMateria: Materia = response.body;
           this.materias.push(nuevaMateria);
-          this.notificacionOK('Materia creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia creada con éxito');
+
           this.materia = {
             codMateria: 0,
             nombreMateria: '',
@@ -205,7 +206,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )
@@ -239,7 +240,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       materia.observacionMateria == '' ||
       materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
       materia.notaMinima == 0 || materia.notaMinima < 0) {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
     }
 
@@ -257,7 +258,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarMateria(materia, materia.codMateria).subscribe({
         next: (response) => {
-          this.notificacionOK('Materia actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia actualizada con éxito');
+
           this.materias[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.materia = {
@@ -274,7 +276,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
 
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           };
         },
       })
@@ -293,7 +295,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarMateria(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Materia eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia eliminada con éxito');
+
           this.showLoading = false;
           const index = this.materias.findIndex(materia => materia.codMateria === this.codigo);
           this.materias.splice(index, 1);
@@ -301,7 +304,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );

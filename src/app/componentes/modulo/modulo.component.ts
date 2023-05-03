@@ -78,7 +78,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
       this.Modulos = data;
     })
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -107,6 +107,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+  */
 
   //registro
   public registro(modulo: Modulo): void {
@@ -123,7 +124,8 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Modulo>) => {
           let nuevoModulo: Modulo = response.body;
           this.Modulos.push(nuevoModulo);
-          this.notificacionOk('Módulo creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo creado con éxito');
+
           this.Modulo = {
             cod_modulo: 0,
             etiqueta: '',
@@ -132,7 +134,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -181,7 +183,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiModulo.actualizarModulo(Modulo, Modulo.cod_modulo).subscribe({
         next: (response: HttpResponse<Modulo>) => {
-          this.notificacionOk('Módulo actualizado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo actualizado con éxito');
           this.Modulos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Modulo = {
@@ -194,7 +196,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         },
       })
@@ -214,14 +216,15 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiModulo.eliminarModulo(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Módulo eliminado con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo eliminado con éxito');
+
           const index = this.Modulos.indexOf(this.data);
           this.Modulos.splice(index, 1);
           this.Modulos = [...this.Modulos];
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

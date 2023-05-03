@@ -75,7 +75,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       this.tiposDocumento = data;
     })
   }
-/*
+
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -113,13 +113,12 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
-  */
 
   //registro
   public registro(tipodocumento: TipoDocumento): void {
 
     if (tipodocumento.tipoDocumento === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+      this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
@@ -130,8 +129,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<TipoDocumento>) => {
           let nuevoTipoDocumento: TipoDocumento = response.body;
           this.tiposDocumento.push(nuevoTipoDocumento);
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento creado con éxito');
-
+          this.notificacionOk('Tipo de documento creado con éxito');
           this.tipoDocumento = {
             codigoDocumento: 0,
             tipoDocumento: '',
@@ -139,7 +137,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
 
         },
       })
@@ -166,7 +164,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     tipoDocumento = {...tipoDocumento, tipoDocumento: formValue.nombre, estado: 'ACTIVO'};
     
     if (formValue.nombre === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+      this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
@@ -175,7 +173,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento, tipoDocumento.codigoDocumento).subscribe({
         next: (response: HttpResponse<TipoDocumento>) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento actualizado con éxito');
+          this.notificacionOk('Tipo documento actualizado con éxito');
           this.tiposDocumento[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoDocumento = {
@@ -186,7 +184,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
           this.showLoading = false;
         },
       })
@@ -206,14 +204,14 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoDocumento.eliminarTipoDocumento(this.codigo).subscribe({
         next: (response: string) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento eliminado con éxito');
+          this.notificacionOk('Tipo de documento eliminado con éxito');
           const index = this.tiposDocumento.indexOf(this.data);
           this.tiposDocumento.splice(index, 1);
           this.tiposDocumento = [...this.tiposDocumento]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.notificacion(errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

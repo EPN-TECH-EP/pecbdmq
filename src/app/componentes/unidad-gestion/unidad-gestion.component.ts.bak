@@ -1,86 +1,89 @@
+import {UnidadGestion} from '../../modelo/admin/unidad-gestion';
 import {Component, OnInit} from '@angular/core';
 import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Modulo} from 'src/app/modelo/admin/modulo';
-import {ModuloService} from 'src/app/servicios/modulo.service';
-import {Subscription} from 'rxjs';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {
+  MdbPopconfirmRef,
+  MdbPopconfirmService,
+} from 'mdb-angular-ui-kit/popconfirm';
+import {UnidadGestionService} from 'src/app/servicios/unidad-gestion.service';
+import {Observable, Subscription} from 'rxjs';
+import {
+  MdbNotificationRef,
+  MdbNotificationService,
+} from 'mdb-angular-ui-kit/notification';
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Notificacion} from 'src/app/util/notificacion';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {HeaderType} from 'src/app/enum/header-type.enum';
+import {CambiosPendientes} from 'src/app/modelo/util/cambios-pendientes';
+import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
 import {ComponenteBase} from 'src/app/util/componente-base';
 import {ValidacionUtil} from 'src/app/util/validacion-util';
 
-
 @Component({
-  selector: 'app-modulo',
-  templateUrl: './modulo.component.html',
-  styleUrls: ['./modulo.component.scss']
+  selector: 'app-unidad-gestion',
+  templateUrl: './unidad-gestion.component.html',
+  styleUrls: ['./unidad-gestion.component.scss'],
 })
-export class ModuloComponent extends ComponenteBase implements OnInit {
-  //model
-  Modulos: Modulo[];
-  Modulo: Modulo;
-  ModuloEditForm: Modulo;
+export class UnidadGestionComponent extends ComponenteBase implements OnInit, CambiosPendientes {
+  unidades: UnidadGestion[];
+  Unidad: UnidadGestion;
+  UnidadEditForm: UnidadGestion;
+
   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-//  private subscriptions: Subscription[];
+  //private subscriptions: Subscription[];
 
-
-// codigo de item a modificar o eliminar
+  // codigo de item a modificar o eliminar
   codigo: number;
+  data: UnidadGestion;
   showLoading = false;
-  data: Modulo;
 
   validacionUtil = ValidacionUtil;
 
-//options
+  //options
   options = [
     {value: 'ACTIVO', label: 'ACTIVO'},
     {value: 'INACTIVO', label: 'INACTIVO'},
   ];
+
   //table
-  @ViewChild('table') table!: MdbTableDirective<Modulo>;
+  @ViewChild('table') table!: MdbTableDirective<UnidadGestion>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Módulo', 'Descripción'];
+  headers = ['Nombre'];
 
   constructor(
-    private ApiModulo: ModuloService,
+    private ApiUnidad: UnidadGestionService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
-
     super(notificationServiceLocal, popconfirmServiceLocal);
 
-    this.Modulos = [];
+    this.unidades = [];
     this.subscriptions = [];
-    this.Modulo = {
-      cod_modulo: 0,
-      etiqueta: '',
-      descripcion: '',
+    this.Unidad = {
+      codigo: 0,
+      nombre: '',
       estado: 'ACTIVO'
     }
-    this.ModuloEditForm = {
-      cod_modulo: 0,
-      etiqueta: '',
-      descripcion: '',
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
       estado: 'ACTIVO'
     };
   }
 
   ngOnInit(): void {
-    this.ApiModulo.getModulo().subscribe(data => {
-      this.Modulos = data;
-    })
+    this.ApiUnidad.getUnidadGestion().subscribe((data) => {
+      this.unidades = data;
+    });
   }
 
   private notificacion(errorResponse: HttpErrorResponse) {
-
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
@@ -91,7 +94,6 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -109,25 +111,23 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   }
 
   //registro
-  public registro(modulo: Modulo): void {
+  public registro(unidad: UnidadGestion): void {
 
-    if(this.Modulo.etiqueta == '' || this.Modulo.descripcion == ''){
+    if (unidad.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    modulo = {...modulo, estado: 'ACTIVO'};
-    this.showLoading = true;
+    (unidad = {...unidad, estado: 'ACTIVO'}), (this.showLoading = true);
     this.subscriptions.push(
-      this.ApiModulo.crearModulo(modulo).subscribe({
-        next: (response: HttpResponse<Modulo>) => {
-          let nuevoModulo: Modulo = response.body;
-          this.Modulos.push(nuevoModulo);
-          this.notificacionOk('Módulo creado con éxito');
-          this.Modulo = {
-            cod_modulo: 0,
-            etiqueta: '',
-            descripcion: '',
+      this.ApiUnidad.crearUnidad(unidad).subscribe({
+        next: (response: HttpResponse<UnidadGestion>) => {
+          let nuevaUnidad: UnidadGestion = response.body;
+          this.unidades.push(nuevaUnidad);
+          this.notificacionOk('Unidad de gestión creada con éxito');
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
             estado: 'ACTIVO'
           }
         },
@@ -140,14 +140,13 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.ModuloEditForm = {...this.Modulos[index]};
+    this.UnidadEditForm = {...this.unidades[index]};
   }
 
   undoRow() {
-    this.ModuloEditForm = {
-      cod_modulo: 0,
-      etiqueta: '',
-      descripcion: '',
+    this.UnidadEditForm = {
+      codigo: 0,
+      nombre: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
@@ -162,16 +161,16 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   }
 
   //actualizar
-  public actualizar(Modulo: Modulo, formValue): void {
+  public actualizar(unidad: UnidadGestion, formValue): void {
 
-    if(this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == ''){
+    if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
-    Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
+    unidad = {...unidad, nombre: formValue.nombre, estado: 'ACTIVO'};
 
-    if (this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == '') {
+    if (formValue.nombre == '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -179,19 +178,17 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModulo.actualizarModulo(Modulo, Modulo.cod_modulo).subscribe({
-        next: (response: HttpResponse<Modulo>) => {
-          this.notificacionOk('Módulo actualizado con éxito');
-          this.Modulos[this.editElementIndex] = response.body;
+      this.ApiUnidad.actualizarUnidad(unidad, unidad.codigo).subscribe({
+        next: (response: HttpResponse<UnidadGestion>) => {
+          this.notificacionOk('Unidad de gestión actualizada con éxito');
+          this.unidades[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.Modulo = {
-            cod_modulo: 0,
-            etiqueta: '',
-            descripcion: '',
+          this.Unidad = {
+            codigo: 0,
+            nombre: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
-
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.notificacion(errorResponse);
@@ -201,23 +198,25 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
     );
   }
 
+
   //eliminar
-  public confirmaEliminar(event: Event, codigo: number, modulo: Modulo): void {
+
+  public confirmaEliminar(event: Event, codigo: number, data: UnidadGestion): void {
     super.confirmaEliminarMensaje();
     this.codigo = codigo;
-    this.data = modulo;
+    this.data = data;
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-  public eliminar(/*moduloId: any, data: Modulo*/): void {
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModulo.eliminarModulo(this.codigo).subscribe({
+      this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Módulo eliminado con éxito');
-          const index = this.Modulos.indexOf(this.data);
-          this.Modulos.splice(index, 1);
-          this.Modulos = [...this.Modulos];
+          this.notificacionOk('Unidad de gestión eliminada con éxito');
+          const index = this.unidades.indexOf(this.data);
+          this.unidades.splice(index, 1);
+          this.unidades = [...this.unidades]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -226,12 +225,16 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         },
       })
-    );
+    )
   }
 
-  search(event: Event) {
-    const searchTerm = (event.target as HTMLInputElement).value;
-    this.table.search(searchTerm);
+  cambiosPendientes(): boolean {
+    return this.editElementIndex !== -1;
   }
+
+  /*canDeactivate(component: CambiosPendientes, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot): Observable<boolean> | boolean {
+    return this.cambiosPendientes();
+  }*/
+
 
 }
