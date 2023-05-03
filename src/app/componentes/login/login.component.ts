@@ -108,4 +108,23 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     window.location.reload();
   }
+
+  /*public onOlvidoPassword(formValue): void {
+    const usuario: string = formValue.controls['usuario'].value;
+
+    if (usuario === '') {
+      Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'Ingresar un usuario para recuperar la contraseña');
+    } else {
+      this.subscriptions.push(
+        this.autenticacionService.resetPassword(usuario).subscribe({
+          next: (response: CustomHttpResponse) => {
+          Notificacion.notificacionOK(this.notificationRef, this.notificationService, response.mensaje);
+        }, 
+         error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        }
+        })
+      );     
+  }*/
 }
