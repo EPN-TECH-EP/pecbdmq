@@ -85,7 +85,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
                             ],
       email               : ["", [Validators.required, Validators.email]],
       sexo                : ["", [Validators.required]],
-      fechaNacimiento     : ["", [Validators.required, MyValidators.validAge()]],
+      fechaNacimiento     : ["", [Validators.required]],
       telCelular          : ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       telConvencional     : ["", [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       // Datos nacionalidad
@@ -324,5 +324,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
+
 
 }
