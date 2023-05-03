@@ -153,7 +153,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -180,7 +180,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
-
+*/
   //registro
   public registro(ponderacion: Ponderacion): void {
     ponderacion = {...ponderacion, estado: 'ACTIVO'};
@@ -220,7 +220,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           };
 
           this.table.data.push(ponderacionTodo);
-          this.notificacionOK('Ponderacion creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion creada con éxito');
+
           this.addRow = false;
           this.ponderacion = {
             cod_ponderacion: 0,
@@ -236,7 +237,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           };
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );
@@ -306,7 +307,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
         ponderacion.cod_ponderacion
       ).subscribe({
         next: (response) => {
-          this.notificacionOK('Ponderacion actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion actualizada con éxito');
 
           let ponderacionTodo = {
             ...ponderacion,
@@ -331,7 +332,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );
@@ -350,7 +351,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.eliminarPonderacion(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('Ponderacion eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion eliminada con éxito');
           this.showLoading = false;
           const index = this.ponderaciones.findIndex(
             (ponderacion) => ponderacion.cod_ponderacion === this.codigo
@@ -359,7 +360,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           this.ponderaciones = [...this.ponderaciones];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           console.log(errorResponse);
         },
       })
