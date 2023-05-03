@@ -123,6 +123,7 @@ import { ProcesoProfesionalizacionComponent } from './componentes/flujos/profesi
 import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
 import { InputValidationDirective } from './directivas/input-validation.directive';
 import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
+import { PerfilComponent } from './componentes/user/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,8 @@ import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
     ProcesoEspecializacionComponent,
     ProcesoProfesionalizacionComponent,
     ProcesoFormacionComponent,
-    InputValidationDirective
+    InputValidationDirective,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
