@@ -75,7 +75,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
       this.componentesNota = data;
     })
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -114,12 +114,14 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
+  */
 
   //registro
   public registro(componenteNota: ComponenteNota): void {
 
     if(componenteNota.componentenota == ''){
-      this.errorNotification('Todos los campos son obligatorios');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
+
       return;
     }
 
@@ -131,7 +133,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<ComponenteNota>) => {
           let nuevoComponenteNota: ComponenteNota = response.body;
           this.componentesNota.push(nuevoComponenteNota);
-          this.notificacionOk('Componente nota creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Componente nota creado con éxito');
+
           this.componenteNota = {
             cod_componente_nota: 0,
             componentenota: '',
@@ -139,7 +142,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
 
         },
       })
@@ -165,7 +168,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
     
     if(formValue.componentenota == ''){
-      this.errorNotification('Todos los campos son obligatorios');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
+      
       return;
     }
 
@@ -174,7 +178,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({
       next: (response: HttpResponse<ComponenteNota>) => {
-        this.notificacionOk('Componente nota actualizado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Componente nota actualizado con éxito');
         this.componentesNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.componenteNota = {
@@ -185,7 +189,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         this.showLoading = false;
       },
     })
@@ -206,14 +210,15 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiComponenteNota.eliminarComponenteNota(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Componente nota eliminado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Componente nota eliminado con éxito');
+
           const index = this.componentesNota.indexOf(this.data);
           this.componentesNota.splice(index, 1);
           this.componentesNota = [...this.componentesNota]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

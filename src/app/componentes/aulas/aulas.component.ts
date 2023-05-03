@@ -129,7 +129,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
- */
+ 
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -138,6 +138,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
+*/
 
   public registro(aula: Aula): void {
 
@@ -146,7 +147,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       aula.capacidad == 0 || aula.capacidad < 0 ||      
       aula.tipo == 0
     ) {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -225,7 +226,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       formValue.salaOcupada == '' ||
       formValue.tipo == 0
     ) {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
     

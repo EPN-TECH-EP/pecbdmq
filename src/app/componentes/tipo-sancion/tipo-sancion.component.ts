@@ -72,7 +72,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
       this.tiposSancion = data;
     });
   }
-
+/*
   public okNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -105,13 +105,14 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
-
+*/
 
   //create a register of tipo sancion
   public createTipoSancion(tipoSancion: ITipoSancion): void {
 
     if(tipoSancion.sancion === ""){
-      this.errorNotification('El campo sanción no puede estar vacío');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'El campo sanción no puede estar vacío');
+
       return
     }
 
@@ -122,7 +123,8 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<ITipoSancion>) => {
           let newTipoSancion: ITipoSancion = response.body;
           this.tiposSancion.push(newTipoSancion);
-          this.okNotification('Tipo de sanción creado correctamente');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de sanción creado correctamente');
+
           this.showLoading = false;
           this.tipoSancion = {
             cod_tipo_sancion: 0,
@@ -131,7 +133,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.errorResponseNotification(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )
@@ -157,7 +159,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
     tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"};
 
     if(formValue.sancion === ""){
-      this.errorNotification('El campo sanción no puede estar vacío');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'El campo sanción no puede estar vacío');
       return
     }
 
@@ -165,7 +167,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
         next: (response) => {
-          this.okNotification('Tipo de sanción actualizado correctamente');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de sanción actualizada correctamente');
           this.showLoading = false;
           this.tiposSancion[this.editElementIndex] = response.body
           this.tipoSancion = {
@@ -176,7 +178,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.errorResponseNotification(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )
@@ -195,14 +197,14 @@ public confirmaEliminar(event: Event, codigo: number): void {
     this.subscriptions.push(
       this.apiTipoSancion.deleteTipoSancion(this.codigo).subscribe({
         next: () => {
-          this.okNotification('Tipo de sanción eliminado correctamente');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de sanción eliminada correctamente');
           this.showLoading = false;
           const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.cod_tipo_sancion === this.codigo);
           this.tiposSancion.splice(index, 1);
           this.tiposSancion = [...this.tiposSancion];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.errorResponseNotification(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )

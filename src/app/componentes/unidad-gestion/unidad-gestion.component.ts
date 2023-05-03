@@ -82,7 +82,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
       this.unidades = data;
     });
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -109,6 +109,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
       TipoAlerta.ALERTA_OK
     );
   }
+  */
 
   //registro
   public registro(unidad: UnidadGestion): void {
@@ -118,7 +119,8 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
         next: (response: HttpResponse<UnidadGestion>) => {
           let nuevaUnidad: UnidadGestion = response.body;
           this.unidades.push(nuevaUnidad);
-          this.notificacionOk('Unidad de gestión creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión creada con éxito');
+
           this.Unidad = {
             codigo: 0,
             nombre: '',
@@ -126,7 +128,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -169,7 +171,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     this.subscriptions.push(
       this.ApiUnidad.actualizarUnidad(Unidad, Unidad.codigo).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
-          this.notificacionOk('Unidad de gestión actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión actualizada con éxito');
           this.unidades[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Unidad = {
@@ -180,7 +182,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         },
       })
@@ -202,14 +204,14 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     this.subscriptions.push(
       this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Unidad de gestión eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión eliminada con éxito');
           const index = this.unidades.indexOf(this.data);
           this.unidades.splice(index, 1);
           this.unidades = [...this.unidades]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

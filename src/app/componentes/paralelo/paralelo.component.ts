@@ -93,7 +93,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     }
 
   }
-
+/*
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -124,7 +124,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
-
+*/
   public registro(paralelo: Paralelo): void {
     paralelo = {...paralelo, estado: 'ACTIVO'}
     this.showLoading = true;
@@ -133,7 +133,8 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Paralelo>) => {
           let nuevoParalelo: Paralelo = response.body;
           this.paralelos.push(nuevoParalelo);
-          this.notificacionOK('Paralelo creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo creado con éxito');
+
           this.showLoading = false;
           this.paralelo = {
             codParalelo: 0,
@@ -143,7 +144,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           this.cargarRegistros();
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           //  this.showLoading = false;
         },
       })
@@ -170,7 +171,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
           next: (response) => {
-            this.notificacionOK('Paralelo actualizado con éxito');
+            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo actualizado con éxito');
             this.paralelos[this.editElementIndex] = response.body;
             this.editElementIndex = -1;
             this.showLoading = false;
@@ -182,7 +183,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           },
 
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
             // this.showLoading = false;
           },
         }
@@ -202,14 +203,14 @@ public confirmaEliminar(event: Event, codigo: number): void {
     this.subscriptions.push(
       this.Api.eliminarParalelo(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Paralelo eliminado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo eliminado con éxito');
           this.showLoading = false;
           const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === this.codigo);
           this.paralelos.splice(index, 1);
           this.paralelos = [...this.paralelos];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );

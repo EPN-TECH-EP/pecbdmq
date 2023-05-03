@@ -74,7 +74,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
         this.requisitos = data;
       })
     }
-
+/*
     private notificacion(errorResponse: HttpErrorResponse) {
 
       let customError: CustomHttpResponse = errorResponse.error;
@@ -103,6 +103,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
         TipoAlerta.ALERTA_OK
       );
     }
+    */
     //registro
     public registro(requisito: Requisito): void {
       requisito={...requisito, estado:'ACTIVO'};
@@ -112,7 +113,8 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           next: (response: HttpResponse<Requisito>) => {
             let nuevoRequisito: Requisito = response.body;
             this.requisitos.push(nuevoRequisito);
-            this.notificacionOK('Requisito creado con éxito');
+            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito creado con éxito');
+
               this.Api.getRequisito().subscribe(data => {
                this.requisitos = data;
              });
@@ -126,7 +128,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
             }
           },
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           },
         })
       );
@@ -166,7 +168,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
       this.subscriptions.push(
         this.Api.actualizarRequisito(requisito, requisito.codigoRequisito).subscribe({
         next: (response) => {
-          this.notificacionOK('Requisito actualizado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito actualizado con éxito');
           this.requisitos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.requisito ={
@@ -180,7 +182,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           this.editElementIndex=-1;
 
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         };
       },
      })
@@ -201,14 +203,14 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarRequisito(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('Requisito eliminado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Requisito eliminado con éxito');
           this.showLoading = false;
           const index = this.requisitos.findIndex(requisito => requisito.codigoRequisito === this.codigo);
           this.requisitos.splice(index, 1);
           this.requisitos = [...this.requisitos]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );

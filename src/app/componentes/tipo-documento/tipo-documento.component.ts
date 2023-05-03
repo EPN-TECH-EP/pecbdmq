@@ -75,7 +75,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       this.tiposDocumento = data;
     })
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -105,6 +105,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+  
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -113,12 +114,13 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
+  */
 
   //registro
   public registro(tipodocumento: TipoDocumento): void {
 
     if (tipodocumento.tipoDocumento === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -129,7 +131,8 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<TipoDocumento>) => {
           let nuevoTipoDocumento: TipoDocumento = response.body;
           this.tiposDocumento.push(nuevoTipoDocumento);
-          this.notificacionOk('Tipo de documento creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento creado con éxito');
+
           this.tipoDocumento = {
             codigoDocumento: 0,
             tipoDocumento: '',
@@ -137,7 +140,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
 
         },
       })
@@ -164,7 +167,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     tipoDocumento = {...tipoDocumento, tipoDocumento: formValue.nombre, estado: 'ACTIVO'};
     
     if (formValue.nombre === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -173,7 +176,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoDocumento.actualizarTipoDocumento(tipoDocumento, tipoDocumento.codigoDocumento).subscribe({
         next: (response: HttpResponse<TipoDocumento>) => {
-          this.notificacionOk('Tipo documento actualizado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento actualizado con éxito');
           this.tiposDocumento[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoDocumento = {
@@ -184,7 +187,7 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         },
       })
@@ -204,14 +207,14 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoDocumento.eliminarTipoDocumento(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Tipo de documento eliminado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento eliminado con éxito');
           const index = this.tiposDocumento.indexOf(this.data);
           this.tiposDocumento.splice(index, 1);
           this.tiposDocumento = [...this.tiposDocumento]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

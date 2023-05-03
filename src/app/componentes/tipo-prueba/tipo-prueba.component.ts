@@ -74,6 +74,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
+  /*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -93,6 +94,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     );
   }
+  
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -101,6 +103,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+  
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -109,11 +112,12 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
+  */
 
   public registro(tipoPrueba: TipoPrueba): void {
 
     if (tipoPrueba.prueba === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -124,7 +128,8 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<TipoPrueba>) => {
           let nuevaPrueba: TipoPrueba = response.body;
           this.tiposprueba.push(nuevaPrueba);
-          this.notificacionOK('Prueba creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba creada con éxito');
+
           this.tipoPrueba = {
             cod_tipo_prueba: 0,
             prueba: '',
@@ -132,7 +137,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -158,7 +163,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
     
     if (formValue.prueba === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -167,7 +172,8 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.cod_tipo_prueba).subscribe({
         next: (response) => {
-          this.notificacionOK('Prueba actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba actualizada con éxito');
+
           this.tiposprueba[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoPrueba = {
@@ -178,7 +184,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )
@@ -198,14 +204,14 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarTipoPrueba(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('Tipo de prueba eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba eliminada con éxito');
           this.showLoading = false;
           const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
           this.tiposprueba.splice(index, 1);
           this.tiposprueba = [...this.tiposprueba];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     )

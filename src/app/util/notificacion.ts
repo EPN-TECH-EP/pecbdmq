@@ -44,16 +44,26 @@ import {
     static notificacion(
       notificationRef: MdbNotificationRef<AlertaComponent>,
       notificationService: MdbNotificationService,
-      errorResponse: HttpErrorResponse
+      errorResponse?: HttpErrorResponse, 
+      mensajeErrorApp?: string
     ) {
-      let customError: CustomHttpResponse = errorResponse.error;
+
       let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
-      let mensajeError = customError.mensaje;
-      let codigoError = errorResponse.status;
+      let codigoError = -1;
+      let mensajeError = 'Error inesperado';
 
-      if (!mensajeError) {
+      if (errorResponse) {
+        let customError: CustomHttpResponse = errorResponse.error;
+        mensajeError = customError.mensaje;
+        codigoError = errorResponse.status;
+      }
+
+      if (!mensajeErrorApp) {
         mensajeError = 'Error inesperado';
+        tipoAlerta = TipoAlerta.ALERTA_ERROR;
+      }else{
+        mensajeError = mensajeErrorApp;
         tipoAlerta = TipoAlerta.ALERTA_ERROR;
       }
 

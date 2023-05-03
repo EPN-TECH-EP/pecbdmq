@@ -75,7 +75,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     })
   }
 
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -96,6 +96,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     );
   }
+  
 
 
   public notificacionOk(mensaje: string) {
@@ -113,12 +114,13 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
-
+*/
   //registro
   public registro(tipoNota: TipoNota): void {
 
     if(tipoNota.nota === ''){
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+
       return
     }
 
@@ -129,7 +131,8 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<TipoNota>) => {
           let nuevoTipoNota: TipoNota = response.body;
           this.tiposNota.push(nuevoTipoNota);
-          this.notificacionOk('Tipo de nota creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota creado con éxito');
+
           this.tipoNota = {
             cod_tipo_nota: 0,
             nota: '',
@@ -138,7 +141,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
 
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
 
         },
       })
@@ -165,7 +168,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     tipoNota = {...tipoNota, nota: formValue.nota, estado: 'ACTIVO'};
     
     if(formValue.nota === ''){
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
     }
 
@@ -174,7 +177,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({
         next: (response: HttpResponse<TipoNota>) => {
-          this.notificacionOk('Tipo de nota actualizado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota actualizado con éxito');
           this.tiposNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoNota = {
@@ -186,7 +189,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
 
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         },
       })
@@ -207,14 +210,15 @@ public eliminar(): void {
   this.subscriptions.push(
     this.ApiTipoNota.eliminarTipoNota(this.codigo).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Tipo de nota eliminado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota eliminado con éxito');
+
         const index = this.tiposNota.indexOf(this.data);
         this.tiposNota.splice(index, 1);
         this.tiposNota = [...this.tiposNota]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         console.log(errorResponse);
         this.showLoading = false;
       },

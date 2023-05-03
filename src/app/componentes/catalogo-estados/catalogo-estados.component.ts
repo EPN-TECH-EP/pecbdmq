@@ -73,7 +73,7 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
    }
 
 
-
+/*
    private notificacion(errorResponse: HttpErrorResponse) {
 
      let customError: CustomHttpResponse = errorResponse.error;
@@ -113,6 +113,7 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
        TipoAlerta.ALERTA_ERROR
      );
    }
+   */
 
    //registro
    public registro(catalogo: CatalogoEstados): void {
@@ -123,7 +124,8 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
          next: (response: HttpResponse<CatalogoEstados>) => {
            let nuevoCatalogo: CatalogoEstados = response.body;
            this.catalogos.push(nuevoCatalogo);
-           this.notificacionOK('Catálogo de Estado creado con éxito');
+           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado creado con éxito');
+
              this.Api.getCatalogo().subscribe(data => {
               this.catalogos = data;
             });
@@ -134,7 +136,8 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
            }
          },
          error: (errorResponse: HttpErrorResponse) => {
-           this.notificacion(errorResponse);
+           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+
          },
        })
      );
@@ -165,7 +168,8 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
      this.subscriptions.push(
        this.Api.actualizarCatalogo(catalogo, catalogo.codigo).subscribe({
        next: (response) => {
-         this.notificacionOK('Catálogo de Estados actualizada con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado actualizada con éxito');
+
          this.catalogos[this.editElementIndex] = response.body;
          this.showLoading = false;
          this.catalogo ={
@@ -176,8 +180,8 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
          this.editElementIndex=-1;
        },
        error: (errorResponse: HttpErrorResponse) => {
-         this.notificacion(errorResponse);
-       },
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+      },
      })
      );
    }
@@ -195,15 +199,16 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
    this.subscriptions.push(
      this.Api.eliminarCatalogo(this.codigo).subscribe({
        next: () => {
-         this.notificacionOK('El catálogo de estado se ha eliminado con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'El catálogo de estado se ha eliminado con éxito');
+
          this.showLoading = false;
          const index = this.catalogos.findIndex(catalogo => catalogo.codigo === this.codigo);
          this.catalogos.splice(index, 1);
          this.catalogos = [...this.catalogos]
        },
        error: (errorResponse: HttpErrorResponse) => {
-         this.notificacion(errorResponse);
-       },
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+      },
      })
    );
  }

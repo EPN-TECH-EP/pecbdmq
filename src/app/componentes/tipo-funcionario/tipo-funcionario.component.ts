@@ -79,7 +79,7 @@ headers = ['Nombre'];
   }
 
 
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -101,6 +101,7 @@ headers = ['Nombre'];
       tipoAlerta
     );
   }
+  
 
 
   public notificacionOk(mensaje: string) {
@@ -118,12 +119,13 @@ headers = ['Nombre'];
       TipoAlerta.ALERTA_ERROR
     );
   }
+  */
 
   //registro
   public registro(tipofuncionario: TipoFuncionario): void {
 
     if(tipofuncionario.nombre === ''){
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -134,7 +136,8 @@ headers = ['Nombre'];
         next: (response: HttpResponse<TipoFuncionario>) => {
           let nuevoTipoFuncionario: TipoFuncionario = response.body;
           this.tiposFuncionario.push(nuevoTipoFuncionario);
-          this.notificacionOk('Tipo funcionario creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo funcionario creado con éxito');
+
           this.tipoFuncionario = {
             codigo: 0,
             nombre: '',
@@ -142,7 +145,7 @@ headers = ['Nombre'];
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
 
         },
       })
@@ -169,7 +172,7 @@ headers = ['Nombre'];
     tipoFuncionario = {...tipoFuncionario, nombre: formValue.nombre, estado:'ACTIVO'};
     
     if (formValue.nombre === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -178,7 +181,7 @@ headers = ['Nombre'];
     this.subscriptions.push(
       this.ApiTipoFuncionario.actualizarTipoFuncionario(tipoFuncionario,tipoFuncionario.codigo).subscribe({
       next: (response: HttpResponse<TipoFuncionario>) => {
-        this.notificacionOk('Tipo funcionario actualizado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo funcionario actualizado con éxito');
         this.tiposFuncionario[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoFuncionario = {
@@ -190,7 +193,7 @@ headers = ['Nombre'];
 
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         this.showLoading = false;
       },
     })
@@ -212,14 +215,14 @@ public eliminar(): void {
   this.subscriptions.push(
     this.ApiTipoFuncionario.eliminarTipoFuncionario(this.codigo).subscribe({
       next: (response: string) => {
-        this.notificacionOk('Tipo Funcionario eliminado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo funcionario eliminado con éxito');
         const index = this.tiposFuncionario.indexOf(this.data);
         this.tiposFuncionario.splice(index, 1);
         this.tiposFuncionario = [...this.tiposFuncionario]
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         console.log(errorResponse);
         this.showLoading = false;
       },

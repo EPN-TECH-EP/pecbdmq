@@ -81,7 +81,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     }
 
   }
-
+/*
   public notificacionOK(mensaje:string){
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -112,6 +112,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
+  
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -120,11 +121,11 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_ERROR
     );
   }
-
+*/
   public registro(tipoInstruccion: TipoInstruccion): void {
 
     if (tipoInstruccion.tipoInstruccion === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -135,7 +136,8 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<TipoInstruccion>) => {
           let nuevoTipo: TipoInstruccion = response.body;
           this.table.data.push(nuevoTipo);
-          this.notificacionOK('Tipo instrucción creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción creada con éxito');
+
           this.showLoading = false;
           this.tipoInstruccion={
             codigoTipoInstruccion: 0,
@@ -144,7 +146,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           //  this.showLoading = false;
         },
       })
@@ -168,7 +170,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     tipoInstruccion={...tipoInstruccion,estado:'ACTIVO',tipoInstruccion:formValue.tipoInstruccion};
 
     if (formValue.tipoInstruccion === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -177,7 +179,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
         next: (response) => {
-          this.notificacionOK('Tipo instrucción actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción actualizada con éxito');
           this.tiposInstruccion[this.editElementIndex]=response.body;
           this.editElementIndex = -1;
           this.showLoading = false;
@@ -189,7 +191,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
         },
 
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
             // this.showLoading = false;
           },
 
@@ -209,14 +211,14 @@ public confirmaEliminar(event: Event, codigo: number): void {
     this.subscriptions.push(
       this.Api.eliminarTipoInstruccion(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOK('Tipo instrucción eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción eliminada con éxito');
           this.showLoading = false;
           const index = this.tiposInstruccion.findIndex(tipoInstruccionO=>tipoInstruccionO.codigoTipoInstruccion===this.codigo)
           this.tiposInstruccion.splice(index, 1);
           this.tiposInstruccion = [...this.tiposInstruccion]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );

@@ -76,7 +76,7 @@ validacionUtil = ValidacionUtil;
     })
   }
 
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -106,6 +106,7 @@ validacionUtil = ValidacionUtil;
       TipoAlerta.ALERTA_OK
     );
   }
+  
 
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
@@ -115,11 +116,12 @@ validacionUtil = ValidacionUtil;
     );
   }
 
+  */
   //registro
   public registro(tipoprocedencia: TipoProcedencia): void {
 
     if (tipoprocedencia.nombre === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -130,7 +132,8 @@ validacionUtil = ValidacionUtil;
         next: (response: HttpResponse<TipoProcedencia>) => {
           let nuevoTipoProcedencia: TipoProcedencia = response.body;
           this.tiposProcedencia.push(nuevoTipoProcedencia);
-          this.notificacionOk('Tipo procedencia creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia creado con éxito');
+
           this.tipoProcedencia = {
             codigo: 0,
             nombre: '',
@@ -138,7 +141,7 @@ validacionUtil = ValidacionUtil;
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           // this.showLoading = false;
         },
       })
@@ -166,7 +169,7 @@ validacionUtil = ValidacionUtil;
     tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'};
     
     if (formValue.nombre === '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -174,7 +177,8 @@ validacionUtil = ValidacionUtil;
     this.subscriptions.push(
       this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia, tipoProcedencia.codigo).subscribe({
         next: (response: HttpResponse<TipoProcedencia>) => {
-          this.notificacionOk('Tipo procedencia actualizado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia actualizado con éxito');
+
           this.tiposProcedencia[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoProcedencia = {
@@ -185,7 +189,7 @@ validacionUtil = ValidacionUtil;
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         },
       })
@@ -206,14 +210,14 @@ validacionUtil = ValidacionUtil;
     this.subscriptions.push(
       this.ApiTipoProcedencia.eliminarTipoProcedencia(this.codigo).subscribe({
         next: (response: string) => {
-          this.notificacionOk('Tipo Procedencia eliminado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia eliminado con éxito');
           const index = this.tiposProcedencia.indexOf(this.data);
           this.tiposProcedencia.splice(index, 1);
           this.tiposProcedencia = [...this.tiposProcedencia]
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
           this.showLoading = false;
         },

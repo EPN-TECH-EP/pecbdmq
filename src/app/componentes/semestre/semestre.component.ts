@@ -84,7 +84,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
 
 
 
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -114,6 +114,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+  */
   //registro
   public registro(semestre: Semestre): void {
     semestre={...semestre, estado:'ACTIVO'};
@@ -123,7 +124,8 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Semestre>) => {
           let nuevaSemestre: Semestre = response.body;
           this.semestres.push(nuevaSemestre);
-          this.notificacionOK('Semestre creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Semestre creada con éxito');
+
           this.semestre ={
           codSemestre: 0,
           semestre:'',
@@ -131,7 +133,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -175,7 +177,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarSemestre(semestre, semestre.codSemestre).subscribe({
       next: (response) => {
-        this.notificacionOK('Semestre actualizada con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Semestre actualizado con éxito');
         this.semestres[this.editElementIndex] = response.body;
         this.showLoading = false;
         this.semestre ={
@@ -186,7 +188,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
         this.editElementIndex=-1;
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
       },
     })
     );
@@ -205,14 +207,14 @@ public eliminar(): void {
   this.subscriptions.push(
     this.Api.eliminarSemestre(this.codigo).subscribe({
       next: () => {
-        this.notificacionOK('Semestre eliminada con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Semestre eliminado con éxito');
         this.showLoading = false;
         const index = this.semestres.findIndex(semestre => semestre.codSemestre === this.codigo);
         this.semestres.splice(index, 1);
         this.semestres = [...this.semestres]
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         console.log(errorResponse);
       },
     })

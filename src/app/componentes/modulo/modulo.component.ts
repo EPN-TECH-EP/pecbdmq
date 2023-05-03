@@ -78,7 +78,7 @@ validacionUtil = ValidacionUtil;
       this.Modulos = data;
     })
   }
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -108,6 +108,7 @@ validacionUtil = ValidacionUtil;
       TipoAlerta.ALERTA_OK
     );
   }
+  */
 
   //registro
   public registro(modulo: Modulo): void {
@@ -118,7 +119,8 @@ validacionUtil = ValidacionUtil;
         next: (response: HttpResponse<Modulo>) => {
           let nuevoModulo: Modulo = response.body;
           this.Modulos.push(nuevoModulo);
-          this.notificacionOk('Módulo creado con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo creado con éxito');
+
           this.Modulo = {
             cod_modulo: 0,
             etiqueta: '',
@@ -127,7 +129,7 @@ validacionUtil = ValidacionUtil;
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -170,7 +172,7 @@ validacionUtil = ValidacionUtil;
     this.subscriptions.push(
       this.ApiModulo.actualizarModulo(Modulo,Modulo.cod_modulo).subscribe({
       next: (response: HttpResponse<Modulo>) => {
-        this.notificacionOk('Módulo actualizado con éxito');
+        Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo actualizado con éxito');
         this.Modulos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Modulo = {
@@ -183,7 +185,7 @@ validacionUtil = ValidacionUtil;
 
       },
       error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         this.showLoading = false;
       },
     })
@@ -203,15 +205,16 @@ validacionUtil = ValidacionUtil;
    this.subscriptions.push(
      this.ApiModulo.eliminarModulo(this.codigo).subscribe({
        next: (response: string) => {
-         this.notificacionOk('Módulo eliminado con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo eliminado con éxito');
+
          const index = this.Modulos.indexOf(this.data);
          this.Modulos.splice(index, 1);
          this.Modulos = [...this.Modulos];
          this.showLoading = false;
        },
        error: (errorResponse: HttpErrorResponse) => {
-         this.notificacion(errorResponse);
-         console.log(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+        console.log(errorResponse);
          this.showLoading = false;
        },
      })

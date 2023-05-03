@@ -109,7 +109,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-
+/*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -140,6 +140,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
       TipoAlerta.ALERTA_OK
     );
   }
+  */
   //registro
   public registro(moduloEstados: ModuloEstados): void {
 
@@ -150,7 +151,8 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<ModuloEstados>) => {
           let nuevoModulo: ModuloEstados = response.body;
           //this.table.data.push(nuevoModulo);
-          this.notificacionOK('Modulo de Estados creada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados creada con éxito');
+
           this.Api.getModuloEstados().subscribe(data => {
             this.modulosEstados = data;
           });
@@ -164,7 +166,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -204,7 +206,8 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarModuloEstados(moduloEstados, moduloEstados.codigo).subscribe({
         next: (response) => {
-          this.notificacionOK('Modulo de Estados actualizada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados actualizada con éxito');
+
           this.modulosEstados[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Api.getModuloEstados().subscribe(data => {
@@ -213,7 +216,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           this.editElementIndex=-1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -231,14 +234,15 @@ public confirmaEliminar(event: Event, codigo: number): void {
     this.subscriptions.push(
       this.Api.eliminarModuloEstados(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('Modulo Estados eliminada con éxito');
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados eliminada con éxito');
+
           this.showLoading = false;
           const index = this.modulosEstados.findIndex(moduloEstados => moduloEstados.codigo === this.codigo);
           this.modulosEstados.splice(index, 1);
           this.modulosEstados = [...this.modulosEstados]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           console.log(errorResponse);
         },
       })
