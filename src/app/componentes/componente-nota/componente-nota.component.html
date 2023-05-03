@@ -30,10 +30,9 @@
         #table="mdbTable"
         #sort="mdbTableSort"
         [dataSource]="componentesNota"
-        [sort]="sort"
       >
         <thead class="datatable-header">
-          <tr align="center">
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
@@ -51,9 +50,9 @@
                 <input
                   mdbInput="mdbInput"
                   id="componentenota"
-                  name="componentenota"
+                  name="nombre"
                   class="form-control"
-                  [(ngModel)]="componenteNota.componentenota"
+                  [(ngModel)]="componenteNota.nombre"
                   #nombre="ngModel"
                   required
                   (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
@@ -64,7 +63,7 @@
 
 
 
-            <td align="center">
+            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
@@ -83,19 +82,19 @@
           </tr>
 
           <tr *ngFor="let componenteNota of table.data; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <td>
               <ng-container *ngIf="editElementIndex !== index">
-                {{ componenteNota.componentenota }}
+                {{ componenteNota.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="componentenota"
+                    id="nombreEdit"
                     name="componentenota"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="componenteNotaEditForm.componentenota"
+                    [(ngModel)]="componenteNotaEditForm.nombre"
                     #componenteNota="ngModel"
                     (change)="validacionUtil.onInputChange($event, 'catalogo', componenteNota)"
                   />
@@ -103,7 +102,7 @@
               </ng-container>
             </td>
 
-            <td align="center">
+            <td class="text-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

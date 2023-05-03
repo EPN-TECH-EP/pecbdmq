@@ -82,7 +82,7 @@
                   <mdb-option
                     *ngFor="let componente of componentes"
                     [value]="componente.cod_componente_nota"
-                  >{{ componente.componentenota }}
+                  >{{ componente.nombre }}
                   </mdb-option>
                 </mdb-select>
                 <label mdbLabel class="form-label"
@@ -280,7 +280,7 @@
                     <mdb-option
                       *ngFor="let componente of componentes"
                       [value]="componente.cod_componente_nota"
-                    >{{ componente.componentenota }}
+                    >{{ componente.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label"
@@ -329,7 +329,6 @@
                     [(ngModel)]="ponderacionEditForm.porcentajefinalponderacion"
                     required
                     #porcentajefinalponderacion="ngModel"
-                    required
                     min="1"
                     max="100"
                     inputValidation="decimal"
@@ -355,7 +354,6 @@
                     [(ngModel)]="ponderacionEditForm.porcentajenotamateria"
                     required
                     #porcentajenotamateria="ngModel"
-                    required
                     min="1"
                     max="100"
                     inputValidation="decinal"

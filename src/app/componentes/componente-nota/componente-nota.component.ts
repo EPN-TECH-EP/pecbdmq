@@ -1,19 +1,19 @@
-import { ComponenteNotaService } from './../../servicios/componente-nota.service';
-import { ComponenteNota } from '../../modelo/admin/componente-nota';
-import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../util/alerta/alerta.component';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {ComponenteNotaService} from './../../servicios/componente-nota.service';
+import {ComponenteNota} from '../../modelo/admin/componente-nota';
+import {Component, OnInit} from '@angular/core';
+import {ViewChild} from '@angular/core';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
+import {AlertaComponent} from '../util/alerta/alerta.component';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {HeaderType} from 'src/app/enum/header-type.enum';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-componente-nota',
@@ -21,11 +21,11 @@ import { ValidacionUtil } from 'src/app/util/validacion-util';
   styleUrls: ['./componente-nota.component.scss']
 })
 export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
-   //model
-   componentesNota: ComponenteNota[];
-   componenteNota: ComponenteNota;
-   componenteNotaEditForm: ComponenteNota;
-   //utils
+  //model
+  componentesNota: ComponenteNota[];
+  componenteNota: ComponenteNota;
+  componenteNotaEditForm: ComponenteNota;
+  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
 
@@ -37,9 +37,9 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   validacionUtil = ValidacionUtil;
 
   //options
- options = [
-  { value: 'ACTIVO', label: 'ACTIVO' },
-  { value: 'INACTIVO', label: 'INACTIVO' },
+  options = [
+    {value: 'ACTIVO', label: 'ACTIVO'},
+    {value: 'INACTIVO', label: 'INACTIVO'},
   ];
 
   //table
@@ -59,20 +59,21 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.componenteNota = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     }
     this.componenteNotaEditForm = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     };
-   }
+  }
 
 
   ngOnInit(): void {
     this.ApiComponenteNota.getComponenteNota().subscribe(data => {
       this.componentesNota = data;
+      console.log(this.componentesNota);
     })
   }
 
@@ -88,7 +89,6 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
-
 
 
     this.notificationRef = Notificacion.notificar(
@@ -118,13 +118,13 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //registro
   public registro(componenteNota: ComponenteNota): void {
 
-    if(componenteNota.componentenota == ''){
+    if (componenteNota.nombre == '') {
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
 
 
-    componenteNota={...componenteNota, estado:'ACTIVO'};
+    componenteNota = {...componenteNota, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.crearComponenteNota(componenteNota).subscribe({
@@ -134,7 +134,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
           this.notificacionOk('Componente nota creado con éxito');
           this.componenteNota = {
             cod_componente_nota: 0,
-            componentenota: '',
+            nombre: '',
             estado: 'ACTIVO'
           }
         },
@@ -154,41 +154,42 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.componenteNotaEditForm = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
+
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 
-    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
-    
-    if(formValue.componentenota == ''){
+    componenteNota = {...componenteNota, nombre: formValue.componentenota, estado: 'ACTIVO'};
+
+    if (formValue.componentenota == '') {
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
 
-    
+
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({
-      next: (response: HttpResponse<ComponenteNota>) => {
-        this.notificacionOk('Componente nota actualizado con éxito');
-        this.componentesNota[this.editElementIndex] = response.body;
+        next: (response: HttpResponse<ComponenteNota>) => {
+          this.notificacionOk('Componente nota actualizado con éxito');
+          this.componentesNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.componenteNota = {
             cod_componente_nota: 0,
-            componentenota: '',
+            nombre: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.notificacion(errorResponse);
-        this.showLoading = false;
-      },
-    })
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.notificacion(errorResponse);
+          this.showLoading = false;
+        },
+      })
     );
   }
 

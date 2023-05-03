@@ -210,7 +210,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.cod_componente_nota ===
                 ponderacion.cod_componente_nota
-            ).componentenota,
+            ).nombre,
             tipo_nota_desc: this.tiposNota.find(
               (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
             ).nota,
@@ -317,7 +317,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.cod_componente_nota ===
                 ponderacion.cod_componente_nota
-            ).componentenota,
+            ).nombre,
             tipo_nota_desc: this.tiposNota.find(
               (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
             ).nota,

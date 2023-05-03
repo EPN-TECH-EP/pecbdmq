@@ -18,7 +18,7 @@ export class Usuario {
   public codDatosPersonales: DatoPersonal;
 
   constructor(){
-    this.codDatosPersonales = new DatoPersonal(null,null,null,null,null,null,null,null,null,null,null,null,null/*,null,null*/);
+    this.codDatosPersonales = {} as DatoPersonal;
   }
 
 

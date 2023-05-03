@@ -42,7 +42,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
 
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
-    this.nombreUsuario = usuario?.codDatosPersonales["nombre"] + " " + usuario?.codDatosPersonales["apellido"]
+    this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido
 
     this.listaMenuInicial = this.menuService.getMenu();
     //console.log(this.listaMenu);
