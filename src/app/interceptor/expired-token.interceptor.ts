@@ -15,7 +15,7 @@ export class ExpiredTokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 403 && err.message === 'FORBIDDEN') {
+        if (err.status === 403 /*&& err.message === 'FORBIDDEN'*/) {
           this.router.navigate(['/login']).then();
           return EMPTY
         }
