@@ -7,6 +7,7 @@ import {MyValidators} from "../../../util/validators";
 import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
+import {ImagenService} from "../../../servicios/imagen.service";
 
 @Component({
   selector: 'app-perfil',
@@ -15,15 +16,16 @@ import {DatoPersonal} from "../../../modelo/admin/dato-personal";
 })
 export class PerfilComponent implements OnInit {
 
-  usuario                     : Usuario
-  datosPersonales             : UpdateDatoPersonalDto
-  formularioActualizarUsuario : FormGroup
-  editando                    : boolean = false
+  usuario: Usuario
+  datosPersonales: UpdateDatoPersonalDto
+  formularioActualizarUsuario: FormGroup
+  editando: boolean = false
 
   constructor(
     private autenticacionService: AutenticacionService,
     private formBuilder: FormBuilder,
     private datoPersonalService: DatoPersonalService,
+    private imagenService: ImagenService
   ) {
     this.formularioActualizarUsuario = new FormGroup({})
     this.datosPersonales = {} as UpdateDatoPersonalDto
@@ -33,8 +35,12 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.autenticacionService.user$.subscribe(
       {
-        next: (usuario) => {this.usuario = usuario},
-        error: () => {this.usuario = this.autenticacionService.obtieneUsuarioDeCache()}
+        next: (usuario) => {
+          this.usuario = usuario
+        },
+        error: () => {
+          this.usuario = this.autenticacionService.obtieneUsuarioDeCache()
+        }
       }
     );
     this.datosPersonales = this.usuario.codDatosPersonales
@@ -43,12 +49,12 @@ export class PerfilComponent implements OnInit {
 
   private constructorFormulario(): void {
     this.formularioActualizarUsuario = this.formBuilder.group({
-      nombre          : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      apellido        : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      correoPersonal  : ['', Validators.email],
-      telefono        : ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      direccion       : ['', [Validators.minLength(5), Validators.maxLength(100)]],
-      fechaNacimiento : [''],
+      nombre: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      apellido: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      correoPersonal: ['', Validators.email],
+      telefono: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      direccion: ['', [Validators.minLength(5), Validators.maxLength(100)]],
+      fechaNacimiento: [''],
     })
     this.formularioActualizarUsuario.valueChanges.subscribe({
       next: value => {
@@ -85,12 +91,12 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre            : this.nombreField.value,
-      apellido          : this.apellidoField.value,
-      correo_personal   : this.correoPersonalField.value,
-      num_telef_celular : this.telefonoField.value,
-      canton_residencia : this.direccionField.value,
-      fecha_nacimiento  : this.fechaNacimientoField.value,
+      nombre: this.nombreField.value,
+      apellido: this.apellidoField.value,
+      correo_personal: this.correoPersonalField.value,
+      num_telef_celular: this.telefonoField.value,
+      canton_residencia: this.direccionField.value,
+      fecha_nacimiento: this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
@@ -106,13 +112,27 @@ export class PerfilComponent implements OnInit {
 
   editarPerfil() {
     this.formularioActualizarUsuario.patchValue({
-      nombre          : this.usuario.codDatosPersonales.nombre,
-      apellido        : this.usuario.codDatosPersonales.apellido,
-      correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
-      telefono        : this.usuario.codDatosPersonales.num_telef_celular,
-      direccion       : this.usuario.codDatosPersonales.canton_residencia,
-      fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
+      nombre: this.usuario.codDatosPersonales.nombre,
+      apellido: this.usuario.codDatosPersonales.apellido,
+      correoPersonal: this.usuario.codDatosPersonales.correo_personal,
+      telefono: this.usuario.codDatosPersonales.num_telef_celular,
+      direccion: this.usuario.codDatosPersonales.canton_residencia,
+      fechaNacimiento: this.usuario.codDatosPersonales.fecha_nacimiento,
     });
+  }
+
+  cargarImagen(event: any) {
+    const formData = new FormData();
+
+    formData.append('archivo', event.target.files[0]);
+    formData.append('codigo', this.usuario.codUsuario.toString());
+    formData.append('proceso', 'Usuario')
+
+    this.imagenService.cargar(formData).subscribe(
+      (res) => {
+        console.log(res)
+      }
+    )
   }
 
   protected readonly opcionesDatePicker = OPCIONES_DATEPICKER;
