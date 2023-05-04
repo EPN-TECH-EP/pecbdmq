@@ -36,7 +36,6 @@
           #table="mdbTable"
           #sort="mdbTableSort"
           [dataSource]="roles"
-          [sort]="sort"
         >
           <thead class="datatable-header">
           <tr>
@@ -45,14 +44,14 @@
               [mdbTableSortHeader]="header"
               scope="col"
             >
-              {{ header | titlecase }}
+              <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col">Acciones</th>
+            <th class="text-center"><b>Acciones</b></th>
           </tr>
           </thead>
 
           <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
@@ -136,7 +135,7 @@
               </ng-container>
             </td>
 
-            <td>
+            <td class="text-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

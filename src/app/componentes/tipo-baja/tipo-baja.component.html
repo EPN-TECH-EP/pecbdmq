@@ -25,6 +25,7 @@
           mdbTableSort
           #table="mdbTable"
           [dataSource]="tiposBaja"
+          [pagination]="pagination"
         >
           <!-- Table head -->
           <thead class="datatable-header">
@@ -59,7 +60,7 @@
                 class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
                 [disabled]="tiposBajaForm.invalid"
-                (click)="createTipoBaja(tiposBajaForm.value)"
+                (click)="createTipoBaja(tiposBajaForm.value); addRow = false"
               >
                 <i class="fa fa-check"></i> &nbsp;Agregar
               </button>
@@ -137,6 +138,11 @@
           </tbody>
         </table>
       </form>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
     </div>
 
   </div>
