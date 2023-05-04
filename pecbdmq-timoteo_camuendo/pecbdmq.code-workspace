@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../MDBootstrap Pro/MDB5-ANGULAR-UI-KIT-Pro-Essential"
+		},
+		{
+			"path": "../angular-basics-src-main"
+		},
+		{
+			"path": "../angular-fundamentals-src-master"
+		},
+		{
+			"path": "../../references/testing"
+		}
+	],
+	"settings": {
+	}
+}

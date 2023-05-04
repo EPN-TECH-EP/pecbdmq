@@ -9,9 +9,9 @@ import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {ValidacionUtil} from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-sancion',
@@ -72,7 +72,8 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
       this.tiposSancion = data;
     });
   }
-/*
+
+  /*
   public okNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -105,18 +106,18 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
       tipoAlerta
     )
   }
-*/
+  */
 
   //create a register of tipo sancion
   public createTipoSancion(tipoSancion: ITipoSancion): void {
 
-    if(tipoSancion.sancion === ""){
+    if (tipoSancion.sancion === "") {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'El campo sanción no puede estar vacío');
 
       return
     }
 
-    tipoSancion = {...tipoSancion, estado:'ACTIVO'}
+    tipoSancion = {...tipoSancion, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
       this.apiTipoSancion.createTipoSancion(tipoSancion).subscribe({
@@ -133,7 +134,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )
@@ -158,7 +159,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
 
     tipoSancion = {...tipoSancion, sancion: formValue.sancion, estado: "ACTIVO"};
 
-    if(formValue.sancion === ""){
+    if (formValue.sancion === "") {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'El campo sanción no puede estar vacío');
       return
     }
@@ -178,18 +179,18 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )
   }
 
   // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
+  public confirmaEliminar(event: Event, codigo: number): void {
   super.confirmaEliminarMensaje();
   this.codigo = codigo;
   super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  }
 
   //delete a register of tipo sancion
   public eliminar(): void {
@@ -204,7 +205,7 @@ public confirmaEliminar(event: Event, codigo: number): void {
           this.tiposSancion = [...this.tiposSancion];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )

@@ -2,9 +2,6 @@ import {CatalogoEstadosService} from './../../servicios/catalogo-estados.service
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
-import {Subscription} from 'rxjs';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {Notificacion} from 'src/app/util/notificacion';
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
@@ -73,7 +70,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
   }
 
 
-/*
+  /*
   private notificacion(errorResponse: HttpErrorResponse) {
 
     let customError: CustomHttpResponse = errorResponse.error;
@@ -128,6 +125,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<CatalogoEstados>) => {
           let nuevoCatalogo: CatalogoEstados = response.body;
           this.catalogos.push(nuevoCatalogo);
+          this.catalogos = [...this.catalogos]
            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado creado con éxito');
 
           this.Api.getCatalogo().subscribe(data => {
@@ -140,7 +138,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
 
         },
       })
@@ -180,6 +178,8 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado actualizada con éxito');
 
           this.catalogos[this.editElementIndex] = response.body;
+          this.catalogos = [...this.catalogos]
+
           this.showLoading = false;
           this.catalogo = {
             codigo: 0,
@@ -189,7 +189,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );
@@ -216,7 +216,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
           this.catalogos = [...this.catalogos]
         },
         error: (errorResponse: HttpErrorResponse) => {
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );

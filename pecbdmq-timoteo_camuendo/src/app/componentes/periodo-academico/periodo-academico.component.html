@@ -1,0 +1,291 @@
+ <!-- Título de componente
+ <div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión de Período académico</p>
+  </div>
+</div>
+
+<div class="row justify-content">
+  <div class="col-12 ">
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <button
+      MdbRiple
+      class="btn btn-primary btn-sm ms-3"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+  <hr />
+
+  <div class="datatable table-editor mt-4">
+    <form #form="ngForm" novalidate    >
+      <table
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="periodos"
+        [sort]="sort"
+        >
+        <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+            >
+              {{ header | titlecase }}
+            </th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody class="datatable-body">
+          <tr *ngIf="addRow" scope="row">
+
+            <td>
+              <mdb-form-control>
+
+                <mdb-select [(ngModel)]="periodo.moduloEstados" id="modulo"
+                name="modulo">
+                  <mdb-option *ngFor="let moduloEstados of modulosEstados" [value]="moduloEstados.cod_modulo">{{
+                    moduloEstados.etiqueta
+                  }} </mdb-option>
+                </mdb-select>
+                <label mdbLabel class="form-label">Seleccione un módulo</label>
+              </mdb-form-control>
+            </td>
+
+
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput1"
+                  [mdbDatepicker]="datepicker1"
+                  id="fechaInicio"
+                  name="fechaInicio"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="periodo.fechaInicio"
+                  required
+                />
+                <label mdbLabel="mdbLabel1" for="exampleDatepicker" class="form-label">Selecciona una fecha</label>
+                <mdb-datepicker-toggle [mdbDatepicker]="datepicker1"></mdb-datepicker-toggle>
+                <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker1 [format]="'yyyy, mmm, dd'"></mdb-datepicker>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput2"
+                  [mdbDatepicker]="datepicker2"
+                  id="fechaFin"
+                  name="fechaFin"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="periodo.fechaFin"
+                  required
+                />
+                <label  mdbLabel="mdbLabel2" for="exampleDatepicker" class="form-label">Selecciona una fecha</label>
+                <mdb-datepicker-toggle [mdbDatepicker]="datepicker2"></mdb-datepicker-toggle>
+                <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker2 [format]="'yyyy, mmm, dd'"></mdb-datepicker>
+              </mdb-form-control>
+            </td>
+
+
+            <td>
+              <mdb-form-control>
+                <input
+                mdbInput
+                  id="descripcion"
+                  name="descripcion"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="periodo.descripcion"
+                  required
+                  placeholder="Ingrese una descripción"
+                    aria-label="readonly input example"
+                    [readonly]="false"
+                />
+                <label mdbLabel class="form-label" for="formControlReadonly"></label>
+
+              </mdb-form-control>
+            </td>
+
+
+            <td>
+            <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                type="submit"
+                (click)="registro(form.value); addRow = false"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                (click)="addRow = false"
+
+              >
+                <i class="fa fa-ban"></i>
+              </button>
+            </td>
+          </tr>
+
+
+          <tr *ngFor="let periodo of table.data; let index = index" >
+            <td style="min-width: 20px; max-width: 30px">
+
+
+                <ng-container *ngIf="editElementIndex !== index" >
+                {{ periodo.moduloEstados }}
+              </ng-container>
+
+              <ng-container *ngIf="editElementIndex === index">
+
+               <mdb-form-control *ngIf="editElementIndex === index">
+                <mdb-select
+                [(ngModel)]="periodoEditForm.moduloEstados"
+                id="modulo"
+                name="modulo">
+
+                  <mdb-option *ngFor="let moduloEstados of modulosEstados"[value]="moduloEstados.cod_modulo">
+                    {{ moduloEstados.etiqueta }}
+                  </mdb-option>
+                </mdb-select>
+                <label mdbLabel class="form-label"> {{ periodo.moduloEstados }}</label>
+
+              </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+            <td style="min-width: 20px; max-width: 20px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.fechaInicio }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    [mdbDatepicker]="datepicker3"
+                    id="fechaInicio"
+                    name="fechaInicio"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.fechaInicio"
+                    (click)="datepicker3.open()"
+                  />
+                  <mdb-datepicker-toggle  [mdbDatepicker]="datepicker3"></mdb-datepicker-toggle>
+                  <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker3 [format]="'yyyy, mmm, dd'">{{ periodo.fechaInicio }} </mdb-datepicker>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+            <td style="min-width: 10px; max-width: 10px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.fechaFin }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                  mdbInput
+                  [mdbDatepicker]="datepicker4"
+                    id="fechaFin"
+                    name="fechaFin"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.fechaFin"
+                  />
+
+                  <label mdbLabel class="form-label"  ></label>
+                  <mdb-datepicker-toggle  [mdbDatepicker]="datepicker4"></mdb-datepicker-toggle>
+                  <mdb-datepicker [options]="translationOptions" [inline]="true" #datepicker4 [format]="'yyyy, mmm, dd'">{{ periodo.fechaInicio }} </mdb-datepicker>
+
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.descripcion }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.descripcion"
+                  />
+                  <label  class="form-control"> {{ periodo.descripcion }}
+                  </label>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+
+
+            <td>
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+              <button
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="editRow(index)"
+              [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+               <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="eliminar(periodo.codigo)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="actualizar(periodo, form.value);"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editElementIndex = -1"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+
+ -->

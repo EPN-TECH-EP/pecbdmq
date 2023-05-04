@@ -1,0 +1,25 @@
+.bg-image {
+    /* The image used */
+    //background-image: url($img);
+    
+    /* Add the blur effect */
+    //filter: blur(1px);
+    //-webkit-filter: blur(1px);
+    
+    /* Full height */
+    height: 100%; 
+    
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  div.transbox {
+    background-color: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
+    //padding: 20px;
+    //margin: 30px;
+    //font-weight: bold;
+  }

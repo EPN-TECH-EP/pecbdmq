@@ -117,7 +117,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
   //registro
   public registro(catalogo: CatalogoEstados): void {
     if (catalogo.nombre == null || catalogo.nombre == '') {
-      this.errorNotification('Ingrese el nombre del catálogo');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Ingrese el nombre del catálogo');
       return;
     }
 
@@ -128,7 +128,9 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<CatalogoEstados>) => {
           let nuevoCatalogo: CatalogoEstados = response.body;
           this.catalogos.push(nuevoCatalogo);
-          this.notificacionOK('Catálogo de Estado creado con éxito');
+          this.catalogos = [...this.catalogos]
+           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado creado con éxito');
+
           this.Api.getCatalogo().subscribe(data => {
             this.catalogos = data;
           });
@@ -139,7 +141,8 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
           }
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+
         },
       })
     );
@@ -163,7 +166,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
   public actualizar(catalogo: CatalogoEstados, formValue): void {
 
     if (formValue.nombre == null || formValue.nombre == '') {
-      this.errorNotification('Ingrese el nombre del catálogo');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Ingrese el nombre del catálogo');
       return;
     }
 
@@ -175,8 +178,11 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.actualizarCatalogo(catalogo, catalogo.codigo).subscribe({
         next: (response) => {
-          this.notificacionOK('Catálogo de Estados actualizada con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado actualizada con éxito');
+
           this.catalogos[this.editElementIndex] = response.body;
+          this.catalogos = [...this.catalogos]
+
           this.showLoading = false;
           this.catalogo = {
             codigo: 0,
@@ -186,7 +192,7 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );
@@ -205,14 +211,15 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.Api.eliminarCatalogo(this.codigo).subscribe({
         next: () => {
-          this.notificacionOK('El catálogo de estado se ha eliminado con éxito');
+         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'El catálogo de estado se ha eliminado con éxito');
+
           this.showLoading = false;
           const index = this.catalogos.findIndex(catalogo => catalogo.codigo === this.codigo);
           this.catalogos.splice(index, 1);
           this.catalogos = [...this.catalogos]
         },
         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
         },
       })
     );

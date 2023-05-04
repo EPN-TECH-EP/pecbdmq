@@ -55,6 +55,7 @@ import {
 } from "../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
 import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 import {NgModule} from "@angular/core";
+import {PerfilComponent} from "../../componentes/user/perfil/perfil.component";
 
 
 const routes: Routes = [
@@ -111,6 +112,7 @@ const routes: Routes = [
       {path: 'especializacion/proceso', component: ProcesoEspecializacionComponent},
       {path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent},
       {path: 'requisito', component: RequisitoComponent},
+      {path: 'perfil', component: PerfilComponent},
 
     ],
   },
