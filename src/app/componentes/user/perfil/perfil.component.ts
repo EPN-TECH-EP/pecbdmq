@@ -6,6 +6,8 @@ import {OPCIONES_DATEPICKER} from "../../../util/constantes/opciones-datepicker.
 import {MyValidators} from "../../../util/validators";
 import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
+import {DatoPersonal} from "../../../modelo/admin/dato-personal";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-perfil',
@@ -30,7 +32,13 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
+    this.autenticacionService.user$.subscribe(
+      {
+        next: (usuario) => {this.usuario = usuario},
+        error: () => {this.usuario = this.autenticacionService.obtieneUsuarioDeCache()}
+      }
+    );
+    this.datosPersonales = this.usuario.codDatosPersonales
     this.usuario.codDatosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento)
   }
 
@@ -87,9 +95,14 @@ export class PerfilComponent implements OnInit {
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
-      .subscribe( value => {
-        console.log(value)
-      })
+      .subscribe(
+        (res: DatoPersonal) => {
+          this.usuario.codDatosPersonales = res
+          this.autenticacionService.agregaUsuarioACache(this.usuario);
+          this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
+        })
+    this.editando = false;
+
   }
 
   editarPerfil() {
@@ -101,7 +114,6 @@ export class PerfilComponent implements OnInit {
       direccion       : this.usuario.codDatosPersonales.canton_residencia,
       fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
     });
-    console.log(this.formularioActualizarUsuario.value)
   }
 
   protected readonly opcionesDatePicker = OPCIONES_DATEPICKER;

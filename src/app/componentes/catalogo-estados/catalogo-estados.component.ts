@@ -1,4 +1,4 @@
-import {CatalogoEstadosService} from './../../servicios/catalogo-estados.service';
+import {CatalogoEstadosService} from '../../servicios/catalogo-estados.service';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
