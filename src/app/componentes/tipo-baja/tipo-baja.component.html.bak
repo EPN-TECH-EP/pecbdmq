@@ -112,7 +112,7 @@
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   [disabled]="editElementIndex !== -1 && editElementIndex !== index"
-                  (click)="confirmarEliminar($event,tipoBaja.cod_tipo_baja)"
+                  (click)="confirmaEliminar($event,tipoBaja.cod_tipo_baja)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>

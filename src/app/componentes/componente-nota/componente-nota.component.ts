@@ -1,19 +1,19 @@
-import {ComponenteNotaService} from './../../servicios/componente-nota.service';
-import {ComponenteNota} from '../../modelo/admin/componente-nota';
-import {Component, OnInit} from '@angular/core';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {HeaderType} from 'src/app/enum/header-type.enum';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {ValidacionUtil} from 'src/app/util/validacion-util';
+import { ComponenteNotaService } from './../../servicios/componente-nota.service';
+import { ComponenteNota } from '../../modelo/admin/componente-nota';
+import { Component, OnInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-componente-nota',
@@ -21,11 +21,11 @@ import {ValidacionUtil} from 'src/app/util/validacion-util';
   styleUrls: ['./componente-nota.component.scss']
 })
 export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
-  //model
-  componentesNota: ComponenteNota[];
-  componenteNota: ComponenteNota;
-  componenteNotaEditForm: ComponenteNota;
-  //utils
+   //model
+   componentesNota: ComponenteNota[];
+   componenteNota: ComponenteNota;
+   componenteNotaEditForm: ComponenteNota;
+   //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   //private subscriptions: Subscription[];
 
@@ -37,9 +37,9 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   validacionUtil = ValidacionUtil;
 
   //options
-  options = [
-    {value: 'ACTIVO', label: 'ACTIVO'},
-    {value: 'INACTIVO', label: 'INACTIVO'},
+ options = [
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
   ];
 
   //table
@@ -67,7 +67,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
       nombre: '',
       estado: 'ACTIVO'
     };
-  }
+   }
 
 
   ngOnInit(): void {
@@ -88,6 +88,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
       mensajeError = 'Error inesperado';
       tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
+
 
 
     this.notificationRef = Notificacion.notificar(
@@ -161,7 +162,6 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     };
     this.editElementIndex = -1;
   }
-
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 

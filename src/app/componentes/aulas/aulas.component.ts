@@ -208,7 +208,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     if (
       formValue.nombre == '' ||
       formValue.capacidad == 0 || formValue.capacidad < 0 ||
-      formValue.salaOcupada == '' ||
+      //formValue.salaOcupada == '' ||
       formValue.tipo == 0
     ) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');

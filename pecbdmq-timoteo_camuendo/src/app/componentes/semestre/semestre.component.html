@@ -1,0 +1,166 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión de Semestre</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-6 ">
+    <button
+      class="btn btn-primary btn-sm mb-3"
+      id="btnAgregarFila"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
+
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+
+    <hr>
+
+    <div class="datatable table-editor mt-3">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          id="tblSemestre"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="semestres"
+        >
+          <thead class="datatable-header">
+          <tr align="center">
+
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              style="font-size: medium"
+            >
+              <b> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="semestreRegistro"
+                  name="semestre"
+                  class="form-control"
+                  [(ngModel)]="semestre.semestre"
+                  required
+                  #semestreRegistro="ngModel"
+                  type="text"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', semestreRegistro)"
+                />
+              </mdb-form-control>
+            </td>
+
+
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                id="btnRegistrar"
+                type="submit"
+                (click)="registro(form.value); addRow = false;"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let semestre of table.data; let index = index">
+            <td style="min-width: 10px; max-width: 10px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ semestre.semestre }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="semestreActualizar"
+                    name="semestre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="semestreEditForm.semestre"
+                    required
+                    #semestreActualizar="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', semestreActualizar)"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td class="text-center">
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(index)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmaEliminar($event,semestre.codSemestre)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(semestre, form.value);"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+

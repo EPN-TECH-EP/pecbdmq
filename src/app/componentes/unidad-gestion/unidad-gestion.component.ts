@@ -172,12 +172,6 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
     unidad = {...unidad, nombre: formValue.nombre, estado: 'ACTIVO'};
 
-    if (formValue.nombre == '') {
-      this.errorNotification('Todos los campos deben estar llenos');
-      return;
-    }
-
-
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiUnidad.actualizarUnidad(unidad, unidad.codigo).subscribe({

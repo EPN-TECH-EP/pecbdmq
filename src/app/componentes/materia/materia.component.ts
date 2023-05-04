@@ -37,8 +37,9 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   materias: Materia[];
   materia: Materia;
   materiaEditForm: Materia;
-  public getMaterias: number[] = [];
-  public errorMessage: any;
+  
+  /*public getMaterias: number[] = [];
+  public errorMessage: any;*/
 
   //private subscriptions: Subscription[] = [];
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -78,7 +79,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.materia = {
       codMateria: 0,
-      nombreMateria: '',
+      nombre: '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
@@ -88,7 +89,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     }
     this.materiaEditForm = {
       codMateria: 0,
-      nombreMateria: '',
+      nombre: '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
@@ -105,13 +106,14 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.makeAPICall();
+    //this.makeAPICall();
     this.Api.getMaterias().subscribe((data) => {
       this.materias = data;
     });
+
   }
 
-  makeAPICall() {
+  /*makeAPICall() {
     Promise.all([this.service.getMaterias()])
       .then((response) => {
         this.parseResponse(response);
@@ -130,7 +132,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
+  }*/
   /*
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
@@ -174,7 +176,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   public registro(materia: Materia): void {
 
     if (
-      materia.nombreMateria == '' ||
+      materia.nombre == '' ||
       materia.numHoras == 0 || materia.numHoras < 0 ||
       materia.tipoMateria == '' ||
       materia.observacionMateria == '' ||
@@ -182,7 +184,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       materia.notaMinima == 0 || materia.notaMinima < 0) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
-    }
+    }   
 
     materia = {...materia, estado: 'ACTIVO'};
     this.showLoading = true;
@@ -192,11 +194,12 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Materia>) => {
           let nuevaMateria: Materia = response.body;
           this.materias.push(nuevaMateria);
+          this.materias = [...this.materias]
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia creada con éxito');
 
           this.materia = {
             codMateria: 0,
-            nombreMateria: '',
+            nombre: '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
@@ -220,7 +223,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.materiaEditForm = {
       codMateria: 0,
-      nombreMateria: '',
+      nombre: '',
       numHoras: '' as any,
       tipoMateria: '',
       observacionMateria: '',
@@ -234,7 +237,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   public actualizar(materia: Materia, formValue): void {
 
     if (
-      materia.nombreMateria == '' ||
+      materia.nombre == '' ||
       materia.numHoras == 0 || materia.numHoras < 0 ||
       materia.tipoMateria == '' ||
       materia.observacionMateria == '' ||
@@ -246,7 +249,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
     materia = {
       ...materia,
-      nombreMateria: formValue.nombreMateria,
+      nombre: formValue.nombre,
       numHoras: formValue.numHoras,
       tipoMateria: formValue.tipoMateria,
       observacionMateria: formValue.observacionMateria,
@@ -264,7 +267,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
           this.materia = {
             codMateria: 0,
-            nombreMateria: '',
+            nombre: '',
             numHoras: '' as any,
             tipoMateria: '',
             observacionMateria: '',
@@ -273,13 +276,15 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
+          this.materias = [...this.materias]
 
+        },
 
           error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-          };
+          }
         },
-      })
+      )
     );
   }
 

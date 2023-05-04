@@ -1,0 +1,87 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Lista de inscritos</p>
+  </div>
+</div>
+<div class="row justify-content-center">
+
+  <div class="col-9 ">
+  <hr />
+  <div class="datatable table-editor mt-4">
+    <form #form="ngForm" >
+      <table
+
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="inscripciones"
+        [sort]="sort"
+      >
+        <thead class="datatable-header">
+          <tr align="center">
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              style="font-size: medium"
+            >
+              <b> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+          </tr>
+        </thead>
+        <tbody class="datatable-body">
+
+          <tr *ngFor="let inscripcion of table.data; let index = index" scope="row">
+            <td align="center"  style="min-width: 50px; max-width: 200px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ inscripcion.cedula }}
+              </ng-container>
+
+            </td>
+            <td align="center"  style="min-width: 50px; max-width: 200px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ inscripcion.nombres }}
+              </ng-container>
+
+            </td>
+            <td align="center" style="min-width: 50px; max-width: 200px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ inscripcion.apellidos }}
+              </ng-container>
+
+            </td>
+            <td align="center"  style="min-width: 50px; max-width: 200px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ inscripcion.sexo }}
+              </ng-container>
+
+            </td>
+            <td align="center"  style="min-width: 50px; max-width: 200px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ inscripcion.fechaInscripcion }}
+              </ng-container>
+
+            </td>
+            <td align="center">
+              <ng-container>
+                <button
+                  class="btn btn-primary"
+                  (click)="openModal('edit', inscripcion)"
+                  [disabled]=""
+                >
+                  Validar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+</div>
+

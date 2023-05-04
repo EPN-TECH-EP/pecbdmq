@@ -9,8 +9,8 @@ import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-tipo-baja',
@@ -20,11 +20,11 @@ import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   codigo: number;
-  tiposBaja: TipoBaja[];
-  tipoBajaEditForm: TipoBaja;
-  tiposBajaForm: FormGroup;
-  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  showLoading: boolean;
+  tiposBaja         : TipoBaja[];
+  tipoBajaEditForm  : TipoBaja;
+  tiposBajaForm     : FormGroup;
+  notificationRef   : MdbNotificationRef<AlertaComponent> | null = null;
+  showLoading       : boolean;
 
   @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
@@ -58,7 +58,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   private buildForm() {
     this.tiposBajaForm = this.formBuilder.group({
-      baja: ['', [Validators.required, Validators.minLength(3)]]
+      baja: ['', [Validators.required, Validators.minLength(5)]]
     });
   }
 
@@ -117,7 +117,6 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
         },
       })
     )
-    this.bajaField?.reset();
   }
 
   updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
@@ -143,11 +142,11 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-  public confirmaEliminar(event: Event, codigo: number): void {
-    super.confirmaEliminarMensaje();
-    this.codigo = codigo;
-    super.openPopconfirm(event, this.eliminar.bind(this));
-  }
+public confirmaEliminar(event: Event, codigo: number): void {
+  super.confirmaEliminarMensaje();
+  this.codigo = codigo;
+  super.openPopconfirm(event, this.eliminar.bind(this));
+}
 
   public eliminar(): void {
     this.showLoading = true;

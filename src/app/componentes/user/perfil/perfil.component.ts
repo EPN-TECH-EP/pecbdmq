@@ -7,7 +7,6 @@ import {MyValidators} from "../../../util/validators";
 import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-perfil',
