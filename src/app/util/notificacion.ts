@@ -60,7 +60,7 @@ import {
       }
 
       if (!mensajeErrorApp) {
-        mensajeError = 'Error inesperado';
+        //mensajeError = 'Error inesperado';
         tipoAlerta = TipoAlerta.ALERTA_ERROR;
       }else{
         mensajeError = mensajeErrorApp;

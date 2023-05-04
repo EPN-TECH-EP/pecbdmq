@@ -53,7 +53,7 @@
                   id="componentenota"
                   name="componentenota"
                   class="form-control"
-                  [(ngModel)]="componenteNota.componentenota"
+                  [(ngModel)]="componenteNota.nombre"
                   #nombre="ngModel"
                   required
                   (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
@@ -85,7 +85,7 @@
           <tr *ngFor="let componenteNota of table.data; let index = index" scope="row">
             <td align="center" style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ componenteNota.componentenota }}
+                {{ componenteNota.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
@@ -95,7 +95,7 @@
                     name="componentenota"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="componenteNotaEditForm.componentenota"
+                    [(ngModel)]="componenteNotaEditForm.nombre"
                     #componenteNota="ngModel"
                     (change)="validacionUtil.onInputChange($event, 'catalogo', componenteNota)"
                   />

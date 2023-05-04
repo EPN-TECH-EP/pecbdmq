@@ -59,12 +59,12 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.componenteNota = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     }
     this.componenteNotaEditForm = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     };
    }
@@ -119,7 +119,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //registro
   public registro(componenteNota: ComponenteNota): void {
 
-    if(componenteNota.componentenota == ''){
+    if(componenteNota.nombre == ''){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
 
       return;
@@ -137,7 +137,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
 
           this.componenteNota = {
             cod_componente_nota: 0,
-            componentenota: '',
+            nombre: '',
             estado: 'ACTIVO'
           }
         },
@@ -157,7 +157,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.componenteNotaEditForm = {
       cod_componente_nota: 0,
-      componentenota: '',
+      nombre: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
@@ -165,7 +165,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 
-    componenteNota={...componenteNota, componentenota:formValue.componentenota, estado:'ACTIVO'};
+    componenteNota={...componenteNota, nombre:formValue.componentenota, estado:'ACTIVO'};
     
     if(formValue.componentenota == ''){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
@@ -183,7 +183,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
           this.componenteNota = {
             cod_componente_nota: 0,
-            componentenota: '',
+            nombre: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;

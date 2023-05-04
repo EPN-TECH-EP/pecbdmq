@@ -31,7 +31,7 @@
     <hr/>
 
     <div class="datatable table-editor mt-4">
-      <form #form="ngForm" novalidate>
+      <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
           id="materiaTbl"
@@ -60,14 +60,14 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="registroNombreMateria"
-                  name="nombreMateria"
+                  id="registroNombre"
+                  name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="materia.nombreMateria"
+                  [(ngModel)]="materia.nombre"
                   required
-                  #nombreMateria="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombreMateria)"
+                  #nombre="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                 />
               </mdb-form-control>
             </td>
@@ -174,24 +174,24 @@
             </td>
           </tr>
 
-          <tr *ngFor="let materia of table.data; let index = index" scope="row">
+          <tr *ngFor="let materia of table.data; let index = index">
 
             <td style="min-width: 50px">
               <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.nombreMateria }}
+                {{ materia.nombre }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombreMateria"
-                    name="nombreMateria"
+                    id="nombre"
+                    name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.nombreMateria"
-                    #nombreMateria="ngModel"
+                    [(ngModel)]="materiaEditForm.nombre"
+                    #nombre="ngModel"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreMateria)"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </ng-container>
