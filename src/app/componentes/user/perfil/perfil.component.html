@@ -13,9 +13,9 @@
         </div>
         <div class="card-body">
           <h5
-            class="card-title">{{usuario?.codDatosPersonales["nombre"]}} {{usuario?.codDatosPersonales["apellido"]}}</h5>
-          <p class="card-text">{{usuario?.codDatosPersonales["correo_personal"]}}</p>
-          <button class="btn btn-primary" (click)="editando = !editando; editarPerfil()">Editar perfil</button>
+            class="card-title">{{usuario?.codDatosPersonales.nombre}} {{usuario?.codDatosPersonales.apellido}}</h5>
+          <p class="card-text">{{usuario?.codDatosPersonales.correo_personal}}</p>
+          <button class="btn btn-primary" (click)="editando = !editando; onEditarPerfil()">Editar perfil</button>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
               <p><strong>Nombre: </strong>{{usuario?.codDatosPersonales.nombre}}</p>
               <p><strong>Apellido: </strong>{{usuario?.codDatosPersonales.apellido}}</p>
               <p><strong>Fecha de
-                Nacimiento: </strong>{{usuario?.codDatosPersonales.fecha_nacimiento | date: 'yyyy/MM/dd' }}</p>
+                Nacimiento: </strong>{{usuario?.codDatosPersonales.fecha_nacimiento | date: 'dd/MM/yyy' }}</p>
               <p><strong>Correo Personal: </strong>{{usuario?.codDatosPersonales.correo_personal}}</p>
             </div>
             <div class="col-6">

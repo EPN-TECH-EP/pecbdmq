@@ -8,9 +8,9 @@ import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
 import {ImagenService} from "../../../servicios/imagen.service";
-import {EMPTY, switchMap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {catchError, map, tap} from "rxjs/operators";
+import {EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-perfil',
@@ -19,11 +19,11 @@ import {catchError, map, tap} from "rxjs/operators";
 })
 export class PerfilComponent implements OnInit {
 
-  usuario: Usuario
-  datosPersonales: UpdateDatoPersonalDto
-  imagenPerfil: SafeResourceUrl
-  formularioActualizarUsuario: FormGroup
-  editando: boolean = false
+  usuario                     : Usuario
+  datosPersonales             : UpdateDatoPersonalDto
+  imagenPerfil                : SafeResourceUrl
+  formularioActualizarUsuario : FormGroup
+  editando                    : boolean = false
 
   constructor(
     private autenticacionService: AutenticacionService,
@@ -53,14 +53,14 @@ export class PerfilComponent implements OnInit {
     ).subscribe();
   }
 
-  private constructorFormulario(): void {
+  private constructorFormulario() {
     this.formularioActualizarUsuario = this.formBuilder.group({
-      nombre: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      apellido: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      correoPersonal: ['', Validators.email],
-      telefono: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      direccion: ['', [Validators.minLength(5), Validators.maxLength(100)]],
-      fechaNacimiento: [''],
+      nombre          : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      apellido        : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      correoPersonal  : ['', Validators.email],
+      telefono        : ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      direccion       : ['', [Validators.minLength(5), Validators.maxLength(100)]],
+      fechaNacimiento : [''],
     })
     this.formularioActualizarUsuario.valueChanges.subscribe({
       next: value => {
@@ -97,18 +97,18 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre: this.nombreField.value,
-      apellido: this.apellidoField.value,
-      correo_personal: this.correoPersonalField.value,
-      num_telef_celular: this.telefonoField.value,
-      canton_residencia: this.direccionField.value,
-      fecha_nacimiento: this.fechaNacimientoField.value,
+      nombre            : this.nombreField.value,
+      apellido          : this.apellidoField.value,
+      correo_personal   : this.correoPersonalField.value,
+      num_telef_celular : this.telefonoField.value,
+      canton_residencia : this.direccionField.value,
+      fecha_nacimiento  : this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
       .subscribe(
-        (res: DatoPersonal) => {
-          this.usuario.codDatosPersonales = res
+        (datoPersonal: DatoPersonal) => {
+          this.usuario.codDatosPersonales = datoPersonal
           this.autenticacionService.agregaUsuarioACache(this.usuario);
           this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
         })
@@ -116,14 +116,14 @@ export class PerfilComponent implements OnInit {
 
   }
 
-  editarPerfil() {
+  onEditarPerfil() {
     this.formularioActualizarUsuario.patchValue({
-      nombre: this.usuario.codDatosPersonales.nombre,
-      apellido: this.usuario.codDatosPersonales.apellido,
-      correoPersonal: this.usuario.codDatosPersonales.correo_personal,
-      telefono: this.usuario.codDatosPersonales.num_telef_celular,
-      direccion: this.usuario.codDatosPersonales.canton_residencia,
-      fechaNacimiento: this.usuario.codDatosPersonales.fecha_nacimiento,
+      nombre          : this.usuario.codDatosPersonales.nombre,
+      apellido        : this.usuario.codDatosPersonales.apellido,
+      correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
+      telefono        : this.usuario.codDatosPersonales.num_telef_celular,
+      direccion       : this.usuario.codDatosPersonales.canton_residencia,
+      fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
     });
   }
 
@@ -155,5 +155,6 @@ export class PerfilComponent implements OnInit {
   }
 
   protected readonly opcionesDatePicker = OPCIONES_DATEPICKER;
+
 }
 
