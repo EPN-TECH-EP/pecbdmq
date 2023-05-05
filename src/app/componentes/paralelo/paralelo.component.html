@@ -118,7 +118,7 @@
                     [(ngModel)]="paraleloEdit.nombreParalelo"
                     required
                     #nombreParaleloModel="ngModel"
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"                    
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -189,6 +189,7 @@
         <mdb-table-pagination
           #pagination
           [entries]="10"
+          (paginationChange)="onPaginationChange($event)"
         ></mdb-table-pagination>
       </form>
     </div>

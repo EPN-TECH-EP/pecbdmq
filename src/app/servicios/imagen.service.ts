@@ -40,7 +40,7 @@ export class ImagenService {
   descargar(id: string) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',
-      headers: new HttpHeaders({Accept: 'application/image'})
+      headers: new HttpHeaders({Accept: 'application/json'}),
     });
   }
 }

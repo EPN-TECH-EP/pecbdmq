@@ -159,7 +159,8 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.paraleloEdit = {...this.paralelos[index]};
+    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
+    this.paraleloEdit = {...this.paralelos[index + offset]};
   }
 
   undoRow() {
@@ -184,7 +185,8 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
       this.Api.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
           next: (response) => {
             Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo actualizado con éxito');
-            this.paralelos[this.editElementIndex] = response.body;
+            const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
+            this.paralelos[index] = response.body;
             this.editElementIndex = -1;
             this.showLoading = false;
             this.paralelo = {

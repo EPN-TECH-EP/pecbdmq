@@ -8,7 +8,6 @@ import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
 import {ImagenService} from "../../../servicios/imagen.service";
-import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-perfil',
@@ -92,12 +91,12 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre: this.nombreField.value,
-      apellido: this.apellidoField.value,
-      correo_personal: this.correoPersonalField.value,
-      num_telef_celular: this.telefonoField.value,
-      canton_residencia: this.direccionField.value,
-      fecha_nacimiento: this.fechaNacimientoField.value,
+      nombre            : this.nombreField.value,
+      apellido          : this.apellidoField.value,
+      correo_personal   : this.correoPersonalField.value,
+      num_telef_celular : this.telefonoField.value,
+      canton_residencia : this.direccionField.value,
+      fecha_nacimiento  : this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
@@ -113,12 +112,12 @@ export class PerfilComponent implements OnInit {
 
   editarPerfil() {
     this.formularioActualizarUsuario.patchValue({
-      nombre: this.usuario.codDatosPersonales.nombre,
-      apellido: this.usuario.codDatosPersonales.apellido,
-      correoPersonal: this.usuario.codDatosPersonales.correo_personal,
-      telefono: this.usuario.codDatosPersonales.num_telef_celular,
-      direccion: this.usuario.codDatosPersonales.canton_residencia,
-      fechaNacimiento: this.usuario.codDatosPersonales.fecha_nacimiento,
+      nombre          : this.usuario.codDatosPersonales.nombre,
+      apellido        : this.usuario.codDatosPersonales.apellido,
+      correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
+      telefono        : this.usuario.codDatosPersonales.num_telef_celular,
+      direccion       : this.usuario.codDatosPersonales.canton_residencia,
+      fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
     });
   }
 
