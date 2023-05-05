@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse} from "@angular/common/http";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Observable, throwError} from "rxjs";
 import {CustomHttpResponse} from "../modelo/admin/custom-http-response";
-import {catchError} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -37,10 +37,31 @@ export class ImagenService {
   }
 
 
-  descargar(id: string) {
+  descargar(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',
-      headers: new HttpHeaders({Accept: 'application/json'}),
-    });
+      headers: new HttpHeaders({Accept: 'application/pdf'})
+    }).pipe(
+      catchError(error => {
+        console.error('Error al descargar archivo:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  visualizar(id: number): Observable<SafeResourceUrl> {
+    return this.descargar(id).pipe(
+      map(data => {
+        const blob = new Blob([data], {type: 'application/pdf'});
+        const archivo = new File([blob], 'archivo.pdf', {type: 'application/pdf'});
+        const url = URL.createObjectURL(archivo);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      })
+    ).pipe(
+      catchError(error => {
+        console.error('Error al visualizar archivo:', error);
+        return throwError(error);
+      })
+    );
   }
 }
