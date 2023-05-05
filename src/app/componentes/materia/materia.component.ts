@@ -175,6 +175,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   */
   public registro(materia: Materia): void {
 
+    materia = {...materia, estado: 'ACTIVO'};
+
     if (
       materia.nombre == '' ||
       materia.numHoras == 0 || materia.numHoras < 0 ||
@@ -186,7 +188,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       return
     }   
 
-    materia = {...materia, estado: 'ACTIVO'};
+    
     this.showLoading = true;
     this.userResponse = 'Lunes';
     this.subscriptions.push(
@@ -237,12 +239,12 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   public actualizar(materia: Materia, formValue): void {
 
     if (
-      materia.nombre == '' ||
-      materia.numHoras == 0 || materia.numHoras < 0 ||
-      materia.tipoMateria == '' ||
-      materia.observacionMateria == '' ||
-      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
-      materia.notaMinima == 0 || materia.notaMinima < 0) {
+      formValue.nombre == '' ||
+      ValidacionUtil.isNullOrEmptyNumber(formValue.numHoras) ||
+      formValue.tipoMateria == '' ||
+      formValue.observacionMateria == '' ||
+      ValidacionUtil.isNullOrEmptyNumber(formValue.pesoMateria) ||
+      ValidacionUtil.isNullOrEmptyNumber(formValue.notaMinima)) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
     }

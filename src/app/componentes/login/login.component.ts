@@ -20,28 +20,39 @@ import { AlertaComponent } from '../util/alerta/alerta.component';
 import { TipoAlerta } from '../../enum/tipo-alerta';
 import { Notificacion } from '../../util/notificacion';
 import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent
+  extends ComponenteBase
+  implements OnInit, OnDestroy
+{
   backgroundImage: string;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
-  public showLoading: boolean;
-  private subscriptions: Subscription[] = [];
+  public showLoading: boolean = false;
+  public showLoadingOlvidoPassword: boolean = false;
+  //private subscriptions: Subscription[] = [];
 
   @Output()
   emisor: EventEmitter<boolean>;
+  nombreUsuario: any;
 
   constructor(
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService,
     private router: Router,
     private autenticacionService: AutenticacionService
-  ) {}
+  ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+    this.subscriptions = [];
+  }
 
   ngOnInit(): void {
     this.backgroundImage = 'url(/assets/bg.jpg)';
@@ -73,8 +84,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -97,7 +106,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.notificationRef = Notificacion.notificar(
-      this.notificationService,
+      this.notificationServiceLocal,
       mensajeError,
       tipoAlerta
     );
@@ -109,22 +118,63 @@ export class LoginComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  /*public onOlvidoPassword(formValue): void {
-    const usuario: string = formValue.controls['usuario'].value;
+  public onCancelOlvidoPassword(): void {
+    this.showLoadingOlvidoPassword = false;
+  }
 
-    if (usuario === '') {
-      Notificacion.notificacionOK(this.notificationRef, this.notificationService, 'Ingresar un usuario para recuperar la contraseña');
-    } else {
-      this.subscriptions.push(
-        this.autenticacionService.resetPassword(usuario).subscribe({
-          next: (response: CustomHttpResponse) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationService, response.mensaje);
-        }, 
-         error: (errorResponse: HttpErrorResponse) => {
-          this.notificacion(errorResponse);
-          this.showLoading = false;
-        }
-        })
-      );     
-  }*/
+  public onOlvidoPassword(): void {
+    if (this.nombreUsuario === '') {
+      Notificacion.notificacionOK(
+        this.notificationRef,
+        this.notificationServiceLocal,
+        'Ingresar un usuario para recuperar la contraseña'
+      );
+      return;
+    }
+
+    this.subscriptions.push(
+      this.autenticacionService.resetPassword(this.nombreUsuario).subscribe({
+        next: (response: CustomHttpResponse) => {
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            response.mensaje
+          );
+          this.showLoadingOlvidoPassword = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
+          this.showLoadingOlvidoPassword = false;
+        },
+      })
+    );
+  }
+
+  public confirmaOlvidoPassword(event, nombreUsuario): void {
+
+    console.log(nombreUsuario);
+
+    if (nombreUsuario === '') {
+      Notificacion.notificacionOK(
+        this.notificationRef,
+        this.notificationServiceLocal,
+        'Ingresar un usuario para recuperar la contraseña'
+      );
+      this.showLoadingOlvidoPassword = false;
+      return;
+    }
+
+    this.mensajeConfirmacion =
+      '¿Está seguro que desea recuperar la contraseña del usuario ' +
+      nombreUsuario +
+      '?';
+
+    this.nombreUsuario = nombreUsuario;
+
+    super.openPopconfirm(event, this.onOlvidoPassword.bind(this), this.onCancelOlvidoPassword.bind(this));
+  }
 }

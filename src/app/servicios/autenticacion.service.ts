@@ -30,10 +30,14 @@ export class AutenticacionService {
     return this.http.post<Usuario>(`${this.host}/usuario/registro`, usuario);
   }
 
-  public resetPassword(nombreUsuario: string): Observable<string> {
+  /*public resetPassword(nombreUsuario: string): Observable<string> {
     return this.http.post<string>(`${this.host}/usuario/resetpassword/${nombreUsuario}`, null);
-  }
+  }*/
 
+  public resetPassword(nombreUsuario: string): Observable<any> {
+    const url = `${this.host}/usuario/resetPassword/${nombreUsuario}`;
+    return this.http.post(url, {});
+  }
 
   public logOut(): void {
     this.token = null;

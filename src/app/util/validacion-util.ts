@@ -58,6 +58,10 @@ export class ValidacionUtil {
     || ( typeof value === 'string' ? value.trim() === '' : false);
   }
 
+  public static isNullOrEmptyNumber(value: number): boolean {
+    return value === undefined || value === null || isNaN(value);
+  }
+
   public static isNullOrEmptyObject(value: any): boolean {
     return value === undefined || value === null;
   }

@@ -45,7 +45,7 @@ export class ComponenteBase implements OnDestroy {
 
   // Funcionalidad de confirmación
 
-  openPopconfirm(event: Event, confirmCallback: () => void) {
+  openPopconfirm(event: Event, confirmCallback: () => void, cancelCallback?: () => void) {
     
     const target = event.target as HTMLElement;
 
@@ -58,6 +58,11 @@ export class ComponenteBase implements OnDestroy {
     this.subscriptions.push(
     this.popconfirmRef.onClose.subscribe((message: any) => {
       // cancela acción
+
+      if(cancelCallback != null){
+        cancelCallback();
+      }
+
       return false;
     })
     );

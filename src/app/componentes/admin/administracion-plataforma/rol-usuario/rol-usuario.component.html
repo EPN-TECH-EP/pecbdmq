@@ -104,7 +104,7 @@
 
 <!-- Resutados de la búsqueda -->
 <div class="row d-flex justify-content-center" *ngIf="usuarios.length > 0">
-  <div class="col-md-6 text-center">
+  <div class="col-md-9 text-center">
     <p class="fs-5 fw-bolder">Resultados</p>
 
     <div class="datatable mt-4 datatable-sm table-responsive">
@@ -157,11 +157,11 @@
 <!-- FIN Resultados -->
 
 <div class="row d-flex justify-content-center" *ngIf="hayUsuarioSeleccionado()">
-  <div class="col-md-6 text-center">
+  <div class="col-md-9 text-center">
     <div>
       <p>
         Usuario actual:
-        <strong class="ms-2 text-primary" >{{ usuarioSeleccionado.nombreUsuario }}</strong>
+        <strong class="ms-2 text-primary" >{{ usuarioSeleccionado.nombreUsuario }} | {{ usuarioSeleccionado.codDatosPersonales.apellido }}  {{usuarioSeleccionado.codDatosPersonales.nombre}}</strong>
       </p>
     </div>
 
