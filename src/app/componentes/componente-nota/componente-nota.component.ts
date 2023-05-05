@@ -1,19 +1,19 @@
-import {ComponenteNotaService} from './../../servicios/componente-nota.service';
-import {ComponenteNota} from '../../modelo/admin/componente-nota';
-import {Component, OnInit} from '@angular/core';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {HeaderType} from 'src/app/enum/header-type.enum';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {ValidacionUtil} from 'src/app/util/validacion-util';
+import { ComponenteNotaService } from './../../servicios/componente-nota.service';
+import { ComponenteNota } from '../../modelo/admin/componente-nota';
+import { Component, OnInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { MdbNotificationRef, MdbNotificationService, } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-componente-nota',
@@ -38,8 +38,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
 
   //options
  options = [
-    {value: 'ACTIVO', label: 'ACTIVO'},
-    {value: 'INACTIVO', label: 'INACTIVO'},
+  { value: 'ACTIVO', label: 'ACTIVO' },
+  { value: 'INACTIVO', label: 'INACTIVO' },
   ];
 
   //table

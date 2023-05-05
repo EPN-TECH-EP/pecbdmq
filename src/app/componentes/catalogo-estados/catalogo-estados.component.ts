@@ -1,4 +1,4 @@
-import {CatalogoEstadosService} from './../../servicios/catalogo-estados.service';
+import {CatalogoEstadosService} from '../../servicios/catalogo-estados.service';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
@@ -147,7 +147,8 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.catalogoEditForm = {...this.catalogos[index]};
+    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
+    this.catalogoEditForm = {...this.catalogos[index + offset]};
   }
 
   undoRow() {
@@ -176,8 +177,8 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
       this.Api.actualizarCatalogo(catalogo, catalogo.codigo).subscribe({
         next: (response) => {
          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Catálogo de Estado actualizada con éxito');
-
-          this.catalogos[this.editElementIndex] = response.body;
+          const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
+          this.catalogos[index] = response.body;
           this.catalogos = [...this.catalogos]
 
           this.showLoading = false;

@@ -23,15 +23,17 @@
           class="table datatable-table"
           mdbTable
           mdbTableSort
+          #sort="mdbTableSort"
           #table="mdbTable"
           [dataSource]="tiposBaja"
           [pagination]="pagination"
+          [sort]="sort"
         >
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col">
-              <b> {{ header | titlecase }}</b>
+            <th *ngFor="let header of headers" scope="col" [mdbTableSortHeader]="header.key">
+              <b> {{ header.label | titlecase }}</b>
             </th>
             <th scope="col" class="text-center"><b>Acciones</b></th>
           </tr>
@@ -140,8 +142,9 @@
       </form>
       <mdb-table-pagination
         #pagination
-        [entries]="10"
+        [entries]="5"
         [rowsPerPageText]="'Registros por página'"
+        (paginationChange)="onPaginationChange($event)"
       ></mdb-table-pagination>
     </div>
 

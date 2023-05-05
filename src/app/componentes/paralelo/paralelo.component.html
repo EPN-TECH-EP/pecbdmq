@@ -189,6 +189,7 @@
         <mdb-table-pagination
           #pagination
           [entries]="10"
+          (paginationChange)="onPaginationChange($event)"
         ></mdb-table-pagination>
       </form>
     </div>

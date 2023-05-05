@@ -39,7 +39,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     private rolService: RolService,
     private usuarioService: UsuarioService,
     private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService
+    private popconfirmServiceLocal: MdbPopconfirmService,
   ) {
     super(notificationServiceLocal, popconfirmServiceLocal);
   }
@@ -213,9 +213,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
 
   // tabla de resultados de busqueda de usuarios
   onRowClick(usuario: Usuario): void {
-    
-    console.log(usuario);
-    
     this.usuarioSeleccionado = usuario;
 
     this.buscarRolesUsuario();

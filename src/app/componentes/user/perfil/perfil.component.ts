@@ -6,6 +6,11 @@ import {OPCIONES_DATEPICKER} from "../../../util/constantes/opciones-datepicker.
 import {MyValidators} from "../../../util/validators";
 import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
+import {DatoPersonal} from "../../../modelo/admin/dato-personal";
+import {ImagenService} from "../../../servicios/imagen.service";
+import {EMPTY, switchMap} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
+import {catchError, map, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-perfil',
@@ -14,15 +19,17 @@ import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 })
 export class PerfilComponent implements OnInit {
 
-  usuario                     : Usuario
-  datosPersonales             : UpdateDatoPersonalDto
-  formularioActualizarUsuario : FormGroup
-  editando                    : boolean = false
+  usuario: Usuario
+  datosPersonales: UpdateDatoPersonalDto
+  imagenPerfil: SafeResourceUrl
+  formularioActualizarUsuario: FormGroup
+  editando: boolean = false
 
   constructor(
     private autenticacionService: AutenticacionService,
     private formBuilder: FormBuilder,
     private datoPersonalService: DatoPersonalService,
+    private imagenService: ImagenService
   ) {
     this.formularioActualizarUsuario = new FormGroup({})
     this.datosPersonales = {} as UpdateDatoPersonalDto
@@ -30,18 +37,30 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.autenticacionService.user$.pipe(
+      tap((usuario) => {
+        this.usuario = usuario;
+        this.imagenService.visualizar(usuario.codDatosPersonales.cod_documento_imagen).pipe(
+          map((imagen) => this.imagenPerfil = imagen)
+        ).subscribe();
+        this.datosPersonales = this.usuario.codDatosPersonales;
+        this.usuario.codDatosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
+      }),
+      catchError(() => {
     this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
-    this.usuario.codDatosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento)
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   private constructorFormulario(): void {
     this.formularioActualizarUsuario = this.formBuilder.group({
-      nombre          : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      apellido        : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      correoPersonal  : ['', Validators.email],
-      telefono        : ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      direccion       : ['', [Validators.minLength(5), Validators.maxLength(100)]],
-      fechaNacimiento : [''],
+      nombre: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      apellido: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      correoPersonal: ['', Validators.email],
+      telefono: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      direccion: ['', [Validators.minLength(5), Validators.maxLength(100)]],
+      fechaNacimiento: [''],
     })
     this.formularioActualizarUsuario.valueChanges.subscribe({
       next: value => {
@@ -78,30 +97,61 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre            : this.nombreField.value,
-      apellido          : this.apellidoField.value,
-      correo_personal   : this.correoPersonalField.value,
-      num_telef_celular : this.telefonoField.value,
-      canton_residencia : this.direccionField.value,
-      fecha_nacimiento  : this.fechaNacimientoField.value,
+      nombre: this.nombreField.value,
+      apellido: this.apellidoField.value,
+      correo_personal: this.correoPersonalField.value,
+      num_telef_celular: this.telefonoField.value,
+      canton_residencia: this.direccionField.value,
+      fecha_nacimiento: this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
-      .subscribe( value => {
-        console.log(value)
+      .subscribe(
+        (res: DatoPersonal) => {
+          this.usuario.codDatosPersonales = res
+          this.autenticacionService.agregaUsuarioACache(this.usuario);
+          this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
       })
+    this.editando = false;
+
   }
 
   editarPerfil() {
     this.formularioActualizarUsuario.patchValue({
-      nombre          : this.usuario.codDatosPersonales.nombre,
-      apellido        : this.usuario.codDatosPersonales.apellido,
-      correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
-      telefono        : this.usuario.codDatosPersonales.num_telef_celular,
-      direccion       : this.usuario.codDatosPersonales.canton_residencia,
-      fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
+      nombre: this.usuario.codDatosPersonales.nombre,
+      apellido: this.usuario.codDatosPersonales.apellido,
+      correoPersonal: this.usuario.codDatosPersonales.correo_personal,
+      telefono: this.usuario.codDatosPersonales.num_telef_celular,
+      direccion: this.usuario.codDatosPersonales.canton_residencia,
+      fechaNacimiento: this.usuario.codDatosPersonales.fecha_nacimiento,
     });
-    console.log(this.formularioActualizarUsuario.value)
+  }
+
+  cargarImagen(event: any) {
+    const formData = new FormData();
+
+    formData.append('archivo', event.target.files[0]);
+    formData.append('codigo', this.usuario.codUsuario.toString());
+    formData.append('proceso', 'Usuario')
+
+    this.imagenService.cargar(formData).subscribe({
+      next: (response) => {
+        this.datosPersonales.cod_documento_imagen = response.body.codigo;
+        this.imagenService.visualizar(response.body.codigo).subscribe(
+          {
+            next: (url) => {
+              this.imagenPerfil = url
+            },
+            error: (error) => {
+              console.log('Error al obtener la URL de la imagen: ', error)
+            }
+          });
+      },
+      error: (error) => {
+        console.log('Error al cargar la imagen: ', error);
+      }
+    });
+
   }
 
   protected readonly opcionesDatePicker = OPCIONES_DATEPICKER;

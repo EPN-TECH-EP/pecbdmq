@@ -13,6 +13,7 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {Usuario} from "../../modelo/admin/usuario";
 
 @Component({
   selector: 'app-principal',
@@ -29,6 +30,7 @@ export class PrincipalComponent implements OnInit, OnDestroy {
   listaMenu: Menu[] = null;
   estructuraMenu: Map<number, number[]> = new Map();
   sinMenu: boolean = false;
+  usuario: Usuario
 
   constructor(
     private menuService: MenuService,
@@ -40,6 +42,16 @@ export class PrincipalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+
+    this.autenticacionService.user$.subscribe({
+      next: (usuario) => {
+        if (usuario === null) {
+          this.nombreUsuario = '';
+        }
+        this.usuario = usuario
+        this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido
+      },
+    })
 
     const usuario = this.autenticacionService.obtieneUsuarioDeCache();
     this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido

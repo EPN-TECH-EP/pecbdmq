@@ -298,8 +298,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    console.log(ponderacion);
-
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiPonderacion.actualizarPonderacion(

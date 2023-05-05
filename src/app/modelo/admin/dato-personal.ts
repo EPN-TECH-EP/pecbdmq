@@ -317,4 +317,5 @@ export interface DatoPersonal{
   merito_deportivo_descripcion: string;
   merito_academico_descripcion: string;
   pin_validacion_correo:        number;
+  cod_documento_imagen:         number;
 }

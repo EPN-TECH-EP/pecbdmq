@@ -29,7 +29,9 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Baja'];
+  headers = [
+    {key: 'baja', label: 'Baja'},
+  ]
 
   constructor(
     private apiTipoBaja: TipoBajaService,
@@ -58,7 +60,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   private buildForm() {
     this.tiposBajaForm = this.formBuilder.group({
-      baja: ['', [Validators.required, Validators.minLength(3)]]
+      baja: ['', [Validators.required, Validators.minLength(5)]]
     });
   }
 
@@ -93,8 +95,9 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.tipoBajaEditForm = {...this.tiposBaja[index]};
-    this.tiposBajaForm.patchValue(this.tipoBajaEditForm)
+    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
+    this.tipoBajaEditForm = {...this.tiposBaja[index + offset]};
+    this.tiposBajaForm.patchValue(this.tipoBajaEditForm);
   }
 
   undoRow() {
@@ -117,7 +120,6 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
         },
       })
     )
-    this.bajaField?.reset();
   }
 
   updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
@@ -129,8 +131,9 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
       this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
         next: (response) => {
           this.okNotification('Tipo de baja actualizado correctamente');
-          this.tiposBaja[this.editElementIndex] = response.body;
-          this.tiposBaja = [...this.tiposBaja]
+          const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
+          this.tiposBaja[index] = response.body;
+          this.tiposBaja = [...this.tiposBaja];
           this.showLoading = false;
           this.bajaField?.reset();
           this.editElementIndex = -1;

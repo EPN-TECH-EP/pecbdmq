@@ -159,6 +159,7 @@
         #pagination
         [entries]="10"
         [rowsPerPageText]="'Registros por página'"
+        (paginationChange)="onPaginationChange($event)"
       ></mdb-table-pagination>
     </div>
 

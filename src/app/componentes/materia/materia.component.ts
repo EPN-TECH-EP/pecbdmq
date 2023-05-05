@@ -175,20 +175,19 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   */
   public registro(materia: Materia): void {
 
-    materia = {...materia, estado: 'ACTIVO'};
 
     if (
       materia.nombre == '' ||
-      materia.numHoras == 0 || materia.numHoras < 0 ||
+      ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
       materia.tipoMateria == '' ||
       materia.observacionMateria == '' ||
-      materia.pesoMateria == 0 || materia.pesoMateria < 0 ||
-      materia.notaMinima == 0 || materia.notaMinima < 0) {
+      ValidacionUtil.isNullOrEmptyNumber(materia.pesoMateria) ||
+      ValidacionUtil.isNullOrEmptyNumber(materia.notaMinima)) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return
     }   
 
-    
+    materia = {...materia, estado: 'ACTIVO'};
     this.showLoading = true;
     this.userResponse = 'Lunes';
     this.subscriptions.push(
@@ -219,7 +218,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.materiaEditForm = {...this.materias[index]};
+    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
+    this.materiaEditForm = {...this.materias[index + offset]};
   }
 
   undoRow() {
@@ -265,7 +265,8 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia actualizada con éxito');
 
-          this.materias[this.editElementIndex] = response.body;
+          const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
+          this.materias[index] = response.body;
           this.showLoading = false;
           this.materia = {
             codMateria: 0,
