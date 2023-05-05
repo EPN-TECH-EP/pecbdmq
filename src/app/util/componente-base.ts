@@ -7,13 +7,18 @@ import { Subscription } from 'rxjs';
 import { Directive, OnDestroy } from '@angular/core';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { PopconfirmComponent } from '../componentes/util/popconfirm/popconfirm.component';
+import {MdbPaginationChange} from "../../../code/mdb-angular-ui-kit/table";
 
 @Directive()
 export class ComponenteBase implements OnDestroy {
   protected subscriptions: Subscription[] = [];
   protected notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   public showLoading: boolean = false;
-  
+
+  paginaActual: number = 0;
+  entradasPorPagina: number = 0;
+  indiceAuxRegistro: number = 0;
+
   private notificationService: MdbNotificationService;
 
   // confirmar acciones: elimiar y editar
@@ -23,7 +28,7 @@ export class ComponenteBase implements OnDestroy {
   mostrarConfirmacion:boolean = false;
 
   constructor(notificationService: MdbNotificationService,
-    popconfirmService: MdbPopconfirmService) {    
+    popconfirmService: MdbPopconfirmService) {
     this.notificationService = notificationService;
     this.popconfirmService = popconfirmService;
     this.showLoading = false;
@@ -46,7 +51,7 @@ export class ComponenteBase implements OnDestroy {
   // Funcionalidad de confirmación
 
   openPopconfirm(event: Event, confirmCallback: () => void) {
-    
+
     const target = event.target as HTMLElement;
 
     this.popconfirmRef = this.popconfirmService.open(
@@ -68,6 +73,14 @@ export class ComponenteBase implements OnDestroy {
       return true;
     });
 
+  }
+
+  onPaginationChange(event: MdbPaginationChange): void {
+    this.paginaActual = event.page;
+    this.entradasPorPagina = event.entries;
+    if (this.paginaActual > 0) {
+      this.indiceAuxRegistro = this.paginaActual * this.entradasPorPagina;
+    }
   }
 
 }

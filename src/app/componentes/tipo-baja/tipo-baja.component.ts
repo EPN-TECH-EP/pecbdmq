@@ -9,8 +9,8 @@ import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-tipo-baja',
@@ -20,16 +20,18 @@ import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   codigo: number;
-  tiposBaja         : TipoBaja[];
-  tipoBajaEditForm  : TipoBaja;
-  tiposBajaForm     : FormGroup;
-  notificationRef   : MdbNotificationRef<AlertaComponent> | null = null;
-  showLoading       : boolean;
+  tiposBaja: TipoBaja[];
+  tipoBajaEditForm: TipoBaja;
+  tiposBajaForm: FormGroup;
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  showLoading: boolean;
 
   @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Baja'];
+  headers = [
+    {key: 'baja', label: 'Baja'},
+  ]
 
   constructor(
     private apiTipoBaja: TipoBajaService,
@@ -93,8 +95,9 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.tipoBajaEditForm = {...this.tiposBaja[index]};
-    this.tiposBajaForm.patchValue(this.tipoBajaEditForm)
+    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
+    this.tipoBajaEditForm = {...this.tiposBaja[index + offset]};
+    this.tiposBajaForm.patchValue(this.tipoBajaEditForm);
   }
 
   undoRow() {
@@ -128,8 +131,9 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
       this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
         next: (response) => {
           this.okNotification('Tipo de baja actualizado correctamente');
-          this.tiposBaja[this.editElementIndex] = response.body;
-          this.tiposBaja = [...this.tiposBaja]
+          const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
+          this.tiposBaja[index] = response.body;
+          this.tiposBaja = [...this.tiposBaja];
           this.showLoading = false;
           this.bajaField?.reset();
           this.editElementIndex = -1;
@@ -142,11 +146,11 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-public confirmaEliminar(event: Event, codigo: number): void {
-  super.confirmaEliminarMensaje();
-  this.codigo = codigo;
-  super.openPopconfirm(event, this.eliminar.bind(this));
-}
+  public confirmaEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
+  }
 
   public eliminar(): void {
     this.showLoading = true;

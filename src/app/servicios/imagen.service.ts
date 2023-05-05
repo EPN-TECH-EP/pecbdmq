@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpEvent, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {CustomHttpResponse} from "../modelo/admin/custom-http-response";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +19,23 @@ export class ImagenService {
   ) {
   }
 
-  cargar(formData: FormData): Observable<HttpEvent<CustomHttpResponse>> {
-    let response: Observable<HttpEvent<CustomHttpResponse>>;
-    try {
-      response = this.http.post<CustomHttpResponse>(
-        `${this.host}/datopersonal/guardarImagen`,
-        formData,
-        {
-          reportProgress: true,
-          observe: 'events',
-          headers: new HttpHeaders({Accept: 'application/json'}),
-        }
-      );
-
-      return response;
-    } catch (error) {
-      console.log('catch CargaArchivoService');
-    }
+  cargar(formData: FormData): Observable<HttpResponse<any>> {
+    return this.http.post<HttpResponse<any>>(
+      `${this.host}/datopersonal/guardarImagen`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'response',
+        headers: new HttpHeaders({Accept: 'application/json'}),
+      }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.log('catch CargaArchivoService', error);
+        return throwError(() => error);
+      })
+    );
   }
+
 
   descargar(id: string) {
     return this.http.get(`${this.host}/link/${id}`, {

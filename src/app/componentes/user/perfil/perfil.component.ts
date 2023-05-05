@@ -8,6 +8,7 @@ import {DatoPersonalService} from "../../../servicios/dato-personal.service";
 import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
 import {ImagenService} from "../../../servicios/imagen.service";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-perfil',
@@ -49,12 +50,12 @@ export class PerfilComponent implements OnInit {
 
   private constructorFormulario(): void {
     this.formularioActualizarUsuario = this.formBuilder.group({
-      nombre: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      apellido: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      correoPersonal: ['', Validators.email],
-      telefono: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      direccion: ['', [Validators.minLength(5), Validators.maxLength(100)]],
-      fechaNacimiento: [''],
+      nombre          : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      apellido        : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      correoPersonal  : ['', Validators.email],
+      telefono        : ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      direccion       : ['', [Validators.minLength(5), Validators.maxLength(100)]],
+      fechaNacimiento : [''],
     })
     this.formularioActualizarUsuario.valueChanges.subscribe({
       next: value => {
@@ -122,17 +123,15 @@ export class PerfilComponent implements OnInit {
   }
 
   cargarImagen(event: any) {
+    console.log("Ejecutando cargar imagen")
     const formData = new FormData();
 
     formData.append('archivo', event.target.files[0]);
     formData.append('codigo', this.usuario.codUsuario.toString());
     formData.append('proceso', 'Usuario')
 
-    this.imagenService.cargar(formData).subscribe(
-      (res) => {
-        console.log(res)
-      }
-    )
+    this.imagenService.cargar(formData)
+      .subscribe((res) => {console.log(res.body)})
   }
 
   protected readonly opcionesDatePicker = OPCIONES_DATEPICKER;
