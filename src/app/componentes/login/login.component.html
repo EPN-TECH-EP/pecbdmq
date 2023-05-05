@@ -1,4 +1,7 @@
-<div class="container-fluid bg-image " [ngStyle]="{ 'background-image': backgroundImage }" >
+<div
+  class="container-fluid bg-image"
+  [ngStyle]="{ 'background-image': backgroundImage }"
+>
   <div
     class="d-flex justify-content-center align-items-center transbox"
     style="height: 100vh"
@@ -10,9 +13,8 @@
         <!-- h5 class="card-title p-4">Plataforma Educativa - CBDMQ</h5 -->
         <h4 class="card-title p-4 ms-5">
           <i class="fa-solid fa-user-graduate"></i>
-          Plataforma Educativa</h4>
-
-
+          Plataforma Educativa
+        </h4>
 
         <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
           <mdb-form-control class="m-4">
@@ -28,12 +30,12 @@
               class="form-control"
               ngModel
               #nombreUsuarioInput="ngModel"
-              required 
+              required
             />
 
             <label mdbLabel="mdbLabel" class="form-label" for="nombreUsuario"
-              >Usuario</label>           
-
+              >Usuario</label
+            >
           </mdb-form-control>
 
           <mdb-form-control class="m-4">
@@ -70,11 +72,33 @@
           </div>
         </form>
 
-        <!-- Olvido contraseña -->
-        <!--button type="button" class="btn btn-link" mdbRipple rippleColor="dark"
-        (click)="onOlvidoPassword(loginForm.value?.nombreUsuario)"
-        >Olvidé mi contraseña...</button-->
+        <hr class="hr" />
 
+        <!-- Olvido contraseña -->
+        <div class="d-flex justify-content-center align-items-center transbox">
+          <button
+            type="button"
+            class="btn btn-link text-center"
+            mdbRipple
+            rippleColor="dark"
+            (click)="
+              showLoadingOlvidoPassword = true;
+              confirmaOlvidoPassword($event, loginForm.value?.nombreUsuario)
+            "
+            [disabled]="showLoadingOlvidoPassword"
+          >
+            <span
+              *ngIf="showLoadingOlvidoPassword"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="showLoadingOlvidoPassword">Espere...</span>
+            <span *ngIf="!showLoadingOlvidoPassword"
+              >Olvidé mi contraseña...</span
+            >
+          </button>
+        </div>
       </div>
     </div>
   </div>

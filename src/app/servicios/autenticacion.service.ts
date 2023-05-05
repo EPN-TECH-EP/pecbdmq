@@ -7,7 +7,6 @@ import {Usuario} from '../modelo/admin/usuario';
 import {Materia} from '../modelo/admin/materias';
 import {LocalDataService} from './util/local-data.service';
 import {CustomHttpResponse} from '../modelo/admin/custom-http-response';
-import {tap} from "rxjs/operators";
 
 
 @Injectable({providedIn: 'root'})
@@ -34,10 +33,14 @@ export class AutenticacionService {
     return this.http.post<Usuario>(`${this.host}/usuario/registro`, usuario);
   }
 
-  public resetPassword(nombreUsuario: string): Observable<string> {
+  /*public resetPassword(nombreUsuario: string): Observable<string> {
     return this.http.post<string>(`${this.host}/usuario/resetpassword/${nombreUsuario}`, null);
-  }
+  }*/
 
+  public resetPassword(nombreUsuario: string): Observable<any> {
+    const url = `${this.host}/usuario/resetPassword/${nombreUsuario}`;
+    return this.http.post(url, {});
+  }
 
   public logOut(): void {
     this.token = null;

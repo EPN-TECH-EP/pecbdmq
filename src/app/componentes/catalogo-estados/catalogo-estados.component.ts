@@ -71,45 +71,45 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
 
 
   /*
-    private notificacion(errorResponse: HttpErrorResponse) {
+  private notificacion(errorResponse: HttpErrorResponse) {
 
-      let customError: CustomHttpResponse = errorResponse.error;
-      let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
+    let customError: CustomHttpResponse = errorResponse.error;
+    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
 
-      let mensajeError = customError.mensaje;
-      let codigoError = errorResponse.status;
+    let mensajeError = customError.mensaje;
+    let codigoError = errorResponse.status;
 
-      if (!mensajeError) {
-        mensajeError = 'Error inesperado';
-        tipoAlerta = TipoAlerta.ALERTA_ERROR;
-      }
-
-
-      this.notificationRef = Notificacion.notificar(
-        this.notificationServiceLocal,
-        mensajeError,
-        tipoAlerta
-      );
+    if (!mensajeError) {
+      mensajeError = 'Error inesperado';
+      tipoAlerta = TipoAlerta.ALERTA_ERROR;
     }
 
 
-    public notificacionOK(mensaje: string) {
-      this.notificationRef = Notificacion.notificar(
-        this.notificationServiceLocal,
-        mensaje,
-        TipoAlerta.ALERTA_OK
-      );
-    }
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensajeError,
+      tipoAlerta
+    );
+  }
 
 
-    public errorNotification(mensaje: string) {
-      this.notificationRef = Notificacion.notificar(
-        this.notificationServiceLocal,
-        mensaje,
-        TipoAlerta.ALERTA_ERROR
-      );
-    }
-     */
+  public notificacionOK(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
+  }
+
+
+  public errorNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+   */
 
   //registro
   public registro(catalogo: CatalogoEstados): void {

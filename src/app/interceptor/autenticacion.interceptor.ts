@@ -14,7 +14,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
   serviciosPublicosUrls: string[] = 
   ['/usuario/login', 
   '/usuario/registro', 
-  '/usuario/resetpassword', 
+  '/usuario/resetPassword', 
   '/usuario/guardarArchivo',
   '/usuario/maxArchivo',
 ];

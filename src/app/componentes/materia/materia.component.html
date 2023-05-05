@@ -24,7 +24,6 @@
         id="search-input"
         [disabled]="editElementIndex !== -1"
         (keyup)="search($event)"
-
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
@@ -42,316 +41,356 @@
           [dataSource]="materias"
         >
           <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headers"
-              [mdbTableSortHeader]="header"
-              scope="col"
-            >
-              {{ header | titlecase }}
-            </th>
-            <th scope="col">Acciones</th>
-          </tr>
+            <tr>
+              <th
+                *ngFor="let header of headers"
+                [mdbTableSortHeader]="header"
+                scope="col"
+                class="text-wrap"
+              >
+                {{ header | titlecase }}
+              </th>
+              <th scope="col">Acciones</th>
+            </tr>
           </thead>
 
           <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroNombre"
-                  name="nombre"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.nombre"
-                  required
-                  #nombre="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroNumHoras"
-                  name="numHoras"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.numHoras"
-                  required
-                  #numHoras="ngModel"
-                  required min="1" max="20"
-                  inputValidation="entero"
-                  mdbTooltip="Rango: 1 - 20"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroTipoMateria"
-                  name="tipoMateria"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.tipoMateria"
-                  required
-                  #tipoMateria="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoMateria)"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroObservacionMateria"
-                  name="observacionMateria"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.observacionMateria"
-                  required
-                  #observacionMateria="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', observacionMateria)"
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroPesoMateria"
-                  name="pesoMateria"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.pesoMateria"
-                  required
-                  #pesoMateria="ngModel"
-                  required min="1" max="100"
-                  inputValidation="decimal"
-                  mdbTooltip="Rango: 1 - 100"
-                />
-              </mdb-form-control>
-            </td>
-
-            <td>
-              <mdb-form-control>
-                <input
-                  mdbInput="mdbInput"
-                  id="registroNotaMinima"
-                  name="notaMinima"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="materia.notaMinima"
-                  required
-                  #notaMinima="ngModel"
-                  required min="1" max="10"
-                  inputValidation="decimal"
-                  mdbTooltip="Rango: 1 - 10"
-                />
-              </mdb-form-control>
-            </td>
-
-
-            <td>
-              <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                id="btnRegistrar"
-                type="submit"
-                (click)="registro(form.value); addRow = false;"
-              >
-                <i class="fa fa-check"></i> Agregar
-              </button>
-              <button
-                name="añadir"
-                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                (click)="addRow = false"
-              >
-                <i class="fa fa-ban"></i> Cancelar
-              </button>
-            </td>
-          </tr>
-
-          <tr *ngFor="let materia of table.data; let index = index">
-
-            <td style="min-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.nombre }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <tr *ngIf="addRow" scope="row">
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="nombre"
+                    mdbInput="mdbInput"
+                    id="registroNombre"
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.nombre"
-                    #nombre="ngModel"
+                    [(ngModel)]="materia.nombre"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
+                    #nombre="ngModel"
+                    (change)="
+                      validacionUtil.onInputChange($event, 'catalogo', nombre)
+                    "
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
-
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.numHoras }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              </td>
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="numHoras"
+                    mdbInput="mdbInput"
+                    id="registroNumHoras"
                     name="numHoras"
-                    type="number"
+                    type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.numHoras"
+                    [(ngModel)]="materia.numHoras"
+                    required
                     #numHoras="ngModel"
                     required
-                    required min="1" max="20"
+                    min="1"
+                    max="20"
                     inputValidation="entero"
                     mdbTooltip="Rango: 1 - 20"
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
-
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.tipoMateria }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              </td>
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="tipoMateria"
+                    mdbInput="mdbInput"
+                    id="registroTipoMateria"
                     name="tipoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.tipoMateria"
-                    #tipoMateria="ngModel"
+                    [(ngModel)]="materia.tipoMateria"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoMateria)"
+                    #tipoMateria="ngModel"
+                    (change)="
+                      validacionUtil.onInputChange(
+                        $event,
+                        'catalogo',
+                        tipoMateria
+                      )
+                    "
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
-
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.observacionMateria }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              </td>
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="observacionMateria"
+                    mdbInput="mdbInput"
+                    id="registroObservacionMateria"
                     name="observacionMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.observacionMateria"
-                    #observacionMateria="ngModel"
+                    [(ngModel)]="materia.observacionMateria"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', observacionMateria)"
+                    #observacionMateria="ngModel"
+                    (change)="
+                      validacionUtil.onInputChange(
+                        $event,
+                        'catalogo',
+                        observacionMateria
+                      )
+                    "
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
-
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.pesoMateria }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              </td>
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="pesoMateria"
+                    mdbInput="mdbInput"
+                    id="registroPesoMateria"
                     name="pesoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.pesoMateria"
+                    [(ngModel)]="materia.pesoMateria"
+                    required
                     #pesoMateria="ngModel"
-                    required min="1" max="100"
+                    required
+                    min="1"
+                    max="100"
                     inputValidation="decimal"
                     mdbTooltip="Rango: 1 - 100"
-
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
+              </td>
 
-            <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ materia.notaMinima }}
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <td>
                 <mdb-form-control>
                   <input
-                    mdbInput
-                    id="notaMinima"
+                    mdbInput="mdbInput"
+                    id="registroNotaMinima"
                     name="notaMinima"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materiaEditForm.notaMinima"
+                    [(ngModel)]="materia.notaMinima"
+                    required
                     #notaMinima="ngModel"
-                    required min="1" max="10"
+                    required
+                    min="1"
+                    max="10"
                     inputValidation="decimal"
                     mdbTooltip="Rango: 1 - 10"
-
                   />
                 </mdb-form-control>
-              </ng-container>
-            </td>
+              </td>
 
-
-            <td>
-              <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
-              >
-                <button
-                  mdbTooltip="Editar registro"
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editRow(index)"
-                  [disabled]="
-                  editElementIndex !== -1 && editElementIndex !== index
-                "
-                >
-                  <i class="fa fa-edit"></i>
-                </button>
-                <button
-                  mdbTooltip="Eliminar registro"
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event,materia.codMateria)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                >
-                  <i class="fa fa-trash-alt"></i>
-                </button>
-              </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <td>
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(materia, form.value)"
-
+                  id="btnRegistrar"
+                  type="submit"
+                (click)="registro(form.value); addRow = false;"
                 >
-                  <i class="fa fa-check"></i> Guardar
+                  <i class="fa fa-check"></i> Agregar
                 </button>
                 <button
+                  name="añadir"
                   class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="undoRow() "
-
+                  (click)="addRow = false"
                 >
                   <i class="fa fa-ban"></i> Cancelar
                 </button>
-              </ng-container>
-            </td>
-          </tr>
+              </td>
+            </tr>
+
+            <tr *ngFor="let materia of table.data; let index = index">
+              <td style="min-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div class="text-wrap">
+                    {{ materia.nombre }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="nombre"
+                      name="nombre"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.nombre"
+                      #nombre="ngModel"
+                      required
+                      (change)="
+                        validacionUtil.onInputChange($event, 'catalogo', nombre)
+                      "
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ materia.numHoras }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="numHoras"
+                      name="numHoras"
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.numHoras"
+                      #numHoras="ngModel"
+                      required
+                      required
+                      min="1"
+                      max="20"
+                      inputValidation="entero"
+                      mdbTooltip="Rango: 1 - 20"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div class="text-wrap">
+                    {{ materia.tipoMateria }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="tipoMateria"
+                      name="tipoMateria"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.tipoMateria"
+                      #tipoMateria="ngModel"
+                      required
+                      (change)="
+                        validacionUtil.onInputChange(
+                          $event,
+                          'catalogo',
+                          tipoMateria
+                        )
+                      "
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div class="text-wrap">
+                    {{ materia.observacionMateria }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="observacionMateria"
+                      name="observacionMateria"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.observacionMateria"
+                      #observacionMateria="ngModel"
+                      required
+                      (change)="
+                        validacionUtil.onInputChange(
+                          $event,
+                          'catalogo',
+                          observacionMateria
+                        )
+                      "
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ materia.pesoMateria }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="pesoMateria"
+                      name="pesoMateria"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.pesoMateria"
+                      #pesoMateria="ngModel"
+                      required
+                      min="1"
+                      max="100"
+                      inputValidation="decimal"
+                      mdbTooltip="Rango: 1 - 100"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ materia.notaMinima }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="notaMinima"
+                      name="notaMinima"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="materiaEditForm.notaMinima"
+                      #notaMinima="ngModel"
+                      required
+                      min="1"
+                      max="10"
+                      inputValidation="decimal"
+                      mdbTooltip="Rango: 1 - 10"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td>
+                <ng-container
+                  *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                >
+                  <button
+                    mdbTooltip="Editar registro"
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="editRow(index)"
+                    [disabled]="
+                      editElementIndex !== -1 && editElementIndex !== index
+                    "
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="confirmaEliminar($event, materia.codMateria)"
+                    [disabled]="
+                      editElementIndex !== -1 && editElementIndex !== index
+                    "
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editElementIndex === index">
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    (click)="actualizar(materia, form.value)"
+                  >
+                    <i class="fa fa-check"></i> Guardar
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="undoRow()"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
           </tbody>
         </table>
         <mdb-table-pagination
@@ -364,6 +403,3 @@
     </div>
   </div>
 </div>
-
-
-
