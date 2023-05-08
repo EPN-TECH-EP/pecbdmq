@@ -25,8 +25,6 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   tiposBajaForm: FormGroup;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   showLoading: boolean;
-
-  @ViewChild('table') table!: MdbTableDirective<TipoBaja>;
   editElementIndex = -1;
   addRow = false;
   headers = [

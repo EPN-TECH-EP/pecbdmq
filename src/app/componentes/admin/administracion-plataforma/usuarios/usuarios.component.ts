@@ -1,21 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { Subscription } from 'rxjs';
-import { Usuario } from 'src/app/modelo/admin/usuario';
-import { AlertaComponent } from '../../../util/alerta/alerta.component';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { UsuarioService } from '../../../../servicios/usuario.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { Notificacion } from 'src/app/util/notificacion';
-import { PopconfirmComponent } from '../../../util/popconfirm/popconfirm.component';
-import { Router } from '@angular/router';
-import { MenuService } from 'src/app/servicios/menu.service';
+import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {Subscription} from 'rxjs';
+import {Usuario} from 'src/app/modelo/admin/usuario';
+import {AlertaComponent} from '../../../util/alerta/alerta.component';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {UsuarioService} from '../../../../servicios/usuario.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {Notificacion} from 'src/app/util/notificacion';
+import {PopconfirmComponent} from '../../../util/popconfirm/popconfirm.component';
+import {Router} from '@angular/router';
+import {UsuarioNombreApellido} from '../../../../modelo/util/nombre-apellido';
+
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MyValidators} from "../../../../util/validators";
 
 @Component({
   selector: 'app-usuarios',
@@ -23,57 +26,75 @@ import { MenuService } from 'src/app/servicios/menu.service';
   styleUrls: ['./usuarios.component.scss'],
 })
 export class UsuariosComponent implements OnInit {
+
   private subscriptions: Subscription[] = [];
+
+  bucarUsuarioForm: FormGroup;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
-
-  public showLoading: boolean = true;
-
+  showLoading: boolean = true;
   // variables de tabla
   usuarios: Usuario[];
   usuarioFrm: Usuario = new Usuario();
   @ViewChild('table') table!: MdbTableDirective<Usuario>;
-
   editElementIndex = -1;
   addRow = false;
   headers = [
     {key: 'nombreUsuario', label: 'Identificación'},
+    {key: 'nombre', label: 'Nombres'},
+    {key: 'apellido', label: 'Apellidos'},
+    {key: 'correo_personal', label: 'Correo personal'},
     {key: 'fechaRegistro', label: 'Fecha de registro'},
     {key: 'fechaUltimoLogin', label: 'Fecha último ingreso'},
     {key: 'active', label: 'Activo?'},
     {key: 'notLocked', label: 'Habilitado?'}
   ]
   mensajeConfirmacion: string;
-  mostrarConfirmacion:boolean = false;
   indexEliminar: number;
   currentRoute: string;
 
   constructor(
-    public usuarioTemp: Usuario,
     private notificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private popconfirmService: MdbPopconfirmService,
     private router: Router,
-  ) {}
+    private builder: FormBuilder,
+  ) {
+    this.usuarios = [];
+    this.bucarUsuarioForm = new FormGroup({});
+  }
 
   ngOnInit(): void {
     this.currentRoute = this.router.url;
+    this.construirFormulario();
+  }
 
-    this.subscriptions.push(
-      this.usuarioService.getUsuarios().subscribe(
-        {
-          next: (response) => {
-            this.usuarios = response;
-            console.log(this.usuarios);
-            this.showLoading = false;
-          },
-          error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
-            this.showLoading = false;
-          },
-        }
-      )
-    )
+  private construirFormulario() {
+    this.bucarUsuarioForm = this.builder.group({
+      identificacion: [
+        '',
+        [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]
+      ],
+      nombres   : ['', [Validators.required, MyValidators.onlyLetters()]],
+      apellidos : ['',[Validators.required, MyValidators.onlyLetters()]],
+      correo    : ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  get identificacionField() {
+    return this.bucarUsuarioForm.get('identificacion');
+  }
+
+  get nombresField() {
+    return this.bucarUsuarioForm.get('nombres');
+  }
+
+  get apellidosField() {
+    return this.bucarUsuarioForm.get('apellidos');
+  }
+
+  get correoField() {
+    return this.bucarUsuarioForm.get('correo');
   }
 
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -101,11 +122,11 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  public notificacionOK(mensaje:string){
+  public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-    this.notificationService,
-    mensaje,
-    TipoAlerta.ALERTA_OK
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
     );
   }
 
@@ -115,22 +136,22 @@ export class UsuariosComponent implements OnInit {
 
   // funcionalidad
 
-  confirmaActualizar(usuario: Usuario){
+  confirmaActualizar(usuario: Usuario) {
     this.mensajeConfirmacion = '¿Actualizar los datos del usuario?';
   }
 
-  confirmaEliminar(usuario: Usuario){
+  confirmaEliminar(usuario: Usuario) {
     this.mensajeConfirmacion = '¿Eliminar el usuario? Esta acción es irreversible';
   }
 
 
-  eliminar(usuario: Usuario){
+  eliminar(usuario: Usuario) {
     this.subscriptions.push(
       this.usuarioService.eliminarUsuario(usuario.nombreUsuario).subscribe(
         {
           next: (response) => {
             this.showLoading = false;
-            this.editElementIndex=-1;
+            this.editElementIndex = -1;
             this.usuarios.splice(this.indexEliminar, 1);
             this.usuarios = [...this.usuarios];
             this.notificacionOK('Usuario eliminado con éxito');
@@ -153,27 +174,27 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  actualizar(usuario: Usuario, formValue){
+  actualizar(usuario: Usuario, formValue) {
 
-    if(
+    if (
       formValue.nombreUsuario === "" ||
       formValue.fechaRegistro === "" ||
       formValue.fechaUltimoLogin === "" ||
       formValue.active === undefined ||
       formValue.notLocked === undefined
-    ){
+    ) {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
 
     if (formValue.active === undefined) {
-      usuario.active= false;
+      usuario.active = false;
     } else {
       usuario.active = formValue.active;
     }
 
     if (formValue.notLocked === undefined) {
-      usuario.notLocked= false;
+      usuario.notLocked = false;
     } else {
       usuario.notLocked = formValue.notLocked;
     }
@@ -184,7 +205,7 @@ export class UsuariosComponent implements OnInit {
           next: (response) => {
             this.usuarios[this.editElementIndex] = response;
             this.showLoading = false;
-            this.editElementIndex=-1;
+            this.editElementIndex = -1;
             this.notificacionOK('Usuario actualizado con éxito');
           },
           error: (errorResponse: HttpErrorResponse) => {
@@ -196,12 +217,12 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
-  editar(index: number){
+  editar(index: number) {
     this.editElementIndex = index;
-    this.usuarioFrm={...this.usuarios[index]};
+    this.usuarioFrm = {...this.usuarios[index]};
   }
 
-  deshacer(index: number){
+  deshacer(index: number) {
     this.usuarioFrm = new Usuario();
     this.editElementIndex = -1;
   }
@@ -217,7 +238,7 @@ export class UsuariosComponent implements OnInit {
     this.popconfirmRef = this.popconfirmService.open(
       PopconfirmComponent,
       target,
-      { popconfirmMode: 'modal', data: { mensaje: this.mensajeConfirmacion } }
+      {popconfirmMode: 'modal', data: {mensaje: this.mensajeConfirmacion}}
     );
 
     this.popconfirmRef.onClose.subscribe((message: any) => {
@@ -251,4 +272,57 @@ export class UsuariosComponent implements OnInit {
     this.table.search(searchTerm);
   }
 
+  buscarPorIdentificacion() {
+    this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
+      {
+        next: (usuario) => {
+          this.usuarios[0] = usuario;
+          this.usuarios.splice(1, this.usuarios.length);
+          this.showLoading = false;
+          this.usuarios = [...this.usuarios];
+          console.log(this.usuarios);
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          console.log(errorResponse);
+        },
+      });
+  }
+
+  buscarPorNombresApellidos() {
+    const data: UsuarioNombreApellido = {
+      nombre: this.nombresField.value,
+      apellido: this.apellidosField.value
+    }
+    this.usuarioService.buscarPorNombreApellido(data).subscribe(
+      {
+        next: (usuarios) => {
+          this.usuarios = usuarios;
+          this.showLoading = false;
+          this.usuarios = [...this.usuarios];
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          console.error(errorResponse);
+        },
+      });
+  }
+
+  buscarPorCorreo() {
+    this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
+      {
+        next: (usuarios) => {
+          this.usuarios = usuarios;
+          this.usuarios.splice(1, this.usuarios.length);
+          this.showLoading = false;
+          this.usuarios = [...this.usuarios];
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          console.error(errorResponse);
+        },
+      }
+    )
+  }
+
+  limpiarRegistros() {
+    this.usuarios = [];
+  }
 }

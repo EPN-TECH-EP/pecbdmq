@@ -1,15 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpClient,
-  HttpResponse,
-  HttpErrorResponse,
-  HttpEvent,
+  HttpEvent, HttpParams,
 } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
-import { Usuario } from '../modelo/admin/usuario';
-import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
-import { NombreApellido } from '../modelo/util/nombre-apellido';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {Usuario} from '../modelo/admin/usuario';
+import {CustomHttpResponse} from '../modelo/admin/custom-http-response';
+import {UsuarioNombreApellido} from '../modelo/util/nombre-apellido';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +15,8 @@ import { NombreApellido } from '../modelo/util/nombre-apellido';
 export class UsuarioService {
   private host = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`${this.host}/usuario/lista`);
@@ -39,9 +38,10 @@ export class UsuarioService {
 
   public actualizarImagenPerfil(formData: FormData): Observable<HttpEvent<Usuario>> {
     return this.http.post<Usuario>(`${this.host}/usuario/actualizarImagenPerfil`, formData,
-    {reportProgress: true,
-      observe: 'events'
-    });
+      {
+        reportProgress: true,
+        observe: 'events'
+      });
   }
 
   public eliminarUsuario(nombreUsuario: string): Observable<CustomHttpResponse> {
@@ -54,17 +54,38 @@ export class UsuarioService {
 
   public obtenerUsuariosDeCacheLocal(): Usuario[] {
     if (localStorage.getItem('usuarios')) {
-        return JSON.parse(localStorage.getItem('usuarios'));
+      return JSON.parse(localStorage.getItem('usuarios'));
     }
     return null;
+  }
+
+  public buscarPorIdentificacion(identificacion: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.host}/usuario/buscar/${identificacion}`);
   }
 
   public buscarPorNombreUsuario(nombreUsuario: string): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.host}/usuario/buscar/${nombreUsuario}`);
   }
 
-  public buscarPorNombreApellido(nombreApellido: NombreApellido): Observable<Usuario[]> {
-    return this.http.post<Usuario[]>(`${this.host}/usuario/buscarNombreApellido`, nombreApellido);
+  public buscarPorNombreApellido(nombreApellido: UsuarioNombreApellido): Observable<Usuario[]> {
+    const params = new HttpParams()
+      .set('nombres', nombreApellido.nombre)
+      .set('apellidos', nombreApellido.apellido);
+    return this.http.post<Usuario[]>(
+      `${this.host}/usuario/buscarNombresApellidos?`,
+      {},
+      {params}
+    );
+  }
+
+  public buscarPorCorreo(correo: string): Observable<Usuario[]> {
+    const params = new HttpParams()
+      .set('correo', correo);
+    return this.http.post<Usuario[]>(
+      `${this.host}/usuario/buscarCorreo?`,
+      {},
+      {params}
+    );
   }
 
 

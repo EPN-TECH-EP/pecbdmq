@@ -19,9 +19,10 @@
           <div class="col-9">
             <div class="alert alert-info" role="alert">
               <i class="fa-solid fa-circle-info me-2"></i>
-              Puede buscar el usuario ingresando su número de identificación o nombre y apellidos</div>
+              Puede buscar el usuario ingresando su número de identificación o nombre y apellidos
+            </div>
           </div>
-          </div>
+        </div>
         <div class="row">
           <div class="col-3">
             <mdb-form-control>
@@ -36,7 +37,7 @@
                 #frmIdentificacion="ngModel"
               />
               <label mdbLabel class="form-label" for="frmIdentificacion"
-                >Identificación</label
+              >Identificación</label
               >
             </mdb-form-control>
           </div>
@@ -53,7 +54,7 @@
                 #frmNombres="ngModel"
               />
               <label mdbLabel class="form-label" for="frmNombres"
-                >Nombres</label
+              >Nombres</label
               >
             </mdb-form-control>
           </div>
@@ -70,7 +71,7 @@
                 #frmApellidos="ngModel"
               />
               <label mdbLabel class="form-label" for="frmApellidos"
-                >Apellidos</label
+              >Apellidos</label
               >
             </mdb-form-control>
           </div>
@@ -88,7 +89,7 @@
               ></span>
               <span *ngIf="showLoading">Espere...</span>
               <span *ngIf="!showLoading">Buscar</span>
-            </button>            
+            </button>
           </div>
         </div>
       </div>
@@ -100,7 +101,7 @@
 <!-- FIN Formulario de búsqueda -->
 <!-------------------------------->
 
-<hr class="hr hr-blurry" />
+<hr class="hr hr-blurry"/>
 
 <!-- Resutados de la búsqueda -->
 <div class="row d-flex justify-content-center" *ngIf="usuarios.length > 0">
@@ -119,40 +120,40 @@
         [pagination]="pagination"
       >
         <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersUsuarios"
-              [mdbTableSortHeader]="header"
-              scope="col"
-              class="fw-bold"
-            >
-              {{ header | titlecase }}
-            </th>
-          </tr>
+        <tr>
+          <th
+            *ngFor="let header of headersUsuarios"
+            [mdbTableSortHeader]="header"
+            scope="col"
+            class="fw-bold"
+          >
+            {{ header | titlecase }}
+          </th>
+        </tr>
         </thead>
         <tbody class="datatable-body">
-          <tr
-            *ngFor="let data of table.data"
-            scope="row"
-            (click)="onRowClick(data)"
-            [class.active]="usuarioSeleccionado === data"
-          >
-            <td>
-              {{ data.codDatosPersonales["nombre"] }}
-            </td>
-            <td>
-              {{ data.codDatosPersonales["apellido"] }}
-            </td>
-            <td>
-              {{ data.nombreUsuario }}
-            </td>
-          </tr>
+        <tr
+          *ngFor="let data of table.data"
+          scope="row"
+          (click)="onRowClick(data)"
+          [class.active]="usuarioSeleccionado === data"
+        >
+          <td>
+            {{ data.codDatosPersonales["nombre"] }}
+          </td>
+          <td>
+            {{ data.codDatosPersonales["apellido"] }}
+          </td>
+          <td>
+            {{ data.nombreUsuario }}
+          </td>
+        </tr>
         </tbody>
       </table>
       <mdb-table-pagination #pagination></mdb-table-pagination>
     </div>
   </div>
-  <hr class="hr hr-blurry" />
+  <hr class="hr hr-blurry"/>
 </div>
 <!-- FIN Resultados -->
 
@@ -161,7 +162,8 @@
     <div>
       <p>
         Usuario actual:
-        <strong class="ms-2 text-primary" >{{ usuarioSeleccionado.nombreUsuario }} | {{ usuarioSeleccionado.codDatosPersonales.apellido }}  {{usuarioSeleccionado.codDatosPersonales.nombre}}</strong>
+        <strong class="ms-2 text-primary">{{ usuarioSeleccionado.nombreUsuario }}
+          | {{ usuarioSeleccionado.codDatosPersonales.apellido }}  {{usuarioSeleccionado.codDatosPersonales.nombre}}</strong>
       </p>
     </div>
 
@@ -175,43 +177,43 @@
         [dataSource]="rolesAsignados"
       >
         <thead class="datatable-header">
-          <tr>
-            <th scope="col">
-              <!-- <div class="form-check d-flex align-items-center mb-0">
-                  <input
-                    mdbCheckbox
-                    class="datatable-header-checkbox form-check-input"
-                    type="checkbox"
-                    [checked]="allRowsSelected()"
-                    (checkboxChange)="toggleAll($event)"
-                  />
-                </div>
-                 -->
-              Asignado
-            </th>
-            <th *ngFor="let header of headersRoles" scope="col">
-              {{ header | titlecase }}
-            </th>
-          </tr>
-        </thead>
-        <tbody class="datatable-body">
-          <tr *ngFor="let rolAsignado of table.data" scope="row">
-            <td>
-              <div class="form-check d-flex align-items-center mb-0">
+        <tr>
+          <th scope="col">
+            <!-- <div class="form-check d-flex align-items-center mb-0">
                 <input
                   mdbCheckbox
-                  (click)="$event.stopPropagation()"
-                  (checkboxChange)="toggleSelection($event, rolAsignado)"
-                  [checked]="rolAsignado.asignado"
-                  class="datatable-row-checkbox form-check-input"
+                  class="datatable-header-checkbox form-check-input"
                   type="checkbox"
+                  [checked]="allRowsSelected()"
+                  (checkboxChange)="toggleAll($event)"
                 />
               </div>
-            </td>
-            <td>
-              {{ rolAsignado.nombre }}
-            </td>
-          </tr>
+               -->
+            Asignado
+          </th>
+          <th *ngFor="let header of headersRoles" scope="col">
+            {{ header | titlecase }}
+          </th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let rolAsignado of table.data" scope="row">
+          <td>
+            <div class="form-check d-flex align-items-center mb-0">
+              <input
+                mdbCheckbox
+                (click)="$event.stopPropagation()"
+                (checkboxChange)="toggleSelection($event, rolAsignado)"
+                [checked]="rolAsignado.asignado"
+                class="datatable-row-checkbox form-check-input"
+                type="checkbox"
+              />
+            </div>
+          </td>
+          <td>
+            {{ rolAsignado.nombre }}
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
