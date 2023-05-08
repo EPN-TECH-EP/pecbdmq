@@ -118,18 +118,8 @@
       type="button"
       class="btn btn-primary mb-3"
       (click)="limpiarRegistros()">
-      Limpiar registros
+      <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
     </button>
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        (keyup)="buscar($event)"
-      />
-      <label mdbLabel class="form-label" for="search-input">Buscar</label>
-    </mdb-form-control>
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
@@ -217,7 +207,6 @@
                 />
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
-
                 <input
                   mdbCheckbox
                   class="form-check-input"
@@ -232,16 +221,20 @@
             </td>
 
             <td>
-              <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
-              >
+              <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                <button
+                  mdbTooltip="Editar datos personales"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+                  (click)="abrirModalEditarDatosPersonales()"
+                  >
+                  <i class="fa fa-user-check"></i>
+                </button>
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="editar(index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                 >
                   <i class="fa fa-edit"></i>
                 </button>

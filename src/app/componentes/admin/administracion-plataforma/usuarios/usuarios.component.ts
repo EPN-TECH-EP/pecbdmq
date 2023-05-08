@@ -19,6 +19,8 @@ import {UsuarioNombreApellido} from '../../../../modelo/util/nombre-apellido';
 
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../../../../util/validators";
+import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
+import {DatoPersonalComponent} from "../dato-personal/dato-personal.component";
 
 @Component({
   selector: 'app-usuarios',
@@ -33,7 +35,6 @@ export class UsuariosComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
   showLoading: boolean = true;
-  // variables de tabla
   usuarios: Usuario[];
   usuarioFrm: Usuario = new Usuario();
   @ViewChild('table') table!: MdbTableDirective<Usuario>;
@@ -52,6 +53,7 @@ export class UsuariosComponent implements OnInit {
   mensajeConfirmacion: string;
   indexEliminar: number;
   currentRoute: string;
+  modalRef: MdbModalRef<DatoPersonalComponent> | null = null;
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -59,6 +61,7 @@ export class UsuariosComponent implements OnInit {
     private popconfirmService: MdbPopconfirmService,
     private router: Router,
     private builder: FormBuilder,
+    private modalService: MdbModalService
   ) {
     this.usuarios = [];
     this.bucarUsuarioForm = new FormGroup({});
@@ -266,11 +269,6 @@ export class UsuariosComponent implements OnInit {
     this.mostrarConfirmacion = false;
   }*/
 
-  buscar(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value;
-    console.log(searchTerm);
-    this.table.search(searchTerm);
-  }
 
   buscarPorIdentificacion() {
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
@@ -324,5 +322,12 @@ export class UsuariosComponent implements OnInit {
 
   limpiarRegistros() {
     this.usuarios = [];
+  }
+
+  abrirModalEditarDatosPersonales() {
+    this.modalRef = this.modalService.open(DatoPersonalComponent, {
+      data: { title: 'Custom title' },
+      modalClass: 'modal-xl modal-dialog-centered',
+    });
   }
 }
