@@ -78,7 +78,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
       menuAsignado.codMenu = menu.codMenu;
       menuAsignado.etiqueta = menu.etiqueta;
       menuAsignado.ruta = menu.ruta;
-      menuAsignado.menu_padre = menu.menu_padre;
+      menuAsignado.menuPadre = menu.menuPadre;
       menuAsignado.orden = menu.orden;
       menuAsignado.icono = menu.icono;
       menuAsignado.descripcion = menu.descripcion;

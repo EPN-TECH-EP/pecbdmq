@@ -34,7 +34,7 @@
       </div>
 
       <ng-container *ngFor="let item of listaMenu">
-        <p *ngIf="!item.menu_padre" class="fw-bold pt-3 d-block ms-3">
+        <p *ngIf="!item.menuPadre" class="fw-bold pt-3 d-block ms-3">
           {{ item.etiqueta }}
         </p>
         <mdb-sidenav-item>
@@ -44,7 +44,7 @@
             >{{ item.etiqueta }}
           </span -->
           <a
-            *ngIf="item.menu_padre"
+            *ngIf="item.menuPadre"
             class="sidenav-link"
             tabindex="0"
             [routerLink]="item.ruta"

@@ -97,12 +97,12 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre            : this.nombreField.value,
-      apellido          : this.apellidoField.value,
-      correo_personal   : this.correoPersonalField.value,
-      num_telef_celular : this.telefonoField.value,
-      canton_residencia : this.direccionField.value,
-      fecha_nacimiento  : this.fechaNacimientoField.value,
+      nombre                : this.nombreField.value,
+      apellido              : this.apellidoField.value,
+      correo_personal       : this.correoPersonalField.value,
+      num_telef_celular     : this.telefonoField.value,
+      cod_canton_residencia : this.direccionField.value,
+      fecha_nacimiento      : this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
@@ -122,7 +122,7 @@ export class PerfilComponent implements OnInit {
       apellido        : this.usuario.codDatosPersonales.apellido,
       correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
       telefono        : this.usuario.codDatosPersonales.num_telef_celular,
-      direccion       : this.usuario.codDatosPersonales.canton_residencia,
+      direccion       : this.usuario.codDatosPersonales.cod_canton_residencia,
       fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
     });
   }

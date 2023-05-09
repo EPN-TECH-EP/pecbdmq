@@ -1,12 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Canton} from "./canton";
 
-
-@Injectable()
 export class Provincia {
-  public codigo: number;
-  public nombre: string;
-  public estado: string;
-  public cantones: string;
-
-
+  codigo: number;
+  nombre: string;
+  estado: string;
+  cantones: Canton[];
 }

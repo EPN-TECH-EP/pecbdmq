@@ -57,8 +57,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido
 
     this.listaMenuInicial = this.menuService.getMenu();
-    //console.log(this.listaMenu);
-    //console.log(this.menuService.getMenu());
+    console.log(this.listaMenu);
+    console.log(this.menuService.getMenu());
 
     if (
       this.listaMenuInicial === undefined ||
@@ -98,13 +98,13 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     for (let index = 0; index < this.listaMenuInicial.length; index++) {
       const menu = this.listaMenuInicial[index];
 
-      if (menu.menu_padre === null) {
+      if (menu.menuPadre === null) {
         this.estructuraMenu.set(menu.codMenu, []);
       } else {
-        let listaHijos = this.estructuraMenu.get(menu.menu_padre);
+        let listaHijos = this.estructuraMenu.get(menu.menuPadre);
         if (listaHijos !== undefined) {
           listaHijos.push(menu.codMenu);
-          this.estructuraMenu.set(menu.menu_padre, listaHijos);
+          this.estructuraMenu.set(menu.menuPadre, listaHijos);
         }
       }
     }
