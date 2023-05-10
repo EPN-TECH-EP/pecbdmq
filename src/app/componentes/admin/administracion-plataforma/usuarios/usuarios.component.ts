@@ -325,12 +325,16 @@ export class UsuariosComponent implements OnInit {
   }
 
   abrirModalEditarDatosPersonales(index: number) {
-    // mandamos el usuario a editar
     const usuario = this.usuarios[index];
-    console.log(usuario);
     this.modalRef = this.modalService.open(DatoPersonalComponent, {
       data: {usuario: usuario },
       modalClass: 'modal-xl modal-dialog-centered',
+    });
+    this.modalRef.onClose.subscribe((usuario: Usuario) => {
+      if (usuario) {
+        this.usuarios[index] = usuario;
+        this.usuarios = [...this.usuarios];
+      }
     });
   }
 }

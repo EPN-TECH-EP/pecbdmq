@@ -16,7 +16,6 @@ import {ProvinciaService} from "../../../../servicios/provincia.service";
 import {CargoService} from "../../../../servicios/cargo.service";
 import {GradoService} from "../../../../servicios/grado.service";
 import {UnidadGestionService} from "../../../../servicios/unidad-gestion.service";
-import {CANTONES_POR_PROVINCIA} from "../../../../util/constantes/provincias_cuidades";
 import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
 
 @Component({
@@ -28,21 +27,21 @@ export class DatoPersonalComponent implements OnInit {
 
   protected readonly opcionesDatepicker = OPCIONES_DATEPICKER;
 
-  usuario                : Usuario;
-  datosPersonales        : DatoPersonal;
-  formularioDatoPersonal : FormGroup;
-  provincias             : Provincia[];
-  cantonesNacimiento     : Canton[];
-  cantonesResidencia     : Canton[];
-  unidadesGestion        : UnidadGestion[];
-  grados                 : Grado[];
-  rangos                 : Rango[];
-  cargos                 : Cargo[];
-  tipoSangres            : string[];
-  tieneMeritoAcademico   : boolean;
-  tieneMeritoDeportivo   : boolean;
-  tieneNacionalidadEcuatoriana: boolean;
-  tieneComunidadFrontera: boolean;
+  usuario                       : Usuario;
+  datosPersonales               : DatoPersonal;
+  formularioDatoPersonal        : FormGroup;
+  provincias                    : Provincia[];
+  cantonesNacimiento            : Canton[];
+  cantonesResidencia            : Canton[];
+  unidadesGestion               : UnidadGestion[];
+  grados                        : Grado[];
+  rangos                        : Rango[];
+  cargos                        : Cargo[];
+  tipoSangres                   : string[];
+  tieneMeritoAcademico          : boolean;
+  tieneMeritoDeportivo          : boolean;
+  tieneNacionalidadEcuatoriana  : boolean;
+  tieneComunidadFrontera        : boolean;
 
   constructor(
     public modalRef: MdbModalRef<DatoPersonalComponent>,
@@ -131,7 +130,7 @@ export class DatoPersonalComponent implements OnInit {
       grado:                      [''],
       rango:                      [''],
       cargo:                      [''],
-    });
+    }, {updateOn: 'change'});
   }
 
   private matchDatosPersonales() {
@@ -166,7 +165,6 @@ export class DatoPersonalComponent implements OnInit {
       rango:                      this.datosPersonales.cod_rango,
       cargo:                      this.datosPersonales.cod_cargo,
     });
-    console.log(this.formularioDatoPersonal.value);
   }
 
   get apellidoField() {
@@ -325,18 +323,60 @@ export class DatoPersonalComponent implements OnInit {
     });
   }
 
-  actualizarDatos() {
+  onChangeGrado(event: any) {
+    this.gradoService.getRangosPorGrado(event).subscribe({
+      next: (rangos) => {this.rangos = rangos;},
+      error: (err) => {console.log(err)}
+    })
+  }
+
+  actualizarDatoPersonal() {
+    console.log(this.formularioDatoPersonal.value);
     this.datosPersonales = {
       ...this.datosPersonales,
-      ...this.formularioDatoPersonal.value
+      nombre                       : this.nombreField?.value,
+      apellido                     : this.apellidoField?.value,
+      correo_personal              : this.correoPersonalField?.value,
+      correo_institucional         : this.correoInstitucionalField?.value,
+      fecha_nacimiento             : this.fechaNacimientoField?.value,
+      num_telef_convencional       : this.telfConvencionalField?.value,
+      num_telef_celular            : this.telfCelularField?.value,
+      tipo_sangre                  : this.tipoSangreField?.value,
+      cod_provincia_nacimiento     : this.provinciaNacimientoField?.value,
+      cod_canton_nacimiento        : this.cantonNacimientoField?.value,
+      cod_provincia_residencia     : this.provinciaResidenciaField?.value,
+      cod_canton_residencia        : this.cantonResidenciaField?.value,
+      calle_principal_residencia   : this.callePrincipalResidenciaField?.value,
+      calle_secundaria_residencia  : this.calleSecundariaResidenciaField?.value,
+      numero_casa                  : this.numeroCasaField?.value,
+      colegio                      : this.colegioField?.value,
+      tipo_nacionalidad            : this.tipoNacionalidadField?.value,
+      nombre_titulo                : this.nombreTituloField?.value,
+      pais_titulo                  : this.paisTituloField?.value,
+      ciudad_titulo                : this.ciudadTituloField?.value,
+      tiene_merito_deportivo       : this.tieneMeritoDeportivo,
+      merito_deportivo_descripcion : this.meritoDeportivoDescripcionField?.value,
+      tiene_merito_academico       : this.tieneMeritoAcademico,
+      merito_academico_descripcion : this.meritoAcademicoDescripcionField?.value,
+      cod_cargo                    : this.cargoField?.value,
+      cod_grado                    : this.gradoField?.value,
+      cod_rango                    : this.rangoField?.value,
+      genero                       : this.generoField?.value,
+      cod_unidad_gestion           : this.unidadGestionField?.value,
     }
-    this.datoPersonalService.update( this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales).subscribe({
-      next: (res) => {
-        console.log(res);
+
+    this.datoPersonalService.update( this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales).
+    subscribe({
+      next: (datoPersonal: DatoPersonal) => {
+        this.usuario.codDatosPersonales = datoPersonal;
+        this.close()
       },
-      error: (err) => {
-        console.log(err);
-      }
+      error: (err) => {console.log(err);}
     })
+  }
+
+  close(): void {
+    const usuario = this.usuario;
+    this.modalRef.close(usuario)
   }
 }
