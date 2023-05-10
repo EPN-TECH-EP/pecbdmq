@@ -1,0 +1,616 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="exampleModalLabel">Editar Datos Personales del usuario: </h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body px-4">
+  <form [formGroup]="formularioDatoPersonal">
+    <!-- Datos personales -->
+    <div class="row">
+      <h5>Datos personales</h5>
+      <hr class="hr hr-blurry">
+      <div class="col">
+        <!--Nombre-->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="nombre"
+            class="form-control mb-5"
+            formControlName="nombre"
+          />
+          <label mdbLabel class="form-label mb-2x" for="nombre">Nombres</label>
+          <mdb-error *ngIf="nombreField?.dirty || nombreField?.touched">
+        <span *ngIf="nombreField?.hasError('minlength')">
+        <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe tener al menos 3 caracteres
+        </span>
+            <span *ngIf="nombreField?.hasError('required')">
+        <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo es requerido
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+        <!--Apellido-->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="apellido"
+            class="form-control mb-5"
+            formControlName="apellido"
+          >
+          <label mdbLabel class="form-label mb-2x" for="apellido">Apellidos</label>
+          <mdb-error *ngIf="apellidoField?.dirty || apellidoField?.touched">
+        <span *ngIf="apellidoField?.hasError('minlength')">
+        <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe tener al menos 3 caracteres
+        </span>
+            <span *ngIf="apellidoField?.hasError('required')">
+        <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo es requerido
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+        <!-- Correo personal -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="email"
+            id="correoPersonal"
+            class="form-control mb-5"
+            formControlName="correoPersonal"
+          />
+          <label mdbLabel class="form-label mb-2x" for="correoPersonal">Correo Personal</label>
+          <mdb-error
+            *ngIf="correoPersonalField?.dirty || correoPersonalField?.touched"
+          >
+        <span *ngIf="correoPersonalField?.hasError('email')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe ser un correo electrónico
+        </span>
+            <span *ngIf="correoPersonalField?.hasError('required')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo es requerido
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Correo institucional -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="email"
+            id="correoInstitucional"
+            class="form-control mb-5"
+            formControlName="correoInstitucional"
+          />
+          <label mdbLabel class="form-label mb-2x" for="correoPersonal">Correo Institucional</label>
+          <mdb-error
+            *ngIf="correoInstitucionalField?.dirty || correoInstitucionalField?.touched"
+          >
+        <span *ngIf="correoInstitucionalField?.hasError('email')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe ser un correo electrónico
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+        <!-- Fecha de nacimiento -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            [mdbDatepicker]="dpFechaNacimiento"
+            type="text"
+            id="fechaNacimiento"
+            class="form-control mb-5"
+            formControlName="fechaNacimiento"
+            (click)="dpFechaNacimiento.open()"
+          />
+          <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
+          <mdb-datepicker-toggle
+            [mdbDatepicker]="dpFechaNacimiento"
+            (click)="fechaNacimientoField.markAsTouched()"
+          ></mdb-datepicker-toggle>
+          <mdb-datepicker
+            #dpFechaNacimiento="mdbDatepicker"
+            [options]="opcionesDatepicker"
+            [inline]="true"
+          ></mdb-datepicker>
+          <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
+            <div *ngIf="fechaNacimientoField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </div>
+            <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              La edad requerida es entre 18 y 28 años
+            </div>
+          </mdb-error>
+          <mdb-success
+            *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched">
+            <i class="fas fa-check-circle"></i>
+            Campo Correcto
+          </mdb-success>
+        </mdb-form-control>
+        <!-- Telf convencional -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="telfConvencional"
+            class="form-control mb-5"
+            formControlName="telfConvencional"
+            [maxLength]="9"
+          />
+          <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Convencional</label>
+          <mdb-error
+            *ngIf="telfConvencionalField?.dirty || telfConvencionalField?.touched"
+          >
+        <span *ngIf="telfConvencionalField?.hasError('minlength')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe tener al menos 9 caracteres
+        </span>
+            <span *ngIf="telfConvencionalField?.hasError('invalid_numbers')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo solo acepta números
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Telf celular -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="telfCelular"
+            class="form-control mb-5"
+            formControlName="telfCelular"
+            [maxLength]="10"
+          />
+          <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Convencional</label>
+          <mdb-error
+            *ngIf="telfCelularField?.dirty || telfCelularField?.touched"
+          >
+        <span *ngIf="telfCelularField?.hasError('minlength')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo debe tener al menos 10 caracteres
+        </span>
+            <span *ngIf="telfCelularField?.hasError('invalid_numbers')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Este campo solo acepta números
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+        <!-- Tipo de sangre -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            id="tipoSangre"
+            class="mb-5"
+            data-mdb-placeholder="Tipo de sangre"
+            formControlName="tipoSangre"
+          >
+            <mdb-option *ngFor="let tipoSangre of tipoSangres" [value]="tipoSangre">
+              {{ tipoSangre }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="tipoSangre">Tipo de sangre</label>
+        </mdb-form-control>
+        <!-- Genero -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            id="sexo"
+            class="mb-5"
+            data-mdb-placeholder="Género"
+            formControlName="genero"
+          >
+            <mdb-option value="MASCULINO">Masculino</mdb-option>
+            <mdb-option value="FEMENINO">Femenino</mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
+        </mdb-form-control>
+      </div>
+    </div>
+    <!-- Datos de nacionalidad -->
+    <div class="row">
+      <h5>Datos de nacionalidad</h5>
+      <hr class="hr hr-blurry">
+      <div class="col-4 pt-2">
+        <!-- Tipo Nacionalidad -->
+        <div class="form-check mb-2">
+          <input
+            mdbRadio
+            class="form-check-input"
+            type="radio"
+            id="nacionalidadEcuatoriana"
+            formControlName="tipoNacionalidad"
+            value="ECUATORIANA"
+            name="tipoNacionalidad"
+            [checked]="tieneNacionalidadEcuatoriana"
+            (change)="toggleValidationsNacionalidad()"
+          >
+          <label class="form-check-label" for="nacionalidadEcuatoriana"> Nacido en Ecuador </label>
+        </div>
+        <div class="form-check mb-2">
+          <input
+            mdbRadio
+            class="form-check-input"
+            type="radio"
+            id="extranjero"
+            formControlName="tipoNacionalidad"
+            value="EXTRANJERO"
+            name="tipoNacionalidad"
+            (change)="toggleValidationsNacionalidad()"
+          >
+          <label class="form-check-label" for="extranjero"> Extranjero </label>
+        </div>
+        <div class="form-check mb-2">
+          <input
+            mdbRadio
+            class="form-check-input"
+            type="radio"
+            id="comunidadFrontera"
+            formControlName="tipoNacionalidad"
+            value="COMUNIDAD FRONTERA"
+            name="tipoNacionalidad"
+            [checked]="tieneComunidadFrontera"
+            (change)="toggleValidationsNacionalidad()"
+          >
+          <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div
+          *ngIf="tipoNacionalidadField.value === 'ECUATORIANA' ||
+             tipoNacionalidadField.value === 'COMUNIDAD FRONTERA'"
+        >
+          <!-- Provincia Nacimiento -->
+          <mdb-form-control>
+            <mdb-select
+              mdbValidate
+              id="provinciaNacimiento"
+              formControlName="provinciaNacimiento"
+              class="mb-5"
+              (ngModelChange)="onChangeCantonNacimiento($event)"
+            >
+              <mdb-option
+                *ngFor="let provincia of provincias"
+                [value]="provincia.codigo"
+              >{{ provincia.nombre}}
+              </mdb-option>
+            </mdb-select>
+            <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
+          </mdb-form-control>
+          <!-- Cantón Nacimiento -->
+          <mdb-form-control>
+            <mdb-select
+              mdbValidate
+              size="1"
+              id="cantonNacimiento"
+              formControlName="cantonNacimiento"
+              class="mb-5"
+            >
+              <mdb-option
+                *ngFor="let canton of cantonesNacimiento"
+                [value]="canton.codigo"
+              >{{ canton.nombre }}
+              </mdb-option>
+            </mdb-select>
+            <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
+            <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
+        <span *ngIf="!cantonesNacimiento.length">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Escoja primero una provincia
+        </span>
+            </mdb-error>
+          </mdb-form-control>
+        </div>
+      </div>
+    </div>
+    <!-- Datos de residencia -->
+    <div class="row">
+      <h5>Datos de residencia</h5>
+      <hr class="hr hr-blurry">
+      <div class="col">
+        <!-- Provincia Residencia -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            id="provinciaResidencia"
+            formControlName="provinciaResidencia"
+            class="mb-5"
+            (ngModelChange)="onChangeCantonResidencia($event)"
+          >
+            <mdb-option
+              *ngFor="let provincia of provincias"
+              [value]="provincia.codigo"
+            >{{ provincia.nombre }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label" for="provinciaResidencia">Provincia de residencia</label>
+        </mdb-form-control>
+        <!-- Cantón Residencia -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            size="1"
+            id="cantonResidencia"
+            formControlName="cantonResidencia"
+            class="mb-5"
+          >
+            <mdb-option
+              *ngFor="let canton of cantonesResidencia"
+              [value]="canton.codigo"
+            >{{ canton.nombre }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
+          <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
+        <span *ngIf="!cantonesResidencia.length">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Escoja primero una provincia
+        </span>
+          </mdb-error>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Calle Principal -->
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="callePrincipalResidencia"
+            class="form-control mb-5"
+            formControlName="callePrincipalResidencia"
+          >
+          <label mdbLabel class="form-label mb-2x" for="callePrincipalResidencia">Calle Principal</label>
+        </mdb-form-control>
+        <!-- Calle Secundaria -->
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="calleSecundariaResidencia"
+            class="form-control mb-5"
+            formControlName="calleSecundariaResidencia"
+          />
+          <label mdbLabel class="form-label mb-2x" for="calleSecundariaResidencia">Calle secundaria</label>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Número de Casa -->
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="numeroCasa"
+            class="form-control mb-5"
+            formControlName="numeroCasa"
+          />
+          <label mdbLabel class="form-label mb-2x" for="numeroCasa">Número de Casa o Lote</label>
+        </mdb-form-control>
+      </div>
+    </div>
+    <!-- Datos Académicos -->
+    <div class="row">
+      <h5>Datos Académicos</h5>
+      <hr class="hr hr-blurry">
+      <div class="col">
+        <!-- Colegio -->
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="colegio"
+            class="form-control mb-5"
+            formControlName="colegio"
+          >
+          <label mdbLabel class="form-label mb-2x" for="colegio">Colegio donde obtuvo el título</label>
+        </mdb-form-control>
+        <!-- Nombre del Titulo -->
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="nombreTitulo"
+            class="form-control mb-5"
+            formControlName="nombreTitulo"
+          >
+          <label mdbLabel class="form-label mb-2x" for="nombreTitulo">Nombre del título</label>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Pais de Titulo -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="paisTitulo"
+            class="form-control mb-5"
+            formControlName="paisTitulo"
+          >
+          <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
+          <mdb-error *ngIf="(paisTituloField?.dirty || paisTituloField?.touched)">
+            <i class="fas fa-exclamation-circle mb-1"></i>
+          </mdb-error>
+        </mdb-form-control>
+        <!-- Ciudad de Titulo -->
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="ciudadTitulo"
+            class="form-control mb-5"
+            formControlName="ciudadTitulo"
+          >
+          <label mdbLabel class="form-label mb-2x" for="ciudadTitulo">Ciudad donde obtuvo el título</label>
+        </mdb-form-control>
+      </div>
+    </div>
+    <!-- Méritos -->
+    <div class="row">
+      <h6 class="fw-bold">Méritos académicos </h6>
+      <div class="col">
+        <!-- Mérito deportivo -->
+        <div class="form-check mb-3">
+          <input
+            mdbCheckbox
+            class="form-check-input"
+            type="checkbox"
+            value="true"
+            id="meritoDeportivoCheck"
+            [checked]="tieneMeritoDeportivo"
+            (change)="onMeritoDeportivoChange($event)"
+          />
+          <label class="form-check-label fs-6" for="meritoDeportivoCheck">
+            Deportivo
+          </label>
+        </div>
+        <mdb-form-control *ngIf="tieneMeritoDeportivo">
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="meritoDeportivo"
+            class="form-control mb-5"
+            formControlName="meritoDeportivoDescripcion"
+          />
+          <label mdbLabel class="form-label mb-2x" for="meritoDeportivoCheck">Mérito deportivo</label>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Mérito académico -->
+        <div class="form-check mb-3">
+          <input
+            mdbCheckbox
+            class="form-check-input"
+            type="checkbox"
+            value="true"
+            id="meritoAcademicoCheck"
+            [checked]="tieneMeritoAcademico"
+            (change)="onMeritoAcademicoChange($event)"
+          />
+          <label class="form-check-label fs-6" for="meritoAcademicoCheck">
+            Académico
+          </label>
+        </div>
+        <mdb-form-control *ngIf="tieneMeritoAcademico">
+          <input
+            mdbValidate
+            mdbInput
+            type="text"
+            id="meritoAcademico"
+            class="form-control mb-5"
+            formControlName="meritoAcademicoDescripcion"
+          />
+          <label mdbLabel class="form-label mb-2x" for="meritoAcademico">Mérito académico</label>
+        </mdb-form-control>
+      </div>
+    </div>
+    <!-- Datos Institucionales -->
+    <div class="row">
+      <h5>Datos Institucionales</h5>
+      <hr class="hr hr-blurry">
+      <div class="col">
+        <!-- Unidad Gestion -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            formControlName="unidadGestion"
+            id="unidadGestion"
+            class="mb-5"
+          >
+            <mdb-option *ngFor="let unidadGestion of unidadesGestion" [value]="unidadGestion.codigo">
+              {{unidadGestion.nombre}}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="unidadGestion">Unidad de gestión</label>
+        </mdb-form-control>
+        <!-- Cargo -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            formControlName="cargo"
+            id="cargo"
+            class="mb-5"
+          >
+            <mdb-option
+              *ngFor="let cargo of cargos"
+              [value]="cargo.cod_cargo">
+              {{cargo.nombre}}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="cargo">Cargo</label>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <!-- Grado -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            formControlName="grado"
+            id="grado"
+            class="mb-5"
+            (ngModelChange)="onChangeGrado($event)"
+          >
+            <mdb-option *ngFor="let grado of grados" [value]="grado.cod_grado">
+              {{grado.nombre}}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="grado">Grado</label>
+        </mdb-form-control>
+        <!-- Rango -->
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            formControlName="rango"
+            id="rango"
+            class="mb-5"
+          >
+            <mdb-option *ngFor="let rango of rangos" [value]="rango.cod_rango">
+              {{rango.nombre}}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x" for="rango">Rango</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-danger"
+    (click)="modalRef.close()"
+  >
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-success"
+    (click)="actualizarDatoPersonal(); modalRef.close()"
+  >
+    Actualizar datos
+  </button>
+</div>

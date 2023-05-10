@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Observable, throwError} from "rxjs";
-import {CustomHttpResponse} from "../modelo/admin/custom-http-response";
 import {catchError, map} from "rxjs/operators";
 
 @Injectable({
@@ -53,13 +52,12 @@ export class ImagenService {
     return this.descargar(id).pipe(
       map(data => {
         const blob = new Blob([data], {type: 'application/pdf'});
-        const archivo = new File([blob], 'archivo.pdf', {type: 'application/pdf'});
+        const archivo = new File([blob], 'imagen-perfil', {type: 'application/pdf'});
         const url = URL.createObjectURL(archivo);
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);
       })
     ).pipe(
       catchError(error => {
-        console.error('Error al visualizar archivo:', error);
         return throwError(error);
       })
     );

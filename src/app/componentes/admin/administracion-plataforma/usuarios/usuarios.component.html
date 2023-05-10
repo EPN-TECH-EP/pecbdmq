@@ -4,25 +4,124 @@
   <!-- Título de componente-->
   <div class="row m-3">
     <div class="column text-center">
-      <p class="fs-4 fw-bolder">Gestión de usuarios</p>
+      <h1 class="fs-4 fw-bolder">Gestión de usuarios</h1>
     </div>
   </div>
-
-  <!-- Tabla -->
-
-  <mdb-form-control>
+  <div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info me-2"></i>
+    Puede buscar el usuario ingresando su número de identificación o nombre y apellidos o correo electrónico.
+  </div>
+  <!-- Formulario de búsqueda-->
+  <section>
+    <form [formGroup]="bucarUsuarioForm">
+      <mdb-tabs [justified]="true">
+        <mdb-tab title="Buscar por identificación">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-4 me-2">
     <input
       mdbInput
+                mdbValidate
       type="text"
       class="form-control"
-      id="search-input"
-      (keyup)="buscar($event)"
-    />
-    <label mdbLabel class="form-label" for="search-input">Buscar</label>
+                id="identificacion"
+                formControlName="identificacion"
+                [maxlength]="10"
+              >
+              <label mdbLabel class="form-label" for="identificacion">Identificación</label>
+              <mdb-error *ngIf="identificacionField?.dirty || identificacionField?.touched">
+                <div *ngIf="identificacionField?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </div>
+              </mdb-error>
   </mdb-form-control>
-
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorIdentificacion()"
+              [disabled]="identificacionField.invalid"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+        <mdb-tab title="Buscar por nombres y apellidos">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-3 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                id="nombres"
+                formControlName="nombres"
+              >
+              <label mdbLabel class="form-label" for="nombres">Nombres</label>
+            </mdb-form-control>
+            <mdb-form-control class="col-3 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                id="apellidos"
+                formControlName="apellidos"
+              >
+              <label mdbLabel class="form-label" for="apellidos">Apellidos</label>
+            </mdb-form-control>
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorNombresApellidos()"
+              [disabled]="nombresField?.invalid || apellidosField?.invalid"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+        <mdb-tab title="Buscar por correo">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-4 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                formControlName="correo"
+                id="correo"
+              >
+              <label mdbLabel class="form-label" for="correo">Correo</label>
+              <mdb-error *ngIf="correoField?.dirty || correoField?.touched">
+                <div *ngIf="correoField?.hasError('email')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo debe ser un correo electrónico válido
+                </div>
+              </mdb-error>
+            </mdb-form-control>
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorCorreo()"
+              [disabled]="correoField?.invalid"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+      </mdb-tabs>
+    </form>
+  </section>
+  <hr class="mt-4 hr hr-blurry"/>
+  <!-- Tabla de usuarios-->
+  <section *ngIf="usuarios.length > 0">
+    <button
+      type="button"
+      class="btn btn-primary mb-3"
+      (click)="limpiarRegistros()">
+      <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
+    </button>
   <div class="datatable table-editor mt-4">
-    <form #form="ngForm" novalidate>
+      <form #form="ngForm">
       <table
         class="table table-sm datatable-table"
         mdbTable
@@ -51,7 +150,15 @@
           <td>
             {{ usuario.nombreUsuario }}
           </td>
-
+            <td>
+              {{ usuario.codDatosPersonales.nombre }}
+            </td>
+            <td>
+              {{ usuario.codDatosPersonales.apellido }}
+            </td>
+            <td>
+              {{ usuario.codDatosPersonales.correo_personal }}
+            </td>
           <td>
             {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
           </td>
@@ -116,16 +223,20 @@
           </td>
 
           <td>
-            <ng-container
-              *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                <button
+                  mdbTooltip="Editar datos personales"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+                  (click)="abrirModalEditarDatosPersonales(index)"
             >
+                  <i class="fa fa-user-check"></i>
+                </button>
               <button
                 mdbTooltip="Editar registro"
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                 (click)="editar(index)"
-                [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
               >
                 <i class="fa fa-edit"></i>
               </button>
@@ -133,9 +244,7 @@
                 mdbTooltip="Eliminar registro"
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                 (click)="this.mensajeConfirmacion='¿Eliminar el usuario? Esta acción es irreversible'; openPopconfirm($event, index)"
-                [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"
               >
                 <i class="fa fa-trash-alt"></i>
               </button>
@@ -165,5 +274,5 @@
       ></mdb-table-pagination>
     </form>
   </div>
-
+  </section>
 </div>

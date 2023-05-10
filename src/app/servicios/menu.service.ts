@@ -33,4 +33,14 @@ export class MenuService {
   public listarMenu(): Observable<Menu[]> {
     return this.http.get<Menu[]>(`${this.host}/menu/listar`);
   }
+
+  // menu/listarPrimerNivel
+  public listarMenuPrimerNivel(): Observable<Menu[]> {
+    return this.http.get<Menu[]>(`${this.host}/menu/listarPrimerNivel`);
+  }
+
+  // menu/listarHijos/{codMenuPadre}
+  public listarHijos(codMenuPadre: number): Observable<Menu[]> {
+    return this.http.get<Menu[]>(`${this.host}/menu/listarHijos/${codMenuPadre}`);
+  }
 }

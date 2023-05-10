@@ -19,7 +19,7 @@
           <div class="col-9">
             <div class="alert alert-info" role="alert">
               <i class="fa-solid fa-circle-info me-2"></i>
-              Puede buscar el usuario ingresando su número de identificación o nombre y apellidos</div>
+              Puede buscar el usuario ingresando su número de identificación o nombre(s) y apellido(s)</div>
           </div>
           </div>
         <div class="row">
@@ -32,8 +32,8 @@
                 name="nombreUsuario"
                 class="form-control"
                 [ngModel]="usuarioFrm.nombreUsuario"
-                [ngModelOptions]="{ updateOn: 'blur' }"
-                #frmIdentificacion="ngModel"
+                [ngModelOptions]="{ updateOn: 'change' }"
+                #frmIdentificacion="ngModel"                
               />
               <label mdbLabel class="form-label" for="frmIdentificacion"
                 >Identificación</label
@@ -49,7 +49,7 @@
                 name="nombre"
                 class="form-control"
                 [ngModel]="usuarioFrm.nombre"
-                [ngModelOptions]="{ updateOn: 'blur' }"
+                [ngModelOptions]="{ updateOn: 'change' }"
                 #frmNombres="ngModel"
               />
               <label mdbLabel class="form-label" for="frmNombres"
@@ -66,7 +66,7 @@
                 name="apellido"
                 class="form-control"
                 [ngModel]="usuarioFrm.apellido"
-                [ngModelOptions]="{ updateOn: 'blur' }"
+                [ngModelOptions]="{ updateOn: 'change' }"
                 #frmApellidos="ngModel"
               />
               <label mdbLabel class="form-label" for="frmApellidos"
@@ -149,7 +149,8 @@
           </tr>
         </tbody>
       </table>
-      <mdb-table-pagination #pagination></mdb-table-pagination>
+      <mdb-table-pagination #pagination
+      [rowsPerPageText]="'Registros por página'"></mdb-table-pagination>
     </div>
   </div>
   <hr class="hr hr-blurry" />

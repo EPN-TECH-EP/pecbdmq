@@ -68,11 +68,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   headers = [
     'Módulo',
     'Componente',
-    'Tipo de nota',
-    'Porcentaje final',
-    'Porcentaje nota',
-    'Fecha de inicio Vigencia',
-    'Fecha de fin Vigencia',
+    'Tipo nota',
+    '% final',
+    '% nota',
+    'F. inicio Vigencia',
+    'F. fin Vigencia',
     'Periodo académico',
   ];
   translationOptions = OPCIONES_DATEPICKER;
@@ -120,7 +120,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.getPonderacionTodo().subscribe((data) => {
         this.ponderaciones = data;
-        console.log(data);
+        //console.log(data);
       })
     );
 
@@ -275,7 +275,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   public actualizar(ponderacion: Ponderacion, formValue): void {
 
     ponderacion = {
-      ...ponderacion,
+      ...this.ponderacionEditForm,
       cod_modulo: formValue.cod_modulo,
       cod_componente_nota: formValue.cod_componente_nota,
       cod_tipo_nota: formValue.cod_tipo_nota,
@@ -290,7 +290,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
 
-    console.log(vacios);
+    // console.log(vacios);
 
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;

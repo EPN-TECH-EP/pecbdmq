@@ -77,15 +77,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
         this.construirListaRolesAsignados();
       });
 
-    /* this.usuarioService
-      .buscarPorNombreUsuario(nombreUsuario)
-      .subscribe((data: Usuario) => {
-        if (data != null) {
-          this.usuarioSeleccionado = data;
-          this.showLoading = false;
-          this.buscarRolesUsuario();
-        }
-      }); */
   }
 
   public buscarUsuarioPorNombreApellido(nombre: string, apellido: string) {
@@ -138,8 +129,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       }
     });
 
-    console.log(this.rolUsuario);
-    console.log(this.rolesAsignados);
   }
 
   public guardarCambios(): void {
@@ -158,12 +147,9 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
         }
       });
 
-      console.log(nuevaAsignacion);
-
       this.rolUsuarioService
         .asignarRolUsuario(nuevaAsignacion)
         .subscribe((data) => {
-          console.log(data);
           this.cambiosPendientes = false;
 
           Notificacion.notificacionOK(
@@ -193,11 +179,10 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     ) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreApellido(form.nombre, form.apellido);
-      //console.log('buscarUsuarioPorNombreApellido')
+
     } else if (form.nombreUsuario !== null) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreUsuario(form.nombreUsuario);
-      //console.log('buscarUsuarioPorNombreUsuario')
     } else {
       Notificacion.notificacionOK(
         this.notificationRef,
@@ -206,9 +191,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       );
     }
 
-    /* console.log(this.usuarioFrm);
-    console.log(form);
-    console.log(this.usuarios); */
   }
 
   // tabla de resultados de busqueda de usuarios

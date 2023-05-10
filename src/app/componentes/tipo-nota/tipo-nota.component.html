@@ -22,7 +22,7 @@
   <div class="datatable table-editor mt-4">
     <form #form="ngForm" >
       <table
-        class="table table-sm datatable-table"
+        class="table table-sm datatable-table text-center"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -31,7 +31,7 @@
         [sort]="sort"
       >
         <thead class="datatable-header">
-          <tr align="center">
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"

@@ -124,6 +124,8 @@ import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-
 import { InputValidationDirective } from './directivas/input-validation.directive';
 import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
+import { DatoPersonalComponent } from './componentes/admin/administracion-plataforma/dato-personal/dato-personal.component';
+import { MenuComponent } from './componentes/admin/administracion-plataforma/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +178,9 @@ import { PerfilComponent } from './componentes/user/perfil/perfil.component';
     ProcesoProfesionalizacionComponent,
     ProcesoFormacionComponent,
     InputValidationDirective,
-    PerfilComponent
+    PerfilComponent,
+    DatoPersonalComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

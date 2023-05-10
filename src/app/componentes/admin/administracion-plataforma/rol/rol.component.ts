@@ -13,6 +13,7 @@ import {Notificacion} from 'src/app/util/notificacion';
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
 import {ComponenteBase} from 'src/app/util/componente-base';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-rol',
@@ -78,14 +79,8 @@ export class RolComponent extends ComponenteBase implements OnInit {
 
   public registro(rol: Rol): void {
     //rol={...rol, estado:'ACTIVO'};
-    if(rol.nombre === '' || rol.descripcion === ''){
-      this.errorNotification('Todos los campos deben estar llenos');
-      return;
-    }
-
-    console.log(rol);
-
-    if (rol.nombre === undefined || rol.descripcion === undefined) {
+    //if(rol.nombre === '' || rol.descripcion === ''){
+      if(ValidacionUtil.tienePropiedadesVacías(rol).length > 0){
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -101,6 +96,9 @@ export class RolComponent extends ComponenteBase implements OnInit {
             this.notificationServiceLocal,
             'Rol creado con éxito'
           );
+          
+          this.addRow = false;
+
           this.rol = {
             codRol: 0,
             nombre: '',
@@ -133,8 +131,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
   }
 
   public actualizar(rol: Rol, formValue): void {
-    console.log(formValue);
-
+    
     if (formValue.nombre === '' || formValue.descripcion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
@@ -145,6 +142,9 @@ export class RolComponent extends ComponenteBase implements OnInit {
       nombre: formValue.nombre,
       descripcion: formValue.descripcion,
     };
+
+    console.log(rol);
+
     this.showLoading = true;
     this.subscriptions.push(
       this.api.actualizarRol(rol).subscribe({
@@ -162,6 +162,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
             descripcion: '',
           };
           this.editElementIndex = -1;
+        },
 
           error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificacion(
@@ -169,8 +170,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
               this.notificationServiceLocal,
               errorResponse
             );
-          };
-        },
+          }        
       })
     );
   }

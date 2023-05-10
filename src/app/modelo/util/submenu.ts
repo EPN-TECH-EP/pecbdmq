@@ -40,7 +40,7 @@ export class Submenu {
       for (let index = 0; index < this.listaMenu.length; index++) {
         const menu = this.listaMenu[index];
 
-        if (menu.menu_padre === this.idMenuPadre) {
+        if (menu.menuPadre === this.idMenuPadre) {
           this.listaSubMenu.push(menu);
         }
       }

@@ -28,7 +28,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
   rolSeleccionado: Rol = new Rol();
   step: number = 0;
 
-  headers = ['ID', 'Etiqueta', 'Descripción', 'ID Padre'];
+  headers = ['ID', 'Menú', 'Descripción', 'ID Padre'];
 
   cambiosPendientes: boolean = false;
 
@@ -78,7 +78,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
       menuAsignado.codMenu = menu.codMenu;
       menuAsignado.etiqueta = menu.etiqueta;
       menuAsignado.ruta = menu.ruta;
-      menuAsignado.menu_padre = menu.menu_padre;
+      menuAsignado.menuPadre = menu.menuPadre;
       menuAsignado.orden = menu.orden;
       menuAsignado.icono = menu.icono;
       menuAsignado.descripcion = menu.descripcion;
@@ -109,9 +109,7 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
           menuRol.menuRolId.codRol = this.rolSeleccionado.codRol;
           nuevaAsignacion.push(menuRol);
         }
-      });
-
-      console.log(nuevaAsignacion);
+      });      
 
       this.menuRolService.asignarMenuRol(nuevaAsignacion).subscribe((data) => {
         console.log(data);

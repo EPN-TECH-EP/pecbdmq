@@ -11,6 +11,7 @@ import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ComponenteBase} from 'src/app/util/componente-base';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
 
 @Component({
   selector: 'app-tipo-baja',
@@ -105,6 +106,12 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   createTipoBaja(tipoBaja: TipoBaja): void {
+
+    if (ValidacionUtil.tienePropiedadesVacías(tipoBaja).length > 0) {
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+      return;
+    }
+
     tipoBaja = {...tipoBaja, estado: 'ACTIVO'}
     this.showLoading = true;
     this.subscriptions.push(
@@ -114,6 +121,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
           this.tiposBaja.push(newTipoBaja);
           this.tiposBaja = [...this.tiposBaja]
           this.okNotification('Tipo de baja creado correctamente');
+          this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.errorResponseNotification(errorResponse);
@@ -123,6 +131,11 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
   }
 
   updateTipoBaja(tipoBaja: TipoBaja, formValue): void {
+
+    if (ValidacionUtil.tienePropiedadesVacías(formValue).length > 0) {
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+      return;
+    }
 
     tipoBaja = {...tipoBaja, baja: formValue.baja, estado: 'ACTIVO'}
 

@@ -142,6 +142,8 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo creado con éxito');
 
           this.showLoading = false;
+          this.addRow = false;
+
           this.paralelo = {
             codParalelo: 0,
             nombreParalelo: '',
@@ -187,6 +189,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
             Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo actualizado con éxito');
             const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
             this.paralelos[index] = response.body;
+            this.paralelos = [...this.paralelos];
             this.editElementIndex = -1;
             this.showLoading = false;
             this.paralelo = {

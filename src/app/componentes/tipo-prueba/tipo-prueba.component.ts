@@ -128,6 +128,8 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.tiposprueba.push(nuevaPrueba);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba creada con éxito');
 
+          this.addRow = false;
+
           this.tipoPrueba = {
             cod_tipo_prueba: 0,
             prueba: '',
@@ -161,7 +163,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
     
     if (formValue.prueba === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
       return;
     }
 

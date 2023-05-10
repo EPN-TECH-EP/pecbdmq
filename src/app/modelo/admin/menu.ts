@@ -2,7 +2,7 @@ export class Menu {
   public codMenu?: number;
   public etiqueta?: string;
   public ruta?: string;
-  public menu_padre?: number;
+  public menuPadre?: number;
   public orden?: number;
   public icono?:string;
   public descripcion?:string;
@@ -11,7 +11,7 @@ export class Menu {
     this.codMenu = null;
     this.etiqueta = '';
     this.ruta = '';
-    this.menu_padre = null;
+    this.menuPadre = null;
     this.orden = null;
   }
 

@@ -17,7 +17,7 @@
     </button>
     <hr/>
 
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form [formGroup]="tiposBajaForm">
         <table
           class="table datatable-table"
@@ -50,19 +50,15 @@
                   mdbInput="mdbInput"
                   class="form-control mb-3"
                   formControlName="baja"
-                />
-                <mdb-error *ngIf="bajaField.invalid && bajaField.touched">
-                  Este campo es requerido
-                </mdb-error>
+                />                
               </mdb-form-control>
             </td>
             <!-- Buttons for add or cancel a register -->
             <td class="text-center">
               <button
                 class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
-                type="submit"
-                [disabled]="tiposBajaForm.invalid"
-                (click)="createTipoBaja(tiposBajaForm.value); addRow = false"
+                type="submit"                
+                (click)="createTipoBaja(tiposBajaForm.value);"
               >
                 <i class="fa fa-check"></i> &nbsp;Agregar
               </button>
@@ -91,10 +87,7 @@
                     type="text"
                     class="form-control mb-4"
                     formControlName="baja"
-                  />
-                  <mdb-error *ngIf="bajaField.invalid && bajaField.touched">
-                    Este campo es requerido
-                  </mdb-error>
+                  />                  
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -142,8 +135,8 @@
       </form>
       <mdb-table-pagination
         #pagination
-        [entries]="5"
-        [rowsPerPageText]="'Registros por página'"
+        [entries]="10"
+        [rowsPerPageText]="'Registros por pÃ¡gina'"
         (paginationChange)="onPaginationChange($event)"
       ></mdb-table-pagination>
     </div>

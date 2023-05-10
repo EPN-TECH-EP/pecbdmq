@@ -76,9 +76,9 @@
                   />
                 </mdb-form-control>
               </td>
-              <td align="center">
+              <td class="text-center">
                 <div class="col-md">
-                  <div class="form-check" align="center">
+                  <div class="form-check">
                     <input
                       mdbCheckbox
                       class="form-check-input"
@@ -88,21 +88,21 @@
                   </div>
                 </div>
               </td>
-              <td align="center">
+              <td>
                 <button
-                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   id="btnRegistrar"
                   type="submit"
                   (click)="registro(form.value); addRow = false;"
                 >
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-check"></i> Agregar
                 </button>
                 <button
                   name="eliminar"
-                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                   (click)="addRow = false"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-ban"></i> Cancelar
                 </button>
               </td>
             </tr>
@@ -149,8 +149,34 @@
                   </mdb-form-control>
                 </ng-container>
               </td>
-              <td>
+              <td class="text-center">
                 <ng-container *ngIf="editElementIndex !== index">
+                <input
+                  mdbCheckbox
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="esDocumento"
+                  name="esDocumento"
+                  [checked]="requisito.esDocumento"
+                  disabled="true"
+                />
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <input
+                  mdbCheckbox
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="esDocumento"
+                  name="esDocumento"
+                  [checked]="requisito.esDocumento"
+                  [(ngModel)]="requisito.esDocumento"
+                />
+              </ng-container>
+
+
+                <!-- <ng-container *ngIf="editElementIndex !== index">
                   {{ requisito.esDocumento}}
                 </ng-container>
                 <ng-container *ngIf="editElementIndex === index">
@@ -162,7 +188,7 @@
                       [(ngModel)]="requisito.esDocumento"
                     />
                   </div>
-                </ng-container>
+                </ng-container> -->
               </td>
 
               <td>

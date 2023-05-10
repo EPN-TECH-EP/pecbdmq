@@ -56,6 +56,7 @@ import {
 import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 import {NgModule} from "@angular/core";
 import {PerfilComponent} from "../../componentes/user/perfil/perfil.component";
+import { MenuComponent } from 'src/app/componentes/admin/administracion-plataforma/menu/menu.component';
 
 
 const routes: Routes = [
@@ -98,6 +99,7 @@ const routes: Routes = [
       {path: 'admin/roles-usuarios', component: RolUsuarioComponent},
       {path: 'admin/rol', component: RolComponent},
       {path: 'admin/menuRol', component: MenuRolComponent},
+      {path: 'admin/menu', component: MenuComponent},
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},      

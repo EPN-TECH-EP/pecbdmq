@@ -77,26 +77,26 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
     this.materias = [];
     this.subscriptions = [];
-    this.materia = {
+    this.materia = this.initObject();/*{
       codMateria: 0,
       nombre: '',
-      numHoras: '' as any,
+      numHoras: 1,
       tipoMateria: '',
       observacionMateria: '',
-      pesoMateria: '' as any,
-      notaMinima: '' as any,
+      pesoMateria: 1,
+      notaMinima: 1,
       estado: 'ACTIVO'
-    }
-    this.materiaEditForm = {
+    }*/
+    this.materiaEditForm = this.initObject();/*{
       codMateria: 0,
       nombre: '',
-      numHoras: '' as any,
+      numHoras: 1,
       tipoMateria: '',
       observacionMateria: '',
-      pesoMateria: '' as any,
-      notaMinima: '' as any,
+      pesoMateria: 1,
+      notaMinima: 1,
       estado: 'ACTIVO'
-    }
+    }*/
 
   }
 
@@ -113,69 +113,20 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   }
 
-  /*makeAPICall() {
-    Promise.all([this.service.getMaterias()])
-      .then((response) => {
-        this.parseResponse(response);
-      })
-      .catch((error) => {
-        this.errorMessage = error;
-      })
-  }
-
-
-  parseResponse(response: any) {
-    if (!response || !Array.isArray(response)) return;
-    this.getMaterias = response[0] ? response[0] : [];
-  }
-
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }*/
-  /*
-  private notificacion(errorResponse: HttpErrorResponse) {
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
+  initObject(): Materia{
+    return {
+      codMateria: 0,
+      nombre: '',
+      numHoras: 1,
+      tipoMateria: '',
+      observacionMateria: '',
+      pesoMateria: 1,
+      notaMinima: 1,
+      estado: 'ACTIVO'
     }
-
-    if (codigoError === 0) {
-      mensajeError = 'Error de conexión al servidor';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensajeError,
-      tipoAlerta
-    );
   }
-
-  public notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
-  */
+  
   public registro(materia: Materia): void {
-
-
     if (
       materia.nombre == '' ||
       ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
@@ -198,16 +149,9 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           this.materias = [...this.materias]
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia creada con éxito');
 
-          this.materia = {
-            codMateria: 0,
-            nombre: '',
-            numHoras: '' as any,
-            tipoMateria: '',
-            observacionMateria: '',
-            pesoMateria: '' as any,
-            notaMinima: '' as any,
-            estado: 'ACTIVO'
-          }
+          this.addRow = false;
+
+          this.materia = this.initObject();
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
@@ -223,16 +167,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.materiaEditForm = {
-      codMateria: 0,
-      nombre: '',
-      numHoras: '' as any,
-      tipoMateria: '',
-      observacionMateria: '',
-      pesoMateria: '' as any,
-      notaMinima: '' as any,
-      estado: 'ACTIVO'
-    };
+    this.materiaEditForm = this.initObject();
     this.editElementIndex = -1;
   }
 
@@ -268,16 +203,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
           const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
           this.materias[index] = response.body;
           this.showLoading = false;
-          this.materia = {
-            codMateria: 0,
-            nombre: '',
-            numHoras: '' as any,
-            tipoMateria: '',
-            observacionMateria: '',
-            pesoMateria: '' as any,
-            notaMinima: '' as any,
-            estado: 'ACTIVO'
-          }
+          this.materia = this.initObject();
           this.editElementIndex = -1;
           this.materias = [...this.materias]
 

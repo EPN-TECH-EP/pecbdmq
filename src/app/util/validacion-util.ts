@@ -15,13 +15,14 @@ export class ValidacionUtil {
     let allowedChars: RegExp;
 
     if (tipo === 'catalogo') {
-      allowedChars = /^[a-zA-Z0-9 _\.\-\_]*$/;
+      //allowedChars = /^[a-zA-Z0-9 _\.\-\_]*$/;
+      allowedChars = /^[a-zA-Z0-9 _.\-\u00C0-\u00FF]*$/;
     } else if (tipo === 'entero') {
       allowedChars = /^[0-9]*$/;
     } else if (tipo === 'decimal') {
       allowedChars = /^[0-9.]*$/;
     } else if (tipo === 'alfanumerico') {
-      allowedChars = /^[a-zA-Z0-9]*$/;
+      allowedChars = /^[a-zA-Z0-9\u00C0-\u00FF]*$/;
     } else {
       allowedChars = /^[_]*$/;
     }
@@ -59,7 +60,7 @@ export class ValidacionUtil {
   }
 
   public static isNullOrEmptyNumber(value: number): boolean {
-    return value === undefined || value === null || isNaN(value);
+    return value === undefined || value === null || isNaN(value) || this.isNullOrEmpty(value.toString());
   }
 
   public static isNullOrEmptyObject(value: any): boolean {

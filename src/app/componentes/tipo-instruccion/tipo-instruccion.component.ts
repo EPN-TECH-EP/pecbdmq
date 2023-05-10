@@ -137,6 +137,8 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
           this.table.data.push(nuevoTipo);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción creada con éxito');
 
+          this.addRow = false;
+
           this.showLoading = false;
           this.tipoInstruccion={
             codigoTipoInstruccion: 0,
