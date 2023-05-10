@@ -125,6 +125,7 @@ import { InputValidationDirective } from './directivas/input-validation.directiv
 import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
 import { DatoPersonalComponent } from './componentes/admin/administracion-plataforma/dato-personal/dato-personal.component';
+import { UsuarioComponent } from './componentes/admin/administracion-plataforma/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { DatoPersonalComponent } from './componentes/admin/administracion-plataf
     ProcesoFormacionComponent,
     InputValidationDirective,
     PerfilComponent,
-    DatoPersonalComponent
+    DatoPersonalComponent,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,

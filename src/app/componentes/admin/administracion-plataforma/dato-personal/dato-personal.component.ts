@@ -52,9 +52,9 @@ export class DatoPersonalComponent implements OnInit {
     private unidadGestionService: UnidadGestionService,
     private datoPersonalService: DatoPersonalService
   ) {
-    this.provincias = [];
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
+    this.provincias = [];
     this.unidadesGestion = [];
     this.grados = [];
     this.rangos = [];
@@ -92,10 +92,12 @@ export class DatoPersonalComponent implements OnInit {
       next: (unidadesGestion) => {this.unidadesGestion = unidadesGestion},
       error: (error) => {console.log(error)}
     })
-    this.gradoService.getRangosPorGrado(this.datosPersonales?.cod_grado).subscribe({
-      next: (rangos) => {this.rangos = rangos},
-      error: (error) => {console.log(error)}
-    })
+    if(this.datosPersonales.cod_grado){
+      this.gradoService.getRangosPorGrado(this.datosPersonales?.cod_grado).subscribe({
+        next: (rangos) => {this.rangos = rangos},
+        error: (error) => {console.log(error)}
+      })
+    }
     this.construirFormulario();
     this.matchDatosPersonales();
   }

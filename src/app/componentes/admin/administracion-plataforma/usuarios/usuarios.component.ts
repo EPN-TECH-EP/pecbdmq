@@ -21,6 +21,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../../../../util/validators";
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {DatoPersonalComponent} from "../dato-personal/dato-personal.component";
+import {UsuarioComponent} from "../usuario/usuario.component";
 
 @Component({
   selector: 'app-usuarios',
@@ -53,7 +54,8 @@ export class UsuariosComponent implements OnInit {
   mensajeConfirmacion: string;
   indexEliminar: number;
   currentRoute: string;
-  modalRef: MdbModalRef<DatoPersonalComponent> | null = null;
+  editarDatoPersonalModalRef: MdbModalRef<DatoPersonalComponent> | null = null;
+  crearUsuarioModalRef: MdbModalRef<UsuarioComponent> | null = null;
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -326,15 +328,22 @@ export class UsuariosComponent implements OnInit {
 
   abrirModalEditarDatosPersonales(index: number) {
     const usuario = this.usuarios[index];
-    this.modalRef = this.modalService.open(DatoPersonalComponent, {
+    this.editarDatoPersonalModalRef = this.modalService.open(DatoPersonalComponent, {
       data: {usuario: usuario },
       modalClass: 'modal-xl modal-dialog-centered',
     });
-    this.modalRef.onClose.subscribe((usuario: Usuario) => {
+    this.editarDatoPersonalModalRef.onClose.subscribe((usuario: Usuario) => {
       if (usuario) {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
       }
     });
+  }
+
+  abrirModalCrearUsuario() {
+    this.crearUsuarioModalRef = this.modalService.open(UsuarioComponent, {
+      modalClass: 'modal-xl modal-dialog-centered',
+    });
+
   }
 }

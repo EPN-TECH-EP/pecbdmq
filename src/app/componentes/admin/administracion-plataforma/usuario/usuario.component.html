@@ -1,10 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="exampleModalLabel">
-    Edición de datos personales de:
-    <span class="badge rounded-pill badge-primary">
-      {{usuario.codDatosPersonales.nombre}} {{usuario.codDatosPersonales.apellido}}
-    </span>
-  </h4>
+  <h4 class="modal-title" id="exampleModalLabel">Registro de usuario</h4>
   <button
     type="button"
     class="btn-close"
@@ -13,7 +8,59 @@
   ></button>
 </div>
 <div class="modal-body px-4">
-  <form [formGroup]="formularioDatoPersonal">
+  <form [formGroup]="formularioUsuario">
+    <!--Datos de usuario-->
+    <div class="row">
+      <h5>Datos de usuario</h5>
+      <hr class="hr hr-blurry">
+      <div class="col-4">
+        <div class="alert alert-info" role="alert">
+          <i class="fa-solid fa-circle-info me-2"></i>
+          Su numero de cédula será su nombre de usuario
+        </div>
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="text"
+            id="nombreUsuario"
+            class="form-control mb-5"
+            formControlName="nombreUsuario"
+            [maxLength]="10"
+          />
+          <label mdbLabel class="form-label mb-2x" for="nombreUsuario">Cédula del usuario</label>
+          <mdb-error
+            *ngIf=" nombreUsuarioField?.invalid  && (nombreUsuarioField?.dirty || nombreUsuarioField?.touched)">
+            <span *ngIf="nombreUsuarioField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo debe tener al menos 10 caracteres
+              </span>
+            <span *ngIf="nombreUsuarioField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+               Este campo es requerido
+            </span>
+            <span *ngIf="nombreUsuarioField?.hasError('invalid_numbers')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+               Este campo debe contener solo números
+            </span>
+            <span *ngIf="nombreUsuarioField?.hasError('invalid_identification')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+               No es una cédula válida
+            </span>
+          </mdb-error>
+          <mdb-success *ngIf="nombreUsuarioField?.valid && (nombreUsuarioField?.dirty || nombreUsuarioField?.touched)">
+            <i class="fas fa-check-circle"></i>
+            Este campo es válido
+          </mdb-success>
+        </mdb-form-control>
+      </div>
+      <div class="col-4">
+        <div class="alert alert-success" role="alert">
+            <i class="fa-solid fa-calendar me-2"></i>
+            Fecha de registro: {{ hoy | date: 'dd/MM/yyyy' }}
+        </div>
+      </div>
+    </div>
     <!-- Datos personales -->
     <div class="row">
       <h5>Datos personales</h5>
@@ -131,21 +178,6 @@
             [options]="opcionesDatepicker"
             [inline]="true"
           ></mdb-datepicker>
-          <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
-            <div *ngIf="fechaNacimientoField?.hasError('required')">
-              <i class="fas fa-exclamation-circle mb-1"></i>
-              Este campo es requerido
-            </div>
-            <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
-              <i class="fas fa-exclamation-circle mb-1"></i>
-              La edad requerida es entre 18 y 28 años
-            </div>
-          </mdb-error>
-          <mdb-success
-            *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched">
-            <i class="fas fa-check-circle"></i>
-            Campo Correcto
-          </mdb-success>
         </mdb-form-control>
         <!-- Telf convencional -->
         <mdb-form-control>
@@ -159,17 +191,15 @@
             [maxLength]="9"
           />
           <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Convencional</label>
-          <mdb-error
-            *ngIf="telfConvencionalField?.dirty || telfConvencionalField?.touched"
-          >
-        <span *ngIf="telfConvencionalField?.hasError('minlength')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe tener al menos 9 caracteres
-        </span>
+          <mdb-error *ngIf="telfConvencionalField?.dirty || telfConvencionalField?.touched">
+            <span *ngIf="telfConvencionalField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo debe tener al menos 9 caracteres
+            </span>
             <span *ngIf="telfConvencionalField?.hasError('invalid_numbers')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo solo acepta números
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo solo acepta números
+            </span>
           </mdb-error>
         </mdb-form-control>
       </div>
@@ -234,7 +264,7 @@
     <div class="row">
       <h5>Datos de nacionalidad</h5>
       <hr class="hr hr-blurry">
-      <div class="col-4 pt-2">
+      <div class="col-4 py-3">
         <!-- Tipo Nacionalidad -->
         <div class="form-check mb-2">
           <input
@@ -263,7 +293,7 @@
           >
           <label class="form-check-label" for="extranjero"> Extranjero </label>
         </div>
-        <div class="form-check mb-2">
+        <div class="form-check mb-3">
           <input
             mdbRadio
             class="form-check-input"
@@ -272,7 +302,7 @@
             formControlName="tipoNacionalidad"
             value="COMUNIDAD FRONTERA"
             name="tipoNacionalidad"
-            [checked]="tieneComunidadFrontera"
+            [checked]="tieneNacionalidadComunidadFrontera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
@@ -295,7 +325,7 @@
               <mdb-option
                 *ngFor="let provincia of provincias"
                 [value]="provincia.codigo"
-              >{{ provincia.nombre}}
+              >{{ provincia.nombre }}
               </mdb-option>
             </mdb-select>
             <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
@@ -317,10 +347,10 @@
             </mdb-select>
             <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
             <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
-        <span *ngIf="!cantonesNacimiento.length">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Escoja primero una provincia
-        </span>
+              <span *ngIf="!cantonesNacimiento.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Escoja primero una provincia
+              </span>
             </mdb-error>
           </mdb-form-control>
         </div>
@@ -365,10 +395,10 @@
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
           <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
-        <span *ngIf="!cantonesResidencia.length">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Escoja primero una provincia
-        </span>
+            <span *ngIf="!cantonesResidencia.length">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Escoja primero una provincia
+            </span>
           </mdb-error>
         </mdb-form-control>
       </div>
@@ -455,9 +485,6 @@
             formControlName="paisTitulo"
           >
           <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
-          <mdb-error *ngIf="(paisTituloField?.dirty || paisTituloField?.touched)">
-            <i class="fas fa-exclamation-circle mb-1"></i>
-          </mdb-error>
         </mdb-form-control>
         <!-- Ciudad de Titulo -->
         <mdb-form-control>
@@ -614,8 +641,8 @@
   <button
     type="button"
     class="btn btn-success"
-    (click)="actualizarDatoPersonal(); modalRef.close()"
+    (click)="crearUsuario()"
   >
-    Actualizar datos
+    Crear usuario
   </button>
 </div>
