@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
@@ -42,5 +42,20 @@ export class MenuService {
   // menu/listarHijos/{codMenuPadre}
   public listarHijos(codMenuPadre: number): Observable<Menu[]> {
     return this.http.get<Menu[]>(`${this.host}/menu/listarHijos/${codMenuPadre}`);
+  }
+
+  // crear
+  public crear(menu: Menu): Observable<HttpResponse<Menu>> {
+    return this.http.post<Menu>(`${this.host}/menu/crear`, menu, {observe: 'response'});
+  }
+
+  // actualizar
+  public actualizar(menu: Menu): Observable<HttpResponse<Menu>> {
+    return this.http.put<Menu>(`${this.host}/menu/actualizar`, menu, {observe: 'response'});
+  }
+
+  //eliminar
+  public eliminar(codMenu: number): Observable<string> {
+    return this.http.delete<string>(`${this.host}/menu/${codMenu}`);
   }
 }

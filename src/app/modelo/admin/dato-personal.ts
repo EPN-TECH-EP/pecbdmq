@@ -17,7 +17,7 @@ export interface DatoPersonal{
   genero:                       string;
   num_telef_celular:            string;
   canton_nacimiento:            string;
-  reside_pais:                  string;
+  reside_pais:                  boolean;
   cod_provincia_residencia:     number;
   cod_canton_residencia:        number;
   calle_principal_residencia:   string;

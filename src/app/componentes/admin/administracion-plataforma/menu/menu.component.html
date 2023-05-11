@@ -1,1 +1,470 @@
-<p>menu works!</p>
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+<div class="row">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Menús</p>
+  </div>
+</div>
+
+<!-- Contenido principal-->
+<div class="row justify-content">
+  <div class="col-12">
+    <!------------------------------
+        Tabla Menús de primer nivel 
+    ------------------------------->
+    <div
+      class="datatable table-editor datatable-striped datatable-hover datatable-sm"
+    >
+      <form #form="ngForm" novalidate>
+        <table
+          class="table datatable-table caption-top"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sort="mdbTableSort"
+          [dataSource]="menusPrimerNivel"
+        >
+          <caption>
+            <div>
+            Menús de primer nivel
+            <!-- Agregar -->
+            <button
+              class="btn btn-primary btn-sm mb-3"
+              [disabled]="editElementIndexN1 !== -1"
+              (click)="addRow = true"
+            >
+              <i class="fa fa-plus"></i> &nbsp;Agregar
+            </button>
+        </div>
+          </caption>
+          <thead class="datatable-header">
+            <tr>
+              <th>Sel.</th>
+              <th
+                *ngFor="let header of headersMenuN1"
+                [mdbTableSortHeader]="header"
+                scope="col"
+              >
+                <b> {{ header | titlecase }}</b>
+              </th>
+              <th class="text-center"><b>Acciones</b></th>
+            </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+            <tr *ngIf="addRow">
+              <td></td>
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput="mdbInput"
+                    id="etiqueta"
+                    name="etiqueta"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="menu.etiqueta"
+                    required
+                  />
+                </mdb-form-control>
+              </td>
+
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="orden"
+                    name="orden"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="menu.orden"
+                    #orden="ngModel"
+                    min="1"
+                    max="200"
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 200"
+                  />
+                  <label mdbLabel class="form-label" for="formControlReadonly"
+                    >Ingrese el orden</label
+                  >
+                </mdb-form-control>
+              </td>
+
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput="mdbInput"
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="menu.descripcion"
+                    required
+                  />
+                </mdb-form-control>
+              </td>
+              <td>
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  type="submit"
+                  (click)="registro(form.value)"
+                >
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button
+                  name="eliminar"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="addRow = false"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngFor="let menu of table.data; let index = index" scope="row">
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="selection"
+                  [checked]="selectedRow == menu"
+                  (click)="onSelectRow(menu)"
+                />
+              </td>
+
+              <td>
+                <ng-container *ngIf="editElementIndexN1 !== index">
+                  {{ menu.etiqueta }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="etiqueta"
+                      name="etiqueta"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menuEditForm.etiqueta"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td style="min-width: 40px; max-width: 50px">
+                <ng-container *ngIf="editElementIndexN1 !== index">
+                  {{ menu.orden }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="orden"
+                      name="orden"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menuEditForm.orden"
+                      #orden="ngModel"
+                      min="1"
+                      max="200"
+                      inputValidation="entero"
+                      mdbTooltip="Rango: 1 - 200"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td>
+                <ng-container *ngIf="editElementIndexN1 !== index">
+                  {{ menu.descripcion }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="descripcion"
+                      name="descripcion"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menuEditForm.descripcion"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td class="text-center">
+                <ng-container
+                  *ngIf="
+                    editElementIndexN1 === -1 || editElementIndexN1 !== index
+                  "
+                >
+                  <button
+                    mdbTooltip="Editar registro"
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="editar(index)"
+                    [disabled]="
+                      editElementIndexN1 !== -1 && editElementIndexN1 !== index
+                    "
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="confirmaEliminar($event, menu.codMenu)"
+                    [disabled]="
+                      editElementIndexN1 !== -1 && editElementIndexN1 !== index
+                    "
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    (click)="actualizar(menu, form.value)"
+                  >
+                    <i class="fa fa-check"></i> Guardar
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="editElementIndexN1 = -1"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <!------------------------------
+        Tabla Menús de segundo nivel 
+    ------------------------------->
+
+    <ng-container *ngIf="menusSegundoNivel.length > 0">
+      <div
+        class="datatable table-editor datatable-striped datatable-hover datatable-sm"
+      >
+        <form #form="ngForm" novalidate>
+          <table
+            class="table table-sm datatable-table caption-top"
+            mdbTable
+            mdbTableSort
+            #tableN2="mdbTable"
+            #sortN2="mdbTableSort"
+            [dataSource]="menusSegundoNivel"
+          >
+            <caption>
+              Menús de segundo nivel del menú
+              {{
+                menuN1Seleccionado.etiqueta
+              }}
+            </caption>
+            <thead class="datatable-header">
+              <tr>
+                <th>Sel.</th>
+                <th
+                  *ngFor="let header of headersMenuN1"
+                  [mdbTableSortHeader]="header"
+                  scope="col"
+                >
+                  <b> {{ header | titlecase }}</b>
+                </th>
+                <th class="text-center"><b>Acciones</b></th>
+              </tr>
+            </thead>
+
+            <tbody class="datatable-body">
+              <tr *ngIf="addRow">
+                <td></td>
+                <td>
+                  <mdb-form-control>
+                    <input
+                      mdbInput="mdbInput"
+                      id="etiqueta"
+                      name="etiqueta"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menu.etiqueta"
+                      required
+                    />
+                  </mdb-form-control>
+                </td>
+
+                <td>
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="orden"
+                      name="orden"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menu.orden"
+                      #orden="ngModel"
+                      min="1"
+                      max="200"
+                      inputValidation="entero"
+                      mdbTooltip="Rango: 1 - 200"
+                    />
+                    <label mdbLabel class="form-label" for="formControlReadonly"
+                      >Ingrese el orden</label
+                    >
+                  </mdb-form-control>
+                </td>
+
+                <td>
+                  <mdb-form-control>
+                    <input
+                      mdbInput="mdbInput"
+                      id="descripcion"
+                      name="descripcion"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="menu.descripcion"
+                      required
+                    />
+                  </mdb-form-control>
+                </td>
+                <td>
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    type="submit"
+                    (click)="registro(form.value)"
+                  >
+                    <i class="fa fa-check"></i> Agregar
+                  </button>
+                  <button
+                    name="eliminar"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="addRow = false"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </td>
+              </tr>
+
+              <tr
+                *ngFor="let menu of tableN2.data; let index = index"
+                scope="row"
+              >
+                <td class="text-center">
+                  <input
+                    type="radio"
+                    name="selection"
+                    [checked]="selectedRow == menu"
+                    (click)="onSelectRow(menu)"
+                  />
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndexN2 !== index">
+                    {{ menu.etiqueta }}
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        id="etiqueta"
+                        name="etiqueta"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="menuEditForm.etiqueta"
+                      />
+                    </mdb-form-control>
+                  </ng-container>
+                </td>
+
+                <td style="min-width: 40px; max-width: 50px">
+                  <ng-container *ngIf="editElementIndexN2 !== index">
+                    {{ menu.orden }}
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        id="orden"
+                        name="orden"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="menuEditForm.orden"
+                        #orden="ngModel"
+                        min="1"
+                        max="200"
+                        inputValidation="entero"
+                        mdbTooltip="Rango: 1 - 200"
+                      />
+                    </mdb-form-control>
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndexN2 !== index">
+                    {{ menu.descripcion }}
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        id="descripcion"
+                        name="descripcion"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="menuEditForm.descripcion"
+                      />
+                    </mdb-form-control>
+                  </ng-container>
+                </td>
+
+                <td class="text-center">
+                  <ng-container
+                    *ngIf="
+                      editElementIndexN2 === -1 || editElementIndexN2 !== index
+                    "
+                  >
+                    <button
+                      mdbTooltip="Editar registro"
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="editar(index)"
+                      [disabled]="
+                        editElementIndexN2 !== -1 &&
+                        editElementIndexN2 !== index
+                      "
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      mdbTooltip="Eliminar registro"
+                      class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="confirmaEliminar($event, menu.codMenu)"
+                      [disabled]="
+                        editElementIndexN2 !== -1 &&
+                        editElementIndexN2 !== index
+                      "
+                    >
+                      <i class="fa fa-trash-alt"></i>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <button
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                      (click)="actualizar(menu, form.value)"
+                    >
+                      <i class="fa fa-check"></i> Guardar
+                    </button>
+                    <button
+                      class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                      (click)="editElementIndexN2 = -1"
+                    >
+                      <i class="fa fa-ban"></i> Cancelar
+                    </button>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </ng-container>
+  </div>
+</div>

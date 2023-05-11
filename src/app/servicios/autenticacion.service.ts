@@ -7,7 +7,6 @@ import {Usuario} from '../modelo/admin/usuario';
 import {Materia} from '../modelo/admin/materias';
 import {LocalDataService} from './util/local-data.service';
 import {CustomHttpResponse} from '../modelo/admin/custom-http-response';
-import {tap} from "rxjs/operators";
 
 
 @Injectable({providedIn: 'root'})

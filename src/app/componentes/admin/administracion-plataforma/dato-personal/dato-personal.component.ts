@@ -44,7 +44,7 @@ export class DatoPersonalComponent implements OnInit {
   tieneComunidadFrontera        : boolean;
 
   constructor(
-    public modalRef: MdbModalRef<DatoPersonalComponent>,
+    public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
     private builder: FormBuilder,
     private provinciaService: ProvinciaService,
     private cargoService: CargoService,
@@ -52,9 +52,9 @@ export class DatoPersonalComponent implements OnInit {
     private unidadGestionService: UnidadGestionService,
     private datoPersonalService: DatoPersonalService
   ) {
-    this.provincias = [];
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
+    this.provincias = [];
     this.unidadesGestion = [];
     this.grados = [];
     this.rangos = [];
@@ -92,10 +92,12 @@ export class DatoPersonalComponent implements OnInit {
       next: (unidadesGestion) => {this.unidadesGestion = unidadesGestion},
       error: (error) => {console.log(error)}
     })
-    this.gradoService.getRangosPorGrado(this.datosPersonales?.cod_grado).subscribe({
-      next: (rangos) => {this.rangos = rangos},
-      error: (error) => {console.log(error)}
-    })
+    if(this.datosPersonales.cod_grado){
+      this.gradoService.getRangosPorGrado(this.datosPersonales?.cod_grado).subscribe({
+        next: (rangos) => {this.rangos = rangos},
+        error: (error) => {console.log(error)}
+      })
+    }
     this.construirFormulario();
     this.matchDatosPersonales();
   }
@@ -376,7 +378,8 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   close(): void {
-    const usuario = this.usuario;
-    this.modalRef.close(usuario)
+    const usuario: Usuario = this.usuario;
+    console.log(usuario);
+    this.datoPersonalComponentMdbModalRef.close(usuario)
   }
 }

@@ -121,6 +121,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
           this.tiposBaja.push(newTipoBaja);
           this.tiposBaja = [...this.tiposBaja]
           this.okNotification('Tipo de baja creado correctamente');
+          this.tiposBajaForm.reset();
           this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {

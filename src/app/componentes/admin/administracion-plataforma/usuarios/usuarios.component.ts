@@ -21,6 +21,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../../../../util/validators";
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {DatoPersonalComponent} from "../dato-personal/dato-personal.component";
+import {UsuarioComponent} from "../usuario/usuario.component";
 
 @Component({
   selector: 'app-usuarios',
@@ -28,6 +29,7 @@ import {DatoPersonalComponent} from "../dato-personal/dato-personal.component";
   styleUrls: ['./usuarios.component.scss'],
 })
 export class UsuariosComponent implements OnInit {
+
   private subscriptions: Subscription[] = [];
 
   bucarUsuarioForm: FormGroup;
@@ -37,7 +39,6 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[];
   usuarioFrm: Usuario = new Usuario();
   @ViewChild('table') table!: MdbTableDirective<Usuario>;
-
   editElementIndex = -1;
   addRow = false;
   headers = [
@@ -53,7 +54,8 @@ export class UsuariosComponent implements OnInit {
   mensajeConfirmacion: string;
   indexEliminar: number;
   currentRoute: string;
-  modalRef: MdbModalRef<DatoPersonalComponent> | null = null;
+  editarDatoPersonalModalRef: MdbModalRef<DatoPersonalComponent> | null = null;
+  crearUsuarioModalRef: MdbModalRef<UsuarioComponent> | null = null;
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -82,7 +84,7 @@ export class UsuariosComponent implements OnInit {
       apellidos : ['',[Validators.required, MyValidators.onlyLetters()]],
       correo    : ['', [Validators.required, Validators.email]],
     });
-        }
+  }
 
   get identificacionField() {
     return this.bucarUsuarioForm.get('identificacion');
@@ -127,9 +129,9 @@ export class UsuariosComponent implements OnInit {
 
   public notificacionOK(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
-    this.notificationService,
-    mensaje,
-    TipoAlerta.ALERTA_OK
+      this.notificationService,
+      mensaje,
+      TipoAlerta.ALERTA_OK
     );
   }
 
@@ -146,7 +148,6 @@ export class UsuariosComponent implements OnInit {
   confirmaEliminar(usuario: Usuario) {
     this.mensajeConfirmacion = '¿Eliminar el usuario? Esta acción es irreversible';
   }
-
 
   eliminar(usuario: Usuario) {
     this.subscriptions.push(
@@ -168,8 +169,7 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
-
-  public errorNotification(mensaje: string) {
+  errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensaje,
@@ -326,15 +326,30 @@ export class UsuariosComponent implements OnInit {
 
   abrirModalEditarDatosPersonales(index: number) {
     const usuario = this.usuarios[index];
-    this.modalRef = this.modalService.open(DatoPersonalComponent, {
-      data: {usuario: usuario },
+    this.editarDatoPersonalModalRef = this.modalService.open(DatoPersonalComponent, {
+      data: { usuario: usuario },
       modalClass: 'modal-xl modal-dialog-centered',
     });
-    this.modalRef.onClose.subscribe((usuario: Usuario) => {
+    this.editarDatoPersonalModalRef.onClose.subscribe((usuario: Usuario) => {
       if (usuario) {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
+      this.notificacionOK('Datos personales actualizados con éxito')
       }
     });
   }
+
+  abrirModalCrearUsuario() {
+    this.crearUsuarioModalRef = this.modalService.open(UsuarioComponent, {
+      modalClass: 'modal-xl modal-dialog-centered',
+    });
+    this.crearUsuarioModalRef.onClose.subscribe((usuario: Usuario) => {
+      if (usuario) {
+        this.usuarios.push(usuario);
+        this.usuarios = [...this.usuarios];
+        this.notificacionOK('Usuario creado con éxito')
+      }
+    });
+  }
+
 }

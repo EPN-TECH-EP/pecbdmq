@@ -22,8 +22,8 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(`${this.host}/usuario/lista`);
   }
 
-  public nuevoUsuario(formData: FormData): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.host}/usuario/nuevo`, formData);
+  public crear(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.host}/usuario/crear`, usuario);
   }
 
   public actualizarUsuario(usuario: Usuario): Observable<Usuario> {
