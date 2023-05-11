@@ -48,6 +48,7 @@ export class PerfilComponent implements OnInit {
       }),
       catchError(() => {
         this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
+        this.imagenPerfil = "assets/img/avatars/avatar.jpg"
         return EMPTY;
       })
     ).subscribe();

@@ -216,11 +216,18 @@
                     id="telCelular"
                     class="form-control mb-5"
                     formControlName="telCelular"
+                    [maxLength]="10"
                   />
                   <label mdbLabel class="form-label mb-2x" for="telCelular">Teléfono Celular</label>
                   <mdb-error *ngIf="telCelularField?.invalid && (telCelularField?.dirty || telCelularField?.touched)">
-                    <i class="fas fa-exclamation-circle mb-1"></i>
-                    Este campo es requerido
+                    <span *ngIf="telCelularField.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </span>
+                    <span *ngIf="telCelularField.hasError('invalid_numbers')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Solo se aceptan números
+                    </span>
                   </mdb-error>
                   <mdb-success *ngIf="telCelularField?.valid && (telCelularField?.dirty || telCelularField?.touched)">
                     <i class="fas fa-check-circle"></i>
@@ -236,12 +243,19 @@
                     id="telConvencional"
                     class="form-control mb-5"
                     formControlName="telConvencional"
+                    [maxLength]="9"
                   />
                   <label mdbLabel class="form-label mb-2x" for="telConvencional">Teléfono Convencional</label>
                   <mdb-error
                     *ngIf="telConvencionalField?.invalid && (telConvencionalField?.dirty || telConvencionalField?.touched)">
-                    <i class="fas fa-exclamation-circle mb-1"></i>
-                    Este campo es requerido
+                    <span *ngIf="telConvencionalField.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </span>
+                    <span *ngIf="telConvencionalField.hasError('invalid_numbers')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Solo se aceptan números
+                    </span>
                   </mdb-error>
                   <mdb-success
                     *ngIf="telConvencionalField?.valid && (telConvencionalField?.dirty || telConvencionalField?.touched)">

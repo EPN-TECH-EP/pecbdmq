@@ -641,8 +641,15 @@
   <button
     type="button"
     class="btn btn-success"
-    (click)="crearUsuario()"
+    (click)="crearUsuario(); showLoader(true);"
   >
     Crear usuario
   </button>
 </div>
+
+<mdb-loading [show]="loading" [fullscreen]="true">
+  <div class="loading-spinner">
+    <div class="spinner-border loading-icon" role="status"></div>
+    <span class="loading-text">Creando usuario</span>
+  </div>
+</mdb-loading>

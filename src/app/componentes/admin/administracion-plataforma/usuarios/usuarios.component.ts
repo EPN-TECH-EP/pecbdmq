@@ -344,6 +344,12 @@ export class UsuariosComponent implements OnInit {
     this.crearUsuarioModalRef = this.modalService.open(UsuarioComponent, {
       modalClass: 'modal-xl modal-dialog-centered',
     });
-
+    this.crearUsuarioModalRef.onClose.subscribe((usuario: Usuario) => {
+      if (usuario) {
+        this.usuarios.push(usuario);
+        this.usuarios = [...this.usuarios];
+      }
+    });
   }
+
 }

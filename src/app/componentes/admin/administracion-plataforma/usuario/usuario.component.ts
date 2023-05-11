@@ -16,6 +16,7 @@ import {GradoService} from "../../../../servicios/grado.service";
 import {UnidadGestionService} from "../../../../servicios/unidad-gestion.service";
 import TipoSangreEnum from "../../../../enum/tipo-sangre.enum";
 import {MyValidators} from "../../../../util/validators";
+import {UsuarioService} from "../../../../servicios/usuario.service";
 
 @Component({
   selector: 'app-usuario',
@@ -41,6 +42,8 @@ export class UsuarioComponent implements OnInit {
   tieneNacionalidadEcuatoriana  : boolean;
   tieneNacionalidadComunidadFrontera : boolean;
   hoy: Date = new Date();
+  loading: boolean = false;
+
 
   constructor(
     public modalRef: MdbModalRef<UsuarioComponent>,
@@ -49,6 +52,7 @@ export class UsuarioComponent implements OnInit {
     private cargoService: CargoService,
     private gradoService: GradoService,
     private unidadGestionService: UnidadGestionService,
+    private usuarioService: UsuarioService,
   ) {
     this.provincias = [];
     this.cantonesNacimiento = [];
@@ -59,6 +63,8 @@ export class UsuarioComponent implements OnInit {
     this.cargos = [];
     this.tieneMeritoAcademico = false;
     this.tieneMeritoDeportivo = false;
+    this.tieneNacionalidadEcuatoriana = false;
+    this.tieneNacionalidadComunidadFrontera = false;
     this.formularioUsuario = new FormGroup({});
     this.usuario = new Usuario();
     this.datosPersonales = {} as DatoPersonal;
@@ -98,7 +104,7 @@ export class UsuarioComponent implements OnInit {
   private construirFormulario() {
     this.formularioUsuario = this.builder.group({
 
-      nombreUsuario:              ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers, MyValidators.validIdentification]],
+      nombreUsuario:              ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers, MyValidators.validIdentification()]],
       nombre:                     ['', [Validators.required, Validators.minLength(3)]],
       apellido:                   ['', [Validators.required, Validators.minLength(3)]],
       correoPersonal:             ['', [Validators.required, Validators.email]],
@@ -303,10 +309,12 @@ export class UsuarioComponent implements OnInit {
       this.formularioUsuario.markAllAsTouched();
       return;
     }
-    console.log(this.formularioUsuario.value);
     this.usuario = {
       ...this.usuario,
       nombreUsuario: this.nombreUsuarioField.value,
+      codModulo: null,
+      active: true,
+      notLocked: true,
       codDatosPersonales: {
         ...this.usuario.codDatosPersonales,
         apellido: this.apellidoField.value,
@@ -315,6 +323,7 @@ export class UsuarioComponent implements OnInit {
         fecha_nacimiento: this.fechaNacimientoField.value,
         nombre: this.nombreField.value,
         num_telef_convencional: this.telfConvencionalField.value,
+        num_telef_celular: this.telfCelularField.value,
         tipo_sangre: this.tipoSangreField.value,
         cod_cargo: this.cargoField.value,
         cod_grado: this.gradoField.value,
@@ -337,15 +346,42 @@ export class UsuarioComponent implements OnInit {
         merito_academico_descripcion: this.meritoAcademicoDescripcionField.value,
         cod_unidad_gestion: this.unidadGestionField.value,
         genero: this.generoField.value,
+        cedula: this.nombreUsuarioField.value,
+        estado: 'ACTIVO',
+        reside_pais: this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
+        cod_documento_imagen: null,
+        canton_nacimiento: null,
+        cod_estacion: null,
+        pin_validacion_correo: null,
+        validacion_correo: null
       }
+
     }
 
+    console.log(this.usuario);
 
+    this.usuarioService.crear(this.usuario).subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+        console.log(usuario);
+        this.showLoader(false);
+        this.close();
+      },
+      error: (err) => {
+        console.error(err);
+        this.showLoader(false);
+        // Notificar error
+      }
+    })
   }
 
   close(): void {
     const usuario = this.usuario;
     this.modalRef.close(usuario)
+  }
+
+  showLoader(show: boolean) {
+    this.loading = show;
   }
 
 }
