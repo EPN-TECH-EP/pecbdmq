@@ -44,7 +44,7 @@ export class DatoPersonalComponent implements OnInit {
   tieneComunidadFrontera        : boolean;
 
   constructor(
-    public modalRef: MdbModalRef<DatoPersonalComponent>,
+    public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
     private builder: FormBuilder,
     private provinciaService: ProvinciaService,
     private cargoService: CargoService,
@@ -378,8 +378,8 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   close(): void {
-    const usuario = this.usuario;
+    const usuario: Usuario = this.usuario;
     console.log(usuario);
-    this.modalRef.close(usuario)
+    this.datoPersonalComponentMdbModalRef.close(usuario)
   }
 }

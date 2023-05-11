@@ -104,7 +104,9 @@ export class UsuarioComponent implements OnInit {
   private construirFormulario() {
     this.formularioUsuario = this.builder.group({
 
-      nombreUsuario:              ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers, MyValidators.validIdentification()]],
+      nombreUsuario:              ['', [Validators.required, Validators.minLength(10),
+                                        Validators.maxLength(10), MyValidators.onlyNumbers,
+                                        MyValidators.validIdentification()]],
       nombre:                     ['', [Validators.required, Validators.minLength(3)]],
       apellido:                   ['', [Validators.required, Validators.minLength(3)]],
       correoPersonal:             ['', [Validators.required, Validators.email]],

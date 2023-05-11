@@ -327,15 +327,15 @@ export class UsuariosComponent implements OnInit {
   abrirModalEditarDatosPersonales(index: number) {
     const usuario = this.usuarios[index];
     this.editarDatoPersonalModalRef = this.modalService.open(DatoPersonalComponent, {
-      data: {usuario: usuario },
+      data: { usuario: usuario },
       modalClass: 'modal-xl modal-dialog-centered',
     });
     this.editarDatoPersonalModalRef.onClose.subscribe((usuario: Usuario) => {
       if (usuario) {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
+        this.notificacionOK('Datos personales actualizados con éxito')
       }
-      this.notificacionOK('Datos personales actualizados con éxito')
     });
   }
 
