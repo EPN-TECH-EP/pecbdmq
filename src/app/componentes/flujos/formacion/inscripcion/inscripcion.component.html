@@ -248,11 +248,11 @@
                   <label mdbLabel class="form-label mb-2x" for="telConvencional">Teléfono Convencional</label>
                   <mdb-error
                     *ngIf="telConvencionalField?.invalid && (telConvencionalField?.dirty || telConvencionalField?.touched)">
-                    <span *ngIf="telConvencionalField.hasError('required')">
+                    <span *ngIf="telConvencionalField?.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
                     </span>
-                    <span *ngIf="telConvencionalField.hasError('invalid_numbers')">
+                    <span *ngIf="telConvencionalField?.hasError('invalid_numbers')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Solo se aceptan números
                     </span>

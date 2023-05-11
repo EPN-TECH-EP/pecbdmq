@@ -85,7 +85,7 @@ export class InscripcionComponent implements OnInit, OnDestroy {
                             ],
       email               : ["", [Validators.required, Validators.email]],
       sexo                : ["", [Validators.required]],
-      fechaNacimiento     : ["", [Validators.required]],
+      fechaNacimiento     : ["", [Validators.required, MyValidators.validAge()]],
       telCelular          : ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       telConvencional     : ["", [Validators.required, Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
       // Datos nacionalidad
