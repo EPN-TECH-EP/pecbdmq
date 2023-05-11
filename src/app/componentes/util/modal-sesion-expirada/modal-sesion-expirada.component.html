@@ -1,0 +1,16 @@
+<div class="card text-center">
+  <div class="card-header bg-danger">
+    <h4 class="card-title text-white">Sesión expirada</h4>
+  </div>
+  <div class="card-body">
+    <i class="fa-solid fa-right-to-bracket fa-2xl mb-4"></i>
+    <p class="card-text">Por favor, inicia sesión nuevamente.</p>
+  </div>
+  <div class="card-footer">
+    <a
+      routerLink="/login"
+      class="btn btn-danger"
+      (click)="modalRef.close()"
+    >Iniciar sesión</a>
+  </div>
+</div>

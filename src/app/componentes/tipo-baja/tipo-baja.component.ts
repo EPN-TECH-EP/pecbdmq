@@ -1,9 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TipoBaja} from "../../modelo/admin/tipo_baja";
 import {TipoBajaService} from "../../servicios/tipo-baja.service";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../util/alerta/alerta.component";
-import {MdbTableDirective} from "mdb-angular-ui-kit/table";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Notificacion} from "../../util/notificacion";
 import {TipoAlerta} from "../../enum/tipo-alerta";

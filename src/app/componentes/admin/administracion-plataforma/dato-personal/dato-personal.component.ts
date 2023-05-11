@@ -379,6 +379,7 @@ export class DatoPersonalComponent implements OnInit {
 
   close(): void {
     const usuario = this.usuario;
+    console.log(usuario);
     this.modalRef.close(usuario)
   }
 }

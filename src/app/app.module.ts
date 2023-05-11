@@ -126,6 +126,7 @@ import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
 import { DatoPersonalComponent } from './componentes/admin/administracion-plataforma/dato-personal/dato-personal.component';
 import { UsuarioComponent } from './componentes/admin/administracion-plataforma/usuario/usuario.component';
+import { ModalSesionExpiradaComponent } from './componentes/util/modal-sesion-expirada/modal-sesion-expirada.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { UsuarioComponent } from './componentes/admin/administracion-plataforma/
     InputValidationDirective,
     PerfilComponent,
     DatoPersonalComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    ModalSesionExpiradaComponent
   ],
   imports: [
     BrowserModule,

@@ -149,7 +149,6 @@ export class UsuariosComponent implements OnInit {
     this.mensajeConfirmacion = '¿Eliminar el usuario? Esta acción es irreversible';
   }
 
-
   eliminar(usuario: Usuario) {
     this.subscriptions.push(
       this.usuarioService.eliminarUsuario(usuario.nombreUsuario).subscribe(
@@ -170,8 +169,7 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
-
-  public errorNotification(mensaje: string) {
+  errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensaje,
@@ -337,6 +335,7 @@ export class UsuariosComponent implements OnInit {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
       }
+      this.notificacionOK('Datos personales actualizados con éxito')
     });
   }
 
@@ -348,6 +347,7 @@ export class UsuariosComponent implements OnInit {
       if (usuario) {
         this.usuarios.push(usuario);
         this.usuarios = [...this.usuarios];
+        this.notificacionOK('Usuario creado con éxito')
       }
     });
   }
