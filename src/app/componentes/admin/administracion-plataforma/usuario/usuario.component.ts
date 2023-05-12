@@ -141,6 +141,12 @@ export class UsuarioComponent implements OnInit {
       rango:                      [''],
       cargo:                      [''],
     }, {updateOn: 'change'});
+
+    this.fechaNacimientoField.valueChanges.subscribe({
+      next: (fechaNacimiento) => {
+        console.log(fechaNacimiento);
+      }
+    })
   }
 
   get nombreUsuarioField() {
@@ -294,6 +300,9 @@ export class UsuarioComponent implements OnInit {
       this.provinciaNacimientoField.setValidators([Validators.required]);
       this.cantonNacimientoField.setValidators([Validators.required]);
     }
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
+
   }
 
   onChangeCantonNacimiento(event: any) {

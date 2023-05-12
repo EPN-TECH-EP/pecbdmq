@@ -176,7 +176,7 @@
             formControlName="fechaNacimiento"
             (click)="dpFechaNacimiento.open()"
           />
-          <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
+          <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento: dd/mm/yyy</label>
           <mdb-datepicker-toggle
             [mdbDatepicker]="dpFechaNacimiento"
             (click)="fechaNacimientoField.markAsTouched()"
@@ -355,9 +355,18 @@
                 [value]="provincia.codigo"
               >{{ provincia.nombre }}
               </mdb-option>
-
             </mdb-select>
             <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
+            <mdb-error *ngIf="(provinciaNacimientoField?.dirty || provinciaNacimientoField?.touched)">
+              <span *ngIf="!provincias.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                No se pudo cargar las provincias
+              </span>
+              <span *ngIf="provinciaNacimientoField?.hasError('required')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </span>
+            </mdb-error>
           </mdb-form-control>
           <!-- Cantón Nacimiento -->
           <mdb-form-control>
@@ -379,6 +388,14 @@
               <span *ngIf="!cantonesNacimiento.length">
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Escoja primero una provincia
+              </span>
+              <span *ngIf="!cantonesNacimiento.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                No se pudo cargar los cantones
+              </span>
+              <span *ngIf="cantonNacimientoField?.hasError('required')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
               </span>
             </mdb-error>
           </mdb-form-control>

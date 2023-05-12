@@ -310,6 +310,9 @@ export class DatoPersonalComponent implements OnInit {
       this.provinciaNacimientoField.setValidators([Validators.required]);
       this.cantonNacimientoField.setValidators([Validators.required]);
     }
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
+
   }
 
   onChangeCantonNacimiento(event: any) {
