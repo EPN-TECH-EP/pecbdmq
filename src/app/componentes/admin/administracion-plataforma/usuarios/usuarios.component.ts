@@ -276,11 +276,13 @@ export class UsuariosComponent implements OnInit {
 
 
   buscarPorIdentificacion() {
+    if(this.identificacionField?.invalid) return;
 
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
       {
         next: (usuario) => {
           if(usuario === null){
+            this.usuarios = [];
             this.existenCoincidencias = false;
             return;
           }
@@ -297,6 +299,8 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarPorNombresApellidos() {
+    if(this.nombresField?.invalid || this.apellidosField?.invalid) return;
+
     const data: UsuarioNombreApellido = {
       nombre: this.nombresField.value,
       apellido: this.apellidosField.value
@@ -305,6 +309,7 @@ export class UsuariosComponent implements OnInit {
       {
         next: (usuarios) => {
           if(usuarios.length === 0){
+            this.usuarios = [];
             this.existenCoincidencias = false;
             return;
           }
@@ -320,10 +325,13 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarPorCorreo() {
+    if(this.correoField?.invalid) return;
+
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
           if(usuarios.length === 0){
+            this.usuarios = [];
             this.existenCoincidencias = false;
             return;
           }

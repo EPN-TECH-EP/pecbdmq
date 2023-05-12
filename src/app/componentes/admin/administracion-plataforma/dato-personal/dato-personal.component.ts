@@ -42,6 +42,7 @@ export class DatoPersonalComponent implements OnInit {
   tieneMeritoDeportivo          : boolean;
   tieneNacionalidadEcuatoriana  : boolean;
   tieneComunidadFrontera        : boolean;
+  hoy                           : Date;
 
   constructor(
     public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
@@ -63,6 +64,7 @@ export class DatoPersonalComponent implements OnInit {
     this.tieneMeritoDeportivo = false;
     this.formularioDatoPersonal = new FormGroup({});
     this.usuario = new Usuario();
+    this.hoy = new Date();
     this.datosPersonales = {} as DatoPersonal;
     this.tipoSangres = Object.values(TipoSangreEnum)
   }
@@ -105,18 +107,18 @@ export class DatoPersonalComponent implements OnInit {
   private construirFormulario() {
     this.formularioDatoPersonal = this.builder.group({
 
-      nombre:                     ['', [Validators.required, Validators.minLength(3)]],
-      apellido:                   ['', [Validators.required, Validators.minLength(3)]],
+      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       correoPersonal:             ['', [Validators.required, Validators.email]],
       correoInstitucional:        ['', [Validators.email]],
-      fechaNacimiento:            [''],
-      telfConvencional:           ['',[Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular:                ['',[Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      fechaNacimiento:            ['', [Validators.required]],
+      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       tipoSangre:                 [''],
-      genero:                     [''],
-      tipoNacionalidad:           [''], // Ecuatoriana, Extranjera
-      provinciaNacimiento:        [''],
-      cantonNacimiento:           [''],
+      genero:                     ['', [Validators.required]],
+      tipoNacionalidad:           ['', [Validators.required]],
+      provinciaNacimiento:        ['', [Validators.required]],
+      cantonNacimiento:           ['', [Validators.required]],
       provinciaResidencia:        [''],
       cantonResidencia:           [''],
       callePrincipalResidencia:   [''],
@@ -299,7 +301,7 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   toggleValidationsNacionalidad() {
-    if( this.tipoNacionalidadField.value === 'Extranjero' ) {
+    if( this.tipoNacionalidadField.value === 'EXTRANJERO' ) {
       this.provinciaNacimientoField.clearValidators()
       this.cantonNacimientoField.clearValidators()
       this.provinciaNacimientoField.setValue('');
@@ -311,7 +313,7 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   onChangeCantonNacimiento(event: any) {
-    console.log(event);
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {this.cantonesNacimiento = cantones;},
       error: (err) => {console.log(err)}
@@ -319,6 +321,7 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   onChangeCantonResidencia(event: any) {
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {this.cantonesResidencia = cantones;},
       error: (err) => {console.log(err)}
@@ -333,7 +336,11 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   actualizarDatoPersonal() {
-    console.log(this.formularioDatoPersonal.value);
+    if (this.formularioDatoPersonal.invalid) {
+      this.formularioDatoPersonal.markAllAsTouched();
+      return;
+    }
+
     this.datosPersonales = {
       ...this.datosPersonales,
       nombre                       : this.nombreField?.value,
@@ -373,7 +380,7 @@ export class DatoPersonalComponent implements OnInit {
         this.usuario.codDatosPersonales = datoPersonal;
         this.close()
       },
-      error: (err) => {console.log(err);}
+      error: (err) => {console.log(err)}
     })
   }
 

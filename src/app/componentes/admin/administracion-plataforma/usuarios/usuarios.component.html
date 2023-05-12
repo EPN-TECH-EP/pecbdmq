@@ -29,7 +29,9 @@
                 class="form-control"
                 id="identificacion"
                 formControlName="identificacion"
-                [maxlength]="10"
+                [maxLength]="10"
+                [minLength]="10"
+                (keyup.enter)="buscarPorIdentificacion()"
               >
               <label mdbLabel class="form-label" for="identificacion">Identificación</label>
               <mdb-error *ngIf="identificacionField?.dirty || identificacionField?.touched">
@@ -69,6 +71,16 @@
                 formControlName="nombres"
               >
               <label mdbLabel class="form-label" for="nombres">Nombres</label>
+              <mdb-error *ngIf="nombresField?.dirty || nombresField?.touched">
+                <span *ngIf="nombresField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+                <span *ngIf="nombresField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+              </mdb-error>
             </mdb-form-control>
             <mdb-form-control class="col-3 me-2">
               <input
@@ -78,8 +90,19 @@
                 class="form-control"
                 id="apellidos"
                 formControlName="apellidos"
+                (keyup.enter)="buscarPorNombresApellidos()"
               >
               <label mdbLabel class="form-label" for="apellidos">Apellidos</label>
+              <mdb-error *ngIf="apellidosField?.dirty || apellidosField?.touched">
+                <span *ngIf="apellidosField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+                <span *ngIf="apellidosField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+              </mdb-error>
             </mdb-form-control>
             <button
               type="button"
@@ -101,13 +124,18 @@
                 class="form-control"
                 formControlName="correo"
                 id="correo"
+                (keyup.enter)="buscarPorCorreo()"
               >
               <label mdbLabel class="form-label" for="correo">Correo</label>
               <mdb-error *ngIf="correoField?.dirty || correoField?.touched">
-                <div *ngIf="correoField?.hasError('email')">
+                <span *ngIf="correoField?.hasError('email')">
                   <i class="fa-solid fa-circle-exclamation"></i>
                   Este campo debe ser un correo electrónico válido
-                </div>
+                </span>
+                <span *ngIf="correoField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
               </mdb-error>
             </mdb-form-control>
             <button
