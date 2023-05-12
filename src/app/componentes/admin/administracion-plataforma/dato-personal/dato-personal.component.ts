@@ -41,8 +41,8 @@ export class DatoPersonalComponent implements OnInit {
   tieneMeritoAcademico          : boolean;
   tieneMeritoDeportivo          : boolean;
   tieneNacionalidadEcuatoriana  : boolean;
-  tieneComunidadFrontera        : boolean;
   hoy                           : Date;
+  tieneNacionalidadComunidadFrontera        : boolean;
 
   constructor(
     public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
@@ -73,7 +73,7 @@ export class DatoPersonalComponent implements OnInit {
     this.datosPersonales = this.usuario.codDatosPersonales;
     this.datosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
     this.tieneNacionalidadEcuatoriana = this.datosPersonales.tipo_nacionalidad === ('ECUATORIANA');
-    this.tieneComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
+    this.tieneNacionalidadComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
     this.provinciaService.getProvincias().subscribe({
       next: (provincias) => {this.provincias = provincias},
       error: (error) => {console.log(error)}
@@ -117,8 +117,8 @@ export class DatoPersonalComponent implements OnInit {
       tipoSangre:                 [''],
       genero:                     ['', [Validators.required]],
       tipoNacionalidad:           ['', [Validators.required]],
-      provinciaNacimiento:        ['', [Validators.required]],
-      cantonNacimiento:           ['', [Validators.required]],
+      provinciaNacimiento:        [''],
+      cantonNacimiento:           [''],
       provinciaResidencia:        [''],
       cantonResidencia:           [''],
       callePrincipalResidencia:   [''],
@@ -301,15 +301,19 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   toggleValidationsNacionalidad() {
-    if( this.tipoNacionalidadField.value === 'EXTRANJERO' ) {
-      this.provinciaNacimientoField.clearValidators()
-      this.cantonNacimientoField.clearValidators()
+
+    if(this.tipoNacionalidadField?.value === 'EXTRANJERO') {
+      this.tieneNacionalidadEcuatoriana = false;
+      this.tieneNacionalidadComunidadFrontera = false;
+      this.provinciaNacimientoField.clearValidators();
+      this.cantonNacimientoField.clearValidators();
       this.provinciaNacimientoField.setValue('');
       this.cantonNacimientoField.setValue('');
     } else {
       this.provinciaNacimientoField.setValidators([Validators.required]);
       this.cantonNacimientoField.setValidators([Validators.required]);
     }
+
     this.provinciaNacimientoField.setValue('');
     this.cantonNacimientoField.setValue('');
 

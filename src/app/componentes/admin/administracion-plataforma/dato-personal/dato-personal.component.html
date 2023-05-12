@@ -267,7 +267,7 @@
             formControlName="tipoNacionalidad"
             value="EXTRANJERO"
             name="tipoNacionalidad"
-            [checked]="!tieneNacionalidadEcuatoriana && !tieneComunidadFrontera"
+            [checked]="!tieneNacionalidadEcuatoriana && !tieneNacionalidadComunidadFrontera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="extranjero"> Extranjero </label>
@@ -281,7 +281,7 @@
             formControlName="tipoNacionalidad"
             value="COMUNIDAD FRONTERA"
             name="tipoNacionalidad"
-            [checked]="tieneComunidadFrontera"
+            [checked]="tieneNacionalidadComunidadFrontera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
