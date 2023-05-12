@@ -16,7 +16,7 @@
       <div class="col-4">
         <div class="alert alert-info" role="alert">
           <i class="fa-solid fa-circle-info me-2"></i>
-          Su numero de cédula será su nombre de usuario
+          El número cédula será el nombre de usuario
         </div>
         <mdb-form-control>
           <input
@@ -56,8 +56,8 @@
       </div>
       <div class="col-4">
         <div class="alert alert-success" role="alert">
-            <i class="fa-solid fa-calendar me-2"></i>
-            Fecha de registro: {{ hoy | date: 'dd/MM/yyyy' }}
+          <i class="fa-solid fa-calendar me-2"></i>
+          Fecha de registro: {{ hoy | date: 'dd/MM/yyyy' }}
         </div>
       </div>
     </div>
@@ -78,14 +78,18 @@
           />
           <label mdbLabel class="form-label mb-2x" for="nombre">Nombres</label>
           <mdb-error *ngIf="nombreField?.dirty || nombreField?.touched">
-        <span *ngIf="nombreField?.hasError('minlength')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe tener al menos 3 caracteres
-        </span>
+            <span *ngIf="nombreField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Debe tener al menos 3 caracteres
+            </span>
             <span *ngIf="nombreField?.hasError('required')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="nombreField?.hasError('invalid_letters')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Solo se permiten letras
+            </span>
           </mdb-error>
         </mdb-form-control>
         <!--Apellido-->
@@ -100,14 +104,18 @@
           >
           <label mdbLabel class="form-label mb-2x" for="apellido">Apellidos</label>
           <mdb-error *ngIf="apellidoField?.dirty || apellidoField?.touched">
-        <span *ngIf="apellidoField?.hasError('minlength')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe tener al menos 3 caracteres
-        </span>
+            <span *ngIf="apellidoField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Debe tener al menos 3 caracteres
+            </span>
             <span *ngIf="apellidoField?.hasError('required')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="apellidoField?.hasError('invalid_letters')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Solo se permiten letras
+            </span>
           </mdb-error>
         </mdb-form-control>
         <!-- Correo personal -->
@@ -177,7 +185,15 @@
             #dpFechaNacimiento="mdbDatepicker"
             [options]="opcionesDatepicker"
             [inline]="true"
+            [maxDate]="hoy"
           ></mdb-datepicker>
+          <mdb-error
+            *ngIf="fechaNacimientoField.invalid && (fechaNacimientoField?.dirty || fechaNacimientoField?.touched)">
+            <span *ngIf="fechaNacimientoField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+          </mdb-error>
         </mdb-form-control>
         <!-- Telf convencional -->
         <mdb-form-control>
@@ -215,7 +231,7 @@
             formControlName="telfCelular"
             [maxLength]="10"
           />
-          <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Convencional</label>
+          <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Celular</label>
           <mdb-error
             *ngIf="telfCelularField?.dirty || telfCelularField?.touched"
           >
@@ -257,6 +273,12 @@
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
+          <mdb-error *ngIf="generoField?.invalid && (generoField?.dirty || generoField?.touched)">
+            <span *ngIf="generoField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+          </mdb-error>
         </mdb-form-control>
       </div>
     </div>
@@ -307,6 +329,12 @@
           >
           <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
         </div>
+        <span
+          class="text-danger"
+          *ngIf="tipoNacionalidadField?.invalid && tipoNacionalidadField?.touched">
+          <i class="fas fa-times-circle"></i>
+          Este campo es requerido
+        </span>
       </div>
       <div class="col-4">
         <div
@@ -327,6 +355,7 @@
                 [value]="provincia.codigo"
               >{{ provincia.nombre }}
               </mdb-option>
+
             </mdb-select>
             <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
           </mdb-form-control>
@@ -641,13 +670,13 @@
   <button
     type="button"
     class="btn btn-success"
-    (click)="crearUsuario(); showLoader(true);"
+    (click)="crearUsuario();"
   >
     Crear usuario
   </button>
 </div>
 
-<mdb-loading [show]="loading" [fullscreen]="true" >
+<mdb-loading [show]="loading" [fullscreen]="true">
   <div class="loading-spinner">
     <div class="spinner-border loading-icon text-primary" role="status"></div>
     <span class="loading-text text-primary">Creando usuario ...</span>
