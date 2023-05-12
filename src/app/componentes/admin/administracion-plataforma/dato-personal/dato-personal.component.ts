@@ -37,7 +37,7 @@ export class DatoPersonalComponent implements OnInit {
   grados                        : Grado[];
   rangos                        : Rango[];
   cargos                        : Cargo[];
-  tipoSangres                   : string[];
+  tiposSangre                   : string[];
   tieneMeritoAcademico          : boolean;
   tieneMeritoDeportivo          : boolean;
   tieneNacionalidadEcuatoriana  : boolean;
@@ -66,7 +66,7 @@ export class DatoPersonalComponent implements OnInit {
     this.usuario = new Usuario();
     this.hoy = new Date();
     this.datosPersonales = {} as DatoPersonal;
-    this.tipoSangres = Object.values(TipoSangreEnum)
+    this.tiposSangre = Object.values(TipoSangreEnum)
   }
 
   ngOnInit(): void {
