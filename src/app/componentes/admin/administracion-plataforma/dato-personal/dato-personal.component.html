@@ -235,6 +235,12 @@
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
+          <mdb-error *ngIf="generoField?.invalid && (generoField?.dirty || generoField?.touched)">
+            <span *ngIf="generoField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+          </mdb-error>
         </mdb-form-control>
       </div>
     </div>
