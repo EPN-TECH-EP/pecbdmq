@@ -55,7 +55,7 @@
           </thead>
 
           <tbody class="datatable-body">
-            <tr *ngIf="addRow" scope="row">
+            <tr *ngIf="addRow">
               <td>
                 <mdb-form-control>
                   <input
@@ -67,9 +67,7 @@
                     [(ngModel)]="materia.nombre"
                     required
                     #nombre="ngModel"
-                    (change)="
-                      validacionUtil.onInputChange($event, 'catalogo', nombre)
-                    "
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </td>
@@ -82,7 +80,6 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materia.numHoras"
-                    required
                     #numHoras="ngModel"
                     required
                     min="1"
@@ -143,7 +140,6 @@
                     type="text"
                     class="form-control"
                     [(ngModel)]="materia.pesoMateria"
-                    required
                     #pesoMateria="ngModel"
                     required
                     min="1"
@@ -165,7 +161,6 @@
                     [(ngModel)]="materia.notaMinima"
                     required
                     #notaMinima="ngModel"
-                    required
                     min="1"
                     max="10"
                     inputValidation="decimal"
@@ -179,7 +174,7 @@
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   id="btnRegistrar"
                   type="submit"
-                (click)="registro(form.value); addRow = false;"
+                (click)="crear(form.value); addRow = false;"
                 >
                   <i class="fa fa-check"></i> Agregar
                 </button>
@@ -233,7 +228,6 @@
                       class="form-control"
                       [(ngModel)]="materiaEditForm.numHoras"
                       #numHoras="ngModel"
-                      required
                       required
                       min="1"
                       max="20"
@@ -358,19 +352,15 @@
                     mdbTooltip="Editar registro"
                     class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                     (click)="editRow(index)"
-                    [disabled]="
-                      editElementIndex !== -1 && editElementIndex !== index
-                    "
+                    [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
                   <button
                     mdbTooltip="Eliminar registro"
                     class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    (click)="confirmaEliminar($event, materia.codMateria)"
-                    [disabled]="
-                      editElementIndex !== -1 && editElementIndex !== index
-                    "
+                    (click)="confirmarEliminar($event, materia.codMateria)"
+                    [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                   >
                     <i class="fa fa-trash-alt"></i>
                   </button>

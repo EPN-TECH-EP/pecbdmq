@@ -12,7 +12,7 @@
     <button
       class="btn btn-primary btn-sm mb-2"
       id="btnAgregarFila"
-      [disabled]="editElementIndex !== -1"
+      [disabled]="estaEditando"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i>&nbsp;Agregar
@@ -23,7 +23,7 @@
         type="text"
         class="form-control"
         id="search-input"
-        [disabled]="editElementIndex !== -1"
+        [disabled]="estaEditando"
         (keyup)="search($event)"
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
@@ -55,6 +55,7 @@
           </tr>
           </thead>
           <tbody class="datatable-body">
+          <!-- Add new row -->
           <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
@@ -76,7 +77,7 @@
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 id="btnRegistrar"
                 type="submit"
-                (click)="registro(form.value); addRow = false;"
+                (click)="crear(form.value); addRow = false;"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -89,13 +90,13 @@
               </button>
             </td>
           </tr>
-
-          <tr *ngFor="let catalogo of table.data; let index = index">
+          <!-- Data table rows -->
+          <tr *ngFor="let catalogo of table.data">
             <td>
-              <ng-container *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="!estaEditando || codigoCatalogoEditando !== catalogo.codigo">
                 {{ catalogo.nombre }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoCatalogoEditando === catalogo.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
@@ -113,39 +114,35 @@
 
             <td>
               <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                *ngIf="!estaEditando || codigoCatalogoEditando !== catalogo.codigo"
               >
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editRow(index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="editRow(catalogo); estaEditando = true;"
+                  [disabled]="estaEditando"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event, catalogo.codigo)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="confirmarEliminar($event, catalogo.codigo)"
+                  [disabled]="estaEditando"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoCatalogoEditando == catalogo.codigo">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(catalogo, form.value);"
+                  (click)="actualizar(catalogo);"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="undoRow()"
+                  (click)="undoRow();"
                 >
                   <i class="fa fa-ban"></i> Cancelar
                 </button>
