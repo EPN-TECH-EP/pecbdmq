@@ -205,7 +205,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
             ...nuevaPonderacion,
             modulo_desc: this.modulos.find(
               (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
-            ).descripcion,
+            ).etiqueta,
             componente_nota_desc: this.componentes.find(
               (componente) =>
                 componente.cod_componente_nota ===
@@ -311,7 +311,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
             ...ponderacion,
             modulo_desc: this.modulos.find(
               (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
-            ).descripcion,
+            ).etiqueta,
             componente_nota_desc: this.componentes.find(
               (componente) =>
                 componente.cod_componente_nota ===

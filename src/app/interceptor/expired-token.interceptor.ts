@@ -12,6 +12,7 @@ import {ModalSesionExpiradaComponent} from "../componentes/util/modal-sesion-exp
 export class ExpiredTokenInterceptor implements HttpInterceptor {
 
   sesionExpiradaModalRef:  MdbModalRef<ModalSesionExpiradaComponent>;
+  public static globalModalRef:  MdbModalRef<any>;
   private showModal = false;
 
   constructor(
@@ -35,13 +36,18 @@ export class ExpiredTokenInterceptor implements HttpInterceptor {
   }
 
   abrirModalSesionExpirada() {
+
+    if (ExpiredTokenInterceptor.globalModalRef) {
+      ExpiredTokenInterceptor.globalModalRef.close();
+    }          
+
     this.sesionExpiradaModalRef = this.modalService.open(ModalSesionExpiradaComponent, {
       modalClass: '.modal-sm modal-dialog-centered',
     });
 
     this.sesionExpiradaModalRef.onClose.subscribe(() => {
       this.router.navigate(['/login']).then(() => {
-        window.location.reload()
+        //window.location.reload()
       });
     });
   }

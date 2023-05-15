@@ -17,6 +17,10 @@ import {UnidadGestionService} from "../../../../servicios/unidad-gestion.service
 import TipoSangreEnum from "../../../../enum/tipo-sangre.enum";
 import {MyValidators} from "../../../../util/validators";
 import {UsuarioService} from "../../../../servicios/usuario.service";
+import {Notificacion} from "../../../../util/notificacion";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {AlertaComponent} from "../../../util/alerta/alerta.component";
 
 @Component({
   selector: 'app-usuario',
@@ -43,6 +47,7 @@ export class UsuarioComponent implements OnInit {
   tieneNacionalidadComunidadFrontera : boolean;
   hoy: Date = new Date();
   loading: boolean = false;
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
 
 
   constructor(
@@ -53,6 +58,7 @@ export class UsuarioComponent implements OnInit {
     private gradoService: GradoService,
     private unidadGestionService: UnidadGestionService,
     private usuarioService: UsuarioService,
+    private notificacionService: MdbNotificationService
   ) {
     this.provincias = [];
     this.cantonesNacimiento = [];
@@ -107,18 +113,18 @@ export class UsuarioComponent implements OnInit {
       nombreUsuario:              ['', [Validators.required, Validators.minLength(10),
                                         Validators.maxLength(10), MyValidators.onlyNumbers,
                                         MyValidators.validIdentification()]],
-      nombre:                     ['', [Validators.required, Validators.minLength(3)]],
-      apellido:                   ['', [Validators.required, Validators.minLength(3)]],
+      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       correoPersonal:             ['', [Validators.required, Validators.email]],
       correoInstitucional:        ['', [Validators.email]],
-      fechaNacimiento:            [''],
-      telfConvencional:           ['',[Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular:                ['',[Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      fechaNacimiento:            ['', Validators.required],
+      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       tipoSangre:                 [''],
-      genero:                     [''],
-      tipoNacionalidad:           [''],
-      provinciaNacimiento:        [''],
-      cantonNacimiento:           [''],
+      genero:                     ['', Validators.required],
+      tipoNacionalidad:           ['', Validators.required],
+      provinciaNacimiento:        ['', Validators.required],
+      cantonNacimiento:           ['', Validators.required],
       provinciaResidencia:        [''],
       cantonResidencia:           [''],
       callePrincipalResidencia:   [''],
@@ -135,6 +141,12 @@ export class UsuarioComponent implements OnInit {
       rango:                      [''],
       cargo:                      [''],
     }, {updateOn: 'change'});
+
+    this.fechaNacimientoField.valueChanges.subscribe({
+      next: (fechaNacimiento) => {
+        console.log(fechaNacimiento);
+      }
+    })
   }
 
   get nombreUsuarioField() {
@@ -249,6 +261,14 @@ export class UsuarioComponent implements OnInit {
     return this.formularioUsuario.get('rango');
   }
 
+  notificarError(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificacionService,
+      mensaje,
+      TipoAlerta.ALERTA_ERROR
+    );
+  }
+
   onMeritoDeportivoChange(event: any) {
     this.tieneMeritoDeportivo = event.target.checked;
     if (this.tieneMeritoDeportivo) {
@@ -276,10 +296,17 @@ export class UsuarioComponent implements OnInit {
       this.cantonNacimientoField.clearValidators()
       this.provinciaNacimientoField.setValue('');
       this.cantonNacimientoField.setValue('');
+    } else {
+      this.provinciaNacimientoField.setValidators([Validators.required]);
+      this.cantonNacimientoField.setValidators([Validators.required]);
     }
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
+
   }
 
   onChangeCantonNacimiento(event: any) {
+    if(event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
         this.cantonesNacimiento = cantones;
@@ -290,6 +317,8 @@ export class UsuarioComponent implements OnInit {
   }
 
   onChangeCantonResidencia(event: any) {
+    if(event === '') return;
+
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
         this.cantonesResidencia = cantones;
@@ -311,6 +340,9 @@ export class UsuarioComponent implements OnInit {
       this.formularioUsuario.markAllAsTouched();
       return;
     }
+
+    this.showLoader(true);
+
     this.usuario = {
       ...this.usuario,
       nombreUsuario: this.nombreUsuarioField.value,
@@ -372,7 +404,7 @@ export class UsuarioComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.showLoader(false);
-        // Notificar error
+        this.notificarError(err.error.mensaje)
       }
     })
   }

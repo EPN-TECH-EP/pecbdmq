@@ -31,14 +31,18 @@
           />
           <label mdbLabel class="form-label mb-2x" for="nombre">Nombres</label>
           <mdb-error *ngIf="nombreField?.dirty || nombreField?.touched">
-        <span *ngIf="nombreField?.hasError('minlength')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe tener al menos 3 caracteres
-        </span>
+            <span *ngIf="nombreField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Debe tener al menos 3 caracteres
+            </span>
             <span *ngIf="nombreField?.hasError('required')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="nombreField?.hasError('invalid_letters')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Solo se permiten letras
+            </span>
           </mdb-error>
         </mdb-form-control>
         <!--Apellido-->
@@ -53,14 +57,18 @@
           >
           <label mdbLabel class="form-label mb-2x" for="apellido">Apellidos</label>
           <mdb-error *ngIf="apellidoField?.dirty || apellidoField?.touched">
-        <span *ngIf="apellidoField?.hasError('minlength')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe tener al menos 3 caracteres
-        </span>
+            <span *ngIf="apellidoField?.hasError('minlength')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Debe tener al menos 3 caracteres
+            </span>
             <span *ngIf="apellidoField?.hasError('required')">
-        <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="apellidoField?.hasError('invalid_letters')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Solo se permiten letras
+            </span>
           </mdb-error>
         </mdb-form-control>
         <!-- Correo personal -->
@@ -114,11 +122,13 @@
           <input
             mdbInput
             mdbValidate
+            [readonly]="true"
             [mdbDatepicker]="dpFechaNacimiento"
             type="text"
             id="fechaNacimiento"
             class="form-control mb-5"
             formControlName="fechaNacimiento"
+
             (click)="dpFechaNacimiento.open()"
           />
           <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
@@ -130,16 +140,14 @@
             #dpFechaNacimiento="mdbDatepicker"
             [options]="opcionesDatepicker"
             [inline]="true"
+            [maxDate]="hoy"
           ></mdb-datepicker>
-          <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
-            <div *ngIf="fechaNacimientoField?.hasError('required')">
+          <mdb-error
+            *ngIf="fechaNacimientoField.invalid && (fechaNacimientoField?.dirty || fechaNacimientoField?.touched)">
+            <span *ngIf="fechaNacimientoField?.hasError('required')">
               <i class="fas fa-exclamation-circle mb-1"></i>
               Este campo es requerido
-            </div>
-            <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
-              <i class="fas fa-exclamation-circle mb-1"></i>
-              La edad requerida es entre 18 y 28 años
-            </div>
+            </span>
           </mdb-error>
           <mdb-success
             *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched">
@@ -227,6 +235,12 @@
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
+          <mdb-error *ngIf="generoField?.invalid && (generoField?.dirty || generoField?.touched)">
+            <span *ngIf="generoField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+          </mdb-error>
         </mdb-form-control>
       </div>
     </div>
@@ -234,7 +248,7 @@
     <div class="row">
       <h5>Datos de nacionalidad</h5>
       <hr class="hr hr-blurry">
-      <div class="col-4 pt-2">
+      <div class="col-4 py-3">
         <!-- Tipo Nacionalidad -->
         <div class="form-check mb-2">
           <input
@@ -259,11 +273,12 @@
             formControlName="tipoNacionalidad"
             value="EXTRANJERO"
             name="tipoNacionalidad"
+            [checked]="!tieneNacionalidadEcuatoriana && !tieneNacionalidadComunidadFrontera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="extranjero"> Extranjero </label>
         </div>
-        <div class="form-check mb-2">
+        <div class="form-check mb-3">
           <input
             mdbRadio
             class="form-check-input"
@@ -272,11 +287,17 @@
             formControlName="tipoNacionalidad"
             value="COMUNIDAD FRONTERA"
             name="tipoNacionalidad"
-            [checked]="tieneComunidadFrontera"
+            [checked]="tieneNacionalidadComunidadFrontera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
         </div>
+        <span
+          class="text-danger"
+          *ngIf="tipoNacionalidadField?.invalid && tipoNacionalidadField?.touched">
+          <i class="fas fa-times-circle"></i>
+          Este campo es requerido
+        </span>
       </div>
       <div class="col-4">
         <div
@@ -299,6 +320,16 @@
               </mdb-option>
             </mdb-select>
             <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
+            <mdb-error *ngIf="(provinciaNacimientoField?.dirty || provinciaNacimientoField?.touched)">
+              <span *ngIf="!provincias.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                No se pudo cargar las provincias
+              </span>
+              <span *ngIf="provinciaNacimientoField?.hasError('required')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </span>
+            </mdb-error>
           </mdb-form-control>
           <!-- Cantón Nacimiento -->
           <mdb-form-control>
@@ -317,10 +348,18 @@
             </mdb-select>
             <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
             <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
-        <span *ngIf="!cantonesNacimiento.length">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Escoja primero una provincia
-        </span>
+              <span *ngIf="!cantonesNacimiento.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Escoja primero una provincia
+              </span>
+              <span *ngIf="!cantonesNacimiento.length">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                No se pudo cargar los cantones
+              </span>
+              <span *ngIf="cantonNacimientoField?.hasError('required')">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </span>
             </mdb-error>
           </mdb-form-control>
         </div>
@@ -455,9 +494,6 @@
             formControlName="paisTitulo"
           >
           <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
-          <mdb-error *ngIf="(paisTituloField?.dirty || paisTituloField?.touched)">
-            <i class="fas fa-exclamation-circle mb-1"></i>
-          </mdb-error>
         </mdb-form-control>
         <!-- Ciudad de Titulo -->
         <mdb-form-control>
@@ -614,7 +650,7 @@
   <button
     type="button"
     class="btn btn-success"
-    (click)="actualizarDatoPersonal(); datoPersonalComponentMdbModalRef.close()"
+    (click)="actualizarDatoPersonal()"
   >
     Actualizar datos
   </button>

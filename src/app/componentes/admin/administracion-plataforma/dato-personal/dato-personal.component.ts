@@ -41,7 +41,8 @@ export class DatoPersonalComponent implements OnInit {
   tieneMeritoAcademico          : boolean;
   tieneMeritoDeportivo          : boolean;
   tieneNacionalidadEcuatoriana  : boolean;
-  tieneComunidadFrontera        : boolean;
+  hoy                           : Date;
+  tieneNacionalidadComunidadFrontera        : boolean;
 
   constructor(
     public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
@@ -63,6 +64,7 @@ export class DatoPersonalComponent implements OnInit {
     this.tieneMeritoDeportivo = false;
     this.formularioDatoPersonal = new FormGroup({});
     this.usuario = new Usuario();
+    this.hoy = new Date();
     this.datosPersonales = {} as DatoPersonal;
     this.tipoSangres = Object.values(TipoSangreEnum)
   }
@@ -71,7 +73,7 @@ export class DatoPersonalComponent implements OnInit {
     this.datosPersonales = this.usuario.codDatosPersonales;
     this.datosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
     this.tieneNacionalidadEcuatoriana = this.datosPersonales.tipo_nacionalidad === ('ECUATORIANA');
-    this.tieneComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
+    this.tieneNacionalidadComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
     this.provinciaService.getProvincias().subscribe({
       next: (provincias) => {this.provincias = provincias},
       error: (error) => {console.log(error)}
@@ -105,16 +107,16 @@ export class DatoPersonalComponent implements OnInit {
   private construirFormulario() {
     this.formularioDatoPersonal = this.builder.group({
 
-      nombre:                     ['', [Validators.required, Validators.minLength(3)]],
-      apellido:                   ['', [Validators.required, Validators.minLength(3)]],
+      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       correoPersonal:             ['', [Validators.required, Validators.email]],
       correoInstitucional:        ['', [Validators.email]],
-      fechaNacimiento:            [''],
-      telfConvencional:           ['',[Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular:                ['',[Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      fechaNacimiento:            ['', [Validators.required]],
+      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       tipoSangre:                 [''],
-      genero:                     [''],
-      tipoNacionalidad:           [''], // Ecuatoriana, Extranjera
+      genero:                     ['', [Validators.required]],
+      tipoNacionalidad:           ['', [Validators.required]],
       provinciaNacimiento:        [''],
       cantonNacimiento:           [''],
       provinciaResidencia:        [''],
@@ -299,19 +301,26 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   toggleValidationsNacionalidad() {
-    if( this.tipoNacionalidadField.value === 'Extranjero' ) {
-      this.provinciaNacimientoField.clearValidators()
-      this.cantonNacimientoField.clearValidators()
+
+    if(this.tipoNacionalidadField?.value === 'EXTRANJERO') {
+      this.tieneNacionalidadEcuatoriana = false;
+      this.tieneNacionalidadComunidadFrontera = false;
+      this.provinciaNacimientoField.clearValidators();
+      this.cantonNacimientoField.clearValidators();
       this.provinciaNacimientoField.setValue('');
       this.cantonNacimientoField.setValue('');
     } else {
       this.provinciaNacimientoField.setValidators([Validators.required]);
       this.cantonNacimientoField.setValidators([Validators.required]);
     }
+
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
+
   }
 
   onChangeCantonNacimiento(event: any) {
-    console.log(event);
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {this.cantonesNacimiento = cantones;},
       error: (err) => {console.log(err)}
@@ -319,6 +328,7 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   onChangeCantonResidencia(event: any) {
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {this.cantonesResidencia = cantones;},
       error: (err) => {console.log(err)}
@@ -333,7 +343,11 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   actualizarDatoPersonal() {
-    console.log(this.formularioDatoPersonal.value);
+    if (this.formularioDatoPersonal.invalid) {
+      this.formularioDatoPersonal.markAllAsTouched();
+      return;
+    }
+
     this.datosPersonales = {
       ...this.datosPersonales,
       nombre                       : this.nombreField?.value,
@@ -373,7 +387,7 @@ export class DatoPersonalComponent implements OnInit {
         this.usuario.codDatosPersonales = datoPersonal;
         this.close()
       },
-      error: (err) => {console.log(err);}
+      error: (err) => {console.log(err)}
     })
   }
 

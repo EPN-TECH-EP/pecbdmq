@@ -45,9 +45,17 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   editElementIndexN1 = -1;
   editElementIndexN2 = -1;
   editElementIndexN3 = -1;
-  addRow = false;
+
+  // variables para agregar filas
+  addRowN1 = false;
+  addRowN2 = false;
+  addRowN3 = false;
 
   headersMenuN1 = ['Etiqueta', 'Orden', 'Descripción'];
+  headersMenuN2 = [...this.headersMenuN1, 'Ruta'];
+  headersMenuN3 = [...this.headersMenuN2, 'Icono'];
+
+  nivelEliminar: number;
 
   constructor(
     private menuService: MenuService,
@@ -93,13 +101,23 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   }
 
   //registro
-  public registro(menu: Menu): void {
-    menu = { ...menu };
+  public registro(menu: Menu, nivel: number): void {
     this.showLoading = true;
 
+    // asigna el menú padre
+    if (nivel === 1) {
+      menu = { ...menu };
+    } else if (nivel === 2) {
+      menu = { ...menu, menuPadre: this.menuN1Seleccionado.codMenu };
+    } else if (nivel === 3) {
+      menu = { ...menu, menuPadre: this.menuN2Seleccionado.codMenu };
+    }
+
     // validación vacíos
-    const vacios = ValidacionUtil.tienePropiedadesVacías(menu);
-    if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
+    // se requiere validar por nivel de menú
+
+    // primero validar campos obligatorios en todos los niveles
+    if (ValidacionUtil.isNullOrEmpty(menu.etiqueta)) {
       this.showLoading = false;
       Notificacion.notificacion(
         this.notificationRef,
@@ -110,13 +128,67 @@ export class MenuComponent extends ComponenteBase implements OnInit {
       return;
     }
 
+    // validar campos obligatorios segundo nivel
+    if (nivel === 2) {
+      if (ValidacionUtil.isNullOrEmpty(menu.ruta)) {
+        this.showLoading = false;
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Todos los campos deben estar llenos'
+        );
+        return;
+      }
+    } else if (nivel === 3) {
+      if (
+        ValidacionUtil.isNullOrEmpty(menu.ruta) ||
+        ValidacionUtil.isNullOrEmpty(menu.icono) ||
+        ValidacionUtil.isNullOrEmpty(menu.descripcion)
+      ) {
+        this.showLoading = false;
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Todos los campos deben estar llenos'
+        );
+        return;
+      }
+    }
+
+    /*const vacios = ValidacionUtil.tienePropiedadesVacías(menu);
+    if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
+      this.showLoading = false;
+      Notificacion.notificacion(
+        this.notificationRef,
+        this.notificationServiceLocal,
+        null,
+        'Todos los campos deben estar llenos'
+      );
+      return;
+    }*/
+
     this.subscriptions.push(
       this.menuService.crear(menu).subscribe({
         next: (response: HttpResponse<Menu>) => {
           // guardar en array el nuevo objeto
           let nuevoMenu: Menu = response.body;
-          this.menusPrimerNivel.push(nuevoMenu);
-          this.menusPrimerNivel = [...this.menusPrimerNivel];
+
+          // actualiza el array correspondiente
+          if (nivel === 1) {
+            this.menusPrimerNivel.push(nuevoMenu);
+            this.menusPrimerNivel = [...this.menusPrimerNivel];
+            this.addRowN1 = false;
+          } else if (nivel === 2) {
+            this.menusSegundoNivel.push(nuevoMenu);
+            this.menusSegundoNivel = [...this.menusSegundoNivel];
+            this.addRowN2 = false;
+          } else if (nivel === 3) {
+            this.menusTercerNivel.push(nuevoMenu);
+            this.menusTercerNivel = [...this.menusTercerNivel];
+            this.addRowN3 = false;
+          }                    
 
           Notificacion.notificacionOK(
             this.notificationRef,
@@ -124,7 +196,7 @@ export class MenuComponent extends ComponenteBase implements OnInit {
             'Menú creado con éxito'
           );
 
-          this.addRow = false;
+          
           this.menu = this.initMenuN1();
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -139,13 +211,65 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   }
 
   // editar
-  public editar(index: number) {
-    this.editElementIndexN1 = index;
-    this.menuEditForm = { ...this.menusPrimerNivel[index] };
+  public editar(index: number, nivel: number) {
+    if (nivel === 1) {
+      this.editElementIndexN1 = index;
+      this.menuEditForm = { ...this.menusPrimerNivel[index] };
+    } else if (nivel === 2) {
+      this.editElementIndexN2 = index;
+      this.menuEditForm = { ...this.menusSegundoNivel[index] };
+    } else if (nivel === 3) {
+      this.editElementIndexN3 = index;
+      this.menuEditForm = { ...this.menusTercerNivel[index] };
+    }
   }
 
-  public actualizar(menu: Menu, formValue): void {
+  public actualizar(menu: Menu, formValue, nivel: number): void {
     this.showLoading = true;
+
+    // validación vacíos
+    // se requiere validar por nivel de menú
+
+    // primero validar campos obligatorios en todos los niveles
+    if (ValidacionUtil.isNullOrEmpty(menu.etiqueta)) {
+      this.showLoading = false;
+      Notificacion.notificacion(
+        this.notificationRef,
+        this.notificationServiceLocal,
+        null,
+        'Todos los campos deben estar llenos'
+      );
+      return;
+    }
+
+    // validar campos obligatorios segundo nivel
+    if (nivel === 2) {
+      if (ValidacionUtil.isNullOrEmpty(menu.ruta)) {
+        this.showLoading = false;
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Todos los campos deben estar llenos'
+        );
+        return;
+      }
+    } else if (nivel === 3) {
+      if (
+        ValidacionUtil.isNullOrEmpty(menu.ruta) ||
+        ValidacionUtil.isNullOrEmpty(menu.icono) ||
+        ValidacionUtil.isNullOrEmpty(menu.descripcion)
+      ) {
+        this.showLoading = false;
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Todos los campos deben estar llenos'
+        );
+        return;
+      }
+    }
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(formValue);
@@ -160,6 +284,7 @@ export class MenuComponent extends ComponenteBase implements OnInit {
       return;
     }
 
+    // prepara el objeto a actualizar
     menu = {
       ...menu,
       etiqueta: formValue.etiqueta,
@@ -167,17 +292,35 @@ export class MenuComponent extends ComponenteBase implements OnInit {
       descripcion: formValue.descripcion,
     };
 
+    if (nivel === 2) menu = { ...menu, ruta: formValue.ruta };
+    else if (nivel === 3)
+      menu = { ...menu, icono: formValue.icono, ruta: formValue.ruta };
+
     this.subscriptions.push(
       this.menuService.actualizar(menu).subscribe({
         next: (response: HttpResponse<Menu>) => {
-          this.menusPrimerNivel[this.editElementIndexN1] = response.body;
-          this.menusPrimerNivel = [...this.menusPrimerNivel];
+          // actualiza el objeto en el array correspondiente
+          if (nivel === 1) {
+            this.menusPrimerNivel[this.editElementIndexN1] = response.body;
+            this.menusPrimerNivel = [...this.menusPrimerNivel];
+          } else if (nivel === 2) {
+            this.menusSegundoNivel[this.editElementIndexN2] = response.body;
+            this.menusSegundoNivel = [...this.menusSegundoNivel];
+          } else if (nivel === 3) {
+            this.menusTercerNivel[this.editElementIndexN3] = response.body;
+            this.menusTercerNivel = [...this.menusTercerNivel];
+          }
+
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
             'Menú actualizado con éxito'
           );
+
+          // reestablece índices
           this.editElementIndexN1 = -1;
+          this.editElementIndexN2 = -1;
+          this.editElementIndexN3 = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
@@ -191,26 +334,33 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   }
 
   // eliminar
-  public confirmaEliminar(event: Event, codigo: number): void {
-    // verifica si tiene hijos
-
-    this.subscriptions.push(
-      this.menuService.listarHijos(codigo).subscribe((data: Menu[]) => {
-        if (data.length > 0) {
-          Notificacion.notificacion(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            null,
-            'No se puede eliminar un menú de primer nivel que tiene menús relacionados'
-          );
-          return;
-        } else {
-          super.confirmaEliminarMensaje();
-          this.codigo = codigo;
-          super.openPopconfirm(event, this.eliminar.bind(this));
-        }
-      })
-    );
+  public confirmaEliminar(event: Event, codigo: number, nivel: number): void {
+    // verifica si tiene hijos solamente si es de nivel 1 o 2
+    if (nivel === 1 || nivel === 2) {
+      this.subscriptions.push(
+        this.menuService.listarHijos(codigo).subscribe((data: Menu[]) => {
+          if (data.length > 0) {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              null,
+              'No se puede eliminar un menú de primer o segundo nivel que tiene menús relacionados'
+            );
+            return;
+          } else {
+            super.confirmaEliminarMensaje();
+            this.codigo = codigo;
+            this.nivelEliminar = nivel;
+            super.openPopconfirm(event, this.eliminar.bind(this));
+          }
+        })
+      );
+    } else {
+      super.confirmaEliminarMensaje();
+      this.codigo = codigo;
+      this.nivelEliminar = nivel;
+      super.openPopconfirm(event, this.eliminar.bind(this));
+    }
   }
 
   public eliminar(): void {
@@ -224,11 +374,26 @@ export class MenuComponent extends ComponenteBase implements OnInit {
             'Menú eliminado con éxito'
           );
           this.showLoading = false;
-          const index = this.menusPrimerNivel.findIndex(
-            (menu) => menu.codMenu === this.codigo
-          );
-          this.menusPrimerNivel.splice(index, 1);
-          this.menusPrimerNivel = [...this.menusPrimerNivel];
+
+          if (this.nivelEliminar == 1) {
+            const index = this.menusPrimerNivel.findIndex(
+              (menu) => menu.codMenu === this.codigo
+            );
+            this.menusPrimerNivel.splice(index, 1);
+            this.menusPrimerNivel = [...this.menusPrimerNivel];
+          } else if (this.nivelEliminar == 2) {
+            const index = this.menusSegundoNivel.findIndex(
+              (menu) => menu.codMenu === this.codigo
+            );
+            this.menusSegundoNivel.splice(index, 1);
+            this.menusSegundoNivel = [...this.menusSegundoNivel];
+          } else if (this.nivelEliminar == 3) {
+            const index = this.menusTercerNivel.findIndex(
+              (menu) => menu.codMenu === this.codigo
+            );
+            this.menusTercerNivel.splice(index, 1);
+            this.menusTercerNivel = [...this.menusTercerNivel];
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
@@ -242,19 +407,34 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   }
 
   // selección de menu de primer nivel
-  public onSelectRow(menu: Menu): void {
+  public onSelectRow(menu: Menu, nivel: number): void {
+    if (nivel === 1) {
+      this.menuN1Seleccionado = menu;
+      this.menuN2Seleccionado = null;
+      this.menuN3Seleccionado = null;
 
-    this.menuN1Seleccionado = menu;
-    this.menusSegundoNivel = [];
-    this.menusTercerNivel = [];
+      this.menusSegundoNivel = [];
+      this.menusTercerNivel = []; 
 
+      // obtiene los hijos del menú seleccionado
+      this.obtenerMenusHijos(menu.codMenu, nivel);
+    } else if (nivel === 2) {
+      this.menuN2Seleccionado = menu;
+      this.menuN3Seleccionado = null;
+      this.menusTercerNivel = []; 
+
+      // obtiene los hijos del menú seleccionado
+      this.obtenerMenusHijos(menu.codMenu, nivel);
+    } else if (nivel === 3) {
+      this.menuN3Seleccionado = menu;
+    }
+  }
+
+  obtenerMenusHijos(codMenuPadre: number, nivel: number): void {
     this.subscriptions.push(
-      this.menuService.listarHijos(menu.codMenu).subscribe((data: Menu[]) => {
-        if (data.length > 0) {
-          this.menusSegundoNivel = data;
-          console.log(this.menusSegundoNivel);
-          return;
-        }
+      this.menuService.listarHijos(codMenuPadre).subscribe((data: Menu[]) => {
+        if (nivel === 1) this.menusSegundoNivel = data;
+        else if (nivel === 2) this.menusTercerNivel = data;
       })
     );
   }

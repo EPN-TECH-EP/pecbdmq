@@ -29,15 +29,25 @@
                 class="form-control"
                 id="identificacion"
                 formControlName="identificacion"
-                [maxlength]="10"
+                [maxLength]="10"
+                [minLength]="10"
+                (keyup.enter)="buscarPorIdentificacion()"
               >
               <label mdbLabel class="form-label" for="identificacion">Identificación</label>
               <mdb-error *ngIf="identificacionField?.dirty || identificacionField?.touched">
-                <div *ngIf="identificacionField?.hasError('invalid_numbers')">
+                <span *ngIf="identificacionField?.hasError('invalid_numbers')">
                   <i class="fa-solid fa-circle-exclamation"></i>
                   Este campo solo acepta números
-                </div>
+                </span>
+                <span *ngIf="identificacionField?.hasError('invalid_identification')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  No es una cédula válida
+                </span>
               </mdb-error>
+              <mdb-success *ngIf="identificacionField?.valid && (identificacionField?.touched || identificacionField?.dirty)">
+                <i class="fa-solid fa-circle-check"></i>
+                Campo válido
+              </mdb-success>
             </mdb-form-control>
             <button
               type="button"
@@ -61,6 +71,16 @@
                 formControlName="nombres"
               >
               <label mdbLabel class="form-label" for="nombres">Nombres</label>
+              <mdb-error *ngIf="nombresField?.dirty || nombresField?.touched">
+                <span *ngIf="nombresField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+                <span *ngIf="nombresField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+              </mdb-error>
             </mdb-form-control>
             <mdb-form-control class="col-3 me-2">
               <input
@@ -70,8 +90,19 @@
                 class="form-control"
                 id="apellidos"
                 formControlName="apellidos"
+                (keyup.enter)="buscarPorNombresApellidos()"
               >
               <label mdbLabel class="form-label" for="apellidos">Apellidos</label>
+              <mdb-error *ngIf="apellidosField?.dirty || apellidosField?.touched">
+                <span *ngIf="apellidosField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+                <span *ngIf="apellidosField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+              </mdb-error>
             </mdb-form-control>
             <button
               type="button"
@@ -93,13 +124,18 @@
                 class="form-control"
                 formControlName="correo"
                 id="correo"
+                (keyup.enter)="buscarPorCorreo()"
               >
               <label mdbLabel class="form-label" for="correo">Correo</label>
               <mdb-error *ngIf="correoField?.dirty || correoField?.touched">
-                <div *ngIf="correoField?.hasError('email')">
+                <span *ngIf="correoField?.hasError('email')">
                   <i class="fa-solid fa-circle-exclamation"></i>
                   Este campo debe ser un correo electrónico válido
-                </div>
+                </span>
+                <span *ngIf="correoField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
               </mdb-error>
             </mdb-form-control>
             <button
@@ -152,22 +188,22 @@
 
           <tr *ngFor="let usuario of table.data; let index = index">
             <td>
-              {{ usuario.nombreUsuario }}
+              {{ usuario?.nombreUsuario }}
             </td>
             <td>
-              {{ usuario.codDatosPersonales.nombre }}
+              {{ usuario?.codDatosPersonales?.nombre }}
             </td>
             <td>
-              {{ usuario.codDatosPersonales.apellido }}
+              {{ usuario?.codDatosPersonales?.apellido }}
             </td>
             <td>
-              {{ usuario.codDatosPersonales.correo_personal }}
+              {{ usuario?.codDatosPersonales?.correo_personal }}
             </td>
             <td>
-              {{ usuario.fechaRegistro | date:'YYYY-MM-dd'  }}
+              {{ usuario?.fechaRegistro | date:'YYYY-MM-dd'  }}
             </td>
             <td>
-              {{ usuario.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
+              {{ usuario?.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
             </td>
 
             <td>
@@ -179,7 +215,7 @@
                   value=""
                   id="usuarioActive"
                   name="active"
-                  [checked]="usuario.active"
+                  [checked]="usuario?.active"
                   disabled="true"
                 />
               </ng-container>
@@ -206,7 +242,7 @@
                   value=""
                   id="usuarioNotLocked"
                   name="notLocked"
-                  [checked]="usuario.notLocked"
+                  [checked]="usuario?.notLocked"
                   disabled="true"
                 />
               </ng-container>
@@ -275,6 +311,12 @@
           [rowsPerPageText]="'Registros por página'"
         ></mdb-table-pagination>
       </form>
+    </div>
+  </section>
+  <section *ngIf="!existenCoincidencias">
+    <div class="alert alert-warning" role="alert">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      No se encontraron coincidencias
     </div>
   </section>
 </div>

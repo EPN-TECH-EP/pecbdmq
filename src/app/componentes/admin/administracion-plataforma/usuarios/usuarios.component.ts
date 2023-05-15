@@ -56,6 +56,7 @@ export class UsuariosComponent implements OnInit {
   currentRoute: string;
   editarDatoPersonalModalRef: MdbModalRef<DatoPersonalComponent> | null = null;
   crearUsuarioModalRef: MdbModalRef<UsuarioComponent> | null = null;
+  existenCoincidencias: boolean = true;
 
   constructor(
     private notificationService: MdbNotificationService,
@@ -78,10 +79,16 @@ export class UsuariosComponent implements OnInit {
     this.bucarUsuarioForm = this.builder.group({
       identificacion: [
         '',
-        [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          MyValidators.onlyNumbers(),
+          MyValidators.validIdentification()
+        ]
       ],
       nombres   : ['', [Validators.required, MyValidators.onlyLetters()]],
-      apellidos : ['',[Validators.required, MyValidators.onlyLetters()]],
+      apellidos : ['', [Validators.required, MyValidators.onlyLetters()]],
       correo    : ['', [Validators.required, Validators.email]],
     });
   }
@@ -127,7 +134,7 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  public notificacionOK(mensaje: string) {
+  public notificarOk(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationService,
       mensaje,
@@ -138,8 +145,6 @@ export class UsuariosComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-
-  // funcionalidad
 
   confirmaActualizar(usuario: Usuario) {
     this.mensajeConfirmacion = '¿Actualizar los datos del usuario?';
@@ -158,7 +163,7 @@ export class UsuariosComponent implements OnInit {
             this.editElementIndex = -1;
             this.usuarios.splice(this.indexEliminar, 1);
             this.usuarios = [...this.usuarios];
-            this.notificacionOK('Usuario eliminado con éxito');
+            this.notificarOk('Usuario eliminado con éxito');
           },
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
@@ -209,7 +214,7 @@ export class UsuariosComponent implements OnInit {
             this.usuarios[this.editElementIndex] = response;
             this.showLoading = false;
             this.editElementIndex = -1;
-            this.notificacionOK('Usuario actualizado con éxito');
+            this.notificarOk('Usuario actualizado con éxito');
           },
           error: (errorResponse: HttpErrorResponse) => {
             this.notificacion(errorResponse);
@@ -271,22 +276,31 @@ export class UsuariosComponent implements OnInit {
 
 
   buscarPorIdentificacion() {
+    if(this.identificacionField?.invalid) return;
+
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
       {
         next: (usuario) => {
+          if(usuario === null){
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
           this.usuarios[0] = usuario;
           this.usuarios.splice(1, this.usuarios.length);
           this.showLoading = false;
           this.usuarios = [...this.usuarios];
-          console.log(this.usuarios);
+          this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse);
+          console.error(errorResponse);
         },
       });
   }
 
   buscarPorNombresApellidos() {
+    if(this.nombresField?.invalid || this.apellidosField?.invalid) return;
+
     const data: UsuarioNombreApellido = {
       nombre: this.nombresField.value,
       apellido: this.apellidosField.value
@@ -294,9 +308,15 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
+          if(usuarios.length === 0){
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
           this.usuarios = usuarios;
           this.showLoading = false;
           this.usuarios = [...this.usuarios];
+          this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
           console.error(errorResponse);
@@ -305,13 +325,21 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarPorCorreo() {
+    if(this.correoField?.invalid) return;
+
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
+          if(usuarios.length === 0){
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
           this.usuarios = usuarios;
           this.usuarios.splice(1, this.usuarios.length);
           this.showLoading = false;
           this.usuarios = [...this.usuarios];
+          this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
           console.error(errorResponse);
@@ -334,7 +362,7 @@ export class UsuariosComponent implements OnInit {
       if (usuario) {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
-      this.notificacionOK('Datos personales actualizados con éxito')
+        this.notificarOk('Datos personales actualizados con éxito')
       }
     });
   }
@@ -343,13 +371,15 @@ export class UsuariosComponent implements OnInit {
     this.crearUsuarioModalRef = this.modalService.open(UsuarioComponent, {
       modalClass: 'modal-xl modal-dialog-centered',
     });
-    this.crearUsuarioModalRef.onClose.subscribe((usuario: Usuario) => {
-      if (usuario) {
-        this.usuarios.push(usuario);
-        this.usuarios = [...this.usuarios];
-        this.notificacionOK('Usuario creado con éxito')
-      }
-    });
+    this.crearUsuarioModalRef.onClose.subscribe(
+      (usuario: Usuario) => {
+        if (usuario) {
+          this.usuarios.push(usuario);
+          this.usuarios = [...this.usuarios];
+          this.notificarOk('Usuario creado con éxito')
+          }
+        },
+      );
   }
 
 }
