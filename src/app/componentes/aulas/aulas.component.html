@@ -38,6 +38,7 @@
         #table="mdbTable"
         #sort="mdbTableSort"
         [dataSource]="aulas"
+        [pagination]="pagination"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -487,6 +488,11 @@
         </tr>
         </tbody>
       </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        (paginationChange)="onPaginationChange($event)"
+      ></mdb-table-pagination>
     </form>
   </div>
 </div>

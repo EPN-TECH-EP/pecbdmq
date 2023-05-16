@@ -120,6 +120,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.aulas.push(nuevaAula);
+          this.aulas = [...this.aulas]
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula creada con éxito');
           this.aula = {
             codigo: 0,
