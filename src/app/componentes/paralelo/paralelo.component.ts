@@ -3,14 +3,9 @@ import {Paralelo} from "../../modelo/admin/paralelo";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {Subscription} from "rxjs";
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-
 import {Notificacion} from "../../util/notificacion";
 import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {ComponenteBase} from "src/app/util/componente-base";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
@@ -32,7 +27,6 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   validacionUtil = ValidacionUtil;
 
   @ViewChild('table') table!: MdbTableDirective<Paralelo>;
-  editElementIndex = -1;
   addRow = false;
   headers = [
     'Nombre Paralelo',
@@ -75,7 +69,6 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   }
 
   editRow(paralelo: Paralelo) {
-    const index = this.paralelos.indexOf(paralelo);
     this.paraleloEdit = {...paralelo}
     this.codigoParaleloEditando = paralelo.codParalelo;
   }
@@ -87,7 +80,6 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
       nombreParalelo: '',
       estado: 'ACTIVO'
     };
-    this.editElementIndex = -1;
   }
 
   crear(paralelo: Paralelo): void {
@@ -122,33 +114,28 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  actualizar(paralelo: Paralelo, formValue): void {
+  actualizar(paralelo: Paralelo): void {
 
-    if (formValue.nombreParalelo == '') {
+    if (this.paraleloEdit.nombreParalelo == '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Ingrese un nombre de paralelo');
       return;
     }
 
-    paralelo = {...paralelo, estado: 'ACTIVO', nombreParalelo: formValue.nombreParalelo};
+    paralelo = {...paralelo, estado: 'ACTIVO', nombreParalelo: this.paraleloEdit.nombreParalelo}
     this.showLoading = true;
     this.subscriptions.push(
       this.paraleloService.actualizarParalelo(paralelo, paralelo.codParalelo).subscribe({
-          next: (response) => {
+          next: () => {
+            let index = this.paralelos.findIndex(value => value.codParalelo === paralelo.codParalelo);
+            this.paralelos[index] = paralelo;
+            this.paralelos = [...this.paralelos];
+            this.codigoParaleloEditando = 0;
+            this.estaEditando = false;
             Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo actualizado con éxito');
-            const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
-            this.paralelos[index] = response.body;
-            this.editElementIndex = -1;
-            this.showLoading = false;
-            this.paralelo = {
-              codParalelo: 0,
-              nombreParalelo: '',
-              estado: '',
-            }
           },
 
           error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-            // this.showLoading = false;
           },
         }
       )
@@ -165,12 +152,12 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     this.showLoading = true;
     this.subscriptions.push(
       this.paraleloService.eliminarParalelo(this.codigo).subscribe({
-        next: (response: string) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo eliminado con éxito');
+        next: () => {
           this.showLoading = false;
           const index = this.paralelos.findIndex(paraleloO => paraleloO.codParalelo === this.codigo);
           this.paralelos.splice(index, 1);
           this.paralelos = [...this.paralelos];
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo eliminado con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);

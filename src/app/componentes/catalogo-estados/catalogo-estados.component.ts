@@ -145,12 +145,11 @@ export class CatalogoEstadosComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.catalogoEstadosService.eliminarCatalogo(this.codigo).subscribe({
         next: () => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'El catálogo de estado se ha eliminado con éxito');
-
           this.showLoading = false;
           const index = this.catalogos.findIndex(catalogo => catalogo.codigo === this.codigo);
           this.catalogos.splice(index, 1);
           this.catalogos = [...this.catalogos]
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'El catálogo de estado se ha eliminado con éxito');
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
