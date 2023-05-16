@@ -26,7 +26,6 @@
           #sort="mdbTableSort"
           #table="mdbTable"
           [dataSource]="tiposBaja"
-          [pagination]="pagination"
           [sort]="sort"
         >
           <!-- Table head -->
@@ -141,12 +140,12 @@
           </tbody>
         </table>
       </form>
-      <mdb-table-pagination
-        #pagination
-        [entries]="5"
-        [rowsPerPageText]="'Registros por página'"
-        (paginationChange)="onPaginationChange($event)"
-      ></mdb-table-pagination>
+<!--      <mdb-table-pagination-->
+<!--        #pagination-->
+<!--        [entries]="5"-->
+<!--        [rowsPerPageText]="'Registros por página'"-->
+<!--        (paginationChange)="onPaginationChange($event)"-->
+<!--      ></mdb-table-pagination>-->
     </div>
   </div>
 </div>

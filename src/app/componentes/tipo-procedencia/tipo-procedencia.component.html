@@ -16,17 +16,17 @@
     >
       <i class="fa fa-plus"></i> Agregar
     </button>
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        [disabled]="editElementIndex !== -1"
-        (keyup)="search($event)"
-      />
-      <label mdbLabel class="form-label" for="search-input">Buscar</label>
-    </mdb-form-control>
+<!--    <mdb-form-control>-->
+<!--      <input-->
+<!--        mdbInput-->
+<!--        type="text"-->
+<!--        class="form-control"-->
+<!--        id="search-input"-->
+<!--        [disabled]="editElementIndex !== -1"-->
+<!--        (keyup)="search($event)"-->
+<!--      />-->
+<!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
+<!--    </mdb-form-control>-->
 
 
     <hr/>
@@ -53,12 +53,12 @@
           </tr>
           </thead>
           <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
+                  id="nombreNew"
                   name="nombre"
                   class="form-control"
                   [(ngModel)]="tipoProcedencia.nombre"
@@ -70,7 +70,7 @@
               </mdb-form-control>
             </td>
 
-            <td align="center">
+            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
@@ -88,8 +88,8 @@
             </td>
           </tr>
 
-          <tr *ngFor="let tipoProcedencia of table.data; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+          <tr *ngFor="let tipoProcedencia of table.data; let index = index">
+            <td style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tipoProcedencia.nombre }}
               </ng-container>
@@ -104,13 +104,13 @@
                     [(ngModel)]="tipoProcedenciaEditForm.nombre"
                     #nombre="ngModel"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"                    
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
-            <td align="center">
+            <td>
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

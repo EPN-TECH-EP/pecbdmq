@@ -16,17 +16,17 @@
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        [disabled]="editElementIndex !== -1"
-        (keyup)="search($event)"
-      />
-      <label mdbLabel class="form-label" for="search-input">Buscar</label>
-    </mdb-form-control>
+<!--    <mdb-form-control>-->
+<!--      <input-->
+<!--        mdbInput-->
+<!--        type="text"-->
+<!--        class="form-control"-->
+<!--        id="search-input"-->
+<!--        [disabled]="editElementIndex !== -1"-->
+<!--        (keyup)="search($event)"-->
+<!--      />-->
+<!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
+<!--    </mdb-form-control>-->
     <hr />
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
@@ -50,7 +50,7 @@
             </tr>
           </thead>
           <tbody class="datatable-body">
-            <tr *ngIf="addRow" scope="row">
+            <tr *ngIf="addRow">
               <td>
                 <mdb-form-control>
                   <input
@@ -81,7 +81,7 @@
                   />
                 </mdb-form-control>
               </td>
-              <td align="center">
+              <td>
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   type="submit"
@@ -99,8 +99,8 @@
               </td>
             </tr>
 
-            <tr *ngFor="let Modulo of table.data; let index = index" scope="row">
-              <td align="center" style="min-width: 10px; max-width: 10px">
+            <tr *ngFor="let Modulo of table.data; let index = index">
+              <td style="min-width: 10px; max-width: 10px">
                 <ng-container *ngIf="editElementIndex !== index">
                   {{ Modulo.etiqueta }}
                 </ng-container>
@@ -118,7 +118,7 @@
                 </ng-container>
               </td>
 
-              <td align="center" style="min-width: 10px; max-width: 10px">
+              <td style="min-width: 10px; max-width: 10px">
                 <ng-container *ngIf="editElementIndex !== index">
                   {{ Modulo.descripcion }}
                 </ng-container>
@@ -136,7 +136,7 @@
                 </ng-container>
               </td>
 
-              <td align="center">
+              <td>
                 <ng-container
                   *ngIf="editElementIndex === -1 || editElementIndex !== index"
                 >
