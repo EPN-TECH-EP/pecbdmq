@@ -1,23 +1,15 @@
-import {MateriaService} from './../../servicios/materia.service';
-import {MateriasTbl} from './../../modelo/util/materias-tbl';
-import {HttpErrorResponse, HttpResponse, HttpClient} from '@angular/common/http';
-import {Component, OnInit, OnDestroy, Inject, Injectable} from '@angular/core';
+import {MateriaService} from '../../servicios/materia.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {Subscription} from 'rxjs';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {AutenticacionService} from 'src/app/servicios/autenticacion.service';
 import {Notificacion} from '../../util/notificacion';
 import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
 import {Materia} from 'src/app/modelo/admin/materias';
-import {
-  MdbPopconfirmRef,
-  MdbPopconfirmService,
-} from 'mdb-angular-ui-kit/popconfirm';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {ComponenteBase} from 'src/app/util/componente-base';
 import {ValidacionUtil} from 'src/app/util/validacion-util';
@@ -28,11 +20,7 @@ import {ValidacionUtil} from 'src/app/util/validacion-util';
   templateUrl: './materia.component.html',
   styleUrls: ['./materia.component.scss'],
 })
-// @Injectable()
-// export class MaService {
-//   constructor(private valueService: ValueService) { }
-//   getValue() { return this.valueService.getValue(); }
-// }
+
 export class MateriaComponent extends ComponenteBase implements OnInit {
   materias: Materia[];
   materia: Materia;
@@ -45,7 +33,6 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   userResponse: string;
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
-  editElementIndex = -1;
   addRow = false;
   headers = [
     'Nombre Materia',
@@ -55,6 +42,9 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     'Peso Materia',
     'Nota Mínima',
   ];
+
+  estaEditando = false;
+  codigoMateriaEditando = 0;
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
@@ -98,13 +88,13 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  editRow(index: number) {
-    this.editElementIndex = index;
-    const offset = this.paginaActual > 0 ? this.indiceAuxRegistro : 0;
-    this.materiaEditForm = {...this.materias[index + offset]};
+  editRow(materia: Materia) {
+    this.materiaEditForm = {...materia};
+    this.codigoMateriaEditando = materia.codMateria;
   }
 
   undoRow() {
+    this.estaEditando = false;
     this.materiaEditForm = {
       codMateria: 0,
       nombre: '',
@@ -115,7 +105,6 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
       notaMinima: '' as any,
       estado: 'ACTIVO'
     };
-    this.editElementIndex = -1;
   }
 
   crear(materia: Materia): void {
@@ -186,24 +175,13 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.showLoading = true;
     this.subscriptions.push(
       this.materiaService.actualizarMateria(materia, materia.codMateria).subscribe({
-          next: (response) => {
+          next: () => {
+            let index = this.materias.findIndex(value => value.codMateria === materia.codMateria);
+            this.materias[index] = materia;
+            this.materias = [...this.materias];
+            this.codigoMateriaEditando = 0;
+            this.estaEditando = false;
             Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia actualizada con éxito');
-
-            const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
-            this.materias[index] = response.body;
-            this.showLoading = false;
-            this.materia = {
-              codMateria: 0,
-              nombre: '',
-              numHoras: '' as any,
-              tipoMateria: '',
-              observacionMateria: '',
-              pesoMateria: '' as any,
-              notaMinima: '' as any,
-              estado: 'ACTIVO'
-            }
-            this.editElementIndex = -1;
-            this.materias = [...this.materias]
 
           },
 
@@ -225,7 +203,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.showLoading = true;
     this.subscriptions.push(
       this.materiaService.eliminarMateria(this.codigo).subscribe({
-        next: (response: string) => {
+        next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Materia eliminada con éxito');
 
           this.showLoading = false;

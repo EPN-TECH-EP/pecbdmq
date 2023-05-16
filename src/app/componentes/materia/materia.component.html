@@ -11,7 +11,7 @@
     <button
       id="btnAgregarFila"
       class="btn btn-primary btn-sm mb-3"
-      [disabled]="editElementIndex !== -1"
+      [disabled]="estaEditando"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
@@ -22,7 +22,7 @@
         type="text"
         class="form-control"
         id="search-input"
-        [disabled]="editElementIndex !== -1"
+        [disabled]="estaEditando"
         (keyup)="search($event)"
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
@@ -37,8 +37,8 @@
           mdbTable
           mdbTableSort
           #table="mdbTable"
-          [pagination]="pagination"
           [dataSource]="materias"
+          [pagination]="pagination"
         >
           <thead class="datatable-header">
             <tr>
@@ -190,12 +190,12 @@
 
             <tr *ngFor="let materia of table.data; let index = index">
               <td style="min-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   <div class="text-wrap">
                     {{ materia.nombre }}
                   </div>
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -215,10 +215,10 @@
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   {{ materia.numHoras }}
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -239,12 +239,12 @@
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   <div class="text-wrap">
                     {{ materia.tipoMateria }}
                   </div>
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -268,12 +268,12 @@
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   <div class="text-wrap">
                     {{ materia.observacionMateria }}
                   </div>
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -297,10 +297,10 @@
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   {{ materia.pesoMateria }}
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -321,10 +321,10 @@
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
+                <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   {{ materia.notaMinima }}
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -346,13 +346,13 @@
 
               <td>
                 <ng-container
-                  *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                  *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria"
                 >
                   <button
                     mdbTooltip="Editar registro"
                     class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    (click)="editRow(index)"
-                    [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+                    (click)="editRow(materia); estaEditando = true"
+                    [disabled]="estaEditando"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
@@ -360,12 +360,12 @@
                     mdbTooltip="Eliminar registro"
                     class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                     (click)="confirmarEliminar($event, materia.codMateria)"
-                    [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+                    [disabled]="estaEditando"
                   >
                     <i class="fa fa-trash-alt"></i>
                   </button>
                 </ng-container>
-                <ng-container *ngIf="editElementIndex === index">
+                <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
                   <button
                     class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                     (click)="actualizar(materia, form.value)"
