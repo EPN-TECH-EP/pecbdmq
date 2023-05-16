@@ -5,7 +5,6 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import {Rol} from 'src/app/modelo/admin/rol';
 import {AlertaComponent} from '../../../util/alerta/alerta.component';
-import {Subscription} from 'rxjs';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
 import {RolService} from 'src/app/servicios/rol.service';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -20,32 +19,25 @@ import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
   styleUrls: ['./rol.component.scss'],
 })
 export class RolComponent extends ComponenteBase implements OnInit {
-  //modelo
   roles: Rol[];
   rol: Rol;
   rolEditForm: Rol;
-
-  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  //private subscriptions: Subscription[] = [];
-
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
-
-  //table
   @ViewChild('table') table!: MdbTableDirective<Rol>;
-  editElementIndex = -1;
   addRow = false;
-
   headers = ['Nombre', 'Descripcion'];
+  estaEditando = false;
+  codigoRolEditando = 0;
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService,
-    private api: RolService
+    private popConfirmServiceLocal: MdbPopconfirmService,
+    private rolService: RolService
   ) {
-    super(notificationServiceLocal, popconfirmServiceLocal);
+    super(notificationServiceLocal, popConfirmServiceLocal);
 
     this.roles = [];
     this.subscriptions = [];
@@ -54,9 +46,13 @@ export class RolComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getRol().subscribe((data) => {
+    this.rolService.getRol().subscribe((data) => {
       this.roles = data;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   search(event: Event): void {
@@ -64,11 +60,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  public errorNotification(mensaje: string) {
+  errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
       mensaje,
@@ -76,9 +68,9 @@ export class RolComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  public registro(rol: Rol): void {
+  crear(rol: Rol): void {
     //rol={...rol, estado:'ACTIVO'};
-    if(rol.nombre === '' || rol.descripcion === ''){
+    if (rol.nombre === '' || rol.descripcion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
     }
@@ -92,10 +84,11 @@ export class RolComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.api.registroRol(rol).subscribe({
+      this.rolService.registroRol(rol).subscribe({
         next: (response: HttpResponse<Rol>) => {
           let nuevaRol: Rol = response.body;
           this.roles.push(nuevaRol);
+          this.roles = [...this.roles];
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
@@ -118,21 +111,21 @@ export class RolComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  editar(index: number) {
-    this.editElementIndex = index;
-    this.rolEditForm = {...this.roles[index]};
+  editRow(rol: Rol) {
+    this.rolEditForm = {...rol};
+    this.codigoRolEditando = rol.codRol;
   }
 
   undoRow() {
+    this.codigoRolEditando = 0;
     this.rolEditForm = {
       codRol: 0,
       nombre: '',
       descripcion: '',
     };
-    this.editElementIndex = -1;
   }
 
-  public actualizar(rol: Rol, formValue): void {
+  actualizar(rol: Rol, formValue): void {
     console.log(formValue);
 
     if (formValue.nombre === '' || formValue.descripcion === '') {
@@ -145,47 +138,35 @@ export class RolComponent extends ComponenteBase implements OnInit {
       nombre: formValue.nombre,
       descripcion: formValue.descripcion,
     };
+
     this.showLoading = true;
     this.subscriptions.push(
-      this.api.actualizarRol(rol).subscribe({
-        next: (response) => {
-          Notificacion.notificacionOK(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            'Rol actualizado con éxito'
-          );
-          this.roles[this.editElementIndex] = response.body;
-          this.showLoading = false;
-          this.rol = {
-            codRol: 0,
-            nombre: '',
-            descripcion: '',
-          };
-          this.editElementIndex = -1;
-
-          error: (errorResponse: HttpErrorResponse) => {
-            Notificacion.notificacion(
-              this.notificationRef,
-              this.notificationServiceLocal,
-              errorResponse
-            );
-          };
+      this.rolService.actualizarRol(rol).subscribe({
+        next: () => {
+          let index = this.roles.findIndex(value => value.codRol === rol.codRol);
+          this.roles[index] = rol;
+          this.roles = [...this.roles];
+          this.codigoRolEditando = 0;
+          this.estaEditando = false;
+          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Rol actualizado con éxito');
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );
   }
 
-  // eliminar
-  public confirmaEliminar(event: Event, codigo: number): void {
+  confirmarEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
     this.codigo = codigo;
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-  public eliminar(): void {
+  eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.api.eliminarRol(this.codigo).subscribe({
+      this.rolService.eliminarRol(this.codigo).subscribe({
         next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,

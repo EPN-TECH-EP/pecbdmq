@@ -9,7 +9,7 @@
   <div class="col-8">
     <button
       class="btn btn-primary btn-sm mb-3"
-      [disabled]="editElementIndex !== -1"
+      [disabled]="estaEditando"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
@@ -20,7 +20,7 @@
         type="text"
         class="form-control"
         id="search-input"
-        [disabled]="editElementIndex !== -1"
+        [disabled]="estaEditando"
         (keyup)="search($event)"
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
@@ -34,8 +34,8 @@
           mdbTable
           mdbTableSort
           #table="mdbTable"
-          #sort="mdbTableSort"
           [dataSource]="roles"
+          [pagination]="pagination"
         >
           <thead class="datatable-header">
           <tr>
@@ -83,7 +83,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)="registro(form.value); addRow = false"
+                (click)="crear(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -98,16 +98,16 @@
             </td>
           </tr>
 
-          <tr *ngFor="let rol of table.data; let index = index" scope="row">
+          <tr *ngFor="let rol of table.data">
             <td>
-              <ng-container *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="!estaEditando || codigoRolEditando !== rol.codRol">
                 {{ rol.nombre }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoRolEditando === rol.codRol">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombre"
+                    id="nombreEdit"
                     name="nombre"
                     type="text"
                     class="form-control"
@@ -118,14 +118,14 @@
             </td>
 
             <td>
-              <ng-container *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="!estaEditando || codigoRolEditando !== rol.codRol">
                 {{ rol.descripcion }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoRolEditando === rol.codRol">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="descripcion"
+                    id="descripcionEdit"
                     name="descripcion"
                     type="text"
                     class="form-control"
@@ -137,30 +137,26 @@
 
             <td class="text-center">
               <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                *ngIf="!estaEditando || codigoRolEditando !== rol.codRol"
               >
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="editRow(rol); estaEditando = true"
+                  [disabled]="estaEditando"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event,rol.codRol)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="confirmarEliminar($event,rol.codRol)"
+                  [disabled]="estaEditando"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoRolEditando === rol.codRol">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(rol, form.value)"
@@ -169,7 +165,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="editElementIndex = -1"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i> Cancelar
                 </button>
@@ -178,6 +174,11 @@
           </tr>
           </tbody>
         </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          (paginationChange)="onPaginationChange($event)"
+        ></mdb-table-pagination>
       </form>
     </div>
   </div>
