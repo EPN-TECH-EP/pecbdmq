@@ -6,6 +6,7 @@ import {
   import { TipoAlerta } from '../enum/tipo-alerta';
   import { HttpErrorResponse } from '@angular/common/http';
   import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
+import { ValidacionUtil } from './validacion-util';
   export class Notificacion {
     static ref: MdbNotificationRef<AlertaComponent>;
 
@@ -55,7 +56,7 @@ import {
 
       if (errorResponse) {
         let customError: CustomHttpResponse = errorResponse.error;
-        mensajeError = customError.mensaje;
+        mensajeError = ValidacionUtil.isNullOrEmpty(customError.mensaje) ? mensajeError : customError.mensaje;
         codigoError = errorResponse.status;
       }
 

@@ -128,6 +128,7 @@ import { DatoPersonalComponent } from './componentes/admin/administracion-plataf
 import { UsuarioComponent } from './componentes/admin/administracion-plataforma/usuario/usuario.component';
 import { ModalSesionExpiradaComponent } from './componentes/util/modal-sesion-expirada/modal-sesion-expirada.component';
 import { MenuComponent } from './componentes/admin/administracion-plataforma/menu/menu.component';
+import { MenuAdminComponent } from './componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +156,7 @@ import { MenuComponent } from './componentes/admin/administracion-plataforma/men
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
     MenuFormacionComponent,
+    MenuAdminComponent,
     BienvenidaComponent,
     ValidacionComponent,
     ParaleloComponent,
@@ -228,6 +230,7 @@ import { MenuComponent } from './componentes/admin/administracion-plataforma/men
     MdbTooltipModule,
     MdbValidationModule,
     MdbMultiRangeModule,
+    //
     PrincipalModuleModule,
   ],
   providers: [

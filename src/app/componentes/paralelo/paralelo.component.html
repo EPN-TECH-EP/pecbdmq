@@ -10,7 +10,7 @@
     <!-- Button to add a register-->
     <button
       class="btn btn-primary btn-sm mb-3"
-      [disabled]="editElementIndex !== -1"
+      [disabled]="estaEditando"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
@@ -21,7 +21,8 @@
         type="text"
         class="form-control"
         id="search-input"
-        (keyup)="advancedSearch($event)"
+        [disabled]="estaEditando"
+        (keyup)="search($event)"
       >
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
@@ -36,7 +37,6 @@
           #table="mdbTable"
           [dataSource]="paralelos"
           [pagination]="pagination"
-          [filterFn]="filterFn"
         >
           <!-- Table head -->
           <thead class="datatable-header">
@@ -85,7 +85,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)=" registro(form.value); "
+                (click)=" crear(form.value);"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -102,12 +102,12 @@
           <tr *ngFor="let paralelo of table.data; let index = index">
             <td>
               <!--Show paralelo-->
-              <ng-container *ngIf="editElementIndex !== index">
+              <ng-container *ngIf="!estaEditando || codigoParaleloEditando !== paralelo.codParalelo">
                 {{ paralelo.nombreParalelo}}
               </ng-container>
 
               <!--Edit paralelo-->
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoParaleloEditando === paralelo.codParalelo">
                 <mdb-form-control>
                   <input
                     mdbInput
@@ -144,34 +144,30 @@
             <td>
               <!--Buttons to delete -->
               <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+                *ngIf="!estaEditando || codigoParaleloEditando !== paralelo.codParalelo"
               >
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editRow(index);"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                  (click)="editRow(paralelo); estaEditando = true"
+                  [disabled]="estaEditando"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
-                  (click)="confirmaEliminar($event,paralelo.codParalelo)"
+                  [disabled]="estaEditando"
+                  (click)="confirmarEliminar($event,paralelo.codParalelo)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
               <!--Buttons to edit-->
-              <ng-container *ngIf="editElementIndex === index">
+              <ng-container *ngIf="estaEditando && codigoParaleloEditando === paralelo.codParalelo">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(paralelo, form.value)"
+                  (click)="actualizar(paralelo)"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>

@@ -60,7 +60,8 @@ export class ValidacionUtil {
   }
 
   public static isNullOrEmptyNumber(value: number): boolean {
-    return value === undefined || value === null || isNaN(value) || this.isNullOrEmpty(value.toString());
+    return value === undefined || value === null || isNaN(value) 
+    || this.isNullOrEmpty(value.toString()) || value.toString() === '.';
   }
 
   public static isNullOrEmptyObject(value: any): boolean {

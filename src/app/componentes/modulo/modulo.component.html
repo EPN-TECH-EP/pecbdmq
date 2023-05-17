@@ -16,17 +16,17 @@
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        [disabled]="editElementIndex !== -1"
-        (keyup)="search($event)"
-      />
-      <label mdbLabel class="form-label" for="search-input">Buscar</label>
-    </mdb-form-control>
+<!--    <mdb-form-control>-->
+<!--      <input-->
+<!--        mdbInput-->
+<!--        type="text"-->
+<!--        class="form-control"-->
+<!--        id="search-input"-->
+<!--        [disabled]="editElementIndex !== -1"-->
+<!--        (keyup)="search($event)"-->
+<!--      />-->
+<!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
+<!--    </mdb-form-control>-->
     <hr />
     <div class="datatable table-editor mt-4">
       <form #form="ngForm">
@@ -42,15 +42,15 @@
               <th
                 *ngFor="let header of headers"
                 scope="col"
-                style="font-size: medium"
+                class="text-center"                
               >
                 <b> {{ header | titlecase }}</b>
               </th>
-              <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+              <th scope="col" class="text-center"><b>Acciones</b></th>
             </tr>
           </thead>
           <tbody class="datatable-body">
-            <tr *ngIf="addRow" scope="row">
+            <tr *ngIf="addRow">
               <td>
                 <mdb-form-control>
                   <input
@@ -99,7 +99,7 @@
               </td>
             </tr>
 
-            <tr *ngFor="let Modulo of table.data; let index = index" scope="row">
+            <tr *ngFor="let Modulo of table.data; let index = index">
               <td align="center" style="min-width: 10px; max-width: 10px">
                 <ng-container *ngIf="editElementIndex !== index">
                   {{ Modulo.etiqueta }}

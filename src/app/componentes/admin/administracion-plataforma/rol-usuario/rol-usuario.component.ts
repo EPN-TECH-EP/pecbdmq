@@ -32,6 +32,8 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
   headersRoles = ['Nombre'];
 
   cambiosPendientes: boolean = false;
+  
+  
   usuarioFrm: BuscarUsuarioFrm = new BuscarUsuarioFrm();
 
   constructor(
@@ -63,9 +65,10 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
             );
           } else {
             this.showLoading = false;
-            Notificacion.notificacionOK(
+            Notificacion.notificacion(
               this.notificationRef,
               this.notificationServiceLocal,
+              null,
               'No se encontró el usuario'
             );
             return [];
@@ -148,7 +151,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       });
 
       this.rolUsuarioService
-        .asignarRolUsuario(nuevaAsignacion)
+        .asignarRolUsuario(nuevaAsignacion, Number.parseInt(this.usuarioSeleccionado.codUsuario))
         .subscribe((data) => {
           this.cambiosPendientes = false;
 
@@ -180,15 +183,19 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       this.showLoading = true;
       this.buscarUsuarioPorNombreApellido(form.nombre, form.apellido);
 
-    } else if (form.nombreUsuario !== null) {
+    } else if (form.nombreUsuario !== null && form?.nombreUsuario?.trim().length > 0) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreUsuario(form.nombreUsuario);
     } else {
-      Notificacion.notificacionOK(
+      Notificacion.notificacion(
         this.notificationRef,
         this.notificationServiceLocal,
+        null,
         'Debe ingresar un criterio de búsqueda'
       );
+
+      this.showLoading = false;
+
     }
 
   }

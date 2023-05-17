@@ -2,10 +2,8 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MdbNotificationRef, MdbNotificationService} from 'mdb-angular-ui-kit/notification';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {Subscription} from 'rxjs';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {Aula} from 'src/app/modelo/admin/aula';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {AulaService} from 'src/app/servicios/aula.service';
 import {Notificacion} from '../../util/notificacion';
 import {AlertaComponent} from '../util/alerta/alerta.component';
@@ -34,7 +32,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
   //table
   @ViewChild('table') table!: MdbTableDirective<Aula>;
-  editElementIndex = -1;
   addRow = false;
 
   headers = [
@@ -44,11 +41,14 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     'Sala Ocupada',
   ];
 
+  estaEditando = false;
+  codigoAulaEditando = 0;
+
   constructor(
     private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService,
-    private Api: AulaService) {
-    super(notificationServiceLocal, popconfirmServiceLocal);
+    private popConfirmServiceLocal: MdbPopconfirmService,
+    private aulaService: AulaService) {
+    super(notificationServiceLocal, popConfirmServiceLocal);
     this.showLoading = false;
 
     this.aulas = [];
@@ -82,7 +82,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.Api.getAula().subscribe(data => {
+    this.aulaService.getAula().subscribe(data => {
       this.aulas = data;
       this.aulas.forEach((aula) => {
         delete aula.pcs;
@@ -100,38 +100,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   }
 
 
-  /* public notificacionOK(mensaje:string){
-    this.notificationRef = Notificacion.notificar(
-    this.notificationService,
-    mensaje,
-    TipoAlerta.ALERTA_OK
-    );
-  } */
-
-  /*   private notificacion(errorResponse: HttpErrorResponse) {
-      let customError: CustomHttpResponse = errorResponse.error;
-      let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-      let mensajeError = customError.mensaje;
-      let codigoError = errorResponse.status;
-
-      if (!mensajeError) {
-        mensajeError = 'Error inesperado';
-        tipoAlerta = TipoAlerta.ALERTA_ERROR;
-      }
-
-      if (codigoError === 0) {
-       mensajeError = 'Error de conexión al servidor';
-       tipoAlerta = TipoAlerta.ALERTA_ERROR;
-     }
-      this.notificationRef = Notificacion.notificar(
-        this.notificationService,
-        mensajeError,
-        tipoAlerta
-      )
-    }
-   */
-
   public errorNotification(mensaje: string) {
     this.notificationRef = Notificacion.notificar(
       this.notificationServiceLocal,
@@ -140,7 +108,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  public registro(aula: Aula): void {
+  public crear(aula: Aula): void {
 
     if (
       aula.nombre == '' ||
@@ -154,10 +122,11 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     aula = {...aula, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.registroAula(aula).subscribe({
+      this.aulaService.registroAula(aula).subscribe({
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.aulas.push(nuevaAula);
+          this.aulas = [...this.aulas]
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula creada con éxito');
           this.aula = {
             codigo: 0,
@@ -180,12 +149,13 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     )
   }
 
-  editar(index: number) {
-    this.editElementIndex = index;
-    this.aulaEditForm = {...this.aulas[index]};
+  editRow(aula: Aula) {
+    this.aulaEditForm = {...aula}
+    this.codigoAulaEditando = aula.codigo;
   }
 
   undoRow() {
+    this.estaEditando = false;
     this.aulaEditForm = {
       codigo: 0,
       estado: '',
@@ -199,7 +169,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       instructor: '' as any,
       salaOcupada: false
     };
-    this.editElementIndex = -1;
   }
 
 
@@ -208,7 +177,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     if (
       formValue.nombre == '' ||
       ValidacionUtil.isNullOrEmptyNumber(formValue.capacidad) ||
-      //formValue.salaOcupada == '' ||
       formValue.tipo == 0
     ) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
@@ -232,25 +200,14 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarAula(aula, aula.codigo).subscribe({
-        next: (response) => {
+      this.aulaService.actualizarAula(aula, aula.codigo).subscribe({
+        next: () => {
+          let index = this.aulas.findIndex(value => value.codigo == aula.codigo);
+          this.aulas[index] = aula;
+          this.aulas = [...this.aulas];
+          this.codigoAulaEditando = 0;
+          this.estaEditando = false;
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula actualizada con éxito');
-          this.aulas[this.editElementIndex] = response.body;
-          this.showLoading = false;
-          this.aula = {
-            codigo: 0,
-            nombre: '',
-            capacidad: '' as any,
-            tipo: '' as any,
-            pcs: '',
-            impresoras: '',
-            internet: '',
-            proyectores: '' as any,
-            instructor: '' as any,
-            salaOcupada: false,
-            estado: 'ACTIVO'
-          }
-          this.editElementIndex = -1;
         },
 
         error: (errorResponse: HttpErrorResponse) => {
@@ -273,7 +230,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarAula(this.codigo).subscribe({
+      this.aulaService.eliminarAula(this.codigo).subscribe({
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula eliminada con éxito');
           this.showLoading = false;

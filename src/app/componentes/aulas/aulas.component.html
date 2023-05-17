@@ -8,9 +8,8 @@
 <div class="row justify-content">
   <div class="col-12">
     <button
-      MdbRiple
       class="btn btn-primary btn-sm mb-3"
-      [disabled]="editElementIndex !== -1"
+      [disabled]="estaEditando"
       (click)="addRow = true"
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
@@ -21,12 +20,12 @@
         type="text"
         class="form-control"
         id="search-input"
-        [disabled]="editElementIndex !== -1"
+        [disabled]="estaEditando"
         (keyup)="search($event)"
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
-    <hr />
+    <hr>
   </div>
 
   <div class="datatable table-editor mt-4">
@@ -38,6 +37,7 @@
         #table="mdbTable"
         #sort="mdbTableSort"
         [dataSource]="aulas"
+        [pagination]="pagination"
         [sort]="sort"
       >
         <thead class="datatable-header">
@@ -54,7 +54,7 @@
         </thead>
 
         <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+        <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
@@ -83,15 +83,15 @@
                   mdbInput="mdbInput"
                   id="capacidad"
                   name="capacidad"
-                  type="number"
+                  type="text"
                   class="form-control"
                   [(ngModel)]="aula.capacidad"
                   #capacidad="ngModel"
                   required
                   min="1"
-                  max="20"
+                  max="100"
                   inputValidation="entero"
-                  mdbTooltip="Rango: 1 - 20"
+                  mdbTooltip="Rango: 1 - 100"
                 />
               </mdb-form-control>
             </td>
@@ -203,7 +203,7 @@
                 [(ngModel)]="aula.salaOcupada"
                 required
               / -->
-                <ng-container>
+                <ng-container class="text-center">
                   <input
                     mdbCheckbox
                     class="form-check-input"
@@ -222,7 +222,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)="registro(form.value); addRow = false"
+              (click)="crear(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -236,16 +236,16 @@
             </td>
           </tr>
 
-          <tr *ngFor="let aula of table.data; let index = index" scope="row">
+        <tr *ngFor="let aula of table.data">
             <td style="min-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.nombre }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="nombre"
+                  id="nombreEdit"
                     name="nombre"
                     type="text"
                     class="form-control"
@@ -265,35 +265,37 @@
             </td>
 
             <td style="min-width: 50px; max-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.capacidad }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="capacidad"
+                  id="capacidadEdit"
                     name="capacidad"
-                    type="number"
+                    type="text"
                     class="form-control"
                     [(ngModel)]="aulaEditForm.capacidad"
                     min="1"
                     max="100"
                     required
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 100"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
             <td style="min-width: 50px">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.tipo }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="tipo"
+                  id="tipoEdit"
                     name="tipo"
                     type="text"
                     class="form-control"
@@ -309,14 +311,14 @@
             </td>
 
             <td *ngIf="aula.pcs">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.pcs }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="pcs"
+                  id="pcsEdit"
                     name="pcs"
                     type="number"
                     class="form-control"
@@ -330,14 +332,14 @@
             </td>
 
             <td *ngIf="aula.impresoras">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.impresoras }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="impresoras"
+                  id="impresorasEdit"
                     name="impresoras"
                     type="number"
                     class="form-control"
@@ -351,14 +353,14 @@
             </td>
 
             <td *ngIf="aula.internet">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.internet }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="internet"
+                  id="internetEdit"
                     name="internet"
                     type="text"
                     class="form-control"
@@ -374,14 +376,14 @@
             </td>
 
             <td *ngIf="aula.proyectores">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.proyectores }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="proyectores"
+                  id="proyectoresEdit"
                     name="proyectores"
                     type="number"
                     class="form-control"
@@ -395,14 +397,14 @@
             </td>
 
             <td *ngIf="aula.instructor">
-              <ng-container *ngIf="editElementIndex !== index">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 {{ aula.instructor }}
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="instructor"
+                  id="instructorEdit"
                     name="instructor"
                     type="text"
                     class="form-control"
@@ -421,18 +423,8 @@
               </ng-container>
             </td>
 
-            <td style="min-width: 50px; max-width: 50px" class="text-center">
-              <!-- input
-                  mdbInput
-                  id="salaOcupada"
-                  name="salaOcupada"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.salaOcupada"
-                  #salaOcupada="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', salaOcupada)" required
-                / -->
-              <ng-container *ngIf="editElementIndex !== index">
+          <td style="min-width: 50px; max-width: 50px" class="text-center">
+            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
                 <input
                   mdbCheckbox
                   class="form-check-input"
@@ -444,13 +436,13 @@
                   disabled="true"
                 />
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <input
                   mdbCheckbox
                   class="form-check-input"
                   type="checkbox"
                   value=""
-                  id="salaOcupada"
+                id="salaOcupadaEdit"
                   name="salaOcupada"
                   [checked]="aula.salaOcupada"
                   [(ngModel)]="aula.salaOcupada"
@@ -460,15 +452,13 @@
 
             <td>
               <ng-container
-                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
               >
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                (click)="editRow(aula); estaEditando = true"
+                [disabled]="estaEditando"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
@@ -476,14 +466,12 @@
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   (click)="confirmaEliminar($event, aula.codigo)"
-                  [disabled]="
-                    editElementIndex !== -1 && editElementIndex !== index
-                  "
+                [disabled]="estaEditando"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
-              <ng-container *ngIf="editElementIndex === index">
+            <ng-container *ngIf="estaEditando">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(aula, form.value)"
@@ -492,7 +480,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="editElementIndex = -1"
+                (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i> Cancelar
                 </button>
@@ -501,6 +489,11 @@
           </tr>
         </tbody>
       </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        (paginationChange)="onPaginationChange($event)"
+      ></mdb-table-pagination>
     </form>
   </div>
 </div>

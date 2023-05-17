@@ -10,10 +10,6 @@ import { Submenu } from 'src/app/modelo/util/submenu';
   styleUrls: ['./menu-formacion.component.scss'],
 })
 export class MenuFormacionComponent extends Submenu implements OnInit {
-  /*listaMenu: Menu[];
-  listaSubMenu: Menu[] = [];
-
-  idMenuPadre: number;*/
 
   constructor(private menuService: MenuService, private router: Router) {
     super();

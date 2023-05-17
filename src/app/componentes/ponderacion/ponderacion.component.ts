@@ -1,38 +1,38 @@
-import {Ponderacion} from '../../modelo/admin/ponderacion';
-import {PonderacionService} from './../../servicios/ponderacion.service';
-import {Modulo} from 'src/app/modelo/admin/modulo';
-import {ModuloService} from 'src/app/servicios/modulo.service';
-import {ComponenteNota} from 'src/app/modelo/admin/componente-nota';
-import {ComponenteNotaService} from 'src/app/servicios/componente-nota.service';
-import {TipoNota} from 'src/app/modelo/admin/tipo-nota';
-import {TipoNotaService} from 'src/app/servicios/tipo-nota.service';
-import {Periodo} from 'src/app/modelo/admin/periodo-academico';
-import {PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
-import {Component, OnInit, Input} from '@angular/core';
-import {ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import { Ponderacion } from '../../modelo/admin/ponderacion';
+import { PonderacionService } from './../../servicios/ponderacion.service';
+import { Modulo } from 'src/app/modelo/admin/modulo';
+import { ModuloService } from 'src/app/servicios/modulo.service';
+import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
+import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
+import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
+import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
+import { Periodo } from 'src/app/modelo/admin/periodo-academico';
+import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
 import {
   MdbPopconfirmRef,
   MdbPopconfirmService,
 } from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 
-import {HeaderType} from 'src/app/enum/header-type.enum';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/compiler';
-import {FormArray, FormControl} from '@angular/forms';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {ValidacionUtil} from 'src/app/util/validacion-util';
-import {OPCIONES_DATEPICKER} from '../../util/constantes/opciones-datepicker.const';
-import {PonderacionTodo} from 'src/app/modelo/admin/ponderacion-todo';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { FormArray, FormControl } from '@angular/forms';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
+import { OPCIONES_DATEPICKER } from '../../util/constantes/opciones-datepicker.const';
+import { PonderacionTodo } from 'src/app/modelo/admin/ponderacion-todo';
 
 @Component({
   selector: 'app-ponderacion',
@@ -153,7 +153,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-/*
+  /*
   private notificacion(errorResponse: HttpErrorResponse) {
     let customError: CustomHttpResponse = errorResponse.error;
     let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
@@ -183,21 +183,50 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 */
   //registro
   public registro(ponderacion: Ponderacion): void {
-    ponderacion = {...ponderacion, estado: 'ACTIVO'};
+    ponderacion = { ...ponderacion, estado: 'ACTIVO' };
     this.showLoading = true;
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
+
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;
-      Notificacion.notificar(this.notificationServiceLocal, 'Ingrese un valor: '.concat(vacios[0]), TipoAlerta.ALERTA_WARNING);
+
+      // busca la etiqueta a mostrar
+      let index = 0;
+      for (let key in ponderacion) {        
+        if (key === vacios[0]) {
+          break;
+        }
+        index++;
+      }
+
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor: '.concat(/*vacios[0]*/this.headers[index]),
+        TipoAlerta.ALERTA_WARNING
+      );
+      return;
+    }
+
+    if (
+      ValidacionUtil.isNullOrEmptyNumber(
+        ponderacion.porcentajefinalponderacion
+      ) ||
+      ValidacionUtil.isNullOrEmptyNumber(ponderacion.porcentajenotamateria)
+    ) {
+      this.showLoading = false;
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor válido de porcentaje',
+        TipoAlerta.ALERTA_WARNING
+      );
       return;
     }
 
     this.subscriptions.push(
       this.ApiPonderacion.registroPonderacion(ponderacion).subscribe({
         next: (response: HttpResponse<Ponderacion>) => {
-
           // guardar en array el nuevo objeto
           let nuevaPonderacion: Ponderacion = response.body;
 
@@ -220,7 +249,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           };
 
           this.table.data.push(ponderacionTodo);
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion creada con éxito');
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion creada con éxito'
+          );
 
           this.addRow = false;
           this.ponderacion = {
@@ -237,7 +270,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           };
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
         },
       })
     );
@@ -245,14 +282,15 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.ponderacionEditForm = {...this.ponderaciones[index]};
+    this.ponderacionEditForm = { ...this.ponderaciones[index] };
 
     this.ponderacionEditForm.fechainiciovigencia = new Date(
-      this.ponderacionEditForm.fechainiciovigencia);
+      this.ponderacionEditForm.fechainiciovigencia
+    );
 
     this.ponderacionEditForm.fechafinvigencia = new Date(
-      this.ponderacionEditForm.fechafinvigencia);
-
+      this.ponderacionEditForm.fechafinvigencia
+    );
   }
 
   undoRow() {
@@ -273,7 +311,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   //actualizar
   public actualizar(ponderacion: Ponderacion, formValue): void {
-
     ponderacion = {
       ...this.ponderacionEditForm,
       cod_modulo: formValue.cod_modulo,
@@ -289,12 +326,39 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
-
-    // console.log(vacios);
-
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;
-      Notificacion.notificar(this.notificationServiceLocal, 'Ingrese un valor: '.concat(vacios[0]), TipoAlerta.ALERTA_WARNING);
+
+
+      // busca la etiqueta a mostrar
+      let index = 0;
+      for (let key in ponderacion) {        
+        if (key === vacios[0]) {
+          break;
+        }
+        index++;
+      }
+
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor: '.concat(/*vacios[0]*/this.headers[index]),
+        TipoAlerta.ALERTA_WARNING
+      );
+      return;
+    }
+
+    if (
+      ValidacionUtil.isNullOrEmptyNumber(
+        ponderacion.porcentajefinalponderacion
+      ) ||
+      ValidacionUtil.isNullOrEmptyNumber(ponderacion.porcentajenotamateria)
+    ) {
+      this.showLoading = false;
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor válido de porcentaje',
+        TipoAlerta.ALERTA_WARNING
+      );
       return;
     }
 
@@ -305,7 +369,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
         ponderacion.cod_ponderacion
       ).subscribe({
         next: (response) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion actualizada con éxito');
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion actualizada con éxito'
+          );
 
           let ponderacionTodo = {
             ...ponderacion,
@@ -330,7 +398,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
         },
       })
     );
@@ -349,7 +421,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.eliminarPonderacion(this.codigo).subscribe({
         next: () => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion eliminada con éxito');
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion eliminada con éxito'
+          );
           this.showLoading = false;
           const index = this.ponderaciones.findIndex(
             (ponderacion) => ponderacion.cod_ponderacion === this.codigo
@@ -358,13 +434,16 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           this.ponderaciones = [...this.ponderaciones];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
           console.log(errorResponse);
         },
       })
     );
   }
-
 
   value = new Date();
 

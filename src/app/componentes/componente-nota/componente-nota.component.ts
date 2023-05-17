@@ -119,7 +119,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //registro
   public registro(componenteNota: ComponenteNota): void {
 
-    if(componenteNota.nombre == ''){
+    if(ValidacionUtil.isNullOrEmpty(componenteNota.nombre)){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
 
       return;
@@ -140,6 +140,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
             nombre: '',
             estado: 'ACTIVO'
           }
+
+          this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -167,7 +169,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
 
     componenteNota={...componenteNota, nombre:formValue.componentenota, estado:'ACTIVO'};
     
-    if(formValue.nombre == ''){
+    if(ValidacionUtil.isNullOrEmpty(formValue.nombre)){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
       
       return;

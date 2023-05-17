@@ -123,7 +123,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     //MenuFormacionComponent,
-    MenuAdminComponent,
+    //MenuAdminComponent,
     //MenuItemComponent,
     BotonVolverComponent,
   ],
