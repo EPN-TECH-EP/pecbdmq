@@ -107,9 +107,9 @@
   <div class="col-md-9 text-center">
     <p class="fs-5 fw-bolder">Resultados</p>
 
-    <div class="datatable mt-4 datatable-sm table-responsive">
+    <div class="datatable mt-4 datatable-sm table-responsive datatable-striped datatable-hover datatable-sm">
       <table
-        class="table datatable-table"
+        class="table datatable-table text-start"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -126,7 +126,7 @@
               scope="col"
               class="fw-bold"
             >
-              {{ header | titlecase }}
+              <b>{{ header | titlecase }}</b>
             </th>
           </tr>
         </thead>
@@ -168,16 +168,16 @@
 
     <!-- LISTA DE ROLES -->
 
-    <div class="datatable datatable-sm table-responsive">
+    <div class="datatable datatable-sm table-responsive datatable-striped datatable-hover">
       <table
-        class="table datatable-table"
+        class="table datatable-table text-center"
         mdbTable
         #table="mdbTable"
         [dataSource]="rolesAsignados"
       >
         <thead class="datatable-header">
           <tr>
-            <th scope="col">
+            <th scope="col" class="fw-bold text-center">
               <!-- <div class="form-check d-flex align-items-center mb-0">
                   <input
                     mdbCheckbox
@@ -191,14 +191,14 @@
               Asignado
             </th>
             <th *ngFor="let header of headersRoles" scope="col">
-              {{ header | titlecase }}
+              <b class="fw-bold">{{ header | titlecase }}</b>
             </th>
           </tr>
         </thead>
         <tbody class="datatable-body">
           <tr *ngFor="let rolAsignado of table.data" scope="row">
             <td>
-              <div class="form-check d-flex align-items-center mb-0">
+              <div class="form-check d-flex justify-content-center">
                 <input
                   mdbCheckbox
                   (click)="$event.stopPropagation()"

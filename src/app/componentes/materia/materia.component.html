@@ -29,7 +29,7 @@
     </mdb-form-control>
     <hr/>
 
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -46,11 +46,11 @@
                 *ngFor="let header of headers"
                 [mdbTableSortHeader]="header"
                 scope="col"
-                class="text-wrap"
+                class="text-wrap fw-bold"
               >
-                {{ header | titlecase }}
+                <b> {{ header | titlecase }}</b>
               </th>
-              <th scope="col">Acciones</th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
             </tr>
           </thead>
 
@@ -344,7 +344,7 @@
                 </ng-container>
               </td>
 
-              <td>
+              <td class="text-center">
                 <ng-container
                   *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria"
                 >

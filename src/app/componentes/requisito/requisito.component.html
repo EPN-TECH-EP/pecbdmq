@@ -22,7 +22,7 @@
     'edited-table': addRow || editElementIndex !== -1
   }"
     >
-      <div class="datatable table-editor mt-3">
+    <div class="datatable table-editor mt-3 datatable-striped datatable-hover datatable-sm">
         <form #form="ngForm">
           <table
             class="table table-sm datatable-table"
@@ -39,11 +39,11 @@
                 *ngFor="let header of headers"
                 [mdbTableSortHeader]="header"
                 scope="col"
-                style="font-size: medium"
+                  class="fw-bold"
               >
                 <b> {{ header | titlecase }}</b>
               </th>
-              <th scope="col"><b>Acciones</b></th>
+                <th scope="col" class="text-center fw-bold" ><b>Acciones</b></th>
             </tr>
             </thead>
             <tbody class="datatable-body">
@@ -76,7 +76,7 @@
                   />
                 </mdb-form-control>
               </td>
-              <td class="text-center">
+              <td>
                 <div class="col-md">
                   <div class="form-check">
                     <input
@@ -149,7 +149,7 @@
                   </mdb-form-control>
                 </ng-container>
               </td>
-              <td class="text-center">
+              <td>
                 <ng-container *ngIf="editElementIndex !== index">
                 <input
                   mdbCheckbox
@@ -191,7 +191,7 @@
                 </ng-container> -->
               </td>
 
-              <td>
+              <td class="text-center">
                 <ng-container
                   *ngIf="editElementIndex === -1 || editElementIndex !== index"
                 >

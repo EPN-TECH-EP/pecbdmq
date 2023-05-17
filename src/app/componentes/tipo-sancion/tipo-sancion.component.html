@@ -1,6 +1,9 @@
 <app-boton-volver></app-boton-volver>
-<div class="titulo text-center">
-  <h1>Tipo de Sanción</h1>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Tipo de Sanción</p>
+  </div>
 </div>
 
 <div class="row justify-content-center">
@@ -16,24 +19,29 @@
     </button>
     <hr/>
     <!-- Table -->
-    <div class="datatable table-editor">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
-          class="table datatable-table text-center"
+          class="table datatable-table"
           mdbTable
           mdbTableSort
           #table="mdbTable"
           [dataSource]="tiposSancion"
         >
-          <!-- Table head -->
-          <thead class="datatable-header">
+        <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col">
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="text-wrap fw-bold"
+            >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col"><b>Acciones</b></th>
+            <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
           </tr>
-          </thead>
+        </thead>
+
           <!-- Table body -->
           <tbody class="datatable-body">
           <!-- Add row -->
@@ -98,7 +106,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td class="text-center">
               <!--Buttons to delete -->
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"

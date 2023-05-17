@@ -32,10 +32,10 @@
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col" [mdbTableSortHeader]="header.key">
+            <th *ngFor="let header of headers" scope="col" class="fw-bold" [mdbTableSortHeader]="header.key">
               <b> {{ header.label | titlecase }}</b>
             </th>
-            <th scope="col" class="text-center"><b>Acciones</b></th>
+              <th scope="col" class="text-center fw-bold"><b >Acciones</b></th>
           </tr>
           </thead>
           <!-- Table body -->

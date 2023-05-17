@@ -27,7 +27,7 @@
     </mdb-form-control>
 
     <hr/>
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -39,15 +39,15 @@
           [sort]="sort"
         >
           <thead class="datatable-header">
-          <tr align="center">
+            <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
-              style="font-size: medium"
+                class="fw-bold"
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
           </tr>
           </thead>
           <tbody class="datatable-body">
@@ -68,7 +68,7 @@
               </mdb-form-control>
             </td>
 
-            <td align="center">
+            <td class="text-center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
@@ -87,7 +87,7 @@
           </tr>
 
           <tr *ngFor="let tipoDocumento of table.data; let index = index" scope="row">
-            <td align="center" style="min-width: 10px; max-width: 10px">
+            <td style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tipoDocumento.tipoDocumento }}
               </ng-container>

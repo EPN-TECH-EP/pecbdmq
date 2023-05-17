@@ -236,17 +236,16 @@
           #table="mdbTable"
           [dataSource]="ponderaciones"
         >
-          <thead class="align-middle">
+          <thead class="text-start">
             <tr>
               <th
                 *ngFor="let header of headers"
                 [mdbTableSortHeader]="header"
-                scope="col"
+                scope="col"				
               >
-                <div class="text-wrap">{{ header | titlecase }}</div>
-                <br />
+                <div class="fw-bold">{{ header | titlecase }}</div>                
               </th>
-              <th scope="col">Acciones</th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
             </tr>
           </thead>
 
@@ -696,7 +695,7 @@
                 </ng-container> -->
               </td>
 
-              <td>
+              <td class="d-flex justify-content-center">
                 <ng-container
                   *ngIf="editElementIndex === -1 || editElementIndex !== index"
                 >

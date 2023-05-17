@@ -28,10 +28,10 @@
 <!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
 <!--    </mdb-form-control>-->
     <hr>
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
-          class="table table-sm datatable-table text-center"
+          class="table table-sm datatable-table"
           mdbTable
           mdbTableSort
           #table="mdbTable"
@@ -44,11 +44,11 @@
             <th
               *ngFor="let header of headers"
               scope="col"
-              style="font-size: medium"
+              class="fw-bold"
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
           </tr>
           </thead>
           <tbody class="datatable-body">
@@ -110,7 +110,7 @@
             </td>
 
 
-            <td class="justify-content-center">
+            <td class="text-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >
