@@ -1,7 +1,6 @@
 <app-boton-volver></app-boton-volver>
 
 <div class="container">
-  <!-- Título de componente-->
   <div class="row m-3">
     <div class="column text-center">
       <h1 class="fs-4 fw-bolder">Gestión de usuarios</h1>
@@ -160,7 +159,7 @@
       (click)="limpiarRegistros()">
       <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
     </button>
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 overflow-auto" >
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -203,7 +202,7 @@
               {{ usuario?.fechaRegistro | date:'YYYY-MM-dd'  }}
             </td>
             <td>
-              {{ usuario?.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
+              {{ usuario?.fechaUltimoLogin | date:'YYYY-MM-dd | hh:mm' }}
             </td>
 
             <td>
@@ -315,8 +314,8 @@
   </section>
   <section *ngIf="!existenCoincidencias">
     <div class="alert alert-warning" role="alert">
-      <i class="fa-solid fa-circle-exclamation"></i>
-      No se encontraron coincidencias
+      <i class="fa-solid fa-circle-exclamation"></i>&nbsp;&nbsp;
+      No se encontraron coincidencias para la búsqueda
     </div>
   </section>
 </div>

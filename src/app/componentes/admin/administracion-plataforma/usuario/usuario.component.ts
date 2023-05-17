@@ -82,10 +82,6 @@ export class UsuarioComponent implements OnInit {
       next: (provincias) => {this.provincias = provincias},
       error: (error) => {console.error(error)}
     });
-    this.provinciaService.getCantones().subscribe({
-      next: (cantones) => {this.cantonesNacimiento = cantones; this.cantonesResidencia = cantones},
-      error: (error) => {console.error(error)}
-    });
     this.gradoService.getGrados().subscribe({
       next: (grados) => {this.grados = grados},
       error: (error) => {console.error(error)}
@@ -98,12 +94,7 @@ export class UsuarioComponent implements OnInit {
       next: (unidadesGestion) => {this.unidadesGestion = unidadesGestion},
       error: (error) => {console.error(error)}
     })
-    if(this.datosPersonales.cod_grado !== undefined){
-      this.gradoService.getRangosPorGrado(this.datosPersonales?.cod_grado).subscribe({
-        next: (rangos) => {this.rangos = rangos},
-        error: (error) => {console.log(error)}
-      })
-    }
+
     this.construirFormulario();
   }
 
@@ -124,9 +115,9 @@ export class UsuarioComponent implements OnInit {
       genero:                     ['', Validators.required],
       tipoNacionalidad:           ['', Validators.required],
       provinciaNacimiento:        ['', Validators.required],
-      cantonNacimiento:           ['', Validators.required],
+      cantonNacimiento:           [{value: '', disabled: true}, Validators.required],
       provinciaResidencia:        [''],
-      cantonResidencia:           [''],
+      cantonResidencia:           [{value: '', disabled: true}],
       callePrincipalResidencia:   [''],
       calleSecundariaResidencia:  [''],
       numeroCasa:                 [''],
@@ -138,7 +129,7 @@ export class UsuarioComponent implements OnInit {
       meritoAcademicoDescripcion: [''],
       unidadGestion:              [''],
       grado:                      [''],
-      rango:                      [''],
+      rango:                      [{value: '', disabled: true}],
       cargo:                      [''],
     }, {updateOn: 'change'});
 
@@ -291,24 +282,31 @@ export class UsuarioComponent implements OnInit {
   }
 
   toggleValidationsNacionalidad() {
-    if( this.tipoNacionalidadField.value === 'EXTRANJERO' ) {
-      this.provinciaNacimientoField.clearValidators()
-      this.cantonNacimientoField.clearValidators()
-      this.provinciaNacimientoField.setValue('');
-      this.cantonNacimientoField.setValue('');
-    } else {
+    const isExtranjero = this.tipoNacionalidadField.value === 'EXTRANJERO';
+
+    this.provinciaNacimientoField.clearValidators();
+    this.cantonNacimientoField.clearValidators();
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
+    this.formularioUsuario.get('cantonNacimiento')?.disable();
+    this.formularioUsuario.get('cantonResidencia')?.disable();
+    this.cantonesResidencia = [];
+    this.cantonesNacimiento = [];
+
+    if (!isExtranjero) {
       this.provinciaNacimientoField.setValidators([Validators.required]);
       this.cantonNacimientoField.setValidators([Validators.required]);
     }
-    this.provinciaNacimientoField.setValue('');
-    this.cantonNacimientoField.setValue('');
 
+    this.provinciaNacimientoField.updateValueAndValidity();
+    this.cantonNacimientoField.updateValueAndValidity();
   }
 
   onChangeCantonNacimiento(event: any) {
     if(event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
+        this.formularioUsuario.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
         },
@@ -318,9 +316,9 @@ export class UsuarioComponent implements OnInit {
 
   onChangeCantonResidencia(event: any) {
     if(event === '') return;
-
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
+      this.formularioUsuario.get('cantonResidencia')?.enable();
         this.cantonesResidencia = cantones;
         this.cantonResidenciaField.setValue('');
         },
@@ -330,7 +328,7 @@ export class UsuarioComponent implements OnInit {
 
   onChangeGrado(event: any) {
     this.gradoService.getRangosPorGrado(event).subscribe({
-      next: (rangos) => {this.rangos = rangos;},
+      next: (rangos) => {this.formularioUsuario.get('rango')?.enable(); this.rangos = rangos;},
       error: (err) => {console.log(err)}
     })
   }

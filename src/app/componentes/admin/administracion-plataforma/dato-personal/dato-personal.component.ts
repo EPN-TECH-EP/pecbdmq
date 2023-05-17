@@ -40,9 +40,10 @@ export class DatoPersonalComponent implements OnInit {
   tiposSangre                   : string[];
   tieneMeritoAcademico          : boolean;
   tieneMeritoDeportivo          : boolean;
-  tieneNacionalidadEcuatoriana  : boolean;
   hoy                           : Date;
-  tieneNacionalidadComunidadFrontera        : boolean;
+  tieneNacionalidadEcuatoriana        : boolean;
+  tieneNacionalidadComunidadFrontera  : boolean;
+  tieneNacionalidadExtranjera         : boolean;
 
   constructor(
     public datoPersonalComponentMdbModalRef: MdbModalRef<DatoPersonalComponent>,
@@ -67,6 +68,9 @@ export class DatoPersonalComponent implements OnInit {
     this.hoy = new Date();
     this.datosPersonales = {} as DatoPersonal;
     this.tiposSangre = Object.values(TipoSangreEnum)
+    this.tieneNacionalidadComunidadFrontera = false;
+    this.tieneNacionalidadEcuatoriana = false;
+    this.tieneNacionalidadExtranjera = false;
   }
 
   ngOnInit(): void {
@@ -74,12 +78,18 @@ export class DatoPersonalComponent implements OnInit {
     this.datosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
     this.tieneNacionalidadEcuatoriana = this.datosPersonales.tipo_nacionalidad === ('ECUATORIANA');
     this.tieneNacionalidadComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
+    this.tieneNacionalidadExtranjera = this.datosPersonales.tipo_nacionalidad === ('EXTRANJERO');
+
     this.provinciaService.getProvincias().subscribe({
       next: (provincias) => {this.provincias = provincias},
       error: (error) => {console.log(error)}
     });
-    this.provinciaService.getCantones().subscribe({
-      next: (cantones) => {this.cantonesNacimiento = cantones; this.cantonesResidencia = cantones},
+    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_nacimiento).subscribe({
+      next: (cantones) => {this.cantonesNacimiento = cantones},
+      error: (error) => {console.log(error)}
+    });
+    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_residencia).subscribe({
+      next: (cantones) => {this.cantonesResidencia = cantones},
       error: (error) => {console.log(error)}
     });
     this.gradoService.getGrados().subscribe({
@@ -117,8 +127,8 @@ export class DatoPersonalComponent implements OnInit {
       tipoSangre:                 [''],
       genero:                     ['', [Validators.required]],
       tipoNacionalidad:           ['', [Validators.required]],
-      provinciaNacimiento:        [''],
-      cantonNacimiento:           [''],
+      provinciaNacimiento:        ['', [Validators.required]],
+      cantonNacimiento:           ['', [Validators.required]],
       provinciaResidencia:        [''],
       cantonResidencia:           [''],
       callePrincipalResidencia:   [''],
@@ -301,28 +311,30 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   toggleValidationsNacionalidad() {
+    const tipoNacionalidad = this.formularioDatoPersonal.get('tipoNacionalidad').value;
+    const isExtranjero = tipoNacionalidad === 'EXTRANJERO';
 
-    if(this.tipoNacionalidadField?.value === 'EXTRANJERO') {
-      this.tieneNacionalidadEcuatoriana = false;
-      this.tieneNacionalidadComunidadFrontera = false;
-      this.provinciaNacimientoField.clearValidators();
-      this.cantonNacimientoField.clearValidators();
-      this.provinciaNacimientoField.setValue('');
-      this.cantonNacimientoField.setValue('');
-    } else {
-      this.provinciaNacimientoField.setValidators([Validators.required]);
-      this.cantonNacimientoField.setValidators([Validators.required]);
-    }
+    this.tieneNacionalidadEcuatoriana = tipoNacionalidad === 'ECUATORIANA';
+    this.tieneNacionalidadExtranjera = isExtranjero;
+    this.tieneNacionalidadComunidadFrontera = tipoNacionalidad === 'COMUNIDAD FRONTERA';
 
-    this.provinciaNacimientoField.setValue('');
-    this.cantonNacimientoField.setValue('');
+    this.provinciaNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
+    this.cantonNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
 
+    this.provinciaNacimientoField.updateValueAndValidity();
+    this.cantonNacimientoField.updateValueAndValidity();
+
+    this.provinciaNacimientoField.reset();
+    this.cantonNacimientoField.reset();
   }
 
   onChangeCantonNacimiento(event: any) {
     if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
-      next: (cantones) => {this.cantonesNacimiento = cantones;},
+      next: (cantones) => {
+        this.cantonesNacimiento = cantones;
+        this.cantonNacimientoField.setValue('');
+        },
       error: (err) => {console.log(err)}
     });
   }
@@ -330,7 +342,10 @@ export class DatoPersonalComponent implements OnInit {
   onChangeCantonResidencia(event: any) {
     if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
-      next: (cantones) => {this.cantonesResidencia = cantones;},
+      next: (cantones) => {
+        this.cantonesResidencia = cantones;
+        this.cantonResidenciaField.setValue('');
+        },
       error: (err) => {console.log(err)}
     });
   }

@@ -273,7 +273,7 @@
             formControlName="tipoNacionalidad"
             value="EXTRANJERO"
             name="tipoNacionalidad"
-            [checked]="!tieneNacionalidadEcuatoriana && !tieneNacionalidadComunidadFrontera"
+            [checked]="tieneNacionalidadExtranjera"
             (change)="toggleValidationsNacionalidad()"
           >
           <label class="form-check-label" for="extranjero"> Extranjero </label>
@@ -311,7 +311,7 @@
               id="provinciaNacimiento"
               formControlName="provinciaNacimiento"
               class="mb-5"
-              (ngModelChange)="onChangeCantonNacimiento($event)"
+              (valueChange)="onChangeCantonNacimiento($event)"
             >
               <mdb-option
                 *ngFor="let provincia of provincias"
@@ -321,10 +321,6 @@
             </mdb-select>
             <label mdbLabel class="form-label" for="provinciaNacimiento">Provincia de nacimiento</label>
             <mdb-error *ngIf="(provinciaNacimientoField?.dirty || provinciaNacimientoField?.touched)">
-              <span *ngIf="!provincias.length">
-                <i class="fas fa-exclamation-circle mb-1"></i>
-                No se pudo cargar las provincias
-              </span>
               <span *ngIf="provinciaNacimientoField?.hasError('required')">
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Este campo es requerido
@@ -352,10 +348,6 @@
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Escoja primero una provincia
               </span>
-              <span *ngIf="!cantonesNacimiento.length">
-                <i class="fas fa-exclamation-circle mb-1"></i>
-                No se pudo cargar los cantones
-              </span>
               <span *ngIf="cantonNacimientoField?.hasError('required')">
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Este campo es requerido
@@ -377,7 +369,7 @@
             id="provinciaResidencia"
             formControlName="provinciaResidencia"
             class="mb-5"
-            (ngModelChange)="onChangeCantonResidencia($event)"
+            (valueChange)="onChangeCantonResidencia($event)"
           >
             <mdb-option
               *ngFor="let provincia of provincias"
@@ -613,7 +605,7 @@
             formControlName="grado"
             id="grado"
             class="mb-5"
-            (ngModelChange)="onChangeGrado($event)"
+            (valueChange)="onChangeGrado($event)"
           >
             <mdb-option *ngFor="let grado of grados" [value]="grado.cod_grado">
               {{grado.nombre}}
