@@ -6,6 +6,6 @@ export class Requisito {
   public codFuncionario: number;
   public nombre: string;
   public descripcion: string;
-  public esDocumento: string;
+  public esDocumento: boolean;
   public estado: string;
 }

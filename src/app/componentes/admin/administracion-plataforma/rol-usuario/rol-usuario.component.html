@@ -19,10 +19,9 @@
           <div class="col-9">
             <div class="alert alert-info" role="alert">
               <i class="fa-solid fa-circle-info me-2"></i>
-              Puede buscar el usuario ingresando su número de identificación o nombre y apellidos
-            </div>
+              Puede buscar el usuario ingresando su número de identificación o nombre(s) y apellido(s)</div>
           </div>
-        </div>
+          </div>
         <div class="row">
           <div class="col-3">
             <mdb-form-control>
@@ -33,11 +32,11 @@
                 name="nombreUsuario"
                 class="form-control"
                 [ngModel]="usuarioFrm.nombreUsuario"
-                [ngModelOptions]="{ updateOn: 'blur' }"
+                [ngModelOptions]="{ updateOn: 'change' }"
                 #frmIdentificacion="ngModel"
               />
               <label mdbLabel class="form-label" for="frmIdentificacion"
-              >Identificación</label
+                >Identificación</label
               >
             </mdb-form-control>
           </div>
@@ -50,11 +49,11 @@
                 name="nombre"
                 class="form-control"
                 [ngModel]="usuarioFrm.nombre"
-                [ngModelOptions]="{ updateOn: 'blur' }"
+                [ngModelOptions]="{ updateOn: 'change' }"
                 #frmNombres="ngModel"
               />
               <label mdbLabel class="form-label" for="frmNombres"
-              >Nombres</label
+                >Nombres</label
               >
             </mdb-form-control>
           </div>
@@ -67,11 +66,11 @@
                 name="apellido"
                 class="form-control"
                 [ngModel]="usuarioFrm.apellido"
-                [ngModelOptions]="{ updateOn: 'blur' }"
+                [ngModelOptions]="{ updateOn: 'change' }"
                 #frmApellidos="ngModel"
               />
               <label mdbLabel class="form-label" for="frmApellidos"
-              >Apellidos</label
+                >Apellidos</label
               >
             </mdb-form-control>
           </div>
@@ -101,16 +100,16 @@
 <!-- FIN Formulario de búsqueda -->
 <!-------------------------------->
 
-<hr class="hr hr-blurry"/>
+<hr class="hr hr-blurry" />
 
 <!-- Resutados de la búsqueda -->
 <div class="row d-flex justify-content-center" *ngIf="usuarios.length > 0">
   <div class="col-md-9 text-center">
     <p class="fs-5 fw-bolder">Resultados</p>
 
-    <div class="datatable mt-4 datatable-sm table-responsive">
+    <div class="datatable mt-4 datatable-sm table-responsive datatable-striped datatable-hover datatable-sm">
       <table
-        class="table datatable-table"
+        class="table datatable-table text-start"
         mdbTable
         mdbTableSort
         #table="mdbTable"
@@ -120,40 +119,41 @@
         [pagination]="pagination"
       >
         <thead class="datatable-header">
-        <tr>
-          <th
-            *ngFor="let header of headersUsuarios"
-            [mdbTableSortHeader]="header"
-            scope="col"
-            class="fw-bold"
-          >
-            {{ header | titlecase }}
-          </th>
-        </tr>
+          <tr>
+            <th
+              *ngFor="let header of headersUsuarios"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="fw-bold"
+            >
+              <b>{{ header | titlecase }}</b>
+            </th>
+          </tr>
         </thead>
         <tbody class="datatable-body">
-        <tr
-          *ngFor="let data of table.data"
-          scope="row"
-          (click)="onRowClick(data)"
-          [class.active]="usuarioSeleccionado === data"
-        >
-          <td>
-            {{ data.codDatosPersonales["nombre"] }}
-          </td>
-          <td>
-            {{ data.codDatosPersonales["apellido"] }}
-          </td>
-          <td>
-            {{ data.nombreUsuario }}
-          </td>
-        </tr>
+          <tr
+            *ngFor="let data of table.data"
+            scope="row"
+            (click)="onRowClick(data)"
+            [class.active]="usuarioSeleccionado === data"
+          >
+            <td>
+              {{ data.codDatosPersonales["nombre"] }}
+            </td>
+            <td>
+              {{ data.codDatosPersonales["apellido"] }}
+            </td>
+            <td>
+              {{ data.nombreUsuario }}
+            </td>
+          </tr>
         </tbody>
       </table>
-      <mdb-table-pagination #pagination></mdb-table-pagination>
+      <mdb-table-pagination #pagination
+      [rowsPerPageText]="'Registros por página'"></mdb-table-pagination>
     </div>
   </div>
-  <hr class="hr hr-blurry"/>
+  <hr class="hr hr-blurry" />
 </div>
 <!-- FIN Resultados -->
 
@@ -162,58 +162,57 @@
     <div>
       <p>
         Usuario actual:
-        <strong class="ms-2 text-primary">{{ usuarioSeleccionado.nombreUsuario }}
-          | {{ usuarioSeleccionado.codDatosPersonales.apellido }}  {{usuarioSeleccionado.codDatosPersonales.nombre}}</strong>
+        <strong class="ms-2 text-primary" >{{ usuarioSeleccionado.nombreUsuario }} | {{ usuarioSeleccionado.codDatosPersonales.apellido }}  {{usuarioSeleccionado.codDatosPersonales.nombre}}</strong>
       </p>
     </div>
 
     <!-- LISTA DE ROLES -->
 
-    <div class="datatable datatable-sm table-responsive">
+    <div class="datatable datatable-sm table-responsive datatable-striped datatable-hover">
       <table
-        class="table datatable-table"
+        class="table datatable-table text-center"
         mdbTable
         #table="mdbTable"
         [dataSource]="rolesAsignados"
       >
         <thead class="datatable-header">
-        <tr>
-          <th scope="col">
-            <!-- <div class="form-check d-flex align-items-center mb-0">
-                <input
-                  mdbCheckbox
-                  class="datatable-header-checkbox form-check-input"
-                  type="checkbox"
-                  [checked]="allRowsSelected()"
-                  (checkboxChange)="toggleAll($event)"
-                />
-              </div>
-               -->
-            Asignado
-          </th>
-          <th *ngFor="let header of headersRoles" scope="col">
-            {{ header | titlecase }}
-          </th>
-        </tr>
+          <tr>
+            <th scope="col" class="fw-bold text-center">
+              <!-- <div class="form-check d-flex align-items-center mb-0">
+                  <input
+                    mdbCheckbox
+                    class="datatable-header-checkbox form-check-input"
+                    type="checkbox"
+                    [checked]="allRowsSelected()"
+                    (checkboxChange)="toggleAll($event)"
+                  />
+                </div>
+                 -->
+              Asignado
+            </th>
+            <th *ngFor="let header of headersRoles" scope="col">
+              <b class="fw-bold">{{ header | titlecase }}</b>
+            </th>
+          </tr>
         </thead>
         <tbody class="datatable-body">
-        <tr *ngFor="let rolAsignado of table.data" scope="row">
-          <td>
-            <div class="form-check d-flex align-items-center mb-0">
-              <input
-                mdbCheckbox
-                (click)="$event.stopPropagation()"
-                (checkboxChange)="toggleSelection($event, rolAsignado)"
-                [checked]="rolAsignado.asignado"
-                class="datatable-row-checkbox form-check-input"
-                type="checkbox"
-              />
-            </div>
-          </td>
-          <td>
-            {{ rolAsignado.nombre }}
-          </td>
-        </tr>
+          <tr *ngFor="let rolAsignado of table.data" scope="row">
+            <td>
+              <div class="form-check d-flex justify-content-center">
+                <input
+                  mdbCheckbox
+                  (click)="$event.stopPropagation()"
+                  (checkboxChange)="toggleSelection($event, rolAsignado)"
+                  [checked]="rolAsignado.asignado"
+                  class="datatable-row-checkbox form-check-input"
+                  type="checkbox"
+                />
+              </div>
+            </td>
+            <td>
+              {{ rolAsignado.nombre }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

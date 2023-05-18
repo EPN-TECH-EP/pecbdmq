@@ -17,7 +17,7 @@
     </button>
     <hr/>
     <!-- Table -->
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
           class="table datatable-table text-center"
@@ -29,10 +29,14 @@
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col">
-              <b> {{ header | titlecase }}</b>
+              <th
+                *ngFor="let header of headers"
+                scope="col"
+                class="fw-bold"
+              >
+                <b class="text-start"> {{ header | titlecase }}</b>
             </th>
-            <th scope="col"><b>Acciones</b></th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
           </tr>
           </thead>
           <!-- Table body -->
@@ -74,7 +78,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)=" registro(form.value); addRow = false"
+                (click)=" registro(form.value);"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>

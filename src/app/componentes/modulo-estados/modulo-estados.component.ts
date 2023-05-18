@@ -156,6 +156,8 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           //this.table.data.push(nuevoModulo);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados creada con éxito');
 
+          this.addRow = false;
+
           this.Api.getModuloEstados().subscribe(data => {
             this.modulosEstados = data;
           });
@@ -199,15 +201,24 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(moduloEstados: ModuloEstados, formValue): void {
 
-    if (moduloEstados.modulo == '' || moduloEstados.estadoCatalogo == '' ){
+    if (formValue.modulo == '' || formValue.estadoCatalogo == '' ){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe llenar todos los campos');
       return;
     }
 
+    // buscar codigo de modulo por nombre
+    let codigoModulo = this.modulos.find(modulo => modulo.etiqueta === moduloEstados.modulo)?.cod_modulo;
+
+
+
+    // buscar codigo catalogo estados por nombre
+    let codigoCatalogoEstados = this.estadosCatalogo.find(estadoCatalogo => estadoCatalogo.nombre === formValue.estadoCatalogo)?.codigo;
+    
+
     moduloEstados = {
       ...moduloEstados,
-      modulo: formValue.modulo,
-      estadoCatalogo: formValue.estadoCatalogo,
+      modulo: (new String(codigoModulo)).toString(),
+      estadoCatalogo: (new String(codigoCatalogoEstados)).toString(),
       orden: formValue.orden,
       estado: 'ACTIVO'
     }

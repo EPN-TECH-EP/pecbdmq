@@ -17,7 +17,7 @@
     </button>
     <hr/>
 
-    <div class="datatable table-editor mt-4">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form [formGroup]="tiposBajaForm">
         <table
           class="table datatable-table"
@@ -26,15 +26,16 @@
           #sort="mdbTableSort"
           #table="mdbTable"
           [dataSource]="tiposBaja"
+          [pagination]="pagination"
           [sort]="sort"
         >
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" scope="col" [mdbTableSortHeader]="header.key">
+            <th *ngFor="let header of headers" scope="col" class="fw-bold" [mdbTableSortHeader]="header.key">
               <b> {{ header.label | titlecase }}</b>
             </th>
-            <th scope="col" class="text-center"><b>Acciones</b></th>
+              <th scope="col" class="text-center fw-bold"><b >Acciones</b></th>
           </tr>
           </thead>
           <!-- Table body -->
@@ -50,9 +51,6 @@
                   class="form-control mb-3"
                   formControlName="baja"
                 />
-                <mdb-error *ngIf="bajaField.invalid && bajaField.touched">
-                  Este campo es requerido
-                </mdb-error>
               </mdb-form-control>
             </td>
             <!-- Buttons for add or cancel a register -->
@@ -60,8 +58,7 @@
               <button
                 class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                [disabled]="tiposBajaForm.invalid"
-                (click)="createTipoBaja(tiposBajaForm.value); addRow = false"
+                (click)="createTipoBaja(tiposBajaForm.value);"
               >
                 <i class="fa fa-check"></i> &nbsp;Agregar
               </button>
@@ -75,7 +72,6 @@
           </tr>
 
           <tr *ngFor="let tipoBaja of table.data; let index = index">
-
             <td>
               <!--Show baja-->
               <ng-container *ngIf="editElementIndex !== index">
@@ -92,9 +88,6 @@
                     class="form-control mb-4"
                     formControlName="baja"
                   />
-                  <mdb-error *ngIf="bajaField.invalid && bajaField.touched">
-                    Este campo es requerido
-                  </mdb-error>
                 </mdb-form-control>
               </ng-container>
             </td>
@@ -140,12 +133,13 @@
           </tbody>
         </table>
       </form>
-<!--      <mdb-table-pagination-->
-<!--        #pagination-->
-<!--        [entries]="5"-->
-<!--        [rowsPerPageText]="'Registros por página'"-->
-<!--        (paginationChange)="onPaginationChange($event)"-->
-<!--      ></mdb-table-pagination>-->
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+        (paginationChange)="onPaginationChange($event)"
+      ></mdb-table-pagination>
     </div>
+
   </div>
 </div>

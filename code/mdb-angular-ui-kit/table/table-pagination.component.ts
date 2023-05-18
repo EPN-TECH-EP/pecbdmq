@@ -92,7 +92,7 @@ export class MdbTablePaginationComponent implements OnInit {
     const startIndex = this.page * this.entries;
     const endIndex = Math.min(startIndex + this.entries, this.total);
 
-    return `${this._total ? startIndex + 1 : 0} – ${endIndex} of ${this.total}`;
+    return `${this._total ? startIndex + 1 : 0} – ${endIndex} de ${this.total}`;
   }
 
   isPreviousPageDisabled(): boolean {

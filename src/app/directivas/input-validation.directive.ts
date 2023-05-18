@@ -104,6 +104,13 @@ export class InputValidationDirective implements OnInit, OnChanges {
           value = parseFloat(input.value);  
         }
 
+        if(isNaN(value)){
+          value = '';
+          this.control.control.setValue(newValue);
+          this.ngModelChange.emit(this.control.control.value);
+          return;
+        }
+
 
         if (!isNaN(this.min) && value < this.min) {
           input.value = this.min.toString();

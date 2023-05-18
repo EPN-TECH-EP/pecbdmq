@@ -22,6 +22,11 @@ export class RolUsuarioService {
     return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listar/${codUsuario}`);
   }
 
+  public getRolUsuarioPorRol(codRol: number): Observable<RolUsuario[]> {
+    console.log('getRolUsuarioPorRol codRol: ' + codRol);
+    return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listarporrol/${codRol}`);
+  }
+
   public registroRolUsuario(rolUsuario: RolUsuario): Observable<HttpResponse<RolUsuario>> {
     return this.http.post<RolUsuario>(`${this.host}/rolUsuario/crear`, rolUsuario, {
       observe: 'response',
@@ -39,8 +44,8 @@ export class RolUsuarioService {
     });
   }
 
-  public asignarRolUsuario(listaRolUsuario: RolUsuario[]): Observable<HttpResponse<RolUsuario>> {
-    return this.http.post<RolUsuario>(`${this.host}/rolUsuario/asignar`, listaRolUsuario, {
+  public asignarRolUsuario(listaRolUsuario: RolUsuario[], codUsuario: number): Observable<HttpResponse<RolUsuario>> {
+    return this.http.post<RolUsuario>(`${this.host}/rolUsuario/asignar/${codUsuario}`, listaRolUsuario, {
       observe: 'response',
     });
   }

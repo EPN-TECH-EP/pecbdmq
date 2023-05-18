@@ -28,7 +28,7 @@
 <!--    </mdb-form-control>-->
     <hr/>
 
-    <div class="datatable table-editor mt-3">
+    <div class="datatable table-editor mt-3 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm" novalidate>
         <table
           class="table table-sm datatable-table"
@@ -45,10 +45,11 @@
               *ngFor="let header of headers"
               [mdbTableSortHeader]="header"
               scope="col"
+              class="fw-bold"
             >
-              {{ header | titlecase }} <br/>
+              <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col">Acciones</th>
+            <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
           </tr>
           </thead>
 
@@ -111,11 +112,11 @@
             </td>
 
 
-            <td>
+            <td class="d-flex justify-content-center">
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)="registro(form.value); addRow = false"
+                (click)="registro(form.value);"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -203,7 +204,7 @@
             </td>
 
 
-            <td>
+            <td class="d-flex justify-content-center">
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

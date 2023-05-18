@@ -33,7 +33,7 @@
 
     <hr>
 
-    <div class="datatable table-editor mt-3">
+    <div class="datatable table-editor mt-3 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -44,16 +44,16 @@
           [dataSource]="semestres"
         >
           <thead class="datatable-header">
-          <tr align="center">
+          <tr>
 
             <th
               *ngFor="let header of headers"
               scope="col"
-              style="font-size: medium"
+              class="fw-bold"
             >
-              <b> {{ header | titlecase }}</b>
+              <b class="text-start"> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
+            <th scope="col" class="text-center fw-bold"><b >Acciones</b></th>
           </tr>
           </thead>
           <tbody class="datatable-body">

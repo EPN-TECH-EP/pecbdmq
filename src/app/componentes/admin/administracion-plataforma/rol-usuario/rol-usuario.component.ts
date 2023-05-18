@@ -32,6 +32,8 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
   headersRoles = ['Nombre'];
 
   cambiosPendientes: boolean = false;
+  
+  
   usuarioFrm: BuscarUsuarioFrm = new BuscarUsuarioFrm();
 
   constructor(
@@ -63,9 +65,10 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
             );
           } else {
             this.showLoading = false;
-            Notificacion.notificacionOK(
+            Notificacion.notificacion(
               this.notificationRef,
               this.notificationServiceLocal,
+              null,
               'No se encontró el usuario'
             );
             return [];
@@ -77,15 +80,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
         this.construirListaRolesAsignados();
       });
 
-    /* this.usuarioService
-      .buscarPorNombreUsuario(nombreUsuario)
-      .subscribe((data: Usuario) => {
-        if (data != null) {
-          this.usuarioSeleccionado = data;
-          this.showLoading = false;
-          this.buscarRolesUsuario();
-        }
-      }); */
   }
 
   public buscarUsuarioPorNombreApellido(nombre: string, apellido: string) {
@@ -138,8 +132,6 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
       }
     });
 
-    console.log(this.rolUsuario);
-    console.log(this.rolesAsignados);
   }
 
   public guardarCambios(): void {
@@ -158,12 +150,9 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
         }
       });
 
-      console.log(nuevaAsignacion);
-
       this.rolUsuarioService
-        .asignarRolUsuario(nuevaAsignacion)
+        .asignarRolUsuario(nuevaAsignacion, Number.parseInt(this.usuarioSeleccionado.codUsuario))
         .subscribe((data) => {
-          console.log(data);
           this.cambiosPendientes = false;
 
           Notificacion.notificacionOK(
@@ -193,22 +182,22 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
     ) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreApellido(form.nombre, form.apellido);
-      //console.log('buscarUsuarioPorNombreApellido')
-    } else if (form.nombreUsuario !== null) {
+
+    } else if (form.nombreUsuario !== null && form?.nombreUsuario?.trim().length > 0) {
       this.showLoading = true;
       this.buscarUsuarioPorNombreUsuario(form.nombreUsuario);
-      //console.log('buscarUsuarioPorNombreUsuario')
     } else {
-      Notificacion.notificacionOK(
+      Notificacion.notificacion(
         this.notificationRef,
         this.notificationServiceLocal,
+        null,
         'Debe ingresar un criterio de búsqueda'
       );
+
+      this.showLoading = false;
+
     }
 
-    /* console.log(this.usuarioFrm);
-    console.log(form);
-    console.log(this.usuarios); */
   }
 
   // tabla de resultados de busqueda de usuarios
