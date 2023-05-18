@@ -203,7 +203,7 @@
               {{ usuario?.fechaRegistro | date:'YYYY-MM-dd'  }}
             </td>
             <td>
-              {{ usuario?.fechaUltimoLogin | date:'YYYY-MM-dd hh:mm' }}
+              {{ usuario?.fechaUltimoLogin | date:'YYYY-MM-dd | hh:mm' }}
             </td>
 
             <td>
@@ -315,8 +315,8 @@
   </section>
   <section *ngIf="!existenCoincidencias">
     <div class="alert alert-warning" role="alert">
-      <i class="fa-solid fa-circle-exclamation"></i>
-      No se encontraron coincidencias
+      <i class="fa-solid fa-circle-exclamation"></i>&nbsp;&nbsp;
+      No se encontraron coincidencias para la búsqueda
     </div>
   </section>
 </div>

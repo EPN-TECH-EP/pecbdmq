@@ -12,12 +12,11 @@ import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 import { Convocatoria } from '../modelo/admin/convocatoria';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConvocatoriaService {
   private host = environment.apiUrl;
   inputData: string;
-
 
   setInputData(data: string) {
     this.inputData = data;
@@ -27,21 +26,26 @@ export class ConvocatoriaService {
     return this.inputData;
   }
 
-  constructor(private http: HttpClient) { }
+  //creación convocatoria
+  
+
+
+  // ANTERIOR
+
+  constructor(private http: HttpClient) {}
   public getConvocatoria(): Observable<Convocatoria[]> {
     return this.http.get<Convocatoria[]>(`${this.host}/convocatoria/listar`);
   }
 
-
-  // public registroMateria(convocatoria: Convocatoria): Observable<HttpResponse<Convocatoria>> {
-  //   return this.http.post<Convocatoria>(`${this.host}/materia/crear`, materia, { observe: 'response' });
-  // }
-
-    // public eliminarConvocatoria(codMateria: number): Observable<string> {
-    // return this.http.delete<string>(`${this.host}/materia/${codMateria}`);
-    // }
-   public actualizarConvocatoria(convocatoria: Convocatoria, codigo_convocatoria:any): Observable<HttpResponse<Convocatoria>> {
-    return this.http.put<Convocatoria>(`${this.host}/convocatoria/${codigo_convocatoria}`, convocatoria, { observe: 'response' });
+  public actualizarConvocatoria(
+    convocatoria: Convocatoria,
+    codigo_convocatoria: any
+  ): Observable<HttpResponse<Convocatoria>> {
+    return this.http.put<Convocatoria>(
+      `${this.host}/convocatoria/${codigo_convocatoria}`,
+      convocatoria,
+      { observe: 'response' }
+    );
   }
 
   public cargarArchivo(
