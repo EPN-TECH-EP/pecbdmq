@@ -129,6 +129,8 @@ import { UsuarioComponent } from './componentes/admin/administracion-plataforma/
 import { ModalSesionExpiradaComponent } from './componentes/util/modal-sesion-expirada/modal-sesion-expirada.component';
 import { MenuComponent } from './componentes/admin/administracion-plataforma/menu/menu.component';
 import { MenuAdminComponent } from './componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
+import { GestionDocumentosComponent } from './componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
+import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +188,9 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
     DatoPersonalComponent,
     UsuarioComponent,
     ModalSesionExpiradaComponent,
-    MenuComponent
+    MenuComponent,
+    GestionDocumentosComponent,
+    EstadoProcesoFormacionComponent
   ],
   imports: [
     BrowserModule,

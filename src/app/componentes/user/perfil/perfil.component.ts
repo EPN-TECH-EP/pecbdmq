@@ -9,8 +9,8 @@ import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
 import {DatoPersonal} from "../../../modelo/admin/dato-personal";
 import {ImagenService} from "../../../servicios/imagen.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
-import {catchError, map, tap} from "rxjs/operators";
-import {EMPTY} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
+import {EMPTY, throwError} from "rxjs";
 
 @Component({
   selector: 'app-perfil',
@@ -41,17 +41,23 @@ export class PerfilComponent implements OnInit {
       tap((usuario) => {
         this.usuario = usuario;
         this.imagenService.visualizar(usuario.codDatosPersonales.cod_documento_imagen).pipe(
-          map((imagen) => this.imagenPerfil = imagen)
-        ).subscribe();
+          catchError(error => {
+            console.error('Error al cargar la imagen de perfil:', error);
+            this.imagenPerfil = "assets/img/avatars/avatar.jpg";
+            return throwError(() => error);
+          })
+        ).subscribe((imagen) => {
+          this.imagenPerfil = imagen;
+        });
         this.datosPersonales = this.usuario.codDatosPersonales;
         this.usuario.codDatosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
       }),
       catchError(() => {
         this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
-        this.imagenPerfil = "assets/img/avatars/avatar.jpg"
+        this.imagenPerfil = "assets/img/avatars/avatar.jpg";
         return EMPTY;
       })
-    ).subscribe();
+    ).subscribe()
   }
 
   private constructorFormulario() {

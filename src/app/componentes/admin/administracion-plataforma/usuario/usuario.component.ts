@@ -289,8 +289,6 @@ export class UsuarioComponent implements OnInit {
     this.provinciaNacimientoField.setValue('');
     this.cantonNacimientoField.setValue('');
     this.formularioUsuario.get('cantonNacimiento')?.disable();
-    this.formularioUsuario.get('cantonResidencia')?.disable();
-    this.cantonesResidencia = [];
     this.cantonesNacimiento = [];
 
     if (!isExtranjero) {

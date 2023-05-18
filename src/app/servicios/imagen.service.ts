@@ -39,11 +39,10 @@ export class ImagenService {
   descargar(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',
-      headers: new HttpHeaders({Accept: 'application/pdf'})
     }).pipe(
       catchError(error => {
         console.error('Error al descargar archivo:', error);
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
@@ -58,7 +57,8 @@ export class ImagenService {
       })
     ).pipe(
       catchError(error => {
-        return throwError(error);
+        console.error('Error al visualizar archivo:', error);
+        return throwError(() => error);
       })
     );
   }

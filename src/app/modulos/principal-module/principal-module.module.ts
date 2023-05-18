@@ -57,6 +57,10 @@ import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lis
 import {NgModule} from "@angular/core";
 import {PerfilComponent} from "../../componentes/user/perfil/perfil.component";
 import { MenuComponent } from 'src/app/componentes/admin/administracion-plataforma/menu/menu.component';
+import {
+  GestionDocumentosComponent
+} from "../../componentes/flujos/formacion/gestion-documentos/gestion-documentos.component";
+import {EstadoProcesoFormacionComponent} from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
 
 
 const routes: Routes = [
@@ -103,6 +107,9 @@ const routes: Routes = [
       // flujos y procesos
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},
+      {path: 'formacion/gestion-documentos', component: GestionDocumentosComponent},
+      {path: 'formacion/estado', component: EstadoProcesoFormacionComponent},
+
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},
