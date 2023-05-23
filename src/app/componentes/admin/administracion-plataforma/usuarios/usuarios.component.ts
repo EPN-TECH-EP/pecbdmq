@@ -10,7 +10,6 @@ import {AlertaComponent} from '../../../util/alerta/alerta.component';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
 import {UsuarioService} from '../../../../servicios/usuario.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {Notificacion} from 'src/app/util/notificacion';
 import {PopconfirmComponent} from '../../../util/popconfirm/popconfirm.component';
@@ -32,9 +31,9 @@ export class UsuariosComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  bucarUsuarioForm: FormGroup;
+  buscarUsuarioForm: FormGroup;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
+  popConfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
   showLoading: boolean = true;
   usuarios: Usuario[];
   usuarioFrm: Usuario = new Usuario();
@@ -59,7 +58,7 @@ export class UsuariosComponent implements OnInit {
   existenCoincidencias: boolean = true;
 
   constructor(
-    private notificationService: MdbNotificationService,
+    private mdbNotificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private popconfirmService: MdbPopconfirmService,
     private router: Router,
@@ -67,7 +66,7 @@ export class UsuariosComponent implements OnInit {
     private modalService: MdbModalService
   ) {
     this.usuarios = [];
-    this.bucarUsuarioForm = new FormGroup({});
+    this.buscarUsuarioForm = new FormGroup({});
   }
 
   ngOnInit(): void {
@@ -76,7 +75,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   private construirFormulario() {
-    this.bucarUsuarioForm = this.builder.group({
+    this.buscarUsuarioForm = this.builder.group({
       identificacion: [
         '',
         [
@@ -87,70 +86,33 @@ export class UsuariosComponent implements OnInit {
           MyValidators.validIdentification()
         ]
       ],
-      nombres   : ['', [Validators.required, MyValidators.onlyLetters()]],
-      apellidos : ['', [Validators.required, MyValidators.onlyLetters()]],
-      correo    : ['', [Validators.required, Validators.email]],
+      nombres: ['', [MyValidators.onlyLetters()]],
+      apellidos: ['', [MyValidators.onlyLetters()]],
+      correo: ['', [Validators.required, Validators.email]],
     });
   }
 
   get identificacionField() {
-    return this.bucarUsuarioForm.get('identificacion');
+    return this.buscarUsuarioForm.get('identificacion');
   }
 
   get nombresField() {
-    return this.bucarUsuarioForm.get('nombres');
+    return this.buscarUsuarioForm.get('nombres');
   }
 
   get apellidosField() {
-    return this.bucarUsuarioForm.get('apellidos');
+    return this.buscarUsuarioForm.get('apellidos');
   }
 
   get correoField() {
-    return this.bucarUsuarioForm.get('correo');
-  }
-
-  private notificacion(errorResponse: HttpErrorResponse) {
-
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    if (codigoError === 0) {
-      mensajeError = 'Error de conexión al servidor';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensajeError,
-      tipoAlerta
-    );
-  }
-
-  public notificarOk(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
+    return this.buscarUsuarioForm.get('correo');
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  confirmaActualizar(usuario: Usuario) {
-    this.mensajeConfirmacion = '¿Actualizar los datos del usuario?';
-  }
-
-  confirmaEliminar(usuario: Usuario) {
+  confirmaEliminar() {
     this.mensajeConfirmacion = '¿Eliminar el usuario? Esta acción es irreversible';
   }
 
@@ -158,15 +120,15 @@ export class UsuariosComponent implements OnInit {
     this.subscriptions.push(
       this.usuarioService.eliminarUsuario(usuario.nombreUsuario).subscribe(
         {
-          next: (response) => {
+          next: () => {
             this.showLoading = false;
             this.editElementIndex = -1;
             this.usuarios.splice(this.indexEliminar, 1);
             this.usuarios = [...this.usuarios];
-            this.notificarOk('Usuario eliminado con éxito');
+            Notificacion.notificar(this.mdbNotificationService, 'Usuario eliminado correctamente', TipoAlerta.ALERTA_OK);
           },
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
             this.showLoading = false;
           },
         }
@@ -174,24 +136,13 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
-  errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
-
   actualizar(usuario: Usuario, formValue) {
 
     if (
-      formValue.nombreUsuario === "" ||
-      formValue.fechaRegistro === "" ||
-      formValue.fechaUltimoLogin === "" ||
       formValue.active === undefined ||
       formValue.notLocked === undefined
     ) {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificar(this.mdbNotificationService, 'Todos los campos son obligatorios', TipoAlerta.ALERTA_ERROR);
       return;
     }
 
@@ -214,10 +165,10 @@ export class UsuariosComponent implements OnInit {
             this.usuarios[this.editElementIndex] = response;
             this.showLoading = false;
             this.editElementIndex = -1;
-            this.notificarOk('Usuario actualizado con éxito');
+            Notificacion.notificar(this.mdbNotificationService, 'Usuario actualizado correctamente', TipoAlerta.ALERTA_OK);
           },
           error: (errorResponse: HttpErrorResponse) => {
-            this.notificacion(errorResponse);
+            Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
             this.showLoading = false;
           },
         }
@@ -225,17 +176,15 @@ export class UsuariosComponent implements OnInit {
     )
   }
 
-  editar(index: number) {
+  editRow(index: number) {
     this.editElementIndex = index;
     this.usuarioFrm = {...this.usuarios[index]};
   }
 
-  deshacer(index: number) {
+  undoRow() {
     this.usuarioFrm = new Usuario();
     this.editElementIndex = -1;
   }
-
-  // Funcionalidad de confirmación
 
   openPopconfirm(event: Event, index: number) {
     this.indexEliminar = index;
@@ -243,45 +192,30 @@ export class UsuariosComponent implements OnInit {
 
     console.log("mensaje de confirmacion: " + this.mensajeConfirmacion);
 
-    this.popconfirmRef = this.popconfirmService.open(
+    this.popConfirmRef = this.popconfirmService.open(
       PopconfirmComponent,
       target,
       {popconfirmMode: 'modal', data: {mensaje: this.mensajeConfirmacion}}
     );
 
-    this.popconfirmRef.onClose.subscribe((message: any) => {
-      // cancela acción
+    this.popConfirmRef.onClose.subscribe((message: any) => {
       console.log("onClose() - " + message);
     });
 
-    this.popconfirmRef.onConfirm.subscribe((message: any) => {
-      //confirma acción
+    this.popConfirmRef.onConfirm.subscribe((message: any) => {
       console.log("onConfirm() - " + message);
       this.eliminar(this.usuarios[this.indexEliminar]);
     });
 
   }
 
-  /*onCancel(){
-    console.log('User cancelled action');
-    // Handle the case where the user cancelled the action
-    this.mostrarConfirmacion = false;
-  }
-
-  onConfirm(){
-    console.log('User confirmed action');
-    // Perform the action that the user confirmed
-    this.mostrarConfirmacion = false;
-  }*/
-
-
   buscarPorIdentificacion() {
-    if(this.identificacionField?.invalid) return;
+    if (this.identificacionField?.invalid) return;
 
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
       {
         next: (usuario) => {
-          if(usuario === null){
+          if (usuario === null) {
             this.usuarios = [];
             this.existenCoincidencias = false;
             return;
@@ -299,7 +233,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarPorNombresApellidos() {
-    if(this.nombresField?.invalid || this.apellidosField?.invalid) return;
+    if (this.nombresField?.invalid || this.apellidosField?.invalid) return;
 
     const data: UsuarioNombreApellido = {
       nombre: this.nombresField.value,
@@ -308,7 +242,7 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
-          if(usuarios.length === 0){
+          if (usuarios.length === 0) {
             this.usuarios = [];
             this.existenCoincidencias = false;
             return;
@@ -325,12 +259,12 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarPorCorreo() {
-    if(this.correoField?.invalid) return;
+    if (this.correoField?.invalid) return;
 
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
-          if(usuarios.length === 0){
+          if (usuarios.length === 0) {
             this.usuarios = [];
             this.existenCoincidencias = false;
             return;
@@ -355,14 +289,14 @@ export class UsuariosComponent implements OnInit {
   abrirModalEditarDatosPersonales(index: number) {
     const usuario = this.usuarios[index];
     this.editarDatoPersonalModalRef = this.modalService.open(DatoPersonalComponent, {
-      data: { usuario: usuario },
+      data: {usuario: usuario},
       modalClass: 'modal-xl modal-dialog-centered',
     });
     this.editarDatoPersonalModalRef.onClose.subscribe((usuario: Usuario) => {
       if (usuario) {
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
-        this.notificarOk('Datos personales actualizados con éxito')
+        Notificacion.notificar(this.mdbNotificationService, 'Datos personales actualizados correctamente', TipoAlerta.ALERTA_OK);
       }
     });
   }
@@ -376,10 +310,10 @@ export class UsuariosComponent implements OnInit {
         if (usuario) {
           this.usuarios.push(usuario);
           this.usuarios = [...this.usuarios];
-          this.notificarOk('Usuario creado con éxito')
-          }
-        },
-      );
+          Notificacion.notificar(this.mdbNotificationService, 'Usuario creado correctamente', TipoAlerta.ALERTA_OK);
+        }
+      },
+    );
   }
 
 }

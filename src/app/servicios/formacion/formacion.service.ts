@@ -33,4 +33,8 @@ export class FormacionService {
   getEstadoActual(): Observable<CustomHttpResponse> {
     return this.http.get<CustomHttpResponse>(`${this.host}/periodoacademico/validaestado`);
   }
+
+  actualizarEstadoActual(formData: FormData): Observable<CustomHttpResponse> {
+    return this.http.post<CustomHttpResponse>(`${this.host}/periodoacademico/actualizaEstado`, formData);
+  }
 }

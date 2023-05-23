@@ -11,6 +11,11 @@
   align-items: center;
   gap: 10px;
 
+  &.actual {
+    background: rgba(234, 246, 255, 0.73);
+    border-radius: 5px;
+  }
+
   .step__order {
     display: flex;
     justify-content: center;
@@ -68,8 +73,8 @@
 }
 
 .color {
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   border-radius: 100%;
 }
 
