@@ -20,7 +20,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.steps)
+    console.log("stepper", this.steps)
   }
 
   getStepClass(estado: string): string {
@@ -39,10 +39,12 @@ export class EstadoProcesoStepperComponent implements OnInit {
       const step = this.steps[i];
       if (step.estadoActual === 'actual') {
         step.estadoActual = 'siguiente';
+        this.disabledNextButton = false;
       }
       if (!foundPrevious && step.estadoActual === 'completado') {
         step.estadoActual = 'actual';
         foundPrevious = true;
+        this.disabledNextButton = false;
       }
       if (i === 0 && !foundPrevious) {
         step.estadoActual = 'actual';
@@ -53,7 +55,6 @@ export class EstadoProcesoStepperComponent implements OnInit {
   }
 
 
-
   nextStep() {
     let foundNext = false;
     for (let i = 0; i < this.steps.length; i++) {
@@ -61,10 +62,12 @@ export class EstadoProcesoStepperComponent implements OnInit {
       if (step.estadoActual === 'actual') {
         step.estadoActual = 'completado';
         foundNext = true;
+        this.disabledPreviousButton = false;
       }
       if (foundNext && step.estadoActual === 'siguiente') {
         step.estadoActual = 'actual';
         foundNext = false;
+        this.disabledPreviousButton = false;
       }
       if (i === this.steps.length - 1 && foundNext) {
         this.disabledNextButton = true;

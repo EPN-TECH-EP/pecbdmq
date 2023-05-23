@@ -28,6 +28,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
         return this.formacionService.getEstadoActual();
       })
     ).subscribe((estado) => {
+      console.log(estado.mensaje);
       const estadoCatalogoActual = this.estados.find(
         (estadoItem) => estadoItem.estadoCatalogo === estado.mensaje.toUpperCase()
       );

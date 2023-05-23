@@ -28,7 +28,9 @@
             formControlName="nombreUsuario"
             [maxLength]="10"
           />
-          <label mdbLabel class="form-label mb-2x" for="nombreUsuario">Cédula del usuario</label>
+          <label mdbLabel class="form-label mb-2x" for="nombreUsuario">
+            Cédula del usuario <span class="text-danger">*</span>
+          </label>
           <mdb-error
             *ngIf=" nombreUsuarioField?.invalid  && (nombreUsuarioField?.dirty || nombreUsuarioField?.touched)">
             <span *ngIf="nombreUsuarioField?.hasError('minlength')">
@@ -76,7 +78,9 @@
             class="form-control mb-5"
             formControlName="nombre"
           />
-          <label mdbLabel class="form-label mb-2x" for="nombre">Nombres</label>
+          <label mdbLabel class="form-label mb-2x" for="nombre">
+            Nombres <span class="text-danger">*</span>
+          </label>
           <mdb-error *ngIf="nombreField?.dirty || nombreField?.touched">
             <span *ngIf="nombreField?.hasError('minlength')">
               <i class="fas fa-exclamation-circle mb-1"></i>
@@ -102,7 +106,9 @@
             class="form-control mb-5"
             formControlName="apellido"
           >
-          <label mdbLabel class="form-label mb-2x" for="apellido">Apellidos</label>
+          <label mdbLabel class="form-label mb-2x" for="apellido">
+            Apellidos <span class="text-danger">*</span>
+          </label>
           <mdb-error *ngIf="apellidoField?.dirty || apellidoField?.touched">
             <span *ngIf="apellidoField?.hasError('minlength')">
               <i class="fas fa-exclamation-circle mb-1"></i>
@@ -128,7 +134,9 @@
             class="form-control mb-5"
             formControlName="correoPersonal"
           />
-          <label mdbLabel class="form-label mb-2x" for="correoPersonal">Correo Personal</label>
+          <label mdbLabel class="form-label mb-2x" for="correoPersonal">
+            Correo Personal <span class="text-danger">*</span>
+          </label>
           <mdb-error
             *ngIf="correoPersonalField?.dirty || correoPersonalField?.touched"
           >
@@ -177,7 +185,9 @@
             formControlName="fechaNacimiento"
             (click)="dpFechaNacimiento.open()"
           />
-          <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento: dd/mm/yyy</label>
+          <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">
+            Fecha de nacimiento: dd/mm/yyy <span class="text-danger">*</span>
+          </label>
           <mdb-datepicker-toggle
             [mdbDatepicker]="dpFechaNacimiento"
             (click)="fechaNacimientoField.markAsTouched()"
@@ -273,7 +283,9 @@
             <mdb-option value="MASCULINO">Masculino</mdb-option>
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
-          <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
+          <label mdbLabel class="form-label mb-2x" for="sexo">
+            Género <span class="text-danger">*</span>
+          </label>
           <mdb-error *ngIf="generoField?.invalid && (generoField?.dirty || generoField?.touched)">
             <span *ngIf="generoField?.hasError('required')">
               <i class="fas fa-exclamation-circle mb-1"></i>
@@ -285,7 +297,7 @@
     </div>
     <!-- Datos de nacionalidad -->
     <div class="row">
-      <h5>Datos de nacionalidad</h5>
+      <h5>Datos de nacionalidad <span class="text-danger">*</span></h5>
       <hr class="hr hr-blurry">
       <div class="col-4 py-3">
         <!-- Tipo Nacionalidad -->
