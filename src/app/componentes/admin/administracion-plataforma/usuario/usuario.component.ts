@@ -58,7 +58,7 @@ export class UsuarioComponent implements OnInit {
     private gradoService: GradoService,
     private unidadGestionService: UnidadGestionService,
     private usuarioService: UsuarioService,
-    private notificacionService: MdbNotificationService
+    private mdbNotificationService: MdbNotificationService
   ) {
     this.provincias = [];
     this.cantonesNacimiento = [];
@@ -252,13 +252,6 @@ export class UsuarioComponent implements OnInit {
     return this.formularioUsuario.get('rango');
   }
 
-  notificarError(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificacionService,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
 
   onMeritoDeportivoChange(event: any) {
     this.tieneMeritoDeportivo = event.target.checked;
@@ -333,6 +326,7 @@ export class UsuarioComponent implements OnInit {
 
   crearUsuario() {
     if(this.formularioUsuario.invalid) {
+      Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioUsuario.markAllAsTouched();
       return;
     }
@@ -347,43 +341,43 @@ export class UsuarioComponent implements OnInit {
       notLocked: true,
       codDatosPersonales: {
         ...this.usuario.codDatosPersonales,
-        apellido: this.apellidoField.value,
-        correo_personal: this.correoPersonalField.value,
-        correo_institucional: this.correoInstitucionalField.value,
-        fecha_nacimiento: this.fechaNacimientoField.value,
-        nombre: this.nombreField.value,
-        num_telef_convencional: this.telfConvencionalField.value,
-        num_telef_celular: this.telfCelularField.value,
-        tipo_sangre: this.tipoSangreField.value,
-        cod_cargo: this.cargoField.value,
-        cod_grado: this.gradoField.value,
-        cod_rango: this.rangoField.value,
-        cod_canton_nacimiento: this.cantonNacimientoField.value,
-        cod_canton_residencia: this.cantonResidenciaField.value,
-        cod_provincia_nacimiento: this.provinciaNacimientoField.value,
-        cod_provincia_residencia: this.provinciaResidenciaField.value,
-        calle_principal_residencia: this.callePrincipalResidenciaField.value,
-        calle_secundaria_residencia: this.calleSecundariaResidenciaField.value,
-        numero_casa: this.numeroCasaField.value,
-        tipo_nacionalidad: this.tipoNacionalidadField.value,
-        colegio: this.colegioField.value,
-        nombre_titulo: this.nombreTituloField.value,
-        pais_titulo: this.paisTituloField.value,
-        ciudad_titulo: this.ciudadTituloField.value,
-        tiene_merito_deportivo: this.tieneMeritoDeportivo,
-        merito_deportivo_descripcion: this.meritoDeportivoDescripcionField.value,
-        tiene_merito_academico: this.tieneMeritoAcademico,
-        merito_academico_descripcion: this.meritoAcademicoDescripcionField.value,
-        cod_unidad_gestion: this.unidadGestionField.value,
-        genero: this.generoField.value,
-        cedula: this.nombreUsuarioField.value,
-        estado: 'ACTIVO',
-        reside_pais: this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
-        cod_documento_imagen: null,
-        canton_nacimiento: null,
-        cod_estacion: null,
-        pin_validacion_correo: null,
-        validacion_correo: null
+        apellido                      : this.apellidoField.value,
+        correo_personal               : this.correoPersonalField.value,
+        correo_institucional          : this.correoInstitucionalField.value,
+        fecha_nacimiento              : this.fechaNacimientoField.value,
+        nombre                        : this.nombreField.value,
+        num_telef_convencional        : this.telfConvencionalField.value,
+        num_telef_celular             : this.telfCelularField.value,
+        tipo_sangre                   : this.tipoSangreField.value,
+        cod_cargo                     : this.cargoField.value,
+        cod_grado                     : this.gradoField.value,
+        cod_rango                     : this.rangoField.value,
+        cod_canton_nacimiento         : this.cantonNacimientoField.value,
+        cod_canton_residencia         : this.cantonResidenciaField.value,
+        cod_provincia_nacimiento      : this.provinciaNacimientoField.value,
+        cod_provincia_residencia      : this.provinciaResidenciaField.value,
+        calle_principal_residencia    : this.callePrincipalResidenciaField.value,
+        calle_secundaria_residencia   : this.calleSecundariaResidenciaField.value,
+        numero_casa                   : this.numeroCasaField.value,
+        tipo_nacionalidad             : this.tipoNacionalidadField.value,
+        colegio                       : this.colegioField.value,
+        nombre_titulo                 : this.nombreTituloField.value,
+        pais_titulo                   : this.paisTituloField.value,
+        ciudad_titulo                 : this.ciudadTituloField.value,
+        tiene_merito_deportivo        : this.tieneMeritoDeportivo,
+        merito_deportivo_descripcion  : this.meritoDeportivoDescripcionField.value,
+        tiene_merito_academico        : this.tieneMeritoAcademico,
+        merito_academico_descripcion  : this.meritoAcademicoDescripcionField.value,
+        cod_unidad_gestion            : this.unidadGestionField.value,
+        genero                        : this.generoField.value,
+        cedula                        : this.nombreUsuarioField.value,
+        estado                        : 'ACTIVO',
+        reside_pais                   : this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
+        cod_documento_imagen          : null,
+        canton_nacimiento             : null,
+        cod_estacion                  : null,
+        pin_validacion_correo         : null,
+        validacion_correo             : null
       }
 
     }
@@ -400,7 +394,7 @@ export class UsuarioComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.showLoader(false);
-        this.notificarError(err.error.mensaje)
+        Notificacion.notificar(this.mdbNotificationService, 'Ha ocurrido un error al crear el usuario.', TipoAlerta.ALERTA_ERROR);
       }
     })
   }

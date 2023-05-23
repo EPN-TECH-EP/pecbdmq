@@ -29,7 +29,6 @@ export class ImagenService {
       }
     ).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log('catch CargaArchivoService', error);
         return throwError(() => error);
       })
     );

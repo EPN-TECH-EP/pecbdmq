@@ -1,6 +1,6 @@
 import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { CatalogoEstadosComponent } from './componentes/catalogo-estados/catalogo-estados.component';
-import { ModuloEstados } from './modelo/admin/modulo-estados';
+import { ModuloEstado } from './modelo/admin/modulo-estado';
 import { TipoPrueba } from './modelo/admin/tipo-prueba';
 import { Semestre } from 'src/app/modelo/admin/semestre';
 import { Periodo } from './modelo/admin/periodo-academico';
@@ -131,6 +131,7 @@ import { MenuComponent } from './componentes/admin/administracion-plataforma/men
 import { MenuAdminComponent } from './componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
 import { GestionDocumentosComponent } from './componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
 import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
+import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso-stepper/estado-proceso-stepper.component';
 
 @NgModule({
   declarations: [
@@ -190,7 +191,8 @@ import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/
     ModalSesionExpiradaComponent,
     MenuComponent,
     GestionDocumentosComponent,
-    EstadoProcesoFormacionComponent
+    EstadoProcesoFormacionComponent,
+    EstadoProcesoStepperComponent
   ],
   imports: [
     BrowserModule,
@@ -270,7 +272,7 @@ import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/
     MdbPopconfirmService,
     Semestre,
     TipoPrueba,
-    ModuloEstados,
+    ModuloEstado,
     CatalogoEstados
 
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }

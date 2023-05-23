@@ -46,7 +46,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   }
 
   ngOnInit(): void {
-    this.documentosService.getDocumentos().subscribe((documentos) => {
+    this.documentosService.listar().subscribe((documentos) => {
       console.log(documentos);
       this.documentos = documentos;
     });
@@ -62,7 +62,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   }
 
   descargar(documento: DocumentoFormacion) {
-    this.documentosService.descargar(documento.codigo).subscribe(
+    this.documentosService.descargarArchivo(documento.codigo).subscribe(
       {
         next: (data) => {
           const blob = new Blob([data], {type: 'application/pdf'});
@@ -80,10 +80,24 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
       });
   }
 
-  cargar() {
+  crear() {
+    const documento = this.documentoForm.value as DocumentoFormacion;
+    this.documentosService.crear(documento).subscribe(
+      {
+        next: (data) => {
+          this.documentos.push(data);
+          this.notificationRef = Notificacion.notificar(this.notificationServiceLocal, 'Documento creado correctamente', TipoAlerta.ALERTA_OK)
+          this.documentoForm.reset();
+        },
+        error: (error) => {
+          console.log('Error al crear documento', error);
+          this.notificationRef = Notificacion.notificar(this.notificationServiceLocal, 'Error al crear documento', TipoAlerta.ALERTA_ERROR)
+        }
+      });
   }
 
-  actualizar(documento: DocumentoFormacion) {
+  actualizar(
+    documento: DocumentoFormacion) {
   }
 
   eliminar() {

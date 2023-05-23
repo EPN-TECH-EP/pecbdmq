@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
+import {Component, OnInit} from '@angular/core';
+import {MdbModalRef} from 'mdb-angular-ui-kit/modal';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../../../../util/validators";
 import {Usuario} from "../../../../modelo/admin/usuario";
@@ -17,6 +17,9 @@ import {CargoService} from "../../../../servicios/cargo.service";
 import {GradoService} from "../../../../servicios/grado.service";
 import {UnidadGestionService} from "../../../../servicios/unidad-gestion.service";
 import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
+import {Notificacion} from "../../../../util/notificacion";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 
 @Component({
   selector: 'app-dato-personal',
@@ -52,7 +55,8 @@ export class DatoPersonalComponent implements OnInit {
     private cargoService: CargoService,
     private gradoService: GradoService,
     private unidadGestionService: UnidadGestionService,
-    private datoPersonalService: DatoPersonalService
+    private datoPersonalService: DatoPersonalService,
+    private mdbNotificationService: MdbNotificationService
   ) {
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
@@ -75,6 +79,7 @@ export class DatoPersonalComponent implements OnInit {
 
   ngOnInit(): void {
     this.datosPersonales = this.usuario.codDatosPersonales;
+    console.log("DATO PERSONAL:", this.datosPersonales);
     this.datosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
     this.tieneNacionalidadEcuatoriana = this.datosPersonales.tipo_nacionalidad === ('ECUATORIANA');
     this.tieneNacionalidadComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
@@ -84,14 +89,18 @@ export class DatoPersonalComponent implements OnInit {
       next: (provincias) => {this.provincias = provincias},
       error: (error) => {console.log(error)}
     });
-    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_nacimiento).subscribe({
-      next: (cantones) => {this.cantonesNacimiento = cantones},
-      error: (error) => {console.log(error)}
-    });
-    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_residencia).subscribe({
-      next: (cantones) => {this.cantonesResidencia = cantones},
-      error: (error) => {console.log(error)}
-    });
+    if(this.datosPersonales.cod_provincia_nacimiento){
+      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_nacimiento).subscribe({
+        next: (cantones) => {this.cantonesNacimiento = cantones},
+        error: (error) => {console.log(error)}
+      });
+    }
+    if(this.datosPersonales.cod_provincia_residencia){
+      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_residencia).subscribe({
+        next: (cantones) => {this.cantonesResidencia = cantones},
+        error: (error) => {console.log(error)}
+      });
+    }
     this.gradoService.getGrados().subscribe({
       next: (grados) => {this.grados = grados},
       error: (error) => {console.log(error)}
@@ -128,9 +137,9 @@ export class DatoPersonalComponent implements OnInit {
       genero:                     ['', [Validators.required]],
       tipoNacionalidad:           ['', [Validators.required]],
       provinciaNacimiento:        ['', [Validators.required]],
-      cantonNacimiento:           ['', [Validators.required]],
+      cantonNacimiento:           [{value: '', disabled: true}, [Validators.required]],
       provinciaResidencia:        [''],
-      cantonResidencia:           [''],
+      cantonResidencia:           [{value: '', disabled: true}],
       callePrincipalResidencia:   [''],
       calleSecundariaResidencia:  [''],
       numeroCasa:                 [''],
@@ -142,7 +151,7 @@ export class DatoPersonalComponent implements OnInit {
       meritoAcademicoDescripcion: [''],
       unidadGestion:              [''],
       grado:                      [''],
-      rango:                      [''],
+      rango:                      [{value: '', disabled: true}],
       cargo:                      [''],
     }, {updateOn: 'change'});
   }
@@ -151,34 +160,37 @@ export class DatoPersonalComponent implements OnInit {
     this.tieneMeritoAcademico = this.datosPersonales.tiene_merito_academico;
     this.tieneMeritoDeportivo = this.datosPersonales.tiene_merito_deportivo;
     this.formularioDatoPersonal.patchValue({
-      nombre:                     this.datosPersonales.nombre,
-      apellido:                   this.datosPersonales.apellido,
-      correoPersonal:             this.datosPersonales.correo_personal,
-      correoInstitucional:        this.datosPersonales.correo_institucional,
-      fechaNacimiento:            this.datosPersonales.fecha_nacimiento,
-      telfConvencional:           this.datosPersonales.num_telef_convencional,
-      telfCelular:                this.datosPersonales.num_telef_celular,
-      tipoSangre:                 this.datosPersonales.tipo_sangre,
-      genero:                     this.datosPersonales.genero,
-      tipoNacionalidad:           this.datosPersonales.tipo_nacionalidad,
-      provinciaNacimiento:        this.datosPersonales.cod_provincia_nacimiento,
-      cantonNacimiento:           this.datosPersonales.cod_canton_nacimiento,
-      provinciaResidencia:        this.datosPersonales.cod_provincia_residencia,
-      cantonResidencia:           this.datosPersonales.cod_canton_residencia,
-      callePrincipalResidencia:   this.datosPersonales.calle_principal_residencia,
-      calleSecundariaResidencia:  this.datosPersonales.calle_secundaria_residencia,
-      numeroCasa:                 this.datosPersonales.numero_casa,
-      colegio:                    this.datosPersonales.colegio,
-      nombreTitulo:               this.datosPersonales.nombre_titulo,
-      paisTitulo:                 this.datosPersonales.pais_titulo,
-      ciudadTitulo:               this.datosPersonales.ciudad_titulo,
+      nombre: this.datosPersonales.nombre,
+      apellido: this.datosPersonales.apellido,
+      correoPersonal: this.datosPersonales.correo_personal,
+      correoInstitucional: this.datosPersonales.correo_institucional,
+      fechaNacimiento: this.datosPersonales.fecha_nacimiento,
+      telfConvencional: this.datosPersonales.num_telef_convencional,
+      telfCelular: this.datosPersonales.num_telef_celular,
+      tipoSangre: this.datosPersonales.tipo_sangre,
+      genero: this.datosPersonales.genero,
+      tipoNacionalidad: this.datosPersonales.tipo_nacionalidad,
+      provinciaNacimiento: this.datosPersonales.cod_provincia_nacimiento,
+      cantonNacimiento: this.datosPersonales.cod_canton_nacimiento,
+      provinciaResidencia: this.datosPersonales.cod_provincia_residencia,
+      cantonResidencia: this.datosPersonales.cod_canton_residencia,
+      callePrincipalResidencia: this.datosPersonales.calle_principal_residencia,
+      calleSecundariaResidencia: this.datosPersonales.calle_secundaria_residencia,
+      numeroCasa: this.datosPersonales.numero_casa,
+      colegio: this.datosPersonales.colegio,
+      nombreTitulo: this.datosPersonales.nombre_titulo,
+      paisTitulo: this.datosPersonales.pais_titulo,
+      ciudadTitulo: this.datosPersonales.ciudad_titulo,
       meritoDeportivoDescripcion: this.datosPersonales.merito_deportivo_descripcion,
       meritoAcademicoDescripcion: this.datosPersonales.merito_academico_descripcion,
-      unidadGestion:              this.datosPersonales.cod_unidad_gestion,
-      grado:                      this.datosPersonales.cod_grado,
-      rango:                      this.datosPersonales.cod_rango,
-      cargo:                      this.datosPersonales.cod_cargo,
+      unidadGestion: this.datosPersonales.cod_unidad_gestion,
+      grado: this.datosPersonales.cod_grado,
+      rango: this.datosPersonales.cod_rango,
+      cargo: this.datosPersonales.cod_cargo,
     });
+    this.datosPersonales.cod_canton_nacimiento === null ? this.cantonNacimientoField.disable() : this.cantonNacimientoField.enable();
+    this.datosPersonales.cod_canton_residencia === null ? this.cantonResidenciaField.disable() : this.cantonResidenciaField.enable();
+    this.toggleValidationsNacionalidad();
   }
 
   get apellidoField() {
@@ -329,36 +341,40 @@ export class DatoPersonalComponent implements OnInit {
   }
 
   onChangeCantonNacimiento(event: any) {
-    if (event === '') return;
+    if(event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
+        this.formularioDatoPersonal.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }
 
   onChangeCantonResidencia(event: any) {
-    if (event === '') return;
+    if(event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
+        this.formularioDatoPersonal.get('cantonResidencia')?.enable();
         this.cantonesResidencia = cantones;
+        this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }
 
   onChangeGrado(event: any) {
     this.gradoService.getRangosPorGrado(event).subscribe({
-      next: (rangos) => {this.rangos = rangos;},
+      next: (rangos) => {this.formularioDatoPersonal.get('rango')?.enable(); this.rangos = rangos;},
       error: (err) => {console.log(err)}
     })
   }
 
   actualizarDatoPersonal() {
     if (this.formularioDatoPersonal.invalid) {
+      Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioDatoPersonal.markAllAsTouched();
       return;
     }
@@ -408,7 +424,7 @@ export class DatoPersonalComponent implements OnInit {
 
   close(): void {
     const usuario: Usuario = this.usuario;
-    console.log(usuario);
+    console.log("Usuario actualizado",usuario);
     this.datoPersonalComponentMdbModalRef.close(usuario)
   }
 }

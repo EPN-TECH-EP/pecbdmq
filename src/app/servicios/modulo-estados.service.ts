@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { ModuloEstados } from '../modelo/admin/modulo-estados';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {ModuloEstado} from '../modelo/admin/modulo-estado';
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +10,23 @@ import { ModuloEstados } from '../modelo/admin/modulo-estados';
 export class ModuloEstadosService {
   private host = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
-
-  public getModuloEstados(): Observable<ModuloEstados[]> {
-    return this.http.get<ModuloEstados[]>(`${this.host}/moduloestados/listartodo`);
+  constructor(private http: HttpClient) {
   }
 
-  public registroModuloEstados(moduloEstados: ModuloEstados): Observable<HttpResponse< ModuloEstados>> {
-    return this.http.post<ModuloEstados>(`${this.host}/moduloestados/crear`, moduloEstados, { observe: 'response' });
+  getAll(): Observable<ModuloEstado[]> {
+    return this.http.get<ModuloEstado[]>(`${this.host}/moduloestados/listartodo`);
   }
-  public actualizarModuloEstados(moduloEstados: ModuloEstados,  codigo :any): Observable<HttpResponse<ModuloEstados>> {
-    return this.http.put<ModuloEstados>(`${this.host}/moduloestados/${codigo}`, moduloEstados, { observe: 'response' });
+
+  crear(moduloEstados: ModuloEstado): Observable<HttpResponse<ModuloEstado>> {
+    return this.http.post<ModuloEstado>(`${this.host}/moduloestados/crear`, moduloEstados, {observe: 'response'});
   }
-  public eliminarModuloEstados(codigo: any): Observable<string> {
+
+  actualizar(moduloEstados: ModuloEstado, codigo: any): Observable<HttpResponse<ModuloEstado>> {
+    return this.http.put<ModuloEstado>(`${this.host}/moduloestados/${codigo}`, moduloEstados, {observe: 'response'});
+  }
+
+  eliminar(codigo: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/moduloestados/${codigo}`);
-    }
-
-    public mostrarModuloEstados(codigo: any): Observable<string> {
-    return this.http.get<any>(`${this.host}/moduloestados/${codigo}`);
-    }
+  }
 
 }

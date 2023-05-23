@@ -15,11 +15,20 @@ export class DocumentosService {
   constructor(private http: HttpClient) {
   }
 
-  getDocumentos() {
+  listar() {
     return this.http.get<DocumentoFormacion[]>(`${this.host}/periodoacademico/documentos`);
   }
 
-  descargar(id: number) {
+  crear(documento: DocumentoFormacion) {
+    console.log(documento);
+    return this.http.post<DocumentoFormacion>(`${this.host}/periodoacademico/cargarDocs`, documento);
+  }
+
+  actualizar(documento: DocumentoFormacion) {}
+
+  eliminar(id: number) {}
+
+  descargarArchivo(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',
     }).pipe(

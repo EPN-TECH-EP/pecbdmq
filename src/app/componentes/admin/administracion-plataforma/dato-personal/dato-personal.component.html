@@ -343,15 +343,17 @@
               </mdb-option>
             </mdb-select>
             <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
+            <mdb-error *ngIf="!cantonesNacimiento.length">
+              <span class="text-muted">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Primero seleccione una provincia
+              </span>
+            </mdb-error>
             <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
-              <span *ngIf="!cantonesNacimiento.length">
-                <i class="fas fa-exclamation-circle mb-1"></i>
-                Escoja primero una provincia
-              </span>
-              <span *ngIf="cantonNacimientoField?.hasError('required')">
-                <i class="fas fa-exclamation-circle mb-1"></i>
-                Este campo es requerido
-              </span>
+               <span *ngIf="cantonNacimientoField?.hasError('required')">
+                 <i class="fas fa-exclamation-circle mb-1"></i>
+                  Este campo es requerido
+               </span>
             </mdb-error>
           </mdb-form-control>
         </div>
@@ -396,10 +398,14 @@
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
           <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
-        <span *ngIf="!cantonesResidencia.length">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Escoja primero una provincia
-        </span>
+            <span *ngIf="cantonResidenciaField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+          </mdb-error>
+          <mdb-error *ngIf="!cantonesResidencia.length" class="text-muted">
+            <i class="fas fa-exclamation-circle mb-1"></i>
+            Primero seleccione una provincia
           </mdb-error>
         </mdb-form-control>
       </div>
@@ -626,6 +632,10 @@
             </mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="rango">Rango</label>
+          <mdb-error *ngIf="!rangos.length" class="text-muted">
+            <i class="fas fa-exclamation-circle"></i>
+            Para seleccionar un rango primero debe seleccionar un grado
+          </mdb-error>
         </mdb-form-control>
       </div>
     </div>

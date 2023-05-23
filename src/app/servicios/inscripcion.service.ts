@@ -31,7 +31,6 @@ export class InscripcionService {
 
       return response;
     } catch (error) {
-      console.log('catch CargaArchivoService');
       console.log(error);
     }
   }

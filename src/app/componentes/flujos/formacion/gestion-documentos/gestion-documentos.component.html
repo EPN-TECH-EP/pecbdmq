@@ -37,6 +37,7 @@
             <mdb-form-control>
               <input
                 mdbValidate
+                accept="application/pdf"
                 mdbInput
                 type="file"
                 class="form-control"
@@ -71,7 +72,8 @@
               class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
               id="btnRegistrar"
               type="submit"
-              (click)="addRow = false;"
+              [disabled]="documentoForm.invalid"
+              (click)="crear(); addRow = false;"
             >
               <i class="fa fa-check"></i> Agregar
             </button>
@@ -94,10 +96,11 @@
                 mdbInput
                 mdbValidate
                 type="file"
+                accept="application/pdf"
                 class="form-control"
+                id="archivo"
                 formControlName="archivo"
-                [value]="documento.nombre"
-              >
+              />
             </ng-container>
           </td>
           <td>
