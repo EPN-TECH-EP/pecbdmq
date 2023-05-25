@@ -113,8 +113,6 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
 import { Requisito } from './modelo/admin/requisito';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
-import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
-import { ValidacionInscripcionComponent } from './componentes/flujos/formacion/validacion-inscripcion/validacion-inscripcion.component';
 import { RolComponent } from './componentes/admin/administracion-plataforma/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import { MenuFormacionComponent } from './componentes/flujos/formacion/menu-formacion/menu-formacion.component';
@@ -132,6 +130,7 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
 import { GestionDocumentosComponent } from './componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
 import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
 import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso-stepper/estado-proceso-stepper.component';
+import { PostulantesComponent } from './componentes/flujos/formacion/postulantes/postulantes.component';
 
 @NgModule({
   declarations: [
@@ -177,8 +176,6 @@ import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso
     MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
-    ListaInscripcionComponent,
-    ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
     ProcesoEspecializacionComponent,
@@ -192,7 +189,8 @@ import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso
     MenuComponent,
     GestionDocumentosComponent,
     EstadoProcesoFormacionComponent,
-    EstadoProcesoStepperComponent
+    EstadoProcesoStepperComponent,
+    PostulantesComponent
   ],
   imports: [
     BrowserModule,

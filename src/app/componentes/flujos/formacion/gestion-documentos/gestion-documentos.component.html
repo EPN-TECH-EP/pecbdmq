@@ -42,6 +42,7 @@
                 type="file"
                 class="form-control"
                 formControlName="archivo"
+                (change)="cargarArchivo($event)"
               />
             </mdb-form-control>
           </td>
@@ -73,7 +74,7 @@
               id="btnRegistrar"
               type="submit"
               [disabled]="documentoForm.invalid"
-              (click)="crear(); addRow = false;"
+              (click)="crear()"
             >
               <i class="fa fa-check"></i> Agregar
             </button>
@@ -99,8 +100,14 @@
                 accept="application/pdf"
                 class="form-control"
                 id="archivo"
-                formControlName="archivo"
+                (change)="cargarArchivo($event)"
               />
+              <ng-container *ngIf="documentoForm.get('archivo').value">
+                <div>
+                  <p class="fw-bold mb-0 mt-2">Nombre del documento actual: </p>
+                  <p class="badge rounded-pill badge-primary px-3 py-2">{{ documentoForm.get('archivo').value }}</p>
+                </div>
+              </ng-container>
             </ng-container>
           </td>
           <td>
@@ -141,7 +148,8 @@
               <button
                 mdbTooltip="Descargar documento"
                 class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="descargar(documento)"
+                [disabled]="estaEditando"
+                (click)="descargarArchivo(documento)"
               >
                 <i class="fa fa-download"></i>
               </button>
@@ -156,6 +164,8 @@
               <button
                 mdbTooltip="Eliminar registro"
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                [disabled]="estaEditando"
+                (click)="eliminar(documento.codigo)"
               >
                 <i class="fa fa-trash-alt"></i>
               </button>
@@ -163,6 +173,7 @@
             <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codigo">
               <button
                 class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                [disabled]="documentoForm.invalid"
                 (click)="actualizar(documento)"
               >
                 <i class="fa fa-check"></i> Guardar

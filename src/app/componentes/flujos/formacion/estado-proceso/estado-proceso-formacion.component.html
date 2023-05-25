@@ -2,8 +2,11 @@
   <div class="row m-3">
     <h1 class="col text-center fs-4 fw-bolder">Estado del Proceso de Formación</h1>
   </div>
-  <div class="row">
-    <app-estado-proceso-stepper [steps]="estados"></app-estado-proceso-stepper>
+  <div class="row" *ngIf="stepsLoaded">
+    <app-estado-proceso-stepper
+      [steps]="estados"
+      (updatedStep)="updateStep($event)"
+    ></app-estado-proceso-stepper>
   </div>
 </div>
 

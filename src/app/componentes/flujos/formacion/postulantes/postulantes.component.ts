@@ -1,0 +1,95 @@
+import {Component, OnInit} from '@angular/core';
+import {Inscripcion} from "../../../../modelo/flujos/formacion/inscripcion";
+import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
+import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
+import {Requisito} from "../../../../modelo/admin/requisito";
+import {Router} from "@angular/router";
+import {Usuario} from "../../../../modelo/admin/usuario";
+import {AutenticacionService} from "../../../../servicios/autenticacion.service";
+import {UsuarioAsignado} from "../../../../modelo/flujos/formacion/asignar-usuario";
+import {Notificacion} from "../../../../util/notificacion";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+
+@Component({
+  selector: 'app-postulantes',
+  templateUrl: './postulantes.component.html',
+  styleUrls: ['./postulantes.component.scss']
+})
+export class PostulantesComponent implements OnInit {
+
+  usuario: Usuario = null;
+  inscripciones: Inscripcion[]
+  inscripcionesAsignadas: Inscripcion[]
+  inscripcionesLoaded = false
+
+  headers = [
+    {key: 'id', label: 'ID'},
+    {key: 'cedula', label: 'Cédula'},
+    {key: 'nombre', label: 'Nombre'},
+    {key: 'apellido', label: 'Apellido'},
+  ]
+
+  constructor(
+    private validacionInscripcionService: ValidacionInscripcionService,
+    private datoPersonalService: DatoPersonalService,
+    private router: Router,
+    private autenticacionService: AutenticacionService,
+    private mdbNotificationService: MdbNotificationService
+  ) {
+    this.inscripcionesAsignadas = []
+    this.inscripciones = []
+    this.autenticacionService.user$.subscribe({
+      next: usuario => {
+        this.usuario = usuario
+      }
+    })
+
+  }
+
+  ngOnInit(): void {
+    this.validacionInscripcionService.listarInscripciones(this.usuario.codUsuario).subscribe({
+      next: inscripciones => {
+        this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
+        this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
+        this.inscripcionesLoaded = true
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  validar(inscripcion: Inscripcion) {
+    // this.validacionInscripcionService.getPostulante(inscripcion.codPostulante).subscribe({
+    //   next: postulante => {
+    //     console.log(this.router.navigate(['/formacion/validacion', postulante.codPostulante]))
+    //     this.router.navigate(['/formacion/validacion', postulante.codPostulante])
+    //   },
+    //   error: err => console.log(err)
+    // })
+    this.router.navigate(['principal/formacion/validacion', inscripcion.codPostulante])
+  }
+
+  asignar(idPostulante: number) {
+    const usuarioAsignado: UsuarioAsignado = {
+      codPostulante: idPostulante,
+      codUsuario: this.usuario.codUsuario,
+      estado: 'ASIGNADO'
+    }
+    this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
+      next: inscripcion => {
+        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
+        this.inscripcionesAsignadas.push(inscripcion)
+        Notificacion.notificar(this.mdbNotificationService, "Usuario asignado correctamente", TipoAlerta.ALERTA_OK)
+      },
+      error: err => {
+        if (err.status !== 400) {
+          Notificacion.notificar(this.mdbNotificationService, "Error al asignar usuario", TipoAlerta.ALERTA_ERROR)
+        }
+        Notificacion.notificar(this.mdbNotificationService, "El usuario ya se encuentra asignado", TipoAlerta.ALERTA_WARNING)
+        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
+        console.error(err)
+      }
+    })
+  }
+
+}

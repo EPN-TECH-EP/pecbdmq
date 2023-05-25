@@ -15,6 +15,10 @@ export class DatoPersonalService {
 
   ) { }
 
+  getOne(id: number) {
+    return this.http.get(`${this.host}/datopersonal/${id}`)
+  }
+
   update(datoPersonal: UpdateDatoPersonalDto, id: number) {
     return this.http.put(`${this.host}/datopersonal/${id}`, datoPersonal)
   }

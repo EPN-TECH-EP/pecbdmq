@@ -1,13 +1,13 @@
 <div class="my-stepper">
   <div *ngFor="let step of steps">
-    <div class="my-step" [ngClass]="getStepClass(step.estadoActual)">
+    <div class="my-step" [ngClass]="getStepClass(step?.estadoActual)">
       <div class="step__order">
         <span class="step__order--numeral">
-          {{step.orden}}
+          {{step?.orden}}
         </span>
       </div>
       <span class="step__title">
-        {{step.estadoCatalogo}}
+        {{step?.estadoCatalogo}}
       </span>
     </div>
   </div>
@@ -30,19 +30,20 @@
     <span>Pendiente</span>
   </div>
 </div>
-<div class="d-flex justify-content-center gap-3">
+<div class="d-flex justify-content-center gap-3 mt-3">
   <button
     class="btn btn-primary"
-    (click)="previousStep()"
+    (click)="openPopConfirmPreviousStep($event)"
     [disabled]="disabledPreviousButton"
   >
     Anterior Estado
   </button>
   <button
     class="btn btn-primary"
-    (click)="nextStep()"
+    (click)="openPopConfirmNextStep($event)"
     [disabled]="disabledNextButton"
   >
     Siguiente Estado
   </button>
 </div>
+

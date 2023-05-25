@@ -159,7 +159,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     this.subscriptions.push(
-      this.usuarioService.actualizarUsuario(usuario).subscribe(
+      this.usuarioService.actualizar(usuario).subscribe(
         {
           next: (response) => {
             this.usuarios[this.editElementIndex] = response;

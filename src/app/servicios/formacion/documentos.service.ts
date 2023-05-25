@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable, throwError} from "rxjs";
 import {DocumentoFormacion} from "../../modelo/flujos/formacion/documento";
@@ -19,14 +19,27 @@ export class DocumentosService {
     return this.http.get<DocumentoFormacion[]>(`${this.host}/periodoacademico/documentos`);
   }
 
-  crear(documento: DocumentoFormacion) {
-    console.log(documento);
-    return this.http.post<DocumentoFormacion>(`${this.host}/periodoacademico/cargarDocs`, documento);
+  crear(formData: FormData) {
+    return this.http.post<DocumentoFormacion>(
+      `${this.host}/periodoacademico/cargarDocs`,
+      formData,
+      {
+        headers: new HttpHeaders({Accept: 'application/json'}),
+      });
   }
 
-  actualizar(documento: DocumentoFormacion) {}
+  actualizar(formData: FormData, id: number) {
+    return this.http.put<DocumentoFormacion>(
+      `${this.host}/documento/${id}`,
+      formData,
+      {
+        headers: new HttpHeaders({Accept: 'application/json'}),
+      });
+  }
 
-  eliminar(id: number) {}
+  eliminar(id: number) {
+    return this.http.post(`${this.host}/documento/eliminardocumentoconvocatoria/${id}`, null);
+  }
 
   descargarArchivo(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
