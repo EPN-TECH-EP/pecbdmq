@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Inscripcion} from "../../../../modelo/flujos/formacion/inscripcion";
 import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
 import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
-import {Requisito} from "../../../../modelo/admin/requisito";
 import {Router} from "@angular/router";
 import {Usuario} from "../../../../modelo/admin/usuario";
 import {AutenticacionService} from "../../../../servicios/autenticacion.service";
@@ -12,11 +11,11 @@ import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
 
 @Component({
-  selector: 'app-postulantes',
-  templateUrl: './postulantes.component.html',
-  styleUrls: ['./postulantes.component.scss']
+  selector: 'app-inscripciones',
+  templateUrl: './inscripciones.component.html',
+  styleUrls: ['./inscripciones.component.scss']
 })
-export class PostulantesComponent implements OnInit {
+export class InscripcionesComponent implements OnInit {
 
   usuario: Usuario = null;
   inscripciones: Inscripcion[]

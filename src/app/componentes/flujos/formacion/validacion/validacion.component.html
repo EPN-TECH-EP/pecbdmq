@@ -1,9 +1,113 @@
 <div class="container">
-  <!-- Título de componente-->
-  <div class="row m-3">
+  <app-boton-volver [texto]="'Lista de inscripciones'"></app-boton-volver>
+  <div class="row m-4">
     <div class="column text-center">
-      <p class="fs-5 fw-bolder">Validación</p>
-      <p class="fs-4 fw-bolder">Lista de Inscritos</p>
+      <p class="fs-4 fw-bolder">
+        Validación de la inscripción
+        <span class="badge rounded-pill badge-info">
+          {{ 'F0002' }}
+        </span>
+      </p>
     </div>
   </div>
+
+  <div class="row" *ngIf="loadInformation">
+    <!-- Start datos de la inscripción -->
+    <section class="col">
+      <h5 class="text-center">Datos del solicitante</h5>
+    </section>
+    <!-- End datos de la inscripción -->
+
+    <div class="vr p-0"></div>
+
+    <!-- Start lista de requisitos -->
+    <section class="col">
+      <h5 class="text-center mb-4">Lista de requisitos</h5>
+      <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+        <table
+          class="table table-sm"
+          mdbTable
+          mdbTableSort
+          #tableRequisitos="mdbTable"
+          [dataSource]="formularioRequisitos"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+            >
+              <b>{{ header}}</b>
+            </th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngFor="let formulario of tableRequisitos.data; let i = index">
+            <td>{{ formulario?.get('nombre')?.value }}</td>
+            <td>
+              <form [formGroup]="formulario">
+                <ng-container>
+                  <div class="form-check form-check-inline">
+                    <input
+                      formControlName="estado"
+                      class="form-check-input"
+                      type="radio"
+                      name="estado"
+                      [id]="'estado-' + i"
+                      [value]="true"
+                      [checked]="formulario?.controls?.estado?.value === true"
+                    />
+                    <label class="form-check-label" [for]="'estado-' + i">Sí</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      formControlName="estado"
+                      class="form-check-input"
+                      type="radio"
+                      name="estado"
+                      [id]="'estado-' + i"
+                      [value]="false"
+                      [checked]="formulario?.controls?.estado?.value === false"
+                    />
+                    <label class="form-check-label" [for]="'estado-' + i">No</label>
+                  </div>
+                  <mdb-error
+                    *ngIf="formulario?.controls?.estado?.invalid && formulario?.controls?.estado?.touched"
+                  >
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Este campo es requerido, seleccione una opción
+                  </mdb-error>
+                </ng-container>
+              </form>
+            </td>
+            <td>
+              <form [formGroup]="formulario">
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    formControlName="observaciones"
+                    type="text"
+                    class="form-control"
+                  />
+                </mdb-form-control>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="guardarRequisitos()">Terminar validación</button>
+        </div>
+        <ng-container *ngIf="tableRequisitos.data?.length === 0">
+          <div class="alert alert-warning my-3 py-2">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            No se encontraron requisitos para esta inscripción
+          </div>
+        </ng-container>
+      </div>
+
+    </section>
+    <!-- End lista de requisitos -->
+  </div>
+
 </div>

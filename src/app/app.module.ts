@@ -130,7 +130,7 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
 import { GestionDocumentosComponent } from './componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
 import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
 import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso-stepper/estado-proceso-stepper.component';
-import { PostulantesComponent } from './componentes/flujos/formacion/postulantes/postulantes.component';
+import { InscripcionesComponent } from './componentes/flujos/formacion/inscripciones/inscripciones.component';
 
 @NgModule({
   declarations: [
@@ -190,7 +190,7 @@ import { PostulantesComponent } from './componentes/flujos/formacion/postulantes
     GestionDocumentosComponent,
     EstadoProcesoFormacionComponent,
     EstadoProcesoStepperComponent,
-    PostulantesComponent
+    InscripcionesComponent
   ],
   imports: [
     BrowserModule,

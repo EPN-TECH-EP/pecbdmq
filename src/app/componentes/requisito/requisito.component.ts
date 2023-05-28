@@ -177,7 +177,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
   public actualizar(requisito: Requisito, formValue): void {
     if (
       formValue.nombre == '' ||
-      formValue.descripcion == '' 
+      formValue.descripcion == ''
     ) {
       Notificacion.notificacion(
         this.notificationRef,

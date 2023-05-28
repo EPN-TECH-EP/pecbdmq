@@ -64,7 +64,7 @@ import {
 import {
   EstadoProcesoFormacionComponent
 } from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
-import {PostulantesComponent} from "../../componentes/flujos/formacion/postulantes/postulantes.component";
+import {InscripcionesComponent} from "../../componentes/flujos/formacion/inscripciones/inscripciones.component";
 
 const routes: Routes = [
   {
@@ -110,7 +110,7 @@ const routes: Routes = [
       // flujos y procesos
       {path: 'formacion/gestion-documentos', component: GestionDocumentosComponent},
       {path: 'formacion/estado', component: EstadoProcesoFormacionComponent},
-      {path: 'formacion/postulantes', component: PostulantesComponent},
+      {path: 'formacion/inscripciones', component: InscripcionesComponent},
       {path: 'formacion/validacion/:id', component: ValidacionComponent},
 
       {path: 'paralelo', component: ParaleloComponent},

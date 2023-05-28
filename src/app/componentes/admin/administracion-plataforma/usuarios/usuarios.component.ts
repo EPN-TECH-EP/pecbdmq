@@ -227,6 +227,7 @@ export class UsuariosComponent implements OnInit {
           this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
           console.error(errorResponse);
         },
       });
@@ -253,6 +254,7 @@ export class UsuariosComponent implements OnInit {
           this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
           console.error(errorResponse);
         },
       });
@@ -276,6 +278,7 @@ export class UsuariosComponent implements OnInit {
           this.existenCoincidencias = true;
         },
         error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
           console.error(errorResponse);
         },
       }

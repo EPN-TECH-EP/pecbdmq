@@ -1,8 +1,7 @@
-export interface RequisitoFormacion {
-  codFuncionario  : null;
-  codigoRequisito : number;
-  descripcion     : string;
-  esDocumento     : boolean | null;
-  estado          : string;
-  nombre          : string;
+export interface ValidacionRequisito {
+  cod_validacion_requisitos: number,
+  cod_requisitos: number,
+  nombre_requisito: string,
+  estado: boolean,
+  observaciones: string | null
 }

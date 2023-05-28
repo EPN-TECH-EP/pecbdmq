@@ -46,15 +46,10 @@ export class EstadoProcesoStepperComponent implements OnInit {
   }
 
   private foundCurrentStep() {
-    for (let i = 0; i < this.steps.length; i++) {
-      const step = this.steps[i];
-      if (step.estadoActual === 'actual') {
-        this.currentStep = step;
-        this.nextStep = this.steps[i + 1];
-        this.previousStep = this.steps[i - 1];
-        break;
-      }
-    }
+    this.currentStep = this.steps.find(step => step.estadoActual === 'actual');
+    const currentIndex = this.steps.indexOf(this.currentStep);
+    this.nextStep = this.steps[currentIndex + 1];
+    this.previousStep = this.steps[currentIndex - 1];
   }
 
   getPreviousStep() {
@@ -70,14 +65,13 @@ export class EstadoProcesoStepperComponent implements OnInit {
         foundPrevious = true;
         this.disabledNextButton = false;
         this.currentStep = step;
-        this.foundCurrentStep()
+        this.foundCurrentStep();
         this.updatedStep.emit(this.currentStep?.codigo);
       }
       if (i === 0 && !foundPrevious) {
         step.estadoActual = 'actual';
         this.disabledPreviousButton = true;
       }
-
     }
   }
 
@@ -95,7 +89,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
         foundNext = false;
         this.disabledPreviousButton = false;
         this.currentStep = step;
-        this.foundCurrentStep()
+        this.foundCurrentStep();
         this.updatedStep.emit(this.currentStep?.codigo);
       }
       if (i === this.steps.length - 1 && foundNext) {

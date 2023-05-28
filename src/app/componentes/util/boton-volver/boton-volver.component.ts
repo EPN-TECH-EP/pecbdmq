@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Location} from '@angular/common';
 
 @Component({
@@ -7,6 +7,8 @@ import {Location} from '@angular/common';
   styleUrls: ['./boton-volver.component.scss']
 })
 export class BotonVolverComponent {
+
+  @Input() texto: string = 'Regresar al menú';
 
   constructor(private location: Location) {
   }
