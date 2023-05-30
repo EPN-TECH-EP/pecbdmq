@@ -1,4 +1,4 @@
-export interface Inscripcion {
+export interface InscripcionItem {
   cedula?:              string;
   nombre?:             string;
   apellido?:           string;

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Inscripcion} from "../../../../modelo/flujos/formacion/inscripcion";
+import {InscripcionItem} from "../../../../modelo/flujos/formacion/inscripcion-item";
 import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
 import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
 import {Router} from "@angular/router";
@@ -18,8 +18,8 @@ import {TipoAlerta} from "../../../../enum/tipo-alerta";
 export class InscripcionesComponent implements OnInit {
 
   usuario: Usuario = null;
-  inscripciones: Inscripcion[]
-  inscripcionesAsignadas: Inscripcion[]
+  inscripciones: InscripcionItem[]
+  inscripcionesAsignadas: InscripcionItem[]
   inscripcionesLoaded = false
 
   headers = [
@@ -59,7 +59,7 @@ export class InscripcionesComponent implements OnInit {
     });
   }
 
-  validar(inscripcion: Inscripcion) {
+  validar(inscripcion: InscripcionItem) {
     // this.validacionInscripcionService.getPostulante(inscripcion.codPostulante).subscribe({
     //   next: postulante => {
     //     console.log(this.router.navigate(['/formacion/validacion', postulante.codPostulante]))

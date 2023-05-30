@@ -1,28 +1,116 @@
 <div class="container">
   <app-boton-volver [texto]="'Lista de inscripciones'"></app-boton-volver>
-  <div class="row m-4">
-    <div class="column text-center">
-      <p class="fs-4 fw-bolder">
-        Validación de la inscripción
-        <span class="badge rounded-pill badge-info">
+  <div class="row my-1">
+    <p class="col text-center fs-4 fw-bolder">
+      Validación de la inscripción
+      <span class="badge  badge-info">
           {{ inscripcion?.idPostulante }}
         </span>
-      </p>
-    </div>
+    </p>
+  </div>
+  <div class="col">
+    <p class="badge badge-success py-3 fs-6">
+      <i class="fas fa-calendar-check me-3"></i>
+      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaPostulacion | date: 'dd/MM/yyyy' }}</p>
   </div>
 
   <div class="row" *ngIf="loadInformation">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-primary btn-floating btn-lg mb-2"
+        [mdbTooltip]="msmBtnListaRequisitos"
+        (click)="toggleListaRequisitos()"
+      >
+        <i class="fas fa-list-check"></i>
+      </button>
+    </div>
     <!-- Start datos de la inscripción -->
     <section class="col">
-      <h5 class="text-center">Datos del solicitante</h5>
+      <mdb-accordion [flush]="true" [multiple]="true">
+        <mdb-accordion-item [collapsed]="true">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Datos del solicitante</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <h5 class="mb-4 fw-bolder">Datos personales</h5>
+            <p><b>Cédula de ciudadanía:</b> {{ inscripcion?.cedula }}</p>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre:</b> {{ inscripcion?.nombre }} {{ inscripcion?.apellido }}</p>
+                <p><b>Fecha de nacimiento:</b> {{ inscripcion?.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
+                <p><b>Edad:</b> {{ inscripcion?.edadPostulacion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Teléfono celular:</b> {{ inscripcion?.numTelefCelular }}</p>
+                <p><b>Sexo:</b> {{ inscripcion?.sexo}}</p>
+                <p><b>Tipo sangre:</b> {{ inscripcion?.tipoSangre}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Nacionalidad</h5>
+            <p><b>Nacionalidad:</b> {{ inscripcion?.tipoNacionalidad}}</p>
+            <p><b>Provincia de nacimiento:</b> {{ inscripcion?.provinciaNacimiento}}</p>
+            <p><b>Cantón de nacimiento:</b> {{ inscripcion?.cantonNacimiento}}</p>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Residencia</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Calle principal:</b> {{ inscripcion?.callePrincipalResidencia}}</p>
+                <p><b>Calle secundaria:</b> {{ inscripcion?.calleSecundariaResidencia}}</p>
+                <p><b>Número de casa:</b> {{ inscripcion?.numeroCasa}}</p>
+              </div>
+              <div class="col">
+                <p><b>Provincia de residencia:</b> {{ inscripcion?.provinciaResidencia}}</p>
+                <p><b>Cantón de residencia:</b> {{ inscripcion?.cantonResidencia}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos Académicos</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre del título:</b> {{ inscripcion?.nombreTituloSegundonivel}}</p>
+                <p *ngIf="inscripcion?.meritoAcademicoDescripcion"><b>Mérito
+                  Académico:</b> {{ inscripcion?.meritoAcademicoDescripcion}}</p>
+                <p *ngIf="inscripcion?.meritoDeportivoDescripcion"><b>Mérito
+                  Deportivo:</b> {{ inscripcion?.meritoDeportivoDescripcion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Nombre del colegio:</b> {{ inscripcion?.colegio}}</p>
+                <p><b>País:</b> {{ inscripcion?.paisTituloSegundonivel}}</p>
+                <p><b>Cuidad:</b> {{ inscripcion?.ciudadTituloSegundonivel}}</p>
+              </div>
+            </div>
+          </ng-template>
+        </mdb-accordion-item>
+        <mdb-accordion-item [collapsed]="true">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Documentos asociados</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <div *ngIf="urlsArchivo; else errorArchivo">
+              <div *ngFor="let url of urlsArchivo">
+                <p class="badge badge-primary p-2"><b>Nombre del archivo: </b>{{url.nombreArchivo}}</p>
+                <embed
+                  [src]="url.SafeResourceUrl" [width]="'100%'" [height]="400">
+              </div>
+            </div>
+            <ng-template #errorArchivo>
+              <span>Error al cargar el archivo</span>
+            </ng-template>
+          </ng-template>
+        </mdb-accordion-item>
+      </mdb-accordion>
+
     </section>
     <!-- End datos de la inscripción -->
-
-    <div class="vr p-0"></div>
-
+    <div *ngIf="!estaExpandidoListaRequisitos" class="vr p-0"></div>
     <!-- Start lista de requisitos -->
-    <section class="col">
-      <h5 class="text-center mb-4">Lista de requisitos</h5>
+    <section class="col" [ngClass]="{'expanded': estaExpandidoListaRequisitos}">
+      <h4 class="text-center mb-4">Lista de requisitos</h4>
       <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
         <table
           class="table table-sm"
@@ -101,13 +189,12 @@
             No se encontraron requisitos para esta inscripción
           </div>
         </ng-container>
-        <div class="d-flex justify-content-end" *ngIf="tableRequisitos.data?.length !== 0">
-          <button class="btn btn-primary" (click)="guardarRequisitos()">Terminar validación</button>
+        <div class="d-flex justify-content-center" *ngIf="tableRequisitos.data?.length !== 0">
+          <button class="btn btn-primary mt-3" (click)="guardarRequisitos()">Guardar validación</button>
         </div>
       </div>
-
     </section>
     <!-- End lista de requisitos -->
   </div>
-
 </div>
+

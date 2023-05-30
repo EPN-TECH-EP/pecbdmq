@@ -3,7 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable, throwError} from "rxjs";
 import {DocumentoFormacion} from "../../modelo/flujos/formacion/documento";
-import {catchError} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class DocumentosService {
 
   private host = environment.apiUrl
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
   }
 
   listar() {
@@ -46,10 +47,24 @@ export class DocumentosService {
       responseType: 'blob',
     }).pipe(
       catchError(error => {
-          console.error('Error al descargar archivo:', error);
           return throwError(() => error);
         }
       ));
+  }
+
+  visualizarArchivo(id: number): Observable<SafeResourceUrl> {
+    return this.descargarArchivo(id).pipe(
+      map(data => {
+        const blob = new Blob([data], {type: 'application/pdf'});
+        const archivo = new File([blob], 'archivo.pdf', {type: 'application/pdf'});
+        const url = URL.createObjectURL(archivo);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      })
+    ).pipe(
+      catchError(error => {
+        return throwError(error);
+      })
+    );
   }
 
 }

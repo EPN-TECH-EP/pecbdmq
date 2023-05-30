@@ -1,13 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
-import {Subscription, switchMap} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {forkJoin, Subscription, switchMap} from "rxjs";
 import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
-import {Inscripcion} from "../../../../modelo/flujos/formacion/inscripcion";
 import {ValidacionRequisito} from "../../../../modelo/flujos/formacion/requisito";
 import {Notificacion} from "../../../../util/notificacion";
 import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {InscripcionCompleta} from "../../../../modelo/flujos/formacion/inscripcion-completa";
+import {DocumentosService} from "../../../../servicios/formacion/documentos.service";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-validacion',
@@ -17,16 +19,22 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class ValidacionComponent implements OnInit, OnDestroy {
 
   postulanteId: string | null;
-  inscripcion: Inscripcion | null;
+  inscripcion: InscripcionCompleta | null;
   requisitos: ValidacionRequisito[];
   formularioRequisitos: FormGroup[];
   loadInformation: boolean;
   headers: string[];
+  msmBtnListaRequisitos: string;
+  estaExpandidoListaRequisitos: boolean = false;
+  urlsArchivo: { SafeResourceUrl, nombreArchivo: string }[];
+
   private routerSubscription: Subscription;
+
 
   constructor(
     private route: ActivatedRoute,
     private validacionInscripcionService: ValidacionInscripcionService,
+    private documentosService: DocumentosService,
     private mdbNotificationService: MdbNotificationService,
     private builder: FormBuilder,
     private router: Router
@@ -34,20 +42,19 @@ export class ValidacionComponent implements OnInit, OnDestroy {
     this.postulanteId = null;
     this.inscripcion = null;
     this.requisitos = [];
-    this.loadInformation = false;
+    this.urlsArchivo = [];
     this.formularioRequisitos = [];
+    this.loadInformation = false;
     this.headers = ['Requisito', 'Cumple el requisito', 'Observaciones'];
-    window.addEventListener('unload', () => {
-      this.guardarRequisitosAuto();
-    });
+    this.msmBtnListaRequisitos = 'Posición inferior de la lista de requisitos';
+
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
+    this.routerSubscription = this.route.paramMap.pipe(
       switchMap((params) => {
         this.postulanteId = params.get('id');
         if (this.postulanteId && !isNaN(+this.postulanteId)) {
-          console.log(+this.postulanteId);
           return this.validacionInscripcionService.getInscripcion(+this.postulanteId);
         }
         Notificacion.notificar(this.mdbNotificationService, 'No se pudo obtener la información del postulante', TipoAlerta.ALERTA_ERROR);
@@ -58,37 +65,36 @@ export class ValidacionComponent implements OnInit, OnDestroy {
       console.log("inscripcion", inscripcion);
       if (inscripcion) {
         this.inscripcion = inscripcion;
-        this.validacionInscripcionService.listarRequisitos(21).subscribe({
+        console.log("documentos", this.inscripcion.documentos);
+        if (this.inscripcion.documentos.length > 0) {
+          const observables = this.inscripcion.documentos.map(documento =>
+            this.documentosService.visualizarArchivo(165)
+          );
+
+          forkJoin(observables).subscribe({
+            next: urls => {
+              this.urlsArchivo = urls.map((url, index) => {
+                return {
+                  SafeResourceUrl: url,
+                  nombreArchivo: this.inscripcion.documentos[index].nombre
+                }
+              });
+              console.log("urlsArchivo", this.urlsArchivo);
+            },
+            error: err => console.log(err, "No se pudo obtener los archivos")
+          });
+        }
+        this.validacionInscripcionService.listarRequisitos(inscripcion?.codPostulante).subscribe({
           next: requisitos => {
             this.requisitos = requisitos;
             this.construirFormulario();
             this.loadInformation = true;
           },
-          error: err => console.log(err)
+          error: err => console.log(err, "No se pudo obtener los requisitos")
         });
       }
     });
-    // TODO: Eliminar esto
-    // this.validacionInscripcionService.listarRequisitos(21).subscribe({
-    //   next: requisitos => {
-    //     this.requisitos = requisitos;
-    //     console.log(this.requisitos);
-    //     this.construirFormulario();
-    //     this.loadInformation = true;
-    //   },
-    //   error: err => console.log(err)
-    // });
-    // when the user leaves the page to go to another page on our site
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.guardarRequisitosAuto();
-      }
-    });
 
-    // when the user reloads, closes, or navigates away from the page
-    window.addEventListener('beforeunload', () => {
-      this.guardarRequisitosAuto();
-    });
   }
 
   ngOnDestroy(): void {
@@ -131,20 +137,26 @@ export class ValidacionComponent implements OnInit, OnDestroy {
     console.log(requisitos)
   }
 
-  guardarRequisitosAuto() {
+  // guardarRequisitosAuto() {
+  //
+  //   const hayRequisitosTocados = this.formularioRequisitos.some(requisito => requisito.touched);
+  //   if (!hayRequisitosTocados) return;
+  //
+  //   // // si todos los requisitos son validos le digo al usuario que presione el boton de guardar
+  //   // const formulariosValidos = this.formularioRequisitos.every(requisito => requisito.valid);
+  //   // if (!formulariosValidos) return;
+  //
+  //   const requisitos = this.formularioRequisitos.filter(requisito => requisito.valid && requisito.touched
+  //   ).map(requisito => requisito.value);
+  //
+  //   Notificacion.notificar(this.mdbNotificationService, 'Se guardaron los cambios pendientes', TipoAlerta.ALERTA_INFO);
+  //   console.log(requisitos);
+  // }
 
-    const hayRequisitosTocados = this.formularioRequisitos.some(requisito => requisito.touched);
-    if (!hayRequisitosTocados) return;
 
-    // // si todos los requisitos son validos le digo al usuario que presione el boton de guardar
-    // const formulariosValidos = this.formularioRequisitos.every(requisito => requisito.valid);
-    // if (!formulariosValidos) return;
-
-    const requisitos = this.formularioRequisitos.filter(
-      requisito => requisito.valid && requisito.touched
-    ).map(requisito => requisito.value);
-    Notificacion.notificar(this.mdbNotificationService, 'Se guardaron los cambios pendientes', TipoAlerta.ALERTA_INFO);
-    console.log(requisitos);
+  toggleListaRequisitos() {
+    this.estaExpandidoListaRequisitos = !this.estaExpandidoListaRequisitos;
+    this.msmBtnListaRequisitos = this.estaExpandidoListaRequisitos ? 'Posición lateral de la lista de requisitos' : 'Posición inferior de la lista de requisitos';
   }
 
 }
