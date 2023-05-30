@@ -50,7 +50,9 @@ export class InscripcionesComponent implements OnInit {
     this.validacionInscripcionService.listarInscripciones(this.usuario.codUsuario).subscribe({
       next: inscripciones => {
         this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
+        console.log(this.inscripcionesAsignadas)
         this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
+        console.log(this.inscripciones)
         this.inscripcionesLoaded = true
       },
       error: err => console.log(err)

@@ -5,7 +5,7 @@
       <p class="fs-4 fw-bolder">
         Validación de la inscripción
         <span class="badge rounded-pill badge-info">
-          {{ 'F0002' }}
+          {{ inscripcion?.idPostulante }}
         </span>
       </p>
     </div>
@@ -42,7 +42,7 @@
           </thead>
           <tbody class="datatable-body">
           <tr *ngFor="let formulario of tableRequisitos.data; let i = index">
-            <td>{{ formulario?.get('nombre')?.value }}</td>
+            <td class="text-wrap">{{ formulario?.get('nombre')?.value }}</td>
             <td>
               <form [formGroup]="formulario">
                 <ng-container>
@@ -82,28 +82,28 @@
             <td>
               <form [formGroup]="formulario">
                 <mdb-form-control>
-                  <input
+                  <textarea
                     mdbValidate
                     mdbInput
                     formControlName="observaciones"
                     type="text"
-                    class="form-control"
-                  />
+                    class="form-control">
+                  </textarea>
                 </mdb-form-control>
               </form>
             </td>
           </tr>
           </tbody>
         </table>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-primary" (click)="guardarRequisitos()">Terminar validación</button>
-        </div>
         <ng-container *ngIf="tableRequisitos.data?.length === 0">
           <div class="alert alert-warning my-3 py-2">
             <i class="fas fa-exclamation-triangle me-1"></i>
             No se encontraron requisitos para esta inscripción
           </div>
         </ng-container>
+        <div class="d-flex justify-content-end" *ngIf="tableRequisitos.data?.length !== 0">
+          <button class="btn btn-primary" (click)="guardarRequisitos()">Terminar validación</button>
+        </div>
       </div>
 
     </section>

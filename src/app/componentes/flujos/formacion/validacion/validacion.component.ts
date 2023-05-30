@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from "@angular/router";
+import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
 import {Subscription, switchMap} from "rxjs";
 import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
 import {Inscripcion} from "../../../../modelo/flujos/formacion/inscripcion";
@@ -7,8 +7,7 @@ import {ValidacionRequisito} from "../../../../modelo/flujos/formacion/requisito
 import {Notificacion} from "../../../../util/notificacion";
 import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {filter} from "rxjs/operators";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-validacion',
@@ -44,37 +43,41 @@ export class ValidacionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.route.paramMap.pipe(
-    //   switchMap((params) => {
-    //     this.postulanteId = params.get('id');
-    //     if (this.postulanteId && !isNaN(+this.postulanteId)) {
-    //       console.log(this.postulanteId);
-    //       return this.validacionInscripcionService.getInscripcion(+this.postulanteId);
-    //     }
-    //     Notificacion.notificar(this.mdbNotificationService, 'No se pudo obtener la información del postulante', TipoAlerta.ALERTA_ERROR);
-    //     return [null];
-    //   })
-    // ).subscribe((inscripcion) => {
-    //   if (inscripcion) {
-    //     this.inscripcion = inscripcion;
-    //     this.validacionInscripcionService.listarRequisitos().subscribe({
-    //       next: requisitos => {
-    //         this.requisitos = requisitos;
-    //         this.loadInformation = true;
-    //       },
-    //       error: err => console.log(err)
-    //     });
-    //   }
-    // });
-    // TODO: Eliminar esto
-    this.validacionInscripcionService.listarRequisitos().subscribe({
-      next: requisitos => {
-        this.requisitos = requisitos;
-        this.construirFormulario();
-        this.loadInformation = true;
-      },
-      error: err => console.log(err)
+    this.route.paramMap.pipe(
+      switchMap((params) => {
+        this.postulanteId = params.get('id');
+        if (this.postulanteId && !isNaN(+this.postulanteId)) {
+          console.log(+this.postulanteId);
+          return this.validacionInscripcionService.getInscripcion(+this.postulanteId);
+        }
+        Notificacion.notificar(this.mdbNotificationService, 'No se pudo obtener la información del postulante', TipoAlerta.ALERTA_ERROR);
+        this.router.navigate(['principal/formacion/inscripciones']);
+        return [null];
+      })
+    ).subscribe((inscripcion) => {
+      console.log("inscripcion", inscripcion);
+      if (inscripcion) {
+        this.inscripcion = inscripcion;
+        this.validacionInscripcionService.listarRequisitos(21).subscribe({
+          next: requisitos => {
+            this.requisitos = requisitos;
+            this.construirFormulario();
+            this.loadInformation = true;
+          },
+          error: err => console.log(err)
+        });
+      }
     });
+    // TODO: Eliminar esto
+    // this.validacionInscripcionService.listarRequisitos(21).subscribe({
+    //   next: requisitos => {
+    //     this.requisitos = requisitos;
+    //     console.log(this.requisitos);
+    //     this.construirFormulario();
+    //     this.loadInformation = true;
+    //   },
+    //   error: err => console.log(err)
+    // });
     // when the user leaves the page to go to another page on our site
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {

@@ -26,11 +26,11 @@ export class ValidacionInscripcionService {
   }
 
   getInscripcion(id: number) {
-    return this.http.get<Inscripcion>(`${this.host}/inscripcionfor/postulante/${id}`);
+    return this.http.get<Inscripcion>(`${this.host}/inscripcionfor/${id}`);
   }
 
-  listarRequisitos() {
-    return this.http.get<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitos/21`);
+  listarRequisitos(codigoPostulante: number) {
+    return this.http.get<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitos/${codigoPostulante}`);
   }
 
 }
