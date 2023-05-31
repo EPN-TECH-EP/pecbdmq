@@ -1,0 +1,125 @@
+<div class="container" *ngIf="inscripcionesLoaded">
+  <div class="row m-3 text-center">
+    <p class="fs-4 fw-bolder mb-3">
+      Lista de Inscritos
+    </p>
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <h5>
+      <span class="badge badge-success p-2 mt-2">
+        <i class="fas fa-user me-1"></i>
+        Inscripciones asignadas
+      </span>
+    </h5>
+    <div>
+      <i class="fas fa-file-circle-check fa-xl" style="color: #bdbdbd"></i>
+      <span class="badge rounded-pill badge-notification bg-danger">{{inscripcionesAsignadas?.length}}</span>
+    </div>
+  </div>
+  <section>
+    <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+      <table
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #tableInscripcionesAsignadas="mdbTable"
+        [dataSource]="inscripcionesAsignadas"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+          >
+            <b>{{ header.label }}</b>
+          </th>
+          <th class="text-center"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let postulante of tableInscripcionesAsignadas.data">
+          <td>{{ postulante?.idPostulante }}</td>
+          <td>{{ postulante?.cedula }}</td>
+          <td>{{ postulante?.nombre }}</td>
+          <td>{{ postulante?.apellido }}</td>
+          <td class="text-center">
+            <button
+              mdbTooltip="Validar"
+              class="m-0 p-0 shadow-0 btn text-dark"
+              (click)="validar(postulante)"
+            >
+              <i class="fa-regular fa-check-square fa-xl"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ng-container *ngIf="tableInscripcionesAsignadas.data?.length === 0">
+        <div class="alert alert-warning my-3 py-2">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          No existen inscripciones asignadas
+        </div>
+      </ng-container>
+    </div>
+    <hr class="hr">
+  </section>
+
+  <div class="d-flex align-items-center gap-2">
+    <h5>
+    <span class="badge badge-primary p-2 mt-2">
+       <i class="fas fa-clock me-1"></i>
+      Inscripciones pendientes
+    </span>
+    </h5>
+    <div>
+      <i class="fas fa-file-circle-check fa-xl" style="color: #bdbdbd"></i>
+      <span class="badge rounded-pill badge-notification bg-danger">{{inscripciones?.length}}</span>
+    </div>
+  </div>
+  <section>
+    <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto mt-4 overflow-auto">
+      <table
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #tableInscripciones="mdbTable"
+        [dataSource]="inscripciones"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+          >
+            <b>{{ header.label }}</b>
+          </th>
+          <th class="text-center"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let postulante of tableInscripciones.data">
+          <td>{{ postulante?.idPostulante }}</td>
+          <td>{{ postulante?.cedula }}</td>
+          <td>{{ postulante?.nombre }}</td>
+          <td>{{ postulante?.apellido }}</td>
+          <td class="text-center">
+            <button
+              mdbTooltip="Asignarme"
+              class="m-0 btn shadow-0 text-dark"
+              (click)="asignar(postulante?.codPostulante)"
+            >
+              <i class="fas fa-user-check fa-lg"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ng-container *ngIf="tableInscripciones.data?.length === 0">
+        <div class="alert alert-warning my-3 py-2">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          No existen inscripciones pendientes
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</div>

@@ -34,13 +34,19 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
   addRow = false;
-  headers = [
+  
+  /*headers = [
     'Nombre Materia',
     'Número de Horas',
     'Tipo de Materia',
     'Observacion Materia',
     'Peso Materia',
     'Nota Mínima',
+  ];*/
+
+  headers = [
+    'Nombre Materia',
+    'Tipo de Materia'
   ];
 
   estaEditando = false;
@@ -115,11 +121,11 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   crear(materia: Materia): void {
     if (
       materia.nombre == '' ||
-      ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
-      materia.tipoMateria == '' ||
-      materia.observacionMateria == '' ||
-      ValidacionUtil.isNullOrEmptyNumber(materia.pesoMateria) ||
-      ValidacionUtil.isNullOrEmptyNumber(materia.notaMinima)
+      //ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
+      materia.tipoMateria == '' 
+      //materia.observacionMateria == '' ||
+      //ValidacionUtil.isNullOrEmptyNumber(materia.pesoMateria) ||
+      //ValidacionUtil.isNullOrEmptyNumber(materia.notaMinima)
     ) {
       Notificacion.notificacion(
         this.notificationRef,
@@ -163,11 +169,11 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   actualizar(materia: Materia, formValue): void {
     if (
       formValue.nombre == '' ||
-      ValidacionUtil.isNullOrEmptyNumber(formValue.numHoras) ||
-      formValue.tipoMateria == '' ||
-      formValue.observacionMateria == '' ||
-      ValidacionUtil.isNullOrEmptyNumber(formValue.pesoMateria) ||
-      ValidacionUtil.isNullOrEmptyNumber(formValue.notaMinima)
+      //ValidacionUtil.isNullOrEmptyNumber(formValue.numHoras) ||
+      formValue.tipoMateria == '' 
+      //formValue.observacionMateria == '' ||
+      //ValidacionUtil.isNullOrEmptyNumber(formValue.pesoMateria) ||
+      //ValidacionUtil.isNullOrEmptyNumber(formValue.notaMinima)
     ) {
       Notificacion.notificacion(
         this.notificationRef,

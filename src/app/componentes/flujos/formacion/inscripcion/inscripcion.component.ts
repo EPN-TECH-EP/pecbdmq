@@ -1,123 +1,190 @@
-import {Inscripcion} from '../../../../modelo/admin/inscripcion';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import { InscripcionCompleta } from '../../../../modelo/flujos/formacion/inscripcion-completa';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {Subscription} from 'rxjs';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
-import {Notificacion} from 'src/app/util/notificacion';
-import {AlertaComponent} from '../../../util/alerta/alerta.component';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CargaArchivoService} from 'src/app/servicios/carga-archivo';
-import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
-import {MyValidators} from "../../../../util/validators";
-import {CANTONES_POR_PROVINCIA, PROVINCIAS} from "../../../../util/constantes/provincias_cuidades";
+import { Subscription } from 'rxjs';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { Notificacion } from 'src/app/util/notificacion';
+import { AlertaComponent } from '../../../util/alerta/alerta.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CargaArchivoService } from 'src/app/servicios/carga-archivo';
+import { OPCIONES_DATEPICKER } from '../../../../util/constantes/opciones-datepicker.const';
+import { MyValidators } from '../../../../util/validators';
+import {
+  CANTONES_POR_PROVINCIA,
+  PROVINCIAS,
+} from '../../../../util/constantes/provincias_cuidades';
+import {
+  MdbStepChangeEvent,
+  MdbStepperComponent,
+} from 'mdb-angular-ui-kit/stepper';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { InscripcionService } from '../../../../servicios/formacion/inscripcion.service';
+import { Provincia } from 'src/app/modelo/admin/provincia';
+import { Canton } from 'src/app/modelo/admin/canton';
+import { ProvinciaService } from 'src/app/servicios/provincia.service';
+import { InscripcionCompletaDto } from 'src/app/modelo/flujos/formacion/inscripcion-completa-dto';
 
 @Component({
   selector: 'app-inscripcion',
   templateUrl: './inscripcion.component.html',
   styleUrls: ['./inscripcion.component.scss'],
 })
-export class InscripcionComponent implements OnInit, OnDestroy {
-
-  private subscriptions: Subscription[] = [];
+export class InscripcionComponent extends ComponenteBase implements OnInit {
+  @ViewChild('stepper') stepper!: MdbStepperComponent;
 
   minDate = new Date(1980, 1, 31);
   maxDate = new Date(2005, 12, 31);
-  provincias = PROVINCIAS;
+  provincias                    : Provincia[];
   translationOptions = OPCIONES_DATEPICKER;
-  cantonesNacimiento     : string[];
-  cantonesResidencia     : string[];
-  formularioInscripcion  : FormGroup;
-  formularioPinSeguridad : FormGroup;
-  notificationRef        : MdbNotificationRef<AlertaComponent> | null = null;
-  inscripcion            : Inscripcion;
-  showLoading            : boolean;
-  docInscripcion         : File;
-  tamMaxArchivo          : number = 0;
-  hayMeritoDeportivo     : boolean = false;
-  hayMeritoAcademico     : boolean = false;
-  fechaActual            : Date;
+  cantonesNacimiento            : Canton[];
+  cantonesResidencia            : Canton[];
+  formularioInscripcion: FormGroup;
+  formularioPinSeguridad: FormGroup;
+  notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  inscripcion: InscripcionCompletaDto;
+  showLoading: boolean;
+  docInscripcion: File;
+  tamMaxArchivo: number = 0;
+  hayMeritoDeportivo: boolean = false;
+  hayMeritoAcademico: boolean = false;
+  fechaActual: Date;
+
+  step: number = 0;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
-    private notificationService: MdbNotificationService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popConfirmServiceLocal: MdbPopconfirmService,
     private builder: FormBuilder,
+    private inscripcionService: InscripcionService,
+    private provinciaService: ProvinciaService,
   ) {
-    this.inscripcion = new Inscripcion();
-    this.formularioInscripcion = new FormGroup({})
+    super(notificationServiceLocal, popConfirmServiceLocal);
+
+    this.subscriptions = [];
+
+    this.inscripcion = new InscripcionCompletaDto();
+    this.formularioInscripcion = new FormGroup({});
     this.construirFormularios();
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
+    this.provincias = [];
     this.fechaActual = new Date();
   }
 
   ngOnInit(): void {
-
     this.subscriptions.push(
       this.cargaArchivoService.maxArchivo().subscribe({
-        next: (result) => {this.tamMaxArchivo = result},
-        error: (errorResponse) => {console.log(errorResponse)},
-      }));
+        next: (result) => {
+          this.tamMaxArchivo = result;
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+        },
+      })
+    );
+
+    this.provinciaService.getProvincias().subscribe({
+      next: (provincias) => {this.provincias = provincias},
+      error: (error) => {console.log(error)}
+    });
   }
 
   private construirFormularios() {
-    this.formularioInscripcion = this.builder.group({
-      // Datos iniciales
-      cedula              : ["", [Validators.required,
-                                  Validators.minLength(10),
-                                  Validators.maxLength(10),
-                                  MyValidators.onlyNumbers(),
-                                  MyValidators.validIdentification()]
-                            ],
-      nombres             : ["", [Validators.required,
-                                  Validators.minLength(3),
-                                  Validators.maxLength(50),
-                                  MyValidators.onlyLetters()]
-                            ],
-      apellidos           : ["", [Validators.required,
-                                  Validators.minLength(3),
-                                  Validators.maxLength(50),
-                                  MyValidators.onlyLetters()]
-                            ],
-      email               : ["", [Validators.required, Validators.email]],
-      sexo                : ["", [Validators.required]],
-      fechaNacimiento     : ["", [Validators.required, MyValidators.validAge()]],
-      telCelular          : ["", [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      telConvencional     : ["", [Validators.required, Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      // Datos nacionalidad
-      nacionalidad        : ["", [Validators.required]],
-      provinciaNacimiento : ["", [Validators.required]],
-      cantonNacimiento    : ["", [Validators.required]],
-      // Datos residencia
-      provinciaResidencia : ["", [Validators.required]],
-      cantonResidencia    : ["", [Validators.required]],
-      callePrincipal      : ["", [Validators.required]],
-      calleSecundaria     : ["", [Validators.required]],
-      numeroCasa          : ["", [Validators.required]],
-      // Datos titulo
-      paisTitulo          : ["", [Validators.required]],
-      ciudadTitulo        : ["", [Validators.required]],
-      colegioTitulo       : ["", [Validators.required]],
-      nombreTitulo        : ["", [Validators.required]],
-      // Datos merito
-      meritoAcademico     : ["", [Validators.minLength(10)]],
-      meritoDeportivo     : ["", [Validators.minLength(10)]],
-      // Documentos de soporte
-      docSoporte          : ["", [Validators.required]],
-    }, {
-      updateOn: 'change'
-    });
+    this.formularioInscripcion = this.builder.group(
+      {
+        // Datos iniciales
+        cedula: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            MyValidators.onlyNumbers(),
+            MyValidators.validIdentification(),
+          ],
+        ],
+        nombres: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            MyValidators.onlyLetters(),
+          ],
+        ],
+        apellidos: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            MyValidators.onlyLetters(),
+          ],
+        ],
+        email: ['', [Validators.required, Validators.email]],
+        sexo: ['', [Validators.required]],
+        fechaNacimiento: ['', [Validators.required, MyValidators.validAge()]],
+        telCelular: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            MyValidators.onlyNumbers(),
+          ],
+        ],
+        telConvencional: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(9),
+            Validators.maxLength(9),
+            MyValidators.onlyNumbers(),
+          ],
+        ],
+        // Datos nacionalidad
+        nacionalidad: ['', [Validators.required]],
+        provinciaNacimiento: ['', [Validators.required]],
+        cantonNacimiento: ['', [Validators.required]],
+        // Datos residencia
+        provinciaResidencia: ['', [Validators.required]],
+        cantonResidencia: ['', [Validators.required]],
+        callePrincipal: ['', [Validators.required]],
+        calleSecundaria: ['', [Validators.required]],
+        numeroCasa: ['', [Validators.required]],
+        // Datos titulo
+        paisTitulo: ['', [Validators.required]],
+        ciudadTitulo: ['', [Validators.required]],
+        colegioTitulo: ['', [Validators.required]],
+        nombreTitulo: ['', [Validators.required]],
+        // Datos merito
+        meritoAcademico: ['', [Validators.minLength(10)]],
+        meritoDeportivo: ['', [Validators.minLength(10)]],
+        // Documentos de soporte
+        docSoporte: ['', [Validators.required]],
+      },
+      {
+        updateOn: 'change',
+      }
+    );
     this.formularioPinSeguridad = this.builder.group({
-      pin: ["267389", [Validators.required,
-                Validators.minLength(6),
-                Validators.maxLength(6),
-                MyValidators.onlyNumbers()]
-      ]
-    })
+      pin: [
+        '267389',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(6),
+          MyValidators.onlyNumbers(),
+        ],
+      ],
+    });
   }
 
   get cedulaField() {
@@ -230,18 +297,18 @@ export class InscripcionComponent implements OnInit, OnDestroy {
   onMeritoAcademicoChange(event: any) {
     this.hayMeritoAcademico = event.target.checked;
 
-    if(this.hayMeritoAcademico) {
+    if (this.hayMeritoAcademico) {
       this.meritoAcademicoField.setValidators([Validators.required]);
     } else {
       this.meritoAcademicoField.clearValidators();
     }
     this.meritoAcademicoField.updateValueAndValidity();
-}
+  }
 
   toggleValidationsNacionalidad() {
-    if( this.nacionalidadField.value === 'Extranjero' ) {
-      this.provinciaNacimientoField.clearValidators()
-      this.cantonNacimientoField.clearValidators()
+    if (this.nacionalidadField.value === 'Extranjero') {
+      this.provinciaNacimientoField.clearValidators();
+      this.cantonNacimientoField.clearValidators();
       this.provinciaNacimientoField.setValue('');
       this.cantonNacimientoField.setValue('');
     } else {
@@ -259,72 +326,117 @@ export class InscripcionComponent implements OnInit, OnDestroy {
     doc = event.target.files[0];
     if (doc !== undefined) {
       if (doc.size > this.tamMaxArchivo) {
-        this.notificacion(null, 'Archivo excede el tamaño máximo permitido')
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Archivo excede el tamaño máximo permitido'
+        );
       } else if (!docName.endsWith(extension)) {
-        this.notificacion(null, 'El archivo debe ser de tipo .pdf');
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'El archivo debe ser de tipo .pdf'
+        );
       } else {
         this.docInscripcion = doc;
-        this.notificacionOK('Archivo cargado');
-
+        Notificacion.notificacionOK(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          'Archivo cargado'
+        );
       }
     }
   }
 
-  changeCantonNacimiento(event: any) {
-    const provincia = this.provincias.find(provincia=> provincia.id === event);
-    this.cantonesNacimiento = CANTONES_POR_PROVINCIA[provincia.nombre];
-    this.cantonNacimientoField.setValue('');
+  onChangeCantonNacimiento(event: any) {
+    if(event === '') return;
+    this.provinciaService.getCantonesPorProvincia(event).subscribe({
+      next: (cantones) => {
+        this.formularioInscripcion.get('cantonNacimiento')?.enable();
+        this.cantonesNacimiento = cantones;
+        this.cantonNacimientoField.setValue('');
+        },
+      error: (err) => {console.log(err)}
+    });
   }
 
-  changeCantonResidencia(event: any) {
-    const provincia = this.provincias.find(provincia=> provincia.id === event);
-    this.cantonesResidencia = CANTONES_POR_PROVINCIA[provincia.nombre];
-    this.cantonResidenciaField.setValue('');
+  onChangeCantonResidencia(event: any) {
+    if(event === '') return;
+    this.provinciaService.getCantonesPorProvincia(event).subscribe({
+      next: (cantones) => {
+        this.formularioInscripcion.get('cantonResidencia')?.enable();
+        this.cantonesResidencia = cantones;
+        this.cantonResidenciaField.setValidators([Validators.required]);
+        this.cantonResidenciaField.setValue('');
+        },
+      error: (err) => {console.log(err)}
+    });
   }
 
-  notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
+  crearInscripcion() {
+    this.inscripcion.cedula = this.cedulaField.value;
+    this.inscripcion.nombre = this.nombresField.value;
+    this.inscripcion.apellido = this.apellidosField.value;
+    this.inscripcion.correoPersonal = this.emailField.value;
+    this.inscripcion.sexo = this.sexoField.value;
+    this.inscripcion.fecha_nacimiento = this.fechaNacimientoField.value;
+    this.inscripcion.num_telef_celular = this.telCelularField.value;
+    this.inscripcion.num_telef_convencional = this.telConvencionalField.value;
+    //
+    this.inscripcion.tipo_nacionalidad = this.nacionalidadField.value;
+    this.inscripcion.cod_provincia_nacimiento = this.provinciaNacimientoField.value;
+    this.inscripcion.cod_canton_nacimiento = this.cantonNacimientoField.value;
+    //
+    this.inscripcion.cod_provincia_residencia = this.provinciaResidenciaField.value;
+    this.inscripcion.cod_canton_residencia = this.cantonResidenciaField.value;
+    this.inscripcion.calle_principal_residencia = this.callePrincipalField.value;
+    this.inscripcion.calle_secundaria_residencia = this.calleSecundariaField.value;
+    this.inscripcion.numero_casa = this.numeroCasaField.value;
+    //
+    this.inscripcion.pais_titulo_segundonivel = this.paisTituloField.value;
+    this.inscripcion.ciudad_titulo_segundonivel = this.ciudadTituloField.value;
+    this.inscripcion.colegio = this.colegioTituloField.value;
+    this.inscripcion.nombre_titulo_segundonivel = this.nombreTituloField.value;
+    //
+    this.inscripcion.merito_academico_descripcion = this.meritoAcademicoField.value;
+    this.inscripcion.merito_deportivo_descripcion = this.meritoDeportivoField.value;
   }
 
-  private notificacion(errorResponse?: HttpErrorResponse, mensaje?: string) {
+  public stepChange(event: any, stepper: MdbStepperComponent) {
+    this.showLoading = true;
+    const stepEvent = event as MdbStepChangeEvent;
 
+    this.step = stepper.activeStepIndex;
+    if (this.step == 0) {
 
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-    let mensajeError = 'ERROR';
-    let codigoError = 0;
+      this.crearInscripcion();
+      
+      // crear inscripcion
+      let formData = new FormData();
+      formData.append('datosPersonales', JSON.stringify(this.inscripcion));
+      formData.append('documentos', this.docInscripcion);
 
-    if (errorResponse) {
-      let customError: CustomHttpResponse = errorResponse.error;
-      mensajeError = customError.mensaje;
-      codigoError = errorResponse.status;
+      this.subscriptions.push(
+        this.inscripcionService.crearInscripcion(formData).subscribe({
+          next: (response: any) => {
+            this.inscripcion = response;
+            this.showLoading = false;
+            stepper.next();
+          },
+          error: (errorResponse: any) => {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              errorResponse/*,
+              'Error al crear inscripción'*/
+            );
+            this.showLoading = false;
+            stepper.setNewActiveStep(0);
+          },
+        })
+      );
     }
-
-    if (mensaje) {
-      mensajeError = mensaje;
-    }
-
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado: ' + codigoError;
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensajeError,
-      tipoAlerta
-    );
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-
-
 }

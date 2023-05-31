@@ -17,6 +17,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
   '/usuario/resetPassword', 
   '/usuario/guardarArchivo',
   '/usuario/maxArchivo',
+  '/link'
 ];
 
   constructor(private autenticacionService: AutenticacionService) {}

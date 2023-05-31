@@ -510,7 +510,7 @@
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
-              <ng-container *ngIf="estaEditando">
+              <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(aula, form.value)"

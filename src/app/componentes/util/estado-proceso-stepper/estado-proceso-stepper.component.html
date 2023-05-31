@@ -1,0 +1,49 @@
+<div class="my-stepper">
+  <div *ngFor="let step of steps">
+    <div class="my-step" [ngClass]="getStepClass(step?.estadoActual)">
+      <div class="step__order">
+        <span class="step__order--numeral">
+          {{step?.orden}}
+        </span>
+      </div>
+      <span class="step__title">
+        {{step?.estadoCatalogo}}
+      </span>
+    </div>
+  </div>
+</div>
+<hr class="hr hr-blurry">
+<div class="alert alert-info w-25" role="alert">
+  <i class="fas fa-info-circle me-3"></i>Código de colores
+</div>
+<div class="d-flex gap-4">
+  <div class="codigo-colores">
+    <div class="color color-finalizado"></div>
+    <span>Finalizado</span>
+  </div>
+  <div class="codigo-colores">
+    <div class="color color-actual"></div>
+    <span>En progreso</span>
+  </div>
+  <div class="codigo-colores">
+    <div class="color color-siguiente"></div>
+    <span>Pendiente</span>
+  </div>
+</div>
+<div class="d-flex justify-content-center gap-3 mt-3">
+  <button
+    class="btn btn-primary"
+    (click)="openPopConfirmPreviousStep($event)"
+    [disabled]="disabledPreviousButton"
+  >
+    Anterior Estado
+  </button>
+  <button
+    class="btn btn-primary"
+    (click)="openPopConfirmNextStep($event)"
+    [disabled]="disabledNextButton"
+  >
+    Siguiente Estado
+  </button>
+</div>
+

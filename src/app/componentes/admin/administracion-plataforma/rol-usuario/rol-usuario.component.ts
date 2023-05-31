@@ -143,15 +143,13 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
           let rolUsuario = new RolUsuario();
           rolUsuario.rolUsuarioId = new RolUsuarioId();
           rolUsuario.rolUsuarioId.codRol = rolAsignado.codRol;
-          rolUsuario.rolUsuarioId.codUsuario = Number.parseInt(
-            this.usuarioSeleccionado.codUsuario
-          );
+          rolUsuario.rolUsuarioId.codUsuario =             this.usuarioSeleccionado.codUsuario;
           nuevaAsignacion.push(rolUsuario);
         }
       });
 
       this.rolUsuarioService
-        .asignarRolUsuario(nuevaAsignacion, Number.parseInt(this.usuarioSeleccionado.codUsuario))
+        .asignarRolUsuario(nuevaAsignacion, this.usuarioSeleccionado.codUsuario)
         .subscribe((data) => {
           this.cambiosPendientes = false;
 

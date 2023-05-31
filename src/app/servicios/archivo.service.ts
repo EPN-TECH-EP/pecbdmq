@@ -18,6 +18,23 @@ export class ArchivoService {
   ) {
   }
 
+  cargar(formData: FormData) {
+    return this.http.post<FormData>(
+      `${this.host}/documento/guardarArchivo`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'response',
+        headers: new HttpHeaders({Accept: 'application/json'}),
+      }
+    ).pipe(
+      catchError(error => {
+        console.error('Error al cargar archivo:', error);
+        return throwError(error);
+      })
+    );
+  }
+
   descargar(id: string) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',

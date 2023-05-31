@@ -17,7 +17,7 @@
   </div>
   <!-- Formulario de búsqueda-->
   <section>
-    <form [formGroup]="bucarUsuarioForm">
+    <form [formGroup]="buscarUsuarioForm">
       <mdb-tabs [justified]="true">
         <mdb-tab title="Buscar por identificación">
           <div class="row justify-content-center">
@@ -59,7 +59,7 @@
             </button>
           </div>
         </mdb-tab>
-        <mdb-tab title="Buscar por nombres y apellidos">
+        <mdb-tab title="Buscar por nombres o apellidos">
           <div class="row justify-content-center">
             <mdb-form-control class="col-3 me-2">
               <input
@@ -69,16 +69,13 @@
                 class="form-control"
                 id="nombres"
                 formControlName="nombres"
+                (keyup.enter)="buscarPorNombresApellidos()"
               >
               <label mdbLabel class="form-label" for="nombres">Nombres</label>
               <mdb-error *ngIf="nombresField?.dirty || nombresField?.touched">
                 <span *ngIf="nombresField?.hasError('invalid_letters')">
                   <i class="fa-solid fa-circle-exclamation"></i>
                   Este campo solo acepta letras
-                </span>
-                <span *ngIf="nombresField?.hasError('required')">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                  Este campo es requerido
                 </span>
               </mdb-error>
             </mdb-form-control>
@@ -98,17 +95,13 @@
                   <i class="fa-solid fa-circle-exclamation"></i>
                   Este campo solo acepta letras
                 </span>
-                <span *ngIf="apellidosField?.hasError('required')">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                  Este campo es requerido
-                </span>
               </mdb-error>
             </mdb-form-control>
             <button
               type="button"
               class="btn btn-primary col-1"
               (click)="buscarPorNombresApellidos()"
-              [disabled]="nombresField?.invalid || apellidosField?.invalid"
+              [disabled]="nombresField?.value === '' && apellidosField?.value === ''"
             >
               Buscar
             </button>
@@ -160,7 +153,7 @@
       (click)="limpiarRegistros()">
       <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
     </button>
-    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm overflow-auto">
       <form #form="ngForm">
         <table
           class="table datatable-table"
@@ -273,7 +266,7 @@
                 <button
                   mdbTooltip="Editar registro"
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="editar(index)"
+                  (click)="editRow(index)"
                   [disabled]="editElementIndex !== -1 && editElementIndex !== index"
                 >
                   <i class="fa fa-edit"></i>
@@ -296,7 +289,7 @@
                 </button>
                 <button
                   class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                  (click)="deshacer(editElementIndex)"
+                  (click)="undoRow()"
                 >
                   <i class="fa fa-ban"></i> Cancelar
                 </button>

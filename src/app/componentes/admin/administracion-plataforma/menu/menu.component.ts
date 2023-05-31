@@ -60,21 +60,25 @@ export class MenuComponent extends ComponenteBase implements OnInit {
   headersMapN3=[...this.headersMapN2, {'5':'Icono'}];
 */
 
-headersMapN1 = [
-  {name:'Etiqueta',value: 'Etiqueta'},
-  {name:'Orden', value:'Orden'},
-  {name:'Descripcion',value: 'Descripción'},
-]
-headersMapN2 = [
-  ...this.headersMapN1,{
-  name:'ruta',value:'Ruta'
-  }
-]
-headersMapN3 = [
-  ...this.headersMapN2,{
-  name:'icono',value:'Icono'
-    }
-  ]
+  headersMapN1 = [
+    { name: 'Etiqueta', value: 'Etiqueta' },
+    { name: 'Orden', value: 'Orden' },
+    { name: 'Descripcion', value: 'Descripción' },
+  ];
+  headersMapN2 = [
+    ...this.headersMapN1,
+    {
+      name: 'ruta',
+      value: 'Ruta',
+    },
+  ];
+  headersMapN3 = [
+    ...this.headersMapN2,
+    {
+      name: 'icono',
+      value: 'Icono',
+    },
+  ];
 
   nivelEliminar: number;
 
@@ -123,7 +127,7 @@ headersMapN3 = [
 
   //registro
   public registro(menu: Menu, nivel: number): void {
-    this.showLoading = true;    
+    this.showLoading = true;
 
     // asigna el menú padre
     if (nivel === 1) {
@@ -342,6 +346,9 @@ headersMapN3 = [
           this.editElementIndexN1 = -1;
           this.editElementIndexN2 = -1;
           this.editElementIndexN3 = -1;
+
+          //reestablece objetos temporales
+          this.reestableceObjetos();
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
@@ -417,7 +424,6 @@ headersMapN3 = [
           }
 
           this.reestablecerSeleccion(this.nivelEliminar);
-
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
@@ -479,7 +485,11 @@ headersMapN3 = [
     this.menuEditForm = this.initMenuN1();
   }
 
-  agregar(){
+  agregar() {
+    this.reestableceObjetos();
+  }
+  
+  reestableceObjetos() {
     // reestablece objetos temporales
     this.menu = this.initMenuN1();
     this.menuEditForm = this.initMenuN1();

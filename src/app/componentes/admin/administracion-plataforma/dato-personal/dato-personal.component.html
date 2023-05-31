@@ -29,7 +29,9 @@
             class="form-control mb-5"
             formControlName="nombre"
           />
-          <label mdbLabel class="form-label mb-2x" for="nombre">Nombres</label>
+          <label mdbLabel class="form-label mb-2x" for="nombre">
+            Nombres <span class="text-danger">*</span>
+          </label>
           <mdb-error *ngIf="nombreField?.dirty || nombreField?.touched">
             <span *ngIf="nombreField?.hasError('minlength')">
               <i class="fas fa-exclamation-circle mb-1"></i>
@@ -55,7 +57,9 @@
             class="form-control mb-5"
             formControlName="apellido"
           >
-          <label mdbLabel class="form-label mb-2x" for="apellido">Apellidos</label>
+          <label mdbLabel class="form-label mb-2x" for="apellido">
+            Apellidos <span class="text-danger">*</span>
+          </label>
           <mdb-error *ngIf="apellidoField?.dirty || apellidoField?.touched">
             <span *ngIf="apellidoField?.hasError('minlength')">
               <i class="fas fa-exclamation-circle mb-1"></i>
@@ -81,7 +85,9 @@
             class="form-control mb-5"
             formControlName="correoPersonal"
           />
-          <label mdbLabel class="form-label mb-2x" for="correoPersonal">Correo Personal</label>
+          <label mdbLabel class="form-label mb-2x" for="correoPersonal">
+            Correo Personal <span class="text-danger">*</span>
+          </label>
           <mdb-error
             *ngIf="correoPersonalField?.dirty || correoPersonalField?.touched"
           >
@@ -228,15 +234,17 @@
             mdbValidate
             id="sexo"
             class="mb-5"
-            data-mdb-placeholder="Género"
-            formControlName="genero"
+            data-mdb-placeholder="Sexo"
+            formControlName="sexo"
           >
             <mdb-option value="MASCULINO">Masculino</mdb-option>
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
-          <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
-          <mdb-error *ngIf="generoField?.invalid && (generoField?.dirty || generoField?.touched)">
-            <span *ngIf="generoField?.hasError('required')">
+          <label mdbLabel class="form-label mb-2x" for="sexo">Sexo
+          <span class="text-danger">*</span>
+          </label>
+          <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
+            <span *ngIf="sexoField?.hasError('required')">
               <i class="fas fa-exclamation-circle mb-1"></i>
               Este campo es requerido
             </span>
@@ -246,7 +254,7 @@
     </div>
     <!-- Datos de nacionalidad -->
     <div class="row">
-      <h5>Datos de nacionalidad</h5>
+      <h5>Datos de nacionalidad <span class="text-danger">*</span></h5>
       <hr class="hr hr-blurry">
       <div class="col-4 py-3">
         <!-- Tipo Nacionalidad -->
@@ -343,11 +351,13 @@
               </mdb-option>
             </mdb-select>
             <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
-            <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
-              <span *ngIf="!cantonesNacimiento.length">
+            <mdb-error *ngIf="!cantonesNacimiento.length">
+              <span class="text-muted">
                 <i class="fas fa-exclamation-circle mb-1"></i>
-                Escoja primero una provincia
+                Primero seleccione una provincia
               </span>
+            </mdb-error>
+            <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
               <span *ngIf="cantonNacimientoField?.hasError('required')">
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Este campo es requerido
@@ -396,10 +406,14 @@
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
           <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
-        <span *ngIf="!cantonesResidencia.length">
+            <span *ngIf="cantonResidenciaField?.hasError('required')">
           <i class="fas fa-exclamation-circle mb-1"></i>
-          Escoja primero una provincia
+              Este campo es requerido
         </span>
+          </mdb-error>
+          <mdb-error *ngIf="!cantonesResidencia.length" class="text-muted">
+            <i class="fas fa-exclamation-circle mb-1"></i>
+            Primero seleccione una provincia
           </mdb-error>
         </mdb-form-control>
       </div>
@@ -467,11 +481,11 @@
             mdbValidate
             mdbInput
             type="text"
-            id="nombreTitulo"
+            id="nombreTituloSegundoNivel"
             class="form-control mb-5"
-            formControlName="nombreTitulo"
+            formControlName="nombreTituloSegundoNivel"
           >
-          <label mdbLabel class="form-label mb-2x" for="nombreTitulo">Nombre del título</label>
+          <label mdbLabel class="form-label mb-2x" for="nombreTituloSegundoNivel">Nombre del título</label>
         </mdb-form-control>
       </div>
       <div class="col">
@@ -481,11 +495,11 @@
             mdbInput
             mdbValidate
             type="text"
-            id="paisTitulo"
+            id="paisTituloSegundoNivel"
             class="form-control mb-5"
-            formControlName="paisTitulo"
+            formControlName="paisTituloSegundoNivel"
           >
-          <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
+          <label mdbLabel class="form-label mb-2x" for="paisTituloSegundoNivel">País donde obtuvo el título</label>
         </mdb-form-control>
         <!-- Ciudad de Titulo -->
         <mdb-form-control>
@@ -493,11 +507,11 @@
             mdbInput
             mdbValidate
             type="text"
-            id="ciudadTitulo"
+            id="ciudadTituloSegundoNivel"
             class="form-control mb-5"
-            formControlName="ciudadTitulo"
+            formControlName="ciudadTituloSegundoNivel"
           >
-          <label mdbLabel class="form-label mb-2x" for="ciudadTitulo">Ciudad donde obtuvo el título</label>
+          <label mdbLabel class="form-label mb-2x" for="ciudadTituloSegundoNivel">Ciudad donde obtuvo el título</label>
         </mdb-form-control>
       </div>
     </div>
@@ -626,6 +640,10 @@
             </mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="rango">Rango</label>
+          <mdb-error *ngIf="!rangos.length" class="text-muted">
+            <i class="fas fa-exclamation-circle"></i>
+            Para seleccionar un rango primero debe seleccionar un grado
+          </mdb-error>
         </mdb-form-control>
       </div>
     </div>

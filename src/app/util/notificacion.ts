@@ -11,7 +11,7 @@ import { ValidacionUtil } from './validacion-util';
     static ref: MdbNotificationRef<AlertaComponent>;
 
     static notificar(
-      ns: MdbNotificationService,
+      mdbNotificationService: MdbNotificationService,
       mensajeError: String,
       tipoAlerta: TipoAlerta
     ): MdbNotificationRef<AlertaComponent> {
@@ -19,7 +19,7 @@ import { ValidacionUtil } from './validacion-util';
         this.ref.close;
       }
 
-      this.ref = ns.open(AlertaComponent, {
+      this.ref = mdbNotificationService.open(AlertaComponent, {
         data: { mensaje: mensajeError, clase: tipoAlerta },
         autohide: true,
         animation: true,

@@ -17,13 +17,13 @@ export class RolUsuarioService {
     return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listar`);
   }
 
-  public getRolUsuarioPorUsuario(codUsuario: string): Observable<RolUsuario[]> {
-    console.log('getRolUsuarioPorUsuario codUsuario: ' + codUsuario);
+  public getRolUsuarioPorUsuario(codUsuario: number): Observable<RolUsuario[]> {
+    
     return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listar/${codUsuario}`);
   }
 
   public getRolUsuarioPorRol(codRol: number): Observable<RolUsuario[]> {
-    console.log('getRolUsuarioPorRol codRol: ' + codRol);
+    
     return this.http.get<RolUsuario[]>(`${this.host}/rolUsuario/listarporrol/${codRol}`);
   }
 

@@ -137,6 +137,7 @@
                   name="selection"
                   [checked]="selectedRow == menu"
                   (click)="onSelectRow(menu, 1)"
+                  [disabled]="addRowN1 || addRowN2 || addRowN3 || editElementIndexN1 !== -1 || editElementIndexN2 !== -1 || editElementIndexN3 !== -1"
                 />
               </td>
 
@@ -395,6 +396,7 @@
                     name="selection"
                     [checked]="selectedRow == menu"
                     (click)="onSelectRow(menu, 2)"
+                    [disabled]="addRowN1 || addRowN2 || addRowN3 || editElementIndexN1 !== -1 || editElementIndexN2 !== -1 || editElementIndexN3 !== -1"
                   />
                 </td>
 

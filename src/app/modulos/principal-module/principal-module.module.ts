@@ -46,22 +46,29 @@ import {LocalDataService} from 'src/app/servicios/util/local-data.service';
 import {RolComponent} from 'src/app/componentes/admin/administracion-plataforma/rol/rol.component';
 import {MenuRolComponent} from 'src/app/componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import {BotonVolverComponent} from "../../componentes/util/boton-volver/boton-volver.component";
-import {ProcesoFormacionComponent} from "../../componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
+import {
+  ProcesoFormacionComponent
+} from "../../componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
 import {
   ProcesoEspecializacionComponent
 } from "../../componentes/flujos/especializacion/proceso-especializacion/proceso-especializacion.component";
 import {
   ProcesoProfesionalizacionComponent
 } from "../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component";
-import {ListaInscripcionComponent} from "../../componentes/lista-inscripcion/lista-inscripcion.component";
 import {NgModule} from "@angular/core";
 import {PerfilComponent} from "../../componentes/user/perfil/perfil.component";
-import { MenuComponent } from 'src/app/componentes/admin/administracion-plataforma/menu/menu.component';
+import {MenuComponent} from 'src/app/componentes/admin/administracion-plataforma/menu/menu.component';
+import {
+  GestionDocumentosComponent
+} from "../../componentes/flujos/formacion/gestion-documentos/gestion-documentos.component";
+import {EstadoProcesoFormacionComponent} from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
+import { AutenticacionChildGuard } from 'src/app/guard/autenticacion-child.guard';
+import { InscripcionesComponent } from 'src/app/componentes/flujos/formacion/inscripciones/inscripciones.component';
 
 
 const routes: Routes = [
   {
-    path: 'principal', component: PrincipalComponent,
+    path: 'principal', component: PrincipalComponent, canActivateChild: [AutenticacionChildGuard],
     children: [
       //sub-menu
       {path: 'bienvenida', component: BienvenidaComponent},
@@ -101,8 +108,11 @@ const routes: Routes = [
       {path: 'admin/menuRol', component: MenuRolComponent},
       {path: 'admin/menu', component: MenuComponent},
       // flujos y procesos
-      {path: 'formacion/validacion', component: ValidacionComponent},
-      {path: 'formacion/lista-inscripcion', component: ListaInscripcionComponent},      
+      {path: 'formacion/gestion-documentos', component: GestionDocumentosComponent},
+      {path: 'formacion/estado', component: EstadoProcesoFormacionComponent},
+      {path: 'formacion/inscripciones', component: InscripcionesComponent},
+      {path: 'formacion/validacion/:id', component: ValidacionComponent},
+
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
       {path: 'ponderacion', component: PonderacionComponent},

@@ -7,6 +7,7 @@ import { AutenticacionGuard } from './guard/autenticacion.guard';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { Usuario } from './modelo/admin/usuario';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
+import { AutenticacionChildGuard } from './guard/autenticacion-child.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -17,7 +18,7 @@ const routes: Routes = [
   {
     path: 'principal',
     component: PrincipalComponent,
-    canActivate: [AutenticacionGuard],
+    canActivate: [AutenticacionGuard], canActivateChild: [AutenticacionChildGuard],
     //loadChildren: () => import('./modulos/principal-module/principal-module.module').then(m => m.PrincipalModuleModule)
   },
 ];

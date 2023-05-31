@@ -169,7 +169,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
 
     componenteNota={...componenteNota, nombre:formValue.componentenota, estado:'ACTIVO'};
     
-    if(ValidacionUtil.isNullOrEmpty(formValue.nombre)){
+    if(ValidacionUtil.isNullOrEmpty(formValue.componentenota)){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
       
       return;

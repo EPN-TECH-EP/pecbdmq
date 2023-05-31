@@ -16,7 +16,7 @@ import {CustomHttpResponse} from 'src/app/modelo/admin/custom-http-response';
 import {HeaderType} from 'src/app/enum/header-type.enum';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/compiler';
 import {FormArray, FormControl} from '@angular/forms';
-import {ModuloEstados} from 'src/app/modelo/admin/modulo-estados';
+import {ModuloEstado} from 'src/app/modelo/admin/modulo-estado';
 import {CatalogoEstados} from 'src/app/modelo/admin/catalogo-estados';
 import {ModuloEstadosService} from 'src/app/servicios/modulo-estados.service';
 import {CatalogoEstadosService} from 'src/app/servicios/catalogo-estados.service';
@@ -29,11 +29,11 @@ import {ValidacionUtil} from 'src/app/util/validacion-util';
   styleUrls: ['./modulo-estados.component.scss']
 })
 export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
-  modulosEstados: ModuloEstados[];
+  modulosEstados: ModuloEstado[];
   modulos: Modulo[];
   estadosCatalogo: CatalogoEstados[];
-  moduloEstados: ModuloEstados;
-  moduloEstadosEditForm: ModuloEstados;
+  moduloEstados: ModuloEstado;
+  moduloEstadosEditForm: ModuloEstado;
 
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -44,7 +44,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   codigo: number;
   showLoading = false;
 
-  @ViewChild('table') table!: MdbTableDirective<ModuloEstados>;
+  @ViewChild('table') table!: MdbTableDirective<ModuloEstado>;
   editElementIndex = -1;
   addRow = false;
 
@@ -88,7 +88,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.Api.getModuloEstados().subscribe(data => {
+    this.Api.getAll().subscribe(data => {
       this.modulosEstados = data;
     });
     this.ApiModulo.getModulo().subscribe(data => {
@@ -140,7 +140,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   }
   */
   //registro
-  public registro(moduloEstados: ModuloEstados): void {
+  public registro(moduloEstados: ModuloEstado): void {
 
     if (moduloEstados.modulo == '' || moduloEstados.estadoCatalogo == '' ){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe llenar todos los campos');
@@ -150,15 +150,15 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     moduloEstados = {...moduloEstados, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.registroModuloEstados(moduloEstados).subscribe({
-        next: (response: HttpResponse<ModuloEstados>) => {
-          let nuevoModulo: ModuloEstados = response.body;
+      this.Api.crear(moduloEstados).subscribe({
+        next: (response: HttpResponse<ModuloEstado>) => {
+          let nuevoModulo: ModuloEstado = response.body;
           //this.table.data.push(nuevoModulo);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados creada con éxito');
 
           this.addRow = false;
 
-          this.Api.getModuloEstados().subscribe(data => {
+          this.Api.getAll().subscribe(data => {
             this.modulosEstados = data;
           });
           this.moduloEstados = {
@@ -199,7 +199,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
 
 
   //actualizar
-  public actualizar(moduloEstados: ModuloEstados, formValue): void {
+  public actualizar(moduloEstados: ModuloEstado, formValue): void {
 
     if (formValue.modulo == '' || formValue.estadoCatalogo == '' ){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe llenar todos los campos');
@@ -224,13 +224,13 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     }
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarModuloEstados(moduloEstados, moduloEstados.codigo).subscribe({
+      this.Api.actualizar(moduloEstados, moduloEstados.codigo).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados actualizada con éxito');
 
           this.modulosEstados[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.Api.getModuloEstados().subscribe(data => {
+          this.Api.getAll().subscribe(data => {
             this.modulosEstados = data;
           });
           this.editElementIndex = -1;
@@ -252,7 +252,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarModuloEstados(this.codigo).subscribe({
+      this.Api.eliminar(this.codigo).subscribe({
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Modulo de Estados eliminada con éxito');
 

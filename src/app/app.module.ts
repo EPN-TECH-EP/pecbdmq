@@ -1,6 +1,6 @@
 import { CatalogoEstados } from 'src/app/modelo/admin/catalogo-estados';
 import { CatalogoEstadosComponent } from './componentes/catalogo-estados/catalogo-estados.component';
-import { ModuloEstados } from './modelo/admin/modulo-estados';
+import { ModuloEstado } from './modelo/admin/modulo-estado';
 import { TipoPrueba } from './modelo/admin/tipo-prueba';
 import { Semestre } from 'src/app/modelo/admin/semestre';
 import { Periodo } from './modelo/admin/periodo-academico';
@@ -113,8 +113,6 @@ import { RequisitoComponent } from './componentes/requisito/requisito.component'
 import { Requisito } from './modelo/admin/requisito';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
-import { ListaInscripcionComponent } from './componentes/lista-inscripcion/lista-inscripcion.component';
-import { ValidacionInscripcionComponent } from './componentes/flujos/formacion/validacion-inscripcion/validacion-inscripcion.component';
 import { RolComponent } from './componentes/admin/administracion-plataforma/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import { MenuFormacionComponent } from './componentes/flujos/formacion/menu-formacion/menu-formacion.component';
@@ -129,6 +127,10 @@ import { UsuarioComponent } from './componentes/admin/administracion-plataforma/
 import { ModalSesionExpiradaComponent } from './componentes/util/modal-sesion-expirada/modal-sesion-expirada.component';
 import { MenuComponent } from './componentes/admin/administracion-plataforma/menu/menu.component';
 import { MenuAdminComponent } from './componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
+import { GestionDocumentosComponent } from './componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
+import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
+import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso-stepper/estado-proceso-stepper.component';
+import { InscripcionesComponent } from './componentes/flujos/formacion/inscripciones/inscripciones.component';
 
 @NgModule({
   declarations: [
@@ -174,8 +176,6 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
     MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
-    ListaInscripcionComponent,
-    ValidacionInscripcionComponent,
     RolComponent,
     MenuRolComponent,
     ProcesoEspecializacionComponent,
@@ -186,7 +186,11 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
     DatoPersonalComponent,
     UsuarioComponent,
     ModalSesionExpiradaComponent,
-    MenuComponent
+    MenuComponent,
+    GestionDocumentosComponent,
+    EstadoProcesoFormacionComponent,
+    EstadoProcesoStepperComponent,
+    InscripcionesComponent
   ],
   imports: [
     BrowserModule,
@@ -266,7 +270,7 @@ import { MenuAdminComponent } from './componentes/admin/administracion-plataform
     MdbPopconfirmService,
     Semestre,
     TipoPrueba,
-    ModuloEstados,
+    ModuloEstado,
     CatalogoEstados
 
     //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
