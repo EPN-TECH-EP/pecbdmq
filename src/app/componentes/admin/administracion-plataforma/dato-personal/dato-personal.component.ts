@@ -134,7 +134,7 @@ export class DatoPersonalComponent implements OnInit {
       telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
       telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       tipoSangre:                 [''],
-      genero:                     ['', [Validators.required]],
+      sexo:                       ['', [Validators.required]],
       tipoNacionalidad:           ['', [Validators.required]],
       provinciaNacimiento:        ['', [Validators.required]],
       cantonNacimiento:           [{value: '', disabled: true}, [Validators.required]],
@@ -144,8 +144,8 @@ export class DatoPersonalComponent implements OnInit {
       calleSecundariaResidencia:  [''],
       numeroCasa:                 [''],
       colegio:                    [''],
-      nombreTitulo:               [''],
-      paisTitulo:                 [''],
+      nombreTituloSegundoNivel:   [''],
+      paisTituloSegundoNivel:     [''],
       ciudadTitulo:               [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
@@ -168,7 +168,7 @@ export class DatoPersonalComponent implements OnInit {
       telfConvencional:           this.datosPersonales.num_telef_convencional,
       telfCelular:                this.datosPersonales.num_telef_celular,
       tipoSangre:                 this.datosPersonales.tipo_sangre,
-      sexo:                     this.datosPersonales.sexo,
+      sexo:                                   this.datosPersonales.sexo,
       tipoNacionalidad:           this.datosPersonales.tipo_nacionalidad,
       provinciaNacimiento:        this.datosPersonales.cod_provincia_nacimiento,
       cantonNacimiento:           this.datosPersonales.cod_canton_nacimiento,
@@ -381,6 +381,8 @@ export class DatoPersonalComponent implements OnInit {
     if (this.formularioDatoPersonal.invalid) {
       Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioDatoPersonal.markAllAsTouched();
+      // imprimo cuales son los campos que tienen error
+      console.log(this.formularioDatoPersonal.controls);
       return;
     }
 

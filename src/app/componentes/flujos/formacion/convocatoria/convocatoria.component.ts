@@ -1,35 +1,35 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { OPCIONES_DATEPICKER } from '../../../../util/constantes/opciones-datepicker.const';
-import { Subscription } from 'rxjs';
-import { FileUploadStatus } from '../../../../modelo/util/file-upload-status';
+import {OPCIONES_DATEPICKER} from '../../../../util/constantes/opciones-datepicker.const';
+import {Subscription} from 'rxjs';
+import {FileUploadStatus} from '../../../../modelo/util/file-upload-status';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { AlertaComponent } from '../../../util/alerta/alerta.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { TipoAlerta } from '../../../../enum/tipo-alerta';
-import { CustomHttpResponse } from '../../../../modelo/admin/custom-http-response';
-import { Notificacion } from '../../../../util/notificacion';
-import { CargaArchivoService } from '../../../../servicios/carga-archivo';
-import { RequisitoService } from '../../../../servicios/requisito.service';
-import { ConvocatoriaService } from '../../../../servicios/formacion/convocatoria.service';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { Requisito } from '../../../../modelo/admin/requisito';
-import { Convocatoria } from '../../../../modelo/admin/convocatoria';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { ArchivoService } from '../../../../servicios/archivo.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MyValidators } from '../../../../util/validators';
-import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
-import { FORMACION } from 'src/app/util/constantes/fomacion.const';
-import { ComponenteBase } from 'src/app/util/componente-base';
+import {AlertaComponent} from '../../../util/alerta/alerta.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {TipoAlerta} from '../../../../enum/tipo-alerta';
+import {CustomHttpResponse} from '../../../../modelo/admin/custom-http-response';
+import {Notificacion} from '../../../../util/notificacion';
+import {CargaArchivoService} from '../../../../servicios/carga-archivo';
+import {RequisitoService} from '../../../../servicios/requisito.service';
+import {ConvocatoriaService} from '../../../../servicios/formacion/convocatoria.service';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {Requisito} from '../../../../modelo/admin/requisito';
+import {Convocatoria} from '../../../../modelo/admin/convocatoria';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {ArchivoService} from '../../../../servicios/archivo.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {MyValidators} from '../../../../util/validators';
+import {FormacionService} from 'src/app/servicios/formacion/formacion.service';
+import {FORMACION} from 'src/app/util/constantes/fomacion.const';
+import {ComponenteBase} from 'src/app/util/componente-base';
 
 @Component({
   selector: 'app-convocatoria',
@@ -65,7 +65,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
   private tamMaxArchivo: number;
 
-  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,12 +94,17 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.formacionService.getEstadoFormacion().subscribe({
       next: (response) => {
         const customResponse: CustomHttpResponse = response.body;
+        console.log(customResponse);
         if (customResponse.httpStatusCode === 200) {
           this.terminaConsultaEstado = true;
 
           if (customResponse.mensaje !== FORMACION.estado_inicial) {
             //Notificacion.notificacion(this.notificationRef, this.notificationService, null, 'Ya existe una convocatoria activa.');
             this.procesoActivo = true;
+            this.servicioConvocatoria.getConvocatoria().subscribe((data) => {
+              this.convocatorias = data;
+              console.log(this.convocatorias);
+            });
           } else {
             this.procesoActivo = false;
 
@@ -111,6 +115,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
             this.servicioConvocatoria.getConvocatoria().subscribe((data) => {
               this.convocatorias = data;
+              console.log(this.convocatorias);
             });
 
             this.subscriptions.push(
@@ -254,9 +259,9 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     // invocación servicio crear convocatoria
     const formData = new FormData();
     formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
-    formData.append('docsConvocatoria',  this.documentoConvocatoria);
+    formData.append('docsConvocatoria', this.documentoConvocatoria);
     formData.append('docsPeriodoAcademico', this.documentoSoporte);
-    
+
     console.log(formData);
 
     this.subscriptions.push(
@@ -265,14 +270,14 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
           const customResponse: CustomHttpResponse = response;
           Notificacion.notificacionOK(
             this.notificationRef,
-            this.notificationServiceLocal,            
+            this.notificationServiceLocal,
             'Convocatoria creada exitosamente'
           );
 
           this.exitoCreacion = true;
           this.showLoading = false;
 
-        }, 
+        },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
             this.notificationRef,
@@ -282,7 +287,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         }
       })
-    );    
+    );
   }
 
   visualizarArchivo(id: string) {

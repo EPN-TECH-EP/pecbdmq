@@ -32,7 +32,7 @@ export class FormacionService {
     );
   }
 
-    getEstadosFormacion(): Observable<ModuloEstado[]> {
+  getEstadosFormacion(): Observable<ModuloEstado[]> {
     return this.http.get<ModuloEstado[]>(`${this.host}/moduloestados/bymodulo?modulo=1`);
   }
 
