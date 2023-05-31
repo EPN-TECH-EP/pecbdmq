@@ -1,7 +1,7 @@
 <div class="container" xmlns="http://www.w3.org/1999/html">
   <div class="row mt-3">
     <div class="column col-3">
-      <img src="assets/logo-bomberos.svg" alt=""/>
+      <img src="assets/logo-bomberos.svg" alt="" />
     </div>
     <div class="column col-9 text-end">
       <h4 class="ms-5">
@@ -11,11 +11,15 @@
     </div>
   </div>
 
-  <hr class="hr hr-blurry"/>
+  <hr class="hr hr-blurry" />
   <!-- Inicio estructura de pasos -->
   <mdb-stepper #stepper [linear]="true">
     <!-- Paso 1 -->
-    <mdb-step [stepForm]="formularioInscripcion " [name]="'Paso 1 - Formulario de Inscripción'">
+    <mdb-step
+      [stepForm]="formularioInscripcion"
+      [name]="'Paso 1 - Formulario de Inscripción'"
+      (stepChange)="stepChange($event, stepper)"
+    >
       <ng-template mdbStepIcon>
         <i class="fas fa-user"></i>
       </ng-template>
@@ -24,10 +28,10 @@
           <h4>Formulario de inscripción</h4>
         </div>
         <div class="alert alert-success w-auto" role="alert">
-          Fecha de postulación: {{ fechaActual | date: 'dd/MM/yyyy' }}
+          Fecha de postulación: {{ fechaActual | date : "dd/MM/yyyy" }}
         </div>
       </div>
-      <hr class="hr hr-blurry"/>
+      <hr class="hr hr-blurry" />
       <!---------------------------->
       <!-- Formulario de inscripción-->
       <!---------------------------->
@@ -54,25 +58,37 @@
                     formControlName="cedula"
                     [maxlength]="10"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="cedula">Cédula</label>
-                  <mdb-error *ngIf="(cedulaField?.dirty || cedulaField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="cedula"
+                    >Cédula</label
+                  >
+                  <mdb-error *ngIf="cedulaField?.dirty || cedulaField?.touched">
                     <div
-                      *ngIf="cedulaField?.hasError('invalid_numbers') || cedulaField?.hasError('required')"
+                      *ngIf="
+                        cedulaField?.hasError('invalid_numbers') ||
+                        cedulaField?.hasError('required')
+                      "
                     >
-                      <i class=" fas fa-exclamation-circle mb-1"></i>
+                      <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido y solo acepta números
                     </div>
                     <div
-                      *ngIf="cedulaField?.hasError('invalid_identification') &&
-                      !cedulaField?.hasError('invalid_numbers') &&
-                      !cedulaField?.hasError('required')"
+                      *ngIf="
+                        cedulaField?.hasError('invalid_identification') &&
+                        !cedulaField?.hasError('invalid_numbers') &&
+                        !cedulaField?.hasError('required')
+                      "
                       class="mb-2"
                     >
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Cédula inválida
                     </div>
                   </mdb-error>
-                  <mdb-success *ngIf="cedulaField?.valid && (cedulaField?.dirty || cedulaField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      cedulaField?.valid &&
+                      (cedulaField?.dirty || cedulaField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -87,12 +103,24 @@
                     class="form-control mb-5"
                     formControlName="apellidos"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="apellidos">Apellidos</label>
-                  <mdb-error *ngIf="apellidosField?.invalid && (apellidosField?.dirty || apellidosField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="apellidos"
+                    >Apellidos</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      apellidosField?.invalid &&
+                      (apellidosField?.dirty || apellidosField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido y solo acepta letras
                   </mdb-error>
-                  <mdb-success *ngIf="apellidosField?.valid && (apellidosField?.dirty || apellidosField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      apellidosField?.valid &&
+                      (apellidosField?.dirty || apellidosField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -107,12 +135,24 @@
                     class="form-control mb-5"
                     formControlName="nombres"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="nombres">Nombres</label>
-                  <mdb-error *ngIf="nombresField?.invalid &&(nombresField?.dirty || nombresField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="nombres"
+                    >Nombres</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      nombresField?.invalid &&
+                      (nombresField?.dirty || nombresField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido y solo acepta letras
                   </mdb-error>
-                  <mdb-success *ngIf="nombresField?.valid && (nombresField?.dirty || nombresField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      nombresField?.valid &&
+                      (nombresField?.dirty || nombresField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -130,12 +170,24 @@
                     class="form-control mb-5"
                     formControlName="email"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="email">Email</label>
-                  <mdb-error *ngIf="emailField?.invalid && (emailField?.dirty || emailField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="email"
+                    >Email</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      emailField?.invalid &&
+                      (emailField?.dirty || emailField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="emailField?.valid && (emailField?.dirty || emailField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      emailField?.valid &&
+                      (emailField?.dirty || emailField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -152,12 +204,24 @@
                     <mdb-option value="masculino">Masculino</mdb-option>
                     <mdb-option value="femenino">Femenino</mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="sexo">Género</label>
-                  <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="sexo"
+                    >Sexo</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      sexoField?.invalid &&
+                      (sexoField?.dirty || sexoField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="sexoField?.valid && (sexoField?.dirty || sexoField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      sexoField?.valid &&
+                      (sexoField?.dirty || sexoField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -173,8 +237,11 @@
                     class="form-control mb-5"
                     formControlName="fechaNacimiento"
                     (click)="dpFechaNacimiento.open()"
+                    [readonly]="true"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
+                  <label mdbLabel class="form-label mb-2x" for="fechaNacimiento"
+                    >Fecha de nacimiento:</label
+                  >
                   <mdb-datepicker-toggle
                     [mdbDatepicker]="dpFechaNacimiento"
                     (click)="fechaNacimientoField.markAsTouched()"
@@ -187,7 +254,12 @@
                     [maxDate]="maxDate"
                     [startDate]="maxDate"
                   ></mdb-datepicker>
-                  <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
+                  <mdb-error
+                    *ngIf="
+                      fechaNacimientoField?.invalid &&
+                      fechaNacimientoField?.touched
+                    "
+                  >
                     <div *ngIf="fechaNacimientoField?.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
@@ -198,12 +270,15 @@
                     </div>
                   </mdb-error>
                   <mdb-success
-                    *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched">
+                    *ngIf="
+                      fechaNacimientoField?.valid &&
+                      fechaNacimientoField?.touched
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
                 </mdb-form-control>
-
               </div>
               <!-- Columna 3 -->
               <div class="col-md">
@@ -218,8 +293,15 @@
                     formControlName="telCelular"
                     [maxLength]="10"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="telCelular">Teléfono Celular</label>
-                  <mdb-error *ngIf="telCelularField?.invalid && (telCelularField?.dirty || telCelularField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="telCelular"
+                    >Teléfono Celular</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      telCelularField?.invalid &&
+                      (telCelularField?.dirty || telCelularField?.touched)
+                    "
+                  >
                     <span *ngIf="telCelularField.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
@@ -229,7 +311,12 @@
                       Solo se aceptan números
                     </span>
                   </mdb-error>
-                  <mdb-success *ngIf="telCelularField?.valid && (telCelularField?.dirty || telCelularField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      telCelularField?.valid &&
+                      (telCelularField?.dirty || telCelularField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -245,20 +332,34 @@
                     formControlName="telConvencional"
                     [maxLength]="9"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="telConvencional">Teléfono Convencional</label>
+                  <label mdbLabel class="form-label mb-2x" for="telConvencional"
+                    >Teléfono Convencional</label
+                  >
                   <mdb-error
-                    *ngIf="telConvencionalField?.invalid && (telConvencionalField?.dirty || telConvencionalField?.touched)">
+                    *ngIf="
+                      telConvencionalField?.invalid &&
+                      (telConvencionalField?.dirty ||
+                        telConvencionalField?.touched)
+                    "
+                  >
                     <span *ngIf="telConvencionalField?.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
                     </span>
-                    <span *ngIf="telConvencionalField?.hasError('invalid_numbers')">
+                    <span
+                      *ngIf="telConvencionalField?.hasError('invalid_numbers')"
+                    >
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Solo se aceptan números
                     </span>
                   </mdb-error>
                   <mdb-success
-                    *ngIf="telConvencionalField?.valid && (telConvencionalField?.dirty || telConvencionalField?.touched)">
+                    *ngIf="
+                      telConvencionalField?.valid &&
+                      (telConvencionalField?.dirty ||
+                        telConvencionalField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -267,7 +368,7 @@
             </div>
           </div>
 
-          <hr class="hr hr-blurry"/>
+          <hr class="hr hr-blurry" />
 
           <!-- Datos Nacionalidad -->
           <h5>Datos nacionalidad:</h5>
@@ -275,7 +376,6 @@
           <div class="container">
             <div class="row">
               <div class="col-md">
-
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -284,8 +384,10 @@
                     formControlName="nacionalidad"
                     value="Ecuatoriana"
                     (change)="toggleValidationsNacionalidad()"
-                  >
-                  <label class="form-check-label" for="nacionalidadEcuatoriana"> Nacido en Ecuador </label>
+                  />
+                  <label class="form-check-label" for="nacionalidadEcuatoriana">
+                    Nacido en Ecuador
+                  </label>
                 </div>
 
                 <div class="form-check">
@@ -296,8 +398,10 @@
                     formControlName="nacionalidad"
                     value="Extranjero"
                     (change)="toggleValidationsNacionalidad()"
-                  >
-                  <label class="form-check-label" for="extranjero"> Extranjero </label>
+                  />
+                  <label class="form-check-label" for="extranjero">
+                    Extranjero
+                  </label>
                 </div>
 
                 <div class="form-check">
@@ -308,22 +412,29 @@
                     formControlName="nacionalidad"
                     value="Comunidad Frontera"
                     (change)="toggleValidationsNacionalidad()"
-                  >
-                  <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
+                  />
+                  <label class="form-check-label" for="comunidadFrontera">
+                    Comunidad frontera
+                  </label>
                 </div>
 
                 <span
                   class="text-danger"
-                  *ngIf="nacionalidadField?.invalid && nacionalidadField.touched">
+                  *ngIf="
+                    nacionalidadField?.invalid && nacionalidadField.touched
+                  "
+                >
                   <i class="fas fa-times-circle"></i>
                   Este valor es requerido para continuar
                 </span>
-
               </div>
               <!-- Columna 2 -->
-              <div class="col-md"
-                   *ngIf="nacionalidadField.value === 'Ecuatoriana' ||
-                          nacionalidadField.value === 'Comunidad Frontera'"
+              <div
+                class="col-md"
+                *ngIf="
+                  nacionalidadField.value === 'Ecuatoriana' ||
+                  nacionalidadField.value === 'Comunidad Frontera'
+                "
               >
                 <!-- Provincia Nacimiento -->
                 <mdb-form-control>
@@ -332,22 +443,34 @@
                     id="provinciaNacimiento"
                     formControlName="provinciaNacimiento"
                     class="mb-5"
-                    (ngModelChange)="changeCantonNacimiento($event)"
+                    (ngModelChange)="onChangeCantonNacimiento($event)"
                   >
                     <mdb-option
                       *ngFor="let provincia of provincias"
-                      [value]="provincia.id"
-                    >{{ provincia.nombre }}
+                      [value]="provincia.codigo"
+                      >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label" for="provinciaNacimiento">Seleccione una provincia</label>
+                  <label mdbLabel class="form-label" for="provinciaNacimiento"
+                    >Seleccione una provincia</label
+                  >
                   <mdb-error
-                    *ngIf="provinciaNacimientoField?.invalid && (provinciaNacimientoField?.dirty || provinciaNacimientoField?.touched)">
+                    *ngIf="
+                      provinciaNacimientoField?.invalid &&
+                      (provinciaNacimientoField?.dirty ||
+                        provinciaNacimientoField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="provinciaNacimientoField?.valid && (provinciaNacimientoField?.dirty || provinciaNacimientoField?.touched)">
+                    *ngIf="
+                      provinciaNacimientoField?.valid &&
+                      (provinciaNacimientoField?.dirty ||
+                        provinciaNacimientoField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -363,13 +486,23 @@
                   >
                     <mdb-option
                       *ngFor="let canton of cantonesNacimiento"
-                      [value]="canton"
-                    >{{ canton }}
+                      [value]="canton.codigo"
+                      >{{ canton.nombre }}
                     </mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="cantonNacimiento">Cantón de nacimiento</label>
-                  <mdb-error *ngIf="(cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
-                    <div *ngIf="cantonNacimientoField?.hasError('required') ">
+                  <label
+                    mdbLabel
+                    class="form-label mb-2x"
+                    for="cantonNacimiento"
+                    >Cantón de nacimiento</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      cantonNacimientoField?.dirty ||
+                      cantonNacimientoField?.touched
+                    "
+                  >
+                    <div *ngIf="cantonNacimientoField?.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
                     </div>
@@ -379,12 +512,16 @@
                     </div>
                   </mdb-error>
                   <mdb-success
-                    *ngIf="cantonNacimientoField?.valid && (cantonNacimientoField?.dirty || cantonNacimientoField?.touched)">
+                    *ngIf="
+                      cantonNacimientoField?.valid &&
+                      (cantonNacimientoField?.dirty ||
+                        cantonNacimientoField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
                 </mdb-form-control>
-
               </div>
               <div
                 class="alert alert-info"
@@ -399,7 +536,7 @@
           </div>
 
           <!-- Residencia -->
-          <hr class="hr hr-blurry"/>
+          <hr class="hr hr-blurry" />
 
           <h5 class="me-4">Residencia:</h5>
           <h5>Dirección actual:</h5>
@@ -416,23 +553,37 @@
                     id="provinciaResidencia"
                     formControlName="provinciaResidencia"
                     class="mb-5"
-                    (ngModelChange)="changeCantonResidencia($event)"
+                    (ngModelChange)="onChangeCantonResidencia($event)"
                   >
                     <mdb-option
                       *ngFor="let provincia of provincias"
-                      [value]="provincia.id"
-                    >{{ provincia.nombre }}
+                      [value]="provincia.codigo"
+                      >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="provinciaResidencia">Seleccione una provincia</label>
+                  <label
+                    mdbLabel
+                    class="form-label mb-2x"
+                    for="provinciaResidencia"
+                    >Seleccione una provincia</label
+                  >
                   <mdb-error
-                    *ngIf="provinciaResidenciaField?.invalid &&(provinciaResidenciaField?.dirty ||provinciaResidenciaField?.touched)"
+                    *ngIf="
+                      provinciaResidenciaField?.invalid &&
+                      (provinciaResidenciaField?.dirty ||
+                        provinciaResidenciaField?.touched)
+                    "
                   >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="provinciaResidenciaField?.valid &&(provinciaResidenciaField?.dirty ||provinciaResidenciaField?.touched)">
+                    *ngIf="
+                      provinciaResidenciaField?.valid &&
+                      (provinciaResidenciaField?.dirty ||
+                        provinciaResidenciaField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -449,13 +600,23 @@
                   >
                     <mdb-option
                       *ngFor="let canton of cantonesResidencia"
-                      [value]="canton"
-                    >{{ canton }}
+                      [value]="canton.codigo"
+                      >{{ canton.nombre }}
                     </mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
-                  <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
-                    <div *ngIf="cantonResidenciaField?.hasError('required') ">
+                  <label
+                    mdbLabel
+                    class="form-label mb-2x"
+                    for="cantonResidencia"
+                    >Cantón de residencia</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      cantonResidenciaField?.dirty ||
+                      cantonResidenciaField?.touched
+                    "
+                  >
+                    <div *ngIf="cantonResidenciaField?.hasError('required')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
                     </div>
@@ -465,7 +626,12 @@
                     </div>
                   </mdb-error>
                   <mdb-success
-                    *ngIf="cantonResidenciaField?.valid &&(cantonResidenciaField?.dirty ||cantonResidenciaField?.touched)">
+                    *ngIf="
+                      cantonResidenciaField?.valid &&
+                      (cantonResidenciaField?.dirty ||
+                        cantonResidenciaField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -485,14 +651,26 @@
                     class="form-control mb-5"
                     formControlName="callePrincipal"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="callePrincipal">Calle Principal</label>
+                  <label mdbLabel class="form-label mb-2x" for="callePrincipal"
+                    >Calle Principal</label
+                  >
                   <mdb-error
-                    *ngIf="callePrincipalField?.invalid && (callePrincipalField?.dirty || callePrincipalField?.touched)">
+                    *ngIf="
+                      callePrincipalField?.invalid &&
+                      (callePrincipalField?.dirty ||
+                        callePrincipalField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="callePrincipalField?.valid && (callePrincipalField?.dirty || callePrincipalField?.touched)">
+                    *ngIf="
+                      callePrincipalField?.valid &&
+                      (callePrincipalField?.dirty ||
+                        callePrincipalField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -507,14 +685,26 @@
                     class="form-control mb-5"
                     formControlName="calleSecundaria"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="calleSecundaria">Calle secundaria</label>
+                  <label mdbLabel class="form-label mb-2x" for="calleSecundaria"
+                    >Calle secundaria</label
+                  >
                   <mdb-error
-                    *ngIf="calleSecundariaField?.invalid && (calleSecundariaField?.dirty || calleSecundariaField?.touched)">
+                    *ngIf="
+                      calleSecundariaField?.invalid &&
+                      (calleSecundariaField?.dirty ||
+                        calleSecundariaField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="calleSecundariaField?.valid && (calleSecundariaField?.dirty || calleSecundariaField?.touched)">
+                    *ngIf="
+                      calleSecundariaField?.valid &&
+                      (calleSecundariaField?.dirty ||
+                        calleSecundariaField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -529,12 +719,24 @@
                     class="form-control mb-5"
                     formControlName="numeroCasa"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="numeroCasa">Número de Casa o Lote</label>
-                  <mdb-error *ngIf="numeroCasaField?.invalid && (numeroCasaField?.dirty || numeroCasaField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="numeroCasa"
+                    >Número de Casa o Lote</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      numeroCasaField?.invalid &&
+                      (numeroCasaField?.dirty || numeroCasaField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="numeroCasaField?.valid && (numeroCasaField?.dirty || numeroCasaField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      numeroCasaField?.valid &&
+                      (numeroCasaField?.dirty || numeroCasaField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -548,7 +750,7 @@
             </div>
           </div>
 
-          <hr class="hr hr-blurry"/>
+          <hr class="hr hr-blurry" />
           <!-- Título bachiller -->
           <h5>Título bachiller:</h5>
           <div class="container">
@@ -566,12 +768,24 @@
                     formControlName="paisTitulo"
                     required
                   />
-                  <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
-                  <mdb-error *ngIf="paisTituloField?.invalid && (paisTituloField?.dirty || paisTituloField?.touched)">
+                  <label mdbLabel class="form-label mb-2x" for="paisTitulo"
+                    >País donde obtuvo el título</label
+                  >
+                  <mdb-error
+                    *ngIf="
+                      paisTituloField?.invalid &&
+                      (paisTituloField?.dirty || paisTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="paisTituloField?.valid && (paisTituloField?.dirty || paisTituloField?.touched)">
+                  <mdb-success
+                    *ngIf="
+                      paisTituloField?.valid &&
+                      (paisTituloField?.dirty || paisTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -586,19 +800,28 @@
                     class="form-control mb-5"
                     formControlName="ciudadTitulo"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="cuidadTitulo">Ciudad donde obtuvo el título</label>
+                  <label mdbLabel class="form-label mb-2x" for="cuidadTitulo"
+                    >Ciudad donde obtuvo el título</label
+                  >
                   <mdb-error
-                    *ngIf="ciudadTituloField?.invalid && (ciudadTituloField?.dirty || ciudadTituloField?.touched)">
+                    *ngIf="
+                      ciudadTituloField?.invalid &&
+                      (ciudadTituloField?.dirty || ciudadTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="ciudadTituloField?.valid && (ciudadTituloField?.dirty || ciudadTituloField?.touched)">
+                    *ngIf="
+                      ciudadTituloField?.valid &&
+                      (ciudadTituloField?.dirty || ciudadTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
                 </mdb-form-control>
-
               </div>
               <!-- Columna 2 -->
               <div class="col-md">
@@ -612,14 +835,24 @@
                     class="form-control mb-5"
                     formControlName="nombreTitulo"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="nombreTitulo">Nombre del título</label>
+                  <label mdbLabel class="form-label mb-2x" for="nombreTitulo"
+                    >Nombre del título</label
+                  >
                   <mdb-error
-                    *ngIf="nombreTituloField?.invalid && (nombreTituloField?.dirty || nombreTituloField?.touched)">
+                    *ngIf="
+                      nombreTituloField?.invalid &&
+                      (nombreTituloField?.dirty || nombreTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="nombreTituloField?.valid && (nombreTituloField?.dirty || nombreTituloField?.touched)">
+                    *ngIf="
+                      nombreTituloField?.valid &&
+                      (nombreTituloField?.dirty || nombreTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -635,14 +868,24 @@
                     class="form-control mb-5"
                     formControlName="colegioTitulo"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="colegioTitulo">Colegio donde obtuvo el título</label>
+                  <label mdbLabel class="form-label mb-2x" for="colegioTitulo"
+                    >Colegio donde obtuvo el título</label
+                  >
                   <mdb-error
-                    *ngIf="colegioTituloField?.invalid && (colegioTituloField?.dirty || colegioTituloField?.touched)">
+                    *ngIf="
+                      colegioTituloField?.invalid &&
+                      (colegioTituloField?.dirty || colegioTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="colegioTituloField?.valid && (colegioTituloField?.dirty || colegioTituloField?.touched)">
+                    *ngIf="
+                      colegioTituloField?.valid &&
+                      (colegioTituloField?.dirty || colegioTituloField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -656,7 +899,7 @@
               </div>
             </div>
           </div>
-          <hr class="hr hr-blurry"/>
+          <hr class="hr hr-blurry" />
           <!-- Méritos -->
           <h5>Méritos (opcional):</h5>
           <div class="container">
@@ -672,7 +915,10 @@
                     id="meritoDeportivoCheck"
                     (change)="onMeritoDeportivoChange($event)"
                   />
-                  <label class="form-check-label fs-6" for="meritoDeportivoCheck">
+                  <label
+                    class="form-check-label fs-6"
+                    for="meritoDeportivoCheck"
+                  >
                     Deportivo
                   </label>
                 </div>
@@ -686,14 +932,29 @@
                     class="form-control mb-5"
                     formControlName="meritoDeportivo"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="meritoDeportivoCheck">Mérito deportivo</label>
+                  <label
+                    mdbLabel
+                    class="form-label mb-2x"
+                    for="meritoDeportivoCheck"
+                    >Mérito deportivo</label
+                  >
                   <mdb-error
-                    *ngIf="meritoDeportivoField?.invalid && (meritoDeportivoField?.dirty || meritoDeportivoField?.touched)">
+                    *ngIf="
+                      meritoDeportivoField?.invalid &&
+                      (meritoDeportivoField?.dirty ||
+                        meritoDeportivoField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="meritoDeportivoField?.valid && (meritoDeportivoField?.dirty || meritoDeportivoField?.touched)">
+                    *ngIf="
+                      meritoDeportivoField?.valid &&
+                      (meritoDeportivoField?.dirty ||
+                        meritoDeportivoField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -710,7 +971,10 @@
                     id="meritoAcademicoCheck"
                     (change)="onMeritoAcademicoChange($event)"
                   />
-                  <label class="form-check-label fs-6" for="meritoAcademicoCheck">
+                  <label
+                    class="form-check-label fs-6"
+                    for="meritoAcademicoCheck"
+                  >
                     Académico
                   </label>
                 </div>
@@ -725,14 +989,26 @@
                     class="form-control mb-5"
                     formControlName="meritoAcademico"
                   />
-                  <label mdbLabel class="form-label mb-2x" for="meritoAcademico">Mérito académico</label>
+                  <label mdbLabel class="form-label mb-2x" for="meritoAcademico"
+                    >Mérito académico</label
+                  >
                   <mdb-error
-                    *ngIf="meritoAcademicoField?.invalid && (meritoAcademicoField?.dirty || meritoAcademicoField?.touched)">
+                    *ngIf="
+                      meritoAcademicoField?.invalid &&
+                      (meritoAcademicoField?.dirty ||
+                        meritoAcademicoField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
                   <mdb-success
-                    *ngIf="meritoAcademicoField?.valid && (meritoAcademicoField?.dirty || meritoAcademicoField?.touched)">
+                    *ngIf="
+                      meritoAcademicoField?.valid &&
+                      (meritoAcademicoField?.dirty ||
+                        meritoAcademicoField?.touched)
+                    "
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
@@ -742,14 +1018,11 @@
               <div class="col-md"></div>
             </div>
           </div>
-          <hr class="hr hr-blurry"/>
+          <hr class="hr hr-blurry" />
           <!-- Carga de documentos -->
           <h5>Carga de expediente:</h5>
-          <div
-            class="alert alert-info"
-            role="alert"
-          >
-            <p>Indicaciones: </p>
+          <div class="alert alert-info" role="alert">
+            <p>Indicaciones:</p>
             <p>1. Cargar título de Bachiller.</p>
             <p>2. Cargar planilla de agua o luz.</p>
             <p>3. Cargar copia de cédula.</p>
@@ -773,16 +1046,22 @@
                     formControlName="docSoporte"
                     (change)="subirArchivo($event)"
                   />
-                  <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
+                  <mdb-error
+                    *ngIf="
+                      docSoporteField?.invalid &&
+                      (docSoporteField?.dirty || docSoporteField?.touched)
+                    "
+                  >
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="docSoporteField?.valid &&  docSoporteField?.touched">
+                  <mdb-success
+                    *ngIf="docSoporteField?.valid && docSoporteField?.touched"
+                  >
                     <i class="fas fa-check-circle"></i>
                     Campo Correcto
                   </mdb-success>
                 </mdb-form-control>
-
               </div>
               <!-- Columna 2 -->
               <div class="col-md"></div>
@@ -796,11 +1075,19 @@
             <div class="column text-center">
               <button
                 id="next-step"
-                (click)="stepper.next()"
+                (click)="stepChange($event, stepper)"
                 type="submit"
                 class="btn btn-primary"
+                [disabled]="showLoading"
               >
-                Siguiente
+                <span
+                  *ngIf="showLoading"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span *ngIf="showLoading">Espere...</span>
+                <span *ngIf="!showLoading">Siguiente</span>
               </button>
             </div>
           </div>
@@ -808,17 +1095,20 @@
       </form>
     </mdb-step>
     <!-- Paso 2 -->
-    <mdb-step [name]="'Paso 2 - Validacion de Email'" [stepForm]="formularioPinSeguridad">
+    <mdb-step
+      [name]="'Paso 2 - Validacion de Email'"
+      [stepForm]="formularioPinSeguridad"
+    >
       <ng-template mdbStepIcon>
         <i class="far fa-envelope"></i>
       </ng-template>
-      <div class="alert alert-light  col-6 mx-auto" role="alert">
+      <div class="alert alert-light col-6 mx-auto" role="alert">
         <i class="far fa-envelope fa-5x"></i>
         <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
-        <hr/>
+        <hr />
         <p>
-          Para poder confirmar tu inscripción digita el PIN de seguridad
-          enviado a tu email
+          Para poder confirmar tu inscripción digita el PIN de seguridad enviado
+          a tu email
         </p>
         <form [formGroup]="formularioPinSeguridad">
           <mdb-form-control>
@@ -832,14 +1122,20 @@
               formControlName="pin"
               [maxlength]="6"
             />
-            <label mdbLabel class="form-label mb-2x" for="pinSeguridad">PIN de seguridad</label>
-            <mdb-error *ngIf="pinField?.invalid && (pinField?.dirty || pinField?.touched)">
+            <label mdbLabel class="form-label mb-2x" for="pinSeguridad"
+              >PIN de seguridad</label
+            >
+            <mdb-error
+              *ngIf="
+                pinField?.invalid && (pinField?.dirty || pinField?.touched)
+              "
+            >
               <div *ngIf="pinField?.hasError('required')">
                 <i class="fas fa-exclamation-circle mb-1"></i>
                 Este campo es requerido
               </div>
               <div *ngIf="pinField?.hasError('invalid_numbers')">
-                <i class=" fas fa-exclamation-circle mb-1"></i>
+                <i class="fas fa-exclamation-circle mb-1"></i>
                 Este campo es requerido y solo acepta números
               </div>
               <div *ngIf="pinField?.hasError('minlength')">
@@ -847,17 +1143,18 @@
                 Este campo debe tener al menos 6 caracteres
               </div>
             </mdb-error>
-            <mdb-success *ngIf="pinField?.valid && (pinField?.dirty || pinField?.touched)">
+            <mdb-success
+              *ngIf="pinField?.valid && (pinField?.dirty || pinField?.touched)"
+            >
               <i class="fas fa-check-circle"></i>
               Campo Correcto
             </mdb-success>
-
           </mdb-form-control>
           <button
             type="button"
             class="btn btn-success btn-rounded w-100"
             [disabled]="formularioPinSeguridad.invalid"
-            (click)="stepper.next()"
+            (click)="stepChange($event, stepper)"
           >
             CONFIRMAR
           </button>
@@ -872,18 +1169,16 @@
       <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
         <i class="far fa-check-circle fa-5x"></i>
         <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
-        <hr/>
-        <p>
-          Ha completado la etapa de registro
-        </p>
-        <p></p>
+        <hr />
+        <p>Ha completado la etapa de registro</p>
+        <!-- <p></p>
         <button
           type="button"
           class="btn btn-success btn-rounded d-grid"
           routerLink="/principal"
         >
           SALIR
-        </button>
+        </button> -->
       </div>
     </mdb-step>
   </mdb-stepper>

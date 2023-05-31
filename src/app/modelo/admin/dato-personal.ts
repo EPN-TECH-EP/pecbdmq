@@ -1,5 +1,50 @@
-export interface DatoPersonal{
-  cod_canton_nacimiento:        number;
+export interface DatoPersonal {
+  cod_datos_personales: number;
+  apellido: string;
+  cedula: string;
+  cod_estacion: number;
+  correo_personal: string;
+  estado: string;
+  fecha_nacimiento: Date;
+  nombre: string;
+  num_telef_convencional: string;
+  tipo_sangre: string;
+  validacion_correo: string;
+  cod_provincia_nacimiento: number;
+  cod_unidad_gestion: number;
+  sexo: string;
+  num_telef_celular: string;
+  reside_pais: boolean;
+  cod_provincia_residencia: number;
+  calle_principal_residencia: string;
+  calle_secundaria_residencia: string;
+  numero_casa: string;
+  colegio: string;
+  tipo_nacionalidad: string;
+  tiene_merito_deportivo: boolean;
+  tiene_merito_academico: boolean;
+  nombre_titulo_segundonivel: string;
+  pais_titulo_segundonivel: string;
+  ciudad_titulo_segundonivel: string;
+  merito_deportivo_descripcion: string;
+  merito_academico_descripcion: string;
+  pin_validacion_correo: string;
+  correo_institucional: string;
+  cod_cargo: number;
+  cod_rango: number;
+  cod_grado: number;
+  cod_documento_imagen: number;
+  cod_canton_nacimiento: number;
+  cod_canton_residencia: number;
+  fecha_salida_institucion: Date;
+  nivel_instruccion: string;
+  nombre_titulo_tercernivel: string;
+  nombre_titulo_cuartonivel: string;
+  es_vulnerable: boolean;
+  pais_titulo_cuartonivel: string;
+  pais_titulo_tercernivel: string;
+
+  /*   cod_canton_nacimiento:        number;
   cod_datos_personales:         number;
   apellido:                     string;
   cedula:                       string;
@@ -36,5 +81,5 @@ export interface DatoPersonal{
   cod_documento_imagen:         number;
   cod_grado:                    number;
   cod_cargo:                    number;
-  cod_rango:                    number;
+  cod_rango:                    number; */
 }

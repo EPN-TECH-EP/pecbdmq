@@ -6,8 +6,7 @@
   </div>
 </div>
 <div class="row justify-content">
-  <div class="col-12 ">
-
+  <div class="col-12">
     <button
       class="btn btn-primary btn-sm mb-3"
       [disabled]="estaEditando"
@@ -26,10 +25,12 @@
       />
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
-    <hr>
+    <hr />
   </div>
 
-  <div class="datatable table-editor mt-4">
+  <div
+    class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm"
+  >
     <form #form="ngForm" novalidate>
       <table
         class="table table-sm datatable-table"
@@ -42,160 +43,161 @@
         [sort]="sort"
       >
         <thead class="datatable-header">
-        <tr>
-          <th
-            *ngFor="let header of headers"
-            [mdbTableSortHeader]="header"
-            scope="col"
-          >
-            {{ header | titlecase }}
-          </th>
-          <th scope="col">Acciones</th>
-        </tr>
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="fw-bold"
+            >
+              <b>{{ header | titlecase }}</b>
+            </th>
+            <th scope="col" class="text-center fw-bold">Acciones</th>
+          </tr>
         </thead>
 
         <tbody class="datatable-body">
-        <tr *ngIf="addRow">
-          <td>
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="nombre"
-                name="nombre"
-                type="text"
-                class="form-control"
-                [(ngModel)]="aula.nombre"
-                #nombreModel="ngModel"
-                required
-                (change)="
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="nombre"
+                  name="nombre"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="aula.nombre"
+                  #nombreModel="ngModel"
+                  required
+                  (change)="
                     validacionUtil.onInputChange(
                       $event,
                       'catalogo',
                       nombreModel
                     )
                   "
-              />
-            </mdb-form-control>
-          </td>
+                />
+              </mdb-form-control>
+            </td>
 
-          <td>
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="capacidad"
-                name="capacidad"
-                type="number"
-                class="form-control"
-                [(ngModel)]="aula.capacidad"
-                #capacidad="ngModel"
-                required
-                min="1"
-                max="20"
-                inputValidation="entero"
-                mdbTooltip="Rango: 1 - 20"
-              />
-            </mdb-form-control>
-          </td>
-          <td>
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="tipo"
-                name="tipo"
-                type="text"
-                class="form-control"
-                [(ngModel)]="aula.tipo"
-                #tipo="ngModel"
-                required
-                (change)="
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="capacidad"
+                  name="capacidad"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="aula.capacidad"
+                  #capacidad="ngModel"
+                  required
+                  min="1"
+                  max="100"
+                  inputValidation="entero"
+                  mdbTooltip="Rango: 1 - 100"
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="tipo"
+                  name="tipo"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="aula.tipo"
+                  #tipo="ngModel"
+                  required
+                  (change)="
                     validacionUtil.onInputChange($event, 'catalogo', tipo)
                   "
-              />
-            </mdb-form-control>
-          </td>
-          <td *ngIf="aula.pcs">
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="pcs"
-                name="pcs"
-                type="number"
-                class="form-control"
-                [(ngModel)]="aula.pcs"
-                required
-                min="1"
-                max="100"
-              />
-            </mdb-form-control>
-          </td>
-          <td *ngIf="aula.impresoras">
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="impresoras"
-                name="impresoras"
-                type="number"
-                class="form-control"
-                [(ngModel)]="aula.impresoras"
-                required
-                min="1"
-                max="100"
-              />
-            </mdb-form-control>
-          </td>
-          <td *ngIf="aula.internet">
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="internet"
-                name="internet"
-                type="text"
-                class="form-control"
-                [(ngModel)]="aula.internet"
-                #internet="ngModel"
-                required
-                (change)="
+                />
+              </mdb-form-control>
+            </td>
+            <td *ngIf="aula.pcs">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="pcs"
+                  name="pcs"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="aula.pcs"
+                  required
+                  min="1"
+                  max="100"
+                />
+              </mdb-form-control>
+            </td>
+            <td *ngIf="aula.impresoras">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="impresoras"
+                  name="impresoras"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="aula.impresoras"
+                  required
+                  min="1"
+                  max="100"
+                />
+              </mdb-form-control>
+            </td>
+            <td *ngIf="aula.internet">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="internet"
+                  name="internet"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="aula.internet"
+                  #internet="ngModel"
+                  required
+                  (change)="
                     validacionUtil.onInputChange($event, 'catalogo', internet)
                   "
-              />
-            </mdb-form-control>
-          </td>
+                />
+              </mdb-form-control>
+            </td>
 
-          <td *ngIf="aula.proyectores">
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="proyectores"
-                name="proyectores"
-                type="number"
-                class="form-control"
-                [(ngModel)]="aula.proyectores"
-                required
-                min="1"
-                max="100"
-              />
-            </mdb-form-control>
-          </td>
-          <td *ngIf="aula.instructor">
-            <mdb-form-control>
-              <input
-                mdbInput="mdbInput"
-                id="instructor"
-                name="instructor"
-                type="text"
-                class="form-control"
-                [(ngModel)]="aula.instructor"
-                #instructor="ngModel"
-                required
-                (change)="
+            <td *ngIf="aula.proyectores">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="proyectores"
+                  name="proyectores"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="aula.proyectores"
+                  required
+                  min="1"
+                  max="100"
+                />
+              </mdb-form-control>
+            </td>
+            <td *ngIf="aula.instructor">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="instructor"
+                  name="instructor"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="aula.instructor"
+                  #instructor="ngModel"
+                  required
+                  (change)="
                     validacionUtil.onInputChange($event, 'catalogo', instructor)
                   "
-              />
-            </mdb-form-control>
-          </td>
-          <td>
-            <mdb-form-control>
-              <!-- input
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <!-- input
                 mdbInput="mdbInput"
                 id="salaOcupada"
                 name="salaOcupada"
@@ -204,288 +206,326 @@
                 [(ngModel)]="aula.salaOcupada"
                 required
               / -->
-              <ng-container>
-                <input
-                  mdbCheckbox
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="active"
-                  name="active"
-                  [checked]="aula.salaOcupada"
-                  [(ngModel)]="aula.salaOcupada"
-                />
+                <ng-container>
+                  <input
+                    mdbCheckbox
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="active"
+                    name="active"
+                    [checked]="aula.salaOcupada"
+                    [(ngModel)]="aula.salaOcupada"
+                  />
+                </ng-container>
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit"
+                (click)="crear(form.value); addRow = false"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let aula of table.data">
+            <td style="min-width: 50px">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.nombre }}
               </ng-container>
-            </mdb-form-control>
-          </td>
-
-          <td>
-            <button
-              class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-              type="submit"
-              (click)="crear(form.value); addRow = false"
-            >
-              <i class="fa fa-check"></i> Agregar
-            </button>
-            <button
-              name="eliminar"
-              class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-              (click)="addRow = false"
-            >
-              <i class="fa fa-ban"></i> Cancelar
-            </button>
-          </td>
-        </tr>
-
-        <tr *ngFor="let aula of table.data">
-          <td style="min-width: 50px">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.nombre }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="nombreEdit"
-                  name="nombre"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.nombre"
-                  required
-                  #nombreModel="ngModel"
-                  (change)="
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="nombreEdit"
+                    name="nombre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.nombre"
+                    required
+                    #nombreModel="ngModel"
+                    (change)="
                       validacionUtil.onInputChange(
                         $event,
                         'catalogo',
                         nombreModel
                       )
                     "
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td style="min-width: 50px; max-width: 50px">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.capacidad }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="capacidadEdit"
-                  name="capacidad"
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.capacidad"
-                  min="1"
-                  max="100"
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.capacidad }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="capacidadEdit"
+                    name="capacidad"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.capacidad"
+                    min="1"
+                    max="100"
+                    required
+                    inputValidation="entero"
+                    mdbTooltip="Rango: 1 - 100"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td style="min-width: 50px">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.tipo }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="tipoEdit"
-                  name="tipo"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.tipo"
-                  #tipo="ngModel"
-                  (change)="
+            <td style="min-width: 50px">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.tipo }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="tipoEdit"
+                    name="tipo"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.tipo"
+                    #tipo="ngModel"
+                    (change)="
                       validacionUtil.onInputChange($event, 'catalogo', tipo)
                     "
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td *ngIf="aula.pcs">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.pcs }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="pcsEdit"
-                  name="pcs"
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.pcs"
-                  min="1"
-                  max="100"
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+            <td *ngIf="aula.pcs">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.pcs }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="pcsEdit"
+                    name="pcs"
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.pcs"
+                    min="1"
+                    max="100"
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td *ngIf="aula.impresoras">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.impresoras }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="impresorasEdit"
-                  name="impresoras"
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.impresoras"
-                  min="1"
-                  max="100"
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+            <td *ngIf="aula.impresoras">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.impresoras }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="impresorasEdit"
+                    name="impresoras"
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.impresoras"
+                    min="1"
+                    max="100"
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td *ngIf="aula.internet">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.internet }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="internetEdit"
-                  name="internet"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.internet"
-                  #internet="ngModel"
-                  (change)="
+            <td *ngIf="aula.internet">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.internet }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="internetEdit"
+                    name="internet"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.internet"
+                    #internet="ngModel"
+                    (change)="
                       validacionUtil.onInputChange($event, 'catalogo', internet)
                     "
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td *ngIf="aula.proyectores">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.proyectores }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="proyectoresEdit"
-                  name="proyectores"
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.proyectores"
-                  min="1"
-                  max="100"
-                  required
-                />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+            <td *ngIf="aula.proyectores">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.proyectores }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="proyectoresEdit"
+                    name="proyectores"
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.proyectores"
+                    min="1"
+                    max="100"
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
-          <td *ngIf="aula.instructor">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              {{ aula.instructor }}
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  id="instructorEdit"
-                  name="instructor"
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="aulaEditForm.instructor"
-                  #instructor="ngModel"
-                  (change)="
+            <td *ngIf="aula.instructor">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                {{ aula.instructor }}
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="instructorEdit"
+                    name="instructor"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="aulaEditForm.instructor"
+                    #instructor="ngModel"
+                    (change)="
                       validacionUtil.onInputChange(
                         $event,
                         'catalogo',
                         instructor
                       )
                     "
-                  required
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+              >
+                <input
+                  mdbCheckbox
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="salaOcupada"
+                  name="salaOcupada"
+                  [checked]="aula.salaOcupada"
+                  disabled="true"
                 />
-              </mdb-form-control>
-            </ng-container>
-          </td>
+              </ng-container>
+              <ng-container
+                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+              >
+                <input
+                  mdbCheckbox
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="salaOcupadaEdit"
+                  name="salaOcupada"
+                  [checked]="aula.salaOcupada"
+                  [(ngModel)]="aula.salaOcupada"
+                />
+              </ng-container>
+            </td>
 
-          <td style="min-width: 50px; max-width: 50px">
-            <ng-container *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo">
-              <input
-                mdbCheckbox
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="salaOcupada"
-                name="salaOcupada"
-                [checked]="aula.salaOcupada"
-                disabled="true"
-              />
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <input
-                mdbCheckbox
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="salaOcupadaEdit"
-                name="salaOcupada"
-                [checked]="aula.salaOcupada"
-                [(ngModel)]="aula.salaOcupada"
-              />
-            </ng-container>
-          </td>
-
-          <td>
-            <ng-container
-              *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
-            >
-              <button
-                mdbTooltip="Editar registro"
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="editRow(aula); estaEditando = true"
-                [disabled]="estaEditando"
+            <td class="text-center">
+              <ng-container
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
               >
-                <i class="fa fa-edit"></i>
-              </button>
-              <button
-                mdbTooltip="Eliminar registro"
-                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                (click)="confirmaEliminar($event, aula.codigo)"
-                [disabled]="estaEditando"
-              >
-                <i class="fa fa-trash-alt"></i>
-              </button>
-            </ng-container>
-            <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
-              <button
-                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                (click)="actualizar(aula, form.value)"
-              >
-                <i class="fa fa-check"></i> Guardar
-              </button>
-              <button
-                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                (click)="undoRow()"
-              >
-                <i class="fa fa-ban"></i> Cancelar
-              </button>
-            </ng-container>
-          </td>
-        </tr>
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(aula); estaEditando = true"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmaEliminar($event, aula.codigo)"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(aula, form.value)"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
         </tbody>
       </table>
       <mdb-table-pagination

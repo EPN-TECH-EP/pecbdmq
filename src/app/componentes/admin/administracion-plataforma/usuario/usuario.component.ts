@@ -180,8 +180,8 @@ export class UsuarioComponent implements OnInit {
     return this.formularioUsuario.get('unidadGestion');
   }
 
-  get generoField() {
-    return this.formularioUsuario.get('genero');
+  get sexoField() {
+    return this.formularioUsuario.get('sexo');
   }
 
   get telfCelularField() {
@@ -220,16 +220,16 @@ export class UsuarioComponent implements OnInit {
     return this.formularioUsuario.get('tipoNacionalidad');
   }
 
-  get nombreTituloField() {
-    return this.formularioUsuario.get('nombreTitulo');
+  get nombreTituloSegundoNivelField() {
+    return this.formularioUsuario.get('nombreTituloSegundoNivel');
   }
 
-  get paisTituloField() {
-    return this.formularioUsuario.get('paisTitulo');
+  get paisTituloSegundoNivelField() {
+    return this.formularioUsuario.get('paisTituloSegundoNivel');
   }
 
-  get ciudadTituloField() {
-    return this.formularioUsuario.get('ciudadTitulo');
+  get ciudadTituloSegundoNivelField() {
+    return this.formularioUsuario.get('ciudadTituloSegundoNivel');
   }
 
   get meritoDeportivoDescripcionField() {
@@ -279,8 +279,8 @@ export class UsuarioComponent implements OnInit {
 
     this.provinciaNacimientoField.clearValidators();
     this.cantonNacimientoField.clearValidators();
-    this.provinciaNacimientoField.setValue('');
-    this.cantonNacimientoField.setValue('');
+      this.provinciaNacimientoField.setValue('');
+      this.cantonNacimientoField.setValue('');
     this.formularioUsuario.get('cantonNacimiento')?.disable();
     this.cantonesNacimiento = [];
 
@@ -307,6 +307,7 @@ export class UsuarioComponent implements OnInit {
 
   onChangeCantonResidencia(event: any) {
     if(event === '') return;
+
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
       this.formularioUsuario.get('cantonResidencia')?.enable();
@@ -361,23 +362,23 @@ export class UsuarioComponent implements OnInit {
         numero_casa                   : this.numeroCasaField.value,
         tipo_nacionalidad             : this.tipoNacionalidadField.value,
         colegio                       : this.colegioField.value,
-        nombre_titulo                 : this.nombreTituloField.value,
-        pais_titulo                   : this.paisTituloField.value,
-        ciudad_titulo                 : this.ciudadTituloField.value,
+        nombre_titulo_segundonivel                 : this.nombreTituloSegundoNivelField.value,
+        pais_titulo_segundonivel                   : this.paisTituloSegundoNivelField.value,
+        ciudad_titulo_segundonivel                 : this.ciudadTituloSegundoNivelField.value,
         tiene_merito_deportivo        : this.tieneMeritoDeportivo,
         merito_deportivo_descripcion  : this.meritoDeportivoDescripcionField.value,
         tiene_merito_academico        : this.tieneMeritoAcademico,
         merito_academico_descripcion  : this.meritoAcademicoDescripcionField.value,
         cod_unidad_gestion            : this.unidadGestionField.value,
-        genero                        : this.generoField.value,
+        sexo                        : this.sexoField.value,
         cedula                        : this.nombreUsuarioField.value,
         estado                        : 'ACTIVO',
         reside_pais                   : this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
-        cod_documento_imagen          : null,
-        canton_nacimiento             : null,
+        cod_documento_imagen          : null,                
         cod_estacion                  : null,
         pin_validacion_correo         : null,
         validacion_correo             : null
+
       }
 
     }

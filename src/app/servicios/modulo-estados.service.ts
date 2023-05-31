@@ -23,10 +23,10 @@ export class ModuloEstadosService {
 
   actualizar(moduloEstados: ModuloEstado, codigo: any): Observable<HttpResponse<ModuloEstado>> {
     return this.http.put<ModuloEstado>(`${this.host}/moduloestados/${codigo}`, moduloEstados, {observe: 'response'});
-  }
+    }
 
   eliminar(codigo: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/moduloestados/${codigo}`);
-  }
+    }
 
 }

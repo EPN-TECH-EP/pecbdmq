@@ -1,6 +1,7 @@
 <app-boton-volver></app-boton-volver>
 
 <div class="container">
+  <!-- Título de componente-->
   <div class="row m-3">
     <div class="column text-center">
       <h1 class="fs-4 fw-bolder">Gestión de usuarios</h1>
@@ -152,10 +153,10 @@
       (click)="limpiarRegistros()">
       <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
     </button>
-    <div class="datatable table-editor mt-4 overflow-auto" >
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm overflow-auto">
       <form #form="ngForm">
         <table
-          class="table table-sm datatable-table"
+          class="table datatable-table"
           mdbTable
           mdbTableSort
           #table="mdbTable"

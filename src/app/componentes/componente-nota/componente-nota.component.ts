@@ -119,7 +119,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //registro
   public registro(componenteNota: ComponenteNota): void {
 
-    if(componenteNota.nombre == ''){
+    if(ValidacionUtil.isNullOrEmpty(componenteNota.nombre)){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
 
       return;
@@ -140,6 +140,8 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
             nombre: '',
             estado: 'ACTIVO'
           }
+
+          this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -165,13 +167,15 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
   //actualizar
   public actualizar(componenteNota: ComponenteNota, formValue): void {
 
-    if(formValue.componentenota === ''){
+    componenteNota={...componenteNota, nombre:formValue.componentenota, estado:'ACTIVO'};
+    
+    if(ValidacionUtil.isNullOrEmpty(formValue.componentenota)){
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos son obligatorios');
+      
       return;
     }
 
-    componenteNota={...componenteNota, nombre:formValue.componentenota, estado:'ACTIVO'};
-
+    
     this.showLoading = true;
     this.subscriptions.push(
       this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({

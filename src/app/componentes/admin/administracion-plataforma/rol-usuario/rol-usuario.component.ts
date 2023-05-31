@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {MdbCheckboxChange} from 'mdb-angular-ui-kit/checkbox';
-import {MdbNotificationService} from 'mdb-angular-ui-kit/notification';
-import {Rol} from 'src/app/modelo/admin/rol';
-import {RolAsignado} from 'src/app/modelo/admin/rol-asignado';
-import {RolUsuario} from 'src/app/modelo/admin/rol-usuario';
-import {Usuario} from 'src/app/modelo/admin/usuario';
-import {RolUsuarioService} from 'src/app/servicios/rol-usuario.service';
-import {RolService} from 'src/app/servicios/rol.service';
-import {UsuarioService} from 'src/app/servicios/usuario.service';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {BuscarUsuarioFrm} from '../../../../modelo/util/buscar-usuario-frm';
-import {switchMap} from 'rxjs';
-import {Notificacion} from 'src/app/util/notificacion';
-import {RolUsuarioId} from 'src/app/modelo/admin/rol-usuario-id';
-import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import { Component, OnInit } from '@angular/core';
+import { MdbCheckboxChange } from 'mdb-angular-ui-kit/checkbox';
+import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { Rol } from 'src/app/modelo/admin/rol';
+import { RolAsignado } from 'src/app/modelo/admin/rol-asignado';
+import { RolUsuario } from 'src/app/modelo/admin/rol-usuario';
+import { Usuario } from 'src/app/modelo/admin/usuario';
+import { RolUsuarioService } from 'src/app/servicios/rol-usuario.service';
+import { RolService } from 'src/app/servicios/rol.service';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { BuscarUsuarioFrm } from '../../../../modelo/util/buscar-usuario-frm';
+import { switchMap } from 'rxjs';
+import { Notificacion } from 'src/app/util/notificacion';
+import { RolUsuarioId } from 'src/app/modelo/admin/rol-usuario-id';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-rol-usuario',
@@ -32,8 +32,8 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
   headersRoles = ['Nombre'];
 
   cambiosPendientes: boolean = false;
-
-
+  
+  
   usuarioFrm: BuscarUsuarioFrm = new BuscarUsuarioFrm();
 
   constructor(
@@ -143,8 +143,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
           let rolUsuario = new RolUsuario();
           rolUsuario.rolUsuarioId = new RolUsuarioId();
           rolUsuario.rolUsuarioId.codRol = rolAsignado.codRol;
-          rolUsuario.rolUsuarioId.codUsuario = this.usuarioSeleccionado.codUsuario
-
+          rolUsuario.rolUsuarioId.codUsuario =             this.usuarioSeleccionado.codUsuario;
           nuevaAsignacion.push(rolUsuario);
         }
       });
@@ -173,7 +172,7 @@ export class RolUsuarioComponent extends ComponenteBase implements OnInit {
   public buscarUsuarios(form: BuscarUsuarioFrm) {
     this.usuarioSeleccionado = null;
     this.usuarios = [];
-    this.rolUsuario = [];
+    this.rolUsuario = [];   
 
     if (
       (form.nombre !== null || form.apellido !== null) &&

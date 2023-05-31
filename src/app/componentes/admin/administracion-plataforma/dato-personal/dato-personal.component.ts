@@ -45,7 +45,7 @@ export class DatoPersonalComponent implements OnInit {
   tieneMeritoDeportivo          : boolean;
   hoy                           : Date;
   tieneNacionalidadEcuatoriana        : boolean;
-  tieneNacionalidadComunidadFrontera  : boolean;
+  tieneNacionalidadComunidadFrontera        : boolean;
   tieneNacionalidadExtranjera         : boolean;
 
   constructor(
@@ -90,16 +90,16 @@ export class DatoPersonalComponent implements OnInit {
       error: (error) => {console.log(error)}
     });
     if(this.datosPersonales.cod_provincia_nacimiento){
-      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_nacimiento).subscribe({
-        next: (cantones) => {this.cantonesNacimiento = cantones},
-        error: (error) => {console.log(error)}
-      });
+    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_nacimiento).subscribe({
+      next: (cantones) => {this.cantonesNacimiento = cantones},
+      error: (error) => {console.log(error)}
+    });
     }
     if(this.datosPersonales.cod_provincia_residencia){
-      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_residencia).subscribe({
-        next: (cantones) => {this.cantonesResidencia = cantones},
-        error: (error) => {console.log(error)}
-      });
+    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.cod_provincia_residencia).subscribe({
+      next: (cantones) => {this.cantonesResidencia = cantones},
+      error: (error) => {console.log(error)}
+    });
     }
     this.gradoService.getGrados().subscribe({
       next: (grados) => {this.grados = grados},
@@ -160,33 +160,33 @@ export class DatoPersonalComponent implements OnInit {
     this.tieneMeritoAcademico = this.datosPersonales.tiene_merito_academico;
     this.tieneMeritoDeportivo = this.datosPersonales.tiene_merito_deportivo;
     this.formularioDatoPersonal.patchValue({
-      nombre                    : this.datosPersonales.nombre,
-      apellido                  : this.datosPersonales.apellido,
-      correoPersonal            : this.datosPersonales.correo_personal,
-      correoInstitucional       : this.datosPersonales.correo_institucional,
-      fechaNacimiento           : this.datosPersonales.fecha_nacimiento,
-      telfConvencional          : this.datosPersonales.num_telef_convencional,
-      telfCelular               : this.datosPersonales.num_telef_celular,
-      tipoSangre                : this.datosPersonales.tipo_sangre,
-      genero                    : this.datosPersonales.genero,
-      tipoNacionalidad          : this.datosPersonales.tipo_nacionalidad,
-      provinciaNacimiento       : this.datosPersonales.cod_provincia_nacimiento,
-      cantonNacimiento          : this.datosPersonales.cod_canton_nacimiento,
-      provinciaResidencia       : this.datosPersonales.cod_provincia_residencia,
-      cantonResidencia          : this.datosPersonales.cod_canton_residencia,
-      callePrincipalResidencia  : this.datosPersonales.calle_principal_residencia,
-      calleSecundariaResidencia : this.datosPersonales.calle_secundaria_residencia,
-      numeroCasa                : this.datosPersonales.numero_casa,
-      colegio                   : this.datosPersonales.colegio,
-      nombreTitulo              : this.datosPersonales.nombre_titulo,
-      paisTitulo                : this.datosPersonales.pais_titulo,
-      ciudadTitulo              : this.datosPersonales.ciudad_titulo,
+      nombre:                     this.datosPersonales.nombre,
+      apellido:                   this.datosPersonales.apellido,
+      correoPersonal:             this.datosPersonales.correo_personal,
+      correoInstitucional:        this.datosPersonales.correo_institucional,
+      fechaNacimiento:            this.datosPersonales.fecha_nacimiento,
+      telfConvencional:           this.datosPersonales.num_telef_convencional,
+      telfCelular:                this.datosPersonales.num_telef_celular,
+      tipoSangre:                 this.datosPersonales.tipo_sangre,
+      sexo:                     this.datosPersonales.sexo,
+      tipoNacionalidad:           this.datosPersonales.tipo_nacionalidad,
+      provinciaNacimiento:        this.datosPersonales.cod_provincia_nacimiento,
+      cantonNacimiento:           this.datosPersonales.cod_canton_nacimiento,
+      provinciaResidencia:        this.datosPersonales.cod_provincia_residencia,
+      cantonResidencia:           this.datosPersonales.cod_canton_residencia,
+      callePrincipalResidencia:   this.datosPersonales.calle_principal_residencia,
+      calleSecundariaResidencia:  this.datosPersonales.calle_secundaria_residencia,
+      numeroCasa:                 this.datosPersonales.numero_casa,
+      colegio:                    this.datosPersonales.colegio,
+      nombreTituloSegundoNivel:               this.datosPersonales.nombre_titulo_segundonivel,
+      paisTituloSegundoNivel:                 this.datosPersonales.pais_titulo_segundonivel,
+      ciudadTituloSegundoNivel:               this.datosPersonales.ciudad_titulo_segundonivel,
       meritoDeportivoDescripcion: this.datosPersonales.merito_deportivo_descripcion,
       meritoAcademicoDescripcion: this.datosPersonales.merito_academico_descripcion,
-      unidadGestion             : this.datosPersonales.cod_unidad_gestion,
-      grado                     : this.datosPersonales.cod_grado,
-      rango                     : this.datosPersonales.cod_rango,
-      cargo                     : this.datosPersonales.cod_cargo,
+      unidadGestion:              this.datosPersonales.cod_unidad_gestion,
+      grado:                      this.datosPersonales.cod_grado,
+      rango:                      this.datosPersonales.cod_rango,
+      cargo:                      this.datosPersonales.cod_cargo,
     });
     this.datosPersonales.cod_canton_nacimiento === null ? this.cantonNacimientoField.disable() : this.cantonNacimientoField.enable();
     this.datosPersonales.cod_canton_residencia === null ? this.cantonResidenciaField.disable() : this.cantonResidenciaField.enable();
@@ -234,8 +234,8 @@ export class DatoPersonalComponent implements OnInit {
     return this.formularioDatoPersonal.get('unidadGestion');
   }
 
-  get generoField() {
-    return this.formularioDatoPersonal.get('genero');
+  get sexoField() {
+    return this.formularioDatoPersonal.get('sexo');
   }
 
   get telfCelularField() {
@@ -274,16 +274,16 @@ export class DatoPersonalComponent implements OnInit {
     return this.formularioDatoPersonal.get('tipoNacionalidad');
   }
 
-  get nombreTituloField() {
-    return this.formularioDatoPersonal.get('nombreTitulo');
+  get nombreTituloSegundoNivelField() {
+    return this.formularioDatoPersonal.get('nombreTituloSegundoNivel');
   }
 
-  get paisTituloField() {
-    return this.formularioDatoPersonal.get('paisTitulo');
+  get paisTituloSegundoNivelField() {
+    return this.formularioDatoPersonal.get('paisTituloSegundoNivel');
   }
 
-  get ciudadTituloField() {
-    return this.formularioDatoPersonal.get('ciudadTitulo');
+  get ciudadTituloSegundoNivelField() {
+    return this.formularioDatoPersonal.get('ciudadTituloSegundoNivel');
   }
 
   get meritoDeportivoDescripcionField() {
@@ -352,7 +352,7 @@ export class DatoPersonalComponent implements OnInit {
         this.formularioDatoPersonal.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-      },
+        },
       error: (err) => {console.log(err)}
     });
   }
@@ -365,7 +365,7 @@ export class DatoPersonalComponent implements OnInit {
         this.cantonesResidencia = cantones;
         this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-      },
+        },
       error: (err) => {console.log(err)}
     });
   }
@@ -403,9 +403,9 @@ export class DatoPersonalComponent implements OnInit {
       numero_casa                  : this.numeroCasaField?.value,
       colegio                      : this.colegioField?.value,
       tipo_nacionalidad            : this.tipoNacionalidadField?.value,
-      nombre_titulo                : this.nombreTituloField?.value,
-      pais_titulo                  : this.paisTituloField?.value,
-      ciudad_titulo                : this.ciudadTituloField?.value,
+      nombre_titulo_segundonivel                : this.nombreTituloSegundoNivelField?.value,
+      pais_titulo_segundonivel                  : this.paisTituloSegundoNivelField?.value,
+      ciudad_titulo_segundonivel                : this.ciudadTituloSegundoNivelField?.value,
       tiene_merito_deportivo       : this.tieneMeritoDeportivo,
       merito_deportivo_descripcion : this.meritoDeportivoDescripcionField?.value,
       tiene_merito_academico       : this.tieneMeritoAcademico,
@@ -413,7 +413,7 @@ export class DatoPersonalComponent implements OnInit {
       cod_cargo                    : this.cargoField?.value,
       cod_grado                    : this.gradoField?.value,
       cod_rango                    : this.rangoField?.value,
-      genero                       : this.generoField?.value,
+      sexo                       : this.sexoField?.value,
       cod_unidad_gestion           : this.unidadGestionField?.value,
     }
 

@@ -61,14 +61,14 @@ import {MenuComponent} from 'src/app/componentes/admin/administracion-plataforma
 import {
   GestionDocumentosComponent
 } from "../../componentes/flujos/formacion/gestion-documentos/gestion-documentos.component";
-import {
-  EstadoProcesoFormacionComponent
-} from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
-import {InscripcionesComponent} from "../../componentes/flujos/formacion/inscripciones/inscripciones.component";
+import {EstadoProcesoFormacionComponent} from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
+import { AutenticacionChildGuard } from 'src/app/guard/autenticacion-child.guard';
+import { InscripcionesComponent } from 'src/app/componentes/flujos/formacion/inscripciones/inscripciones.component';
+
 
 const routes: Routes = [
   {
-    path: 'principal', component: PrincipalComponent,
+    path: 'principal', component: PrincipalComponent, canActivateChild: [AutenticacionChildGuard],
     children: [
       //sub-menu
       {path: 'bienvenida', component: BienvenidaComponent},

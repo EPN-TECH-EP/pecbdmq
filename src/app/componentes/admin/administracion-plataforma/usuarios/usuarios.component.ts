@@ -159,7 +159,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     this.subscriptions.push(
-      this.usuarioService.actualizar(usuario).subscribe(
+      this.usuarioService.actualizarUsuario(usuario).subscribe(
         {
           next: (response) => {
             this.usuarios[this.editElementIndex] = response;
@@ -185,6 +185,8 @@ export class UsuariosComponent implements OnInit {
     this.usuarioFrm = new Usuario();
     this.editElementIndex = -1;
   }
+
+  // Funcionalidad de confirmación
 
   openPopconfirm(event: Event, index: number) {
     this.indexEliminar = index;
@@ -314,9 +316,9 @@ export class UsuariosComponent implements OnInit {
           this.usuarios.push(usuario);
           this.usuarios = [...this.usuarios];
           Notificacion.notificar(this.mdbNotificationService, 'Usuario creado correctamente', TipoAlerta.ALERTA_OK);
-        }
-      },
-    );
+          }
+        },
+      );
   }
 
 }

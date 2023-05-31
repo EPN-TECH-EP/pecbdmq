@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
@@ -11,8 +11,7 @@ import {ModuloEstado} from "../../modelo/admin/modulo-estado";
 export class FormacionService {
   private host = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   // servicio de consulta de estado de período académico de formación
   // GET periodoacademico/validaestado
@@ -26,7 +25,14 @@ export class FormacionService {
     "mensaje": "CONVOCATORIA"
 }   */
 
-  getEstadosFormacion(): Observable<ModuloEstado[]> {
+  public getEstadoFormacion(): Observable<HttpResponse<CustomHttpResponse>> {
+    return this.http.get<CustomHttpResponse>(
+      `${this.host}/periodoacademico/validaestado`,
+      { observe: 'response' }
+    );
+  }
+
+    getEstadosFormacion(): Observable<ModuloEstado[]> {
     return this.http.get<ModuloEstado[]>(`${this.host}/moduloestados/bymodulo?modulo=1`);
   }
 
