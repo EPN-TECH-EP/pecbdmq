@@ -18,11 +18,11 @@
     <div class="d-flex justify-content-end">
       <button
         type="button"
-        class="btn btn-primary btn-floating btn-lg mb-2"
+        class="btn btn-primary btn-floating btn-lg mb-3"
         [mdbTooltip]="msmBtnListaRequisitos"
         (click)="toggleListaRequisitos()"
       >
-        <i class="fas fa-list-check"></i>
+        <i class="fas fa-list-ul"></i>
       </button>
     </div>
     <!-- Start datos de la inscripción -->
@@ -95,7 +95,7 @@
               <div *ngFor="let url of urlsArchivo">
                 <p class="badge badge-primary p-2"><b>Nombre del archivo: </b>{{url.nombreArchivo}}</p>
                 <embed
-                  [src]="url.SafeResourceUrl"
+                  [src]="url.urlSafe"
                   [width]="'100%'"
                   [height]="600"
                 >
@@ -113,7 +113,7 @@
     <div *ngIf="!estaExpandidoListaRequisitos" class="vr p-0"></div>
     <!-- Start lista de requisitos -->
     <section class="col" [ngClass]="{'expanded': estaExpandidoListaRequisitos}">
-      <h4 class="text-center mb-">Lista de requisitos</h4>
+      <h4 class="text-center mb-3">Lista de requisitos</h4>
       <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
         <table
           class="table table-sm"

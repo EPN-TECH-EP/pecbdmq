@@ -111,7 +111,7 @@ const routes: Routes = [
       {path: 'formacion/gestion-documentos', component: GestionDocumentosComponent},
       {path: 'formacion/estado', component: EstadoProcesoFormacionComponent},
       {path: 'formacion/inscripciones', component: InscripcionesComponent},
-      {path: 'formacion/validacion/:id', component: ValidacionComponent},
+      {path: 'formacion/validacion', component: ValidacionComponent},
 
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},

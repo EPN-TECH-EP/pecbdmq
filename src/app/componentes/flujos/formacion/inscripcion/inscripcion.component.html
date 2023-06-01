@@ -13,12 +13,11 @@
 
   <hr class="hr hr-blurry" />
   <!-- Inicio estructura de pasos -->
-  <mdb-stepper #stepper [linear]="true">
+  <mdb-stepper #stepper [linear]="true" >
     <!-- Paso 1 -->
     <mdb-step
       [stepForm]="formularioInscripcion"
       [name]="'Paso 1 - Formulario de Inscripción'"
-      (stepChange)="stepChange($event, stepper)"
     >
       <ng-template mdbStepIcon>
         <i class="fas fa-user"></i>
@@ -443,7 +442,7 @@
                     id="provinciaNacimiento"
                     formControlName="provinciaNacimiento"
                     class="mb-5"
-                    (ngModelChange)="onChangeCantonNacimiento($event)"
+                    (change)="onChangeCantonNacimiento($event)"
                   >
                     <mdb-option
                       *ngFor="let provincia of provincias"
@@ -553,7 +552,7 @@
                     id="provinciaResidencia"
                     formControlName="provinciaResidencia"
                     class="mb-5"
-                    (ngModelChange)="onChangeCantonResidencia($event)"
+                    (change)="onChangeCantonResidencia($event)"
                   >
                     <mdb-option
                       *ngFor="let provincia of provincias"
