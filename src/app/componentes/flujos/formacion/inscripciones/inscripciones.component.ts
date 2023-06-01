@@ -77,9 +77,12 @@ export class InscripcionesComponent implements OnInit {
       estado: 'ASIGNADO'
     }
     this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
-      next: inscripcion => {
-        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
-        this.inscripcionesAsignadas.push(inscripcion)
+      next:() => {
+        const index = this.inscripciones.findIndex(inscripcion => inscripcion.codPostulante === idPostulante);
+        if (index !== -1) {
+          const inscripcion = this.inscripciones.splice(index, 1)[0];
+          this.inscripcionesAsignadas.push(inscripcion);
+        }
         Notificacion.notificar(this.mdbNotificationService, "Usuario asignado correctamente", TipoAlerta.ALERTA_OK)
       },
       error: err => {

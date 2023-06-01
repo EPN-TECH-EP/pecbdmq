@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import {OPCIONES_DATEPICKER} from '../../../../util/constantes/opciones-datepicker.const';
-import {Subscription} from 'rxjs';
 import {FileUploadStatus} from '../../../../modelo/util/file-upload-status';
 import {
   MdbNotificationRef,
@@ -14,7 +13,6 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import {AlertaComponent} from '../../../util/alerta/alerta.component';
 import {HttpErrorResponse} from '@angular/common/http';
-import {TipoAlerta} from '../../../../enum/tipo-alerta';
 import {CustomHttpResponse} from '../../../../modelo/admin/custom-http-response';
 import {Notificacion} from '../../../../util/notificacion';
 import {CargaArchivoService} from '../../../../servicios/carga-archivo';
@@ -94,7 +92,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.formacionService.getEstadoFormacion().subscribe({
       next: (response) => {
         const customResponse: CustomHttpResponse = response.body;
-        console.log(customResponse);
+        console.log(customResponse.mensaje);
         if (customResponse.httpStatusCode === 200) {
           this.terminaConsultaEstado = true;
 
@@ -141,48 +139,21 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   private construirFormulario() {
     this.convocatoriaForm = this.formBuilder.group(
       {
-        codigo: ['', [Validators.required, Validators.maxLength(10)]],
-        cuposHombres: ['', Validators.required],
-        cuposMujeres: ['', Validators.required],
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
-        horaInicio: ['', Validators.required],
-        horaFin: ['', Validators.required],
-        documentoConvocatoria: ['', Validators.required],
-        documentoSoporte: [''],
+        codigo                : ['', [Validators.required, Validators.maxLength(10)]],
+        cuposHombres          : ['', Validators.required],
+        cuposMujeres          : ['', Validators.required],
+        fechaInicio           : ['', Validators.required],
+        fechaFin              : ['', Validators.required],
+        horaInicio            : ['', Validators.required],
+        horaFin               : ['', Validators.required],
+        documentoConvocatoria : ['', Validators.required],
+        documentoSoporte      : [''],
       },
       {
         validators: MyValidators.validDate,
       }
     );
   }
-
-  /*private notificar(errorResponse?: HttpErrorResponse, mensaje?: string) {
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-    let mensajeError = 'ERROR';
-    let codigoError = 0;
-
-    if (errorResponse) {
-      const customError: CustomHttpResponse = errorResponse.error;
-      mensajeError = customError.mensaje;
-      codigoError = errorResponse.status;
-    }
-
-    if (mensaje) {
-      mensajeError = mensaje;
-    }
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado: ' + codigoError;
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensajeError,
-      tipoAlerta
-    );
-  }*/
 
   subirArchivo(event: any, tipo: string): void {
     const extension = '.pdf';
@@ -266,8 +237,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     this.subscriptions.push(
       this.servicioConvocatoria.crearConvocatoria(formData).subscribe({
-        next: (response) => {
-          const customResponse: CustomHttpResponse = response;
+        next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
@@ -287,17 +257,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         }
       })
-    );
-  }
-
-  visualizarArchivo(id: string) {
-    this.archivoService.visualizar(id).subscribe(
-      (url) => {
-        this.urlArchivo = url;
-      },
-      () => {
-        this.urlArchivo = null;
-      }
     );
   }
 

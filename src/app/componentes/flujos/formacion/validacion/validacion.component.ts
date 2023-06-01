@@ -68,7 +68,7 @@ export class ValidacionComponent implements OnInit, OnDestroy {
         console.log("documentos", this.inscripcion.documentos);
         if (this.inscripcion.documentos.length > 0) {
           const observables = this.inscripcion.documentos.map(documento =>
-            this.documentosService.visualizarArchivo(165)
+            this.documentosService.visualizarArchivo(documento.codigoDocumento)
           );
 
           forkJoin(observables).subscribe({
@@ -105,8 +105,9 @@ export class ValidacionComponent implements OnInit, OnDestroy {
 
     this.requisitos.forEach(requisito => {
       const requisitoFormGroup = this.builder.group({
-        codRequisitos: [requisito?.cod_requisitos],
-        nombre: [requisito?.nombre_requisito],
+        codRequisitos: [requisito?.codRequisitos],
+        codValidacion: [requisito?.codValidacion],
+        nombre: [requisito?.nombreRequisito],
         estado: [requisito?.estado, [Validators.required]],
         observaciones: [requisito?.observaciones]
       });
@@ -122,19 +123,22 @@ export class ValidacionComponent implements OnInit, OnDestroy {
   }
 
   guardarRequisitos() {
-    const formulariosValidos = this.formularioRequisitos.every(requisito => requisito.valid);
 
-    this.formularioRequisitos.forEach(requisito => {
-      if (!requisito.valid) requisito.markAllAsTouched()
+    const hayRequisitosTocados = this.formularioRequisitos.some(requisito => requisito.touched);
+    if (!hayRequisitosTocados) return;
+    // solo guardo los requisitos que han sido tocados
+    const requisitos: ValidacionRequisito[] = this.formularioRequisitos.filter(
+      requisito => (requisito.touched && requisito.valid)
+    ).map(requisito => requisito.value);
+    console.log(requisitos);
+    this.validacionInscripcionService.guardarRequisitos(requisitos).subscribe({
+      next: () => {
+        Notificacion.notificar(this.mdbNotificationService, 'Se guardaron los requisitos', TipoAlerta.ALERTA_INFO);
+        this.router.navigate(['principal/formacion/inscripciones']);
+      }
     });
 
-    if (!formulariosValidos) {
-      Notificacion.notificar(this.mdbNotificationService, 'Por favor llenar todos los campos necesarios', TipoAlerta.ALERTA_ERROR);
-      return;
-    }
 
-    const requisitos = this.formularioRequisitos.map(requisito => requisito.value);
-    console.log(requisitos)
   }
 
   // guardarRequisitosAuto() {

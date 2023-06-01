@@ -35,4 +35,8 @@ export class ValidacionInscripcionService {
     return this.http.get<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitos/${codigoPostulante}`);
   }
 
+  guardarRequisitos(requisitos: ValidacionRequisito[]) {
+    return this.http.put<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitosUpdate`, requisitos);
+  }
+
 }
