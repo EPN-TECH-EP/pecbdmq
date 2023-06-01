@@ -19,6 +19,7 @@
       [stepForm]="formularioInscripcion"
       [name]="'Paso 1 - Formulario de Inscripción'"
       (stepChange)="stepChange($event, stepper)"
+      [editable]="!finInscripcion"
     >
       <ng-template mdbStepIcon>
         <i class="fas fa-user"></i>
@@ -1098,6 +1099,7 @@
     <mdb-step
       [name]="'Paso 2 - Validacion de Email'"
       [stepForm]="formularioPinSeguridad"
+      [editable]="!finInscripcion"
     >
       <ng-template mdbStepIcon>
         <i class="far fa-envelope"></i>
@@ -1156,7 +1158,14 @@
             [disabled]="formularioPinSeguridad.invalid"
             (click)="stepChange($event, stepper)"
           >
-            CONFIRMAR
+          <span
+                  *ngIf="showLoading"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span *ngIf="showLoading">Espere...</span>
+                <span *ngIf="!showLoading">CONFIRMAR</span>            
           </button>
         </form>
       </div>
@@ -1170,7 +1179,9 @@
         <i class="far fa-check-circle fa-5x"></i>
         <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
         <hr />
-        <p>Ha completado la etapa de registro</p>
+        <p>Se envió un correo con su CÓDIGO ÚNICO: <span class="text-primary">{{ idPostulante }}</span>. Este código de identificación se usará en futuros comunicados de la academia.</p>
+        <br />
+        <p>Puede cerrar esta ventana de forma segura.</p>
         <!-- <p></p>
         <button
           type="button"

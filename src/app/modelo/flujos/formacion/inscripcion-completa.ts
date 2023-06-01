@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { DocumentoFormacion } from './documento';
 
 
-@Injectable()
-export class InscripcionCompleta {
+export interface InscripcionCompleta {
 
 
 apellido:                   string;

@@ -134,7 +134,7 @@ export class DatoPersonalComponent implements OnInit {
       telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
       telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
       tipoSangre:                 [''],
-      genero:                     ['', [Validators.required]],
+      sexo:                     ['', [Validators.required]],
       tipoNacionalidad:           ['', [Validators.required]],
       provinciaNacimiento:        ['', [Validators.required]],
       cantonNacimiento:           [{value: '', disabled: true}, [Validators.required]],
@@ -144,9 +144,9 @@ export class DatoPersonalComponent implements OnInit {
       calleSecundariaResidencia:  [''],
       numeroCasa:                 [''],
       colegio:                    [''],
-      nombreTitulo:               [''],
-      paisTitulo:                 [''],
-      ciudadTitulo:               [''],
+      nombreTituloSegundoNivel:               [''],
+      paisTituloSegundoNivel:                 [''],
+      ciudadTituloSegundoNivel:               [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
       unidadGestion:              [''],
@@ -381,6 +381,7 @@ export class DatoPersonalComponent implements OnInit {
     if (this.formularioDatoPersonal.invalid) {
       Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioDatoPersonal.markAllAsTouched();
+      console.log(this.formularioDatoPersonal.controls);
       return;
     }
 

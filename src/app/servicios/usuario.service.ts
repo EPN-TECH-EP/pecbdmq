@@ -26,7 +26,7 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.host}/usuario/crear`, usuario);
   }
 
-  public actualizarUsuario(usuario: Usuario): Observable<Usuario> {
+  public actualizar(usuario: Usuario): Observable<Usuario> {
     console.log('Ejecuta actualizar usuario');
     console.log(usuario);
     return this.http.post<Usuario>(`${this.host}/usuario/actualizar`, usuario);

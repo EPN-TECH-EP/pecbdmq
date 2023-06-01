@@ -7,18 +7,10 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AutenticacionService } from '../servicios/autenticacion.service';
+import { SERVICIOS_PUBLICOS_URLS } from '../util/constantes/servicios-publicos.const';
 
 @Injectable()
 export class AutenticacionInterceptor implements HttpInterceptor {
-
-  serviciosPublicosUrls: string[] = 
-  ['/usuario/login', 
-  '/usuario/registro', 
-  '/usuario/resetPassword', 
-  '/usuario/guardarArchivo',
-  '/usuario/maxArchivo',
-  '/link'
-];
 
   constructor(private autenticacionService: AutenticacionService) {}
 
@@ -45,7 +37,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
 
 
 revisaServiciosPublicos(url: string): boolean {
-    for (const servicioPublicoUrl of this.serviciosPublicosUrls) {
+    for (const servicioPublicoUrl of SERVICIOS_PUBLICOS_URLS) {
       if (url.includes(`${this.autenticacionService.host}${servicioPublicoUrl}`)) {
         return true;
       }

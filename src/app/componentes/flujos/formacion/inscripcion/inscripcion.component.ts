@@ -5,7 +5,7 @@ import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
 import { Notificacion } from 'src/app/util/notificacion';
@@ -29,6 +29,9 @@ import { Provincia } from 'src/app/modelo/admin/provincia';
 import { Canton } from 'src/app/modelo/admin/canton';
 import { ProvinciaService } from 'src/app/servicios/provincia.service';
 import { InscripcionCompletaDto } from 'src/app/modelo/flujos/formacion/inscripcion-completa-dto';
+import { InscripcionResultado } from 'src/app/modelo/flujos/formacion/inscripcion-resultado';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
+import { ValidaPinInscripcionUtil } from 'src/app/modelo/flujos/formacion/valida-pin-inscripcion-util';
 
 @Component({
   selector: 'app-inscripcion',
@@ -40,10 +43,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
 
   minDate = new Date(1980, 1, 31);
   maxDate = new Date(2005, 12, 31);
-  provincias                    : Provincia[];
+  provincias: Provincia[];
   translationOptions = OPCIONES_DATEPICKER;
-  cantonesNacimiento            : Canton[];
-  cantonesResidencia            : Canton[];
+  cantonesNacimiento: Canton[];
+  cantonesResidencia: Canton[];
   formularioInscripcion: FormGroup;
   formularioPinSeguridad: FormGroup;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -56,6 +59,9 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   fechaActual: Date;
 
   step: number = 0;
+  inscripcionResultado: InscripcionResultado;
+  idPostulante: string = '';
+  finInscripcion = false;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
@@ -63,7 +69,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     private popConfirmServiceLocal: MdbPopconfirmService,
     private builder: FormBuilder,
     private inscripcionService: InscripcionService,
-    private provinciaService: ProvinciaService,
+    private provinciaService: ProvinciaService
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
@@ -91,8 +97,12 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     );
 
     this.provinciaService.getProvincias().subscribe({
-      next: (provincias) => {this.provincias = provincias},
-      error: (error) => {console.log(error)}
+      next: (provincias) => {
+        this.provincias = provincias;
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 
@@ -176,12 +186,12 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     );
     this.formularioPinSeguridad = this.builder.group({
       pin: [
-        '267389',
+        '',
         [
           Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(6),
-          MyValidators.onlyNumbers(),
+          //Validators.minLength(6),
+          //Validators.maxLength(6),
+          //MyValidators.onlyNumbers(),
         ],
       ],
     });
@@ -351,27 +361,31 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   onChangeCantonNacimiento(event: any) {
-    if(event === '') return;
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
         this.formularioInscripcion.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-        },
-      error: (err) => {console.log(err)}
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
   onChangeCantonResidencia(event: any) {
-    if(event === '') return;
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
         this.formularioInscripcion.get('cantonResidencia')?.enable();
         this.cantonesResidencia = cantones;
         this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-        },
-      error: (err) => {console.log(err)}
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
@@ -386,13 +400,17 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.num_telef_convencional = this.telConvencionalField.value;
     //
     this.inscripcion.tipo_nacionalidad = this.nacionalidadField.value;
-    this.inscripcion.cod_provincia_nacimiento = this.provinciaNacimientoField.value;
+    this.inscripcion.cod_provincia_nacimiento =
+      this.provinciaNacimientoField.value;
     this.inscripcion.cod_canton_nacimiento = this.cantonNacimientoField.value;
     //
-    this.inscripcion.cod_provincia_residencia = this.provinciaResidenciaField.value;
+    this.inscripcion.cod_provincia_residencia =
+      this.provinciaResidenciaField.value;
     this.inscripcion.cod_canton_residencia = this.cantonResidenciaField.value;
-    this.inscripcion.calle_principal_residencia = this.callePrincipalField.value;
-    this.inscripcion.calle_secundaria_residencia = this.calleSecundariaField.value;
+    this.inscripcion.calle_principal_residencia =
+      this.callePrincipalField.value;
+    this.inscripcion.calle_secundaria_residencia =
+      this.calleSecundariaField.value;
     this.inscripcion.numero_casa = this.numeroCasaField.value;
     //
     this.inscripcion.pais_titulo_segundonivel = this.paisTituloField.value;
@@ -400,28 +418,42 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.colegio = this.colegioTituloField.value;
     this.inscripcion.nombre_titulo_segundonivel = this.nombreTituloField.value;
     //
-    this.inscripcion.merito_academico_descripcion = this.meritoAcademicoField.value;
-    this.inscripcion.merito_deportivo_descripcion = this.meritoDeportivoField.value;
+    this.inscripcion.merito_academico_descripcion =
+      this.meritoAcademicoField.value;
+    this.inscripcion.merito_deportivo_descripcion =
+      this.meritoDeportivoField.value;
+
+    // establece estado inicial de la inscripcion
+    this.inscripcion.estado = 'ACTIVO';
   }
 
   public stepChange(event: any, stepper: MdbStepperComponent) {
     this.showLoading = true;
     const stepEvent = event as MdbStepChangeEvent;
-
     this.step = stepper.activeStepIndex;
-    if (this.step == 0) {
 
+    // paso 1 ingreso de datos personales
+    if (this.step == 0) {
       this.crearInscripcion();
-      
+
       // crear inscripcion
       let formData = new FormData();
       formData.append('datosPersonales', JSON.stringify(this.inscripcion));
       formData.append('documentos', this.docInscripcion);
 
-      this.subscriptions.push(
-        this.inscripcionService.crearInscripcion(formData).subscribe({
+      this.inscripcionService
+        .crearInscripcion(formData)
+        .pipe(
+          switchMap((response: any) => {
+            this.inscripcionResultado = response;
+
+            return this.inscripcionService.generarPin(
+              this.inscripcionResultado.cod_postulante
+            );
+          })
+        )
+        .subscribe({
           next: (response: any) => {
-            this.inscripcion = response;
             this.showLoading = false;
             stepper.next();
           },
@@ -429,14 +461,58 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
             Notificacion.notificacion(
               this.notificationRef,
               this.notificationServiceLocal,
-              errorResponse/*,
-              'Error al crear inscripción'*/
+              errorResponse
             );
             this.showLoading = false;
             stepper.setNewActiveStep(0);
           },
-        })
-      );
+        });
+    }
+    // paso 2 ingreso de pin
+    else if (this.step == 1) {
+
+      this.showLoading = true;
+
+      if (ValidacionUtil.isNullOrEmpty(this.pinField.value)) {
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          null,
+          'Debe ingresar el pin'
+        );
+        this.showLoading = false;
+        stepper.setNewActiveStep(1);
+        return;
+      } else {
+        let validaPin = new ValidaPinInscripcionUtil();
+
+        validaPin.pin = this.pinField.value;
+        validaPin.idPostulante = this.inscripcionResultado.cod_postulante;
+        validaPin.idDatoPersonal =
+          this.inscripcionResultado.cod_datos_personales;
+
+        this.subscriptions.push(
+          this.inscripcionService.validarPin(validaPin).subscribe({
+            next: (response: any) => {
+              this.idPostulante = response.mensaje;
+              this.showLoading = false;
+              stepper.next();
+              this.finInscripcion = true;
+            },
+            error: (errorResponse: any) => {
+              Notificacion.notificacion(
+                this.notificationRef,
+                this.notificationServiceLocal,
+                errorResponse
+              );
+              this.showLoading = false;
+              stepper.setNewActiveStep(1);
+            },
+          })
+        );
+      }
+    } else if(this.step == 2){
+      stepper.setNewActiveStep(2);
     }
   }
 }
