@@ -79,7 +79,6 @@ export class DatoPersonalComponent implements OnInit {
 
   ngOnInit(): void {
     this.datosPersonales = this.usuario.codDatosPersonales;
-    console.log("DATO PERSONAL:", this.datosPersonales);
     this.datosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
     this.tieneNacionalidadEcuatoriana = this.datosPersonales.tipo_nacionalidad === ('ECUATORIANA');
     this.tieneNacionalidadComunidadFrontera = this.datosPersonales.tipo_nacionalidad === ('COMUNIDAD FRONTERA');
@@ -381,7 +380,6 @@ export class DatoPersonalComponent implements OnInit {
     if (this.formularioDatoPersonal.invalid) {
       Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioDatoPersonal.markAllAsTouched();
-      // imprimo cuales son los campos que tienen error
       console.log(this.formularioDatoPersonal.controls);
       return;
     }

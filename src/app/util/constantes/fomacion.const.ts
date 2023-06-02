@@ -1,3 +1,4 @@
 export const FORMACION = {
-    estado_inicial : 'SIN PERIODO',
+    estadoInicial : 'SIN PERIODO',
+    estadoConvocatoria : 'CONVOCATORIA',
 }

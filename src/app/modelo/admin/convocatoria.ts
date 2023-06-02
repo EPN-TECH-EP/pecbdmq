@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
 import {Requisito} from "./requisito";
+import {DocumentoFormacion} from "../flujos/formacion/documento";
 
-@Injectable()
-export class Convocatoria {
-  public codConvocatoria: number;
-  public codPeriodoEvaluacion: number;
-  public codPeriodoAcademico: number;
-  public nombre: string;
-  public estado: string;
-  public fechaInicioConvocatoria: string;
-  public fechaFinConvocatoria: string;
-  public horaInicioConvocatoria: string;
-  public horaFinConvocatoria: string;
-  public codigoUnico: number;
-  public cupoHombres: number;
-  public cupoMujeres: number;
-  public correo: string;
-  public documentos: string;
-  public requisitos: Requisito[] | string;
+export interface Convocatoria {
+  codConvocatoria?        : number;
+  codPeriodoEvaluacion    : number;
+  codPeriodoAcademico     : number;
+  nombre                  : string;
+  estado                  : string;
+  fechaInicioConvocatoria : Date;
+  fechaFinConvocatoria    : Date;
+  horaInicioConvocatoria  : string;
+  horaFinConvocatoria     : string;
+  codigoUnico             : number;
+  cupoHombres             : number;
+  cupoMujeres             : number;
+  correo                  : string;
+  documentos              : DocumentoFormacion[];
+  requisitos              : Requisito[] | string;
 }
