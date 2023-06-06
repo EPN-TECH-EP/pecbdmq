@@ -5,7 +5,7 @@ export interface DocumentoFormacion {
   descripcion:      string;
   estado:           string;
   estadoValidacion: string;
-  idDocumento:      string;
+  idDocumento:      number;
   nombre:           string;
   observaciones:    string;
   ruta:             string;

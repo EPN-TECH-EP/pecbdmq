@@ -11,6 +11,8 @@ import {TipoAlerta} from "../../../../enum/tipo-alerta";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {catchError, tap} from "rxjs/operators";
 import {throwError} from "rxjs";
+import {ConvocatoriaService} from "../../../../servicios/formacion/convocatoria.service";
+import {Convocatoria} from "../../../../modelo/admin/convocatoria";
 
 @Component({
   selector: 'app-gestion-documentos',
@@ -33,12 +35,14 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
 
   estaEditando: boolean;
   codigoDocumentoEditando: number;
+  codigoConvocatoriaActiva: number;
 
   constructor(
     private documentosService: DocumentosService,
     private notificationServiceLocal: MdbNotificationService,
     private popConfirmServiceLocal: MdbPopconfirmService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private convocatoriaService: ConvocatoriaService,
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
     this.documentoForm = new FormGroup({});
@@ -46,6 +50,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
     this.estaEditando = false;
     this.codigoDocumentoEditando = 0;
     this.archivo = new File([], '');
+    this.codigoConvocatoriaActiva = 0;
   }
 
   ngOnInit(): void {
@@ -53,6 +58,11 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
       console.log(documentos);
       this.documentos = documentos;
     });
+    this.convocatoriaService.getConvocatoriaActiva().subscribe({
+      next: (convocatorias: Convocatoria[]) => {
+        this.codigoConvocatoriaActiva = convocatorias[0].codConvocatoria
+      },
+    })
     this.construirFormulario();
   }
 
@@ -65,7 +75,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   }
 
   descargarArchivo(documento: DocumentoFormacion) {
-    this.documentosService.descargarArchivo(documento.codigo).subscribe(
+    this.documentosService.descargar(documento.codigo).subscribe(
       {
         next: (data) => {
           const blob = new Blob([data], {type: 'application/pdf'});
@@ -141,7 +151,13 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   }
 
   eliminar(id: number) {
-    this.documentosService.eliminar(id).subscribe({
+    console.log(this.codigoConvocatoriaActiva)
+    console.log(id)
+    const formData = new FormData();
+    formData.append('convocatoria', id.toString());
+    formData.append('codDocumento', this.codigoConvocatoriaActiva.toString());
+
+    this.documentosService.eliminar(formData).subscribe({
       next: () => {
         let index = this.documentos.findIndex((documento) => documento.codigo == id);
         this.documentos.splice(index, 1);

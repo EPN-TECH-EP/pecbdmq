@@ -145,7 +145,7 @@ export class DatoPersonalComponent implements OnInit {
       colegio:                    [''],
       nombreTituloSegundoNivel:   [''],
       paisTituloSegundoNivel:     [''],
-      ciudadTitulo:               [''],
+      ciudadTituloSegundoNivel:   [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
       unidadGestion:              [''],

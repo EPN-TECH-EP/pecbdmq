@@ -27,8 +27,19 @@
 </ng-container>
 
 <ng-container *ngIf="estaCreando || estaActulizando">
+
+
   <div class="row justify-content-center">
     <div class="col-md-10">
+      <div *ngIf="estaActulizando" class="card rounded-7 my-4">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Proceso de Formación abierto</h5>
+          <p class="card-text">
+            Existe un proceso de formación ya creado, por lo que solo
+            se puede <b>actualizar</b> la convocatoria.
+          </p>
+        </div>
+      </div>
       <mdb-stepper #stepper [linear]="true">
         <!-- PASO UNO -->
         <mdb-step
@@ -276,7 +287,7 @@
                         mdbValidate
                         type="text"
                         id="horaFin"
-                        class="form-control mb-5"
+                        class="form-control mb-4"
                         [mdbTimepicker]="tpHoraFin"
                         (click)="tpHoraFin.open()"
                         formControlName="horaFin"
@@ -308,9 +319,20 @@
 
                 <!--Documento Convocatoria-->
                 <ng-container>
-                  <div *ngIf="convocatoria?.documentos?.length" class="mb-3">
+                  <div *ngIf="convocatoria?.documentos?.length"
+                       class="d-flex align-items-center mb-3 gap-3"
+                  >
                     <b>Nombre de documento subido: </b>
                     <span class="badge badge-primary fs-6">{{ convocatoria?.documentos[0]?.nombre }}</span>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-floating"
+                      [mdbTooltip]="'Visualizar documento'"
+                      placement="top"
+                      (click)="descargarDocumento(convocatoria?.documentos[0]?.codigo)"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
                   </div>
                   <div></div>
 
@@ -417,10 +439,12 @@
                       <mdb-select
                         [(ngModel)]="requisitoEditable"
                         name="nevoRequisito"
+                        [filter]="true"
                       >
                         <mdb-option
                           *ngFor="let requisito of requisitos"
                           [value]="requisito"
+                          class="text-wrap"
                         >
                           {{ requisito.nombre }}
                         </mdb-option>
@@ -430,7 +454,7 @@
                       >
                     </mdb-form-control>
                   </td>
-                  <td>
+                  <td class="text-center">
                     <!-- Agregar -->
                     <button
                       class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"

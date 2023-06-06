@@ -21,6 +21,8 @@ import {FORMACION} from 'src/app/util/constantes/fomacion.const';
 import {ComponenteBase} from 'src/app/util/componente-base';
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
+import {DocumentosService} from "../../../../servicios/formacion/documentos.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-convocatoria',
@@ -67,7 +69,9 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     private archivoService: ArchivoService,
     private formacionService: FormacionService,
     private notificationServiceLocal: MdbNotificationService,
-    private popConfirmServiceLocal: MdbPopconfirmService
+    private popConfirmServiceLocal: MdbPopconfirmService,
+    private documentosFormacionService: DocumentosService,
+    private router: Router
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
@@ -108,14 +112,23 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       if (customResponse.mensaje === FORMACION.estadoConvocatoria) {
         this.tieneEstadoConvocatoria = true;
         this.estaActulizando = true;
-        this.servicioConvocatoria.getConvocatoriaActiva().subscribe((data) => {
-          this.matchDatosConvocatoria(data[0]);
-          this.convocatoria = data[0];
-          console.log(this.convocatoria);
-          this.requisitosConvocatoria = data[0].requisitos;
-          this.correo.patchValue(data[0].correo);
-          this.documentoConvocatoriaField.clearValidators();
-          this.documentoConvocatoriaField.updateValueAndValidity();
+        this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
+          next: (data) => {
+            this.matchDatosConvocatoria(data[0]);
+            this.convocatoria = data[0];
+            console.log(this.convocatoria);
+            this.requisitosConvocatoria = data[0].requisitos;
+            this.correo.patchValue(data[0].correo);
+            this.documentoConvocatoriaField.clearValidators();
+            this.documentoConvocatoriaField.updateValueAndValidity();
+          },
+          error: (errorResponse) => {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              errorResponse
+            );
+          }
         });
       }
 
@@ -141,15 +154,15 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   private construirFormulario() {
     this.convocatoriaForm = this.formBuilder.group(
       {
-        codigo: ['', Validators.required],
-        cuposHombres: ['', Validators.required],
-        cuposMujeres: ['', Validators.required],
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
-        horaInicio: ['', Validators.required],
-        horaFin: ['', Validators.required],
-        documentoConvocatoria: ['', Validators.required],
-        documentoSoporte: [''],
+        codigo                : ['', Validators.required],
+        cuposHombres          : ['', Validators.required],
+        cuposMujeres          : ['', Validators.required],
+        fechaInicio           : ['', Validators.required],
+        fechaFin              : ['', Validators.required],
+        horaInicio            : ['', Validators.required],
+        horaFin               : ['', Validators.required],
+        documentoConvocatoria : ['', Validators.required],
+        documentoSoporte      : [''],
       },
       {
         validators: MyValidators.validDate,
@@ -210,16 +223,16 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     this.convocatoria = {
       ...this.convocatoria,
-      codigoUnico: this.convocatoriaForm.get('codigo')?.value,
-      cupoHombres: this.convocatoriaForm.get('cuposHombres')?.value,
-      cupoMujeres: this.convocatoriaForm.get('cuposMujeres')?.value,
-      horaInicioConvocatoria: this.convocatoriaForm.get('horaInicio')?.value,
-      horaFinConvocatoria: this.convocatoriaForm.get('horaFin')?.value,
-      fechaInicioConvocatoria: this.convocatoriaForm.get('fechaInicio')?.value,
-      fechaFinConvocatoria: this.convocatoriaForm.get('fechaFin')?.value,
-      requisitos: this.requisitosConvocatoria,
-      correo: this.correo.value,
-      estado: 'ACTIVO',
+      codigoUnico             : this.convocatoriaForm.get('codigo')?.value,
+      cupoHombres             : this.convocatoriaForm.get('cuposHombres')?.value,
+      cupoMujeres             : this.convocatoriaForm.get('cuposMujeres')?.value,
+      horaInicioConvocatoria  : this.convocatoriaForm.get('horaInicio')?.value,
+      horaFinConvocatoria     : this.convocatoriaForm.get('horaFin')?.value,
+      fechaInicioConvocatoria : this.convocatoriaForm.get('fechaInicio')?.value,
+      fechaFinConvocatoria    : this.convocatoriaForm.get('fechaFin')?.value,
+      requisitos              : this.requisitosConvocatoria,
+      correo                  : this.correo.value,
+      estado                  : 'ACTIVO',
     };
 
     const formData = new FormData();
@@ -294,13 +307,13 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     data.fechaFinConvocatoria = new Date(data.fechaFinConvocatoria);
 
     this.convocatoriaForm.patchValue({
-      codigo: data?.codigoUnico,
-      cuposHombres: data?.cupoHombres,
-      cuposMujeres: data?.cupoMujeres,
-      fechaInicio: data?.fechaInicioConvocatoria,
-      fechaFin: data?.fechaFinConvocatoria,
-      horaInicio: data?.horaInicioConvocatoria,
-      horaFin: data?.horaFinConvocatoria,
+      codigo        : data?.codigoUnico,
+      cuposHombres  : data?.cupoHombres,
+      cuposMujeres  : data?.cupoMujeres,
+      fechaInicio   : data?.fechaInicioConvocatoria,
+      fechaFin      : data?.fechaFinConvocatoria,
+      horaInicio    : data?.horaInicioConvocatoria,
+      horaFin       : data?.horaFinConvocatoria,
     });
 
   }
@@ -311,17 +324,16 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     this.convocatoria = {
       ...this.convocatoria,
-      documentos: [],
-      codigoUnico: this.convocatoriaForm.get('codigo')?.value,
-      cupoHombres: this.convocatoriaForm.get('cuposHombres')?.value,
-      cupoMujeres: this.convocatoriaForm.get('cuposMujeres')?.value,
-      horaInicioConvocatoria: this.convocatoriaForm.get('horaInicio')?.value,
-      horaFinConvocatoria: this.convocatoriaForm.get('horaFin')?.value,
-      fechaInicioConvocatoria: this.convocatoriaForm.get('fechaInicio')?.value,
-      fechaFinConvocatoria: this.convocatoriaForm.get('fechaFin')?.value,
-      requisitos: this.requisitosConvocatoria,
-      correo: this.correo.value,
-      estado: 'ACTIVO',
+      codigoUnico             : this.convocatoriaForm.get('codigo')?.value,
+      cupoHombres             : this.convocatoriaForm.get('cuposHombres')?.value,
+      cupoMujeres             : this.convocatoriaForm.get('cuposMujeres')?.value,
+      horaInicioConvocatoria  : this.convocatoriaForm.get('horaInicio')?.value,
+      horaFinConvocatoria     : this.convocatoriaForm.get('horaFin')?.value,
+      fechaInicioConvocatoria : this.convocatoriaForm.get('fechaInicio')?.value,
+      fechaFinConvocatoria    : this.convocatoriaForm.get('fechaFin')?.value,
+      requisitos              : this.requisitosConvocatoria,
+      correo                  : this.correo.value,
+      estado                  : 'ACTIVO',
     };
 
     console.log('Convocatoria para actualizar', this.convocatoria);
@@ -329,9 +341,14 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     console.log('Documento convocatoria', this.documentoConvocatoria);
 
     const formData = new FormData();
-    formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
-    formData.append('docsConvocatoria', this.documentoConvocatoria);
 
+    if (this.documentoConvocatoriaField?.touched) {
+      formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
+      formData.append('docsConvocatoria', this.documentoConvocatoria);
+    }
+
+    formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
+    console.log('Datos convocatoria', formData.get('datosConvocatoria'));
 
     this.subscriptions.push(
       this.servicioConvocatoria.actualizar(formData).subscribe({
@@ -344,6 +361,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.exitoCreacion = true;
           this.showLoading = false;
+          this.router.navigate(['/principal/formacion/proceso']);
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -358,5 +376,28 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       })
     );
 
+  }
+
+  descargarDocumento(idDocumento: number) {
+    console.log(idDocumento);
+    if (idDocumento) {
+      this.subscriptions.push(
+        this.documentosFormacionService.descargar(idDocumento).subscribe({
+          next: (documento: any) => {
+            console.log(documento);
+            const blob = new Blob([documento], {type: 'application/pdf'});
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+          },
+          error: (errorResponse: HttpErrorResponse) => {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              errorResponse
+            );
+          }
+        })
+      );
+    }
   }
 }
