@@ -201,6 +201,10 @@
       <i class="fa-solid fa-circle-exclamation me-2"></i>
       No se encontró ningún usuario con los datos ingresados
     </div>
+    <div *ngIf="esUsuarioDelegado" class="alert alert-warning my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      El usuario ya es delegado
+    </div>
   </section>
 
   <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">

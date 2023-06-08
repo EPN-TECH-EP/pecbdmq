@@ -19,6 +19,7 @@ export class GestionDelegadosComponent implements OnInit {
 
   agregarDelegado: boolean;
   existenCoincidencias: boolean;
+  esUsuarioDelegado: boolean;
   usuarios: Usuario[];
   usuariosDelegados: Delegado[];
   buscarUsuarioForm: FormGroup;
@@ -41,6 +42,7 @@ export class GestionDelegadosComponent implements OnInit {
     this.buscarUsuarioForm = new FormGroup({});
     this.usuariosDelegados = [];
     this.existenCoincidencias = true;
+    this.esUsuarioDelegado = false;
 
   }
 
@@ -101,12 +103,22 @@ export class GestionDelegadosComponent implements OnInit {
           if (usuario === null) {
             this.usuarios = [];
             this.existenCoincidencias = false;
+            this.esUsuarioDelegado = false;
             return;
           }
-          this.usuarios[0] = usuario;
-          this.usuarios.splice(1, this.usuarios.length);
-          this.usuarios = [...this.usuarios];
+
+          // Revisar si el usuario ya es delegado
+          const esUsuarioDelegado = this.usuariosDelegados.some((delegado) => delegado.cod_usuario === usuario.codUsuario);
+          if (esUsuarioDelegado) {
+            this.esUsuarioDelegado = true;
+            this.usuarios = [];
+            this.existenCoincidencias = true;
+            return;
+          }
+
+          this.usuarios = [usuario];
           this.existenCoincidencias = true;
+          this.esUsuarioDelegado = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -126,14 +138,18 @@ export class GestionDelegadosComponent implements OnInit {
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
-          if (usuarios.length === 0) {
+          const usuariosFiltrados = this.filtrarUsuariosDelegados(usuarios);
+
+          if (usuariosFiltrados.length === 0) {
             this.usuarios = [];
             this.existenCoincidencias = false;
+            this.esUsuarioDelegado = true;
             return;
           }
-          this.usuarios = usuarios;
-          this.usuarios = [...this.usuarios];
+
+          this.usuarios = usuariosFiltrados;
           this.existenCoincidencias = true;
+          this.esUsuarioDelegado = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -149,25 +165,18 @@ export class GestionDelegadosComponent implements OnInit {
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
-          if (usuarios.length === 0) {
+          const usuariosFiltrados = this.filtrarUsuariosDelegados(usuarios);
+
+          if (usuariosFiltrados.length === 0) {
             this.usuarios = [];
             this.existenCoincidencias = false;
+            this.esUsuarioDelegado = true;
             return;
           }
 
-          // filtro con mi arreglo de delegados
-          usuarios = usuarios.filter(usuario => {
-            return this.usuariosDelegados.find(delegado => delegado.cod_usuario === usuario.codUsuario) === undefined;
-          })
-
-          if (usuarios.length === 0) {
-            this.existenCoincidencias = false;
-            return;
-          }
-
-          this.usuarios = usuarios;
-          this.usuarios = [...this.usuarios];
+          this.usuarios = usuariosFiltrados;
           this.existenCoincidencias = true;
+          this.esUsuarioDelegado = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -225,5 +234,12 @@ export class GestionDelegadosComponent implements OnInit {
         console.error(errorResponse);
       }
     })
+  }
+
+  private filtrarUsuariosDelegados(usuarios: Usuario[]) {
+    this.usuariosDelegados.forEach((delegado) => {
+      usuarios = usuarios.filter((usuario) => usuario.codUsuario !== delegado.cod_usuario);
+    })
+    return usuarios;
   }
 }
