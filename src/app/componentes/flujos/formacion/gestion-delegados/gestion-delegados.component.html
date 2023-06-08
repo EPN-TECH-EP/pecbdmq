@@ -1,0 +1,253 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de delegados</h1>
+  </div>
+  <button
+    class="btn btn-primary mb-4"
+    (click)="agregarDelegado = true"
+  >
+    <i class="fa-solid fa-circle-plus me-2"></i>
+    Asignar delegado
+  </button>
+
+  <section *ngIf="agregarDelegado" class="mb-3">
+
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        [mdbTooltip]="'Cerrar'"
+        class="btn btn-danger btn-floating mb-2"
+        (click)="agregarDelegado = false"
+      >
+        <i class="fas fa-x"></i>
+      </button>
+    </div>
+
+    <div class="alert alert-info py-2" role="alert">
+      <i class="fa-solid fa-circle-info me-2"></i>
+      Puede buscar el usuario ingresando su número de identificación o nombre y apellidos o correo electrónico.
+    </div>
+
+    <!-- Formulario de búsqueda-->
+
+    <form [formGroup]="buscarUsuarioForm">
+      <mdb-tabs [justified]="true">
+        <mdb-tab title="Buscar por identificación">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-4 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                id="identificacion"
+                formControlName="identificacion"
+                [maxLength]="10"
+                [minLength]="10"
+                (keyup.enter)="buscarPorIdentificacion()"
+              >
+              <label mdbLabel class="form-label" for="identificacion">Identificación</label>
+              <mdb-error *ngIf="identificacionField?.dirty || identificacionField?.touched">
+                <span *ngIf="identificacionField?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                <span *ngIf="identificacionField?.hasError('invalid_identification')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  No es una cédula válida
+                </span>
+              </mdb-error>
+              <mdb-success
+                *ngIf="identificacionField?.valid && (identificacionField?.touched || identificacionField?.dirty)">
+                <i class="fa-solid fa-circle-check"></i>
+                Campo válido
+              </mdb-success>
+            </mdb-form-control>
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorIdentificacion()"
+              [disabled]="identificacionField.invalid"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+        <mdb-tab title="Buscar por nombres o apellidos">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-3 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                id="nombres"
+                formControlName="nombres"
+                (keyup.enter)="buscarPorNombresApellidos()"
+              >
+              <label mdbLabel class="form-label" for="nombres">Nombres</label>
+              <mdb-error *ngIf="nombresField?.dirty || nombresField?.touched">
+                <span *ngIf="nombresField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+              </mdb-error>
+            </mdb-form-control>
+            <mdb-form-control class="col-3 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                id="apellidos"
+                formControlName="apellidos"
+                (keyup.enter)="buscarPorNombresApellidos()"
+              >
+              <label mdbLabel class="form-label" for="apellidos">Apellidos</label>
+              <mdb-error *ngIf="apellidosField?.dirty || apellidosField?.touched">
+                <span *ngIf="apellidosField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+              </mdb-error>
+            </mdb-form-control>
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorNombresApellidos()"
+              [disabled]="nombresField?.value === '' && apellidosField?.value === ''"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+        <mdb-tab title="Buscar por correo">
+          <div class="row justify-content-center">
+            <mdb-form-control class="col-4 me-2">
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                class="form-control"
+                formControlName="correo"
+                id="correo"
+                (keyup.enter)="buscarPorCorreo()"
+              >
+              <label mdbLabel class="form-label" for="correo">Correo</label>
+              <mdb-error *ngIf="correoField?.dirty || correoField?.touched">
+                <span *ngIf="correoField?.hasError('email')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo debe ser un correo electrónico válido
+                </span>
+                <span *ngIf="correoField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+              </mdb-error>
+            </mdb-form-control>
+            <button
+              type="button"
+              class="btn btn-primary col-1"
+              (click)="buscarPorCorreo()"
+              [disabled]="correoField?.invalid"
+            >
+              Buscar
+            </button>
+          </div>
+        </mdb-tab>
+      </mdb-tabs>
+    </form>
+
+    <!-- Resultados de búsqueda -->
+    <div class="my-3 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
+      <div class="col-7">
+        <button
+          type="button"
+          [mdbTooltip]="'Limpiar registros'"
+          class="btn btn-primary btn btn-floating mb-2"
+          (click)="limpiarRegistros()">
+          <i class="fa-solid fa-broom-ball"></i>
+        </button>
+        <ul class="list-group list-group-light">
+          <li
+            *ngFor="let usuario of usuarios; let i = index"
+            class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-bold d-flex align-items-center gap-2">
+                <div class="span-number">{{ i + 1}}</div>
+                {{usuario?.codDatosPersonales?.nombre}} {{usuario?.codDatosPersonales?.apellido}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-id-card me-1"></i>
+                {{usuario?.codDatosPersonales?.cedula}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-envelope me-1"></i>
+                {{usuario?.codDatosPersonales?.correo_personal}}
+              </div>
+            </div>
+            <button
+              class="btn btn-sm btn-rounded"
+              (click)="asignarComoDelegado(usuario)"
+            >Asignar como delegado
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="!existenCoincidencias" class="alert alert-danger my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      No se encontró ningún usuario con los datos ingresados
+    </div>
+  </section>
+
+  <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <div class="mb-3">
+      Número total de delegados:
+      <span class="badge rounded-pill badge-primary">{{usuariosDelegados.length}}</span>
+    </div>
+    <form>
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        [dataSource]="usuariosDelegados"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            scope="col"
+            class="fw-bold fs-6"
+          >
+            {{ header.label | titlecase }}
+          </th>
+          <th class="text-center"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let delegado of table.data">
+          <td>{{ delegado.cedula }}</td>
+          <td>{{ delegado.nombre }}</td>
+          <td>{{ delegado.apellido }}</td>
+          <td class="text-center">
+            <button
+              mdbTooltip="Eliminar delegado"
+              class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              (click)="eliminarDelegado(delegado)"
+            >
+              <i class="fa fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+</div>
+
+

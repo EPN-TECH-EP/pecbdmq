@@ -64,6 +64,9 @@ import {
 import {EstadoProcesoFormacionComponent} from "../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component";
 import { AutenticacionChildGuard } from 'src/app/guard/autenticacion-child.guard';
 import { InscripcionesComponent } from 'src/app/componentes/flujos/formacion/inscripciones/inscripciones.component';
+import {
+  GestionDelegadosComponent
+} from "../../componentes/flujos/formacion/gestion-delegados/gestion-delegados.component";
 
 
 const routes: Routes = [
@@ -112,6 +115,7 @@ const routes: Routes = [
       {path: 'formacion/estado', component: EstadoProcesoFormacionComponent},
       {path: 'formacion/inscripciones', component: InscripcionesComponent},
       {path: 'formacion/validacion', component: ValidacionComponent},
+      {path: 'formacion/gestion-delegados', component: GestionDelegadosComponent},
 
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},

@@ -1,0 +1,229 @@
+import {Component, OnInit} from '@angular/core';
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {UsuarioService} from "../../../../servicios/usuario.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Usuario} from "../../../../modelo/admin/usuario";
+import {MyValidators} from "../../../../util/validators";
+import {HttpErrorResponse} from "@angular/common/http";
+import {Notificacion} from "../../../../util/notificacion";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {UsuarioNombreApellido} from "../../../../modelo/util/nombre-apellido";
+import {Delegado, DelegadoCreate, DelegadoService} from "../../../../servicios/formacion/delegado.service";
+
+@Component({
+  selector: 'app-gestion-delegados',
+  templateUrl: './gestion-delegados.component.html',
+  styleUrls: ['./gestion-delegados.component.scss']
+})
+export class GestionDelegadosComponent implements OnInit {
+
+  agregarDelegado: boolean;
+  existenCoincidencias: boolean;
+  usuarios: Usuario[];
+  usuariosDelegados: Delegado[];
+  buscarUsuarioForm: FormGroup;
+
+  headers = [
+    {key: 'nombreUsuario', label: 'Identificación'},
+    {key: 'nombre', label: 'Nombres'},
+    {key: 'apellido', label: 'Apellidos'},
+  ]
+
+
+  constructor(
+    private mdbNotificationService: MdbNotificationService,
+    private usuarioService: UsuarioService,
+    private builder: FormBuilder,
+    private delegadoService: DelegadoService,
+  ) {
+    this.agregarDelegado = false;
+    this.usuarios = [];
+    this.buscarUsuarioForm = new FormGroup({});
+    this.usuariosDelegados = [];
+    this.existenCoincidencias = true;
+
+  }
+
+  ngOnInit(): void {
+    this.delegadoService.listar().subscribe({
+      next: (delegados) => {
+        this.usuariosDelegados = delegados;
+      },
+      error: () => {
+        Notificacion.notificar(this.mdbNotificationService, "Error al listar los delegados", TipoAlerta.ALERTA_ERROR)
+      }
+    })
+    this.construirFormularioBusquedaUsuario();
+
+  }
+
+  private construirFormularioBusquedaUsuario() {
+
+    this.buscarUsuarioForm = this.builder.group({
+      identificacion: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          MyValidators.onlyNumbers(),
+          MyValidators.validIdentification()
+        ]
+      ],
+      apellidos: ['', [MyValidators.onlyLetters()]],
+      nombres: ['', [MyValidators.onlyLetters()]],
+      correo: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  get identificacionField() {
+    return this.buscarUsuarioForm.get('identificacion');
+  }
+
+  get nombresField() {
+    return this.buscarUsuarioForm.get('nombres');
+  }
+
+  get apellidosField() {
+    return this.buscarUsuarioForm.get('apellidos');
+  }
+
+  get correoField() {
+    return this.buscarUsuarioForm.get('correo');
+  }
+
+  buscarPorIdentificacion() {
+    if (this.identificacionField?.invalid) return;
+
+    this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
+      {
+        next: (usuario) => {
+          if (usuario === null) {
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
+          this.usuarios[0] = usuario;
+          this.usuarios.splice(1, this.usuarios.length);
+          this.usuarios = [...this.usuarios];
+          this.existenCoincidencias = true;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+          this.existenCoincidencias = false;
+          console.error(errorResponse);
+        },
+      });
+  }
+
+  buscarPorNombresApellidos() {
+    if (this.nombresField?.invalid || this.apellidosField?.invalid) return;
+
+    const data: UsuarioNombreApellido = {
+      nombre: this.nombresField.value,
+      apellido: this.apellidosField.value
+    }
+    this.usuarioService.buscarPorNombreApellido(data).subscribe(
+      {
+        next: (usuarios) => {
+          if (usuarios.length === 0) {
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
+          this.usuarios = usuarios;
+          this.usuarios = [...this.usuarios];
+          this.existenCoincidencias = true;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+          this.existenCoincidencias = false;
+          console.error(errorResponse);
+        },
+      });
+  }
+
+  buscarPorCorreo() {
+    if (this.correoField?.invalid) return;
+
+    this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
+      {
+        next: (usuarios) => {
+          if (usuarios.length === 0) {
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            return;
+          }
+
+          // filtro con mi arreglo de delegados
+          usuarios = usuarios.filter(usuario => {
+            return this.usuariosDelegados.find(delegado => delegado.cod_usuario === usuario.codUsuario) === undefined;
+          })
+
+          if (usuarios.length === 0) {
+            this.existenCoincidencias = false;
+            return;
+          }
+
+          this.usuarios = usuarios;
+          this.usuarios = [...this.usuarios];
+          this.existenCoincidencias = true;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+          this.existenCoincidencias = false;
+          console.error(errorResponse);
+        },
+      }
+    )
+  }
+
+
+  limpiarRegistros() {
+    this.usuarios = [];
+  }
+
+  asignarComoDelegado(usuario: Usuario) {
+    const delegado: DelegadoCreate = {
+      codUsuario: usuario.codUsuario,
+      codPeriodoAcademico: 190,
+      estado: 'ACTIVO'
+    }
+
+
+    this.delegadoService.asignar(delegado).subscribe({
+      next: (delegado) => {
+        this.usuariosDelegados.push(delegado);
+        this.usuariosDelegados = [...this.usuariosDelegados];
+
+        this.usuarios = this.usuarios.filter((usuarioFiltrado) => usuarioFiltrado.codUsuario !== usuario.codUsuario);
+        this.usuarios = [...this.usuarios];
+
+        Notificacion.notificar(this.mdbNotificationService, "Delegado asignado correctamente", TipoAlerta.ALERTA_OK);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        console.error(errorResponse);
+      }
+    })
+  }
+
+
+  eliminarDelegado(delegado: Delegado) {
+    const delegadoDelete = {
+      codUsuario: delegado.cod_usuario,
+      codPeriodoAcademico: 190,
+    }
+    this.delegadoService.eliminar(delegadoDelete).subscribe({
+      next: () => {
+        this.usuariosDelegados = this.usuariosDelegados.filter((delegadoFiltrado) => delegadoFiltrado.cod_usuario !== delegado.cod_usuario);
+        this.usuariosDelegados = [...this.usuariosDelegados];
+        Notificacion.notificar(this.mdbNotificationService, "Delegado eliminado correctamente", TipoAlerta.ALERTA_OK);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        console.error(errorResponse);
+      }
+    })
+  }
+}

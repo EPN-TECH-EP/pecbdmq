@@ -154,8 +154,8 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
     console.log(this.codigoConvocatoriaActiva)
     console.log(id)
     const formData = new FormData();
-    formData.append('convocatoria', id.toString());
-    formData.append('codDocumento', this.codigoConvocatoriaActiva.toString());
+    formData.append('convocatoria', this.codigoConvocatoriaActiva.toString());
+    formData.append('codDocumento', id.toString());
 
     this.documentosService.eliminar(formData).subscribe({
       next: () => {

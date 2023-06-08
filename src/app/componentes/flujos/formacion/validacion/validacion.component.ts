@@ -135,11 +135,14 @@ export class ValidacionComponent implements OnInit {
       next: () => {
         Notificacion.notificar(this.mdbNotificationService, 'Se guardaron los requisitos', TipoAlerta.ALERTA_INFO);
         this.router.navigate(['principal/formacion/inscripciones']);
+      },
+      error: err => {
+        Notificacion.notificar(this.mdbNotificationService, 'No se pudo guardar los requisitos', TipoAlerta.ALERTA_ERROR);
+        console.log("No se pudo guardar los requisitos", err);
       }
     });
 
   }
-
 
   toggleListaRequisitos() {
     this.estaExpandidoListaRequisitos = !this.estaExpandidoListaRequisitos;

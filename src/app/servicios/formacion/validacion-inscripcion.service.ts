@@ -22,7 +22,7 @@ export class ValidacionInscripcionService {
   }
 
   listarInscripciones(idUsuario: number) {
-    const params = {page: '0', size: '10'}
+    const params = {page: '0', size: '50'}
     return this.http.get<InscripcionItem[]>(`${this.host}/inscripcionfor/postulantesPaginado/${idUsuario}`, {params});
   }
 
