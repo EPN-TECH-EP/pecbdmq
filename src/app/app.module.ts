@@ -132,6 +132,7 @@ import { EstadoProcesoFormacionComponent } from './componentes/flujos/formacion/
 import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso-stepper/estado-proceso-stepper.component';
 import { InscripcionesComponent } from './componentes/flujos/formacion/inscripciones/inscripciones.component';
 import { GestionDelegadosComponent } from './componentes/flujos/formacion/gestion-delegados/gestion-delegados.component';
+import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion/reasignacion-inscripcion/reasignacion-inscripcion.component';
 
 @NgModule({
   declarations: [
@@ -192,7 +193,8 @@ import { GestionDelegadosComponent } from './componentes/flujos/formacion/gestio
     EstadoProcesoFormacionComponent,
     EstadoProcesoStepperComponent,
     InscripcionesComponent,
-    GestionDelegadosComponent
+    GestionDelegadosComponent,
+    ReasignacionInscripcionComponent
   ],
   imports: [
     BrowserModule,

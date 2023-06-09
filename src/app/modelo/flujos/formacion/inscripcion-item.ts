@@ -1,5 +1,7 @@
 export interface InscripcionItem {
-  cedula?:              string;
+  nombreUsuario?:       string;
+  correoUsuario?:      string;
+  cedula?:             string;
   nombre?:             string;
   apellido?:           string;
   codDatoPersonal:     number;

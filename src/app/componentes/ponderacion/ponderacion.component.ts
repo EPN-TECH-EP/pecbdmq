@@ -8,16 +8,10 @@ import {TipoNota} from 'src/app/modelo/admin/tipo-nota';
 import {TipoNotaService} from 'src/app/servicios/tipo-nota.service';
 import {Periodo} from 'src/app/modelo/admin/periodo-academico';
 import {PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
-import {Component, OnInit, Input} from '@angular/core';
-import {ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {
-  MdbPopconfirmService,
-} from 'mdb-angular-ui-kit/popconfirm';
-import {
-  MdbNotificationRef,
-  MdbNotificationService,
-} from 'mdb-angular-ui-kit/notification';
+import {MdbPopconfirmService,} from 'mdb-angular-ui-kit/popconfirm';
+import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Notificacion} from 'src/app/util/notificacion';
@@ -26,7 +20,6 @@ import {ComponenteBase} from 'src/app/util/componente-base';
 import {ValidacionUtil} from 'src/app/util/validacion-util';
 import {OPCIONES_DATEPICKER} from '../../util/constantes/opciones-datepicker.const';
 import {PonderacionTodo} from 'src/app/modelo/admin/ponderacion-todo';
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-ponderacion',
@@ -265,7 +258,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       ).subscribe({
         next: (response) => {
           let index = this.ponderaciones.findIndex(value1 => value1.cod_ponderacion === ponderacion.cod_ponderacion);
-          let ponderacionTodo = {
+          this.ponderaciones[index] = {
             ...ponderacion,
             modulo_desc: this.modulos.find(
               (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
@@ -282,7 +275,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (periodo) => periodo.codigo === ponderacion.cod_periodo_academico
             ).descripcion,
           };
-          this.ponderaciones[index] = ponderacionTodo;
           this.ponderaciones = [...this.ponderaciones];
           this.codigoPonderacionEditando = 0;
           this.estaEditando = false;

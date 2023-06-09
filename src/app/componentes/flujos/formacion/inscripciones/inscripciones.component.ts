@@ -47,7 +47,7 @@ export class InscripcionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.validacionInscripcionService.listarInscripciones(this.usuario.codUsuario).subscribe({
+    this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
       next: inscripciones => {
         console.log(inscripciones)
         this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
