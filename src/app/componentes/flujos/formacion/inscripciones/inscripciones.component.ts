@@ -17,8 +17,8 @@ import {TipoAlerta} from "../../../../enum/tipo-alerta";
 })
 export class InscripcionesComponent implements OnInit {
 
-  usuario: Usuario = null;
-  inscripciones: InscripcionItem[]
+  usuario               : Usuario = null;
+  inscripciones         : InscripcionItem[]
   inscripcionesAsignadas: InscripcionItem[]
   inscripcionesLoaded = false
 
@@ -49,10 +49,11 @@ export class InscripcionesComponent implements OnInit {
   ngOnInit(): void {
     this.validacionInscripcionService.listarInscripciones(this.usuario.codUsuario).subscribe({
       next: inscripciones => {
+        console.log(inscripciones)
         this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
-        console.log(this.inscripcionesAsignadas)
+        console.log('Asignadas', this.inscripcionesAsignadas)
         this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
-        console.log(this.inscripciones)
+        console.log('Pendientes', this.inscripciones)
         this.inscripcionesLoaded = true
       },
       error: err => console.log(err)
@@ -60,14 +61,8 @@ export class InscripcionesComponent implements OnInit {
   }
 
   validar(inscripcion: InscripcionItem) {
-    // this.validacionInscripcionService.getPostulante(inscripcion.codPostulante).subscribe({
-    //   next: postulante => {
-    //     console.log(this.router.navigate(['/formacion/validacion', postulante.codPostulante]))
-    //     this.router.navigate(['/formacion/validacion', postulante.codPostulante])
-    //   },
-    //   error: err => console.log(err)
-    // })
-    this.router.navigate(['principal/formacion/validacion', inscripcion.codPostulante])
+    this.validacionInscripcionService.idPostulante = inscripcion.codPostulante;
+    this.router.navigate(['principal/formacion/validacion']).then()
   }
 
   asignar(idPostulante: number) {
@@ -77,9 +72,12 @@ export class InscripcionesComponent implements OnInit {
       estado: 'ASIGNADO'
     }
     this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
-      next: inscripcion => {
-        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
-        this.inscripcionesAsignadas.push(inscripcion)
+      next:() => {
+        const index = this.inscripciones.findIndex(inscripcion => inscripcion.codPostulante === idPostulante);
+        if (index !== -1) {
+          const inscripcion = this.inscripciones.splice(index, 1)[0];
+          this.inscripcionesAsignadas.push(inscripcion);
+        }
         Notificacion.notificar(this.mdbNotificationService, "Usuario asignado correctamente", TipoAlerta.ALERTA_OK)
       },
       error: err => {

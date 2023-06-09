@@ -38,11 +38,13 @@ export class DocumentosService {
       });
   }
 
-  eliminar(id: number) {
-    return this.http.post(`${this.host}/documento/eliminardocumentoconvocatoria/${id}`, null);
+  eliminar(formData: FormData) {
+    return this.http.delete(`${this.host}/documento/eliminardocumentoconvocatoria`,
+      {body: formData}
+    );
   }
 
-  descargarArchivo(id: number) {
+  descargar(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
       responseType: 'blob',
     }).pipe(
@@ -53,7 +55,7 @@ export class DocumentosService {
   }
 
   visualizarArchivo(id: number): Observable<SafeResourceUrl> {
-    return this.descargarArchivo(id).pipe(
+    return this.descargar(id).pipe(
       map(data => {
         const blob = new Blob([data], {type: 'application/pdf'});
         const archivo = new File([blob], 'archivo.pdf', {type: 'application/pdf'});

@@ -1,7 +1,10 @@
 export interface ValidacionRequisito {
-  cod_validacion_requisitos: number,
-  cod_requisitos: number,
-  nombre_requisito: string,
+  codValidacion: number,
+  codRequisitos: number,
+  codPostulante: number,
+  nombreRequisito: string,
   estado: boolean,
   observaciones: string | null
+  estadoMuestra: boolean | null,
+  observacionMuestra: string | null
 }

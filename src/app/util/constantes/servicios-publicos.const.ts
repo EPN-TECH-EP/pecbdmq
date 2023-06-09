@@ -8,4 +8,5 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
 '/provincia',
 '/canton',
 '/inscripcionfor',
+'/apicbdmq'
 ];

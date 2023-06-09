@@ -65,6 +65,9 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
   private tamMaxArchivo: number;
 
+
+  ocurrioErrorInicioProceso = false;
+
   
 
   constructor(
@@ -98,7 +101,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         if (customResponse.httpStatusCode === 200) {
           this.terminaConsultaEstado = true;
 
-          if (customResponse.mensaje !== FORMACION.estado_inicial) {
+          if (customResponse.mensaje !== FORMACION.estadoInicial) {
             //Notificacion.notificacion(this.notificationRef, this.notificationService, null, 'Ya existe una convocatoria activa.');
             this.procesoActivo = true;
           } else {

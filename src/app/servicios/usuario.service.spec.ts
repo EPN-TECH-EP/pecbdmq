@@ -79,7 +79,7 @@ describe('UsuarioService (with spies)', () => {
 
     httpClientSpy.post.and.returnValue(asyncData(usuario));
 
-    usuarioService.actualizarUsuario(usuario).subscribe({
+    usuarioService.actualizar(usuario).subscribe({
       next: usuarioResp => {
         expect(usuarioResp).toEqual(usuario);
         done();
@@ -156,7 +156,7 @@ describe('UsuarioService (with mocks)', () => {
         "notLocked": false
     }
 
-      usuarioService.actualizarUsuario(usuario).subscribe({
+      usuarioService.actualizar(usuario).subscribe({
         next: data => expect(data)
           .withContext('Debe retornar usuario actualizado')
           .toEqual(usuario),

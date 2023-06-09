@@ -91,4 +91,22 @@ export class InscripcionService {
     );
   }
 
+  // validar fechas
+  // retorna boolean si el período de inscirpcion esta activo
+  // ruta: inscripcionfor/validafechas GET
+  public validarFechas(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/inscripcionfor/validafechas`);
+  }
+
+  // busca inscripcion por cédula
+  // si existe ya no puede inscribirse
+  // retorna boolean
+  // PARAMS: cedula
+  // ruta: inscripcionfor/{cedula} GET
+  public buscarInscripcionPorCedula(cedula: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.host}/inscripcionfor/inscripcionPorCedula/${cedula}`
+    );
+  }
+
 }

@@ -13,9 +13,12 @@ import {ArchivoService} from "../archivo.service";
 })
 export class ValidacionInscripcionService {
 
+  idPostulante: number | null
+
   private host = environment.apiUrl
 
   constructor(private http: HttpClient, private archivoService: ArchivoService) {
+    this.idPostulante = null
   }
 
   listarInscripciones(idUsuario: number) {
@@ -27,12 +30,16 @@ export class ValidacionInscripcionService {
     return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulante`, usuarioAsignado);
   }
 
-  getInscripcion(id: number) {
-    return this.http.get<InscripcionCompleta>(`${this.host}/inscripcionfor/datos/${id}`);
+  getInscripcion(idPostulante: number) {
+    return this.http.get<InscripcionCompleta>(`${this.host}/inscripcionfor/datos/${idPostulante}`);
   }
 
   listarRequisitos(codigoPostulante: number) {
     return this.http.get<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitos/${codigoPostulante}`);
+  }
+
+  guardarRequisitos(requisitos: ValidacionRequisito[]) {
+    return this.http.put<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitosUpdate`, requisitos);
   }
 
 }

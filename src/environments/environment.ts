@@ -5,8 +5,9 @@
 export const environment = {
   production: false,
   //apiUrl: 'http://192.168.0.184:8081' // pruebas CBDMQ
-  apiUrl: 'http://192.168.0.184:8083' // interno
-  //apiUrl: 'http://localhost:8083'
+  apiUrl: 'http://192.168.0.184:8083', // interno
+  //apiUrl: 'http://localhost:8083', // local
+  appKey: 'vQ9sdpG52a3Rm4LZYc8fDlNKjnWbHIXheU6YiAzS1VJ0o7OtTwgxqpukCFREz'
 };
 
 /*

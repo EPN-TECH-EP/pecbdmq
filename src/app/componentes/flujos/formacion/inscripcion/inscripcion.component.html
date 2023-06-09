@@ -13,13 +13,20 @@
 
   <hr class="hr hr-blurry" />
   <!-- Inicio estructura de pasos -->
-  <mdb-stepper #stepper [linear]="true">
+  <mdb-stepper
+    #stepper
+    [linear]="true"
+    [markAsCompleted]="true"
+    (stepChange)="stepChange($event, stepper, 'stepper')"
+    [stepperHeadClick]="false"
+  >
     <!-- Paso 1 -->
     <mdb-step
       [stepForm]="formularioInscripcion"
       [name]="'Paso 1 - Formulario de Inscripción'"
-      (stepChange)="stepChange($event, stepper)"
-      [editable]="!finInscripcion"
+      (clickStep)="stepChange($event, stepper, 'step1')"
+      [editable]="false"
+      id="step1"
     >
       <ng-template mdbStepIcon>
         <i class="fas fa-user"></i>
@@ -58,6 +65,7 @@
                     class="form-control mb-5"
                     formControlName="cedula"
                     [maxlength]="10"
+                    (blur)="consultarDatosCedula()"
                   />
                   <label mdbLabel class="form-label mb-2x" for="cedula"
                     >Cédula</label
@@ -246,6 +254,7 @@
                   <mdb-datepicker-toggle
                     [mdbDatepicker]="dpFechaNacimiento"
                     (click)="fechaNacimientoField.markAsTouched()"
+                    [disabled]="existenDatosCiudadano"
                   ></mdb-datepicker-toggle>
                   <mdb-datepicker
                     #dpFechaNacimiento="mdbDatepicker"
@@ -1076,10 +1085,10 @@
             <div class="column text-center">
               <button
                 id="next-step"
-                (click)="stepChange($event, stepper)"
+                (click)="stepChange($event, stepper, 'button')"
                 type="submit"
                 class="btn btn-primary"
-                [disabled]="showLoading"
+                [disabled]="!formularioInscripcion.valid || showLoading"
               >
                 <span
                   *ngIf="showLoading"
@@ -1099,12 +1108,14 @@
     <mdb-step
       [name]="'Paso 2 - Validacion de Email'"
       [stepForm]="formularioPinSeguridad"
-      [editable]="!finInscripcion"
+      (clickStep)="stepChange($event, stepper, 'step2')"
+      id="step2"
+      [editable]="false"
     >
       <ng-template mdbStepIcon>
         <i class="far fa-envelope"></i>
       </ng-template>
-      <div class="alert alert-light col-6 mx-auto" role="alert">
+      <div class="alert alert-light col-9 mx-auto" role="alert">
         <i class="far fa-envelope fa-5x"></i>
         <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
         <hr />
@@ -1156,30 +1167,77 @@
             type="button"
             class="btn btn-success btn-rounded w-100"
             [disabled]="formularioPinSeguridad.invalid"
-            (click)="stepChange($event, stepper)"
+            (click)="stepChange($event, stepper, 'button')"
           >
-          <span
-                  *ngIf="showLoading"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span *ngIf="showLoading">Espere...</span>
-                <span *ngIf="!showLoading">CONFIRMAR</span>            
+            <span
+              *ngIf="showLoading"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="showLoading">Espere...</span>
+            <span *ngIf="!showLoading">CONFIRMAR</span>
           </button>
         </form>
+
+        <ng-container *ngIf="pinIncorrecto">
+          <hr class="hr hr-blurry" />
+
+          <form [formGroup]="formularioReenvioPin">
+            <mdb-form-control>
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="correoPin"
+                class="form-control mb-5"
+                placeholder="Ingrese un correo electrónico válido"
+                formControlName="correoPin"
+              />
+              <label mdbLabel class="form-label mb-2x" for="correoPin"
+                >Correo para reenvío de PIN</label
+              >
+            </mdb-form-control>
+
+            <button
+              type="button"
+              class="btn btn-success btn-rounded w-100"
+              (click)="enviarPin()"
+              [disabled]="formularioReenvioPin.invalid || showLoadingPin"
+            >
+              <span
+                *ngIf="showLoadingPin"
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span *ngIf="showLoadingPin">Espere...</span>
+              <span *ngIf="!showLoadingPin">Reenviar PIN</span>
+            </button>
+          </form>
+        </ng-container>
       </div>
     </mdb-step>
     <!-- Paso 3 -->
-    <mdb-step [name]="'Paso 3 - Confirmación de registro'">
+    <mdb-step
+      [name]="'Paso 3 - Confirmación de registro'"
+      (clickStep)="stepChange($event, stepper, 'step3')"
+      [editable]="false"
+      id="step3"
+    >
       <ng-template mdbStepIcon>
         <i class="far fa-check-circle"></i>
       </ng-template>
-      <div class="alert alert-success d-grid col-6 mx-auto" role="alert">
+      <div class="alert alert-success d-grid col-9 mx-auto" role="alert">
         <i class="far fa-check-circle fa-5x"></i>
         <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
         <hr />
-        <p>Se envió un correo con su CÓDIGO ÚNICO: <span class="text-primary">{{ idPostulante }}</span>. Este código de identificación se usará en futuros comunicados de la academia.</p>
+        <p>
+          Se envió un correo con su CÓDIGO ÚNICO:
+          <span class="text-primary">{{ idPostulante }}</span
+          >. Este código de identificación se usará en futuros comunicados de la
+          academia.
+        </p>
         <br />
         <p>Puede cerrar esta ventana de forma segura.</p>
         <!-- <p></p>

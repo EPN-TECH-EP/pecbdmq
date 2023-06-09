@@ -1,5 +1,19 @@
 <app-boton-volver></app-boton-volver>
 
+<ng-container *ngIf="ocurrioErrorInicioProceso">
+  <div class="alert alert-danger mt-3" role="alert">
+    <h4 class="alert-heading">Error al iniciar el proceso</h4>
+    <p>
+      No se pudo iniciar el proceso de formación, por favor intente de nuevo.
+    </p>
+    <hr/>
+    <p class="mb-0">
+      Si el error persiste, por favor comuníquese con el administrador del
+      sistema.
+    </p>
+  </div>
+</ng-container>
+
 <ng-container *ngIf="terminaConsultaEstado && procesoActivo">
   <div class="card rounded-7">
     <div class="card-body">

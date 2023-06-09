@@ -1,11 +1,7 @@
-import { Injectable } from '@angular/core';
-import { DocumentoFormacion } from './documento';
-
+import {DocumentoFormacion} from "./documento";
 
 export interface InscripcionCompleta {
-
-
-apellido:                   string;
+  apellido:                   string;
   callePrincipalResidencia:   string;
   calleSecundariaResidencia:  string;
   cantonNacimiento:           string;

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class InscripcionCompletaDto {
 
 
-public codigo: number;
+public codDatoPersonal: number;
 public cedula: number;
 public apellido: string;
 public nombre: string;
