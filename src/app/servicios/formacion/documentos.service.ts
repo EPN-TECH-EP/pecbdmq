@@ -38,10 +38,8 @@ export class DocumentosService {
       });
   }
 
-  eliminar(formData: FormData) {
-    return this.http.delete(`${this.host}/documento/eliminardocumentoconvocatoria`,
-      {body: formData}
-    );
+  eliminar(id:number) {
+    return this.http.delete(`${this.host}/documentofor/eliminardocumentoFormacion/${id}`);
   }
 
   descargar(id: number) {

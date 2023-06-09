@@ -153,11 +153,8 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   eliminar(id: number) {
     console.log(this.codigoConvocatoriaActiva)
     console.log(id)
-    const formData = new FormData();
-    formData.append('convocatoria', this.codigoConvocatoriaActiva.toString());
-    formData.append('codDocumento', id.toString());
 
-    this.documentosService.eliminar(formData).subscribe({
+    this.documentosService.eliminar(id).subscribe({
       next: () => {
         let index = this.documentos.findIndex((documento) => documento.codigo == id);
         this.documentos.splice(index, 1);

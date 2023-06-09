@@ -30,7 +30,7 @@ export class ConvocatoriaService {
   }
 
   getConvocatoriaActiva() {
-    return this.http.get(`${this.host}/convocatoria/`);
+    return this.http.get(`${this.host}/convocatoria/activa`);
   }
 
   actualizar(formData: FormData) {

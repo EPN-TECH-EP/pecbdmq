@@ -50,6 +50,7 @@ export class GestionDelegadosComponent implements OnInit {
     this.delegadoService.listar().subscribe({
       next: (delegados) => {
         this.usuariosDelegados = delegados;
+        console.log('delegados: ', this.usuariosDelegados)
       },
       error: () => {
         Notificacion.notificar(this.mdbNotificationService, "Error al listar los delegados", TipoAlerta.ALERTA_ERROR)
@@ -138,6 +139,7 @@ export class GestionDelegadosComponent implements OnInit {
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
+          console.log('usuarios: ', usuarios)
           const usuariosFiltrados = this.filtrarUsuariosDelegados(usuarios);
 
           if (usuariosFiltrados.length === 0) {
@@ -201,12 +203,15 @@ export class GestionDelegadosComponent implements OnInit {
 
 
     this.delegadoService.asignar(delegado).subscribe({
-      next: (delegado) => {
-        this.usuariosDelegados.push(delegado);
-        this.usuariosDelegados = [...this.usuariosDelegados];
-
-        this.usuarios = this.usuarios.filter((usuarioFiltrado) => usuarioFiltrado.codUsuario !== usuario.codUsuario);
-        this.usuarios = [...this.usuarios];
+      next: () => {
+        // this.usuariosDelegados.push(delegado);
+        // this.usuariosDelegados = [...this.usuariosDelegados];
+        //
+        // this.usuarios = this.usuarios.filter((usuarioFiltrado) => usuarioFiltrado.codUsuario !== usuario.codUsuario);
+        // this.usuarios = [...this.usuarios];
+        this.delegadoService.listar().subscribe(
+          delegados => this.usuariosDelegados = delegados
+        )
 
         Notificacion.notificar(this.mdbNotificationService, "Delegado asignado correctamente", TipoAlerta.ALERTA_OK);
       },
@@ -218,19 +223,16 @@ export class GestionDelegadosComponent implements OnInit {
   }
 
 
-  eliminarDelegado(delegado: Delegado) {
-    const delegadoDelete = {
-      codUsuario: delegado.cod_usuario,
-      codPeriodoAcademico: 190,
-    }
-    this.delegadoService.eliminar(delegadoDelete).subscribe({
+  eliminarDelegado(id: number) {
+
+    this.delegadoService.eliminar(id).subscribe({
       next: () => {
-        this.usuariosDelegados = this.usuariosDelegados.filter((delegadoFiltrado) => delegadoFiltrado.cod_usuario !== delegado.cod_usuario);
+        this.usuariosDelegados = this.usuariosDelegados.filter((delegadoFiltrado) => delegadoFiltrado.cod_usuario !== id);
         this.usuariosDelegados = [...this.usuariosDelegados];
         Notificacion.notificar(this.mdbNotificationService, "Delegado eliminado correctamente", TipoAlerta.ALERTA_OK);
       },
       error: (errorResponse: HttpErrorResponse) => {
-        Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificar(this.mdbNotificationService, 'No se pudo eliminar el delegado', TipoAlerta.ALERTA_ERROR);
         console.error(errorResponse);
       }
     })
