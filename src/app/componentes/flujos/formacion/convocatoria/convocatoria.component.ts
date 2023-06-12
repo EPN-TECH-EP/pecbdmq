@@ -347,8 +347,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       formData.append('docsConvocatoria', this.documentoConvocatoria);
     }
 
-    formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
-    console.log('Datos convocatoria', formData.get('datosConvocatoria'));
 
     this.subscriptions.push(
       this.servicioConvocatoria.actualizar(formData).subscribe({

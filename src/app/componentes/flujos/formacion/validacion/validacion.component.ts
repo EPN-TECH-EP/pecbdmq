@@ -61,7 +61,7 @@ export class ValidacionComponent implements OnInit {
         console.log("documentos", this.inscripcion.documentos);
 
         const observables = this.inscripcion?.documentos?.map(documento =>
-          this.documentosService.visualizarArchivo(documento.codigoDocumento)
+          this.documentosService.visualizarArchivo(documento.codDocumento)
         );
 
         if (observables && observables.length > 0) {

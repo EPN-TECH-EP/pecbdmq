@@ -83,6 +83,7 @@
         mdbTable
         mdbTableSort
         #tableInscripciones="mdbTable"
+        [pagination]="pagination"
         [dataSource]="inscripciones"
       >
         <thead class="datatable-header">
@@ -114,6 +115,11 @@
         </tr>
         </tbody>
       </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
       <ng-container *ngIf="tableInscripciones.data?.length === 0">
         <div class="alert alert-warning my-3 py-2">
           <i class="fas fa-exclamation-triangle me-1"></i>
