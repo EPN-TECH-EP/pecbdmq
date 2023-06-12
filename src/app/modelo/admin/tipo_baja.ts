@@ -1,6 +1,6 @@
 
 export interface TipoBaja {
-  cod_tipo_baja: number;
+  codTipoBaja: number;
   baja: string;
   estado: string;
 }

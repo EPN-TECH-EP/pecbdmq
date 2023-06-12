@@ -50,12 +50,12 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.tiposprueba = [];
     this.subscriptions = [];
     this.tipoPrueba = {
-      cod_tipo_prueba: 0,
+      codTipoPrueba: 0,
       prueba: '',
       estado: 'ACTIVO'
     };
     this.tipoPruebaEditForm = {
-      cod_tipo_prueba: 0,
+      codTipoPrueba: 0,
       prueba: '',
       estado: 'ACTIVO'
     };
@@ -131,7 +131,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.addRow = false;
 
           this.tipoPrueba = {
-            cod_tipo_prueba: 0,
+            codTipoPrueba: 0,
             prueba: '',
             estado: 'ACTIVO'
           }
@@ -150,7 +150,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.tipoPruebaEditForm = {
-      cod_tipo_prueba: 0,
+      codTipoPrueba: 0,
       prueba: '',
       estado: 'ACTIVO'
     };
@@ -170,14 +170,14 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.cod_tipo_prueba).subscribe({
+      this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.codTipoPrueba).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba actualizada con éxito');
 
           this.tiposprueba[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoPrueba = {
-            cod_tipo_prueba: 0,
+            codTipoPrueba: 0,
             prueba: '',
             estado: 'ACTIVO'
           }
@@ -206,7 +206,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba eliminada con éxito');
           this.showLoading = false;
-          const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
+          const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.codTipoPrueba === this.codigo);
           this.tiposprueba.splice(index, 1);
           this.tiposprueba = [...this.tiposprueba];
         },

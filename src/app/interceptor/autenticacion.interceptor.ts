@@ -59,7 +59,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
       }*/
 
       
-      return httpHandler.handle(modifiedReq);
+      return httpHandler.handle(httpRequest);
     }
 
     this.autenticacionService.cargaToken();

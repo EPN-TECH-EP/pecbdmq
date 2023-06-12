@@ -48,7 +48,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
       this.usuarioEnvio.codDatosPersonales.nombre = this.usuarioFrm.nombre;
       this.usuarioEnvio.codDatosPersonales.apellido = this.usuarioFrm.apellido;
-      this.usuarioEnvio.codDatosPersonales.correo_personal =this.usuarioFrm.correoPersonal;
+      this.usuarioEnvio.codDatosPersonales.correoPersonal =this.usuarioFrm.correoPersonal;
 
       this.subscriptions.push(
         this.autenticacionService.registro(this.usuarioEnvio).subscribe({

@@ -1,5 +1,5 @@
 export interface Grado {
-  cod_grado: number;
+  codGrado: number;
   nombre: string;
   estado: string;
 }

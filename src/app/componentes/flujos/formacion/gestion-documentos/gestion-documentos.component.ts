@@ -58,7 +58,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
       console.log(documentos);
       this.documentos = documentos;
     });
-    this.convocatoriaService.getConvocatoria().subscribe({
+    this.convocatoriaService.getConvocatoriaActiva().subscribe({
       next: (convocatorias: Convocatoria[]) => {
         this.codigoConvocatoriaActiva = convocatorias[0].codConvocatoria
       },
@@ -153,11 +153,8 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   eliminar(id: number) {
     console.log(this.codigoConvocatoriaActiva)
     console.log(id)
-    const formData = new FormData();
-    formData.append('convocatoria', id.toString());
-    formData.append('codDocumento', this.codigoConvocatoriaActiva.toString());
 
-    this.documentosService.eliminar(formData).subscribe({
+    this.documentosService.eliminar(id).subscribe({
       next: () => {
         let index = this.documentos.findIndex((documento) => documento.codigo == id);
         this.documentos.splice(index, 1);

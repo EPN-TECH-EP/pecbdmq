@@ -21,13 +21,18 @@ export class ValidacionInscripcionService {
     this.idPostulante = null
   }
 
-  listarInscripciones(idUsuario: number) {
-    const params = {page: '0', size: '10'}
+  listarInscripciones() {
+    const params = {page: '0', size: '50'}
+    return this.http.get<InscripcionItem[]>(`${this.host}/inscripcionfor/postulantesAllPaginado`);
+  }
+
+  listarInscripcionesByIdUsuario(idUsuario: number) {
+    const params = {page: '0', size: '50'}
     return this.http.get<InscripcionItem[]>(`${this.host}/inscripcionfor/postulantesPaginado/${idUsuario}`, {params});
   }
 
   asignarValidador(usuarioAsignado: UsuarioAsignado) {
-    return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulante`, usuarioAsignado);
+    return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulanteAsignar`, usuarioAsignado);
   }
 
   getInscripcion(idPostulante: number) {
@@ -42,4 +47,7 @@ export class ValidacionInscripcionService {
     return this.http.put<ValidacionRequisito[]>(`${this.host}/inscripcionfor/requisitosUpdate`, requisitos);
   }
 
+  reasignarInscripcion(usuarioAsignado: UsuarioAsignado) {
+    return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulanteAsignar`, usuarioAsignado);
+  }
 }

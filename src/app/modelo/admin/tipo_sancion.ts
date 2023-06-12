@@ -1,5 +1,5 @@
 export interface ITipoSancion {
-  cod_tipo_sancion: number;
+  codTipoSancion: number;
   sancion: string;
   estado: string;
 }

@@ -91,11 +91,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.ponderaciones = [];
     this.subscriptions = [];
     this.ponderacion = {
-      cod_ponderacion: 0,
-      cod_modulo: null,
-      cod_periodo_academico: null,
-      cod_componente_nota: null,
-      cod_tipo_nota: null,
+      codPonderacion: 0,
+      codModulo: null,
+      codPeriodoAcademico: null,
+      codComponenteNota: null,
+      codTipoNota: null,
       porcentajefinalponderacion: null,
       porcentajenotamateria: null,
       fechainiciovigencia: new Date(),
@@ -103,11 +103,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       estado: 'ACTIVO',
     };
     this.ponderacionEditForm = {
-      cod_ponderacion: 0,
-      cod_modulo: 0,
-      cod_periodo_academico: 0,
-      cod_componente_nota: 0,
-      cod_tipo_nota: 0,
+      codPonderacion: 0,
+      codModulo: 0,
+      codPeriodoAcademico: 0,
+      codComponenteNota: 0,
+      codTipoNota: 0,
       porcentajefinalponderacion: 0,
       porcentajenotamateria: 0,
       fechainiciovigencia: new Date(),
@@ -233,18 +233,18 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           let ponderacionTodo = {
             ...nuevaPonderacion,
             modulo_desc: this.modulos.find(
-              (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
+              (modulo) => modulo.codModulo === ponderacion.codModulo
             ).etiqueta,
             componente_nota_desc: this.componentes.find(
               (componente) =>
-                componente.cod_componente_nota ===
-                ponderacion.cod_componente_nota
+                componente.codComponenteNota ===
+                ponderacion.codComponenteNota
             ).nombre,
             tipo_nota_desc: this.tiposNota.find(
-              (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
+              (tipoNota) => tipoNota.codTipoNota === ponderacion.codTipoNota
             ).nota,
             periodo_academico_desc: this.periodos.find(
-              (periodo) => periodo.codigo === ponderacion.cod_periodo_academico
+              (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
           };
 
@@ -257,11 +257,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
           this.addRow = false;
           this.ponderacion = {
-            cod_ponderacion: 0,
-            cod_modulo: 0,
-            cod_periodo_academico: 0,
-            cod_componente_nota: 0,
-            cod_tipo_nota: 0,
+            codPonderacion: 0,
+            codModulo: 0,
+            codPeriodoAcademico: 0,
+            codComponenteNota: 0,
+            codTipoNota: 0,
             porcentajefinalponderacion: 0,
             porcentajenotamateria: 0,
             fechainiciovigencia: new Date(),
@@ -295,11 +295,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.ponderacionEditForm = {
-      cod_ponderacion: 0,
-      cod_modulo: 0,
-      cod_periodo_academico: 0,
-      cod_componente_nota: 0,
-      cod_tipo_nota: 0,
+      codPonderacion: 0,
+      codModulo: 0,
+      codPeriodoAcademico: 0,
+      codComponenteNota: 0,
+      codTipoNota: 0,
       porcentajefinalponderacion: 0,
       porcentajenotamateria: 0,
       fechainiciovigencia: new Date(),
@@ -313,14 +313,14 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   public actualizar(ponderacion: Ponderacion, formValue): void {
     ponderacion = {
       ...this.ponderacionEditForm,
-      cod_modulo: formValue.cod_modulo,
-      cod_componente_nota: formValue.cod_componente_nota,
-      cod_tipo_nota: formValue.cod_tipo_nota,
+      codModulo: formValue.cod_modulo,
+      codComponenteNota: formValue.cod_componente_nota,
+      codTipoNota: formValue.cod_tipo_nota,
       porcentajefinalponderacion: formValue.porcentajefinalponderacion,
       porcentajenotamateria: formValue.porcentajenotamateria,
       fechainiciovigencia: formValue.fechainiciovigencia,
       fechafinvigencia: formValue.fechafinvigencia,
-      cod_periodo_academico: formValue.cod_periodo_academico,
+      codPeriodoAcademico: formValue.cod_periodo_academico,
       estado: 'ACTIVO',
     };
 
@@ -366,7 +366,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.actualizarPonderacion(
         ponderacion,
-        ponderacion.cod_ponderacion
+        ponderacion.codPonderacion
       ).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(
@@ -377,19 +377,19 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
           let ponderacionTodo = {
             ...ponderacion,
-            modulo_desc: this.modulos.find(
-              (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
+            moduloDesc: this.modulos.find(
+              (modulo) => modulo.codModulo === ponderacion.codModulo
             ).etiqueta,
-            componente_nota_desc: this.componentes.find(
+            componenteNotaDesc: this.componentes.find(
               (componente) =>
-                componente.cod_componente_nota ===
-                ponderacion.cod_componente_nota
+                componente.codComponenteNota ===
+                ponderacion.codComponenteNota
             ).nombre,
-            tipo_nota_desc: this.tiposNota.find(
-              (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
+            tipoNotaDesc: this.tiposNota.find(
+              (tipoNota) => tipoNota.codTipoNota === ponderacion.codTipoNota
             ).nota,
-            periodo_academico_desc: this.periodos.find(
-              (periodo) => periodo.codigo === ponderacion.cod_periodo_academico
+            periodoAcademicoDesc: this.periodos.find(
+              (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
           };
 
@@ -428,7 +428,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           );
           this.showLoading = false;
           const index = this.ponderaciones.findIndex(
-            (ponderacion) => ponderacion.cod_ponderacion === this.codigo
+            (ponderacion) => ponderacion.codPonderacion === this.codigo
           );
           this.ponderaciones.splice(index, 1);
           this.ponderaciones = [...this.ponderaciones];

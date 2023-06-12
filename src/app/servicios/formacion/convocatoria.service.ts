@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpClient,
   HttpEvent,
@@ -6,10 +6,10 @@ import {
   HttpHeaders,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
-import { Convocatoria } from '../../modelo/admin/convocatoria';
+import {Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {CustomHttpResponse} from '../../modelo/admin/custom-http-response';
+import {Convocatoria} from '../../modelo/admin/convocatoria';
 
 @Injectable({
   providedIn: 'root',
@@ -51,18 +51,15 @@ export class ConvocatoriaService {
   public getConvocatoria(): Observable<Convocatoria[]> {
     return this.http.get<Convocatoria[]>(`${this.host}/convocatoria/listar`);
   }
-
-  public actualizarConvocatoria(
-    convocatoria: Convocatoria,
-    codigo_convocatoria: any
-  ): Observable<HttpResponse<Convocatoria>> {
-    return this.http.put<Convocatoria>(
-      `${this.host}/convocatoria/${codigo_convocatoria}`,
-      convocatoria,
-      { observe: 'response' }
-    );
+  
+  getConvocatoriaActiva() {
+    return this.http.get(`${this.host}/convocatoria/activa`);
+    }
+    
+      actualizar(formData: FormData) {
+    return this.http.post(`${this.host}/convocatoriafor/actualizar`, formData);
   }
-
+    
   public cargarArchivo(
     formData: FormData
   ): Observable<HttpEvent<CustomHttpResponse>> {

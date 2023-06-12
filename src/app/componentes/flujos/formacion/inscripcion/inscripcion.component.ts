@@ -416,32 +416,32 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.apellido = this.apellidosField.value;
     this.inscripcion.correoPersonal = this.emailField.value;
     this.inscripcion.sexo = this.sexoField.value;
-    this.inscripcion.fecha_nacimiento = this.fechaNacimientoField.value;
-    this.inscripcion.num_telef_celular = this.telCelularField.value;
-    this.inscripcion.num_telef_convencional = this.telConvencionalField.value;
+    this.inscripcion.fechaNacimiento = this.fechaNacimientoField.value;
+    this.inscripcion.numTelefCelular = this.telCelularField.value;
+    this.inscripcion.numTelefConvencional = this.telConvencionalField.value;
     //
-    this.inscripcion.tipo_nacionalidad = this.nacionalidadField.value;
-    this.inscripcion.cod_provincia_nacimiento =
+    this.inscripcion.tipoNacionalidad = this.nacionalidadField.value;
+    this.inscripcion.codProvinciaNacimiento =
       this.provinciaNacimientoField.value;
-    this.inscripcion.cod_canton_nacimiento = this.cantonNacimientoField.value;
+    this.inscripcion.codCantonNacimiento = this.cantonNacimientoField.value;
     //
-    this.inscripcion.cod_provincia_residencia =
+    this.inscripcion.codProvinciaResidencia =
       this.provinciaResidenciaField.value;
-    this.inscripcion.cod_canton_residencia = this.cantonResidenciaField.value;
-    this.inscripcion.calle_principal_residencia =
+    this.inscripcion.codCantonResidencia = this.cantonResidenciaField.value;
+    this.inscripcion.callePrincipalResidencia =
       this.callePrincipalField.value;
-    this.inscripcion.calle_secundaria_residencia =
+    this.inscripcion.calleSecundariaResidencia =
       this.calleSecundariaField.value;
-    this.inscripcion.numero_casa = this.numeroCasaField.value;
+    this.inscripcion.numeroCasa = this.numeroCasaField.value;
     //
-    this.inscripcion.pais_titulo_segundonivel = this.paisTituloField.value;
-    this.inscripcion.ciudad_titulo_segundonivel = this.ciudadTituloField.value;
+    this.inscripcion.paisTituloSegundoNivel = this.paisTituloField.value;
+    this.inscripcion.ciudadTituloSegundoNivel = this.ciudadTituloField.value;
     this.inscripcion.colegio = this.colegioTituloField.value;
-    this.inscripcion.nombre_titulo_segundonivel = this.nombreTituloField.value;
+    this.inscripcion.nombreTituloSegundoNivel = this.nombreTituloField.value;
     //
-    this.inscripcion.merito_academico_descripcion =
+    this.inscripcion.meritoAcademicoDescripcion =
       this.meritoAcademicoField.value;
-    this.inscripcion.merito_deportivo_descripcion =
+    this.inscripcion.meritoDeportivoDescripcion =
       this.meritoDeportivoField.value;
 
     // establece estado inicial de la inscripcion
@@ -479,10 +479,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
             this.inscripcionResultado = response;
 
             this.inscripcion.codDatoPersonal =
-              this.inscripcionResultado.cod_datos_personales;
+              this.inscripcionResultado.codDatosPersonales;
 
             return this.inscripcionService.generarPin(
-              this.inscripcionResultado.cod_postulante
+              this.inscripcionResultado.codPostulante
             );
           })
         )
@@ -522,9 +522,9 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         let validaPin = new ValidaPinInscripcionUtil();
 
         validaPin.pin = this.pinField.value;
-        validaPin.idPostulante = this.inscripcionResultado.cod_postulante;
+        validaPin.idPostulante = this.inscripcionResultado.codPostulante;
         validaPin.idDatoPersonal =
-          this.inscripcionResultado.cod_datos_personales;
+          this.inscripcionResultado.codDatosPersonales;
 
         this.subscriptions.push(
           this.inscripcionService.validarPin(validaPin).subscribe({

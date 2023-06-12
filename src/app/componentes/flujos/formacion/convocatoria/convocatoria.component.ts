@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { OPCIONES_DATEPICKER } from '../../../../util/constantes/opciones-datepicker.const';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, of } from 'rxjs';
 import { FileUploadStatus } from '../../../../modelo/util/file-upload-status';
 import {
   MdbNotificationRef,
@@ -30,6 +30,8 @@ import { MyValidators } from '../../../../util/validators';
 import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
 import { FORMACION } from 'src/app/util/constantes/fomacion.const';
 import { ComponenteBase } from 'src/app/util/componente-base';
+import { DocumentosService } from 'src/app/servicios/formacion/documentos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-convocatoria',
@@ -38,7 +40,7 @@ import { ComponenteBase } from 'src/app/util/componente-base';
 })
 export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   opcionesDatepicker = OPCIONES_DATEPICKER;
-  email: FormControl;
+  correo: FormControl;
   convocatoriaForm: FormGroup;
   estadoArchivo: FileUploadStatus;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -56,6 +58,13 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   procesoActivo = false;
   terminaConsultaEstado = false;
 
+  existeProcesoActivo: boolean;
+  tieneEstadoConvocatoria: boolean;
+  ocurrioErrorInicioProceso: boolean = false;
+
+  estaActulizando: boolean;
+  estaCreando: boolean;
+
   // éxito en creación de convocatoria
   exitoCreacion = false;
 
@@ -63,11 +72,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   editElementIndex = -1;
   addRow = false;
 
-  private tamMaxArchivo: number;
-
-
-  ocurrioErrorInicioProceso = false;
-
+  private tamMaxArchivo: number; 
   
 
   constructor(
@@ -79,7 +84,9 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     private sanitizer: DomSanitizer,
     private formacionService: FormacionService,
     private notificationServiceLocal: MdbNotificationService,
-    private popConfirmServiceLocal: MdbPopconfirmService
+    private popConfirmServiceLocal: MdbPopconfirmService,
+    private documentosFormacionService: DocumentosService,
+    private router: Router
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
@@ -87,100 +94,99 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.requisitosConvocatoria = [];
     this.estadoArchivo = new FileUploadStatus();
-    this.construirFormulario();
-    this.email = new FormControl('', [Validators.required, Validators.email]);
+    this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.urlArchivo = this.sanitizer.bypassSecurityTrustResourceUrl('');
     this.showLoading = false;
+    this.tieneEstadoConvocatoria = false;
+    this.ocurrioErrorInicioProceso = false;
+    this.existeProcesoActivo = false;
+    this.estaActulizando = false;
+    this.estaCreando = false;    
+    this.correo = new FormControl('', [Validators.required, Validators.email]);
+    this.construirFormulario();
   }
 
   ngOnInit() {
-    // verifica el estado de formación
-    this.formacionService.getEstadoFormacion().subscribe({
-      next: (response) => {
-        const customResponse: CustomHttpResponse = response.body;
-        if (customResponse.httpStatusCode === 200) {
-          this.terminaConsultaEstado = true;
-
-          if (customResponse.mensaje !== FORMACION.estadoInicial) {
-            //Notificacion.notificacion(this.notificationRef, this.notificationService, null, 'Ya existe una convocatoria activa.');
-            this.procesoActivo = true;
-          } else {
-            this.procesoActivo = false;
-
-            // solo si el proceso de formación no está activo ingresa a la creación de la convocatoria
-            this.servicioRequisito.getRequisito().subscribe((data) => {
-              this.requisitos = data;
-            });
-
-            this.servicioConvocatoria.getConvocatoria().subscribe((data) => {
-              this.convocatorias = data;
-            });
-
-            this.subscriptions.push(
-              this.cargaArchivoService.maxArchivo().subscribe({
-                next: (result) => (this.tamMaxArchivo = result),
-                error: (errorResponse) => console.log(errorResponse),
-              })
-            );
-          }
-        }
-      },
-      error: (errorResponse: HttpErrorResponse) => {
+    this.formacionService.getEstadoFormacion().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
         Notificacion.notificacion(
           this.notificationRef,
           this.notificationServiceLocal,
           errorResponse
         );
-      },
+        return of(null);
+      })
+    ).subscribe((response) => {
+      const customResponse: CustomHttpResponse = response?.body;
+
+      if (!customResponse || customResponse.httpStatusCode !== 200) {
+        this.ocurrioErrorInicioProceso = true;
+        return;
+      }
+
+      this.existeProcesoActivo = true;
+
+      if (customResponse.mensaje === FORMACION.estadoConvocatoria) {
+        this.tieneEstadoConvocatoria = true;
+        this.estaActulizando = true;
+        this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
+          next: (data) => {
+            this.matchDatosConvocatoria(data[0]);
+            this.convocatoria = data[0];
+            console.log(this.convocatoria);
+            this.requisitosConvocatoria = data[0].requisitos;
+            this.correo.patchValue(data[0].correo);
+            this.documentoConvocatoriaField.clearValidators();
+            this.documentoConvocatoriaField.updateValueAndValidity();
+          },
+          error: (errorResponse) => {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              errorResponse
+            );
+          }
+        });
+      }
+
+      if (customResponse.mensaje === FORMACION.estadoInicial) {
+        this.existeProcesoActivo = false;
+        this.estaCreando = true;
+
+      }
+      this.servicioRequisito.getRequisito().subscribe((data) => {
+        this.requisitos = data;
+      });
     });
+
+    this.subscriptions.push(
+      this.cargaArchivoService.maxArchivo().subscribe({
+        next: (result) => (this.tamMaxArchivo = result),
+        error: (errorResponse) => console.log(errorResponse),
+      })
+    );
   }
+
 
 
   private construirFormulario() {
     this.convocatoriaForm = this.formBuilder.group(
       {
-        codigo: ['', [Validators.required, Validators.maxLength(10)]],
-        cuposHombres: ['', Validators.required],
-        cuposMujeres: ['', Validators.required],
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
-        horaInicio: ['', Validators.required],
-        horaFin: ['', Validators.required],
-        documentoConvocatoria: ['', Validators.required],
-        documentoSoporte: [''],
+        codigo                : ['', Validators.required],
+        cuposHombres          : ['', Validators.required],
+        cuposMujeres          : ['', Validators.required],
+        fechaInicio           : ['', Validators.required],
+        fechaFin              : ['', Validators.required],
+        horaInicio            : ['', Validators.required],
+        horaFin               : ['', Validators.required],
+        documentoConvocatoria : ['', Validators.required],
+        documentoSoporte      : [''],
       },
       {
         validators: MyValidators.validDate,
       }
     );
   }
-
-  /*private notificar(errorResponse?: HttpErrorResponse, mensaje?: string) {
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-    let mensajeError = 'ERROR';
-    let codigoError = 0;
-
-    if (errorResponse) {
-      const customError: CustomHttpResponse = errorResponse.error;
-      mensajeError = customError.mensaje;
-      codigoError = errorResponse.status;
-    }
-
-    if (mensaje) {
-      mensajeError = mensaje;
-    }
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado: ' + codigoError;
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationService,
-      mensajeError,
-      tipoAlerta
-    );
-  }*/
 
   subirArchivo(event: any, tipo: string): void {
     const extension = '.pdf';
@@ -245,7 +251,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       requisitos: this.requisitosConvocatoria,
       /*documentos:
         this.documentoConvocatoria?.name + ',' + this.documentoSoporte?.name,*/
-      correo: this.email.value,
+      correo: this.correo.value,
       //codConvocatoria: 1,
       estado: 'ACTIVO',
       //nombre: 'Convocatoria 1',
@@ -299,35 +305,139 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  get codigo() {
+  get codigoField() {
     return this.convocatoriaForm.get('codigo');
   }
 
-  get cuposHombres() {
+  get cuposHombresField() {
     return this.convocatoriaForm.get('cuposHombres');
   }
 
-  get cuposMujeres() {
+  get cuposMujeresField() {
     return this.convocatoriaForm.get('cuposMujeres');
   }
 
-  get fechaInicio() {
+  get fechaInicioField() {
     return this.convocatoriaForm.get('fechaInicio');
   }
 
-  get fechaFin() {
+  get fechaFinField() {
     return this.convocatoriaForm.get('fechaFin');
   }
 
-  get horaInicio() {
+  get horaInicioField() {
     return this.convocatoriaForm.get('horaInicio');
   }
 
-  get horaFin() {
+  get horaFinField() {
     return this.convocatoriaForm.get('horaFin');
   }
 
-  get documentoConvocatoriaForm() {
+  get documentoConvocatoriaField() {
     return this.convocatoriaForm.get('documentoConvocatoria');
+  }
+
+  private matchDatosConvocatoria(data: Convocatoria) {
+
+    console.log(data.codigoUnico);
+    data.fechaInicioConvocatoria = new Date(data.fechaInicioConvocatoria);
+    console.log("fecha inicio",data.fechaInicioConvocatoria);
+    data.fechaFinConvocatoria = new Date(data.fechaFinConvocatoria);
+
+    this.convocatoriaForm.patchValue({
+      codigo        : data?.codigoUnico,
+      cuposHombres  : data?.cupoHombres,
+      cuposMujeres  : data?.cupoMujeres,
+      fechaInicio   : data?.fechaInicioConvocatoria,
+      fechaFin      : data?.fechaFinConvocatoria,
+      horaInicio    : data?.horaInicioConvocatoria,
+      horaFin       : data?.horaFinConvocatoria,
+    });
+    
+    console.log("datos convocatoria",this.convocatoriaForm.value);
+
+  }
+
+  actualizarConvocatoria() {
+
+    this.showLoading = true;
+
+    this.convocatoria = {
+      ...this.convocatoria,
+      codigoUnico             : this.convocatoriaForm.get('codigo')?.value,
+      cupoHombres             : this.convocatoriaForm.get('cuposHombres')?.value,
+      cupoMujeres             : this.convocatoriaForm.get('cuposMujeres')?.value,
+      horaInicioConvocatoria  : this.convocatoriaForm.get('horaInicio')?.value,
+      horaFinConvocatoria     : this.convocatoriaForm.get('horaFin')?.value,
+      fechaInicioConvocatoria : this.convocatoriaForm.get('fechaInicio')?.value,
+      fechaFinConvocatoria    : this.convocatoriaForm.get('fechaFin')?.value,
+      requisitos              : this.requisitosConvocatoria,
+      correo                  : this.correo.value,
+      estado                  : 'ACTIVO',
+    };
+
+    console.log('Convocatoria para actualizar', this.convocatoria);
+
+    console.log('Documento convocatoria', this.documentoConvocatoria);
+
+    const formData = new FormData();
+
+    if (this.documentoConvocatoriaField?.touched) {
+      formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
+      formData.append('docsConvocatoria', this.documentoConvocatoria);
+    }
+
+    formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
+    console.log('Datos convocatoria', formData.get('datosConvocatoria'));
+
+    this.subscriptions.push(
+      this.servicioConvocatoria.actualizar(formData).subscribe({
+        next: () => {
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Convocatoria actualizada exitosamente'
+          );
+
+          this.exitoCreacion = true;
+          this.showLoading = false;
+          this.router.navigate(['/principal/formacion/proceso']);
+
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
+          console.log(errorResponse);
+          this.showLoading = false;
+        }
+      })
+    );
+
+  }
+
+  descargarDocumento(idDocumento: number) {
+    console.log(idDocumento);
+    if (idDocumento) {
+      this.subscriptions.push(
+        this.documentosFormacionService.descargar(idDocumento).subscribe({
+          next: (documento: any) => {
+            console.log(documento);
+            const blob = new Blob([documento], {type: 'application/pdf'});
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+          },
+          error: (errorResponse: HttpErrorResponse) => {
+            Notificacion.notificacion(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              errorResponse
+            );
+          }
+        })
+      );
+    }
   }
 }

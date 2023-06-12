@@ -36,13 +36,13 @@
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
-                  [(ngModel)]="ponderacionEditForm.cod_modulo"
-                  id="cod_modulo"
-                  name="cod_modulo"
+                  [(ngModel)]="ponderacionEditForm.codModulo"
+                  id="codModulo"
+                  name="codModulo"
                 >
                   <mdb-option
                     *ngFor="let modulo of modulos"
-                    [value]="modulo.cod_modulo"
+                    [value]="modulo.codModulo"
                     ><div class="text-wrap">
                       {{ modulo.etiqueta }}
                     </div>
@@ -54,13 +54,13 @@
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
-                  [(ngModel)]="ponderacionEditForm.cod_componente_nota"
-                  id="cod_componente_nota"
-                  name="cod_componente_nota"
+                  [(ngModel)]="ponderacionEditForm.codComponenteNota"
+                  id="codComponenteNota"
+                  name="codComponenteNota"
                 >
                   <mdb-option
                     *ngFor="let componente of componentes"
-                    [value]="componente.cod_componente_nota"
+                    [value]="componente.codComponenteNota"
                     >{{ componente.nombre }}
                   </mdb-option>
                 </mdb-select>
@@ -72,13 +72,13 @@
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
-                  [(ngModel)]="ponderacionEditForm.cod_tipo_nota"
-                  id="cod_tipo_nota"
-                  name="cod_tipo_nota"
+                  [(ngModel)]="ponderacionEditForm.codTipoNota"
+                  id="codTipoNota"
+                  name="codTipoNota"
                 >
                   <mdb-option
                     *ngFor="let tiponota of tiposNota"
-                    [value]="tiponota.cod_tipo_nota"
+                    [value]="tiponota.codTipoNota"
                     >{{ tiponota.nota }}
                   </mdb-option>
                 </mdb-select>
@@ -208,9 +208,9 @@
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
-                  [(ngModel)]="ponderacionEditForm.cod_periodo_academico"
-                  id="cod_periodo_academico"
-                  name="cod_periodo_academico"
+                  [(ngModel)]="ponderacionEditForm.codPeriodoAcademico"
+                  id="codPeriodoAcademico"
+                  name="codPeriodoAcademico"
                 >
                   <mdb-option
                     *ngFor="let periodo of periodos"
@@ -260,13 +260,13 @@
                     <td>
                       <mdb-form-control>
                         <mdb-select
-                          [(ngModel)]="ponderacion.cod_modulo"
-                          id="cod_modulo"
-                          name="cod_modulo"
+                          [(ngModel)]="ponderacion.codModulo"
+                          id="codModulo"
+                          name="codModulo"
                         >
                           <mdb-option
                             *ngFor="let modulo of modulos"
-                            [value]="modulo.cod_modulo"
+                            [value]="modulo.codModulo"
                           >
                             <div class="text-wrap">
                               {{ modulo.etiqueta }}
@@ -281,13 +281,13 @@
                     <td>
                       <mdb-form-control>
                         <mdb-select
-                          [(ngModel)]="ponderacion.cod_componente_nota"
-                          id="cod_componente_nota"
-                          name="cod_componente_nota"
+                          [(ngModel)]="ponderacion.codComponenteNota"
+                          id="codComponenteNota"
+                          name="codComponenteNota"
                         >
                           <mdb-option
                             *ngFor="let componente of componentes"
-                            [value]="componente.cod_componente_nota"
+                            [value]="componente.codComponenteNota"
                             ><div class="text-wrap">
                               {{ componente.nombre }}
                             </div>
@@ -301,13 +301,13 @@
                     <td>
                       <mdb-form-control>
                         <mdb-select
-                          [(ngModel)]="ponderacion.cod_tipo_nota"
-                          id="cod_tipo_nota"
-                          name="cod_tipo_nota"
+                          [(ngModel)]="ponderacion.codTipoNota"
+                          id="codTipoNota"
+                          name="codTipoNota"
                         >
                           <mdb-option
                             *ngFor="let tiponota of tiposNota"
-                            [value]="tiponota.cod_tipo_nota"
+                            [value]="tiponota.codTipoNota"
                             ><div class="text-wrap">{{ tiponota.nota }}</div>
                           </mdb-option>
                         </mdb-select>
@@ -430,9 +430,9 @@
                     <td>
                       <mdb-form-control>
                         <mdb-select
-                          [(ngModel)]="ponderacion.cod_periodo_academico"
-                          id="cod_periodo_academico"
-                          name="cod_periodo_academico"
+                          [(ngModel)]="ponderacion.codPeriodoAcademico"
+                          id="codPeriodoAcademico"
+                          name="codPeriodoAcademico"
                         >
                           <mdb-option
                             *ngFor="let periodo of periodos"
@@ -473,19 +473,19 @@
             <tr *ngFor="let ponderacion of table.data; let index = index">
               <td style="min-width: 120px; max-width: 120px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ ponderacion.modulo_desc }}
+                  {{ ponderacion.moduloDesc }}
                 </ng-container>
 
                 <!-- <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
                     <mdb-select
-                      [(ngModel)]="ponderacionEditForm.cod_modulo"
-                      id="cod_modulo"
-                      name="cod_modulo"
+                      [(ngModel)]="ponderacionEditForm.codModulo"
+                      id="codModulo"
+                      name="codModulo"
                     >
                       <mdb-option
                         *ngFor="let modulo of modulos"
-                        [value]="modulo.cod_modulo"
+                        [value]="modulo.codModulo"
                         ><div class="text-wrap">
                           {{ modulo.etiqueta }}
                         </div>
@@ -501,19 +501,19 @@
               <td style="min-width: 20px; max-width: 20px">
                 <ng-container *ngIf="editElementIndex !== index">
                   <div class="text-wrap">
-                    {{ ponderacion.componente_nota_desc }}
+                    {{ ponderacion.componenteNotaDesc }}
                   </div>
                 </ng-container>
                 <!-- <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
                     <mdb-select
-                      [(ngModel)]="ponderacionEditForm.cod_componente_nota"
-                      id="cod_componente_nota"
-                      name="cod_componente_nota"
+                      [(ngModel)]="ponderacionEditForm.codComponenteNota"
+                      id="codComponenteNota"
+                      name="codComponenteNota"
                     >
                       <mdb-option
                         *ngFor="let componente of componentes"
-                        [value]="componente.cod_componente_nota"
+                        [value]="componente.codComponenteNota"
                         >{{ componente.nombre }}
                       </mdb-option>
                     </mdb-select>
@@ -527,19 +527,19 @@
               <td style="min-width: 20px; max-width: 20px">
                 <ng-container *ngIf="editElementIndex !== index">
                   <div class="text-wrap">
-                    {{ ponderacion.tipo_nota_desc }}
+                    {{ ponderacion.tipoNotaDesc }}
                   </div>
                 </ng-container>
                 <!-- <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
                     <mdb-select
-                      [(ngModel)]="ponderacionEditForm.cod_tipo_nota"
-                      id="cod_tipo_nota"
-                      name="cod_tipo_nota"
+                      [(ngModel)]="ponderacionEditForm.codTipoNota"
+                      id="codTipoNota"
+                      name="codTipoNota"
                     >
                       <mdb-option
                         *ngFor="let tiponota of tiposNota"
-                        [value]="tiponota.cod_tipo_nota"
+                        [value]="tiponota.codTipoNota"
                         >{{ tiponota.nota }}
                       </mdb-option>
                     </mdb-select>
@@ -676,15 +676,15 @@
               <td style="min-width: 50px; max-width: 50px">
                 <ng-container *ngIf="editElementIndex !== index">
                   <div class="text-wrap">
-                    {{ ponderacion.periodo_academico_desc }}
+                    {{ ponderacion.periodoAcademicoDesc }}
                   </div>
                 </ng-container>
                 <!-- <ng-container *ngIf="editElementIndex === index">
                   <mdb-form-control>
                     <mdb-select
-                      [(ngModel)]="ponderacionEditForm.cod_periodo_academico"
-                      id="cod_periodo_academico"
-                      name="cod_periodo_academico"
+                      [(ngModel)]="ponderacionEditForm.codPeriodoAcademico"
+                      id="codPeriodoAcademico"
+                      name="codPeriodoAcademico"
                     >
                       <mdb-option
                         *ngFor="let periodo of periodos"
@@ -717,7 +717,7 @@
                     mdbTooltip="Eliminar registro"
                     class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                     (click)="
-                      confirmaEliminar($event, ponderacion.cod_ponderacion)
+                      confirmaEliminar($event, ponderacion.codPonderacion)
                     "
                     [disabled]="
                       editElementIndex !== -1 && editElementIndex !== index

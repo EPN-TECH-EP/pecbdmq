@@ -53,12 +53,12 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
     this.tiposSancion = [];
     this.subscriptions = [];
     this.tipoSancion = {
-      cod_tipo_sancion: 0,
+      codTipoSancion: 0,
       sancion: '',
       estado: 'ACTIVO'
     }
     this.tipoSancionEditForm = {
-      cod_tipo_sancion: 0,
+      codTipoSancion: 0,
       estado: 'ACTIVO',
       sancion: ''
     }
@@ -125,7 +125,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
 
           this.showLoading = false;
           this.tipoSancion = {
-            cod_tipo_sancion: 0,
+            codTipoSancion: 0,
             estado: 'ACTIVO',
             sancion: ''
           }
@@ -144,7 +144,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.tipoSancionEditForm = {
-      cod_tipo_sancion: 0,
+      codTipoSancion: 0,
       estado: 'ACTIVO',
       sancion: ''
     }
@@ -163,13 +163,13 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
 
         this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.cod_tipo_sancion).subscribe({
+      this.apiTipoSancion.updateTipoSancion(tipoSancion, tipoSancion.codTipoSancion).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de sanción actualizada correctamente');
           this.showLoading = false;
           this.tiposSancion[this.editElementIndex] = response.body
           this.tipoSancion = {
-            cod_tipo_sancion: 0,
+            codTipoSancion: 0,
             estado: 'ACTIVO',
             sancion: ''
           }
@@ -197,7 +197,7 @@ export class TipoSancionComponent extends ComponenteBase implements OnInit {
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de sanción eliminada correctamente');
           this.showLoading = false;
-          const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.cod_tipo_sancion === this.codigo);
+          const index = this.tiposSancion.findIndex(tipoSancion => tipoSancion.codTipoSancion === this.codigo);
           this.tiposSancion.splice(index, 1);
           this.tiposSancion = [...this.tiposSancion];
         },

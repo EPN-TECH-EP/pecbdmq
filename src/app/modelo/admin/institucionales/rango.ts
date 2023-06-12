@@ -1,5 +1,5 @@
 export interface Rango {
-  cod_rango: number;
+  codRango: number;
   nombre: string;
   estado: string;
 }
