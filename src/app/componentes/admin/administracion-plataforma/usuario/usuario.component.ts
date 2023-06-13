@@ -279,8 +279,8 @@ export class UsuarioComponent implements OnInit {
 
     this.provinciaNacimientoField.clearValidators();
     this.cantonNacimientoField.clearValidators();
-      this.provinciaNacimientoField.setValue('');
-      this.cantonNacimientoField.setValue('');
+    this.provinciaNacimientoField.setValue('');
+    this.cantonNacimientoField.setValue('');
     this.formularioUsuario.get('cantonNacimiento')?.disable();
     this.cantonesNacimiento = [];
 
@@ -374,7 +374,7 @@ export class UsuarioComponent implements OnInit {
         cedula                        : this.nombreUsuarioField.value,
         estado                        : 'ACTIVO',
         residePais                   : this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
-        codDocumentoImagen          : null,                
+        codDocumentoImagen          : null,
         codEstacion                  : null,
         pinValidacionCorreo         : null,
         validacionCorreo             : null

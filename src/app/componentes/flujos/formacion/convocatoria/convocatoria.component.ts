@@ -29,6 +29,7 @@ import {Router} from "@angular/router";
   templateUrl: './convocatoria.component.html',
   styleUrls: ['./convocatoria.component.scss'],
 })
+
 export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   opcionesDatepicker = OPCIONES_DATEPICKER;
   correo: FormControl;
@@ -346,6 +347,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
       formData.append('docsConvocatoria', this.documentoConvocatoria);
     }
+
+    formData.append('datosConvocatoria', JSON.stringify(this.convocatoria));
 
 
     this.subscriptions.push(

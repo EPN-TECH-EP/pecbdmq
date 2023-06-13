@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {Usuario} from "../../../modelo/admin/usuario";
-import {AutenticacionService} from "../../../servicios/autenticacion.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {OPCIONES_DATEPICKER} from "../../../util/constantes/opciones-datepicker.const";
-import {MyValidators} from "../../../util/validators";
-import {DatoPersonalService} from "../../../servicios/dato-personal.service";
-import {UpdateDatoPersonalDto} from "../../../modelo/dto/dato-personal.dto";
-import {DatoPersonal} from "../../../modelo/admin/dato-personal";
-import {ImagenService} from "../../../servicios/imagen.service";
-import {SafeResourceUrl} from "@angular/platform-browser";
-import {catchError, tap} from "rxjs/operators";
-import {EMPTY, throwError} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { Usuario } from "../../../modelo/admin/usuario";
+import { AutenticacionService } from "../../../servicios/autenticacion.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { OPCIONES_DATEPICKER } from "../../../util/constantes/opciones-datepicker.const";
+import { MyValidators } from "../../../util/validators";
+import { DatoPersonalService } from "../../../servicios/dato-personal.service";
+import { UpdateDatoPersonalDto } from "../../../modelo/dto/dato-personal.dto";
+import { DatoPersonal } from "../../../modelo/admin/dato-personal";
+import { ImagenService } from "../../../servicios/imagen.service";
+import { SafeResourceUrl } from "@angular/platform-browser";
+import { catchError, tap } from "rxjs/operators";
+import { EMPTY, throwError } from "rxjs";
 
 @Component({
   selector: 'app-perfil',
@@ -19,11 +19,11 @@ import {EMPTY, throwError} from "rxjs";
 })
 export class PerfilComponent implements OnInit {
 
-  usuario                     : Usuario
-  datosPersonales             : UpdateDatoPersonalDto
-  imagenPerfil                : SafeResourceUrl
-  formularioActualizarUsuario : FormGroup
-  editando                    : boolean = false
+  usuario: Usuario
+  datosPersonales: UpdateDatoPersonalDto
+  imagenPerfil: SafeResourceUrl
+  formularioActualizarUsuario: FormGroup
+  editando: boolean = false
 
   constructor(
     private autenticacionService: AutenticacionService,
@@ -62,12 +62,12 @@ export class PerfilComponent implements OnInit {
 
   private constructorFormulario() {
     this.formularioActualizarUsuario = this.formBuilder.group({
-      nombre          : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      apellido        : ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
-      correoPersonal  : ['', Validators.email],
-      telefono        : ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      direccion       : ['', [Validators.minLength(5), Validators.maxLength(100)]],
-      fechaNacimiento : [''],
+      nombre: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      apellido: ['', [Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]],
+      correoPersonal: ['', Validators.email],
+      telefono: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      direccion: ['', [Validators.minLength(5), Validators.maxLength(100)]],
+      fechaNacimiento: [''],
     })
     this.formularioActualizarUsuario.valueChanges.subscribe({
       next: value => {
@@ -104,12 +104,12 @@ export class PerfilComponent implements OnInit {
 
     this.datosPersonales = {
       ...this.datosPersonales,
-      nombre                : this.nombreField.value,
-      apellido              : this.apellidoField.value,
-      correoPersonal       : this.correoPersonalField.value,
-      numTelefCelular     : this.telefonoField.value,
-      codCantonResidencia : this.direccionField.value,
-      fechaNacimiento      : this.fechaNacimientoField.value,
+      nombre: this.nombreField.value,
+      apellido: this.apellidoField.value,
+      correoPersonal: this.correoPersonalField.value,
+      numTelefCelular: this.telefonoField.value,
+      codCantonResidencia: this.direccionField.value,
+      fechaNacimiento: this.fechaNacimientoField.value,
     }
 
     this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.codDatosPersonales)
@@ -125,12 +125,12 @@ export class PerfilComponent implements OnInit {
 
   onEditarPerfil() {
     this.formularioActualizarUsuario.patchValue({
-      nombre          : this.usuario.codDatosPersonales.nombre,
-      apellido        : this.usuario.codDatosPersonales.apellido,
-      correoPersonal  : this.usuario.codDatosPersonales.correoPersonal,
-      telefono        : this.usuario.codDatosPersonales.numTelefCelular,
-      direccion       : this.usuario.codDatosPersonales.codCantonResidencia,
-      fechaNacimiento : this.usuario.codDatosPersonales.fechaNacimiento,
+      nombre: this.usuario.codDatosPersonales.nombre,
+      apellido: this.usuario.codDatosPersonales.apellido,
+      correoPersonal: this.usuario.codDatosPersonales.correoPersonal,
+      telefono: this.usuario.codDatosPersonales.numTelefCelular,
+      direccion: this.usuario.codDatosPersonales.codCantonResidencia,
+      fechaNacimiento: this.usuario.codDatosPersonales.fechaNacimiento,
     });
   }
 
