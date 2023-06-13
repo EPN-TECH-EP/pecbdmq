@@ -24,25 +24,13 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   materia: Materia;
   materiaEditForm: Materia;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-
-  // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
-
   validacionUtil = ValidacionUtil;
   userResponse: string;
 
   @ViewChild('table') table!: MdbTableDirective<Materia>;
   addRow = false;
-  
-  /*headers = [
-    'Nombre Materia',
-    'Número de Horas',
-    'Tipo de Materia',
-    'Observacion Materia',
-    'Peso Materia',
-    'Nota Mínima',
-  ];*/
 
   headers = [
     'Nombre Materia',
@@ -123,7 +111,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     if (
       materia.nombre == '' //||
       //ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
-      //materia.codEjeMateria == 0 
+      //materia.codEjeMateria == 0
       //materia.observacionMateria == '' ||
       //ValidacionUtil.isNullOrEmptyNumber(materia.pesoMateria) ||
       //ValidacionUtil.isNullOrEmptyNumber(materia.notaMinima)
@@ -171,7 +159,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     if (
       formValue.nombre == '' ||
       //ValidacionUtil.isNullOrEmptyNumber(formValue.numHoras) ||
-      formValue.tipoMateria == '' 
+      formValue.tipoMateria == ''
       //formValue.observacionMateria == '' ||
       //ValidacionUtil.isNullOrEmptyNumber(formValue.pesoMateria) ||
       //ValidacionUtil.isNullOrEmptyNumber(formValue.notaMinima)
