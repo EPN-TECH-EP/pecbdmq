@@ -3,22 +3,16 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpHeaders
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AutenticacionService } from '../servicios/autenticacion.service';
+import { SERVICIOS_PUBLICOS_URLS } from '../util/constantes/servicios-publicos.const';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AutenticacionInterceptor implements HttpInterceptor {
-
-  serviciosPublicosUrls: string[] = 
-  ['/usuario/login', 
-  '/usuario/registro', 
-  '/usuario/resetPassword', 
-  '/usuario/guardarArchivo',
-  '/usuario/maxArchivo',
-  '/link'
-];
 
   constructor(private autenticacionService: AutenticacionService) {}
 
@@ -34,6 +28,37 @@ export class AutenticacionInterceptor implements HttpInterceptor {
     }*/
 
     if (this.revisaServiciosPublicos(httpRequest.url)) {
+
+      /*let modifiedReq;
+      const key = environment.appKey;
+
+      console.log(httpRequest.url);
+
+      let headersNew = httpRequest.headers.append('X-API-Key', key);
+
+      // append the new headers to the request
+      modifiedReq = httpRequest.clone({
+        headers: headersNew
+      });*/
+      
+      //httpRequest.headers.append('X-API-Key', key);
+
+      /*if (httpRequest.headers) {
+        modifiedReq = httpRequest.clone({
+          setHeaders: { ...httpRequest.headers,
+            'X-API-Key': key
+          }
+        });
+      } else 
+      {
+        modifiedReq = httpRequest.clone({
+          setHeaders: {
+            'X-API-Key': key
+          }
+        });
+      }*/
+
+      
       return httpHandler.handle(httpRequest);
     }
 
@@ -45,7 +70,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
 
 
 revisaServiciosPublicos(url: string): boolean {
-    for (const servicioPublicoUrl of this.serviciosPublicosUrls) {
+    for (const servicioPublicoUrl of SERVICIOS_PUBLICOS_URLS) {
       if (url.includes(`${this.autenticacionService.host}${servicioPublicoUrl}`)) {
         return true;
       }

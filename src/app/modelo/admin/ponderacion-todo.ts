@@ -1,10 +1,10 @@
 import { Ponderacion } from "./ponderacion";
 
 export class PonderacionTodo extends Ponderacion{
-    modulo_desc: string;
-    periodo_academico_desc: string;
-    componente_nota_desc: string;
-    tipo_nota_desc: string;
+    moduloDesc: string;
+    periodoAcademicoDesc: string;
+    componenteNotaDesc: string;
+    //tipoNotaDesc: string;
 }
 
 /*

@@ -1,5 +1,5 @@
 export interface Cargo {
-  cod_cargo: number;
+  codCargo: number;
   nombre: string;
   estado: string;
 }

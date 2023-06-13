@@ -40,7 +40,7 @@ export class PerfilComponent implements OnInit {
     this.autenticacionService.user$.pipe(
       tap((usuario) => {
         this.usuario = usuario;
-        this.imagenService.visualizar(usuario.codDatosPersonales.cod_documento_imagen).pipe(
+        this.imagenService.visualizar(usuario.codDatosPersonales.codDocumentoImagen).pipe(
           catchError(error => {
             console.error('Error al cargar la imagen de perfil:', error);
             this.imagenPerfil = "assets/img/avatars/avatar.jpg";
@@ -50,7 +50,7 @@ export class PerfilComponent implements OnInit {
           this.imagenPerfil = imagen;
         });
         this.datosPersonales = this.usuario.codDatosPersonales;
-        this.usuario.codDatosPersonales.fecha_nacimiento = new Date(this.usuario.codDatosPersonales.fecha_nacimiento);
+        this.usuario.codDatosPersonales.fechaNacimiento = new Date(this.usuario.codDatosPersonales.fechaNacimiento);
       }),
       catchError(() => {
         this.usuario = this.autenticacionService.obtieneUsuarioDeCache();
@@ -106,13 +106,13 @@ export class PerfilComponent implements OnInit {
       ...this.datosPersonales,
       nombre                : this.nombreField.value,
       apellido              : this.apellidoField.value,
-      correo_personal       : this.correoPersonalField.value,
-      num_telef_celular     : this.telefonoField.value,
-      cod_canton_residencia : this.direccionField.value,
-      fecha_nacimiento      : this.fechaNacimientoField.value,
+      correoPersonal       : this.correoPersonalField.value,
+      numTelefCelular     : this.telefonoField.value,
+      codCantonResidencia : this.direccionField.value,
+      fechaNacimiento      : this.fechaNacimientoField.value,
     }
 
-    this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.cod_datos_personales)
+    this.datoPersonalService.update(this.datosPersonales, this.usuario.codDatosPersonales.codDatosPersonales)
       .subscribe(
         (datoPersonal: DatoPersonal) => {
           this.usuario.codDatosPersonales = datoPersonal
@@ -127,10 +127,10 @@ export class PerfilComponent implements OnInit {
     this.formularioActualizarUsuario.patchValue({
       nombre          : this.usuario.codDatosPersonales.nombre,
       apellido        : this.usuario.codDatosPersonales.apellido,
-      correoPersonal  : this.usuario.codDatosPersonales.correo_personal,
-      telefono        : this.usuario.codDatosPersonales.num_telef_celular,
-      direccion       : this.usuario.codDatosPersonales.cod_canton_residencia,
-      fechaNacimiento : this.usuario.codDatosPersonales.fecha_nacimiento,
+      correoPersonal  : this.usuario.codDatosPersonales.correoPersonal,
+      telefono        : this.usuario.codDatosPersonales.numTelefCelular,
+      direccion       : this.usuario.codDatosPersonales.codCantonResidencia,
+      fechaNacimiento : this.usuario.codDatosPersonales.fechaNacimiento,
     });
   }
 
@@ -143,7 +143,7 @@ export class PerfilComponent implements OnInit {
 
     this.imagenService.cargar(formData).subscribe({
       next: (response) => {
-        this.datosPersonales.cod_documento_imagen = response.body.codigo;
+        this.datosPersonales.codDocumentoImagen = response.body.codigo;
         this.imagenService.visualizar(response.body.codigo).subscribe(
           {
             next: (url) => {

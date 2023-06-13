@@ -44,7 +44,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
     this.tiposBaja = [];
     this.subscriptions = [];
-    this.tipoBajaEditForm = {cod_tipo_baja: 0, estado: 'ACTIVO', baja: ''};
+    this.tipoBajaEditForm = {codTipoBaja: 0, estado: 'ACTIVO', baja: ''};
     this.tiposBajaForm = new FormGroup({});
   }
 
@@ -142,7 +142,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.cod_tipo_baja).subscribe({
+      this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.codTipoBaja).subscribe({
         next: (response) => {
           this.okNotification('Tipo de baja actualizado correctamente');
           const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
@@ -173,7 +173,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
         next: () => {
           this.okNotification('Tipo de baja eliminado correctamente');
           this.showLoading = false;
-          const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.cod_tipo_baja === this.codigo);
+          const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.codTipoBaja === this.codigo);
           this.tiposBaja.splice(index, 1);
           this.tiposBaja = [...this.tiposBaja];
         },

@@ -50,13 +50,13 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.tiposprueba = [];
     this.subscriptions = [];
     this.tipoPrueba = {
-      cod_tipo_prueba: 0,
-      prueba: '',
+      codTipoPrueba: 0,
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
     this.tipoPruebaEditForm = {
-      cod_tipo_prueba: 0,
-      prueba: '',
+      codTipoPrueba: 0,
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
   }
@@ -74,47 +74,10 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  /*
-  private notificacion(errorResponse: HttpErrorResponse) {
-
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensajeError,
-      tipoAlerta
-    );
-  }
-
-  public notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
-  */
 
   public registro(tipoPrueba: TipoPrueba): void {
 
-    if (tipoPrueba.prueba === '') {
+    if (tipoPrueba.tipoPrueba === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
@@ -131,8 +94,8 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.addRow = false;
 
           this.tipoPrueba = {
-            cod_tipo_prueba: 0,
-            prueba: '',
+            codTipoPrueba: 0,
+            tipoPrueba: '',
             estado: 'ACTIVO'
           }
         },
@@ -150,19 +113,19 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.tipoPruebaEditForm = {
-      cod_tipo_prueba: 0,
-      prueba: '',
+      codTipoPrueba: 0,
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
 
 
-  public actualizar(tipoPrueba: TipoPrueba, formValue): void {
+  public actualizar(tipoPrueba: TipoPrueba, formValue: TipoPrueba): void {
 
-    tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
+    tipoPrueba = {...tipoPrueba, tipoPrueba: formValue.tipoPrueba, estado: 'ACTIVO'};
     
-    if (formValue.prueba === '') {
+    if (formValue.tipoPrueba === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
       return;
     }
@@ -170,15 +133,15 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.cod_tipo_prueba).subscribe({
+      this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.codTipoPrueba).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba actualizada con éxito');
 
           this.tiposprueba[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoPrueba = {
-            cod_tipo_prueba: 0,
-            prueba: '',
+            codTipoPrueba: 0,
+            tipoPrueba: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;
@@ -206,7 +169,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Prueba eliminada con éxito');
           this.showLoading = false;
-          const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.cod_tipo_prueba === this.codigo);
+          const index = this.tiposprueba.findIndex(tipoPrueba => tipoPrueba.codTipoPrueba === this.codigo);
           this.tiposprueba.splice(index, 1);
           this.tiposprueba = [...this.tiposprueba];
         },

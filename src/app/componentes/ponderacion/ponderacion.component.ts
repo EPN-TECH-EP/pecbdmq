@@ -1,25 +1,38 @@
-import {Ponderacion} from '../../modelo/admin/ponderacion';
-import {PonderacionService} from '../../servicios/ponderacion.service';
-import {Modulo} from 'src/app/modelo/admin/modulo';
-import {ModuloService} from 'src/app/servicios/modulo.service';
-import {ComponenteNota} from 'src/app/modelo/admin/componente-nota';
-import {ComponenteNotaService} from 'src/app/servicios/componente-nota.service';
-import {TipoNota} from 'src/app/modelo/admin/tipo-nota';
-import {TipoNotaService} from 'src/app/servicios/tipo-nota.service';
-import {Periodo} from 'src/app/modelo/admin/periodo-academico';
-import {PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {MdbPopconfirmService,} from 'mdb-angular-ui-kit/popconfirm';
-import {MdbNotificationRef, MdbNotificationService,} from 'mdb-angular-ui-kit/notification';
-import {AlertaComponent} from '../util/alerta/alerta.component';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Notificacion} from 'src/app/util/notificacion';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {ValidacionUtil} from 'src/app/util/validacion-util';
-import {OPCIONES_DATEPICKER} from '../../util/constantes/opciones-datepicker.const';
-import {PonderacionTodo} from 'src/app/modelo/admin/ponderacion-todo';
+import { Ponderacion } from '../../modelo/admin/ponderacion';
+import { PonderacionService } from './../../servicios/ponderacion.service';
+import { Modulo } from 'src/app/modelo/admin/modulo';
+import { ModuloService } from 'src/app/servicios/modulo.service';
+import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
+import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
+import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
+import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
+import { Periodo } from 'src/app/modelo/admin/periodo-academico';
+import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import {
+  MdbPopconfirmRef,
+  MdbPopconfirmService,
+} from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import {
+  MdbNotificationRef,
+  MdbNotificationService,
+} from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../util/alerta/alerta.component';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { FormArray, FormControl } from '@angular/forms';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { ValidacionUtil } from 'src/app/util/validacion-util';
+import { OPCIONES_DATEPICKER } from '../../util/constantes/opciones-datepicker.const';
+import { PonderacionTodo } from 'src/app/modelo/admin/ponderacion-todo';
 
 @Component({
   selector: 'app-ponderacion',
@@ -34,96 +47,103 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   periodos: Periodo[];
   ponderacion: Ponderacion;
   ponderacionEditForm: Ponderacion;
+
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
+
+  fechaInicioVigencia: FormControl = new FormControl();
+  fechaFinVigencia: FormControl = new FormControl();
+
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
+  //private subscriptions: Subscription[] = [];
+  public userResponse: string;
+
   validacionUtil = ValidacionUtil;
 
   @ViewChild('table') table!: MdbTableDirective<Ponderacion>;
+  editElementIndex = -1;
   addRow = false;
 
   headers = [
     'Módulo',
     'Componente',
-    'Tipo de nota',
-    'Porcentaje final',
-    'Porcentaje nota',
-    'Fecha de inicio Vigencia',
-    'Fecha de fin Vigencia',
+//    'Tipo nota',
+    '% final',
+//    '% nota',
+//    'F. inicio Vigencia',
+//    'F. fin Vigencia',
     'Periodo académico',
   ];
   translationOptions = OPCIONES_DATEPICKER;
-  estaEditando = false;
-  codigoPonderacionEditando = 0;
 
   constructor(
-    private ponderacionService: PonderacionService,
-    private moduloService: ModuloService,
-    private componenteNotaService: ComponenteNotaService,
-    private tipoNotaService: TipoNotaService,
-    private periodoAcademicoService: PeriodoAcademicoService,
+    private ApiPonderacion: PonderacionService,
+    private ApiModulo: ModuloService,
+    private ApiComponente: ComponenteNotaService,
+    private ApiTipoNota: TipoNotaService,
+    private ApiPeriodoAcademico: PeriodoAcademicoService,
     private notificationServiceLocal: MdbNotificationService,
-    private popConfirmServiceLocal: MdbPopconfirmService
+    private popconfirmServiceLocal: MdbPopconfirmService
   ) {
-    super(notificationServiceLocal, popConfirmServiceLocal);
+    super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.ponderaciones = [];
     this.subscriptions = [];
     this.ponderacion = {
-      cod_ponderacion: 0,
-      cod_modulo: null,
-      cod_periodo_academico: null,
-      cod_componente_nota: null,
-      cod_tipo_nota: null,
-      porcentajefinalponderacion: null,
-      porcentajenotamateria: null,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      codPonderacion: 0,
+      codModulo: null,
+      codPeriodoAcademico: null,
+      codComponenteNota: null,
+      //codTipoNota: null,
+      porcentajeFinalPonderacion: null,
+      //porcentajeNotaMateria: null,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
     this.ponderacionEditForm = {
-      cod_ponderacion: 0,
-      cod_modulo: 0,
-      cod_periodo_academico: 0,
-      cod_componente_nota: 0,
-      cod_tipo_nota: 0,
-      porcentajefinalponderacion: 0,
-      porcentajenotamateria: 0,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      codPonderacion: 0,
+      codModulo: 0,
+      codPeriodoAcademico: 0,
+      codComponenteNota: 0,
+      //codTipoNota: 0,
+      porcentajeFinalPonderacion: 0,
+      //porcentajeNotaMateria: 0,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
   }
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.ponderacionService.getPonderacionTodo().subscribe((data) => {
+      this.ApiPonderacion.getPonderacionTodo().subscribe((data) => {
         this.ponderaciones = data;
         console.log(data);
       })
     );
 
     this.subscriptions.push(
-      this.moduloService.getModulo().subscribe((data) => {
+      this.ApiModulo.getModulo().subscribe((data) => {
         this.modulos = data;
       })
     );
 
     this.subscriptions.push(
-      this.componenteNotaService.getComponenteNota().subscribe((data) => {
+      this.ApiComponente.getComponenteNota().subscribe((data) => {
         this.componentes = data;
       })
     );
 
     this.subscriptions.push(
-      this.tipoNotaService.getTipoNota().subscribe((data) => {
+      this.ApiTipoNota.getTipoNota().subscribe((data) => {
         this.tiposNota = data;
       })
     );
 
     this.subscriptions.push(
-      this.periodoAcademicoService.getPeriodo().subscribe((data) => {
+      this.ApiPeriodoAcademico.getPeriodo().subscribe((data) => {
         this.periodos = data;
       })
     );
@@ -131,189 +151,267 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
-    console.log(searchTerm);
     this.table.search(searchTerm);
   }
 
-  crear(ponderacion: Ponderacion): void {
-    ponderacion = {...ponderacion, estado: 'ACTIVO'};
+
+  //registro
+  public registro(ponderacion: Ponderacion): void {
+    ponderacion = { ...ponderacion, estado: 'ACTIVO' };
     this.showLoading = true;
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
+
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;
-      Notificacion.notificar(this.notificationServiceLocal, 'Ingrese un valor: '.concat(vacios[0]), TipoAlerta.ALERTA_WARNING);
+
+      // busca la etiqueta a mostrar
+      let index = 0;
+      for (let key in ponderacion) {
+        if (key === vacios[0]) {
+          break;
+        }
+        index++;
+      }
+
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor: '.concat(/*vacios[0]*/this.headers[index]),
+        TipoAlerta.ALERTA_WARNING
+      );
+      return;
+    }
+
+    if (
+      ValidacionUtil.isNullOrEmptyNumber(
+        ponderacion.porcentajeFinalPonderacion
+      )
+    ) {
+      this.showLoading = false;
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor válido de porcentaje',
+        TipoAlerta.ALERTA_WARNING
+      );
       return;
     }
 
     this.subscriptions.push(
-      this.ponderacionService.registroPonderacion(ponderacion).subscribe({
+      this.ApiPonderacion.registroPonderacion(ponderacion).subscribe({
         next: (response: HttpResponse<Ponderacion>) => {
-
           // guardar en array el nuevo objeto
           let nuevaPonderacion: Ponderacion = response.body;
 
           let ponderacionTodo = {
             ...nuevaPonderacion,
             modulo_desc: this.modulos.find(
-              (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
-            ).descripcion,
+              (modulo) => modulo.codModulo === ponderacion.codModulo
+            ).etiqueta,
             componente_nota_desc: this.componentes.find(
               (componente) =>
-                componente.cod_componente_nota ===
-                ponderacion.cod_componente_nota
+                componente.codComponenteNota ===
+                ponderacion.codComponenteNota
             ).nombre,
-            tipo_nota_desc: this.tiposNota.find(
-              (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
-            ).nota,
             periodo_academico_desc: this.periodos.find(
-              (periodo) => periodo.codigo === ponderacion.cod_periodo_academico
+              (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
           };
 
-          this.ponderaciones.push(ponderacionTodo);
-          this.ponderaciones = [...this.ponderaciones];
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion creada con éxito');
+          this.table.data.push(ponderacionTodo);
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion creada con éxito'
+          );
 
           this.addRow = false;
           this.ponderacion = {
-            cod_ponderacion: 0,
-            cod_modulo: 0,
-            cod_periodo_academico: 0,
-            cod_componente_nota: 0,
-            cod_tipo_nota: 0,
-            porcentajefinalponderacion: 0,
-            porcentajenotamateria: 0,
-            fechainiciovigencia: new Date(),
-            fechafinvigencia: new Date(),
+            codPonderacion: 0,
+            codModulo: 0,
+            codPeriodoAcademico: 0,
+            codComponenteNota: 0,
+            //codTipoNota: 0,
+            porcentajeFinalPonderacion: 0,
+            //porcentajeNotaMateria: 0,
+            //fechaInicioVigencia: new Date(),
+            //fechaFinVigencia: new Date(),
             estado: 'ACTIVO',
           };
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
         },
       })
     );
   }
 
-  editRow(ponderacion: Ponderacion) {
-    this.ponderacionEditForm = {...ponderacion};
-    this.codigoPonderacionEditando = ponderacion.cod_ponderacion;
+  editRow(index: number) {
+    this.editElementIndex = index;
+    this.ponderacionEditForm = { ...this.ponderaciones[index] };
 
-    this.ponderacionEditForm.fechainiciovigencia = new Date(
-      this.ponderacionEditForm.fechainiciovigencia);
+    /* this.ponderacionEditForm.fechaInicioVigencia = new Date(
+      this.ponderacionEditForm.fechaInicioVigencia
+    );
 
-    this.ponderacionEditForm.fechafinvigencia = new Date(
-      this.ponderacionEditForm.fechafinvigencia);
+    this.ponderacionEditForm.fechaFinVigencia = new Date(
+      this.ponderacionEditForm.fechaFinVigencia
+    ); */
   }
 
   undoRow() {
-    this.estaEditando = false;
     this.ponderacionEditForm = {
-      cod_ponderacion: 0,
-      cod_modulo: 0,
-      cod_periodo_academico: 0,
-      cod_componente_nota: 0,
-      cod_tipo_nota: 0,
-      porcentajefinalponderacion: 0,
-      porcentajenotamateria: 0,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      codPonderacion: 0,
+      codModulo: 0,
+      codPeriodoAcademico: 0,
+      codComponenteNota: 0,
+      //codTipoNota: 0,
+      porcentajeFinalPonderacion: 0,
+      //porcentajeNotaMateria: 0,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
+    this.editElementIndex = -1;
   }
 
-  actualizar(ponderacion: Ponderacion, formValue): void {
-
+  //actualizar
+  public actualizar(ponderacion: Ponderacion, formValue: Ponderacion): void {
     ponderacion = {
-      ...ponderacion,
-      cod_modulo: formValue.cod_modulo,
-      cod_componente_nota: formValue.cod_componente_nota,
-      cod_tipo_nota: formValue.cod_tipo_nota,
-      porcentajefinalponderacion: formValue.porcentajefinalponderacion,
-      porcentajenotamateria: formValue.porcentajenotamateria,
-      fechainiciovigencia: formValue.fechainiciovigencia,
-      fechafinvigencia: formValue.fechafinvigencia,
-      cod_periodo_academico: formValue.cod_periodo_academico,
+      ...this.ponderacionEditForm,
+      codModulo: formValue.codModulo,
+      codComponenteNota: formValue.codComponenteNota,
+      //codTipoNota: formValue.cod_tipo_nota,
+      porcentajeFinalPonderacion: formValue.porcentajeFinalPonderacion,
+      //porcentajeNotaMateria: formValue.porcentajeNotaMateria,
+      //fechaInicioVigencia: formValue.fechaInicioVigencia,
+      //fechaFinVigencia: formValue.fechaFinVigencia,
+      codPeriodoAcademico: formValue.codPeriodoAcademico,
       estado: 'ACTIVO',
     };
+
+    console.log(ponderacion);
+    console.log(formValue);
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
-
-    console.log(vacios);
-
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;
-      Notificacion.notificar(this.notificationServiceLocal, 'Ingrese un valor: '.concat(vacios[0]), TipoAlerta.ALERTA_WARNING);
+
+      // busca la etiqueta a mostrar
+      let index = 0;
+      for (let key in ponderacion) {
+        if (key === vacios[0]) {
+          break;
+        }
+        index++;
+      }
+
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor: '.concat(/*vacios[0]*/this.headers[index]),
+        TipoAlerta.ALERTA_WARNING
+      );
+      return;
+    }
+
+    if (
+      ValidacionUtil.isNullOrEmptyNumber(
+        ponderacion.porcentajeFinalPonderacion
+      )
+    ) {
+      this.showLoading = false;
+      Notificacion.notificar(
+        this.notificationServiceLocal,
+        'Ingrese un valor válido de porcentaje',
+        TipoAlerta.ALERTA_WARNING
+      );
       return;
     }
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.ponderacionService.actualizarPonderacion(
+      this.ApiPonderacion.actualizarPonderacion(
         ponderacion,
-        ponderacion.cod_ponderacion
+        ponderacion.codPonderacion
       ).subscribe({
         next: (response) => {
-          let index = this.ponderaciones.findIndex(value1 => value1.cod_ponderacion === ponderacion.cod_ponderacion);
-          this.ponderaciones[index] = {
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion actualizada con éxito'
+          );
+
+          let ponderacionTodo = {
             ...ponderacion,
-            modulo_desc: this.modulos.find(
-              (modulo) => modulo.cod_modulo === ponderacion.cod_modulo
-            ).descripcion,
-            componente_nota_desc: this.componentes.find(
+            moduloDesc: this.modulos.find(
+              (modulo) => modulo.codModulo === ponderacion.codModulo
+            ).etiqueta,
+            componenteNotaDesc: this.componentes.find(
               (componente) =>
-                componente.cod_componente_nota ===
-                ponderacion.cod_componente_nota
+                componente.codComponenteNota ===
+                ponderacion.codComponenteNota
             ).nombre,
-            tipo_nota_desc: this.tiposNota.find(
-              (tipoNota) => tipoNota.cod_tipo_nota === ponderacion.cod_tipo_nota
-            ).nota,
-            periodo_academico_desc: this.periodos.find(
-              (periodo) => periodo.codigo === ponderacion.cod_periodo_academico
+            periodoAcademicoDesc: this.periodos.find(
+              (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
           };
-          this.ponderaciones = [...this.ponderaciones];
-          this.codigoPonderacionEditando = 0;
-          this.estaEditando = false;
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion actualizada con éxito');
+
+          this.ponderaciones[this.editElementIndex] = ponderacionTodo;
+          this.showLoading = false;
+          this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
         },
       })
     );
   }
 
-  confirmarEliminar(event: Event, codigo: number): void {
+  //eliminar
+
+  public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
     this.codigo = codigo;
     super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-  eliminar(): void {
+  public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ponderacionService.eliminarPonderacion(this.codigo).subscribe({
+      this.ApiPonderacion.eliminarPonderacion(this.codigo).subscribe({
         next: () => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Ponderacion eliminada con éxito');
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Ponderacion eliminada con éxito'
+          );
           this.showLoading = false;
           const index = this.ponderaciones.findIndex(
-            (ponderacion) => ponderacion.cod_ponderacion === this.codigo
+            (ponderacion) => ponderacion.codPonderacion === this.codigo
           );
           this.ponderaciones.splice(index, 1);
           this.ponderaciones = [...this.ponderaciones];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            errorResponse
+          );
           console.log(errorResponse);
         },
       })
     );
   }
-
 
   value = new Date();
 

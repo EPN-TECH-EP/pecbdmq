@@ -16,7 +16,7 @@ export class CiudadanoService {
   }
 
   getByCedula(cedula: string) {
-    return this.http.get<Ciudadano[]>(`${this.host}/apicbdmq/cuidadanos/${cedula}`);
+    return this.http.get<Ciudadano[]>(`${this.host}/apicbdmq/ciudadanos/${cedula}`);
   }
 
   getEducacionMedia(cedula: string) {

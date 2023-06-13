@@ -34,7 +34,7 @@ import {ValidacionComponent} from '../../componentes/flujos/formacion/validacion
 import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
 import {TipoInstruccionComponent} from "../../componentes/tipo-instruccion/tipo-instruccion.component";
 import {TipoBajaComponent} from "../../componentes/tipo-baja/tipo-baja.component";
-import {TipoSancionComponent} from "../../componentes/tipo-sancion/tipo-sancion.component";
+import {TipoFaltaComponent} from "../../componentes/tipo-falta/tipo-falta.component";
 import {ComponenteNotaComponent} from '../../componentes/componente-nota/componente-nota.component';
 import {CambiosPendientesGuard} from 'src/app/guard/cambios-pendientes.guard';
 import {ConvocatoriaComponent} from 'src/app/componentes/flujos/formacion/convocatoria/convocatoria.component';
@@ -107,7 +107,7 @@ const routes: Routes = [
       {path: 'tipoProcedencia', component: TipoProcedenciaComponent},
       {path: 'tipoNota', component: TipoNotaComponent},
       {path: 'tipoBaja', component: TipoBajaComponent},
-      {path: 'tipoSancion', component: TipoSancionComponent},
+      {path: 'tipoFalta', component: TipoFaltaComponent},
       {path: 'componenteNota', component: ComponenteNotaComponent},
       //{ path: '', component: MenuFormacionComponent/*, pathMatch: 'full'*/}
       {path: 'admin/usuarios', component: UsuariosComponent},

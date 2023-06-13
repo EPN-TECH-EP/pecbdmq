@@ -9,7 +9,6 @@ import {ComponenteBase} from "../../../../util/componente-base";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 import {UsuarioAsignado} from "../../../../modelo/flujos/formacion/asignar-usuario";
 import {FormControl} from "@angular/forms";
-import { MdbTablePaginationComponent } from "mdb-angular-ui-kit/table";
 
 @Component({
   selector: 'app-reasignacion-inscripcion',
@@ -39,6 +38,7 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
     private popConfirmServiceLocal: MdbPopconfirmService,
   ) {
     super(mdbNotificationService, popConfirmServiceLocal);
+
     this.inscripciones = []
     this.estaReasignando = false
     this.codigoInscripcionReasignando = 0

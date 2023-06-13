@@ -60,13 +60,13 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
     this.Modulos = [];
     this.subscriptions = [];
     this.Modulo = {
-      cod_modulo: 0,
+      codModulo: 0,
       etiqueta: '',
       descripcion: '',
       estado: 'ACTIVO'
     }
     this.ModuloEditForm = {
-      cod_modulo: 0,
+      codModulo: 0,
       etiqueta: '',
       descripcion: '',
       estado: 'ACTIVO'
@@ -127,7 +127,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo creado con éxito');
 
           this.Modulo = {
-            cod_modulo: 0,
+            codModulo: 0,
             etiqueta: '',
             descripcion: '',
             estado: 'ACTIVO'
@@ -147,7 +147,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.ModuloEditForm = {
-      cod_modulo: 0,
+      codModulo: 0,
       etiqueta: '',
       descripcion: '',
       estado: 'ACTIVO'
@@ -181,13 +181,13 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiModulo.actualizarModulo(Modulo, Modulo.cod_modulo).subscribe({
+      this.ApiModulo.actualizarModulo(Modulo, Modulo.codModulo).subscribe({
         next: (response: HttpResponse<Modulo>) => {
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo actualizado con éxito');
           this.Modulos[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.Modulo = {
-            cod_modulo: 0,
+            codModulo: 0,
             etiqueta: '',
             descripcion: '',
             estado: 'ACTIVO'

@@ -2,7 +2,7 @@
 
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Tipo de Sanción</p>
+    <p class="fs-4 fw-bolder">Tipo de Falta</p>
   </div>
 </div>
 
@@ -26,7 +26,7 @@
           mdbTable
           mdbTableSort
           #table="mdbTable"
-          [dataSource]="tiposSancion"
+          [dataSource]="tiposFalta"
         >
         <thead class="datatable-header">
           <tr>
@@ -51,14 +51,14 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="add_sancion"
-                  name="sancion"
+                  id="add_falta"
+                  name="nombreFalta"
                   class="form-control"
-                  [(ngModel)]="tipoSancion.sancion"
+                  [(ngModel)]="tipoFalta.nombreFalta"
                   required
                   type="text"
-                  #tipoSancionModel="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoSancionModel)"
+                  #tipoFaltaModel="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoFaltaModel)"
                 />
               </mdb-form-control>
             </td>
@@ -68,7 +68,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)=" createTipoSancion(form.value); addRow = false"
+                (click)=" createTipoFalta(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -82,11 +82,11 @@
             </td>
           </tr>
           <!-- Edit row -->
-          <tr *ngFor="let tipoSancion of table.data; let index = index">
+          <tr *ngFor="let tipoFalta of table.data; let index = index">
             <td>
               <!--Show baja-->
               <ng-container *ngIf="editElementIndex !== index">
-                {{ tipoSancion.sancion }}
+                {{ tipoFalta.nombreFalta }}
               </ng-container>
 
               <!--Edit baja-->
@@ -94,14 +94,14 @@
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="update_sancion"
-                    name="sancion"
+                    id="update_falta"
+                    name="nombreFalta"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="tipoSancionEditForm.sancion"
+                    [(ngModel)]="tipoFaltaEditForm.nombreFalta"
                     required
-                    #tipoSancionModel="ngModel"
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoSancionModel)"
+                    #tipoFaltaModel="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoFaltaModel)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -127,7 +127,7 @@
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
-                  (click)="confirmaEliminar($event,tipoSancion.cod_tipo_sancion)"
+                  (click)="confirmaEliminar($event,tipoFalta.codTipoFalta)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
@@ -136,7 +136,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="updateTipoSancion(tipoSancion, form.value);"
+                  (click)="updateTipoFalta(tipoFalta, form.value);"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>

@@ -92,8 +92,8 @@ import { Modulo } from './modelo/admin/modulo';
 import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
 import { RouteReuseStrategy } from '@angular/router';
 import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
-import { ITipoSancion} from "./modelo/admin/tipo_sancion";
-import {TipoSancionComponent} from "./componentes/tipo-sancion/tipo-sancion.component";
+import { ITipoFalta} from "./modelo/admin/tipo_falta";
+import {TipoFaltaComponent} from "./componentes/tipo-falta/tipo-falta.component";
 import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
 import { ComponenteNotaComponent } from './componentes/componente-nota/componente-nota.component';
@@ -155,7 +155,7 @@ import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion
     TipoProcedenciaComponent,
     TipoNotaComponent,
     TipoBajaComponent,
-    TipoSancionComponent,
+    TipoFaltaComponent,
     PopconfirmComponent,
     MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
@@ -167,7 +167,7 @@ import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion
     TipoInstruccionComponent,
     ComponenteNotaComponent,
     ParaleloComponent,
-    TipoSancionComponent,
+    TipoFaltaComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
     //RequisitoComponent,

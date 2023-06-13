@@ -109,20 +109,21 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     return {
       codMateria: 0,
       nombre: '',
-      numHoras: 1,
+      /*numHoras: 1,
       tipoMateria: '',
       observacionMateria: '',
       pesoMateria: 1,
-      notaMinima: 1,
+      notaMinima: 1,*/
+      codEjeMateria: 1,
       estado: 'ACTIVO',
     };
   }
 
   crear(materia: Materia): void {
     if (
-      materia.nombre == '' ||
+      materia.nombre == '' //||
       //ValidacionUtil.isNullOrEmptyNumber(materia.numHoras) ||
-      materia.tipoMateria == '' 
+      //materia.codEjeMateria == 0 
       //materia.observacionMateria == '' ||
       //ValidacionUtil.isNullOrEmptyNumber(materia.pesoMateria) ||
       //ValidacionUtil.isNullOrEmptyNumber(materia.notaMinima)
@@ -187,11 +188,12 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     materia = {
       ...materia,
       nombre: formValue.nombre,
-      numHoras: formValue.numHoras,
+      /*numHoras: formValue.numHoras,
       tipoMateria: formValue.tipoMateria,
       observacionMateria: formValue.observacionMateria,
       pesoMateria: formValue.pesoMateria,
-      notaMinima: formValue.notaMinima,
+      notaMinima: formValue.notaMinima,*/
+      codEjeMateria: 1,
       estado: 'ACTIVO',
     };
     this.showLoading = true;

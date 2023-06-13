@@ -44,6 +44,7 @@ export class ValidacionComponent implements OnInit {
     this.loadInformation = false;
     this.headers = ['Requisito', 'Cumple el requisito', 'Observaciones'];
     this.msmBtnListaRequisitos = 'Posición inferior de la lista de requisitos';
+
   }
 
   ngOnInit(): void {
@@ -53,7 +54,7 @@ export class ValidacionComponent implements OnInit {
       Notificacion.notificar(this.mdbNotificationService,"No se ha seleccionado un postulante", TipoAlerta.ALERTA_ERROR);
       this.router.navigate(['principal/formacion/inscripciones']).then();
       return;
-    }
+        }
 
     this.validacionInscripcionService.getInscripcion(this.postulanteId).subscribe({
       next: inscripcion => {
@@ -61,8 +62,8 @@ export class ValidacionComponent implements OnInit {
         console.log("documentos", this.inscripcion.documentos);
 
         const observables = this.inscripcion?.documentos?.map(documento =>
-          this.documentosService.visualizarArchivo(documento.codDocumento)
-        );
+          this.documentosService.visualizarArchivo(documento.codigoDocumento)
+          );
 
         if (observables && observables.length > 0) {
           forkJoin(observables).subscribe({
@@ -95,7 +96,6 @@ export class ValidacionComponent implements OnInit {
     this.validacionInscripcionService.idPostulante = null;
 
   }
-
 
   private construirFormulario() {
 
@@ -139,10 +139,11 @@ export class ValidacionComponent implements OnInit {
       error: err => {
         Notificacion.notificar(this.mdbNotificationService, 'No se pudo guardar los requisitos', TipoAlerta.ALERTA_ERROR);
         console.log("No se pudo guardar los requisitos", err);
-      }
+    }
     });
 
   }
+
 
   toggleListaRequisitos() {
     this.estaExpandidoListaRequisitos = !this.estaExpandidoListaRequisitos;

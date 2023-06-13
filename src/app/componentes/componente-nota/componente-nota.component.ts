@@ -58,12 +58,12 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     this.componentesNota = [];
     this.subscriptions = [];
     this.componenteNota = {
-      cod_componente_nota: 0,
+      codComponenteNota: 0,
       nombre: '',
       estado: 'ACTIVO'
     }
     this.componenteNotaEditForm = {
-      cod_componente_nota: 0,
+      codComponenteNota: 0,
       nombre: '',
       estado: 'ACTIVO'
     };
@@ -136,7 +136,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Componente nota creado con éxito');
 
           this.componenteNota = {
-            cod_componente_nota: 0,
+            codComponenteNota: 0,
             nombre: '',
             estado: 'ACTIVO'
           }
@@ -158,7 +158,7 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.componenteNotaEditForm = {
-      cod_componente_nota: 0,
+      codComponenteNota: 0,
       nombre: '',
       estado: 'ACTIVO'
     };
@@ -178,13 +178,13 @@ export class ComponenteNotaComponent extends ComponenteBase implements OnInit {
     
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.cod_componente_nota).subscribe({
+      this.ApiComponenteNota.actualizarComponenteNota(componenteNota, componenteNota.codComponenteNota).subscribe({
       next: (response: HttpResponse<ComponenteNota>) => {
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Componente nota actualizado con éxito');
         this.componentesNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.componenteNota = {
-            cod_componente_nota: 0,
+            codComponenteNota: 0,
             nombre: '',
             estado: 'ACTIVO'
           }

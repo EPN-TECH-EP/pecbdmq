@@ -58,12 +58,12 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     this.tiposNota = [];
     this.subscriptions = [];
     this.tipoNota = {
-      cod_tipo_nota: 0,
+      codTipoNota: 0,
       nota: '',
       estado: 'ACTIVO'
     }
     this.tipoNotaEditForm = {
-      cod_tipo_nota: 0,
+      codTipoNota: 0,
       nota: '',
       estado: 'ACTIVO'
     };
@@ -133,7 +133,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota creado con éxito');
 
           this.tipoNota = {
-            cod_tipo_nota: 0,
+            codTipoNota: 0,
             nota: '',
             estado: 'ACTIVO'
           }
@@ -154,7 +154,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.tipoNotaEditForm = {
-      cod_tipo_nota: 0,
+      codTipoNota: 0,
       nota: '',
       estado: 'ACTIVO'
     };
@@ -174,13 +174,13 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.cod_tipo_nota).subscribe({
+      this.ApiTipoNota.actualizarTipoNota(tipoNota, tipoNota.codTipoNota).subscribe({
         next: (response: HttpResponse<TipoNota>) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota actualizado con éxito');
           this.tiposNota[this.editElementIndex] = response.body;
           this.showLoading = false;
           this.tipoNota = {
-            cod_tipo_nota: 0,
+            codTipoNota: 0,
             nota: '',
             estado: 'ACTIVO'
           }

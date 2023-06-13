@@ -207,7 +207,7 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     }
 
     // buscar codigo de modulo por nombre
-    let codigoModulo = this.modulos.find(modulo => modulo.etiqueta === moduloEstados.modulo)?.cod_modulo;
+    let codigoModulo = this.modulos.find(modulo => modulo.etiqueta === moduloEstados.modulo)?.codModulo;
 
 
 

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
 import { environment } from 'src/environments/environment';
 import { InscripcionCompleta } from 'src/app/modelo/flujos/formacion/inscripcion-completa';
+import { ValidaPinInscripcionUtil } from 'src/app/modelo/flujos/formacion/valida-pin-inscripcion-util';
+import { InscripcionCompletaDto } from 'src/app/modelo/flujos/formacion/inscripcion-completa-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -53,40 +55,58 @@ export class InscripcionService {
       formData
     );
   }
-/*
+
   // genera pin
-  // ruta: inscripcionfor/generaPin PUT
-  //codigoPostulante: number
-  public generarPin(formData: FormData): Observable<CustomHttpResponse> {
-    return this.http.put<CustomHttpResponse>(
-      `${this.host}/inscripcionfor/generaPin`, formData
+  // ruta: inscripcionfor/generaPin POST
+  //
+  public generarPin(codigoPostulante: number): Observable<CustomHttpResponse> {
+    return this.http.post<CustomHttpResponse>(
+      `${this.host}/inscripcionfor/generaPin/${codigoPostulante}`, null
     );
   }
 
   // valida pin
-  // ruta: inscripcionfor/validaPin GET
+  // ruta: inscripcionfor/validaPin POST
   // params: pin, codigoDatoPersonal, codigoPostulante
 
 //   pin: string,
 //  codigoDatoPersonal: number,
 //  codigoPostulante: number 
 
-  public validarPin(formData: FormData): Observable<CustomHttpResponse> {
-    return this.http.get<CustomHttpResponse>(
-      `${this.host}/inscripcionfor/validaPin/${pin}/${codigoDatoPersonal}/${codigoPostulante}`
+  public validarPin(validaPin: ValidaPinInscripcionUtil): Observable<CustomHttpResponse> {
+    return this.http.post<CustomHttpResponse>(
+      `${this.host}/inscripcionfor/validaPin`, validaPin
     );
   }
 
   // reenvio pin
-  // ruta: inscripcionfor/reenvioPin PUT
+  // ruta: inscripcionfor/reenvioPin POST
   // PARAMS: inscripcion
   public reenvioPin(
-    inscripcion: InscripcionCompleta
+    inscripcion: InscripcionCompletaDto
   ): Observable<CustomHttpResponse> {
-    return this.http.put<CustomHttpResponse>(
+    return this.http.post<CustomHttpResponse>(
       `${this.host}/inscripcionfor/reenvioPin`,
       inscripcion
     );
-  }*/
+  }
+
+  // validar fechas
+  // retorna boolean si el período de inscirpcion esta activo
+  // ruta: inscripcionfor/validafechas GET
+  public validarFechas(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/inscripcionfor/validafechas`);
+  }
+
+  // busca inscripcion por cédula
+  // si existe ya no puede inscribirse
+  // retorna boolean
+  // PARAMS: cedula
+  // ruta: inscripcionfor/{cedula} GET
+  public buscarInscripcionPorCedula(cedula: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.host}/inscripcionfor/inscripcionPorCedula/${cedula}`
+    );
+  }
 
 }

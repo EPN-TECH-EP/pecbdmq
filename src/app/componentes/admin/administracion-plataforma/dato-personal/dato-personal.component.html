@@ -199,7 +199,7 @@
             formControlName="telfCelular"
             [maxLength]="10"
           />
-          <label mdbLabel class="form-label mb-2x" for="telfConvencional">Teléfono Convencional</label>
+          <label mdbLabel class="form-label mb-2x" for="telfCelular">Teléfono Celular</label>
           <mdb-error
             *ngIf="telfCelularField?.dirty || telfCelularField?.touched"
           >
@@ -604,7 +604,7 @@
           >
             <mdb-option
               *ngFor="let cargo of cargos"
-              [value]="cargo.cod_cargo">
+              [value]="cargo.codCargo">
               {{cargo.nombre}}
             </mdb-option>
           </mdb-select>
@@ -621,7 +621,7 @@
             class="mb-5"
             (valueChange)="onChangeGrado($event)"
           >
-            <mdb-option *ngFor="let grado of grados" [value]="grado.cod_grado">
+            <mdb-option *ngFor="let grado of grados" [value]="grado.codGrado">
               {{grado.nombre}}
             </mdb-option>
           </mdb-select>
@@ -635,7 +635,7 @@
             id="rango"
             class="mb-5"
           >
-            <mdb-option *ngFor="let rango of rangos" [value]="rango.cod_rango">
+            <mdb-option *ngFor="let rango of rangos" [value]="rango.codRango">
               {{rango.nombre}}
             </mdb-option>
           </mdb-select>

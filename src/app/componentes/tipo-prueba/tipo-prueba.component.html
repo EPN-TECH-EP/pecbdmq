@@ -57,13 +57,13 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="pruebaNew"
-                  name="prueba"
+                  id="tipoPruebaNew"
+                  name="tipoPrueba"
                   class="form-control"
-                  [(ngModel)]="tipoPrueba.prueba"
+                  [(ngModel)]="tipoPrueba.tipoPrueba"
                   required
-                  #prueba="ngModel"
-                  (change)="validacionUtil.onInputChange($event, 'catalogo', prueba)"
+                  #tipoPruebaAdd="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', tipoPruebaAdd)"
                 />
               </mdb-form-control>
             </td>
@@ -87,23 +87,23 @@
             </td>
           </tr>
 
-          <tr *ngFor="let tipoPrueba of table.data; let index = index">
+          <tr *ngFor="let item of table.data; let index = index">
             <td>
               <ng-container *ngIf="editElementIndex !== index">
-                {{ tipoPrueba.prueba }}
+                {{ item.tipoPrueba }}
               </ng-container>
               <ng-container *ngIf="editElementIndex === index">
                 <mdb-form-control>
                   <input
                     mdbInput
-                    id="prueba"
-                    name="prueba"
+                    id="tipoPrueba"
+                    name="tipoPrueba"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="tipoPruebaEditForm.prueba"
+                    [(ngModel)]="tipoPruebaEditForm.tipoPrueba"
                     required
-                    #prueba="ngModel"
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', prueba)"
+                    #tipoPruebaEdit="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', tipoPruebaEdit)"
                   />
                 </mdb-form-control>
               </ng-container>
@@ -127,7 +127,7 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event,tipoPrueba.cod_tipo_prueba)"
+                  (click)="confirmaEliminar($event,item.codTipoPrueba)"
                   [disabled]="
                     editElementIndex !== -1 && editElementIndex !== index
                   "
@@ -138,7 +138,7 @@
               <ng-container *ngIf="editElementIndex === index">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
-                  (click)="actualizar(tipoPrueba, form.value)"
+                  (click)="actualizar(item, form.value)"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>
