@@ -68,11 +68,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
   headers = [
     'Módulo',
     'Componente',
-    'Tipo nota',
+//    'Tipo nota',
     '% final',
-    '% nota',
-    'F. inicio Vigencia',
-    'F. fin Vigencia',
+//    '% nota',
+//    'F. inicio Vigencia',
+//    'F. fin Vigencia',
     'Periodo académico',
   ];
   translationOptions = OPCIONES_DATEPICKER;
@@ -95,11 +95,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       codModulo: null,
       codPeriodoAcademico: null,
       codComponenteNota: null,
-      codTipoNota: null,
-      porcentajefinalponderacion: null,
-      porcentajenotamateria: null,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      //codTipoNota: null,
+      porcentajeFinalPonderacion: null,
+      //porcentajeNotaMateria: null,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
     this.ponderacionEditForm = {
@@ -107,11 +107,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       codModulo: 0,
       codPeriodoAcademico: 0,
       codComponenteNota: 0,
-      codTipoNota: 0,
-      porcentajefinalponderacion: 0,
-      porcentajenotamateria: 0,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      //codTipoNota: 0,
+      porcentajeFinalPonderacion: 0,
+      //porcentajeNotaMateria: 0,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
   }
@@ -120,7 +120,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.ApiPonderacion.getPonderacionTodo().subscribe((data) => {
         this.ponderaciones = data;
-        //console.log(data);
+        console.log(data);
       })
     );
 
@@ -153,34 +153,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-  /*
-  private notificacion(errorResponse: HttpErrorResponse) {
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensajeError,
-      tipoAlerta
-    );
-  }
-
-  public notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-*/
+ 
+  
   //registro
   public registro(ponderacion: Ponderacion): void {
     ponderacion = { ...ponderacion, estado: 'ACTIVO' };
@@ -211,9 +185,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
     if (
       ValidacionUtil.isNullOrEmptyNumber(
-        ponderacion.porcentajefinalponderacion
-      ) ||
-      ValidacionUtil.isNullOrEmptyNumber(ponderacion.porcentajenotamateria)
+        ponderacion.porcentajeFinalPonderacion
+      ) 
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -239,10 +212,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,
-            tipo_nota_desc: this.tiposNota.find(
-              (tipoNota) => tipoNota.codTipoNota === ponderacion.codTipoNota
-            ).nota,
+            ).nombre,            
             periodo_academico_desc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
@@ -261,11 +231,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
             codModulo: 0,
             codPeriodoAcademico: 0,
             codComponenteNota: 0,
-            codTipoNota: 0,
-            porcentajefinalponderacion: 0,
-            porcentajenotamateria: 0,
-            fechainiciovigencia: new Date(),
-            fechafinvigencia: new Date(),
+            //codTipoNota: 0,
+            porcentajeFinalPonderacion: 0,
+            //porcentajeNotaMateria: 0,
+            //fechaInicioVigencia: new Date(),
+            //fechaFinVigencia: new Date(),
             estado: 'ACTIVO',
           };
         },
@@ -284,13 +254,13 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     this.editElementIndex = index;
     this.ponderacionEditForm = { ...this.ponderaciones[index] };
 
-    this.ponderacionEditForm.fechainiciovigencia = new Date(
-      this.ponderacionEditForm.fechainiciovigencia
+    /* this.ponderacionEditForm.fechaInicioVigencia = new Date(
+      this.ponderacionEditForm.fechaInicioVigencia
     );
 
-    this.ponderacionEditForm.fechafinvigencia = new Date(
-      this.ponderacionEditForm.fechafinvigencia
-    );
+    this.ponderacionEditForm.fechaFinVigencia = new Date(
+      this.ponderacionEditForm.fechaFinVigencia
+    ); */
   }
 
   undoRow() {
@@ -299,36 +269,38 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       codModulo: 0,
       codPeriodoAcademico: 0,
       codComponenteNota: 0,
-      codTipoNota: 0,
-      porcentajefinalponderacion: 0,
-      porcentajenotamateria: 0,
-      fechainiciovigencia: new Date(),
-      fechafinvigencia: new Date(),
+      //codTipoNota: 0,
+      porcentajeFinalPonderacion: 0,
+      //porcentajeNotaMateria: 0,
+      //fechaInicioVigencia: new Date(),
+      //fechaFinVigencia: new Date(),
       estado: 'ACTIVO',
     };
     this.editElementIndex = -1;
   }
 
   //actualizar
-  public actualizar(ponderacion: Ponderacion, formValue): void {
+  public actualizar(ponderacion: Ponderacion, formValue: Ponderacion): void {
     ponderacion = {
       ...this.ponderacionEditForm,
-      codModulo: formValue.cod_modulo,
-      codComponenteNota: formValue.cod_componente_nota,
-      codTipoNota: formValue.cod_tipo_nota,
-      porcentajefinalponderacion: formValue.porcentajefinalponderacion,
-      porcentajenotamateria: formValue.porcentajenotamateria,
-      fechainiciovigencia: formValue.fechainiciovigencia,
-      fechafinvigencia: formValue.fechafinvigencia,
-      codPeriodoAcademico: formValue.cod_periodo_academico,
+      codModulo: formValue.codModulo,
+      codComponenteNota: formValue.codComponenteNota,
+      //codTipoNota: formValue.cod_tipo_nota,
+      porcentajeFinalPonderacion: formValue.porcentajeFinalPonderacion,
+      //porcentajeNotaMateria: formValue.porcentajeNotaMateria,
+      //fechaInicioVigencia: formValue.fechaInicioVigencia,
+      //fechaFinVigencia: formValue.fechaFinVigencia,
+      codPeriodoAcademico: formValue.codPeriodoAcademico,
       estado: 'ACTIVO',
     };
+
+    console.log(ponderacion);
+    console.log(formValue);
 
     // validación vacíos
     const vacios = ValidacionUtil.tienePropiedadesVacías(ponderacion);
     if (!ValidacionUtil.isNullOrEmptyArray(vacios)) {
       this.showLoading = false;
-
 
       // busca la etiqueta a mostrar
       let index = 0;
@@ -349,9 +321,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
     if (
       ValidacionUtil.isNullOrEmptyNumber(
-        ponderacion.porcentajefinalponderacion
-      ) ||
-      ValidacionUtil.isNullOrEmptyNumber(ponderacion.porcentajenotamateria)
+        ponderacion.porcentajeFinalPonderacion
+      ) 
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -384,10 +355,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,
-            tipoNotaDesc: this.tiposNota.find(
-              (tipoNota) => tipoNota.codTipoNota === ponderacion.codTipoNota
-            ).nota,
+            ).nombre,            
             periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,

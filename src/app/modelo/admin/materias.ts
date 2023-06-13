@@ -5,11 +5,12 @@ import { Paralelo } from './paralelo';
 export class Materia {
   public codMateria: number;
   public nombre: string;
-  public numHoras: number;
+  /*public numHoras: number;
   public tipoMateria: string;
   public observacionMateria: string;
   public pesoMateria: number;
-  public notaMinima: number;
+  public notaMinima: number;*/
+  public codEjeMateria: number;
   public estado: string;
 
  //public paralelos: number;//

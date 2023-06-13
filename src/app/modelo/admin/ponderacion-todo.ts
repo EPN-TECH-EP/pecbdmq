@@ -4,7 +4,7 @@ export class PonderacionTodo extends Ponderacion{
     moduloDesc: string;
     periodoAcademicoDesc: string;
     componenteNotaDesc: string;
-    tipoNotaDesc: string;
+    //tipoNotaDesc: string;
 }
 
 /*

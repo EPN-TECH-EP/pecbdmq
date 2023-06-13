@@ -69,7 +69,7 @@
                 >
               </mdb-form-control>
             </div>
-            <div class="col-md">
+            <!--div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
                   [(ngModel)]="ponderacionEditForm.codTipoNota"
@@ -86,18 +86,18 @@
                   >Tipo de nota</label
                 >
               </mdb-form-control>
-            </div>
+            </div -->
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <input
                   mdbInput
-                  id="porcentajefinalponderacion"
-                  name="porcentajefinalponderacion"
+                  id="porcentajeFinalPonderacion"
+                  name="porcentajeFinalPonderacion"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="ponderacionEditForm.porcentajefinalponderacion"
+                  [(ngModel)]="ponderacionEditForm.porcentajeFinalPonderacion"
                   required
-                  #porcentajefinalponderacion="ngModel"
+                  #porcentajeFinalPonderacion="ngModel"
                   min="1"
                   max="100"
                   inputValidation="decimal"
@@ -124,17 +124,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md">
+            <!-- <div class="col-md">
               <mdb-form-control class="m-1">
                 <input
                   mdbInput
-                  id="porcentajenotamateria"
-                  name="porcentajenotamateria"
+                  id="porcentajeNotaMateria"
+                  name="porcentajeNotaMateria"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="ponderacionEditForm.porcentajenotamateria"
+                  [(ngModel)]="ponderacionEditForm.porcentajeNotaMateria"
                   required
-                  #porcentajenotamateria="ngModel"
+                  #porcentajeNotaMateria="ngModel"
                   min="1"
                   max="100"
                   inputValidation="decimal"
@@ -144,18 +144,18 @@
                   >Porcentaje nota</label
                 >
               </mdb-form-control>
-            </div>
-            <div class="col-md">
+            </div> -->
+            <!-- <div class="col-md">
               <mdb-form-control class="m-1">
                 <input
                   mdbInput="mdbInput3"
                   [readonly]="true"
                   [mdbDatepicker]="datepicker3"
-                  id="fechainiciovigencia"
-                  name="fechainiciovigencia"
+                  id="fechaInicioVigencia"
+                  name="fechaInicioVigencia"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="ponderacionEditForm.fechainiciovigencia"
+                  [(ngModel)]="ponderacionEditForm.fechaInicioVigencia"
                   required
                 />
                 <label
@@ -181,11 +181,11 @@
                   mdbInput="mdbInput4"
                   [readonly]="true"
                   [mdbDatepicker]="datepicker4"
-                  id="fechafinvigencia"
-                  name="fechafinvigencia"
+                  id="fechaFinVigencia"
+                  name="fechaFinVigencia"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="ponderacionEditForm.fechafinvigencia"
+                  [(ngModel)]="ponderacionEditForm.fechaFinVigencia"
                   required
                 />
                 <label
@@ -204,7 +204,7 @@
                   [format]="'yyyy-mm-dd'"
                 ></mdb-datepicker>
               </mdb-form-control>
-            </div>
+            </div> -->
             <div class="col-md">
               <mdb-form-control class="m-1">
                 <mdb-select
@@ -298,7 +298,7 @@
                         >
                       </mdb-form-control>
                     </td>
-                    <td>
+                    <!-- <td>
                       <mdb-form-control>
                         <mdb-select
                           [(ngModel)]="ponderacion.codTipoNota"
@@ -315,16 +315,16 @@
                           >Tipo de nota</label
                         >
                       </mdb-form-control>
-                    </td>
+                    </td> -->
                     <td>
                       <mdb-form-control>
                         <input
                           mdbInput
-                          id="porcentajefinalponderacion"
-                          name="porcentajefinalponderacion"
+                          id="porcentajeFinalPonderacion"
+                          name="porcentajeFinalPonderacion"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="ponderacion.porcentajefinalponderacion"
+                          [(ngModel)]="ponderacion.porcentajeFinalPonderacion"
                           required
                           min="1"
                           max="100"
@@ -341,15 +341,15 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                   <!--  <td>
                       <mdb-form-control>
                         <input
                           mdbInput
-                          id="porcentajenotamateria"
-                          name="porcentajenotamateria"
+                          id="porcentajeNotaMateria"
+                          name="porcentajeNotaMateria"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="ponderacion.porcentajenotamateria"
+                          [(ngModel)]="ponderacion.porcentajeNotaMateria"
                           required
                           min="1"
                           max="100"
@@ -371,11 +371,11 @@
                           mdbInput="mdbInput1"
                           [readonly]="true"
                           [mdbDatepicker]="datepicker1"
-                          id="fechainiciovigencia"
-                          name="fechainiciovigencia"
+                          id="fechaInicioVigencia"
+                          name="fechaInicioVigencia"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="ponderacion.fechainiciovigencia"
+                          [(ngModel)]="ponderacion.fechaInicioVigencia"
                           required
                         />
                         <label
@@ -402,11 +402,11 @@
                           mdbInput="mdbInput2"
                           [readonly]="true"
                           [mdbDatepicker]="datepicker2"
-                          id="fechafinvigencia"
-                          name="fechafinvigencia"
+                          id="fechaFinVigencia"
+                          name="fechaFinVigencia"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="ponderacion.fechafinvigencia"
+                          [(ngModel)]="ponderacion.fechaFinVigencia"
                           required
                         />
                         <label
@@ -425,7 +425,7 @@
                           [format]="'yyyy-mm-dd'"
                         ></mdb-datepicker>
                       </mdb-form-control>
-                    </td>
+                    </td> -->
 
                     <td>
                       <mdb-form-control>
@@ -475,27 +475,6 @@
                 <ng-container *ngIf="editElementIndex !== index">
                   {{ ponderacion.moduloDesc }}
                 </ng-container>
-
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <mdb-select
-                      [(ngModel)]="ponderacionEditForm.codModulo"
-                      id="codModulo"
-                      name="codModulo"
-                    >
-                      <mdb-option
-                        *ngFor="let modulo of modulos"
-                        [value]="modulo.codModulo"
-                        ><div class="text-wrap">
-                          {{ modulo.etiqueta }}
-                        </div>
-                      </mdb-option>
-                    </mdb-select>
-                    <label mdbLabel class="form-label"
-                      >Seleccione un módulo</label
-                    >
-                  </mdb-form-control>
-                </ng-container> -->
               </td>
 
               <td style="min-width: 20px; max-width: 20px">
@@ -504,199 +483,44 @@
                     {{ ponderacion.componenteNotaDesc }}
                   </div>
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <mdb-select
-                      [(ngModel)]="ponderacionEditForm.codComponenteNota"
-                      id="codComponenteNota"
-                      name="codComponenteNota"
-                    >
-                      <mdb-option
-                        *ngFor="let componente of componentes"
-                        [value]="componente.codComponenteNota"
-                        >{{ componente.nombre }}
-                      </mdb-option>
-                    </mdb-select>
-                    <label mdbLabel class="form-label"
-                      >Seleccione un componente</label
-                    >
-                  </mdb-form-control>
-                </ng-container> -->
               </td>
 
-              <td style="min-width: 20px; max-width: 20px">
+              <!-- <td style="min-width: 20px; max-width: 20px">
                 <ng-container *ngIf="editElementIndex !== index">
                   <div class="text-wrap">
                     {{ ponderacion.tipoNotaDesc }}
                   </div>
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <mdb-select
-                      [(ngModel)]="ponderacionEditForm.codTipoNota"
-                      id="codTipoNota"
-                      name="codTipoNota"
-                    >
-                      <mdb-option
-                        *ngFor="let tiponota of tiposNota"
-                        [value]="tiponota.codTipoNota"
-                        >{{ tiponota.nota }}
-                      </mdb-option>
-                    </mdb-select>
-                    <label mdbLabel class="form-label"
-                      >Seleccione un tipo de nota</label
-                    >
-                  </mdb-form-control>
-                </ng-container> -->
-              </td>
+              </td> -->
 
               <td style="min-width: 1px; max-width: 1px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ ponderacion.porcentajefinalponderacion }}
+                  {{ ponderacion.porcentajeFinalPonderacion }}
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <input
-                      mdbInput
-                      id="porcentajefinalponderacion"
-                      name="porcentajefinalponderacion"
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="
-                        ponderacionEditForm.porcentajefinalponderacion
-                      "
-                      required
-                      #porcentajefinalponderacion="ngModel"
-                      min="1"
-                      max="100"
-                      inputValidation="decimal"
-                      mdbTooltip="Rango: 1 - 100"
-                    />
-                    <label mdbLabel class="form-label"></label>
-                  </mdb-form-control>
-                </ng-container> -->
+              </td>
+
+              <!-- <td style="min-width: 50px; max-width: 50px">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ ponderacion.porcentajeNotaMateria }}
+                </ng-container>
               </td>
 
               <td style="min-width: 50px; max-width: 50px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ ponderacion.porcentajenotamateria }}
+                  {{ ponderacion.fechaInicioVigencia | date : "yyyy-MM-dd" }}
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <input
-                      mdbInput
-                      id="porcentajenotamateria"
-                      name="porcentajenotamateria"
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="ponderacionEditForm.porcentajenotamateria"
-                      required
-                      #porcentajenotamateria="ngModel"
-                      min="1"
-                      max="100"
-                      inputValidation="decimal"
-                      mdbTooltip="Rango: 1 - 100"
-                    />
-                    <label mdbLabel class="form-label" for="formControlReadonly"
-                      >Ingrese el porcentaje nota</label
-                    >
-                  </mdb-form-control>
-                </ng-container> -->
-              </td>
-
-              <td style="min-width: 50px; max-width: 50px">
-                <ng-container *ngIf="editElementIndex !== index">
-                  {{ ponderacion.fechainiciovigencia | date : "yyyy-MM-dd" }}
-                </ng-container>
-                <!--                 <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <input
-                      mdbInput="mdbInput3"
-                      [mdbDatepicker]="datepicker3"
-                      id="fechainiciovigencia"
-                      name="fechainiciovigencia"
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="ponderacionEditForm.fechainiciovigencia"
-                      required
-                    />
-                    <label
-                      mdbLabel="mdbLabel1"
-                      for="exampleDatepicker"
-                      class="form-label"
-                      >Selecciona una fecha</label
-                    >
-                    <mdb-datepicker-toggle
-                      [mdbDatepicker]="datepicker3"
-                    ></mdb-datepicker-toggle>
-                    <mdb-datepicker
-                      [options]="translationOptions"
-                      [inline]="true"
-                      #datepicker3
-                      [format]="'yyyy-mm-dd'"
-                    ></mdb-datepicker>
-                  </mdb-form-control>
-                </ng-container> -->
               </td>
               <td style="min-width: 50px; max-width: 50px">
                 <ng-container *ngIf="editElementIndex !== index">
-                  {{ ponderacion.fechafinvigencia | date : "yyyy-MM-dd" }}
+                  {{ ponderacion.fechaFinVigencia | date : "yyyy-MM-dd" }}
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">               
-                  
-                  <mdb-form-control>
-                    <input
-                      mdbInput="mdbInput4"
-                      [mdbDatepicker]="datepicker4"
-                      id="fechafinvigencia"
-                      name="fechafinvigencia"
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="ponderacionEditForm.fechafinvigencia"
-                      required
-                    />
-                    <label
-                      mdbLabel="mdbLabel1"
-                      for="exampleDatepicker"
-                      class="form-label"
-                      >Selecciona una fecha</label
-                    >
-                    <mdb-datepicker-toggle
-                      [mdbDatepicker]="datepicker4"
-                    ></mdb-datepicker-toggle>
-                    <mdb-datepicker
-                      [options]="translationOptions"
-                      [inline]="true"
-                      #datepicker4
-                      [format]="'yyyy-mm-dd'"
-                    ></mdb-datepicker>
-                  </mdb-form-control>
-                </ng-container> -->
-              </td>
+              </td> -->
               <td style="min-width: 50px; max-width: 50px">
                 <ng-container *ngIf="editElementIndex !== index">
                   <div class="text-wrap">
                     {{ ponderacion.periodoAcademicoDesc }}
                   </div>
                 </ng-container>
-                <!-- <ng-container *ngIf="editElementIndex === index">
-                  <mdb-form-control>
-                    <mdb-select
-                      [(ngModel)]="ponderacionEditForm.codPeriodoAcademico"
-                      id="codPeriodoAcademico"
-                      name="codPeriodoAcademico"
-                    >
-                      <mdb-option
-                        *ngFor="let periodo of periodos"
-                        [value]="periodo.codigo"
-                        >{{ periodo.descripcion }}
-                      </mdb-option>
-                    </mdb-select>
-                    <label mdbLabel class="form-label"
-                      >Seleccione un periodo</label
-                    >
-                  </mdb-form-control>
-                </ng-container> -->
               </td>
 
               <td class="d-flex justify-content-center">

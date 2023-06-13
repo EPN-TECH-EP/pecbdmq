@@ -51,12 +51,12 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.tipoPrueba = {
       codTipoPrueba: 0,
-      prueba: '',
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
     this.tipoPruebaEditForm = {
       codTipoPrueba: 0,
-      prueba: '',
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
   }
@@ -74,47 +74,10 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  /*
-  private notificacion(errorResponse: HttpErrorResponse) {
-
-    let customError: CustomHttpResponse = errorResponse.error;
-    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_WARNING;
-
-    let mensajeError = customError.mensaje;
-    let codigoError = errorResponse.status;
-
-    if (!mensajeError) {
-      mensajeError = 'Error inesperado';
-      tipoAlerta = TipoAlerta.ALERTA_ERROR;
-    }
-
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensajeError,
-      tipoAlerta
-    );
-  }
-
-  public notificacionOK(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_OK
-    );
-  }
-
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
-  */
 
   public registro(tipoPrueba: TipoPrueba): void {
 
-    if (tipoPrueba.prueba === '') {
+    if (tipoPrueba.tipoPrueba === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
@@ -132,7 +95,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
           this.tipoPrueba = {
             codTipoPrueba: 0,
-            prueba: '',
+            tipoPrueba: '',
             estado: 'ACTIVO'
           }
         },
@@ -151,18 +114,18 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   undoRow() {
     this.tipoPruebaEditForm = {
       codTipoPrueba: 0,
-      prueba: '',
+      tipoPrueba: '',
       estado: 'ACTIVO'
     };
     this.editElementIndex = -1;
   }
 
 
-  public actualizar(tipoPrueba: TipoPrueba, formValue): void {
+  public actualizar(tipoPrueba: TipoPrueba, formValue: TipoPrueba): void {
 
-    tipoPrueba = {...tipoPrueba, prueba: formValue.prueba, estado: 'ACTIVO'};
+    tipoPrueba = {...tipoPrueba, tipoPrueba: formValue.tipoPrueba, estado: 'ACTIVO'};
     
-    if (formValue.prueba === '') {
+    if (formValue.tipoPrueba === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
       return;
     }
@@ -178,7 +141,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
           this.tipoPrueba = {
             codTipoPrueba: 0,
-            prueba: '',
+            tipoPrueba: '',
             estado: 'ACTIVO'
           }
           this.editElementIndex = -1;

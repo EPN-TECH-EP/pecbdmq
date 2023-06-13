@@ -7,6 +7,7 @@ export const environment = {
   //apiUrl: 'http://192.168.0.184:8081', // pruebas CBDMQ
   apiUrl: 'http://192.168.0.184:8083', // interno
   //apiUrl: 'http://localhost:8083', // local
+  //apiUrl: 'http://192.168.0.184:8080/api-pecb-3/test/api', // proxy
   appKey: 'vQ9sdpG52a3Rm4LZYc8fDlNKjnWbHIXheU6YiAzS1VJ0o7OtTwgxqpukCFREz'
 };
 

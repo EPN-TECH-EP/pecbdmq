@@ -97,7 +97,7 @@
                     name="tipoMateria"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="materia.tipoMateria"
+                    [(ngModel)]="materia.codEjeMateria"
                     required
                     #tipoMateria="ngModel"
                     (change)="
@@ -241,7 +241,7 @@
               <td style="min-width: 50px; max-width: 50px">
                 <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                   <div class="text-wrap">
-                    {{ materia.tipoMateria }}
+                    {{ materia.codEjeMateria }}
                   </div>
                 </ng-container>
                 <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
@@ -252,7 +252,7 @@
                       name="tipoMateria"
                       type="text"
                       class="form-control"
-                      [(ngModel)]="materiaEditForm.tipoMateria"
+                      [(ngModel)]="materiaEditForm.codEjeMateria"
                       #tipoMateria="ngModel"
                       required
                       (change)="
