@@ -17,17 +17,15 @@ export class AutenticacionInterceptor implements HttpInterceptor {
   constructor(private autenticacionService: AutenticacionService) {}
 
   intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<unknown>> {
-    /*if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/login`)) {
-      return httpHandler.handle(httpRequest);
-    }
-    if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/registro`)) {
-      return httpHandler.handle(httpRequest);
-    }
-    if (httpRequest.url.includes(`${this.autenticacionService.host}/usuario/guardarArchivo`)) {
-      return httpHandler.handle(httpRequest);     
-    }*/
 
+    // si el servicio es público, no se envía el token
     if (this.revisaServiciosPublicos(httpRequest.url)) {
+
+      console.log(httpRequest.url);
+
+      const key = environment.APP_KEY;
+      const request = httpRequest.clone({ setHeaders: { 'X-API-Key': `${key}` }});
+      return httpHandler.handle(request);  
 
       /*let modifiedReq;
       const key = environment.appKey;
@@ -56,10 +54,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
             'X-API-Key': key
           }
         });
-      }*/
-
-      
-      return httpHandler.handle(httpRequest);
+      }*/      
     }
 
     this.autenticacionService.cargaToken();

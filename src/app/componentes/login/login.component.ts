@@ -69,6 +69,7 @@ export class LoginComponent
     this.subscriptions.push(
       this.autenticacionService.login(usuario).subscribe({
         next: (response: HttpResponse<Usuario>) => {
+
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.autenticacionService.guardaToken(token);
           this.autenticacionService.agregaUsuarioACache(response.body);
