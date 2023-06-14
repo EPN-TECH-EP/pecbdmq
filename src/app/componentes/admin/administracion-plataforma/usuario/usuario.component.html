@@ -49,6 +49,10 @@
               <i class="fas fa-exclamation-circle mb-1"></i>
                No es una cédula válida
             </span>
+            <span *ngIf="nombreUsuarioField?.hasError('value_found')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              La cédula ingresada ya existe en el sistema
+            </span>
           </mdb-error>
           <mdb-success *ngIf="nombreUsuarioField?.valid && (nombreUsuarioField?.dirty || nombreUsuarioField?.touched)">
             <i class="fas fa-check-circle"></i>
@@ -140,14 +144,18 @@
           <mdb-error
             *ngIf="correoPersonalField?.dirty || correoPersonalField?.touched"
           >
-        <span *ngIf="correoPersonalField?.hasError('email')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe ser un correo electrónico
-        </span>
+            <span *ngIf="correoPersonalField?.hasError('email')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo debe ser un correo electrónico
+            </span>
             <span *ngIf="correoPersonalField?.hasError('required')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="nombreUsuarioField?.hasError('value_found')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              El correo ingresado ya existe en el sistema
+            </span>
           </mdb-error>
         </mdb-form-control>
       </div>
@@ -284,7 +292,7 @@
             <mdb-option value="FEMENINO">Femenino</mdb-option>
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="sexo">Sexo
-          <span class="text-danger">*</span>
+            <span class="text-danger">*</span>
           </label>
           <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
             <span *ngIf="sexoField?.hasError('required')">
@@ -454,7 +462,7 @@
           <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
           </mdb-error>
           <mdb-error *ngIf="!cantonesResidencia.length" class="text-muted">
-              <i class="fas fa-exclamation-circle mb-1"></i>
+            <i class="fas fa-exclamation-circle mb-1"></i>
             Primero seleccione una provincia
           </mdb-error>
         </mdb-form-control>

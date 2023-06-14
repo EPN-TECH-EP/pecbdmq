@@ -284,7 +284,6 @@ export class UsuariosComponent implements OnInit {
             return;
           }
           this.usuarios = usuarios;
-          this.usuarios.splice(1, this.usuarios.length);
           this.showLoading = false;
           this.usuarios = [...this.usuarios];
           this.existenCoincidencias = true;

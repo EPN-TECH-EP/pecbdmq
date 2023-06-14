@@ -1,4 +1,8 @@
-import {AbstractControl} from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
+import { map } from "rxjs/operators";
+import { Usuario } from "../modelo/admin/usuario";
+import { UsuarioService } from "../servicios/usuario.service";
+import { HttpClient } from "@angular/common/http";
 
 export class MyValidators {
 
@@ -7,7 +11,7 @@ export class MyValidators {
     const end = new Date(control.get('fechaFin')?.value);
 
     if (start && end && start > end) {
-      return {invalid_date: true};
+      return { invalid_date: true };
     }
 
     return null;
@@ -19,7 +23,7 @@ export class MyValidators {
       const regex = new RegExp('^[a-zA-Z ]*$');
 
       if (!regex.test(value)) {
-        return {invalid_letters: true};
+        return { invalid_letters: true };
       }
 
       return null;
@@ -32,7 +36,7 @@ export class MyValidators {
       const regex = new RegExp('^[0-9]*$');
 
       if (!regex.test(value)) {
-        return {invalid_numbers: true};
+        return { invalid_numbers: true };
       }
 
       return null;
@@ -53,10 +57,10 @@ export class MyValidators {
             function (valorPrevio, valorActual, indice) {
               return valorPrevio - ((valorActual * (2 - indice % 2)) % 9) - ((valorActual === 9) ? 9 : 0);
             }, 1000) % 10;
-          return digito_calculado === digito_verificador ? null : {invalid_identification: true}
+          return digito_calculado === digito_verificador ? null : { invalid_identification: true }
         }
       }
-      return {invalid_identification: true};
+      return { invalid_identification: true };
     }
   }
 
@@ -68,10 +72,43 @@ export class MyValidators {
       const age = now.getFullYear() - date.getFullYear();
 
       if (age < 18 || age > 28) {
-        return {invalid_age: true};
+        return { invalid_age: true };
       }
 
       return null;
     };
   }
+
+  static userNameExist(usuarioService: UsuarioService) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      return usuarioService.buscarPorIdentificacion(value).pipe(
+        map((usuario: Usuario) => {
+            if (usuario) {
+              return {value_found: true};
+            } else {
+              return null;
+            }
+          }
+        ),
+      );
+    };
+  }
+
+  static emailExist(usuarioService: UsuarioService) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      return usuarioService.buscarPorCorreo(value).pipe(
+        map((usuarios: Usuario[]) => {
+            if (usuarios) {
+              return {value_found: true};
+            } else {
+              return null;
+            }
+          }
+        ),
+      );
+    };
+  }
+
 }
