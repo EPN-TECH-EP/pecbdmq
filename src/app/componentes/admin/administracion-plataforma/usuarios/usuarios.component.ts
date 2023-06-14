@@ -1,26 +1,26 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import {MdbPopconfirmRef, MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {Subscription} from 'rxjs';
-import {Usuario} from 'src/app/modelo/admin/usuario';
-import {AlertaComponent} from '../../../util/alerta/alerta.component';
-import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
-import {UsuarioService} from '../../../../servicios/usuario.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {TipoAlerta} from 'src/app/enum/tipo-alerta';
-import {Notificacion} from 'src/app/util/notificacion';
-import {PopconfirmComponent} from '../../../util/popconfirm/popconfirm.component';
-import {Router} from '@angular/router';
-import {UsuarioNombreApellido} from '../../../../modelo/util/nombre-apellido';
+import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+import { Subscription } from 'rxjs';
+import { Usuario } from 'src/app/modelo/admin/usuario';
+import { AlertaComponent } from '../../../util/alerta/alerta.component';
+import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
+import { UsuarioService } from '../../../../servicios/usuario.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { Notificacion } from 'src/app/util/notificacion';
+import { PopconfirmComponent } from '../../../util/popconfirm/popconfirm.component';
+import { Router } from '@angular/router';
+import { UsuarioNombreApellido } from '../../../../modelo/util/nombre-apellido';
 
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MyValidators} from "../../../../util/validators";
-import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
-import {DatoPersonalComponent} from "../dato-personal/dato-personal.component";
-import {UsuarioComponent} from "../usuario/usuario.component";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MyValidators } from "../../../../util/validators";
+import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import { DatoPersonalComponent } from "../dato-personal/dato-personal.component";
+import { UsuarioComponent } from "../usuario/usuario.component";
 
 @Component({
   selector: 'app-usuarios',
@@ -38,24 +38,25 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[];
   usuarioFrm: Usuario = new Usuario();
   @ViewChild('table') table!: MdbTableDirective<Usuario>;
-  editElementIndex = -1;
   addRow = false;
   headers = [
-    {key: 'nombreUsuario', label: 'Identificación'},
-    {key: 'nombre', label: 'Nombres'},
-    {key: 'apellido', label: 'Apellidos'},
-    {key: 'correo_personal', label: 'Correo personal'},
-    {key: 'fechaRegistro', label: 'Fecha de registro'},
-    {key: 'fechaUltimoLogin', label: 'Fecha último ingreso'},
-    {key: 'active', label: 'Activo?'},
-    {key: 'notLocked', label: 'Habilitado?'}
+    { key: 'nombreUsuario', label: 'Identificación' },
+    { key: 'nombre', label: 'Nombres' },
+    { key: 'apellido', label: 'Apellidos' },
+    { key: 'correo_personal', label: 'Correo personal' },
+    { key: 'fechaRegistro', label: 'Fecha de registro' },
+    { key: 'fechaUltimoLogin', label: 'Fecha último ingreso' },
+    { key: 'active', label: 'Activo?' },
+    { key: 'notLocked', label: 'Habilitado?' }
   ]
   mensajeConfirmacion: string;
-  indexEliminar: number;
   currentRoute: string;
   editarDatoPersonalModalRef: MdbModalRef<DatoPersonalComponent> | null = null;
   crearUsuarioModalRef: MdbModalRef<UsuarioComponent> | null = null;
   existenCoincidencias: boolean = true;
+
+  estaEditando = false;
+  codigoUsuarioEditando = 0;
 
   constructor(
     private mdbNotificationService: MdbNotificationService,
@@ -122,8 +123,10 @@ export class UsuariosComponent implements OnInit {
         {
           next: () => {
             this.showLoading = false;
-            this.editElementIndex = -1;
-            this.usuarios.splice(this.indexEliminar, 1);
+            const index = this.usuarios.findIndex(
+              (usuarioItem) => usuarioItem.nombreUsuario === usuario.nombreUsuario
+            );
+            this.usuarios.splice(index, 1);
             this.usuarios = [...this.usuarios];
             Notificacion.notificar(this.mdbNotificationService, 'Usuario eliminado correctamente', TipoAlerta.ALERTA_OK);
           },
@@ -162,34 +165,39 @@ export class UsuariosComponent implements OnInit {
       this.usuarioService.actualizar(usuario).subscribe(
         {
           next: (response) => {
-            this.usuarios[this.editElementIndex] = response;
+            const index = this.usuarios.findIndex(
+              (usuarioItem) => usuarioItem.nombreUsuario === usuario.nombreUsuario
+            );
+            this.usuarios[index] = response;
+            this.usuarios = [...this.usuarios];
+            this.codigoUsuarioEditando = 0;
+            this.estaEditando = false;
             this.showLoading = false;
-            this.editElementIndex = -1;
             Notificacion.notificar(this.mdbNotificationService, 'Usuario actualizado correctamente', TipoAlerta.ALERTA_OK);
           },
           error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
+            console.error("Error al actualizar usuario: " + errorResponse.error.mensaje);
             this.showLoading = false;
+            this.estaEditando = false;
+
           },
         }
       )
     )
   }
 
-  editRow(index: number) {
-    this.editElementIndex = index;
-    this.usuarioFrm = {...this.usuarios[index]};
+  editRow(usuario: Usuario) {
+    this.usuarioFrm = { ...usuario };
+    this.codigoUsuarioEditando = usuario.codUsuario
   }
 
   undoRow() {
+    this.estaEditando = false;
     this.usuarioFrm = new Usuario();
-    this.editElementIndex = -1;
   }
 
-  // Funcionalidad de confirmación
-
-  openPopconfirm(event: Event, index: number) {
-    this.indexEliminar = index;
+  openPopconfirm(event: Event, codUsuario: number) {
     const target = event.target as HTMLElement;
 
     console.log("mensaje de confirmacion: " + this.mensajeConfirmacion);
@@ -197,7 +205,7 @@ export class UsuariosComponent implements OnInit {
     this.popConfirmRef = this.popconfirmService.open(
       PopconfirmComponent,
       target,
-      {popconfirmMode: 'modal', data: {mensaje: this.mensajeConfirmacion}}
+      { popconfirmMode: 'modal', data: { mensaje: this.mensajeConfirmacion } }
     );
 
     this.popConfirmRef.onClose.subscribe((message: any) => {
@@ -206,7 +214,9 @@ export class UsuariosComponent implements OnInit {
 
     this.popConfirmRef.onConfirm.subscribe((message: any) => {
       console.log("onConfirm() - " + message);
-      this.eliminar(this.usuarios[this.indexEliminar]);
+      const index = this.usuarios.findIndex((usuario) => usuario.codUsuario === codUsuario);
+      this.eliminar(this.usuarios[index]);
+
     });
 
   }
@@ -291,14 +301,14 @@ export class UsuariosComponent implements OnInit {
     this.usuarios = [];
   }
 
-  abrirModalEditarDatosPersonales(index: number) {
-    const usuario = this.usuarios[index];
+  abrirModalEditarDatosPersonales(usuario: Usuario) {
     this.editarDatoPersonalModalRef = this.modalService.open(DatoPersonalComponent, {
-      data: {usuario: usuario},
+      data: { usuario: usuario },
       modalClass: 'modal-xl modal-dialog-centered',
     });
     this.editarDatoPersonalModalRef.onClose.subscribe((usuario: Usuario) => {
       if (usuario) {
+        const index = this.usuarios.findIndex((usuarioItem) => usuarioItem.codUsuario === usuario.codUsuario);
         this.usuarios[index] = usuario;
         this.usuarios = [...this.usuarios];
         Notificacion.notificar(this.mdbNotificationService, 'Datos personales actualizados correctamente', TipoAlerta.ALERTA_OK);

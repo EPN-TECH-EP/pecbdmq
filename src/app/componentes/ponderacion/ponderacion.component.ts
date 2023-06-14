@@ -136,11 +136,11 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
       })
     );
 
-    this.subscriptions.push(
+    /* this.subscriptions.push(
       this.ApiTipoNota.getTipoNota().subscribe((data) => {
         this.tiposNota = data;
       })
-    );
+    ); */
 
     this.subscriptions.push(
       this.ApiPeriodoAcademico.getPeriodo().subscribe((data) => {
@@ -205,24 +205,28 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
           let ponderacionTodo = {
             ...nuevaPonderacion,
-            modulo_desc: this.modulos.find(
+            moduloDesc: this.modulos.find(
               (modulo) => modulo.codModulo === ponderacion.codModulo
             ).etiqueta,
-            componente_nota_desc: this.componentes.find(
+            componenteNotaDesc: this.componentes.find(
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
             ).nombre,            
-            periodo_academico_desc: this.periodos.find(
+            periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
           };
 
-          this.table.data.push(ponderacionTodo);
+          //this.table.data.push(ponderacionTodo);
+
+          this.ponderaciones.push(ponderacionTodo);
+          this.ponderaciones = [...this.ponderaciones];
+
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Ponderacion creada con éxito'
+            'Ponderación creada con éxito'
           );
 
           this.addRow = false;
@@ -343,7 +347,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Ponderacion actualizada con éxito'
+            'Ponderación actualizada con éxito'
           );
 
           let ponderacionTodo = {
@@ -392,7 +396,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Ponderacion eliminada con éxito'
+            'Ponderación eliminada con éxito'
           );
           this.showLoading = false;
           const index = this.ponderaciones.findIndex(

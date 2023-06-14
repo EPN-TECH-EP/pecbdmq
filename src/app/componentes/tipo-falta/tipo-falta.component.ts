@@ -118,11 +118,11 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
   }
 
   //update a register of tipo falta
-  public updateTipoFalta(tipoFalta: ITipoFalta, formValue): void {
+  public updateTipoFalta(tipoFalta: ITipoFalta, formValue: ITipoFalta): void {
 
-    tipoFalta = {...tipoFalta, nombreFalta: formValue.falta, estado: "ACTIVO"};
+    tipoFalta = {...tipoFalta, nombreFalta: formValue.nombreFalta, estado: "ACTIVO"};
 
-    if (formValue.falta === "") {
+    if (formValue.nombreFalta === "") {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'El campo falta no puede estar vacío');
       return
     }
