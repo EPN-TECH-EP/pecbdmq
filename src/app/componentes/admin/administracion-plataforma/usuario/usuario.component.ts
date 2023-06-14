@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
-import {Usuario} from "../../../../modelo/admin/usuario";
-import {DatoPersonal} from "../../../../modelo/admin/dato-personal";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Provincia} from "../../../../modelo/admin/provincia";
-import {Canton} from "../../../../modelo/admin/canton";
-import {UnidadGestion} from "../../../../modelo/admin/unidad-gestion";
-import {Grado} from "../../../../modelo/admin/institucionales/grado";
-import {Rango} from "../../../../modelo/admin/institucionales/rango";
-import {Cargo} from "../../../../modelo/admin/institucionales/cargo";
-import {MdbModalRef} from "mdb-angular-ui-kit/modal";
-import {ProvinciaService} from "../../../../servicios/provincia.service";
-import {CargoService} from "../../../../servicios/cargo.service";
-import {GradoService} from "../../../../servicios/grado.service";
-import {UnidadGestionService} from "../../../../servicios/unidad-gestion.service";
+import { OPCIONES_DATEPICKER } from "../../../../util/constantes/opciones-datepicker.const";
+import { Usuario } from "../../../../modelo/admin/usuario";
+import { DatoPersonal } from "../../../../modelo/admin/dato-personal";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Provincia } from "../../../../modelo/admin/provincia";
+import { Canton } from "../../../../modelo/admin/canton";
+import { UnidadGestion } from "../../../../modelo/admin/unidad-gestion";
+import { Grado } from "../../../../modelo/admin/institucionales/grado";
+import { Rango } from "../../../../modelo/admin/institucionales/rango";
+import { Cargo } from "../../../../modelo/admin/institucionales/cargo";
+import { MdbModalRef } from "mdb-angular-ui-kit/modal";
+import { ProvinciaService } from "../../../../servicios/provincia.service";
+import { CargoService } from "../../../../servicios/cargo.service";
+import { GradoService } from "../../../../servicios/grado.service";
+import { UnidadGestionService } from "../../../../servicios/unidad-gestion.service";
 import TipoSangreEnum from "../../../../enum/tipo-sangre.enum";
-import {MyValidators} from "../../../../util/validators";
-import {UsuarioService} from "../../../../servicios/usuario.service";
-import {Notificacion} from "../../../../util/notificacion";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {AlertaComponent} from "../../../util/alerta/alerta.component";
+import { MyValidators } from "../../../../util/validators";
+import { UsuarioService } from "../../../../servicios/usuario.service";
+import { Notificacion } from "../../../../util/notificacion";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { MdbNotificationRef, MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { AlertaComponent } from "../../../util/alerta/alerta.component";
 
 @Component({
   selector: 'app-usuario',
@@ -30,21 +30,21 @@ import {AlertaComponent} from "../../../util/alerta/alerta.component";
 export class UsuarioComponent implements OnInit {
   protected readonly opcionesDatepicker = OPCIONES_DATEPICKER;
 
-  usuario                       : Usuario;
-  datosPersonales               : DatoPersonal;
-  formularioUsuario             : FormGroup;
-  provincias                    : Provincia[];
-  cantonesNacimiento            : Canton[];
-  cantonesResidencia            : Canton[];
-  unidadesGestion               : UnidadGestion[];
-  grados                        : Grado[];
-  rangos                        : Rango[];
-  cargos                        : Cargo[];
-  tiposSangre                   : string[];
-  tieneMeritoAcademico          : boolean;
-  tieneMeritoDeportivo          : boolean;
-  tieneNacionalidadEcuatoriana  : boolean;
-  tieneNacionalidadComunidadFrontera : boolean;
+  usuario: Usuario;
+  datosPersonales: DatoPersonal;
+  formularioUsuario: FormGroup;
+  provincias: Provincia[];
+  cantonesNacimiento: Canton[];
+  cantonesResidencia: Canton[];
+  unidadesGestion: UnidadGestion[];
+  grados: Grado[];
+  rangos: Rango[];
+  cargos: Cargo[];
+  tiposSangre: string[];
+  tieneMeritoAcademico: boolean;
+  tieneMeritoDeportivo: boolean;
+  tieneNacionalidadEcuatoriana: boolean;
+  tieneNacionalidadComunidadFrontera: boolean;
   hoy: Date = new Date();
   loading: boolean = false;
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
@@ -101,37 +101,37 @@ export class UsuarioComponent implements OnInit {
   private construirFormulario() {
     this.formularioUsuario = this.builder.group({
 
-      nombreUsuario:              ['', [Validators.required, Validators.minLength(10),
-                                        Validators.maxLength(10), MyValidators.onlyNumbers,
-                                        MyValidators.validIdentification()]],
-      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
-      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
-      correoPersonal:             ['', [Validators.required, Validators.email]],
-      correoInstitucional:        ['', [Validators.email]],
-      fechaNacimiento:            ['', Validators.required],
-      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      tipoSangre:                 [''],
-      sexo:                     ['', Validators.required],
-      tipoNacionalidad:           ['', Validators.required],
-      provinciaNacimiento:        ['', Validators.required],
-      cantonNacimiento:           [{value: '', disabled: true}, Validators.required],
-      provinciaResidencia:        [''],
-      cantonResidencia:           [{value: '', disabled: true}],
-      callePrincipalResidencia:   [''],
-      calleSecundariaResidencia:  [''],
-      numeroCasa:                 [''],
-      colegio:                    [''],
-      nombreTituloSegundoNivel:               [''],
-      paisTituloSegundoNivel:                 [''],
-      ciudadTituloSegundoNivel:               [''],
+      nombreUsuario: ['', [Validators.required, Validators.minLength(10),
+        Validators.maxLength(10), MyValidators.onlyNumbers,
+        MyValidators.validIdentification()], MyValidators.userNameExist(this.usuarioService)],
+      nombre: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      correoPersonal: ['', [Validators.required, Validators.email], MyValidators.emailExist(this.usuarioService)],
+      correoInstitucional: ['', [Validators.email]],
+      fechaNacimiento: ['', Validators.required],
+      telfConvencional: ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      tipoSangre: [''],
+      sexo: ['', Validators.required],
+      tipoNacionalidad: ['', Validators.required],
+      provinciaNacimiento: ['', Validators.required],
+      cantonNacimiento: [{ value: '', disabled: true }, Validators.required],
+      provinciaResidencia: [''],
+      cantonResidencia: [{ value: '', disabled: true }],
+      callePrincipalResidencia: [''],
+      calleSecundariaResidencia: [''],
+      numeroCasa: [''],
+      colegio: [''],
+      nombreTituloSegundoNivel: [''],
+      paisTituloSegundoNivel: [''],
+      ciudadTituloSegundoNivel: [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
-      unidadGestion:              [''],
-      grado:                      [''],
-      rango:                      [{value: '', disabled: true}],
-      cargo:                      [''],
-    }, {updateOn: 'change'});
+      unidadGestion: [''],
+      grado: [''],
+      rango: [{ value: '', disabled: true }],
+      cargo: [''],
+    }, { updateOn: 'change' });
 
     this.fechaNacimientoField.valueChanges.subscribe({
       next: (fechaNacimiento) => {
@@ -266,7 +266,7 @@ export class UsuarioComponent implements OnInit {
   onMeritoAcademicoChange(event: any) {
     this.tieneMeritoAcademico = event.target.checked;
 
-    if(this.tieneMeritoAcademico) {
+    if (this.tieneMeritoAcademico) {
       this.meritoAcademicoDescripcionField.setValidators([Validators.required]);
     } else {
       this.meritoAcademicoDescripcionField.clearValidators();
@@ -294,39 +294,43 @@ export class UsuarioComponent implements OnInit {
   }
 
   onChangeCantonNacimiento(event: any) {
-    if(event === '') return;
+    if (event === '') return;
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
         this.formularioUsuario.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }
 
   onChangeCantonResidencia(event: any) {
-    if(event === '') return;
+    if (event === '') return;
 
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
-      this.formularioUsuario.get('cantonResidencia')?.enable();
+        this.formularioUsuario.get('cantonResidencia')?.enable();
         this.cantonesResidencia = cantones;
+        this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }
 
   onChangeGrado(event: any) {
     this.gradoService.getRangosPorGrado(event).subscribe({
-      next: (rangos) => {this.formularioUsuario.get('rango')?.enable(); this.rangos = rangos;},
+      next: (rangos) => {
+        this.formularioUsuario.get('rango')?.enable();
+        this.rangos = rangos;
+      },
       error: (err) => {console.log(err)}
     })
   }
 
   crearUsuario() {
-    if(this.formularioUsuario.invalid) {
+    if (this.formularioUsuario.invalid) {
       Notificacion.notificar(this.mdbNotificationService, 'Por favor, llene todos los campos obligatorios.', TipoAlerta.ALERTA_ERROR);
       this.formularioUsuario.markAllAsTouched();
       return;
@@ -342,42 +346,42 @@ export class UsuarioComponent implements OnInit {
       notLocked: true,
       codDatosPersonales: {
         ...this.usuario.codDatosPersonales,
-        apellido                      : this.apellidoField.value,
-        correoPersonal               : this.correoPersonalField.value,
-        correoInstitucional          : this.correoInstitucionalField.value,
-        fechaNacimiento              : this.fechaNacimientoField.value,
-        nombre                        : this.nombreField.value,
-        numTelefConvencional        : this.telfConvencionalField.value,
-        numTelefCelular             : this.telfCelularField.value,
-        tipoSangre                   : this.tipoSangreField.value,
-        codCargo                     : this.cargoField.value,
-        codGrado                     : this.gradoField.value,
-        codRango                     : this.rangoField.value,
-        codCantonNacimiento         : this.cantonNacimientoField.value,
-        codCantonResidencia         : this.cantonResidenciaField.value,
-        codProvinciaNacimiento      : this.provinciaNacimientoField.value,
-        codProvinciaResidencia      : this.provinciaResidenciaField.value,
-        callePrincipalResidencia    : this.callePrincipalResidenciaField.value,
-        calleSecundariaResidencia   : this.calleSecundariaResidenciaField.value,
-        numeroCasa                   : this.numeroCasaField.value,
-        tipoNacionalidad             : this.tipoNacionalidadField.value,
-        colegio                       : this.colegioField.value,
-        nombreTituloSegundoNivel                 : this.nombreTituloSegundoNivelField.value,
-        paisTituloSegundoNivel                   : this.paisTituloSegundoNivelField.value,
-        ciudadTituloSegundoNivel                 : this.ciudadTituloSegundoNivelField.value,
-        tieneMeritoDeportivo        : this.tieneMeritoDeportivo,
-        meritoDeportivoDescripcion  : this.meritoDeportivoDescripcionField.value,
-        tieneMeritoAcademico        : this.tieneMeritoAcademico,
-        meritoAcademicoDescripcion  : this.meritoAcademicoDescripcionField.value,
-        codUnidadGestion            : this.unidadGestionField.value,
-        sexo                        : this.sexoField.value,
-        cedula                        : this.nombreUsuarioField.value,
-        estado                        : 'ACTIVO',
-        residePais                   : this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
-        codDocumentoImagen          : null,
-        codEstacion                  : null,
-        pinValidacionCorreo         : null,
-        validacionCorreo             : null
+        apellido: this.apellidoField.value,
+        correoPersonal: this.correoPersonalField.value,
+        correoInstitucional: this.correoInstitucionalField.value,
+        fechaNacimiento: this.fechaNacimientoField.value,
+        nombre: this.nombreField.value,
+        numTelefConvencional: this.telfConvencionalField.value,
+        numTelefCelular: this.telfCelularField.value,
+        tipoSangre: this.tipoSangreField.value,
+        codCargo: this.cargoField.value,
+        codGrado: this.gradoField.value,
+        codRango: this.rangoField.value,
+        codCantonNacimiento: this.cantonNacimientoField.value,
+        codCantonResidencia: this.cantonResidenciaField.value,
+        codProvinciaNacimiento: this.provinciaNacimientoField.value,
+        codProvinciaResidencia: this.provinciaResidenciaField.value,
+        callePrincipalResidencia: this.callePrincipalResidenciaField.value,
+        calleSecundariaResidencia: this.calleSecundariaResidenciaField.value,
+        numeroCasa: this.numeroCasaField.value,
+        tipoNacionalidad: this.tipoNacionalidadField.value,
+        colegio: this.colegioField.value,
+        nombreTituloSegundoNivel: this.nombreTituloSegundoNivelField.value,
+        paisTituloSegundoNivel: this.paisTituloSegundoNivelField.value,
+        ciudadTituloSegundoNivel: this.ciudadTituloSegundoNivelField.value,
+        tieneMeritoDeportivo: this.tieneMeritoDeportivo,
+        meritoDeportivoDescripcion: this.meritoDeportivoDescripcionField.value,
+        tieneMeritoAcademico: this.tieneMeritoAcademico,
+        meritoAcademicoDescripcion: this.meritoAcademicoDescripcionField.value,
+        codUnidadGestion: this.unidadGestionField.value,
+        sexo: this.sexoField.value,
+        cedula: this.nombreUsuarioField.value,
+        estado: 'ACTIVO',
+        residePais: this.tieneNacionalidadEcuatoriana || this.tieneNacionalidadComunidadFrontera,
+        codDocumentoImagen: null,
+        codEstacion: null,
+        pinValidacionCorreo: null,
+        validacionCorreo: null
 
       }
 

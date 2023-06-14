@@ -152,7 +152,7 @@
               <i class="fas fa-exclamation-circle mb-1"></i>
               Este campo es requerido
             </span>
-            <span *ngIf="nombreUsuarioField?.hasError('value_found')">
+            <span *ngIf="correoPersonalField?.hasError('value_found')">
               <i class="fas fa-exclamation-circle mb-1"></i>
               El correo ingresado ya existe en el sistema
             </span>
@@ -460,6 +460,10 @@
           </mdb-select>
           <label mdbLabel class="form-label mb-2x" for="cantonResidencia">Cantón de residencia</label>
           <mdb-error *ngIf="(cantonResidenciaField?.dirty || cantonResidenciaField?.touched)">
+            <span *ngIf="cantonResidenciaField?.hasError('required')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
           </mdb-error>
           <mdb-error *ngIf="!cantonesResidencia.length" class="text-muted">
             <i class="fas fa-exclamation-circle mb-1"></i>
