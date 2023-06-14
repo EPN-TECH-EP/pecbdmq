@@ -123,6 +123,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
       nombre: '',
       descripcion: '',
     };
+    this.estaEditando = false;
   }
 
   actualizar(rol: Rol, formValue): void {

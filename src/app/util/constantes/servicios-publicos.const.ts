@@ -7,6 +7,11 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
 '/link',
 '/provincia',
 '/canton',
-'/inscripcionfor',
+'/inscripcionfor/crear',
+'/inscripcionfor/generaPin',
+'/inscripcionfor/validaPin',
+'/inscripcionfor/reenviaPin',
+'/inscripcionfor/validafechas',
+'/inscripcionfor/inscripcionPorCedula',
 '/apicbdmq'
 ];

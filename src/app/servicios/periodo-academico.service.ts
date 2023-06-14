@@ -15,7 +15,7 @@ export class PeriodoAcademicoService {
   constructor(private http: HttpClient) {}
 
   public getPeriodo(): Observable<Periodo[]> {
-    return this.http.get<Periodo[]>(`${this.host}/periodoacademico/listar`);
+    return this.http.get<Periodo[]>(`${this.host}/periodoacademico/listarActivos`);
   }
   public getEstadoPeriodoAcademico(): Observable<Periodo[]> {
     return this.http.get<Periodo[]>(`${this.host}/periodoacademico/validaestado`);

@@ -8,9 +8,11 @@ import {
 import {Observable} from 'rxjs';
 import {timeout} from 'rxjs/operators';
 
+import { environment } from 'src/environments/environment';
+
 @Injectable()
 export class TimeoutInterceptor implements HttpInterceptor {
-  private readonly defaultTimeout = 30000; // 30 segundos
+  private readonly defaultTimeout = environment.DURACION_TIMEOUT; // 30 segundos
 
   constructor() {
   }
