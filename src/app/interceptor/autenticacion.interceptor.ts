@@ -66,6 +66,11 @@ export class AutenticacionInterceptor implements HttpInterceptor {
 
 revisaServiciosPublicos(url: string): boolean {
     for (const servicioPublicoUrl of SERVICIOS_PUBLICOS_URLS) {
+
+      /*console.log(`${this.autenticacionService.host}${servicioPublicoUrl}`);
+      console.log(url);
+      console.log(url.includes(`${this.autenticacionService.host}${servicioPublicoUrl}`));*/
+
       if (url.includes(`${this.autenticacionService.host}${servicioPublicoUrl}`)) {
         return true;
       }
