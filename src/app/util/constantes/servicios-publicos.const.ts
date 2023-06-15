@@ -12,6 +12,7 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
 '/inscripcionfor/validaPin',
 '/inscripcionfor/reenviaPin',
 '/inscripcionfor/validafechas',
+'/inscripcionfor/validaEdad',
 '/inscripcionfor/inscripcionPorCedula',
 '/apicbdmq'
 ];
