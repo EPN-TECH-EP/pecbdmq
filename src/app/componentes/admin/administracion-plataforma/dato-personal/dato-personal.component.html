@@ -91,14 +91,18 @@
           <mdb-error
             *ngIf="correoPersonalField?.dirty || correoPersonalField?.touched"
           >
-        <span *ngIf="correoPersonalField?.hasError('email')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo debe ser un correo electrónico
-        </span>
+            <span *ngIf="correoPersonalField?.hasError('email')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo debe ser un correo electrónico
+            </span>
             <span *ngIf="correoPersonalField?.hasError('required')">
-          <i class="fas fa-exclamation-circle mb-1"></i>
-          Este campo es requerido
-        </span>
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              Este campo es requerido
+            </span>
+            <span *ngIf="correoPersonalField?.hasError('value_found')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              El correo ingresado ya existe en el sistema
+            </span>
           </mdb-error>
         </mdb-form-control>
       </div>

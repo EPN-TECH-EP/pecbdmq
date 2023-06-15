@@ -1,6 +1,18 @@
 <app-boton-volver></app-boton-volver>
 
-<div class="container">
+<ng-container *ngIf="!esEstadoValidacion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de validación no activo</h5>
+      <p class="card-text">
+        El proceso de validación de inscripciones no se encuentra activo.
+        Por lo tanto, no se puede realizar la reasignación de inscripciones.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoValidacion">
   <div class="row m-3">
     <div class="col text-center">
       <h1 class="fs-4 fw-bolder">Reasignación de inscripciones</h1>

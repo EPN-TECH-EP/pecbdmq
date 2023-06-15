@@ -9,6 +9,11 @@ import {UsuarioAsignado} from "../../../../modelo/flujos/formacion/asignar-usuar
 import {Notificacion} from "../../../../util/notificacion";
 import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import { FormacionService } from "../../../../servicios/formacion/formacion.service";
+import { catchError } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { of } from "rxjs";
+import { FORMACION } from "../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-inscripciones',
@@ -21,6 +26,7 @@ export class InscripcionesComponent implements OnInit {
   inscripciones         : InscripcionItem[]
   inscripcionesAsignadas: InscripcionItem[]
   inscripcionesLoaded = false
+  esEstadoValidacion = false
 
   headers = [
     {key: 'id', label: 'ID'},
@@ -34,7 +40,8 @@ export class InscripcionesComponent implements OnInit {
     private datoPersonalService: DatoPersonalService,
     private router: Router,
     private autenticacionService: AutenticacionService,
-    private mdbNotificationService: MdbNotificationService
+    private mdbNotificationService: MdbNotificationService,
+    private formacionService: FormacionService
   ) {
     this.inscripcionesAsignadas = []
     this.inscripciones = []
@@ -47,17 +54,39 @@ export class InscripcionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
-      next: inscripciones => {
-        console.log(inscripciones)
-        this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
-        console.log('Asignadas', this.inscripcionesAsignadas)
-        this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
-        console.log('Pendientes', this.inscripciones)
-        this.inscripcionesLoaded = true
-      },
-      error: err => console.log(err)
-    });
+
+    this.formacionService.getEstadoActual().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.error(errorResponse)
+        return of(null);
+      })
+    ).subscribe({
+      next: estado => {
+
+        if (!estado || estado.httpStatusCode !== 200) {
+          return;
+        }
+
+        if (estado.mensaje === FORMACION.estadoValidacion) {
+
+          this.esEstadoValidacion = true
+
+          this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
+            next: inscripciones => {
+              console.log(inscripciones)
+              this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
+              console.log('Asignadas', this.inscripcionesAsignadas)
+              this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
+              console.log('Pendientes', this.inscripciones)
+              this.inscripcionesLoaded = true
+            },
+            error: err => console.log(err)
+          });
+        }
+      }
+    })
+
+
   }
 
   validar(inscripcion: InscripcionItem) {
