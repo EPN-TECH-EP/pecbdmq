@@ -123,6 +123,7 @@ export class DatoPersonalComponent implements OnInit {
     }
     this.construirFormulario();
     this.matchDatosPersonales();
+
   }
 
   private construirFormulario() {
@@ -198,7 +199,17 @@ export class DatoPersonalComponent implements OnInit {
     this.provinciaNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
     this.cantonNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
 
+    this.verificarCorreoPersonal()
+  }
+
+  private verificarCorreoPersonal() {
     const correoActual = this.datosPersonales.correoPersonal;
+
+    if (!this.correoPersonalField.touched){
+      this.correoPersonalField.clearAsyncValidators()
+      this.correoPersonalField.setValidators([Validators.required, Validators.email]);
+      this.correoPersonalField.updateValueAndValidity();
+    }
 
     this.formularioDatoPersonal.get('correoPersonal').valueChanges.pipe(
       distinctUntilChanged(),
@@ -207,6 +218,7 @@ export class DatoPersonalComponent implements OnInit {
     ).subscribe(
       (correoPersonal) => {
         if (correoPersonal === correoActual) {
+          console.log('correo actual');
           this.correoPersonalField.clearAsyncValidators()
           this.correoPersonalField.setValidators([Validators.required, Validators.email]);
           this.correoPersonalField.updateValueAndValidity();
@@ -217,7 +229,6 @@ export class DatoPersonalComponent implements OnInit {
         this.correoPersonalField.updateValueAndValidity();
       }
     );
-
   }
 
   get apellidoField() {

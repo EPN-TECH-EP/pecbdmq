@@ -1,0 +1,128 @@
+<section>
+  <form [formGroup]="buscarUsuarioForm">
+    <mdb-tabs [justified]="true">
+      <mdb-tab title="Buscar por identificación">
+        <div class="row justify-content-center">
+          <mdb-form-control class="col-4 me-2">
+            <input
+              mdbInput
+              mdbValidate
+              type="text"
+              class="form-control"
+              id="identificacion"
+              formControlName="identificacion"
+              [maxLength]="10"
+              [minLength]="10"
+              (keyup.enter)="buscarPorIdentificacion()"
+            >
+            <label mdbLabel class="form-label" for="identificacion">Identificación</label>
+            <mdb-error *ngIf="identificacionField?.dirty || identificacionField?.touched">
+                <span *ngIf="identificacionField?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+              <span *ngIf="identificacionField?.hasError('invalid_identification')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  No es una cédula válida
+                </span>
+            </mdb-error>
+            <mdb-success *ngIf="identificacionField?.valid && (identificacionField?.touched || identificacionField?.dirty)">
+              <i class="fa-solid fa-circle-check"></i>
+              Campo válido
+            </mdb-success>
+          </mdb-form-control>
+          <button
+            type="button"
+            class="btn btn-primary col-1"
+            (click)="buscarPorIdentificacion()"
+            [disabled]="identificacionField.invalid"
+          >
+            Buscar
+          </button>
+        </div>
+      </mdb-tab>
+      <mdb-tab title="Buscar por nombres o apellidos">
+        <div class="row justify-content-center">
+          <mdb-form-control class="col-3 me-2">
+            <input
+              mdbInput
+              mdbValidate
+              type="text"
+              class="form-control"
+              id="nombres"
+              formControlName="nombres"
+              (keyup.enter)="buscarPorNombresApellidos()"
+            >
+            <label mdbLabel class="form-label" for="nombres">Nombres</label>
+            <mdb-error *ngIf="nombresField?.dirty || nombresField?.touched">
+                <span *ngIf="nombresField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+            </mdb-error>
+          </mdb-form-control>
+          <mdb-form-control class="col-3 me-2">
+            <input
+              mdbInput
+              mdbValidate
+              type="text"
+              class="form-control"
+              id="apellidos"
+              formControlName="apellidos"
+              (keyup.enter)="buscarPorNombresApellidos()"
+            >
+            <label mdbLabel class="form-label" for="apellidos">Apellidos</label>
+            <mdb-error *ngIf="apellidosField?.dirty || apellidosField?.touched">
+                <span *ngIf="apellidosField?.hasError('invalid_letters')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta letras
+                </span>
+            </mdb-error>
+          </mdb-form-control>
+          <button
+            type="button"
+            class="btn btn-primary col-1"
+            (click)="buscarPorNombresApellidos()"
+            [disabled]="nombresField?.value === '' && apellidosField?.value === ''"
+          >
+            Buscar
+          </button>
+        </div>
+      </mdb-tab>
+      <mdb-tab title="Buscar por correo">
+        <div class="row justify-content-center">
+          <mdb-form-control class="col-4 me-2">
+            <input
+              mdbInput
+              mdbValidate
+              type="text"
+              class="form-control"
+              formControlName="correo"
+              id="correo"
+              (keyup.enter)="buscarPorCorreo()"
+            >
+            <label mdbLabel class="form-label" for="correo">Correo</label>
+            <mdb-error *ngIf="correoField?.dirty || correoField?.touched">
+                <span *ngIf="correoField?.hasError('email')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo debe ser un correo electrónico válido
+                </span>
+              <span *ngIf="correoField?.hasError('required')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo es requerido
+                </span>
+            </mdb-error>
+          </mdb-form-control>
+          <button
+            type="button"
+            class="btn btn-primary col-1"
+            (click)="buscarPorCorreo()"
+            [disabled]="correoField?.invalid"
+          >
+            Buscar
+          </button>
+        </div>
+      </mdb-tab>
+    </mdb-tabs>
+  </form>
+</section>

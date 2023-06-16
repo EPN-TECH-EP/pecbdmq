@@ -72,6 +72,15 @@ import {
 import {
   ReasignacionInscripcionComponent
 } from "../../componentes/flujos/formacion/reasignacion-inscripcion/reasignacion-inscripcion.component";
+import {
+  MenuFormacionAcademiaComponent
+} from "../../componentes/flujos/formacion/formacion-academica/menu-formacion-academia/menu-formacion-academia.component";
+import {
+  FaGestionDocumentosComponent
+} from "../../componentes/flujos/formacion/formacion-academica/fa-gestion-documentos/fa-gestion-documentos.component";
+import {
+  InstructoresComponent
+} from "../../componentes/flujos/formacion/formacion-academica/instructores/instructores.component";
 
 
 const routes: Routes = [
@@ -122,6 +131,9 @@ const routes: Routes = [
       {path: 'formacion/validacion', component: ValidacionComponent},
       {path: 'formacion/gestion-delegados', component: GestionDelegadosComponent},
       {path: 'formacion/reasignacion-inscripciones', component: ReasignacionInscripcionComponent},
+      {path: 'formacion/academia/menu', component: MenuFormacionAcademiaComponent},
+      {path: 'formacion/academia/gestion-documentos', component: FaGestionDocumentosComponent},
+      {path: 'formacion/academia/instructores', component: InstructoresComponent},
 
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
