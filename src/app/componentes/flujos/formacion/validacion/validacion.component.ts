@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
-import {ValidacionRequisito} from "../../../../modelo/flujos/formacion/requisito";
-import {Notificacion} from "../../../../util/notificacion";
-import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {InscripcionCompleta} from "../../../../modelo/flujos/formacion/inscripcion-completa";
-import {DocumentosService} from "../../../../servicios/formacion/documentos.service";
-import {forkJoin} from "rxjs";
-import {SafeResourceUrl} from "@angular/platform-browser";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
+import { ValidacionRequisito } from "../../../../modelo/flujos/formacion/requisito";
+import { Notificacion } from "../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { InscripcionCompleta } from "../../../../modelo/flujos/formacion/inscripcion-completa";
+import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
+import { forkJoin } from "rxjs";
+import { SafeResourceUrl } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-validacion',
@@ -26,7 +26,7 @@ export class ValidacionComponent implements OnInit {
   headers: string[];
   msmBtnListaRequisitos: string;
   estaExpandidoListaRequisitos: boolean = false;
-  urlsArchivo: { urlSafe: SafeResourceUrl, nombreArchivo: string }[];
+  urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
 
   constructor(
     private route: ActivatedRoute,
@@ -51,7 +51,7 @@ export class ValidacionComponent implements OnInit {
 
     this.postulanteId = this.validacionInscripcionService.idPostulante;
     if (!this.postulanteId) {
-      Notificacion.notificar(this.mdbNotificationService,"No se ha seleccionado un postulante", TipoAlerta.ALERTA_ERROR);
+      Notificacion.notificar(this.mdbNotificationService, "No se ha seleccionado un postulante", TipoAlerta.ALERTA_ERROR);
       this.router.navigate(['principal/formacion/inscripciones']).then();
       return;
         }
@@ -101,14 +101,14 @@ export class ValidacionComponent implements OnInit {
 
     this.requisitos.forEach(requisito => {
       const requisitoFormGroup = this.builder.group({
-        codRequisitos      : [requisito?.codRequisitos],
-        codValidacion      : [requisito?.codValidacion],
-        codPostulante      : [requisito?.codPostulante],
-        nombre             : [requisito?.nombreRequisito],
-        estado             : [requisito?.estado],
-        observaciones      : [requisito?.observaciones],
-        estadoMuestra      : [requisito?.estadoMuestra],
-        observacionMuestra : [requisito?.observacionMuestra]
+        codRequisitos: [requisito?.codRequisitos],
+        codValidacion: [requisito?.codValidacion],
+        codPostulante: [requisito?.codPostulante],
+        nombre: [requisito?.nombreRequisito],
+        estado: [requisito?.estado],
+        observaciones: [requisito?.observaciones],
+        estadoMuestra: [requisito?.estadoMuestra],
+        observacionMuestra: [requisito?.observacionMuestra]
       });
 
       this.formularioRequisitos.push(requisitoFormGroup);

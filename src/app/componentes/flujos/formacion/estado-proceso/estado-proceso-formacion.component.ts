@@ -26,9 +26,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
   ngOnInit() {
     this.formacionService.getEstadosFormacion().pipe(
       switchMap((estados) => {
-        estados.forEach((estado) => {
-          this.estados[estado.orden - 1] = estado;
-        });
+          this.estados = estados;
         return this.formacionService.getEstadoActual();
       })
     ).subscribe((estado) => {
@@ -58,13 +56,15 @@ export class EstadoProcesoFormacionComponent implements OnInit {
       console.log(key + ': ' + value);
     });
     this.formacionService.actualizarEstadoActual(formData).subscribe(
-      (response) => {
+      {
+        next: (response) => {
         console.log(response);
         Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK)
       },
-      (error) => {
-        console.log(error);
+        error: (error) => {
+          console.error(error);
         Notificacion.notificar(this.mdbNotificationService, "Error al actualizar el estado", TipoAlerta.ALERTA_ERROR)
+      }
       }
     );
   }

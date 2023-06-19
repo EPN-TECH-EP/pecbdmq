@@ -20,6 +20,8 @@ import { DatoPersonalService } from "../../../../servicios/dato-personal.service
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { UsuarioService } from "../../../../servicios/usuario.service";
+import { debounceTime, distinctUntilChanged, skip } from "rxjs/operators";
 
 @Component({
   selector: 'app-dato-personal',
@@ -56,7 +58,8 @@ export class DatoPersonalComponent implements OnInit {
     private gradoService: GradoService,
     private unidadGestionService: UnidadGestionService,
     private datoPersonalService: DatoPersonalService,
-    private mdbNotificationService: MdbNotificationService
+    private mdbNotificationService: MdbNotificationService,
+    private usuarioService: UsuarioService
   ) {
     this.cantonesNacimiento = [];
     this.cantonesResidencia = [];
@@ -127,7 +130,7 @@ export class DatoPersonalComponent implements OnInit {
 
       nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
-      correoPersonal:             ['', [Validators.required, Validators.email]],
+      correoPersonal: ['', [Validators.required, Validators.email], MyValidators.emailExist(this.usuarioService)],
       correoInstitucional:        ['', [Validators.email]],
       fechaNacimiento:            ['', [Validators.required]],
       telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
@@ -195,6 +198,36 @@ export class DatoPersonalComponent implements OnInit {
     this.provinciaNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
     this.cantonNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
 
+    this.verificarCorreoPersonal()
+  }
+
+  private verificarCorreoPersonal() {
+    const correoActual = this.datosPersonales.correoPersonal;
+
+    if (!this.correoPersonalField.touched){
+      this.correoPersonalField.clearAsyncValidators()
+      this.correoPersonalField.setValidators([Validators.required, Validators.email]);
+      this.correoPersonalField.updateValueAndValidity();
+    }
+
+    this.formularioDatoPersonal.get('correoPersonal').valueChanges.pipe(
+      distinctUntilChanged(),
+      debounceTime(200),
+      skip(1)
+    ).subscribe(
+      (correoPersonal) => {
+        if (correoPersonal === correoActual) {
+          console.log('correo actual');
+          this.correoPersonalField.clearAsyncValidators()
+          this.correoPersonalField.setValidators([Validators.required, Validators.email]);
+          this.correoPersonalField.updateValueAndValidity();
+          return;
+        }
+        this.correoPersonalField.setValidators([Validators.required, Validators.email]);
+        this.correoPersonalField.setAsyncValidators(MyValidators.emailExist(this.usuarioService));
+        this.correoPersonalField.updateValueAndValidity();
+      }
+    );
   }
 
   get apellidoField() {
@@ -331,8 +364,8 @@ export class DatoPersonalComponent implements OnInit {
     const isExtranjero = tipoNacionalidad === 'EXTRANJERO';
 
     this.tieneNacionalidadEcuatoriana = tipoNacionalidad === 'ECUATORIANA';
-    this.tieneNacionalidadComunidadFrontera = tipoNacionalidad === 'COMUNIDAD FRONTERA';
     this.tieneNacionalidadExtranjera = isExtranjero;
+    this.tieneNacionalidadComunidadFrontera = tipoNacionalidad === 'COMUNIDAD FRONTERA';
 
     this.provinciaNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
     this.cantonNacimientoField.setValidators(isExtranjero ? null : [Validators.required]);
@@ -343,8 +376,6 @@ export class DatoPersonalComponent implements OnInit {
     this.provinciaNacimientoField.setValue('');
     this.cantonNacimientoField.setValue('');
 
-    this.formularioDatoPersonal.get('cantonNacimiento')?.disable();
-    this.cantonesNacimiento = [];
   }
 
   onChangeCantonNacimiento(event: any) {
@@ -428,9 +459,7 @@ export class DatoPersonalComponent implements OnInit {
         this.usuario.codDatosPersonales = datoPersonal;
         this.close()
       },
-      error: (err) => {
-        Notificacion.notificar(this.mdbNotificationService, err.error.mensaje, TipoAlerta.ALERTA_ERROR);
-      }
+      error: (err) => {console.log(err)}
     })
   }
 

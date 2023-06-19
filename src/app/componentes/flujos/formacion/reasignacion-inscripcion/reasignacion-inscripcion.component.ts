@@ -1,14 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {InscripcionItem} from "../../../../modelo/flujos/formacion/inscripcion-item";
-import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
-import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {Notificacion} from "../../../../util/notificacion";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {Delegado, DelegadoService} from "../../../../servicios/formacion/delegado.service";
-import {ComponenteBase} from "../../../../util/componente-base";
-import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
-import {UsuarioAsignado} from "../../../../modelo/flujos/formacion/asignar-usuario";
-import {FormControl} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { InscripcionItem } from "../../../../modelo/flujos/formacion/inscripcion-item";
+import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { Notificacion } from "../../../../util/notificacion";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { Delegado, DelegadoService } from "../../../../servicios/formacion/delegado.service";
+import { ComponenteBase } from "../../../../util/componente-base";
+import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
+import { UsuarioAsignado } from "../../../../modelo/flujos/formacion/asignar-usuario";
+import { FormControl } from "@angular/forms";
+import { catchError } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { of } from "rxjs";
+import { FORMACION } from "../../../../util/constantes/fomacion.const";
+import { FormacionService } from "../../../../servicios/formacion/formacion.service";
 
 @Component({
   selector: 'app-reasignacion-inscripcion',
@@ -22,13 +27,15 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
   codigoInscripcionReasignando: number
   codigoUsuarioReasignado: FormControl<number>
   delegados: Delegado[]
+  esEstadoValidacion = false
+
 
   headers = [
-    {key: 'id', label: 'ID'},
-    {key: 'cedula', label: 'Cédula'},
-    {key: 'nombre', label: 'Nombre'},
-    {key: 'apellido', label: 'Apellido'},
-    {key: 'asignado', label: 'Asignado a'},
+    { key: 'id', label: 'ID' },
+    { key: 'cedula', label: 'Cédula' },
+    { key: 'nombre', label: 'Nombre' },
+    { key: 'apellido', label: 'Apellido' },
+    { key: 'asignado', label: 'Asignado a' },
   ]
 
   constructor(
@@ -36,6 +43,7 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
     private mdbNotificationService: MdbNotificationService,
     private delegadoService: DelegadoService,
     private popConfirmServiceLocal: MdbPopconfirmService,
+    private formacionService: FormacionService
   ) {
     super(mdbNotificationService, popConfirmServiceLocal);
 
@@ -47,6 +55,21 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
   }
 
   ngOnInit(): void {
+
+    this.formacionService.getEstadoActual().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.error(errorResponse)
+        return of(null);
+      })
+    ).subscribe({
+      next: estado => {
+
+        if (!estado || estado.httpStatusCode !== 200) {
+          return;
+        }
+
+        if (estado.mensaje === FORMACION.estadoValidacion) {
+          this.esEstadoValidacion = true
     this.validacionInscripcionService.listarInscripciones().subscribe({
       next: inscripciones => {
         this.inscripciones = inscripciones
@@ -65,6 +88,10 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
         console.log(err)
       }
     })
+        }
+      }
+    });
+
   }
 
   editarFila(inscripcion: InscripcionItem) {

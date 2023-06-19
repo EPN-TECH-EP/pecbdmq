@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, catchError, of, switchMap } from 'rxjs';
 import { Notificacion } from 'src/app/util/notificacion';
 import { AlertaComponent } from '../../../util/alerta/alerta.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -22,6 +22,10 @@ import { Ciudadano } from '../../../../modelo/flujos/formacion/api-bomberos/ciud
 import { DatosEducacionMedia } from '../../../../modelo/flujos/formacion/api-bomberos/datos-educacion-media';
 import { DatosEducacionSuperior } from '../../../../modelo/flujos/formacion/api-bomberos/datos-educacion-superior';
 import { CiudadanoService } from '../../../../servicios/api-bomberos/ciudadano.service';
+import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FORMACION } from 'src/app/util/constantes/fomacion.const';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-inscripcion',
@@ -32,7 +36,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   @ViewChild('stepper') stepper!: MdbStepperComponent;
 
   minDate = new Date(1980, 1, 31);
-  maxDate = new Date(2005, 12, 31);
+  maxDate = new Date(2015, 12, 31);
   provincias: Provincia[];
   translationOptions = OPCIONES_DATEPICKER;
   cantonesNacimiento: Canton[];
@@ -60,12 +64,17 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   showLoadingPin: boolean = false;
   showLoadingFull: boolean = false;
 
-  showEdadInvalida: boolean = false;
-
-  // integración con PAI CBDMQ
+  // integración con API CBDMQ
   existenDatosCiudadano: boolean = false;
   existenDatosEducacionMedia: boolean = false;
   existenDatosEducacionSuperior: boolean = false;
+
+  showEdadInvalida: boolean = false;
+  cedulaValida: boolean = false;
+  ultimaCedulaValida = '';
+
+  // estado del proceso de formación
+  esEstadoInscripcion: boolean = false;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
@@ -74,7 +83,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     private builder: FormBuilder,
     private inscripcionService: InscripcionService,
     private provinciaService: ProvinciaService,
-    private ciudadanoService: CiudadanoService
+    private ciudadanoService: CiudadanoService,
+    private formacionService: FormacionService
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
@@ -90,6 +100,31 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
+    // obtiene estado del proceso
+    this.formacionService
+      .getEstadoActual()
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => {
+          console.error(errorResponse);
+          return of(null);
+        })
+      )
+      .subscribe({
+        next: (estado) => {
+          if (!estado || estado.httpStatusCode !== 200) {
+            return;
+          }
+
+          if (estado.mensaje === FORMACION.estadoInscripcion) {
+            this.esEstadoInscripcion = true;
+            this.cargarCatalogos();
+          }
+        },
+      });
+  }
+
+  private cargarCatalogos() {
+    // obtiene parámetros y catálogos
     this.subscriptions.push(
       this.cargaArchivoService.maxArchivo().subscribe({
         next: (result) => {
@@ -116,7 +151,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       {
         // Datos iniciales
         cedula: [
-          '2222222222',
+          '',
           [
             Validators.required,
             Validators.minLength(10),
@@ -126,39 +161,39 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           ],
         ],
         nombres: [
-          'aaa',
+          '',
           [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()],
         ],
         apellidos: [
-          'aaa',
+          '',
           [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()],
         ],
-        email: ['dmoreno@tech.epn.edu.ec', [Validators.required, Validators.email]],
-        sexo: ['masculino', [Validators.required]],
-        fechaNacimiento: [new Date('02/01/2005'), [Validators.required, MyValidators.validAge()]],
+        email: ['', [Validators.required, Validators.email]],
+        sexo: ['', [Validators.required]],
+        fechaNacimiento: [null, [Validators.required /*, MyValidators.validAge()*/]],
         telCelular: [
-          '1111111111',
+          '',
           [Validators.required, Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()],
         ],
         telConvencional: [
-          '111111111',
+          '',
           [Validators.required, Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()],
         ],
         // Datos nacionalidad
-        nacionalidad: ['Extranjero', [Validators.required]],
+        nacionalidad: ['', [Validators.required]],
         provinciaNacimiento: ['', [Validators.required]],
         cantonNacimiento: ['', [Validators.required]],
         // Datos residencia
-        provinciaResidencia: [1, [Validators.required]],
-        cantonResidencia: [1, [Validators.required]],
-        callePrincipal: ['1', [Validators.required]],
-        calleSecundaria: ['1', [Validators.required]],
-        numeroCasa: ['1', [Validators.required]],
+        provinciaResidencia: [0, [Validators.required]],
+        cantonResidencia: [0, [Validators.required]],
+        callePrincipal: ['', [Validators.required]],
+        calleSecundaria: ['', [Validators.required]],
+        numeroCasa: ['', [Validators.required]],
         // Datos titulo
-        paisTitulo: ['1', [Validators.required]],
-        ciudadTitulo: ['1', [Validators.required]],
-        colegioTitulo: ['1', [Validators.required]],
-        nombreTitulo: ['1', [Validators.required]],
+        paisTitulo: ['', [Validators.required]],
+        ciudadTitulo: ['', [Validators.required]],
+        colegioTitulo: ['', [Validators.required]],
+        nombreTitulo: ['', [Validators.required]],
         // Datos merito
         meritoAcademico: ['', [Validators.minLength(10)]],
         meritoDeportivo: ['', [Validators.minLength(10)]],
@@ -532,7 +567,15 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   // integración con API de CBDMQ
   // consulta de datos en base a la cédula
   consultarDatosCedula() {
+    //TODO borrar
+    console.log('cedulaValida = ' + this.cedulaValida);
+
     if (this.cedulaField.valid) {
+      if (this.ultimaCedulaValida === this.cedulaField.value) {
+        this.showLoadingFull = false;
+        return;
+      }
+
       this.showLoadingFull = true;
 
       // busca inscripción por cedula
@@ -552,6 +595,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
               return;
             } else {
               // consulta datos ciudadano
+              this.showLoadingFull = true;
               this.consultaDatosCiudadano();
             }
           },
@@ -574,8 +618,6 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   private consultaDatosCiudadano() {
     // si no existe inscripción, se consultan los datos del ciudadano
     let ciudadano: Ciudadano;
-    let datosEM: DatosEducacionMedia;
-    let datosES: DatosEducacionSuperior;
 
     // consulta datos ciudadano
     this.subscriptions.push(
@@ -583,6 +625,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         next: (response: any) => {
           ciudadano = response[0];
           this.existenDatosCiudadano = true;
+          this.cedulaValida = true;
+          this.ultimaCedulaValida = this.cedulaField.value;
 
           // establece valor con los datos del ciudadano
           const [day, month, year] = ciudadano.fechaNacimiento.split('/');
@@ -590,8 +634,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           this.fechaNacimientoField.setValue(fecha);
 
           const partesNombre: string[] = ciudadano.nombre.split(' ');
-          const nombres = partesNombre[0] + ' ' + partesNombre[1];
-          const apellidos = partesNombre[2] + ' ' + partesNombre[3];
+          const apellidos = partesNombre[0] + ' ' + partesNombre[1];
+          const nombres = partesNombre[2] + ' ' + partesNombre[3];
           this.nombresField.setValue(nombres);
           this.apellidosField.setValue(apellidos);
 
@@ -600,45 +644,59 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         error: (errorResponse: any) => {
           this.existenDatosCiudadano = false;
           console.log(errorResponse);
+          Notificacion.notificacion(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            null,
+            'Error al consultar la cédula ingresada - Si el error persiste, contacte al administrador'
+          );
+          this.showLoadingFull = false;
+          return;
         },
       })
     );
-
-    // consulta datos educacion media
-    this.subscriptions.push(
-      this.ciudadanoService.getEducacionMedia(this.cedulaField.value).subscribe({
-        next: (response: any) => {
-          datosEM = response;
-          this.existenDatosEducacionMedia = true;
-        },
-        error: (errorResponse: any) => {
-          this.existenDatosEducacionMedia = false;
-          console.log(errorResponse);
-        },
-      })
-    );
-
-    // consulta datos educación superior
-    this.subscriptions.push(
-      this.ciudadanoService.getEducacionSuperior(this.cedulaField.value).subscribe({
-        next: (response: any) => {
-          datosES = response;
-          this.existenDatosEducacionSuperior = true;
-        },
-        error: (errorResponse: any) => {
-          this.existenDatosEducacionSuperior = false;
-          console.log(errorResponse);
-        },
-      })
-    );
-
-    this.showLoadingFull = false;
   }
+
   validarEdad(fecha: string) {
+    let datosEM: DatosEducacionMedia;
+    let datosES: DatosEducacionSuperior;
+
     this.inscripcionService.validarEdad(fecha).subscribe({
       next: (response: any) => {
         if (response) {
           this.showEdadInvalida = false;
+
+          // consulta datos educacion media
+          this.subscriptions.push(
+            this.ciudadanoService.getEducacionMedia(this.cedulaField.value).subscribe({
+              next: (response: any) => {
+                datosEM = response;
+                this.existenDatosEducacionMedia = true;
+
+                // establece valores con los datos de educación media
+                this.nombreTituloField.setValue(datosEM.titulo);
+                this.colegioTituloField.setValue(datosEM.institucion);
+              },
+              error: (errorResponse: any) => {
+                this.existenDatosEducacionMedia = false;
+                console.log(errorResponse);
+              },
+            })
+          );
+
+          // consulta datos educación superior
+          /* this.subscriptions.push(
+            this.ciudadanoService.getEducacionSuperior(this.cedulaField.value).subscribe({
+              next: (response: any) => {
+                datosES = response;
+                this.existenDatosEducacionSuperior = true;
+              },
+              error: (errorResponse: any) => {
+                this.existenDatosEducacionSuperior = false;
+                console.log(errorResponse);
+              },
+            })
+          ); */
         } else {
           this.showEdadInvalida = true;
         }
@@ -648,7 +706,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       },
     });
 
-    console.log(this.showEdadInvalida);
-
+    //console.log(this.showEdadInvalida);
+    this.showLoadingFull = false;
   }
 }

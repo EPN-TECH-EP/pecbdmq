@@ -1,4 +1,8 @@
-import {AbstractControl} from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
+import { map } from "rxjs/operators";
+import { Usuario } from "../modelo/admin/usuario";
+import { UsuarioService } from "../servicios/usuario.service";
+import { HttpClient } from "@angular/common/http";
 
 export class MyValidators {
 
@@ -16,9 +20,11 @@ export class MyValidators {
   static onlyLetters() {
     return (control: AbstractControl) => {
       const value = control.value;
-      const regex = new RegExp('^[a-zA-Z ]*$');
+      const regex = new RegExp('^[a-zA-ZñáéíóúÑÁÉÍÓÚ _.\-\u00C0-\u00FF ]*$');
 
       if (!regex.test(value)) {
+        console.log('invalid_letters');
+        console.log(value);
         return {invalid_letters: true};
       }
 
@@ -74,4 +80,37 @@ export class MyValidators {
       return null;
     };
   }
+
+  static userNameExist(usuarioService: UsuarioService) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      return usuarioService.buscarPorIdentificacion(value).pipe(
+        map((usuario: Usuario) => {
+            if (usuario) {
+              return {value_found: true};
+            } else {
+              return null;
+            }
+          }
+        ),
+      );
+    };
+  }
+
+  static emailExist(usuarioService: UsuarioService) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      return usuarioService.buscarPorCorreo(value).pipe(
+        map((usuarios: Usuario[]) => {
+            if (usuarios) {
+              return {value_found: true};
+            } else {
+              return null;
+            }
+          }
+        ),
+      );
+    };
+  }
+
 }

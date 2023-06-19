@@ -3,6 +3,7 @@ import { AutenticacionService } from './servicios/autenticacion.service';
 import { AutenticacionGuard } from './guard/autenticacion.guard';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { MyValidators } from "./util/validators";
 
 @Component({
   selector: 'app-root',

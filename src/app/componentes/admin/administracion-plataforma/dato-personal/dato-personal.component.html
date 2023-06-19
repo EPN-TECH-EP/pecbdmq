@@ -99,6 +99,10 @@
           <i class="fas fa-exclamation-circle mb-1"></i>
           Este campo es requerido
         </span>
+            <span *ngIf="correoPersonalField?.hasError('value_found')">
+              <i class="fas fa-exclamation-circle mb-1"></i>
+              El correo ingresado ya existe en el sistema
+            </span>
           </mdb-error>
         </mdb-form-control>
       </div>

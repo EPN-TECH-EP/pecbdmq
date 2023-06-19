@@ -1,4 +1,17 @@
-<div class="container" *ngIf="inscripcionesLoaded">
+<app-boton-volver></app-boton-volver>
+
+<ng-container *ngIf="!esEstadoValidacion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de validación no activo</h5>
+      <p class="card-text">
+        El proceso de validación de inscripciones no se encuentra activo.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="inscripcionesLoaded && esEstadoValidacion">
   <div class="row m-3 text-center">
     <p class="fs-4 fw-bolder mb-3">
       Lista de Inscritos
@@ -118,7 +131,7 @@
       <mdb-table-pagination
         #pagination
         [entries]="10"
-        [rowsPerPageText]="'Registros por p�gina'"
+        [rowsPerPageText]="'Registros por página'"
       ></mdb-table-pagination>
       <ng-container *ngIf="tableInscripciones.data?.length === 0">
         <div class="alert alert-warning my-3 py-2">

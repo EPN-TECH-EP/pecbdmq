@@ -1,3 +1,14 @@
+<ng-container *ngIf="!esEstadoInscripcion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de inscripción no activo</h5>
+      <p class="card-text">
+        El proceso de inscripciones no se encuentra activo.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
 <div class="alert alert-danger d-grid col-9 mx-auto" role="alert" *ngIf="showEdadInvalida">
   <i class="far fa-rectangle-xmark fa-5x"></i>
   <h4 class="alert-heading">ERROR EN INSCRIPCIÓN</h4>
@@ -110,7 +121,9 @@
                     type="text"
                     id="apellidos"
                     class="form-control mb-5"
-                    formControlName="apellidos" />
+                    formControlName="apellidos"
+                    [readonly]="!cedulaValida"
+                    />
                   <label mdbLabel class="form-label mb-2x" for="apellidos">Apellidos</label>
                   <mdb-error *ngIf="apellidosField?.invalid && (apellidosField?.dirty || apellidosField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -129,7 +142,8 @@
                     type="text"
                     id="nombres"
                     class="form-control mb-5"
-                    formControlName="nombres" />
+                    formControlName="nombres"
+                    [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="nombres">Nombres</label>
                   <mdb-error *ngIf="nombresField?.invalid && (nombresField?.dirty || nombresField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -151,7 +165,9 @@
                     type="email"
                     id="email"
                     class="form-control mb-5"
-                    formControlName="email" />
+                    formControlName="email" 
+                    [readonly]="!cedulaValida"
+                    />
                   <label mdbLabel class="form-label mb-2x" for="email">Email</label>
                   <mdb-error *ngIf="emailField?.invalid && (emailField?.dirty || emailField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -164,7 +180,8 @@
                 </mdb-form-control>
                 <!-- Sexo -->
                 <mdb-form-control>
-                  <mdb-select mdbValidate id="sexo" class="mb-5" data-mdb-placeholder="Sexo" formControlName="sexo">
+                  <mdb-select mdbValidate id="sexo" class="mb-5" data-mdb-placeholder="Sexo" formControlName="sexo"
+                  [disabled]="!cedulaValida">
                     <mdb-option value="masculino">Masculino</mdb-option>
                     <mdb-option value="femenino">Femenino</mdb-option>
                   </mdb-select>
@@ -188,8 +205,9 @@
                     id="fechaNacimiento"
                     class="form-control mb-5"
                     formControlName="fechaNacimiento"
-                    (click)="dpFechaNacimiento.open()"
-                    [readonly]="true" />
+                    (click)="cedulaValida ? dpFechaNacimiento.open() : null"
+                    [readonly]="true" 
+                    />
                   <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
                   <mdb-datepicker-toggle
                     [mdbDatepicker]="dpFechaNacimiento"
@@ -229,7 +247,7 @@
                     id="telCelular"
                     class="form-control mb-5"
                     formControlName="telCelular"
-                    [maxLength]="10" />
+                    [maxLength]="10" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="telCelular">Teléfono Celular</label>
                   <mdb-error *ngIf="telCelularField?.invalid && (telCelularField?.dirty || telCelularField?.touched)">
                     <span *ngIf="telCelularField.hasError('required')">
@@ -255,7 +273,7 @@
                     id="telConvencional"
                     class="form-control mb-5"
                     formControlName="telConvencional"
-                    [maxLength]="9" />
+                    [maxLength]="9" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="telConvencional">Teléfono Convencional</label>
                   <mdb-error
                     *ngIf="
@@ -297,7 +315,7 @@
                     id="nacionalidadEcuatoriana"
                     formControlName="nacionalidad"
                     value="Ecuatoriana"
-                    (change)="toggleValidationsNacionalidad()" />
+                    (change)="toggleValidationsNacionalidad()" [readonly]="!cedulaValida"/>
                   <label class="form-check-label" for="nacionalidadEcuatoriana"> Nacido en Ecuador </label>
                 </div>
 
@@ -339,7 +357,8 @@
                     id="provinciaNacimiento"
                     formControlName="provinciaNacimiento"
                     class="mb-5"
-                    (ngModelChange)="onChangeCantonNacimiento($event)">
+                    (ngModelChange)="onChangeCantonNacimiento($event)"
+                    [disabled]="!cedulaValida">
                     <mdb-option *ngFor="let provincia of provincias" [value]="provincia.codigo"
                       >{{ provincia.nombre }}
                     </mdb-option>
@@ -369,7 +388,8 @@
                     size="1"
                     id="cantonNacimiento"
                     formControlName="cantonNacimiento"
-                    class="mb-5">
+                    class="mb-5"
+                    [disabled]="!cedulaValida">
                     <mdb-option *ngFor="let canton of cantonesNacimiento" [value]="canton.codigo"
                       >{{ canton.nombre }}
                     </mdb-option>
@@ -420,7 +440,8 @@
                     id="provinciaResidencia"
                     formControlName="provinciaResidencia"
                     class="mb-5"
-                    (ngModelChange)="onChangeCantonResidencia($event)">
+                    (ngModelChange)="onChangeCantonResidencia($event)"
+                    [disabled]="!cedulaValida">
                     <mdb-option *ngFor="let provincia of provincias" [value]="provincia.codigo"
                       >{{ provincia.nombre }}
                     </mdb-option>
@@ -451,7 +472,8 @@
                     size="1"
                     id="cantonResidencia"
                     formControlName="cantonResidencia"
-                    class="mb-5">
+                    class="mb-5"
+                    [disabled]="!cedulaValida">
                     <mdb-option *ngFor="let canton of cantonesResidencia" [value]="canton.codigo"
                       >{{ canton.nombre }}
                     </mdb-option>
@@ -488,7 +510,8 @@
                     type="text"
                     id="callePrincipal"
                     class="form-control mb-5"
-                    formControlName="callePrincipal" />
+                    formControlName="callePrincipal" 
+                    [readonly]="!cedulaValida" />
                   <label mdbLabel class="form-label mb-2x" for="callePrincipal">Calle Principal</label>
                   <mdb-error
                     *ngIf="
@@ -511,7 +534,9 @@
                     type="text"
                     id="calleSecundaria"
                     class="form-control mb-5"
-                    formControlName="calleSecundaria" />
+                    formControlName="calleSecundaria" 
+                    [readonly]="!cedulaValida"
+                    />
                   <label mdbLabel class="form-label mb-2x" for="calleSecundaria">Calle secundaria</label>
                   <mdb-error
                     *ngIf="
@@ -536,7 +561,7 @@
                     type="text"
                     id="numeroCasa"
                     class="form-control mb-5"
-                    formControlName="numeroCasa" />
+                    formControlName="numeroCasa" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="numeroCasa">Número de Casa o Lote</label>
                   <mdb-error *ngIf="numeroCasaField?.invalid && (numeroCasaField?.dirty || numeroCasaField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -570,7 +595,7 @@
                     id="paisTitulo"
                     class="form-control mb-5"
                     formControlName="paisTitulo"
-                    required />
+                    required [readonly]="!cedulaValida" />
                   <label mdbLabel class="form-label mb-2x" for="paisTitulo">País donde obtuvo el título</label>
                   <mdb-error *ngIf="paisTituloField?.invalid && (paisTituloField?.dirty || paisTituloField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
@@ -589,7 +614,7 @@
                     type="text"
                     id="cuidadTitulo"
                     class="form-control mb-5"
-                    formControlName="ciudadTitulo" />
+                    formControlName="ciudadTitulo" [readonly]="!cedulaValida" />
                   <label mdbLabel class="form-label mb-2x" for="cuidadTitulo">Ciudad donde obtuvo el título</label>
                   <mdb-error
                     *ngIf="ciudadTituloField?.invalid && (ciudadTituloField?.dirty || ciudadTituloField?.touched)">
@@ -613,7 +638,7 @@
                     type="text"
                     id="nombreTitulo"
                     class="form-control mb-5"
-                    formControlName="nombreTitulo" />
+                    formControlName="nombreTitulo" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="nombreTitulo">Nombre del título</label>
                   <mdb-error
                     *ngIf="nombreTituloField?.invalid && (nombreTituloField?.dirty || nombreTituloField?.touched)">
@@ -635,7 +660,7 @@
                     type="text"
                     id="colegioTitulo"
                     class="form-control mb-5"
-                    formControlName="colegioTitulo" />
+                    formControlName="colegioTitulo" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="colegioTitulo">Colegio donde obtuvo el título</label>
                   <mdb-error
                     *ngIf="colegioTituloField?.invalid && (colegioTituloField?.dirty || colegioTituloField?.touched)">
@@ -669,7 +694,7 @@
                     type="checkbox"
                     value="true"
                     id="meritoDeportivoCheck"
-                    (change)="onMeritoDeportivoChange($event)" />
+                    (change)="onMeritoDeportivoChange($event)" [readonly]="!cedulaValida" />
                   <label class="form-check-label fs-6" for="meritoDeportivoCheck"> Deportivo </label>
                 </div>
                 <!-- Mérito deportivo -->
@@ -680,7 +705,7 @@
                     type="text"
                     id="meritoDeportivo"
                     class="form-control mb-5"
-                    formControlName="meritoDeportivo" />
+                    formControlName="meritoDeportivo" [readonly]="!cedulaValida"/>
                   <label mdbLabel class="form-label mb-2x" for="meritoDeportivoCheck">Mérito deportivo</label>
                   <mdb-error
                     *ngIf="
@@ -707,7 +732,7 @@
                     type="checkbox"
                     value="true"
                     id="meritoAcademicoCheck"
-                    (change)="onMeritoAcademicoChange($event)" />
+                    (change)="onMeritoAcademicoChange($event)" [readonly]="!cedulaValida"/>
                   <label class="form-check-label fs-6" for="meritoAcademicoCheck"> Académico </label>
                 </div>
 
@@ -719,7 +744,7 @@
                     type="text"
                     id="meritoAcademico"
                     class="form-control mb-5"
-                    formControlName="meritoAcademico" />
+                    formControlName="meritoAcademico" [readonly]="!cedulaValida" />
                   <label mdbLabel class="form-label mb-2x" for="meritoAcademico">Mérito académico</label>
                   <mdb-error
                     *ngIf="
@@ -767,7 +792,7 @@
                     class="form-control"
                     id="customFile"
                     formControlName="docSoporte"
-                    (change)="subirArchivo($event)" />
+                    (change)="subirArchivo($event)" [readonly]="!cedulaValida"/>
                   <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido

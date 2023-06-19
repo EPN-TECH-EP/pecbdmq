@@ -81,7 +81,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     private servicioRequisito: RequisitoService,
     private servicioConvocatoria: ConvocatoriaService,
     private archivoService: ArchivoService,
-    private sanitizer: DomSanitizer,
     private formacionService: FormacionService,
     private notificationServiceLocal: MdbNotificationService,
     private popConfirmServiceLocal: MdbPopconfirmService,
@@ -94,8 +93,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.subscriptions = [];
     this.requisitosConvocatoria = [];
     this.estadoArchivo = new FileUploadStatus();
-    this.correo = new FormControl('', [Validators.required, Validators.email]);
-    this.urlArchivo = this.sanitizer.bypassSecurityTrustResourceUrl('');
     this.showLoading = false;
     this.tieneEstadoConvocatoria = false;
     this.ocurrioErrorInicioProceso = false;
@@ -107,17 +104,13 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit() {
-    this.formacionService.getEstadoFormacion().pipe(
+    this.formacionService.getEstadoActual().pipe(
       catchError((errorResponse: HttpErrorResponse) => {
-        Notificacion.notificacion(
-          this.notificationRef,
-          this.notificationServiceLocal,
-          errorResponse
-        );
+        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         return of(null);
       })
     ).subscribe((response) => {
-      const customResponse: CustomHttpResponse = response?.body;
+      const customResponse: CustomHttpResponse = response;
 
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.ocurrioErrorInicioProceso = true;
@@ -130,12 +123,12 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         this.tieneEstadoConvocatoria = true;
         this.estaActulizando = true;
         this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
-          next: (data) => {
-            this.matchDatosConvocatoria(data[0]);
-            this.convocatoria = data[0];
+          next: (convocatoria) => {
+            this.matchDatosConvocatoria(convocatoria[0]);
+            this.convocatoria = convocatoria[0];
             console.log(this.convocatoria);
-            this.requisitosConvocatoria = data[0].requisitos;
-            this.correo.patchValue(data[0].correo);
+            this.requisitosConvocatoria = convocatoria[0].requisitos;
+            this.correo.patchValue(convocatoria[0].correo);
             this.documentoConvocatoriaField.clearValidators();
             this.documentoConvocatoriaField.updateValueAndValidity();
           },
@@ -235,7 +228,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.addRow = false;
   }
 
-  guardarConvocatoria() {
+  crearConvocatoria() {
 
     this.showLoading = true;
 

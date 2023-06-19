@@ -82,6 +82,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
   private isRetryableError(error: HttpErrorResponse): boolean {
     // Implement your custom logic to determine if the error is retryable
     // For example, you can check for specific HTTP status codes or error conditions
+    console.log('isRetryableError: ' + (error.status >= 500 || error.status == 0));
     return error.status >= 500 || error.status == 0; // Retry for server errors (status code >= 500)
   }
 

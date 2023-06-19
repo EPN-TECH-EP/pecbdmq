@@ -23,13 +23,13 @@ import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { MdbDatepickerModule } from 'mdb-angular-ui-kit/datepicker';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { MdbFormControlComponent, MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbInfiniteScrollModule } from 'mdb-angular-ui-kit/infinite-scroll';
 import { MdbLazyLoadingModule } from 'mdb-angular-ui-kit/lazy-loading';
 import { MdbLightboxModule } from 'mdb-angular-ui-kit/lightbox';
 import { MdbLoadingModule } from 'mdb-angular-ui-kit/loading';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { MdbNotificationModule, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { MdbNotificationModule } from 'mdb-angular-ui-kit/notification';
 import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
 import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
 import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
@@ -62,7 +62,7 @@ import { AlertaComponent } from './componentes/util/alerta/alerta.component';
 import { PrincipalModuleModule } from './modulos/principal-module/principal-module.module';
 import { UsuarioFrm } from './modelo/util/usuario-frm';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
-import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
+//import { ErrorCatchingInterceptor } from './interceptor/error.interceptor';
 import { MateriaComponent } from './componentes/materia/materia.component';
 //import { UnidadGestionComponent } from './componentes/unidad-gestion/unidad-gestion.component';
 import { UsuariosComponent } from './componentes/admin/administracion-plataforma/usuarios/usuarios.component';
@@ -89,10 +89,10 @@ import { Aula } from './modelo/admin/aula';
 import { Materia } from './modelo/admin/materias';
 import { TipoNota } from './modelo/admin/tipo-nota';
 import { Modulo } from './modelo/admin/modulo';
-import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
-import { RouteReuseStrategy } from '@angular/router';
+//import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
+//import { RouteReuseStrategy } from '@angular/router';
 import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
-import { ITipoFalta} from "./modelo/admin/tipo_falta";
+//import { ITipoFalta} from "./modelo/admin/tipo_falta";
 import {TipoFaltaComponent} from "./componentes/tipo-falta/tipo-falta.component";
 import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
@@ -110,7 +110,7 @@ import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-esta
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 import { ConvocatoriaComponent } from './componentes/flujos/formacion/convocatoria/convocatoria.component';
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
-import { Requisito } from './modelo/admin/requisito';
+//import { Requisito } from './modelo/admin/requisito';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
 import { RolComponent } from './componentes/admin/administracion-plataforma/rol/rol.component';
@@ -133,6 +133,12 @@ import { EstadoProcesoStepperComponent } from './componentes/util/estado-proceso
 import { InscripcionesComponent } from './componentes/flujos/formacion/inscripciones/inscripciones.component';
 import { GestionDelegadosComponent } from './componentes/flujos/formacion/gestion-delegados/gestion-delegados.component';
 import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion/reasignacion-inscripcion/reasignacion-inscripcion.component';
+import { MenuFormacionAcademiaComponent } from './componentes/flujos/formacion/formacion-academica/menu-formacion-academia/menu-formacion-academia.component';
+import { FaGestionDocumentosComponent } from './componentes/flujos/formacion/formacion-academica/fa-gestion-documentos/fa-gestion-documentos.component';
+import { InstructoresComponent } from './componentes/flujos/formacion/formacion-academica/instructores/instructores.component';
+import { BusquedaUsuarioComponent } from './componentes/util/busqueda-usuario/busqueda-usuario.component';
+
+import { PruebasComponent } from './componentes/flujos/formacion/pruebas/pruebas.component';
 
 @NgModule({
   declarations: [
@@ -170,8 +176,7 @@ import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion
     TipoFaltaComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
-    //RequisitoComponent,
-
+    RequisitoComponent,
     CatalogoEstadosComponent,
     ConvocatoriaComponent,
     RequisitoComponent,
@@ -194,7 +199,12 @@ import { ReasignacionInscripcionComponent } from './componentes/flujos/formacion
     EstadoProcesoStepperComponent,
     InscripcionesComponent,
     GestionDelegadosComponent,
-    ReasignacionInscripcionComponent
+    ReasignacionInscripcionComponent,
+    MenuFormacionAcademiaComponent,
+    FaGestionDocumentosComponent,
+    InstructoresComponent,
+    BusquedaUsuarioComponent,
+    PruebasComponent
   ],
   imports: [
     BrowserModule,

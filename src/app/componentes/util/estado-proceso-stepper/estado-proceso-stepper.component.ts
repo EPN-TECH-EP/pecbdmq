@@ -54,13 +54,15 @@ export class EstadoProcesoStepperComponent implements OnInit {
 
   getPreviousStep() {
     let foundPrevious = false;
+    console.log(this.steps)
     for (let i = this.steps.length - 1; i >= 0; i--) {
       const step = this.steps[i];
-      if (step.estadoActual === 'actual') {
+      console.log(step, i)
+      if (step?.estadoActual === 'actual') {
         step.estadoActual = 'siguiente';
         this.disabledNextButton = false;
       }
-      if (!foundPrevious && step.estadoActual === 'completado') {
+      if (!foundPrevious && step?.estadoActual === 'completado') {
         step.estadoActual = 'actual';
         foundPrevious = true;
         this.disabledNextButton = false;
@@ -79,12 +81,12 @@ export class EstadoProcesoStepperComponent implements OnInit {
     let foundNext = false;
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i];
-      if (step.estadoActual === 'actual') {
+      if (step?.estadoActual === 'actual') {
         step.estadoActual = 'completado';
         foundNext = true;
         this.disabledPreviousButton = false;
       }
-      if (foundNext && step.estadoActual === 'siguiente') {
+      if (foundNext && step?.estadoActual === 'siguiente') {
         step.estadoActual = 'actual';
         foundNext = false;
         this.disabledPreviousButton = false;

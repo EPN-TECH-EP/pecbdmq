@@ -45,10 +45,9 @@
         <mdb-step
           [stepForm]="convocatoriaForm"
           [name]="'Crear Convocatoria'"
-          class="container"
         >
           <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
-          <div class="row d-flex justify-content-center">
+          <div>
             <form [formGroup]="convocatoriaForm">
               <div class="container">
                 <div class="row">
@@ -140,7 +139,7 @@
                       </mdb-success>
                     </mdb-form-control>
                   </div>
-
+                </div>
                   <div class="row">
                     <div class="col">
                       <!-- Fecha Inicio-->
@@ -288,7 +287,7 @@
                           mdbValidate
                           type="text"
                           id="horaFin"
-                          class="form-control mb-5"
+                        class="form-control mb-4"
                           [mdbTimepicker]="tpHoraFin"
                           (click)="tpHoraFin.open()"
                           formControlName="horaFin"
@@ -317,8 +316,6 @@
                       </mdb-form-control>
                     </div>
                   </div>
-                </div>
-              </div>
 
               <!--Documento Convocatoria-->
                 <ng-container>
@@ -332,7 +329,7 @@
                       class="btn btn-primary btn-floating"
                       [mdbTooltip]="'Visualizar documento'"
                       placement="top"
-                      (click)="descargarDocumento(convocatoria?.documentos[0]?.codigo)"
+                      (click)="descargarDocumento(convocatoria?.documentos[0]?.codDocumento)"
                     >
                       <i class="fas fa-eye"></i>
                     </button>
@@ -391,7 +388,7 @@
                   Siguiente
                 </button>
               </div>
-
+              </div>
             </form>
           </div>
         </mdb-step>
@@ -611,7 +608,7 @@
               class="btn btn-success"
               type="submit"
               *ngIf="estaCreando"
-              (click)="guardarConvocatoria()"
+              (click)="crearConvocatoria()"
               [disabled]="correo.invalid || showLoading || exitoCreacion"
             >
               <span
