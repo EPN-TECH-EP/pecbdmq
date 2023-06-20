@@ -44,10 +44,6 @@ export class UsuariosComponent implements OnInit {
     { key: 'nombre', label: 'Nombres' },
     { key: 'apellido', label: 'Apellidos' },
     { key: 'correo_personal', label: 'Correo personal' },
-    { key: 'fechaRegistro', label: 'Fecha de registro' },
-    { key: 'fechaUltimoLogin', label: 'Fecha último ingreso' },
-    { key: 'active', label: 'Activo?' },
-    { key: 'notLocked', label: 'Habilitado?' }
   ]
   mensajeConfirmacion: string;
   currentRoute: string;

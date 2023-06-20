@@ -17,7 +17,7 @@ import {Delegado, DelegadoCreate, DelegadoService} from "../../../../servicios/f
 })
 export class GestionDelegadosComponent implements OnInit {
 
-  agregarDelegado: boolean;
+  estaAgregandoDelegado: boolean;
   existenCoincidencias: boolean;
   esUsuarioDelegado: boolean;
   usuarios: Usuario[];
@@ -37,7 +37,7 @@ export class GestionDelegadosComponent implements OnInit {
     private builder: FormBuilder,
     private delegadoService: DelegadoService,
   ) {
-    this.agregarDelegado = false;
+    this.estaAgregandoDelegado = false;
     this.usuarios = [];
     this.buscarUsuarioForm = new FormGroup({});
     this.usuariosDelegados = [];
@@ -204,11 +204,8 @@ export class GestionDelegadosComponent implements OnInit {
 
     this.delegadoService.asignar(delegado).subscribe({
       next: () => {
-        // this.usuariosDelegados.push(delegado);
-        // this.usuariosDelegados = [...this.usuariosDelegados];
-        //
-        // this.usuarios = this.usuarios.filter((usuarioFiltrado) => usuarioFiltrado.codUsuario !== usuario.codUsuario);
-        // this.usuarios = [...this.usuarios];
+        this.usuarios = this.usuarios.filter((usuarioFiltrado) => usuarioFiltrado.codUsuario !== usuario.codUsuario);
+        this.usuarios = [...this.usuarios];
         this.delegadoService.listar().subscribe(
           delegados => this.usuariosDelegados = delegados
         )

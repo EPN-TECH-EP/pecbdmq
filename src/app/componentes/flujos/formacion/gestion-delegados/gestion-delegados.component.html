@@ -6,22 +6,23 @@
   </div>
   <button
     class="btn btn-primary mb-4"
-    (click)="agregarDelegado = true"
+    (click)="estaAgregandoDelegado = true"
   >
     <i class="fa-solid fa-circle-plus me-2"></i>
     Asignar delegado
   </button>
 
-  <section *ngIf="agregarDelegado" class="mb-3">
+  <section *ngIf="estaAgregandoDelegado" class="mb-4">
 
     <div class="d-flex justify-content-end">
       <button
         type="button"
         [mdbTooltip]="'Cerrar'"
-        class="btn btn-danger btn-floating mb-2"
-        (click)="agregarDelegado = false"
+        class="btn btn-danger btn-floating mb-2 d-flex justify-content-center align-items-center"
+        style="width: 15px; height: 15px;"
+        (click)="estaAgregandoDelegado = false"
       >
-        <i class="fas fa-x"></i>
+        <i class="fas fa-x fa-sm"></i>
       </button>
     </div>
 
@@ -161,7 +162,7 @@
     </form>
 
     <!-- Resultados de búsqueda -->
-    <div class="my-3 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
+    <div class="my-4 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
       <div class="col-7">
         <button
           type="button"

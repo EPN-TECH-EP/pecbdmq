@@ -78,7 +78,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   }
 
   ngOnInit(): void {
-    this.ApiUnidad.getUnidadGestion().subscribe((data) => {
+    this.ApiUnidad.listar().subscribe((data) => {
       this.unidades = data;
     });
   }
@@ -121,7 +121,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
     (unidad = {...unidad, estado: 'ACTIVO'}), (this.showLoading = true);
     this.subscriptions.push(
-      this.ApiUnidad.crearUnidad(unidad).subscribe({
+      this.ApiUnidad.crear(unidad).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
           let nuevaUnidad: UnidadGestion = response.body;
           this.unidades.push(nuevaUnidad);
@@ -174,7 +174,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.actualizarUnidad(unidad, unidad.codigo).subscribe({
+      this.ApiUnidad.actualizar(unidad, unidad.codigo).subscribe({
         next: (response: HttpResponse<UnidadGestion>) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión actualizada con éxito');
           this.unidades[this.editElementIndex] = response.body;
@@ -207,7 +207,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiUnidad.eliminarUnidad(this.codigo).subscribe({
+      this.ApiUnidad.eliminar(this.codigo).subscribe({
         next: (response: string) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión eliminada con éxito');
           const index = this.unidades.indexOf(this.data);

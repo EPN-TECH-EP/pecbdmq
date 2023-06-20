@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Notificacion } from "../../../util/notificacion";
@@ -17,14 +17,15 @@ import { UsuarioService } from "../../../servicios/usuario.service";
 export class BusquedaUsuarioComponent implements OnInit {
 
   buscarUsuarioForm: FormGroup;
-  usuarios: Usuario[]
+
+  @Output() usuariosEncontrados = new EventEmitter<Usuario[]>
+  @Output() usuarioEncontrados = new EventEmitter<Usuario>
 
   constructor(
     private mdbNotificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private builder: FormBuilder
   ) {
-    this.usuarios = [];
     this.buscarUsuarioForm = new FormGroup({});
   }
 
@@ -72,11 +73,11 @@ export class BusquedaUsuarioComponent implements OnInit {
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
       {
         next: (usuario) => {
-          if (usuario === null) {
-            this.usuarios = [];
-            return;
+          if (!usuario) {
+            this.usuarioEncontrados.emit(null);
           }
-          this.usuarios[0] = usuario;
+          this.usuarioEncontrados.emit(usuario);
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -95,12 +96,9 @@ export class BusquedaUsuarioComponent implements OnInit {
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
-          if (usuarios.length === 0) {
-            this.usuarios = [];
-            return;
+          if (usuarios.length > 0) {
+            this.usuariosEncontrados.emit(usuarios);
           }
-          this.usuarios = usuarios;
-          this.usuarios = [...this.usuarios];
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -115,12 +113,9 @@ export class BusquedaUsuarioComponent implements OnInit {
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
-          if (usuarios.length === 0) {
-            this.usuarios = [];
-            return;
+          if (usuarios.length > 0) {
+            this.usuariosEncontrados.emit(usuarios);
           }
-          this.usuarios = usuarios;
-          this.usuarios = [...this.usuarios];
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);

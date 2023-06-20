@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {InscripcionItem} from "../../../../modelo/flujos/formacion/inscripcion-item";
-import {ValidacionInscripcionService} from "../../../../servicios/formacion/validacion-inscripcion.service";
-import {DatoPersonalService} from "../../../../servicios/dato-personal.service";
-import {Router} from "@angular/router";
-import {Usuario} from "../../../../modelo/admin/usuario";
-import {AutenticacionService} from "../../../../servicios/autenticacion.service";
-import {UsuarioAsignado} from "../../../../modelo/flujos/formacion/asignar-usuario";
-import {Notificacion} from "../../../../util/notificacion";
-import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import { Component, OnInit } from '@angular/core';
+import { InscripcionItem } from "../../../../modelo/flujos/formacion/inscripcion-item";
+import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
+import { DatoPersonalService } from "../../../../servicios/dato-personal.service";
+import { Router } from "@angular/router";
+import { Usuario } from "../../../../modelo/admin/usuario";
+import { AutenticacionService } from "../../../../servicios/autenticacion.service";
+import { UsuarioAsignado } from "../../../../modelo/flujos/formacion/asignar-usuario";
+import { Notificacion } from "../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { FormacionService } from "../../../../servicios/formacion/formacion.service";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -22,17 +22,17 @@ import { FORMACION } from "../../../../util/constantes/fomacion.const";
 })
 export class InscripcionesComponent implements OnInit {
 
-  usuario               : Usuario = null;
-  inscripciones         : InscripcionItem[]
+  usuario: Usuario = null;
+  inscripciones: InscripcionItem[]
   inscripcionesAsignadas: InscripcionItem[]
   inscripcionesLoaded = false
   esEstadoValidacion = false
 
   headers = [
-    {key: 'id', label: 'ID'},
-    {key: 'cedula', label: 'Cédula'},
-    {key: 'nombre', label: 'Nombre'},
-    {key: 'apellido', label: 'Apellido'},
+    { key: 'id', label: 'ID' },
+    { key: 'cedula', label: 'Cédula' },
+    { key: 'nombre', label: 'Nombre' },
+    { key: 'apellido', label: 'Apellido' },
   ]
 
   constructor(
@@ -101,11 +101,12 @@ export class InscripcionesComponent implements OnInit {
       estado: 'ASIGNADO'
     }
     this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
-      next:() => {
+      next: () => {
         const index = this.inscripciones.findIndex(inscripcion => inscripcion.codPostulante === idPostulante);
         if (index !== -1) {
           const inscripcion = this.inscripciones.splice(index, 1)[0];
           this.inscripcionesAsignadas.push(inscripcion);
+          this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
         }
         Notificacion.notificar(this.mdbNotificationService, "Usuario asignado correctamente", TipoAlerta.ALERTA_OK)
       },
