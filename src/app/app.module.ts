@@ -139,6 +139,10 @@ import { InstructoresComponent } from './componentes/flujos/formacion/formacion-
 import { BusquedaUsuarioComponent } from './componentes/util/busqueda-usuario/busqueda-usuario.component';
 
 import { PruebasComponent } from './componentes/flujos/formacion/pruebas/pruebas.component';
+import { SubtipoPruebaComponent } from './componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
+import { ListaPruebasComponent } from './componentes/flujos/formacion/lista-pruebas/lista-pruebas.component';
+import { SubtipoParametrosComponent } from './componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
+import { ResultadosPruebasComponent } from './componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
 
 @NgModule({
   declarations: [
@@ -204,7 +208,11 @@ import { PruebasComponent } from './componentes/flujos/formacion/pruebas/pruebas
     FaGestionDocumentosComponent,
     InstructoresComponent,
     BusquedaUsuarioComponent,
-    PruebasComponent
+    PruebasComponent,
+    SubtipoPruebaComponent,
+    ListaPruebasComponent,
+    SubtipoParametrosComponent,
+    ResultadosPruebasComponent
   ],
   imports: [
     BrowserModule,

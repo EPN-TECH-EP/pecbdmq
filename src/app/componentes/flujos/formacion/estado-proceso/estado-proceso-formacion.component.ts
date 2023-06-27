@@ -51,7 +51,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
   updateStep(codigo: number) {
     const formData = new FormData();
     formData.append('estado', codigo.toString());
-    formData.append('proceso', 'FORMACIÓN');
+    formData.append('proceso', 'FORMACIÃ“N');
     formData.forEach((value, key) => {
       console.log(key + ': ' + value);
     });
@@ -59,7 +59,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
       {
         next: (response) => {
         console.log(response);
-        Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK)
+        Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con Ã©xito", TipoAlerta.ALERTA_OK)
       },
         error: (error) => {
           console.error(error);

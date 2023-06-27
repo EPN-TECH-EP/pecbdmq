@@ -8,6 +8,7 @@
 
 <div class="row justify-content-center">
   <div class="col-6 ">
+
     <!-- Button to add a register-->
     <button
       class="btn btn-primary btn-sm mb-2"
@@ -29,6 +30,9 @@
       <label mdbLabel class="form-label" for="search-input">Buscar</label>
     </mdb-form-control>
     <hr/>
+
+
+
     <!-- Table -->
     <div class="datatable table-editor mt-3 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
@@ -40,6 +44,7 @@
           #table="mdbTable"
           [pagination]="pagination"
           [dataSource]="catalogos"
+          [filterFn]="filterFn"
         >
           <thead class="datatable-header">
           <tr>

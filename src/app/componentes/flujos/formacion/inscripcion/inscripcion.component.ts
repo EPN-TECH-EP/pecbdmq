@@ -26,6 +26,7 @@ import { FormacionService } from 'src/app/servicios/formacion/formacion.service'
 import { HttpErrorResponse } from '@angular/common/http';
 import { FORMACION } from 'src/app/util/constantes/fomacion.const';
 import { ThisReceiver } from '@angular/compiler';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inscripcion',
@@ -35,8 +36,8 @@ import { ThisReceiver } from '@angular/compiler';
 export class InscripcionComponent extends ComponenteBase implements OnInit {
   @ViewChild('stepper') stepper!: MdbStepperComponent;
 
-  minDate = new Date(1980, 1, 31);
-  maxDate = new Date(2015, 12, 31);
+  minDate = new Date(1950, 1, 31);
+  maxDate = new Date(2010, 12, 31);
   provincias: Provincia[];
   translationOptions = OPCIONES_DATEPICKER;
   cantonesNacimiento: Canton[];
@@ -62,7 +63,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   pinIncorrecto: boolean = false;
   correoPin: string = '';
   showLoadingPin: boolean = false;
-  showLoadingFull: boolean = false;
+  showLoadingFull: boolean = true;
 
   // integración con API CBDMQ
   existenDatosCiudadano: boolean = false;
@@ -74,7 +75,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   ultimaCedulaValida = '';
 
   // estado del proceso de formación
-  esEstadoInscripcion: boolean = false;
+  esEstadoInscripcion: string = 'I';
+
+  // error general
+  showServicioNoDisponible: boolean = false;
 
   constructor(
     private cargaArchivoService: CargaArchivoService,
@@ -100,24 +104,35 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.setEnabledDisabledControls(false);
+
     // obtiene estado del proceso
     this.formacionService
       .getEstadoActual()
       .pipe(
         catchError((errorResponse: HttpErrorResponse) => {
+          this.showServicioNoDisponible = true;
+          this.showLoadingFull = false;
           console.error(errorResponse);
           return of(null);
         })
       )
       .subscribe({
         next: (estado) => {
+
+          this.showLoadingFull = false;
+
           if (!estado || estado.httpStatusCode !== 200) {
+            this.showServicioNoDisponible = true;
             return;
           }
 
           if (estado.mensaje === FORMACION.estadoInscripcion) {
-            this.esEstadoInscripcion = true;
-            this.cargarCatalogos();
+            this.esEstadoInscripcion = 'T';
+            this.cargarCatalogos();            
+          } else {
+            this.esEstadoInscripcion = 'F';
           }
         },
       });
@@ -131,6 +146,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           this.tamMaxArchivo = result;
         },
         error: (errorResponse) => {
+          this.showServicioNoDisponible = true;
           console.log(errorResponse);
         },
       })
@@ -141,6 +157,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         this.provincias = provincias;
       },
       error: (error) => {
+        this.showServicioNoDisponible = true;
         console.log(error);
       },
     });
@@ -162,7 +179,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         ],
         nombres: [
           '',
-          [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()],
+          [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]          
         ],
         apellidos: [
           '',
@@ -204,6 +221,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         updateOn: 'change',
       }
     );
+
     this.formularioPinSeguridad = this.builder.group({
       pin: [
         '',
@@ -215,9 +233,65 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         ],
       ],
     });
+
     this.formularioReenvioPin = this.builder.group({
       correoPin: ['', [Validators.required, Validators.email]],
     });
+
+    this.cedulaField.valueChanges.pipe(debounceTime(1000)).subscribe((value) => {
+      this.consultarDatosCedula();
+    });
+
+  }
+
+  private setEnabledDisabledControls(enabled: boolean) {
+    if (!enabled) {
+      this.formularioInscripcion.controls['nombres'].disable();
+      this.formularioInscripcion.controls['apellidos'].disable();
+      this.formularioInscripcion.controls['email'].disable();
+      this.formularioInscripcion.controls['sexo'].disable();
+      this.formularioInscripcion.controls['fechaNacimiento'].disable();
+      this.formularioInscripcion.controls['telCelular'].disable();
+      this.formularioInscripcion.controls['telConvencional'].disable();
+      this.formularioInscripcion.controls['nacionalidad'].disable();
+      this.formularioInscripcion.controls['provinciaNacimiento'].disable();
+      this.formularioInscripcion.controls['cantonNacimiento'].disable();
+      this.formularioInscripcion.controls['provinciaResidencia'].disable();
+      this.formularioInscripcion.controls['cantonResidencia'].disable();
+      this.formularioInscripcion.controls['callePrincipal'].disable();
+      this.formularioInscripcion.controls['calleSecundaria'].disable();
+      this.formularioInscripcion.controls['numeroCasa'].disable();
+      this.formularioInscripcion.controls['paisTitulo'].disable();
+      this.formularioInscripcion.controls['ciudadTitulo'].disable();
+      this.formularioInscripcion.controls['colegioTitulo'].disable();
+      this.formularioInscripcion.controls['nombreTitulo'].disable();
+      this.formularioInscripcion.controls['meritoAcademico'].disable();
+      this.formularioInscripcion.controls['meritoDeportivo'].disable();
+      this.formularioInscripcion.controls['docSoporte'].disable();    
+    } else {
+      this.formularioInscripcion.controls['nombres'].enable();
+      this.formularioInscripcion.controls['apellidos'].enable();
+      this.formularioInscripcion.controls['email'].enable();
+      this.formularioInscripcion.controls['sexo'].enable();
+      this.formularioInscripcion.controls['fechaNacimiento'].enable();
+      this.formularioInscripcion.controls['telCelular'].enable();
+      this.formularioInscripcion.controls['telConvencional'].enable();
+      this.formularioInscripcion.controls['nacionalidad'].enable();
+      this.formularioInscripcion.controls['provinciaNacimiento'].enable();
+      this.formularioInscripcion.controls['cantonNacimiento'].enable();
+      this.formularioInscripcion.controls['provinciaResidencia'].enable();
+      this.formularioInscripcion.controls['cantonResidencia'].enable();
+      this.formularioInscripcion.controls['callePrincipal'].enable();
+      this.formularioInscripcion.controls['calleSecundaria'].enable();
+      this.formularioInscripcion.controls['numeroCasa'].enable();
+      this.formularioInscripcion.controls['paisTitulo'].enable();
+      this.formularioInscripcion.controls['ciudadTitulo'].enable();
+      this.formularioInscripcion.controls['colegioTitulo'].enable();
+      this.formularioInscripcion.controls['nombreTitulo'].enable();
+      this.formularioInscripcion.controls['meritoAcademico'].enable();
+      this.formularioInscripcion.controls['meritoDeportivo'].enable();
+      this.formularioInscripcion.controls['docSoporte'].enable();    
+    }
   }
 
   get cedulaField() {
@@ -567,12 +641,11 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   // integración con API de CBDMQ
   // consulta de datos en base a la cédula
   consultarDatosCedula() {
-    //TODO borrar
-    console.log('cedulaValida = ' + this.cedulaValida);
 
     if (this.cedulaField.valid) {
       if (this.ultimaCedulaValida === this.cedulaField.value) {
         this.showLoadingFull = false;
+        this.setEnabledDisabledControls(false);
         return;
       }
 
@@ -627,6 +700,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           this.existenDatosCiudadano = true;
           this.cedulaValida = true;
           this.ultimaCedulaValida = this.cedulaField.value;
+
+          this.setEnabledDisabledControls(true);
 
           // establece valor con los datos del ciudadano
           const [day, month, year] = ciudadano.fechaNacimiento.split('/');

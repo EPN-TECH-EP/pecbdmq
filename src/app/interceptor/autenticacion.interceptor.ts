@@ -17,8 +17,10 @@ export class AutenticacionInterceptor implements HttpInterceptor {
       const key = environment.APP_KEY;
       const request = httpRequest.clone({
         setHeaders: { 'X-API-Key': `${key}` },
-      });
+      }); 
       return httpHandler.handle(request);
+
+      //return httpHandler.handle(httpRequest);
 
       /*let modifiedReq;
       const key = environment.appKey;

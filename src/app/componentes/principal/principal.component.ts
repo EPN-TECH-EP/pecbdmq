@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AutenticacionService} from 'src/app/servicios/autenticacion.service';
 import {Menu} from '../../modelo/admin/menu';
 import {MenuService} from '../../servicios/menu.service';
@@ -14,6 +14,7 @@ import {
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {Usuario} from "../../modelo/admin/usuario";
+import { MdbSidenavComponent } from 'mdb-angular-ui-kit/sidenav';
 
 @Component({
   selector: 'app-principal',
@@ -21,6 +22,8 @@ import {Usuario} from "../../modelo/admin/usuario";
   styleUrls: ['./principal.component.scss'],
 })
 export class PrincipalComponent implements OnInit, OnDestroy {
+
+  @ViewChild('sidenav') sidenav: MdbSidenavComponent;
 
   private subscriptions: Subscription[] = [];
 
