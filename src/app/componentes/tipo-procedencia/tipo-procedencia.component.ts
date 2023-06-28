@@ -71,7 +71,7 @@ validacionUtil = ValidacionUtil;
 
 
   ngOnInit(): void {
-    this.ApiTipoProcedencia.getTipoProcedencia().subscribe(data => {
+    this.ApiTipoProcedencia.listar().subscribe(data => {
       this.tiposProcedencia = data;
     })
   }
@@ -127,7 +127,7 @@ validacionUtil = ValidacionUtil;
     tipoprocedencia = {...tipoprocedencia, estado: 'ACTIVO'},
       this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoProcedencia.crearTipoProcedencia(tipoprocedencia).subscribe({
+      this.ApiTipoProcedencia.crear(tipoprocedencia).subscribe({
         next: (response: HttpResponse<TipoProcedencia>) => {
           let nuevoTipoProcedencia: TipoProcedencia = response.body;
           this.tiposProcedencia.push(nuevoTipoProcedencia);
@@ -174,7 +174,7 @@ validacionUtil = ValidacionUtil;
 
       this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoProcedencia.actualizarTipoProcedencia(tipoProcedencia, tipoProcedencia.codigo).subscribe({
+      this.ApiTipoProcedencia.actualizar(tipoProcedencia, tipoProcedencia.codigo).subscribe({
         next: (response: HttpResponse<TipoProcedencia>) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia actualizado con éxito');
 
@@ -207,7 +207,7 @@ validacionUtil = ValidacionUtil;
   public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.ApiTipoProcedencia.eliminarTipoProcedencia(this.codigo).subscribe({
+      this.ApiTipoProcedencia.eliminar(this.codigo).subscribe({
         next: (response: string) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia eliminado con éxito');
           const index = this.tiposProcedencia.indexOf(this.data);

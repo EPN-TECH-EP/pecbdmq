@@ -6,7 +6,6 @@ import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/not
 import {Notificacion} from "../../util/notificacion";
 import {ViewChild} from '@angular/core';
 import {MdbTableDirective} from "mdb-angular-ui-kit/table";
-
 import {AlertaComponent} from "../util/alerta/alerta.component";
 import {ComponenteBase} from "src/app/util/componente-base";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
@@ -18,14 +17,13 @@ import {ValidacionUtil} from "src/app/util/validacion-util";
   styleUrls: ['./paralelo.component.scss']
 })
 export class ParaleloComponent extends ComponenteBase implements OnInit {
+
   paralelos: Paralelo[];
   paralelo: Paralelo;
   paraleloEdit: Paralelo;
-
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
   codigo: number;
   showLoading = false;
-
   validacionUtil = ValidacionUtil;
 
   @ViewChild('table') table!: MdbTableDirective<Paralelo>;
@@ -83,7 +81,7 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
       estado: 'ACTIVO'
     };
   }
-    
+
   crear(paralelo: Paralelo): void {
 
     if (paralelo.nombreParalelo == '') {
@@ -101,8 +99,6 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo creado con éxito');
 
           this.showLoading = false;
-          this.addRow = false;
-
           this.paralelo = {
             codParalelo: 0,
             nombreParalelo: '',

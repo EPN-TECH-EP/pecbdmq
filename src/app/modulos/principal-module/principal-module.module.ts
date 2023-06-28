@@ -81,6 +81,9 @@ import {
 import {
   InstructoresComponent
 } from "../../componentes/flujos/formacion/formacion-academica/instructores/instructores.component";
+import { MateriasComponent } from "../../componentes/flujos/formacion/formacion-academica/materias/materias.component";
+import { SubtipoPruebaComponent } from 'src/app/componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
+
 
 
 const routes: Routes = [
@@ -134,6 +137,7 @@ const routes: Routes = [
       {path: 'formacion/academia/menu', component: MenuFormacionAcademiaComponent},
       {path: 'formacion/academia/gestion-documentos', component: FaGestionDocumentosComponent},
       {path: 'formacion/academia/instructores', component: InstructoresComponent},
+	  {path: 'formacion/academia/materias', component: MateriasComponent},
 
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
@@ -147,6 +151,8 @@ const routes: Routes = [
       {path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent},
       {path: 'requisito', component: RequisitoComponent},
       {path: 'perfil', component: PerfilComponent},
+      // formacion - pruebas
+      {path: 'pruebas/subtipo-prueba', component: SubtipoPruebaComponent},
 
     ],
   },

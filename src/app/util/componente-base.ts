@@ -8,6 +8,8 @@ import { Directive, OnDestroy } from '@angular/core';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { PopconfirmComponent } from '../componentes/util/popconfirm/popconfirm.component';
 import {MdbPaginationChange} from "../../../code/mdb-angular-ui-kit/table";
+import { ValidacionUtil } from './validacion-util';
+import { SubtipoPrueba } from '../modelo/admin/subtipo-prueba';
 
 @Directive()
 export class ComponenteBase implements OnDestroy {
@@ -26,6 +28,9 @@ export class ComponenteBase implements OnDestroy {
   popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
   mensajeConfirmacion: string;
   mostrarConfirmacion:boolean = false;
+
+  // util genérico
+  validacionUtil = ValidacionUtil;
 
   constructor(notificationService: MdbNotificationService,
     popconfirmService: MdbPopconfirmService) {    
@@ -90,6 +95,6 @@ export class ComponenteBase implements OnDestroy {
     if (this.paginaActual > 0) {
       this.indiceAuxRegistro = this.paginaActual * this.entradasPorPagina;
     }
-  }
+  } 
 
 }

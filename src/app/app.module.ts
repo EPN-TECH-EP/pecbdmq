@@ -138,6 +138,8 @@ import { FaGestionDocumentosComponent } from './componentes/flujos/formacion/for
 import { InstructoresComponent } from './componentes/flujos/formacion/formacion-academica/instructores/instructores.component';
 import { BusquedaUsuarioComponent } from './componentes/util/busqueda-usuario/busqueda-usuario.component';
 
+import { MateriasComponent } from './componentes/flujos/formacion/formacion-academica/materias/materias.component';
+
 import { PruebasComponent } from './componentes/flujos/formacion/pruebas/pruebas.component';
 import { SubtipoPruebaComponent } from './componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
 import { ListaPruebasComponent } from './componentes/flujos/formacion/lista-pruebas/lista-pruebas.component';
@@ -208,6 +210,7 @@ import { ResultadosPruebasComponent } from './componentes/flujos/formacion/resul
     FaGestionDocumentosComponent,
     InstructoresComponent,
     BusquedaUsuarioComponent,
+    MateriasComponent,
     PruebasComponent,
     SubtipoPruebaComponent,
     ListaPruebasComponent,

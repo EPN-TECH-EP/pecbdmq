@@ -3,5 +3,6 @@ export const FORMACION = {
   estadoConvocatoria: 'CONVOCATORIA',
   estadoValidacion: 'VALIDACIÓN REQUISITOS',
   estadoInscripcion: 'INSCRIPCION',
+  estadoPruebas: 'PRUEBAS',
 
 }

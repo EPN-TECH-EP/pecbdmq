@@ -1,11 +1,12 @@
 <app-boton-volver></app-boton-volver>
 
-<div class="titulo text-center">
-  <p class="fs-4 fw-bolder">Paralelo</p>
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Paralelo</p>
+  </div>
 </div>
 
 <div class="row justify-content-center ">
-
   <div class="col-6 ">
     <!-- Button to add a register-->
     <button
@@ -28,7 +29,7 @@
     </mdb-form-control>
     <hr/>
     <!-- Table -->
-    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
           class="table datatable-table"
@@ -41,10 +42,10 @@
           <!-- Table head -->
           <thead class="datatable-header">
           <tr>
-            <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col" class="fw-bold">
+            <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col">
               <b> {{ header | titlecase }}</b>
             </th>
-              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            <th scope="col"><b>Acciones</b></th>
           </tr>
           </thead>
           <!-- Table body -->
@@ -67,25 +68,13 @@
                 />
               </mdb-form-control>
             </td>
-            <!-- Input state -->
-            <!--
-            <td>
-              <mdb-form-control>
-                <mdb-select [(ngModel)]="paralelo.estado" name="estado">
-                  <mdb-option *ngFor="let option of options" [value]="option.value">
-                    {{option.label}}
-                  </mdb-option>
-                </mdb-select>
-              </mdb-form-control>
 
-            </td>
-            -->
             <!-- Buttons to add or cancel a register -->
             <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)=" crear(form.value);"
+                (click)=" crear(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -118,30 +107,12 @@
                     [(ngModel)]="paraleloEdit.nombreParalelo"
                     required
                     #nombreParaleloModel="ngModel"
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"                    
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParaleloModel)"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
-            <!--
             <td>
-             Show state
-              <ng-container *ngIf="editElementIndex !== index">
-                {{ paralelo.estado }}
-              </ng-container>
-              Edit state
-              <ng-container *ngIf="editElementIndex === index">
-                <mdb-form-control>
-                  <mdb-select [(ngModel)]="paralelo.estado" name="estado">
-                    <mdb-option *ngFor="let option of options" [value]="option.value">
-                      {{ option.label }}</mdb-option>
-                  </mdb-select>
-                </mdb-form-control>
-              </ng-container>
-            </td>
-
-            --->
-            <td class="text-center">
               <!--Buttons to delete -->
               <ng-container
                 *ngIf="!estaEditando || codigoParaleloEditando !== paralelo.codParalelo"
@@ -186,7 +157,6 @@
           #pagination
           [entries]="10"
           (paginationChange)="onPaginationChange($event)"
-          [rowsPerPageText]="'Registros por página'"
         ></mdb-table-pagination>
       </form>
     </div>

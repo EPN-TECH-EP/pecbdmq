@@ -19,6 +19,7 @@ export class MenuService {
   constructor(private http: HttpClient) {}
 
   public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{
+    console.log(usuario);
     return this.http.get<Menu[]>(`${this.host}/menu/lista/${usuario.nombreUsuario}`)
   }
 

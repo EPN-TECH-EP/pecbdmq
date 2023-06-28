@@ -66,7 +66,7 @@
                   name="nombre"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="aula.nombre"
+                  [(ngModel)]="aula.nombreAula"
                   #nombreModel="ngModel"
                   required
                   (change)="
@@ -242,12 +242,12 @@
           <tr *ngFor="let aula of table.data">
             <td style="min-width: 50px">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
-                {{ aula.nombre }}
+                {{ aula.nombreAula }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -256,7 +256,7 @@
                     name="nombre"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aulaEditForm.nombre"
+                    [(ngModel)]="aulaEditForm.nombreAula"
                     required
                     #nombreModel="ngModel"
                     (change)="
@@ -273,12 +273,12 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.capacidad }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -300,12 +300,12 @@
 
             <td style="min-width: 50px">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.tipo }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -327,12 +327,12 @@
 
             <td *ngIf="aula.pcs">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.pcs }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -352,12 +352,12 @@
 
             <td *ngIf="aula.impresoras">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.impresoras }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -377,12 +377,12 @@
 
             <td *ngIf="aula.internet">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.internet }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -404,12 +404,12 @@
 
             <td *ngIf="aula.proyectores">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.proyectores }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -429,12 +429,12 @@
 
             <td *ngIf="aula.instructor">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 {{ aula.instructor }}
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <mdb-form-control>
                   <input
@@ -460,7 +460,7 @@
 
             <td style="min-width: 50px; max-width: 50px">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 <input
                   mdbCheckbox
@@ -474,7 +474,7 @@
                 />
               </ng-container>
               <ng-container
-                *ngIf="estaEditando && codigoAulaEditando === aula.codigo"
+                *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
               >
                 <input
                   mdbCheckbox
@@ -491,7 +491,7 @@
 
             <td class="text-center">
               <ng-container
-                *ngIf="!estaEditando || codigoAulaEditando !== aula.codigo"
+                *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
                 <button
                   mdbTooltip="Editar registro"
@@ -504,13 +504,13 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event, aula.codigo)"
+                  (click)="confirmaEliminar($event, aula.codAula)"
                   [disabled]="estaEditando"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
               </ng-container>
-              <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codigo">
+              <ng-container *ngIf="estaEditando && codigoAulaEditando === aula.codAula">
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   (click)="actualizar(aula, form.value)"

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Aula {
-  public codigo: number;
-  public nombre: string;
+  public codAula: number;
+  public nombreAula: string;
   public capacidad: number;
   public tipo: number;
   public pcs: string;

@@ -90,7 +90,7 @@ export class UsuarioComponent implements OnInit {
       next: (cargos) => {this.cargos = cargos},
       error: (error) => {console.error(error)}
     });
-    this.unidadGestionService.getUnidadGestion().subscribe({
+    this.unidadGestionService.listar().subscribe({
       next: (unidadesGestion) => {this.unidadesGestion = unidadesGestion},
       error: (error) => {console.error(error)}
     })

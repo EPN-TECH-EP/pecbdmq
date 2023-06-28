@@ -67,7 +67,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.Api.getTipoInstruccion().subscribe(data => {
+    this.Api.listar().subscribe(data => {
       this.tiposInstruccion = data;
     });
   }
@@ -131,7 +131,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     tipoInstruccion={...tipoInstruccion,estado:'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.crearTipoInstruccion(tipoInstruccion).subscribe({
+      this.Api.crear(tipoInstruccion).subscribe({
         next: (response: HttpResponse<TipoInstruccion>) => {
           let nuevoTipo: TipoInstruccion = response.body;
           this.table.data.push(nuevoTipo);
@@ -178,7 +178,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.actualizarTipoInstruccion(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
+      this.Api.actualizar(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({
         next: (response) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción actualizada con éxito');
           this.tiposInstruccion[this.editElementIndex]=response.body;
@@ -210,7 +210,7 @@ public confirmaEliminar(event: Event, codigo: number): void {
   public eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.Api.eliminarTipoInstruccion(this.codigo).subscribe({
+      this.Api.eliminar(this.codigo).subscribe({
         next: (response: string) => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo instrucción eliminada con éxito');
           this.showLoading = false;

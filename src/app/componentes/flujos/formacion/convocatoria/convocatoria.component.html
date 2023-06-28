@@ -40,7 +40,7 @@
           </p>
         </div>
       </div>
-      <mdb-stepper #stepper [linear]="true">
+      <mdb-stepper #stepper [linear]="true" [stepperHeadClick]="false">
         <!-- PASO UNO -->
         <mdb-step
           [stepForm]="convocatoriaForm"
@@ -579,12 +579,12 @@
             <input
               mdbValidate
               mdbInput
-              type="correo"
-              id="correo"
+              type="email"
+              id="email"
               class="form-control mb-5 mt-4"
               [formControl]="correo"
             />
-            <label mdbLabel class="form-label mb-3" for="correo">Correo Electrónico</label>
+            <label mdbLabel class="form-label mb-3" for="email">Correo Electrónico</label>
             <mdb-error *ngIf="correo.invalid && correo.touched">
               <i class="fas fa-times-circle"></i>
               Correo electrónico inválido

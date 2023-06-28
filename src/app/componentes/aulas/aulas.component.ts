@@ -17,7 +17,7 @@ import {ValidacionUtil} from 'src/app/util/validacion-util';
   styleUrls: ['./aulas.component.scss']
 })
 export class AulasComponent extends ComponenteBase implements OnInit {
-  //model
+
   aulas: Aula[];
   aula: Aula;
   aulaEditForm: Aula;
@@ -25,12 +25,8 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
-
-  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   validacionUtil = ValidacionUtil;
-
-  //table
   @ViewChild('table') table!: MdbTableDirective<Aula>;
   addRow = false;
 
@@ -54,9 +50,9 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     this.aulas = [];
     this.subscriptions = [];
     this.aula = {
-      codigo: 0,
+      codAula: 0,
       estado: '',
-      nombre: '',
+      nombreAula: '',
       capacidad: '' as any,
       tipo: '' as any,
       pcs: '',
@@ -67,9 +63,9 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       salaOcupada: false
     }
     this.aulaEditForm = {
-      codigo: 0,
+      codAula: 0,
       estado: '',
-      nombre: '',
+      nombreAula: '',
       capacidad: '' as any,
       tipo: '' as any,
       pcs: '',
@@ -82,7 +78,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.aulaService.getAula().subscribe(data => {
+    this.aulaService.listar().subscribe(data => {
       this.aulas = data;
       this.aulas.forEach((aula) => {
         delete aula.pcs;
@@ -111,7 +107,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   public crear(aula: Aula): void {
 
     if (
-      aula.nombre == '' ||
+      aula.nombreAula == '' ||
       ValidacionUtil.isNullOrEmptyNumber(aula.capacidad) ||
       aula.tipo == 0
     ) {
@@ -122,16 +118,16 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     aula = {...aula, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.aulaService.registroAula(aula).subscribe({
+      this.aulaService.crearAula(aula).subscribe({
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.aulas.push(nuevaAula);
           this.aulas = [...this.aulas]
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula creada con éxito');
           this.aula = {
-            codigo: 0,
+            codAula: 0,
             estado: '',
-            nombre: '',
+            nombreAula: '',
             capacidad: '' as any,
             tipo: '' as any,
             pcs: '',
@@ -151,15 +147,15 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
   editRow(aula: Aula) {
     this.aulaEditForm = {...aula}
-    this.codigoAulaEditando = aula.codigo;
+    this.codigoAulaEditando = aula.codAula;
   }
 
   undoRow() {
     this.estaEditando = false;
     this.aulaEditForm = {
-      codigo: 0,
+      codAula: 0,
       estado: '',
-      nombre: '',
+      nombreAula: '',
       capacidad: '' as any,
       tipo: '' as any,
       pcs: '',
@@ -185,7 +181,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
     aula = {
       ...aula,
-      nombre: formValue.nombre,
+      nombreAula: formValue.nombre,
       capacidad: formValue.capacidad,
       tipo: formValue.tipo,
       pcs: formValue.pcs,
@@ -200,9 +196,9 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
     this.subscriptions.push(
-      this.aulaService.actualizarAula(aula, aula.codigo).subscribe({
+      this.aulaService.actualizarAula(aula, aula.codAula).subscribe({
         next: () => {
-          let index = this.aulas.findIndex(value => value.codigo == aula.codigo);
+          let index = this.aulas.findIndex(value => value.codAula == aula.codAula);
           this.aulas[index] = aula;
           this.aulas = [...this.aulas];
           this.codigoAulaEditando = 0;
@@ -234,7 +230,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
         next: () => {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Aula eliminada con éxito');
           this.showLoading = false;
-          const index = this.aulas.findIndex(aula => aula.codigo === this.codigo);
+          const index = this.aulas.findIndex(aula => aula.codAula === this.codigo);
           this.aulas.splice(index, 1);
           this.aulas = [...this.aulas]
         },

@@ -111,7 +111,7 @@ export class DatoPersonalComponent implements OnInit {
       next: (cargos) => {this.cargos = cargos},
       error: (error) => {console.log(error)}
     });
-    this.unidadGestionService.getUnidadGestion().subscribe({
+    this.unidadGestionService.listar().subscribe({
       next: (unidadesGestion) => {this.unidadesGestion = unidadesGestion},
       error: (error) => {console.log(error)}
     })
