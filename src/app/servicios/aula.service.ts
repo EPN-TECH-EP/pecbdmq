@@ -1,37 +1,32 @@
 import { Aula } from '../modelo/admin/aula';
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpResponse, HttpErrorResponse,HttpEvent,} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
 
-@Injectable({providedIn: 'root',})
+@Injectable({ providedIn: 'root', })
 
 export class AulaService {
+
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  public getAula(): Observable<Aula[]> {
-    return this.http.get<Aula[]>(`${this.host}/aula/listar`);
+  listar(): Observable<Aula[]> {
+    return this.http.get<Aula[]>(`${ this.host }/aula/listar`);
   }
 
-  public registroAula(aula: Aula): Observable<HttpResponse<Aula>> {
-    return this.http.post<Aula>(`${this.host}/aula/crear`, aula, { observe: 'response' });
+  registroAula(aula: Aula): Observable<HttpResponse<Aula>> {
+    return this.http.post<Aula>(`${ this.host }/aula/crear`, aula, { observe: 'response' });
   }
 
-    public eliminarAula(codigo: any): Observable<string> {
-    return this.http.delete<any>(`${this.host}/aula/${codigo}`);
-    }
-   public actualizarAula(aula: Aula, codigo:any): Observable<HttpResponse<Aula>> {
-    return this.http.put<Aula>(`${this.host}/aula/${codigo}`, aula, { observe: 'response' });
-  }x
+  eliminarAula(codigo: any): Observable<string> {
+    return this.http.delete<any>(`${ this.host }/aula/${ codigo }`);
+  }
 
-  // public obtenerUsuariosDeCacheLocal(): Aula[] {
-  //   if (localStorage.getItem('materias')) {
-  //       return JSON.parse(localStorage.getItem('materias'));
-  //   }
-  //   return null;
-  // }
+  actualizarAula(aula: Aula, codigo: any): Observable<HttpResponse<Aula>> {
+    return this.http.put<Aula>(`${ this.host }/aula/${ codigo }`, aula, { observe: 'response' });
+  }
+
 }
 

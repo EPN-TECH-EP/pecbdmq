@@ -6,10 +6,380 @@
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Gestión de Materias</h1>
   </div>
-  <button
-    class="btn btn-primary mb-1"
-  >
+
+  <button class="btn btn-primary mb-1"
+          (click)="estaAgregandoMateria = !estaAgregandoMateria">
     <i class="fa-solid fa-circle-plus me-2"></i>
-    Crear instructor
+    Agregar Materia
   </button>
+
+  <!-- Creacion de materia -->
+  <section
+    *ngIf="estaAgregandoMateria"
+    class="my-2"
+  >
+    <hr class="hr">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        [mdbTooltip]="'Cerrar'"
+        class="btn btn-danger btn-floating mb-4 d-flex justify-content-center align-items-center"
+        style="width: 15px; height: 15px;"
+        (click)="estaAgregandoMateria = false"
+      >
+        <i class="fas fa-x fa-sm"></i>
+      </button>
+    </div>
+    <form
+      [formGroup]="materiaForm"
+      class="row"
+    >
+      <div class="col">
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            class="mb-4"
+            formControlName="codMateria"
+          >
+            <mdb-option
+              *ngFor="let materia of materiasCatalogo"
+              [value]="materia.codMateria"
+            >
+              {{ materia.nombre }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja la materia del catalogo</label>
+        </mdb-form-control>
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            class="mb-4"
+            formControlName="codCoordinador"
+            [filter]="true"
+          >
+            <mdb-option
+              *ngFor="let instructor of instructores"
+              [label]="instructor.nombre + ' ' + instructor.apellido"
+              [value]="instructor.codInstructor">
+              {{ instructor.nombre }} {{ instructor.apellido}}
+              <span class="option-secondary-text">{{instructor.correoPersonal}}</span>
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja a un coordinador</label>
+        </mdb-form-control>
+        <mdb-form-control>
+          <mdb-select
+            mdbValidate
+            class="mb-4"
+            formControlName="codAsistentes"
+            [filter]="true"
+          >
+            <mdb-option
+              *ngFor="let instructor of instructores"
+              [label]="instructor.nombre + ' ' + instructor.apellido"
+              [value]="instructor.codInstructor">
+              {{ instructor.nombre }} {{ instructor.apellido}}
+              <span class="option-secondary-text">{{instructor.correoPersonal}}</span>
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja a un asistente</label>
+        </mdb-form-control>
+      </div>
+      <div class="col">
+        <mdb-form-control [formGroup]="materiaForm">
+          <mdb-select
+            mdbValidate
+            [filter]="true"
+            [multiple]="true"
+            class="mb-4"
+            formArrayName="codInstructores"
+          >
+            <mdb-option
+              *ngFor="let instructor of instructores; let i = index"
+              (click)="toggleInstructorSelection(instructor.codInstructor)"
+              [label]="instructor.nombre + ' ' + instructor.apellido"
+              [value]="instructor.codInstructor">
+              {{ instructor.nombre }} {{ instructor.apellido}}
+              <span class="option-secondary-text ms-4 ps-2">{{instructor.correoPersonal}}</span>
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja a los instructores</label>
+        </mdb-form-control>
+        <mdb-form-control>
+          <mdb-select
+            [filter]="true"
+            mdbValidate
+            class="mb-4"
+            formControlName="codParalelo"
+          >
+            <mdb-option
+              *ngFor="let paralelo of paralelos"
+              [value]="paralelo.codParalelo">
+              {{ paralelo.nombreParalelo }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja un paralelo</label>
+        </mdb-form-control>
+        <mdb-form-control>
+          <mdb-select
+            [filter]="true"
+            mdbValidate
+            class="mb-4"
+            formControlName="codAula"
+          >
+            <mdb-option
+              *ngFor="let aula of aulas"
+              [value]="aula.codAula">
+              {{ aula.nombreAula }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Escoja una aula</label>
+        </mdb-form-control>
+      </div>
+    </form>
+    <button
+      type="button"
+      class="btn btn-success "
+      (click)="onAgregarMateria()"
+    >
+      Agregar Materia
+    </button>
+    <hr class="hr">
+  </section>
+
+  <!-- Lista de materias -->
+  <section>
+    <div
+      *ngIf="materias?.length === 0"
+      class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron materias registradas para este periodo.
+    </div>
+    <div class="datatableb datatable-hover datatable-sm table-responsive">
+      <form>
+        <table
+          class="tabla datatable-table"
+          mdbTable
+          [dataSource]="materias"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let head of headers"
+              class="fw-bold fs-6"
+            >
+              {{ head.label }}
+            </th>
+            <th class="text-center fw-bold fs-6">Acciones</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngFor="let materia of materias">
+            <td [style.width.px]="100">
+              {{ materia?.nombreMateria }}
+            </td>
+            <td>
+              {{ materia?.nombreEjeMateria }}
+            </td>
+            <td>
+              <div>
+                <div class="badge badge-success">
+                  <b>{{ materia?.coordinador?.nombre }} {{ materia?.coordinador?.apellido }}</b>
+                </div>
+                <div class="text-muted ps-2">
+                  {{ materia?.coordinador?.correoPersonal }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="materia?.asistentes?.length > 1; else asistente">
+                <div class="d-flex gap-1 align-items-center">
+                  <span class="total-instructores">{{ materia.asistentes?.length }}</span>
+                  <button
+                    class="btn-instructores ms-1"
+                    type="button"
+                    (click)="asistentesCollapse.toggle()"
+                    [attr.aria-expanded]="!asistentesCollapse.collapsed"
+                    aria-controls="collapseAsistentes"
+                  >
+                    Asistentes
+                    <i class="fa-solid fa-chevron-down" *ngIf="asistentesCollapse.collapsed"></i>
+                    <i class="fa-solid fa-chevron-up" *ngIf="!asistentesCollapse.collapsed"></i>
+                  </button>
+                </div>
+                <div class="mt-3" id="asistentesCollapse" mdbCollapse #asistentesCollapse="mdbCollapse">
+                  <ul class="list-group list-group-light">
+                    <li
+                      *ngFor="let asistente of materia.asistentes"
+                      class="list-group-item p-0">
+                      <b>{{asistente.nombre}} {{ asistente.apellido}}</b>
+                      <p class="text-muted">{{asistente?.correoPersonal}}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <ng-template #asistente>
+                <div class="badge badge-info">
+                  <b>{{ materia?.asistentes[0]?.nombre }}</b>
+                </div>
+                <div class="text-muted ps-2">
+                  {{ materia?.asistentes[0]?.correoPersonal }}
+                </div>
+              </ng-template>
+            </td>
+            <td>
+              <div *ngIf="materia.instructores?.length > 1 ; else instructor">
+                <div class="d-flex gap-1 align-items-center">
+                  <span class="total-instructores">{{ materia.instructores?.length }}</span>
+                  <button
+                    class="btn-instructores ms-1"
+                    type="button"
+                    (click)="instructoresCollapse.toggle()"
+                    [attr.aria-expanded]="!instructoresCollapse.collapsed"
+                    aria-controls="collapseExample"
+                  >
+                    Instructores
+                    <i class="fa-solid fa-chevron-down" *ngIf="instructoresCollapse.collapsed"></i>
+                    <i class="fa-solid fa-chevron-up" *ngIf="!instructoresCollapse.collapsed"></i>
+                  </button>
+                </div>
+                <div class="mt-3" id="instructoresCollapse" mdbCollapse #instructoresCollapse="mdbCollapse">
+                  <ul class="list-group list-group-light">
+                    <li *ngFor="let instructor of materia.instructores" class="list-group-item p-0">
+                      <b>{{ instructor.nombre }} {{ instructor.apellido }}</b>
+                      <p class="text-muted">{{ instructor.correoPersonal }}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <ng-template #instructor>
+                <b>{{ materia?.instructores[0]?.nombre }} {{ materia?.instructores[0]?.apellido  }}</b>
+                <p class="text-muted">{{ materia?.instructores[0]?.correoPersonal  }}</p>
+              </ng-template>
+            </td>
+            <td>
+              {{ materia?.nombreParalelo }}
+            </td>
+            <td>
+              {{ materia?.aula?.nombreAula }}
+            </td>
+            <td class="text-center">
+              <button
+                mdbTooltip="Editar datos del instructor"
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button
+                mdbTooltip="Eliminar registro"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td [style.width.px]="100">Sociales</td>
+            <td>Formacion</td>
+            <td>
+              <div>
+                <div class="badge badge-success">
+                  <b>Timoteo Camuendo</b>
+                </div>
+                <div class="text-muted ps-2">
+                  timo_teo.c@gmail.com
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="badge badge-info">
+                <b>Alberto Camuendo</b>
+              </div>
+              <div class="text-muted ps-2">
+                alberto.c@gmail.com
+              </div>
+            </td>
+            <td>
+              <div class="d-flex gap-1 align-items-center">
+                <span class="total-instructores">3</span>
+                <button
+                  class="btn-instructores ms-1"
+                  type="button"
+                  (click)="basicCollapse.toggle()"
+                  [attr.aria-expanded]="!basicCollapse.collapsed"
+                  aria-controls="collapseExample"
+                >
+                  Instructores
+                  <i class="fa-solid fa-chevron-down" *ngIf="basicCollapse.collapsed"></i>
+                  <i class="fa-solid fa-chevron-up" *ngIf="!basicCollapse.collapsed"></i>
+                </button>
+              </div>
+              <!--Collapsed content-->
+              <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse">
+                <ul class="list-group list-group-light">
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                  <li class="list-group-item p-0">
+                    <b>Alberto Camuendo</b>
+                    <p class="text-muted">alberto.c@gmail.com</p>
+                  </li>
+                </ul>
+              </div>
+            </td>
+            <td>Paralelo A</td>
+            <td>Aula magna</td>
+            <td class="text-center">
+              <button
+                mdbTooltip="Editar datos del instructor"
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+              >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button
+                mdbTooltip="Eliminar registro"
+                class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </section>
+
 </div>

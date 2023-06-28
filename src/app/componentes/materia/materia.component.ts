@@ -73,7 +73,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.materiaService.getMaterias().subscribe((data) => {
+    this.materiaService.listar().subscribe((data) => {
       this.materias = data;
     });
   }
@@ -129,7 +129,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.showLoading = true;
     this.userResponse = 'Lunes';
     this.subscriptions.push(
-      this.materiaService.registroMateria(materia).subscribe({
+      this.materiaService.crear(materia).subscribe({
         next: (response: HttpResponse<Materia>) => {
           let nuevaMateria: Materia = response.body;
           this.materias.push(nuevaMateria);
@@ -187,7 +187,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.showLoading = true;
     this.subscriptions.push(
       this.materiaService
-        .actualizarMateria(materia, materia.codMateria)
+        .actualizar(materia, materia.codMateria)
         .subscribe({
           next: () => {
             let index = this.materias.findIndex(
@@ -226,7 +226,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.materiaService.eliminarMateria(this.codigo).subscribe({
+      this.materiaService.eliminar(this.codigo).subscribe({
         next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,

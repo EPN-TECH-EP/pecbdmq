@@ -111,9 +111,9 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         this.estaActulizando = true;
         this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
           next: (convocatoria) => {
-            this.matchDatosConvocatoria(convocatoria[0]);
+            this.matchDatosConvocatoriaFormulario(convocatoria[0]);
             this.convocatoria = convocatoria[0];
-            console.log(this.convocatoria);
+            console.log('Convocatoria servicio:', this.convocatoria);
             this.requisitosConvocatoria = convocatoria[0].requisitos;
             this.correo.patchValue(convocatoria[0].correo);
             this.documentoConvocatoriaField.clearValidators();
@@ -296,21 +296,24 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     return this.convocatoriaForm.get('documentoConvocatoria');
   }
 
-  private matchDatosConvocatoria(data: Convocatoria) {
+  private matchDatosConvocatoriaFormulario(convocatoria: Convocatoria) {
 
-    console.log(data.codigoUnico);
-    data.fechaInicioConvocatoria = new Date(data.fechaInicioConvocatoria);
-    console.log(data.fechaInicioConvocatoria);
-    data.fechaFinConvocatoria = new Date(data.fechaFinConvocatoria);
+    const fechaInicioOriginal = new Date(convocatoria.fechaInicioConvocatoria);
+    const fechaFinOriginal = new Date(convocatoria.fechaFinConvocatoria);
+    fechaInicioOriginal.setMinutes(fechaInicioOriginal.getMinutes() + fechaInicioOriginal.getTimezoneOffset());
+    fechaFinOriginal.setMinutes(fechaFinOriginal.getMinutes() + fechaFinOriginal.getTimezoneOffset());
+
+    convocatoria.fechaInicioConvocatoria = fechaInicioOriginal;
+    convocatoria.fechaFinConvocatoria = fechaFinOriginal;
 
     this.convocatoriaForm.patchValue({
-      codigo        : data?.codigoUnico,
-      cuposHombres  : data?.cupoHombres,
-      cuposMujeres  : data?.cupoMujeres,
-      fechaInicio   : data?.fechaInicioConvocatoria,
-      fechaFin      : data?.fechaFinConvocatoria,
-      horaInicio    : data?.horaInicioConvocatoria,
-      horaFin       : data?.horaFinConvocatoria,
+      codigo        : convocatoria?.codigoUnico,
+      cuposHombres  : convocatoria?.cupoHombres,
+      cuposMujeres  : convocatoria?.cupoMujeres,
+      fechaInicio   : convocatoria?.fechaInicioConvocatoria,
+      fechaFin      : convocatoria?.fechaFinConvocatoria,
+      horaInicio    : convocatoria?.horaInicioConvocatoria,
+      horaFin       : convocatoria?.horaFinConvocatoria,
     });
 
   }
@@ -334,7 +337,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     };
 
     console.log('Convocatoria para actualizar', this.convocatoria);
-
     console.log('Documento convocatoria', this.documentoConvocatoria);
 
     const formData = new FormData();
