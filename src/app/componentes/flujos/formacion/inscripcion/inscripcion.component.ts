@@ -77,6 +77,9 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   // estado del proceso de formación
   esEstadoInscripcion: string = 'I';
 
+  validaFechas: boolean = false;
+  esFechaValida: boolean = false;
+
   // error general
   showServicioNoDisponible: boolean = false;
 
@@ -130,7 +133,28 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
 
           if (estado.mensaje === FORMACION.estadoInscripcion) {
             this.esEstadoInscripcion = 'T';
-            this.cargarCatalogos();            
+
+
+            // valida fechas
+            this.subscriptions.push(
+              this.inscripcionService.validarFechas().subscribe({
+                next: (result) => {
+                  this.esFechaValida = result;
+                  this.validaFechas = true;
+
+                  if (this.esFechaValida) {
+                    this.cargarCatalogos();            
+                  }
+
+                },
+                error: (errorResponse) => {
+                  this.showServicioNoDisponible = true;
+                  console.log(errorResponse);
+                },
+              })
+            );
+
+            
           } else {
             this.esEstadoInscripcion = 'F';
           }

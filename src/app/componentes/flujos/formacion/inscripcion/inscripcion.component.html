@@ -17,6 +17,16 @@
   </div>
 </ng-container>
 
+<!-- fechas de inscripcion -->
+<ng-container *ngIf="validaFechas && !esFechaValida">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de inscripción no activo</h5>
+      <p class="card-text">El proceso de inscripciones no se encuentra activo a la fecha</p>
+    </div>
+  </div>
+</ng-container>
+
 <!-- No cumple edad-->
 <div class="alert alert-danger d-grid col-9 mx-auto" role="alert" *ngIf="!showServicioNoDisponible && showEdadInvalida">
   <i class="far fa-rectangle-xmark fa-5x"></i>
@@ -31,7 +41,7 @@
 <div
   class="container"
   xmlns="http://www.w3.org/1999/html"
-  *ngIf="!showServicioNoDisponible && esEstadoInscripcion === 'T' && !showEdadInvalida">
+  *ngIf="!showServicioNoDisponible && esEstadoInscripcion === 'T' && !showEdadInvalida && esFechaValida">
   <div class="row mt-3">
     <div class="column col-3">
       <img src="assets/logo-bomberos.svg" alt="" />

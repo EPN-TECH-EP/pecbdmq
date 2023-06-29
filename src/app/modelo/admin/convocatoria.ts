@@ -16,5 +16,5 @@ export interface Convocatoria {
   cupoMujeres             : number;
   correo                  : string;
   documentos              : DocumentoFormacion[];
-  requisitos              : Requisito[] | string;
+  requisitos              : Requisito[];
 }
