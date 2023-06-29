@@ -52,6 +52,29 @@
               <div class="container">
                 <div class="row">
                   <div class="col">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        type="text"
+                        id="nombre"
+                        class="form-control mb-5"
+                        formControlName="nombre"
+                      />
+                      <label mdbLabel class="form-label mb-2x" for="nombre">Nombre de la convocatoria</label>
+                      <mdb-error *ngIf="nombreField?.invalid && nombreField?.touched">
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success *ngIf="nombreField?.valid && nombreField?.touched">
+                        <i class="fas fa-check-circle"></i>
+                        Campo Correcto
+                      </mdb-success>
+                    </mdb-form-control>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
                     <!-- Codigo -->
                     <mdb-form-control>
                       <input
@@ -169,6 +192,7 @@
                         #dpFechaInicio="mdbDatepicker"
                         [options]="opcionesDatepicker"
                         [inline]="true"
+                        [minDate]="opcionesDatepicker.minDate"
                       ></mdb-datepicker>
                       <mdb-error
                         *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"
@@ -226,7 +250,6 @@
                     </mdb-form-control>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col">
                     <!-- Fecha Fin-->
@@ -437,7 +460,7 @@
                   <td>
                     <mdb-form-control>
                       <mdb-select
-                        [(ngModel)]="requisitoEditable"
+                        [(ngModel)]="itemRequisito"
                         name="nevoRequisito"
                         [filter]="true"
                       >
