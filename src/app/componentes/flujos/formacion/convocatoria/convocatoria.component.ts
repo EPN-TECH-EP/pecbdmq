@@ -41,6 +41,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   requisitosConvocatoria: Requisito[];
   itemRequisito: Requisito;
   requisitos: Requisito[];
+  requisitosLista: Requisito[];
   convocatoria: Convocatoria;
   archivo: File;
 
@@ -196,7 +197,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   private filtrarRequisitosConvocatoria(convocatoria: Convocatoria) {
 
     const codigosConvocatoria = new Set(convocatoria.requisitos.map((r) => r.codigoRequisito));
-    this.requisitos = this.requisitos.filter((requisito) => !codigosConvocatoria.has(requisito.codigoRequisito));
+    this.requisitosLista = this.requisitos.filter((requisito) => !codigosConvocatoria.has(requisito.codigoRequisito));
   }
 
   subirArchivo(event: any, tipo: string): void {
@@ -236,18 +237,24 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   agregarRequisito() {
     this.requisitosConvocatoria.push(this.itemRequisito);
 
-    this.requisitos = this.requisitos.filter((requisito) => requisito.codigoRequisito !== this.itemRequisito.codigoRequisito);
-    this.requisitos = [...this.requisitos];
+    this.requisitosLista = this.requisitosLista.filter((requisito) => requisito.codigoRequisito !== this.itemRequisito.codigoRequisito);
+    this.requisitosLista = [...this.requisitosLista];
 
     this.editElementIndex = -1;
     this.addRow = false;
     this.itemRequisito = new Requisito();
   }
 
-  eliminarRequisito(index: number) {
-    this.requisitosConvocatoria.splice(index, 1);
-    this.editElementIndex = -1;
-    this.addRow = false;
+  eliminarRequisito(codRequisito: number) {
+    this.requisitosConvocatoria = this.requisitosConvocatoria.filter((requisito) => requisito.codigoRequisito !== codRequisito);
+    this.requisitosConvocatoria = [...this.requisitosConvocatoria];
+
+    const requisito = this.requisitos.find((r) => r.codigoRequisito === codRequisito);
+    this.requisitosLista.push(requisito);
+
+    this.requisitosLista.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    this.requisitosLista = [...this.requisitosLista];
+
   }
 
   crearConvocatoria() {

@@ -465,7 +465,7 @@
                         [filter]="true"
                       >
                         <mdb-option
-                          *ngFor="let requisito of requisitos"
+                          *ngFor="let requisito of requisitosLista"
                           [value]="requisito"
                           class="text-wrap"
                         >
@@ -508,7 +508,7 @@
                         mdbTooltip="Eliminar requisito"
                         class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                         [disabled]="editElementIndex !== -1 && editElementIndex !== index"
-                        (click)="eliminarRequisito(index)"
+                        (click)="eliminarRequisito(requisito.codigoRequisito)"
                       >
                         <i class="fa fa-trash-alt"></i>
                       </button>
