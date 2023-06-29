@@ -44,6 +44,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   requisitosLista: Requisito[];
   convocatoria: Convocatoria;
   archivo: File;
+  fechaActual: Date;
 
   // verifica el estado de formación
   existeProcesoActivo: boolean;
@@ -54,7 +55,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   estaCreando: boolean;
 
   // éxito en creación de convocatoria
-  exitoCreacion = false;
+  seCreoConExito = false;
 
   @ViewChild('table') table!: MdbTableDirective<Requisito>;
   editElementIndex = -1;
@@ -90,6 +91,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.estaCreando = false;
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
+    this.fechaActual = new Date();
 
   }
 
@@ -118,11 +120,12 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         this.estaActulizando = true;
         this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
           next: (convocatoria) => {
+            console.log('Convocatoria servicio:', convocatoria[0]);
             this.matchDatosConvocatoriaFormulario(convocatoria[0]);
             this.filtrarRequisitosConvocatoria(convocatoria[0]);
+            this.fechaActual = convocatoria[0].fechaActual;
             this.convocatoria = convocatoria[0];
             this.requisitosConvocatoria = convocatoria[0].requisitos;
-            console.log('Convocatoria servicio:', this.convocatoria);
             this.correo.patchValue(convocatoria[0].correo);
             this.documentoConvocatoriaField.clearValidators();
             this.documentoConvocatoriaField.updateValueAndValidity();
@@ -157,7 +160,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.convocatoriaForm = this.formBuilder.group(
       {
         nombre: ['', Validators.required],
-        codigo: ['', Validators.required],
         cuposHombres: ['', Validators.required],
         cuposMujeres: ['', Validators.required],
         fechaInicio: ['', Validators.required],
@@ -185,7 +187,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     this.convocatoriaForm.patchValue({
       nombre: convocatoria?.nombre,
-      codigo: convocatoria?.codigoUnico,
       cuposHombres: convocatoria?.cupoHombres,
       cuposMujeres: convocatoria?.cupoMujeres,
       fechaInicio: convocatoria?.fechaInicioConvocatoria,
@@ -238,6 +239,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
   agregarRequisito() {
     this.requisitosConvocatoria.push(this.itemRequisito);
+    this.requisitosConvocatoria.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
     this.requisitosLista = this.requisitosLista.filter((requisito) => requisito.codigoRequisito !== this.itemRequisito.codigoRequisito);
     this.requisitosLista = [...this.requisitosLista];
@@ -266,7 +268,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.convocatoria = {
       ...this.convocatoria,
       nombre: this.convocatoriaForm.get('nombre')?.value,
-      codigoUnico: this.convocatoriaForm.get('codigo')?.value,
       cupoHombres: this.convocatoriaForm.get('cuposHombres')?.value,
       cupoMujeres: this.convocatoriaForm.get('cuposMujeres')?.value,
       horaInicioConvocatoria: this.convocatoriaForm.get('horaInicio')?.value,
@@ -276,6 +277,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       requisitos: this.requisitosConvocatoria,
       correo: this.correo.value,
       estado: 'ACTIVO',
+      fechaActual: this.fechaActual
     };
 
     const formData = new FormData();
@@ -294,7 +296,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
             'Convocatoria creada exitosamente'
           );
 
-          this.exitoCreacion = true;
+          this.seCreoConExito = true;
           this.showLoading = false;
 
         },
@@ -312,10 +314,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
   get nombreField() {
     return this.convocatoriaForm.get('nombre');
-  }
-
-  get codigoField() {
-    return this.convocatoriaForm.get('codigo');
   }
 
   get cuposHombresField() {
@@ -387,7 +385,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
             'Convocatoria actualizada exitosamente'
           );
 
-          this.exitoCreacion = true;
+          this.seCreoConExito = true;
           this.showLoading = false;
           this.router.navigate(['/principal/formacion/proceso']);
 
