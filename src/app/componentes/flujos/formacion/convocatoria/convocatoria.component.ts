@@ -77,6 +77,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
+    this.itemRequisito = new Requisito()
     this.tamMaxArchivo = 0;
     this.subscriptions = [];
     this.requisitosConvocatoria = [];
@@ -89,6 +90,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.estaCreando = false;
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
+
   }
 
   ngOnInit() {

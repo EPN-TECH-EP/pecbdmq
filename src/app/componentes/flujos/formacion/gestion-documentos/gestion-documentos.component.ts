@@ -75,7 +75,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
   }
 
   descargarArchivo(documento: DocumentoFormacion) {
-    this.documentosService.descargar(documento.codigo).subscribe(
+    this.documentosService.descargar(documento.codDocumento).subscribe(
       {
         next: (data) => {
           const blob = new Blob([data], {type: 'application/pdf'});
@@ -133,9 +133,9 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
     formData.append('observacion', this.documentoForm.get('observaciones')?.value);
     formData.append('tipo', '61');
 
-    this.documentosService.actualizar(formData, documento.codigo).subscribe({
+    this.documentosService.actualizar(formData, documento.codDocumento).subscribe({
       next: (documento) => {
-        let index = this.documentos.findIndex((documento) => documento.codigo == this.codigoDocumentoEditando);
+        let index = this.documentos.findIndex((documento) => documento.codDocumento == this.codigoDocumentoEditando);
         this.documentos[index] = documento;
         this.documentos = [...this.documentos]
         Notificacion.notificar(this.notificationServiceLocal, 'Documento actualizado correctamente', TipoAlerta.ALERTA_OK);
@@ -156,7 +156,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
 
     this.documentosService.eliminar(id).subscribe({
       next: () => {
-        let index = this.documentos.findIndex((documento) => documento.codigo == id);
+        let index = this.documentos.findIndex((documento) => documento.codDocumento == id);
         this.documentos.splice(index, 1);
         this.documentos = [...this.documentos];
         Notificacion.notificar(this.notificationServiceLocal, 'Documento eliminado correctamente', TipoAlerta.ALERTA_OK);
@@ -175,7 +175,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
       archivo: documento.nombre
     });
     this.estaEditando = true;
-    this.codigoDocumentoEditando = documento.codigo;
+    this.codigoDocumentoEditando = documento.codDocumento;
   }
 
   undoRow() {

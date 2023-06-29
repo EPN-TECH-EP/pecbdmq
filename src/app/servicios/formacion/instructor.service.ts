@@ -17,4 +17,5 @@ export class InstructorService {
   listar() {
     return this.http.get<Instructor[]>(`${ this.host }/instructor/listar`);
   }
+
 }

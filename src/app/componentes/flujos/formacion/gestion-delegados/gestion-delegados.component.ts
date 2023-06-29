@@ -126,7 +126,7 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
     this.usuarioService.buscarPorIdentificacion(this.identificacionField.value).subscribe(
       {
         next: (usuario) => {
-          if (usuario === null) {
+          if (usuario === null ) {
             this.usuarios = [];
             this.existenCoincidencias = false;
             this.esUsuarioDelegado = false;
@@ -170,7 +170,7 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
           if (usuariosFiltrados.length === 0) {
             this.usuarios = [];
             this.existenCoincidencias = false;
-            this.esUsuarioDelegado = true;
+            this.esUsuarioDelegado = false;
             return;
           }
 
@@ -221,7 +221,7 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
   asignarComoDelegado(usuario: Usuario) {
     const delegado: DelegadoCreate = {
       codUsuario: usuario.codUsuario,
-      codPeriodoAcademico: 190,
+      codPeriodoAcademico: null,
       estado: 'ACTIVO'
     }
 
@@ -242,7 +242,6 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
       }
     })
   }
-
 
   onEliminarDelegado(event: Event, codigo: number) {
     super.mensajeConfirmacion = "¿Está seguro de eliminar el delegado?";

@@ -1,6 +1,12 @@
 <app-boton-volver></app-boton-volver>
 
 <ng-container *ngIf="!esEstadoValidacion">
+  <div>
+    <span class="badge badge-success mt-3">
+    Es usuario delegado
+    </span>
+  </div>
+
   <div class="card rounded-7 mt-3">
     <div class="card-body">
       <h5 class="card-title text-primary">Proceso de validación no activo</h5>

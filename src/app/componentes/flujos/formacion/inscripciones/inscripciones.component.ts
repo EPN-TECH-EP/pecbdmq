@@ -14,6 +14,7 @@ import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { of } from "rxjs";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
+import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
 
 @Component({
   selector: 'app-inscripciones',
@@ -41,7 +42,8 @@ export class InscripcionesComponent implements OnInit {
     private router: Router,
     private autenticacionService: AutenticacionService,
     private mdbNotificationService: MdbNotificationService,
-    private formacionService: FormacionService
+    private formacionService: FormacionService,
+    private delegadoService: DelegadoService
   ) {
     this.inscripcionesAsignadas = []
     this.inscripciones = []
@@ -55,6 +57,16 @@ export class InscripcionesComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.delegadoService.esDelegado(this.usuario.codUsuario).subscribe({
+      next: esDelegado => {
+        if (!esDelegado) {
+          Notificacion.notificar(this.mdbNotificationService, "No es usuario delegado", TipoAlerta.ALERTA_WARNING)
+          this.router.navigate(['/principal/formacion/proceso'])
+          return
+        }
+      }
+    })
+
     this.formacionService.getEstadoActual().pipe(
       catchError((errorResponse: HttpErrorResponse) => {
         console.error(errorResponse)
@@ -64,6 +76,8 @@ export class InscripcionesComponent implements OnInit {
       next: estado => {
 
         if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.mdbNotificationService, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING)
+          this.router.navigate(['/formacion/proceso'])
           return;
         }
 
@@ -73,11 +87,8 @@ export class InscripcionesComponent implements OnInit {
 
           this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
             next: inscripciones => {
-              console.log(inscripciones)
               this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
-              console.log('Asignadas', this.inscripcionesAsignadas)
               this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
-              console.log('Pendientes', this.inscripciones)
               this.inscripcionesLoaded = true
             },
             error: err => console.log(err)
