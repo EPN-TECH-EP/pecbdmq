@@ -29,7 +29,6 @@ export class ValidacionComponent implements OnInit {
   urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
 
   constructor(
-    private route: ActivatedRoute,
     private validacionInscripcionService: ValidacionInscripcionService,
     private documentosService: DocumentosService,
     private mdbNotificationService: MdbNotificationService,

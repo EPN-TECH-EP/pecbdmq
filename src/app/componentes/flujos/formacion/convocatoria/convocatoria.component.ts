@@ -31,6 +31,7 @@ import { Router } from "@angular/router";
 })
 
 export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
+
   opcionesDatepicker = OPCIONES_DATEPICKER;
   correo: FormControl;
   convocatoriaForm: FormGroup;
@@ -45,6 +46,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   convocatoria: Convocatoria;
   archivo: File;
   fechaActual: Date;
+  codigoUnicoConvocatoria: string;
+  minDate: Date;
 
   // verifica el estado de formación
   existeProcesoActivo: boolean;
@@ -68,7 +71,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     private formBuilder: FormBuilder,
     private cargaArchivoService: CargaArchivoService,
     private servicioRequisito: RequisitoService,
-    private servicioConvocatoria: ConvocatoriaService,
+    private convocatoriaService: ConvocatoriaService,
     private archivoService: ArchivoService,
     private formacionService: FormacionService,
     private notificationServiceLocal: MdbNotificationService,
@@ -92,6 +95,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
     this.fechaActual = new Date();
+    this.minDate = new Date();
+    this.codigoUnicoConvocatoria = '';
 
   }
 
@@ -102,6 +107,12 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         return of(null);
       })
     ).subscribe((response) => {
+
+      this.servicioRequisito.getRequisito().subscribe((requisitos) => {
+        this.requisitos = requisitos;
+        this.requisitosLista = requisitos;
+      });
+
       const customResponse: CustomHttpResponse = response;
 
       if (!customResponse || customResponse.httpStatusCode !== 200) {
@@ -111,18 +122,16 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
       this.existeProcesoActivo = true;
 
-      this.servicioRequisito.getRequisito().subscribe((requisitos) => {
-        this.requisitos = requisitos;
-      });
-
       if (customResponse.mensaje === FORMACION.estadoConvocatoria) {
         this.tieneEstadoConvocatoria = true;
         this.estaActulizando = true;
-        this.servicioConvocatoria.getConvocatoriaActiva().subscribe({
+        this.convocatoriaService.getConvocatoriaActiva().subscribe({
           next: (convocatoria) => {
             console.log('Convocatoria servicio:', convocatoria[0]);
             this.matchDatosConvocatoriaFormulario(convocatoria[0]);
+            this.codigoUnicoConvocatoria = convocatoria[0].codigoUnico;
             this.filtrarRequisitosConvocatoria(convocatoria[0]);
+            this.minDate = new Date(convocatoria[0].fechaActual);
             this.fechaActual = convocatoria[0].fechaActual;
             this.convocatoria = convocatoria[0];
             this.requisitosConvocatoria = convocatoria[0].requisitos;
@@ -144,6 +153,12 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         this.existeProcesoActivo = false;
         this.estaCreando = true;
 
+        this.convocatoriaService.getCodigoUnicoCreacion().subscribe(
+          (codigoUnico) => {
+            console.log('Codigo unico:', codigoUnico);
+            this.codigoUnicoConvocatoria = codigoUnico;
+          }
+        )
       }
     });
 
@@ -263,6 +278,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
   crearConvocatoria() {
 
+
+
     this.showLoading = true;
 
     this.convocatoria = {
@@ -277,7 +294,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       requisitos: this.requisitosConvocatoria,
       correo: this.correo.value,
       estado: 'ACTIVO',
-      fechaActual: this.fechaActual
     };
 
     const formData = new FormData();
@@ -288,7 +304,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     console.log(formData);
 
     this.subscriptions.push(
-      this.servicioConvocatoria.crear(formData).subscribe({
+      this.convocatoriaService.crear(formData).subscribe({
         next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,
@@ -377,7 +393,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
 
     this.subscriptions.push(
-      this.servicioConvocatoria.actualizar(formData).subscribe({
+      this.convocatoriaService.actualizar(formData).subscribe({
         next: () => {
           Notificacion.notificacionOK(
             this.notificationRef,

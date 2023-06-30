@@ -136,6 +136,7 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
           // Revisar si el usuario ya es delegado
           const esUsuarioDelegado = this.usuariosDelegados.some((delegado) => delegado.cod_usuario === usuario.codUsuario);
           if (esUsuarioDelegado) {
+            console.log('es delegado')
             this.esUsuarioDelegado = true;
             this.usuarios = [];
             this.existenCoincidencias = true;
@@ -144,7 +145,6 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
 
           this.usuarios = [usuario];
           this.existenCoincidencias = true;
-          this.esUsuarioDelegado = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificar(this.mdbNotificationService, errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
@@ -164,13 +164,20 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
     this.usuarioService.buscarPorNombreApellido(data).subscribe(
       {
         next: (usuarios) => {
-          console.log('usuarios: ', usuarios)
+
+          if(usuarios.length === 0) {
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            this.esUsuarioDelegado = false;
+            return;
+          }
+
           const usuariosFiltrados = this.filtrarUsuariosDelegados(usuarios);
 
           if (usuariosFiltrados.length === 0) {
             this.usuarios = [];
-            this.existenCoincidencias = false;
-            this.esUsuarioDelegado = false;
+            this.existenCoincidencias = true;
+            this.esUsuarioDelegado = true;
             return;
           }
 
@@ -192,6 +199,14 @@ export class GestionDelegadosComponent extends ComponenteBase implements OnInit 
     this.usuarioService.buscarPorCorreo(this.correoField.value).subscribe(
       {
         next: (usuarios) => {
+
+          if(usuarios.length === 0) {
+            this.usuarios = [];
+            this.existenCoincidencias = false;
+            this.esUsuarioDelegado = false;
+            return;
+          }
+
           const usuariosFiltrados = this.filtrarUsuariosDelegados(usuarios);
 
           if (usuariosFiltrados.length === 0) {

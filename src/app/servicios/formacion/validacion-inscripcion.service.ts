@@ -2,11 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {InscripcionItem} from "../../modelo/flujos/formacion/inscripcion-item";
-import {Requisito} from "../../modelo/admin/requisito";
 import {UsuarioAsignado} from "../../modelo/flujos/formacion/asignar-usuario";
 import {ValidacionRequisito} from "../../modelo/flujos/formacion/requisito";
 import {InscripcionCompleta} from "../../modelo/flujos/formacion/inscripcion-completa";
-import {ArchivoService} from "../archivo.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +15,11 @@ export class ValidacionInscripcionService {
 
   private host = environment.apiUrl
 
-  constructor(private http: HttpClient, private archivoService: ArchivoService) {
+  constructor(private http: HttpClient) {
     this.idPostulante = null
   }
 
   listarInscripciones() {
-    const params = {page: '0', size: '50'}
     return this.http.get<InscripcionItem[]>(`${this.host}/inscripcionfor/postulantesAllPaginado`);
   }
 
@@ -50,4 +47,6 @@ export class ValidacionInscripcionService {
   reasignarInscripcion(usuarioAsignado: UsuarioAsignado) {
     return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulanteAsignar`, usuarioAsignado);
   }
+
+
 }

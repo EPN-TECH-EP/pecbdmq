@@ -1,6 +1,6 @@
 <app-boton-volver></app-boton-volver>
 
-<ng-container *ngIf="!esEstadoValidacion">
+<ng-container *ngIf="!esEstadoValidacion && !esEstadoMuestreo">
   <div>
     <span class="badge badge-success mt-3">
     Es usuario delegado
@@ -146,5 +146,56 @@
         </div>
       </ng-container>
     </div>
+  </section>
+</div>
+
+<!-- Muestreo -->
+<div class="container">
+  <section class="my-4" *ngIf="inscripcionesLoaded && esEstadoMuestreo">
+    <!--  <section class="my-4">-->
+    <h5 class="mb-3">Muestras</h5>
+    <p class="text-primary">
+      <i class="fas fa-info-circle me-1"></i>
+      Las inscripciones en proceso de muestreo son aquellas asignadas a un delegado para análisis probabilísticos.
+    </p>
+    <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+      <table
+        class="table table-sm datatable-table"
+        mdbTable
+        mdbTableSort
+        #tableInscripcionesAsignadas="mdbTable"
+        [dataSource]="inscripcionesAsignadas"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+          >
+            <b>{{ header.label }}</b>
+          </th>
+          <th class="text-center"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let postulante of tableInscripcionesAsignadas.data">
+          <td>{{ postulante?.idPostulante }}</td>
+          <td>{{ postulante?.cedula }}</td>
+          <td>{{ postulante?.nombre }}</td>
+          <td>{{ postulante?.apellido }}</td>
+          <td class="text-center">
+            <button
+              mdbTooltip="Validar muestra"
+              class="m-0 p-0 shadow-0 btn text-dark"
+              (click)="validarMuestra(postulante)"
+            >
+              <i class="fa-regular fa-check-square fa-xl"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr class="hr">
   </section>
 </div>

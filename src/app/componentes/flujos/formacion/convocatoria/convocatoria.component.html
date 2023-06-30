@@ -52,8 +52,8 @@
               <div class="container">
                 <div class="row mb-4">
                   <div class="col-3">
-                      <h6 class="text-primary">Código de la convocatoria</h6>
-                      <h4><span class="badge badge-success">&nbsp;{{ convocatoria?.codigoUnico }}&nbsp;</span></h4>
+                    <h6 class="text-primary">Código de la convocatoria</h6>
+                    <h4><span class="badge badge-success">&nbsp;{{ codigoUnicoConvocatoria }}&nbsp;</span></h4>
                   </div>
                   <div class="col-4">
                     <h6 class="text-primary">Fecha de creación de la convocatoria</h6>
@@ -177,7 +177,7 @@
                         #dpFechaInicio="mdbDatepicker"
                         [options]="opcionesDatepicker"
                         [inline]="true"
-                        [minDate]="opcionesDatepicker.minDate"
+                        [minDate]="minDate"
                       ></mdb-datepicker>
                       <mdb-error
                         *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"
@@ -447,7 +447,6 @@
                       <mdb-select
                         [(ngModel)]="itemRequisito"
                         name="nevoRequisito"
-                        [filter]="true"
                       >
                         <mdb-option
                           *ngFor="let requisito of requisitosLista"
@@ -532,7 +531,7 @@
           <hr/>
           <div class="row">
             <div class="col-md-6">
-              <p><b>Código Único: </b> {{ convocatoria.codigoUnico }}</p>
+              <p><b>Código Único: </b> {{ codigoUnicoConvocatoria }}</p>
               <p><b>Cupo Hombres: </b> {{ cuposHombresField.value }}</p>
               <p><b>Cupo Mujeres: </b> {{ cuposMujeresField.value }}</p>
             </div>
@@ -572,9 +571,14 @@
                   {{ convocatoria?.documentos[0]?.nombre }}
                 </ng-template>
               </div>
-              <p *ngIf="estaCreando">
-                <b>Documento de soporte:</b> {{ documentoSoporte?.name }}
-              </p>
+              <div *ngIf="estaCreando">
+                <p>
+                  <b>Documento de convocatoria:</b> {{ documentoConvocatoria?.name }}
+                </p>
+                <p>
+                  <b>Documento de soporte:</b> {{ documentoSoporte?.name }}
+                </p>
+              </div>
             </div>
           </div>
           <hr/>

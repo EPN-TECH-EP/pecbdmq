@@ -15,6 +15,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { of } from "rxjs";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
+import { MuestraService } from "../../../../servicios/formacion/muestra.service";
 
 @Component({
   selector: 'app-inscripciones',
@@ -28,6 +29,7 @@ export class InscripcionesComponent implements OnInit {
   inscripcionesAsignadas: InscripcionItem[]
   inscripcionesLoaded = false
   esEstadoValidacion = false
+  esEstadoMuestreo = false
 
   headers = [
     { key: 'id', label: 'ID' },
@@ -43,7 +45,8 @@ export class InscripcionesComponent implements OnInit {
     private autenticacionService: AutenticacionService,
     private mdbNotificationService: MdbNotificationService,
     private formacionService: FormacionService,
-    private delegadoService: DelegadoService
+    private delegadoService: DelegadoService,
+    private muestraService: MuestraService
   ) {
     this.inscripcionesAsignadas = []
     this.inscripciones = []
@@ -64,6 +67,11 @@ export class InscripcionesComponent implements OnInit {
           this.router.navigate(['/principal/formacion/proceso'])
           return
         }
+      },
+      error: () => {
+        Notificacion.notificar(this.mdbNotificationService, "Ocurrió un error, inténtelo nuevamente", TipoAlerta.ALERTA_ERROR)
+        this.router.navigate(['/principal/formacion/proceso'])
+        return
       }
     })
 
@@ -94,6 +102,18 @@ export class InscripcionesComponent implements OnInit {
             error: err => console.log(err)
           });
         }
+
+        if (estado.mensaje === FORMACION.estadoMuestreo) {
+
+          this.esEstadoMuestreo = true
+
+          this.muestraService.listarMuestrasByIdUsuario().subscribe({
+            next: inscripciones => {
+              this.inscripcionesAsignadas = inscripciones;
+              this.inscripcionesLoaded = true
+            }
+          })
+        }
       }
     })
 
@@ -103,6 +123,11 @@ export class InscripcionesComponent implements OnInit {
   validar(inscripcion: InscripcionItem) {
     this.validacionInscripcionService.idPostulante = inscripcion.codPostulante;
     this.router.navigate(['principal/formacion/validacion']).then()
+  }
+
+  validarMuestra(inscripcion: InscripcionItem) {
+    this.muestraService.idPostulante = inscripcion.codPostulante;
+    this.router.navigate(['principal/formacion/muestra']).then()
   }
 
   asignar(idPostulante: number) {

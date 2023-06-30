@@ -202,7 +202,7 @@
       <i class="fa-solid fa-circle-exclamation me-2"></i>
       No se encontró ningún usuario con los datos ingresados
     </div>
-    <div *ngIf="esUsuarioDelegado && !existenCoincidencias" class="alert alert-warning my-3 py-1" role="alert">
+    <div *ngIf="esUsuarioDelegado && existenCoincidencias" class="alert alert-warning my-3 py-1" role="alert">
       <i class="fa-solid fa-circle-exclamation me-2"></i>
       El usuario ya es delegado
     </div>
