@@ -5,6 +5,8 @@ import { ArchivoService } from "../archivo.service";
 import { Observable } from "rxjs";
 import { MateriaFormacion } from "./materias-formacion.service";
 import { InscripcionItem } from "../../modelo/flujos/formacion/inscripcion-item";
+import { InscripcionCompleta } from "../../modelo/flujos/formacion/inscripcion-completa";
+import { ValidacionRequisito } from "../../modelo/flujos/formacion/requisito";
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +15,22 @@ export class MuestraService {
 
   private host = environment.apiUrl
 
-  idPostulante: number;
+  idMuestra: number;
 
   constructor(private http: HttpClient, private archivoService: ArchivoService) {
   }
 
-  listarMuestrasByIdUsuario(){
-    return this.http.get<InscripcionItem[]>(`${ this.host }/inscripcionfor/getMuestra`);
-    // return 'Lista de las muestras'
+  listarByIdUsuario(idUsuario: number) {
+    const params = { page: '0', size: '50' }
+    return this.http.get<InscripcionItem[]>(`${ this.host }/inscripcionfor/muestraPostulantesPaginado/${ idUsuario }`, { params });
+  }
+
+  getMuestra(idPostulante: number) {
+    return this.http.get<InscripcionCompleta>(`${ this.host }/inscripcionfor/datos/${ idPostulante }`);
   }
 
 
+  guardarRequisitos(requisitos: ValidacionRequisito[]) {
+    return this.http.put<ValidacionRequisito[]>(`${ this.host }/inscripcionfor/requisitosUpdate`, requisitos);
+  }
 }

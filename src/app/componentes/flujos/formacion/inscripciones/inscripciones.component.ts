@@ -95,6 +95,7 @@ export class InscripcionesComponent implements OnInit {
 
           this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
             next: inscripciones => {
+              console.log(inscripciones)
               this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
               this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
               this.inscripcionesLoaded = true
@@ -107,9 +108,11 @@ export class InscripcionesComponent implements OnInit {
 
           this.esEstadoMuestreo = true
 
-          this.muestraService.listarMuestrasByIdUsuario().subscribe({
-            next: inscripciones => {
-              this.inscripcionesAsignadas = inscripciones;
+          this.muestraService.listarByIdUsuario(this.usuario.codUsuario).subscribe({
+            next: muestras => {
+              console.log(muestras)
+              this.inscripcionesAsignadas = muestras.filter(inscripcion => inscripcion.estado === 'ASIGNADO MUESTRA');
+              this.inscripciones = muestras.filter(inscripcion => inscripcion.estado === 'MUESTRA');
               this.inscripcionesLoaded = true
             }
           })
@@ -126,18 +129,21 @@ export class InscripcionesComponent implements OnInit {
   }
 
   validarMuestra(inscripcion: InscripcionItem) {
-    this.muestraService.idPostulante = inscripcion.codPostulante;
+    this.muestraService.idMuestra = inscripcion.codPostulante;
+    console.log(this,this.muestraService.idMuestra)
     this.router.navigate(['principal/formacion/muestra']).then()
   }
 
   asignar(idPostulante: number) {
+
     const usuarioAsignado: UsuarioAsignado = {
       codPostulante: idPostulante,
       codUsuario: this.usuario.codUsuario,
-      estado: 'ASIGNADO'
     }
+
     this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
-      next: () => {
+      next: (data) => {
+        console.log(data)
         const index = this.inscripciones.findIndex(inscripcion => inscripcion.codPostulante === idPostulante);
         if (index !== -1) {
           const inscripcion = this.inscripciones.splice(index, 1)[0];

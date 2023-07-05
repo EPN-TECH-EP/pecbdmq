@@ -115,7 +115,6 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
     const usuario: UsuarioAsignado = {
       codPostulante: this.codigoInscripcionReasignando,
       codUsuario: this.codigoUsuarioReasignado.value,
-      estado: "ASIGNADO"
     }
 
     console.log(usuario)
