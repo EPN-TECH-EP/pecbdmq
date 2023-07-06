@@ -139,6 +139,7 @@ import { InstructoresComponent } from './componentes/flujos/formacion/formacion-
 import { BusquedaUsuarioComponent } from './componentes/util/busqueda-usuario/busqueda-usuario.component';
 import { MateriasComponent } from './componentes/flujos/formacion/formacion-academica/materias/materias.component';
 import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra.component';
+import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
 
 @NgModule({
   declarations: [
@@ -206,7 +207,8 @@ import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra
     InstructoresComponent,
     BusquedaUsuarioComponent,
     MateriasComponent,
-    MuestraComponent
+    MuestraComponent,
+    EstudiantesComponent
   ],
   imports: [
     BrowserModule,

@@ -83,6 +83,9 @@ import {
 } from "../../componentes/flujos/formacion/formacion-academica/instructores/instructores.component";
 import { MateriasComponent } from "../../componentes/flujos/formacion/formacion-academica/materias/materias.component";
 import { MuestraComponent } from "../../componentes/flujos/formacion/muestra/muestra.component";
+import {
+  EstudiantesComponent
+} from "../../componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component";
 
 
 const routes: Routes = [
@@ -138,6 +141,7 @@ const routes: Routes = [
       {path: 'formacion/academia/gestion-documentos', component: FaGestionDocumentosComponent},
       {path: 'formacion/academia/instructores', component: InstructoresComponent},
       {path: 'formacion/academia/materias', component: MateriasComponent},
+      {path: 'formacion/academia/estudiantes', component: EstudiantesComponent},
 
       {path: 'paralelo', component: ParaleloComponent},
       {path: 'tipoInstruccion', component: TipoInstruccionComponent},
