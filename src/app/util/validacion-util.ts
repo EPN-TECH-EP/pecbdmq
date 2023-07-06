@@ -16,13 +16,13 @@ export class ValidacionUtil {
 
     if (tipo === 'catalogo') {
       //allowedChars = /^[a-zA-Z0-9 _\.\-\_]*$/;
-      allowedChars = /^[a-zA-Z0-9 _.\-\u00C0-\u00FF]*$/;
+      allowedChars = /^[a-zA-ZñáéíóúÑÁÉÍÓÚ0-9 _.\-\u00C0-\u00FF]*$/;
     } else if (tipo === 'entero') {
       allowedChars = /^[0-9]*$/;
     } else if (tipo === 'decimal') {
       allowedChars = /^[0-9.]*$/;
     } else if (tipo === 'alfanumerico') {
-      allowedChars = /^[a-zA-Z0-9\u00C0-\u00FF]*$/;
+      allowedChars = /^[a-zA-ZñáéíóúÑÁÉÍÓÚ0-9\u00C0-\u00FF]*$/;
     } else {
       allowedChars = /^[_]*$/;
     }

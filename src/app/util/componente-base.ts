@@ -7,7 +7,9 @@ import { Subscription } from 'rxjs';
 import { Directive, OnDestroy } from '@angular/core';
 import { MdbPopconfirmRef, MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { PopconfirmComponent } from '../componentes/util/popconfirm/popconfirm.component';
-import { MdbPaginationChange } from "../../../code/mdb-angular-ui-kit/table";
+import {MdbPaginationChange} from "../../../code/mdb-angular-ui-kit/table";
+import { ValidacionUtil } from './validacion-util';
+import { SubtipoPrueba } from '../modelo/admin/subtipo-prueba';
 
 @Directive()
 export class ComponenteBase implements OnDestroy {
@@ -25,10 +27,13 @@ export class ComponenteBase implements OnDestroy {
   private popconfirmService: MdbPopconfirmService
   popconfirmRef: MdbPopconfirmRef<PopconfirmComponent> | null = null;
   mensajeConfirmacion: string;
-  mostrarConfirmacion: boolean = false;
+  mostrarConfirmacion:boolean = false;
+
+  // util genérico
+  validacionUtil = ValidacionUtil;
 
   constructor(notificationService: MdbNotificationService,
-              popconfirmService: MdbPopconfirmService) {
+    popconfirmService: MdbPopconfirmService) {
     this.notificationService = notificationService;
     this.popconfirmService = popconfirmService;
     this.showLoading = false;
@@ -40,15 +45,15 @@ export class ComponenteBase implements OnDestroy {
   }
 
   // confirmar acciones: elimiar y editar
-  confirmaActualizarMensaje() {
+  confirmaActualizarMensaje(){
     this.mensajeConfirmacion = '¿Actualizar los datos?';
   }
 
-  confirmaEliminarMensaje() {
+  confirmaEliminarMensaje(){
     this.mensajeConfirmacion = '¿Eliminar el registro? Esta acción es irreversible';
   }
 
-  confirmarReasignacionMensaje() {
+  confirmarReasignacionMensaje(){
     this.mensajeConfirmacion = '¿Reasignar la inscripción?';
   }
 
@@ -65,15 +70,15 @@ export class ComponenteBase implements OnDestroy {
     );
 
     this.subscriptions.push(
-      this.popconfirmRef.onClose.subscribe((message: any) => {
-        // cancela acción
+    this.popconfirmRef.onClose.subscribe((message: any) => {
+      // cancela acción
 
-        if (cancelCallback != null) {
-          cancelCallback();
-        }
+      if(cancelCallback != null){
+        cancelCallback();
+      }
 
-        return false;
-      })
+      return false;
+    })
     );
 
     this.popconfirmRef.onConfirm.subscribe((message: any) => {

@@ -11,7 +11,7 @@ export class MyValidators {
     const end = new Date(control.get('fechaFin')?.value);
 
     if (start && end && start > end) {
-      return { invalid_date: true };
+      return {invalid_date: true};
     }
 
     return null;
@@ -20,10 +20,12 @@ export class MyValidators {
   static onlyLetters() {
     return (control: AbstractControl) => {
       const value = control.value;
-      const regex = new RegExp('^[a-zA-Z ]*$');
+      const regex = new RegExp('^[a-zA-ZñáéíóúÑÁÉÍÓÚ _.\-\u00C0-\u00FF ]*$');
 
       if (!regex.test(value)) {
-        return { invalid_letters: true };
+        console.log('invalid_letters');
+        console.log(value);
+        return {invalid_letters: true};
       }
 
       return null;
@@ -36,7 +38,7 @@ export class MyValidators {
       const regex = new RegExp('^[0-9]*$');
 
       if (!regex.test(value)) {
-        return { invalid_numbers: true };
+        return {invalid_numbers: true};
       }
 
       return null;
@@ -57,10 +59,10 @@ export class MyValidators {
             function (valorPrevio, valorActual, indice) {
               return valorPrevio - ((valorActual * (2 - indice % 2)) % 9) - ((valorActual === 9) ? 9 : 0);
             }, 1000) % 10;
-          return digito_calculado === digito_verificador ? null : { invalid_identification: true }
+          return digito_calculado === digito_verificador ? null : {invalid_identification: true}
         }
       }
-      return { invalid_identification: true };
+      return {invalid_identification: true};
     }
   }
 
@@ -72,7 +74,7 @@ export class MyValidators {
       const age = now.getFullYear() - date.getFullYear();
 
       if (age < 18 || age > 28) {
-        return { invalid_age: true };
+        return {invalid_age: true};
       }
 
       return null;

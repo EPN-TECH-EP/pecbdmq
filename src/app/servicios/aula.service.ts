@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root', })
 
 export class AulaService {
-
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -16,7 +15,7 @@ export class AulaService {
     return this.http.get<Aula[]>(`${ this.host }/aula/listar`);
   }
 
-  registroAula(aula: Aula): Observable<HttpResponse<Aula>> {
+  crearAula(aula: Aula): Observable<HttpResponse<Aula>> {
     return this.http.post<Aula>(`${ this.host }/aula/crear`, aula, { observe: 'response' });
   }
 
@@ -26,7 +25,7 @@ export class AulaService {
 
   actualizarAula(aula: Aula, codigo: any): Observable<HttpResponse<Aula>> {
     return this.http.put<Aula>(`${ this.host }/aula/${ codigo }`, aula, { observe: 'response' });
-  }
+    }
 
 }
 

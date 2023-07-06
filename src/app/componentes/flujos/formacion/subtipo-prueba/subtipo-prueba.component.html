@@ -1,0 +1,162 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- habilitar luego de pruebas internas 
+<ng-container *ngIf="!esEstadoPruebas">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación</h5>
+      <p class="card-text">
+        El proceso de formación no se encuentra en estado de PRUEBAS.
+      </p>
+    </div>
+  </div>
+</ng-container>
+-->
+
+<div class="container" *ngIf="esEstadoPruebas">
+  <div class="row m-3 d-flex justify-content-center">
+    <div class="col-9 text-center">
+      <p class="fs-4 fw-bolder mb-3">Subtipos de Pruebas</p>
+
+      <form>
+        <mdb-form-control>
+          <mdb-select
+            id="tiposPrueba"
+            name="tiposPrueba"
+            [visibleOptions]="10"
+            (valueChange)="onTipoPruebaSeleccionado($event)"
+            [(ngModel)]="tipoPruebaSeleccionado"
+            [disabled]="addRow || estaEditando">
+            <mdb-option *ngFor="let tipoPruebaItem of tiposPrueba" [value]="tipoPruebaItem"
+              >{{ tipoPruebaItem.tipoPrueba }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label">Seleccione un tipo de prueba</label>
+        </mdb-form-control>
+      </form>
+
+      <div class="container" *ngIf="tipoPruebaSeleccionado">
+        <div class="row mt-3">
+          <div class="col">
+            <p class="fs-6 fw-bolder">
+              Subtipos de Pruebas de tipo:
+              <span class="text-primary"> {{ tipoPruebaSeleccionado.tipoPrueba }} </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col text-start">
+            <button type="button" class="btn btn-primary btn-sm" (click)="onAgregarSubtipoPrueba()">
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="tipoPruebaSeleccionado">
+        <div class="row mt-3">
+          <div class="col">
+            <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+              <form #form="ngForm">
+                <table class="table datatable-table" mdbTable #table="mdbTable" [dataSource]="listaSubtipoPrueba">
+                  <thead class="datatable-header">
+                    <tr>
+                      <th *ngFor="let header of headers" scope="col" class="fw-bold fs-6">
+                        {{ header.label | titlecase }}
+                      </th>
+                      <th scope="col">Acciones</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="datatable-body">
+                    <tr *ngIf="addRow">
+                      <td>
+                        <mdb-form-control>
+                          <input
+                            mdbInput="mdbInput"
+                            id="nombreNew"
+                            name="nombre"
+                            class="form-control"
+                            [(ngModel)]="subtipoPruebaEdit.nombre"
+                            required
+                            #tipoPruebaAdd="ngModel"
+                            (change)="validacionUtil.onInputChange($event, 'catalogo', tipoPruebaAdd)" />
+                        </mdb-form-control>
+                      </td>
+
+                      <td>
+                        <button
+                          class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                          type="submit"
+                          (click)="crear(form.value)">
+                          <i class="fa fa-check"></i> Agregar
+                        </button>
+                        <button
+                          name="eliminar"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                          (click)="addRow = false">
+                          <i class="fa fa-ban"></i> Cancelar
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr *ngFor="let subtipo of table.data; let index = index">
+                      <td>
+                        <ng-container *ngIf="editIndex !== index">
+                          {{ subtipo?.nombre }}
+                        </ng-container>
+                        <ng-container *ngIf="editIndex === index">
+                          <mdb-form-control>
+                            <input
+                              mdbInput
+                              id="nombre"
+                              name="nombre"
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="subtipoPruebaEdit.nombre"
+                              required
+                              #subtipoPrueba="ngModel"
+                              (change)="validacionUtil.onInputChange($event, 'catalogo', subtipoPrueba)" />
+                          </mdb-form-control>
+                        </ng-container>
+                      </td>
+
+                      <td class="text-center">
+                        <ng-container *ngIf="!estaEditando || editIndex !== index">
+                          <button
+                            mdbTooltip="Editar registro"
+                            class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="editRow(subtipo, index)"
+                            [disabled]="addRow || (estaEditando && editIndex !== index)">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button
+                            mdbTooltip="Eliminar registro"
+                            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            (click)="confirmaEliminar($event, subtipo.codSubtipoPrueba)"
+                            [disabled]="addRow || (estaEditando && editIndex !== index)">
+                            <i class="fa fa-trash-alt"></i>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngIf="editIndex === index">
+                          <button
+                            class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                            (click)="actualizar(subtipo, form.value)">
+                            <i class="fa fa-check"></i> Guardar
+                          </button>
+                          <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="undoRow()">
+                            <i class="fa fa-ban"></i> Cancelar
+                          </button>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

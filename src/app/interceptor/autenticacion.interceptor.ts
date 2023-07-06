@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpHeaders
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AutenticacionService } from '../servicios/autenticacion.service';
 import { SERVICIOS_PUBLICOS_URLS } from '../util/constantes/servicios-publicos.const';
@@ -13,19 +7,20 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AutenticacionInterceptor implements HttpInterceptor {
-
   constructor(private autenticacionService: AutenticacionService) {}
 
   intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<unknown>> {
-
     // si el servicio es público, no se envía el token
     if (this.revisaServiciosPublicos(httpRequest.url)) {
-
       console.log(httpRequest.url);
 
       const key = environment.APP_KEY;
-      const request = httpRequest.clone({ setHeaders: { 'X-API-Key': `${key}` }});
-      return httpHandler.handle(request);  
+      const request = httpRequest.clone({
+        setHeaders: { 'X-API-Key': `${key}` },
+      }); 
+      return httpHandler.handle(request);
+
+      //return httpHandler.handle(httpRequest);
 
       /*let modifiedReq;
       const key = environment.appKey;
@@ -38,7 +33,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
       modifiedReq = httpRequest.clone({
         headers: headersNew
       });*/
-      
+
       //httpRequest.headers.append('X-API-Key', key);
 
       /*if (httpRequest.headers) {
@@ -54,19 +49,19 @@ export class AutenticacionInterceptor implements HttpInterceptor {
             'X-API-Key': key
           }
         });
-      }*/      
+      }*/
     }
 
     this.autenticacionService.cargaToken();
     const token = this.autenticacionService.getToken();
-    const request = httpRequest.clone({ setHeaders: { Authorization: `Bearer ${token}` }});
+    const request = httpRequest.clone({
+      setHeaders: { Authorization: `Bearer ${token}` },
+    });
     return httpHandler.handle(request);
   }
 
-
-revisaServiciosPublicos(url: string): boolean {
+  revisaServiciosPublicos(url: string): boolean {
     for (const servicioPublicoUrl of SERVICIOS_PUBLICOS_URLS) {
-
       /*console.log(`${this.autenticacionService.host}${servicioPublicoUrl}`);
       console.log(url);
       console.log(url.includes(`${this.autenticacionService.host}${servicioPublicoUrl}`));*/
@@ -77,7 +72,6 @@ revisaServiciosPublicos(url: string): boolean {
     }
     return false;
   }
-
 }
 
 /*import { Injectable } from '@angular/core';

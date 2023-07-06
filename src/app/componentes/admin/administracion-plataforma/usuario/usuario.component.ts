@@ -101,36 +101,36 @@ export class UsuarioComponent implements OnInit {
   private construirFormulario() {
     this.formularioUsuario = this.builder.group({
 
-      nombreUsuario: ['', [Validators.required, Validators.minLength(10),
-        Validators.maxLength(10), MyValidators.onlyNumbers,
+      nombreUsuario:              ['', [Validators.required, Validators.minLength(10),
+                                        Validators.maxLength(10), MyValidators.onlyNumbers,
         MyValidators.validIdentification()], MyValidators.userNameExist(this.usuarioService)],
-      nombre: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
-      apellido: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       correoPersonal: ['', [Validators.required, Validators.email], MyValidators.emailExist(this.usuarioService)],
-      correoInstitucional: ['', [Validators.email]],
-      fechaNacimiento: ['', Validators.required],
-      telfConvencional: ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      tipoSangre: [''],
-      sexo: ['', Validators.required],
-      tipoNacionalidad: ['', Validators.required],
-      provinciaNacimiento: ['', Validators.required],
+      correoInstitucional:        ['', [Validators.email]],
+      fechaNacimiento:            ['', Validators.required],
+      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      tipoSangre:                 [''],
+      sexo:                     ['', Validators.required],
+      tipoNacionalidad:           ['', Validators.required],
+      provinciaNacimiento:        ['', Validators.required],
       cantonNacimiento: [{ value: '', disabled: true }, Validators.required],
-      provinciaResidencia: [''],
+      provinciaResidencia:        [''],
       cantonResidencia: [{ value: '', disabled: true }],
-      callePrincipalResidencia: [''],
-      calleSecundariaResidencia: [''],
-      numeroCasa: [''],
-      colegio: [''],
-      nombreTituloSegundoNivel: [''],
-      paisTituloSegundoNivel: [''],
-      ciudadTituloSegundoNivel: [''],
+      callePrincipalResidencia:   [''],
+      calleSecundariaResidencia:  [''],
+      numeroCasa:                 [''],
+      colegio:                    [''],
+      nombreTituloSegundoNivel:               [''],
+      paisTituloSegundoNivel:                 [''],
+      ciudadTituloSegundoNivel:               [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
-      unidadGestion: [''],
-      grado: [''],
+      unidadGestion:              [''],
+      grado:                      [''],
       rango: [{ value: '', disabled: true }],
-      cargo: [''],
+      cargo:                      [''],
     }, { updateOn: 'change' });
 
     this.fechaNacimientoField.valueChanges.subscribe({
@@ -279,8 +279,8 @@ export class UsuarioComponent implements OnInit {
 
     this.provinciaNacimientoField.clearValidators();
     this.cantonNacimientoField.clearValidators();
-    this.provinciaNacimientoField.setValue('');
-    this.cantonNacimientoField.setValue('');
+      this.provinciaNacimientoField.setValue('');
+      this.cantonNacimientoField.setValue('');
     this.formularioUsuario.get('cantonNacimiento')?.disable();
     this.cantonesNacimiento = [];
 
@@ -300,7 +300,7 @@ export class UsuarioComponent implements OnInit {
         this.formularioUsuario.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-      },
+        },
       error: (err) => {console.log(err)}
     });
   }
@@ -310,11 +310,11 @@ export class UsuarioComponent implements OnInit {
 
     this.provinciaService.getCantonesPorProvincia(event).subscribe({
       next: (cantones) => {
-        this.formularioUsuario.get('cantonResidencia')?.enable();
+      this.formularioUsuario.get('cantonResidencia')?.enable();
         this.cantonesResidencia = cantones;
         this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-      },
+        },
       error: (err) => {console.log(err)}
     });
   }

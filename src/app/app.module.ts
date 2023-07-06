@@ -23,13 +23,13 @@ import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { MdbDatepickerModule } from 'mdb-angular-ui-kit/datepicker';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { MdbFormControlComponent, MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbInfiniteScrollModule } from 'mdb-angular-ui-kit/infinite-scroll';
 import { MdbLazyLoadingModule } from 'mdb-angular-ui-kit/lazy-loading';
 import { MdbLightboxModule } from 'mdb-angular-ui-kit/lightbox';
 import { MdbLoadingModule } from 'mdb-angular-ui-kit/loading';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { MdbNotificationModule, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { MdbNotificationModule } from 'mdb-angular-ui-kit/notification';
 import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
 import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
 import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
@@ -89,10 +89,10 @@ import { Aula } from './modelo/admin/aula';
 import { Materia } from './modelo/admin/materias';
 import { TipoNota } from './modelo/admin/tipo-nota';
 import { Modulo } from './modelo/admin/modulo';
-import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
-import { RouteReuseStrategy } from '@angular/router';
+//import { CustomRouteReuseStrategy } from './util/custom-route-reuse-strategy';
+//import { RouteReuseStrategy } from '@angular/router';
 import { TipoBajaComponent} from "./componentes/tipo-baja/tipo-baja.component";
-import { ITipoFalta} from "./modelo/admin/tipo_falta";
+//import { ITipoFalta} from "./modelo/admin/tipo_falta";
 import {TipoFaltaComponent} from "./componentes/tipo-falta/tipo-falta.component";
 import {ParaleloComponent} from "./componentes/paralelo/paralelo.component";
 import {TipoInstruccionComponent} from "./componentes/tipo-instruccion/tipo-instruccion.component";
@@ -110,7 +110,7 @@ import { ModuloEstadosComponent } from './componentes/modulo-estados/modulo-esta
 import { MenuItemComponent } from './componentes/util/menu-item/menu-item.component';
 import { ConvocatoriaComponent } from './componentes/flujos/formacion/convocatoria/convocatoria.component';
 import { RequisitoComponent } from './componentes/requisito/requisito.component';
-import { Requisito } from './modelo/admin/requisito';
+//import { Requisito } from './modelo/admin/requisito';
 import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-academico/estado-periodo-academico.component';
 import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
 import { RolComponent } from './componentes/admin/administracion-plataforma/rol/rol.component';
@@ -138,6 +138,11 @@ import { FaGestionDocumentosComponent } from './componentes/flujos/formacion/for
 import { InstructoresComponent } from './componentes/flujos/formacion/formacion-academica/instructores/instructores.component';
 import { BusquedaUsuarioComponent } from './componentes/util/busqueda-usuario/busqueda-usuario.component';
 import { MateriasComponent } from './componentes/flujos/formacion/formacion-academica/materias/materias.component';
+import { PruebasComponent } from './componentes/flujos/formacion/pruebas/pruebas.component';
+import { SubtipoPruebaComponent } from './componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
+import { ListaPruebasComponent } from './componentes/flujos/formacion/lista-pruebas/lista-pruebas.component';
+import { SubtipoParametrosComponent } from './componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
+import { ResultadosPruebasComponent } from './componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
 import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra.component';
 import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
 
@@ -177,8 +182,7 @@ import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-a
     TipoFaltaComponent,
     PonderacionComponent,
     ModuloEstadosComponent,
-    //RequisitoComponent,
-
+    RequisitoComponent,
     CatalogoEstadosComponent,
     ConvocatoriaComponent,
     RequisitoComponent,
@@ -207,6 +211,11 @@ import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-a
     InstructoresComponent,
     BusquedaUsuarioComponent,
     MateriasComponent,
+    PruebasComponent,
+    SubtipoPruebaComponent,
+    ListaPruebasComponent,
+    SubtipoParametrosComponent,
+    ResultadosPruebasComponent,
     MuestraComponent,
     EstudiantesComponent
   ],

@@ -8,7 +8,6 @@ import { UnidadGestion } from '../modelo/admin/unidad-gestion';
   providedIn: 'root'
 })
 export class UnidadGestionService {
-
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -27,6 +26,6 @@ export class UnidadGestionService {
 
   eliminar(unidadId: any): Observable<string> {
     return this.http.delete<string>(`${ this.host }/unidadgestion/${ unidadId }`);
-  }
+    }
 }
 

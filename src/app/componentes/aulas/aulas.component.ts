@@ -116,7 +116,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     aula = {...aula, estado: 'ACTIVO'};
     this.showLoading = true;
     this.subscriptions.push(
-      this.aulaService.registroAula(aula).subscribe({
+      this.aulaService.crearAula(aula).subscribe({
         next: (response: HttpResponse<Aula>) => {
           let nuevaAula: Aula = response.body;
           this.aulas.push(nuevaAula);

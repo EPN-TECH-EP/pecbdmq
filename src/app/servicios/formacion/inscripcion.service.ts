@@ -107,4 +107,12 @@ export class InscripcionService {
     );
   }
 
+   // validar edad
+  // retorna boolean si la edad es válida para el proceso
+  // PARAMS: fecha en BODY
+  // ruta: inscripcionfor/validaEdad POST
+  public validarEdad(fecha : string ): Observable<boolean> {
+    return this.http.post<boolean>(`${this.host}/inscripcionfor/validaEdad`, fecha);
+  }
+
 }
