@@ -89,10 +89,10 @@
         <!-- Data -->
         <tr *ngFor="let documento of table.data;">
           <td>
-            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codigo">
+            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
               {{ documento.nombre }}
             </ng-container>
-            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codigo">
+            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
               <input
                 mdbInput
                 mdbValidate
@@ -111,10 +111,10 @@
             </ng-container>
           </td>
           <td>
-            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codigo">
+            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
               {{ documento.descripcion }}
             </ng-container>
-            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codigo">
+            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
               <mdb-form-control>
                 <textarea
                   mdbValidate
@@ -127,10 +127,10 @@
             </ng-container>
           </td>
           <td>
-            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codigo">
+            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
               {{ documento.observaciones }}
             </ng-container>
-            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codigo">
+            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
               <mdb-form-control>
                 <textarea
                   mdbValidate
@@ -144,7 +144,7 @@
           </td>
 
           <td class="text-center">
-            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codigo">
+            <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
               <button
                 mdbTooltip="Descargar documento"
                 class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
@@ -165,12 +165,12 @@
                 mdbTooltip="Eliminar registro"
                 class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                 [disabled]="estaEditando"
-                (click)="eliminar(documento.codigo)"
+                (click)="eliminar(documento.codDocumento)"
               >
                 <i class="fa fa-trash-alt"></i>
               </button>
             </ng-container>
-            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codigo">
+            <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
               <button
                 class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
                 [disabled]="documentoForm.invalid"

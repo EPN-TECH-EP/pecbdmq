@@ -7,7 +7,7 @@ export interface InscripcionCompleta {
   cantonNacimiento:           string;
   cantonResidencia:           string;
   cedula:                     string;
-  ciudadTituloSegundonivel:   string;
+  ciudadTituloSegundoNivel:   string;
   codDatosPersonales:         number;
   codPostulante:              number;
   colegio:                    string;
@@ -19,10 +19,10 @@ export interface InscripcionCompleta {
   meritoAcademicoDescripcion: string;
   meritoDeportivoDescripcion: string;
   nombre:                     string;
-  nombreTituloSegundonivel:   string;
+  nombreTituloSegundoNivel:   string;
   numTelefCelular:            string;
   numeroCasa:                 string;
-  paisTituloSegundonivel:     string;
+  paisTituloSegundoNivel:     string;
   provinciaNacimiento:        string;
   provinciaResidencia:        string;
   sexo:                       string;

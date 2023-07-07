@@ -1,0 +1,132 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/formacion/academia/menu'"
+></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Estudiantes Inscritos </h1>
+  </div>
+
+  <!-- Lista de estudiantes -->
+  <section>
+    <div
+      *ngIf="estudiantes?.length === 0"
+      class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron estudiantes inscritos.
+    </div>
+    <p class="text-primary">
+      <i class="fas fa-info-circle me-1"></i>
+      Seleccione un paralelo para los estudiantes que no tienen uno asignado.
+    </p>
+    <div class="d-flex gap-2 my-3">
+      <mdb-form-control [style.wi]="">
+        <mdb-select
+          mdbValidate
+          [disabled]="selections.size === 0"
+        >
+          <mdb-option>
+            Paralelo 1
+          </mdb-option>
+        </mdb-select>
+      </mdb-form-control>
+      <button
+        class="btn btn-primary btn-sm"
+        type="button"
+        [disabled]="selections.size === 0"
+      >
+        <i class="fas fa-save me-1"></i>
+        Guardar
+      </button>
+    </div>
+    <div class="datatable datatable-hover datatable-sm datatable-striped">
+      <form>
+        <table
+          class="tabla datatable-table"
+          mdbTable
+          #estudiantesTable="mdbTable"
+          [responsive]="true"
+          [dataSource]="estudiantes"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th scope="col">
+              <div class="form-check d-flex align-items-center mb-0">
+                <input
+                  mdbCheckbox
+                  class="datatable-header-checkbox form-check-input"
+                  type="checkbox"
+                  [checked]="allRowsSelected()"
+                  (checkboxChange)="toggleAll($event)"
+                />
+              </div>
+            </th>
+            <th
+              *ngFor="let head of headers"
+              class="fw-bold fs-6"
+            >
+              {{ head.label }}
+            </th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngFor="let estudiante of estudiantesTable.data" [class.active]="selections.has(estudiante)">
+            <td>
+              <div class="form-check">
+                <input
+                  mdbCheckbox
+                  (click)="$event.stopPropagation()"
+                  (checkboxChange)="toggleSelection($event, estudiante)"
+                  [checked]="selections.has(estudiante)"
+                  class="datatable-row-checkbox form-check-input"
+                  type="checkbox"
+                />
+              </div>
+            </td>
+            <td>
+              {{ estudiante?.codigoUnico }}
+            </td>
+            <td>
+              <div>
+                <p class="fw-bold mb-0">{{estudiante.nombre}} {{estudiante.apellido}}</p>
+                <p class="text-muted mb-0">{{estudiante.correo}}</p>
+              </div>
+            </td>
+            <td>
+              {{ estudiante?.cedula }}
+            </td>
+            <td>
+              {{ estudiante?.telefono }}
+            </td>
+<!--            <td>-->
+<!--              <ng-container *ngIf="estudiante.paralelo === null; else paralelo">-->
+<!--                <mdb-form-control>-->
+<!--                  <mdb-select-->
+<!--                    mdbValidate-->
+<!--                  >-->
+<!--                    <mdb-option>-->
+<!--                      Paralelo 1-->
+<!--                    </mdb-option>-->
+<!--                  </mdb-select>-->
+<!--                </mdb-form-control>-->
+<!--              </ng-container>-->
+<!--              <ng-template #paralelo>-->
+<!--                {{ estudiante?.paralelo }}-->
+<!--              </ng-template>-->
+<!--            </td>-->
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </section>
+
+</div>
+

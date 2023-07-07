@@ -16,6 +16,10 @@ export class ConvocatoriaService {
   constructor(private http: HttpClient) {
   }
 
+  getCodigoUnicoCreacion() {
+    return this.http.get<string>(`${this.host}/convocatoria/codigoUnicoCreacion`, {responseType: 'text' as 'json'});
+  }
+
   crear(formData: FormData): Observable<CustomHttpResponse> {
     return this.http.post<CustomHttpResponse>(`${this.host}/convocatoriafor/crear`, formData);
   }

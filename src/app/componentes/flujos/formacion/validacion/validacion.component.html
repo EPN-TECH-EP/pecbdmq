@@ -19,7 +19,7 @@
       <button
         type="button"
         class="btn btn-primary btn-floating btn-lg mb-3"
-        [mdbTooltip]="msmBtnListaRequisitos"
+        [mdbTooltip]="mensajeBtnListaRequisitos"
         (click)="toggleListaRequisitos()"
       >
         <i class="fas fa-list-ul"></i>
@@ -43,7 +43,7 @@
               </div>
               <div class="col">
                 <p><b>Teléfono celular:</b> {{ inscripcion?.numTelefCelular }}</p>
-                <p><b>Sexo:</b> {{ inscripcion?.sexo}}</p>
+                <p><b>Sexo:</b> {{ inscripcion?.sexo || '-'}}</p>
                 <p><b>Tipo sangre:</b> {{ inscripcion?.tipoSangre}}</p>
               </div>
             </div>
@@ -72,7 +72,7 @@
             <h5 class="mb-4 fw-bolder">Datos Académicos</h5>
             <div class="row">
               <div class="col">
-                <p><b>Nombre del título:</b> {{ inscripcion?.nombreTituloSegundonivel}}</p>
+                <p><b>Nombre del título:</b> {{ inscripcion?.nombreTituloSegundoNivel}}</p>
                 <p *ngIf="inscripcion?.meritoAcademicoDescripcion"><b>Mérito
                   Académico:</b> {{ inscripcion?.meritoAcademicoDescripcion}}</p>
                 <p *ngIf="inscripcion?.meritoDeportivoDescripcion"><b>Mérito
@@ -80,8 +80,8 @@
               </div>
               <div class="col">
                 <p><b>Nombre del colegio:</b> {{ inscripcion?.colegio}}</p>
-                <p><b>País:</b> {{ inscripcion?.paisTituloSegundonivel}}</p>
-                <p><b>Cuidad:</b> {{ inscripcion?.ciudadTituloSegundonivel}}</p>
+                <p><b>País:</b> {{ inscripcion?.paisTituloSegundoNivel}}</p>
+                <p><b>Cuidad:</b> {{ inscripcion?.ciudadTituloSegundoNivel}}</p>
               </div>
             </div>
           </ng-template>

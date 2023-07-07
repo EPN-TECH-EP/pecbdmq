@@ -100,9 +100,15 @@ export class MyValidators {
   static emailExist(usuarioService: UsuarioService) {
     return (control: AbstractControl) => {
       const value = control.value;
+
+      console.log(value);
+
       return usuarioService.buscarPorCorreo(value).pipe(
         map((usuarios: Usuario[]) => {
-            if (usuarios) {
+
+            console.log(usuarios);
+
+            if (usuarios !== null && usuarios.length > 0) {
               return {value_found: true};
             } else {
               return null;

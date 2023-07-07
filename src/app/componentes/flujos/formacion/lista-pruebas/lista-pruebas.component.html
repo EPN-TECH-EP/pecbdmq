@@ -1,1 +1,604 @@
-<p>lista-pruebas works!</p>
+<app-boton-volver></app-boton-volver>
+
+<ng-container *ngIf="!esEstadoPruebas">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación</h5>
+      <p class="card-text">
+        El proceso de formación no se encuentra en estado de PRUEBAS.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container-fluid" *ngIf="esEstadoPruebas">
+  <!-- Título -->
+  <div class="row mt-3 d-flex justify-content-center">
+    <div class="col-9 text-center">
+      <p class="fs-4 fw-bolder mb-3">Lista de Pruebas de Formación</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <!-- Botón de Agregar-->
+    <div class="col text-start">
+      <button type="button" class="btn btn-primary btn-sm" (click)="onAgregar()" [disabled]="addRow || reordenar">
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+    </div>
+    <div *ngIf="reordenar">
+      <div class="col text-end">
+        <!-- Botón de guardar orden nuevo-->
+
+        <button type="button" class="btn btn-outline-primary btn-sm mx-2" (click)="guardarOrdenServicio(false)">
+          <i class="fas fa-floppy-disk"></i> Guardar orden nuevo
+        </button>
+
+        <!-- Botón de deshacer orden nuevo-->
+
+        <button type="button" class="btn btn-outline-warning btn-sm" (click)="restablecerOrden()">
+          <i class="fas fa-rotate-left"></i> Restablecer orden
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de agregar / editar -->
+  <ng-container *ngIf="addRow || editElementIndex !== -1">
+    <div class="container">
+      <form [formGroup]="pruebaDetalleForm">
+        <div class="row m-3">
+          <!-- Subtipo prueba -->
+          <div class="col">
+            <mdb-form-control>
+              <mdb-select
+                mdbValidate
+                id="codSubtipoPrueba"
+                data-mdb-placeholder="Subtipo Prueba"
+                formControlName="codSubtipoPrueba">
+                <mdb-option *ngFor="let subtipo of listaSubtipoPrueba" [value]="subtipo.codSubtipoPrueba">
+                  {{ subtipo.nombre }}
+                  <span class="option-secondary-text">{{ subtipo.tipoPrueba }}</span>
+                </mdb-option>
+              </mdb-select>
+              <label mdbLabel class="form-label" for="codSubtipoPrueba">
+                <span class="text-primary">*</span>
+                Subtipo Prueba</label
+              >
+              <mdb-error
+                *ngIf="
+                  codSubtipoPruebaField?.invalid && (codSubtipoPruebaField?.dirty || codSubtipoPruebaField?.touched)
+                ">
+              </mdb-error>
+              <mdb-success
+                *ngIf="
+                  codSubtipoPruebaField?.valid && (codSubtipoPruebaField?.dirty || codSubtipoPruebaField?.touched)
+                ">
+              </mdb-success>
+            </mdb-form-control>
+          </div>
+          <!-- descripcion -->
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="descripcionPrueba"
+                class="form-control"
+                formControlName="descripcionPrueba" />
+              <label mdbLabel class="form-label" for="descripcionPrueba">
+                <span class="text-primary">*</span>
+                Descripción</label
+              >
+              <mdb-error
+                *ngIf="
+                  descripcionPruebaField?.invalid && (descripcionPruebaField?.dirty || descripcionPruebaField?.touched)
+                ">
+              </mdb-error>
+              <mdb-success
+                *ngIf="
+                  descripcionPruebaField?.valid && (descripcionPruebaField?.dirty || descripcionPruebaField?.touched)
+                ">
+              </mdb-success>
+            </mdb-form-control>
+          </div>
+        </div>
+
+        <div class="row m-3">
+          <!-- Fecha Inicio-->
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                [mdbDatepicker]="dpFechaInicio"
+                type="text"
+                id="fechaInicio"
+                class="form-control"
+                formControlName="fechaInicio"
+                (click)="dpFechaInicio.open()"
+                readonly="true" />
+              <label mdbLabel class="form-label" for="fechaInicio">Seleccionar Fecha Inicio</label>
+              <mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaInicio"
+                (click)="fechaInicioField.markAsTouched()"></mdb-datepicker-toggle>
+              <mdb-datepicker
+                #dpFechaInicio="mdbDatepicker"
+                [options]="opcionesDatepicker"
+                [inline]="true"></mdb-datepicker>
+              <mdb-error *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"> </mdb-error>
+              <mdb-success *ngIf="fechaInicioField?.valid && fechaInicioField?.touched"> </mdb-success>
+            </mdb-form-control>
+          </div>
+
+          <!-- Fecha Fin-->
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                [mdbDatepicker]="dpFechaFin"
+                type="text"
+                id="fechaFin"
+                class="form-control"
+                formControlName="fechaFin"
+                (click)="dpFechaFin.open()"
+                readonly="true" />
+              <label mdbLabel class="form-label" for="fechaFin">Seleccionar Fecha Fin</label>
+              <mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaFin"
+                (click)="fechaFinField.markAsTouched()"></mdb-datepicker-toggle>
+              <mdb-datepicker
+                #dpFechaFin="mdbDatepicker"
+                [options]="opcionesDatepicker"
+                [inline]="true"></mdb-datepicker>
+              <mdb-error *ngIf="fechaFinField?.invalid && fechaFinField?.touched"> </mdb-error>
+              <mdb-success *ngIf="fechaFinField?.valid && fechaFinField?.touched"> </mdb-success>
+            </mdb-form-control>
+          </div>
+
+          <!-- Hora Inicio-->
+          <div class="col">
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                type="text"
+                id="hora"
+                class="form-control"
+                [mdbTimepicker]="tphora"
+                (click)="tphora.open()"
+                formControlName="hora"
+                readonly="true" />
+              <label mdbLabel class="form-label" for="hora">Seleccionar hora de inicio</label>
+              <mdb-timepicker-toggle
+                [mdbTimepickerToggle]="tphora"
+                (click)="horaField.markAsTouched()"></mdb-timepicker-toggle>
+              <mdb-timepicker #tphora [inline]="true" [format24]="true"></mdb-timepicker>
+              <mdb-error *ngIf="horaField?.invalid && horaField?.touched"> </mdb-error>
+              <mdb-success *ngIf="horaField?.valid && horaField?.touched"> </mdb-success>
+            </mdb-form-control>
+          </div>
+        </div>
+
+        <div class="row m-3">
+          <div class="col">
+            <div class="form-check">
+              <input
+                mdbCheckbox
+                class="form-check-input"
+                type="checkbox"
+                value="true"
+                id="tienePuntajeCheck"
+                formControlName="tienePuntaje"
+                (change)="onTienePuntajeChange($event)" />
+              <label class="form-check-label" for="tienePuntajeCheck"> ¿Tiene puntaje? </label>
+            </div>
+          </div>
+
+          <!-- Puntaje mínimo -->
+          <div class="col">
+            <mdb-form-control *ngIf="tienePuntajeField.value">
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="puntajeMinimo"
+                class="form-control"
+                formControlName="puntajeMinimo"
+                min="1"
+                max="100"
+                inputValidation="decimal"
+                mdbTooltip="Rango: 1 - 100" />
+              <label mdbLabel class="form-label" for="puntajeMinimo">Puntaje mínimo</label>
+              <mdb-error
+                *ngIf="puntajeMinimoField?.invalid && (puntajeMinimoField?.dirty || puntajeMinimoField?.touched)">
+              </mdb-error>
+              <mdb-success
+                *ngIf="puntajeMinimoField?.valid && (puntajeMinimoField?.dirty || puntajeMinimoField?.touched)">
+              </mdb-success>
+            </mdb-form-control>
+          </div>
+
+          <!-- Puntaje máximo -->
+          <div class="col">
+            <mdb-form-control *ngIf="tienePuntajeField.value">
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="puntajeMaximo"
+                class="form-control"
+                formControlName="puntajeMaximo"
+                min="1"
+                max="100"
+                inputValidation="decimal"
+                mdbTooltip="Rango: 1 - 100" />
+              <label mdbLabel class="form-label" for="puntajeMaximo">Puntaje máximo</label>
+              <mdb-error
+                *ngIf="puntajeMaximoField?.invalid && (puntajeMaximoField?.dirty || puntajeMaximoField?.touched)">
+              </mdb-error>
+              <mdb-success
+                *ngIf="puntajeMaximoField?.valid && (puntajeMaximoField?.dirty || puntajeMaximoField?.touched)">
+              </mdb-success>
+            </mdb-form-control>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <button class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success" (click)="guardar()">
+              <i class="fa fa-check"></i> Guardar
+            </button>
+            <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="undoRow()">
+              <i class="fa fa-ban"></i> Cancelar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <hr class="hr hr-blurry" />
+  </ng-container>
+
+  <!-- Tabla -->
+  <div class="row d-flex align-items-center">
+    <div class="col-12">
+      <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+        <form #form="ngForm" novalidate>
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #table="mdbTable"
+            [dataSource]="listaPruebaDetalleDatos">
+            <thead>
+              <tr>
+                <th
+                  *ngFor="let header of headers"
+                  [mdbTableSortHeader]="header.key"
+                  scope="col"
+                  [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
+                  <div class="fw-bold">{{ header.label | titlecase }}</div>
+                </th>
+                <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+              </tr>
+            </thead>
+
+            <tbody class="datatable-body">
+              <!-- tr *ngIf="addRow">
+                <td colspan="8">
+                  <table class="table mb-0 table-sm">
+                    <tr>
+                      <td>
+                        <mdb-form-control>
+                          <mdb-select
+                            [(ngModel)]="ponderacion.codModulo"
+                            id="codModulo"
+                            name="codModulo"
+                          >
+                            <mdb-option
+                              *ngFor="let modulo of modulos"
+                              [value]="modulo.codModulo"
+                            >
+                              <div class="text-wrap">
+                                {{ modulo.etiqueta }}
+                              </div>
+                            </mdb-option>
+                          </mdb-select>
+                          <label mdbLabel class="form-label"
+                            >Módulo</label
+                          >
+                        </mdb-form-control>
+                      </td>
+                      <td>
+                        <mdb-form-control>
+                          <mdb-select
+                            [(ngModel)]="ponderacion.codComponenteNota"
+                            id="codComponenteNota"
+                            name="codComponenteNota"
+                          >
+                            <mdb-option
+                              *ngFor="let componente of componentes"
+                              [value]="componente.codComponenteNota"
+                              ><div class="text-wrap">
+                                {{ componente.nombre }}
+                              </div>
+                            </mdb-option>
+                          </mdb-select>
+                          <label mdbLabel class="form-label"
+                            >Componente</label
+                          >
+                        </mdb-form-control>
+                      </td>
+                      <td>
+                        <mdb-form-control>
+                          <mdb-select
+                            [(ngModel)]="ponderacion.codTipoNota"
+                            id="codTipoNota"
+                            name="codTipoNota"
+                          >
+                            <mdb-option
+                              *ngFor="let tiponota of tiposNota"
+                              [value]="tiponota.codTipoNota"
+                              ><div class="text-wrap">{{ tiponota.nota }}</div>
+                            </mdb-option>
+                          </mdb-select>
+                          <label mdbLabel class="form-label"
+                            >Tipo de nota</label
+                          >
+                        </mdb-form-control>
+                      </td>
+                      <td>
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            id="porcentajeFinalPonderacion"
+                            name="porcentajeFinalPonderacion"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="ponderacion.porcentajeFinalPonderacion"
+                            required
+                            min="1"
+                            max="100"
+                            inputValidation="decimal"
+                            mdbTooltip="Rango: 1 - 100"
+                          />
+                          <label
+                            mdbLabel
+                            class="form-label"
+                            for="formControlReadonly"
+                            >Porcentaje final</label
+                          >
+                        </mdb-form-control>
+                      </td>
+                    </tr>
+                    <tr>
+                     <td>
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            id="porcentajeNotaMateria"
+                            name="porcentajeNotaMateria"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="ponderacion.porcentajeNotaMateria"
+                            required
+                            min="1"
+                            max="100"
+                            inputValidation="decimal"
+                            mdbTooltip="Rango: 1 - 100"
+                          />
+                          <label
+                            mdbLabel
+                            class="form-label"
+                            for="formControlReadonly"
+                            >Porcentaje nota</label
+                          >
+                        </mdb-form-control>
+                      </td>
+  
+                      <td>
+                        <mdb-form-control>
+                          <input
+                            mdbInput="mdbInput1"
+                            [readonly]="true"
+                            [mdbDatepicker]="datepicker1"
+                            id="fechaInicioVigencia"
+                            name="fechaInicioVigencia"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="ponderacion.fechaInicioVigencia"
+                            required
+                          />
+                          <label
+                            mdbLabel="mdbLabel1"
+                            for="exampleDatepicker"
+                            class="form-label"
+                            >Fecha Inicio</label
+                          >
+                          <mdb-datepicker-toggle
+                            [mdbDatepicker]="datepicker1"
+                          ></mdb-datepicker-toggle>
+                          <mdb-datepicker
+                            [options]="translationOptions"
+                            [inline]="true"
+                            #datepicker1
+                            [format]="'yyyy-mm-dd'"
+                          ></mdb-datepicker>
+                        </mdb-form-control>
+                      </td>
+  
+                      <td>
+                        <mdb-form-control>
+                          <input
+                            mdbInput="mdbInput2"
+                            [readonly]="true"
+                            [mdbDatepicker]="datepicker2"
+                            id="fechaFinVigencia"
+                            name="fechaFinVigencia"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="ponderacion.fechaFinVigencia"
+                            required
+                          />
+                          <label
+                            mdbLabel="mdbLabel2"
+                            for="exampleDatepicker"
+                            class="form-label"
+                            >Fecha Fin</label
+                          >
+                          <mdb-datepicker-toggle
+                            [mdbDatepicker]="datepicker2"
+                          ></mdb-datepicker-toggle>
+                          <mdb-datepicker
+                            [options]="translationOptions"
+                            [inline]="true"
+                            #datepicker2
+                            [format]="'yyyy-mm-dd'"
+                          ></mdb-datepicker>
+                        </mdb-form-control>
+                      </td> 
+  
+                      <td>
+                        <mdb-form-control>
+                          <mdb-select
+                            [(ngModel)]="ponderacion.codPeriodoAcademico"
+                            id="codPeriodoAcademico"
+                            name="codPeriodoAcademico"
+                          >
+                            <mdb-option
+                              *ngFor="let periodo of periodos"
+                              [value]="periodo.codigo"
+                              ><div class="text-wrap">
+                                {{ periodo.descripcion }}
+                              </div>
+                            </mdb-option>
+                          </mdb-select>
+                          <label mdbLabel class="form-label"
+                            >Período</label
+                          >
+                        </mdb-form-control>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                
+  
+                <td>
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    type="submit"
+                    (click)="registro(form.value)"
+                  >
+                    <i class="fa fa-check"></i> Guardar
+                  </button>
+                  <button
+                    name="eliminar"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="addRow = false"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </td>
+              </tr -->
+              <!-- FIN NESTED PARA AGREGAR -->
+
+              <!-- datos -->
+              <tr *ngFor="let pruebaDetalle of table.data; let index = index">
+                <td class="text-center">
+                  <ng-container *ngIf="editElementIndex !== index">
+                    {{ pruebaDetalle.ordenTipoPrueba }}
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndex !== index">
+                    <div class="text-wrap">
+                      <p class="fw-normal mb-0">{{ pruebaDetalle.subTipoPruebaNombre }}</p>
+                      <p class="text-muted mb-0 small">{{ pruebaDetalle.tipoPruebaNombre }}</p>
+                    </div>
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndex !== index">
+                    <div class="text-wrap">
+                      {{ pruebaDetalle.descripcionPrueba }}
+                    </div>
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndex !== index">
+                    <div>
+                      <span class="text-muted">Fecha inicio:</span>
+                      {{ pruebaDetalle.fechaInicio | date : 'dd/MM/yyyy' }} <br />
+                      <span class="text-muted">Fecha fin:</span> {{ pruebaDetalle.fechaFin | date : 'dd/MM/yyyy' }}
+                      <br />
+
+                      <span class="text-muted">Hora:</span> {{ pruebaDetalle.hora }}
+                    </div>
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndex !== index">
+                    <div>
+                      <span class="text-muted">Puntajes:</span> {{ pruebaDetalle.tienePuntaje ? 'Sí' : 'No' }}
+                      <br />
+                      <div *ngIf="pruebaDetalle.tienePuntaje">
+                        <span class="text-muted">Mínimo:</span> {{ pruebaDetalle.puntajeMinimo }}
+                        <br />
+                        <span class="text-muted">Máximo:</span> {{ pruebaDetalle.puntajeMaximo }}
+                      </div>
+                    </div>
+                  </ng-container>
+                </td>
+
+                <td>
+                  <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                    <div class="text-center">
+                      <button
+                        mdbTooltip="Editar registro"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="editRow(pruebaDetalle, index)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || (addRow || reordenar)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button
+                        mdbTooltip="Eliminar registro"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="confirmaEliminar($event, pruebaDetalle.codPruebaDetalle)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || (addRow || reordenar)">
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+
+                      <i class="fa fa-ellipsis-vertical mx-2"></i>
+
+                      <button
+                        mdbTooltip="Orden anterior"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="moverAntes(pruebaDetalle, index)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || (addRow)">
+                        <i class="fa fa-arrow-up text-primary"></i>
+                      </button>
+                      <button
+                        mdbTooltip="Orden siguiente"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="moverDespues(pruebaDetalle, index)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || (addRow)">
+                        <i class="fa fa-arrow-down text-primary"></i>
+                      </button>
+                    </div>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

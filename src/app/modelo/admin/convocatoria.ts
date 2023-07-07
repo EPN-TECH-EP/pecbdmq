@@ -17,4 +17,5 @@ export interface Convocatoria {
   correo                  : string;
   documentos              : DocumentoFormacion[];
   requisitos              : Requisito[];
+  fechaActual             : Date;
 }

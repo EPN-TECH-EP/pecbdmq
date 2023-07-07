@@ -49,7 +49,11 @@ export class Notificacion {
 
     if (errorResponse) {
       let customError: CustomHttpResponse = errorResponse.error;
-      mensajeError = ValidacionUtil.isNullOrEmpty(customError.mensaje) ? mensajeError : customError.mensaje;
+      if (customError) {
+        mensajeError = ValidacionUtil.isNullOrEmpty(customError.mensaje) ? mensajeError : customError?.mensaje;
+      } else {
+        mensajeError = errorResponse.message;
+      }
       codigoError = errorResponse.status;
     }
 

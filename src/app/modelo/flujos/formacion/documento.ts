@@ -1,7 +1,6 @@
 export interface DocumentoFormacion {
-  codigo:           number;
   autorizacion:     string;
-  codDocumento?:    number;
+  codDocumento:    number;
   descripcion:      string;
   estado:           string;
   estadoValidacion: string;

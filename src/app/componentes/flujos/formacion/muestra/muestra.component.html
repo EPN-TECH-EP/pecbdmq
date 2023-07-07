@@ -1,0 +1,295 @@
+<div class="container">
+  <app-boton-volver [texto]="'Lista de muestras'"></app-boton-volver>
+  <div class="row my-1">
+    <p class="col text-center fs-4 fw-bolder">
+      Muestra
+      <span class="badge  badge-info">
+          {{ muestra?.idPostulante }}
+        </span>
+    </p>
+  </div>
+  <div class="col">
+    <p class="badge badge-success py-3 fs-6">
+      <i class="fas fa-calendar-check me-3"></i>
+      <b>Fecha de inscripción: </b>{{ muestra?.fechaPostulacion | date: 'dd/MM/yyyy' }}</p>
+  </div>
+
+  <div class="row" *ngIf="loadInformation">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-primary btn-floating btn-lg mb-3"
+        [mdbTooltip]="mensajeBtnListasRequisitos"
+        (click)="toggleListasRequisitos()"
+      >
+        <i class="fas fa-list-ul"></i>
+      </button>
+    </div>
+    <!-- Start datos de la inscripción -->
+    <section class="col">
+      <mdb-accordion [flush]="true" [multiple]="true">
+        <mdb-accordion-item [collapsed]="false">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Datos del solicitante</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <h5 class="mb-4 fw-bolder">Datos personales</h5>
+            <p><b>Cédula de ciudadanía:</b> {{ muestra?.cedula }}</p>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre:</b> {{ muestra?.nombre }} {{ muestra?.apellido }}</p>
+                <p><b>Fecha de nacimiento:</b> {{ muestra?.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
+                <p><b>Edad:</b> {{ muestra?.edadPostulacion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Teléfono celular:</b> {{ muestra?.numTelefCelular }}</p>
+                <p><b>Sexo:</b> {{ muestra?.sexo || '-'}}</p>
+                <p><b>Tipo sangre:</b> {{ muestra?.tipoSangre}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Nacionalidad</h5>
+            <p><b>Nacionalidad:</b> {{ muestra?.tipoNacionalidad}}</p>
+            <p><b>Provincia de nacimiento:</b> {{ muestra?.provinciaNacimiento}}</p>
+            <p><b>Cantón de nacimiento:</b> {{ muestra?.cantonNacimiento}}</p>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Residencia</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Calle principal:</b> {{ muestra?.callePrincipalResidencia}}</p>
+                <p><b>Calle secundaria:</b> {{ muestra?.calleSecundariaResidencia}}</p>
+                <p><b>Número de casa:</b> {{ muestra?.numeroCasa}}</p>
+              </div>
+              <div class="col">
+                <p><b>Provincia de residencia:</b> {{ muestra?.provinciaResidencia}}</p>
+                <p><b>Cantón de residencia:</b> {{ muestra?.cantonResidencia}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos Académicos</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre del título:</b> {{ muestra?.nombreTituloSegundoNivel}}</p>
+                <p *ngIf="muestra?.meritoAcademicoDescripcion"><b>Mérito
+                  Académico:</b> {{ muestra?.meritoAcademicoDescripcion}}</p>
+                <p *ngIf="muestra?.meritoDeportivoDescripcion"><b>Mérito
+                  Deportivo:</b> {{ muestra?.meritoDeportivoDescripcion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Nombre del colegio:</b> {{ muestra?.colegio}}</p>
+                <p><b>País:</b> {{ muestra?.paisTituloSegundoNivel}}</p>
+                <p><b>Cuidad:</b> {{ muestra?.ciudadTituloSegundoNivel}}</p>
+              </div>
+            </div>
+          </ng-template>
+        </mdb-accordion-item>
+        <mdb-accordion-item [collapsed]="true">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Documentos asociados</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <div *ngIf="urlsArchivo; else errorArchivo">
+              <div *ngFor="let url of urlsArchivo">
+                <p class="badge badge-primary p-2"><b>Nombre del archivo: </b>{{url.nombreArchivo}}</p>
+                <embed
+                  [src]="url.urlSafe"
+                  [width]="'100%'"
+                  [height]="600"
+                >
+              </div>
+            </div>
+            <ng-template #errorArchivo>
+              <span>Error al cargar el archivo</span>
+            </ng-template>
+          </ng-template>
+        </mdb-accordion-item>
+      </mdb-accordion>
+
+    </section>
+    <!-- End datos de la inscripción -->
+    <section class="col" [ngClass]="{'expanded': estaExpandidoListasRequisitos}">
+      <div class="row">
+        <!-- Start lista de requisitos -->
+        <section class="col">
+          <h4 class="text-center mb-3">Lista de requisitos</h4>
+          <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+            <table
+              class="table table-sm"
+              mdbTable
+              mdbTableSort
+              #tableRequisitos="mdbTable"
+              [dataSource]="formularioRequisitos"
+            >
+              <thead class="datatable-header">
+              <tr>
+                <th
+                  *ngFor="let header of headers"
+                >
+                  <b>{{ header}}</b>
+                </th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr *ngFor="let formulario of tableRequisitos.data; let i = index">
+                <td class="text-wrap">{{ formulario?.get('nombre')?.value }}</td>
+                <td>
+                  <form [formGroup]="formulario">
+                    <ng-container>
+                      <div class="form-check form-check-inline">
+                        <input
+                          formControlName="estado"
+                          class="form-check-input"
+                          type="radio"
+                          name="estado"
+                          [id]="'estado-' + i"
+                          [value]="true"
+                          [checked]="formulario?.controls?.estado?.value === true"
+                        />
+                        <label class="form-check-label" [for]="'estado-' + i">Sí</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          formControlName="estado"
+                          class="form-check-input"
+                          type="radio"
+                          name="estado"
+                          [id]="'estado-' + i"
+                          [value]="false"
+                          [checked]="formulario?.controls?.estado?.value === false"
+                        />
+                        <label class="form-check-label" [for]="'estado-' + i">No</label>
+                      </div>
+                      <mdb-error
+                        *ngIf="formulario?.controls?.estado?.invalid && formulario?.controls?.estado?.touched"
+                      >
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Este campo es requerido, seleccione una opción
+                      </mdb-error>
+                    </ng-container>
+                  </form>
+                </td>
+                <td>
+                  <form [formGroup]="formulario">
+                    <mdb-form-control>
+                  <textarea
+                    mdbValidate
+                    mdbInput
+                    formControlName="observaciones"
+                    type="text"
+                    class="form-control">
+                  </textarea>
+                    </mdb-form-control>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <ng-container *ngIf="tableRequisitos.data?.length === 0">
+              <div class="alert alert-warning my-3 py-2">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                No se encontraron requisitos para esta inscripción
+              </div>
+            </ng-container>
+            <div class="d-flex justify-content-center" *ngIf="tableRequisitos.data?.length !== 0">
+            </div>
+          </div>
+        </section>
+        <!-- End lista de requisitos -->
+
+        <!-- Start lista de requisitos muestra-->
+        <section class="col">
+          <h4 class="text-center mb-3">Lista de requisitos muestra</h4>
+          <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+            <table
+              class="table table-sm"
+              mdbTable
+              mdbTableSort
+              #tableRequisitosMuestra="mdbTable"
+              [dataSource]="formularioRequisitosMuestra"
+            >
+              <thead class="datatable-header">
+              <tr>
+                <th
+                  *ngFor="let header of headers"
+                >
+                  <b>{{ header}}</b>
+                </th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr *ngFor="let formulario of tableRequisitosMuestra.data; let i = index">
+                <td class="text-wrap">{{ formulario?.get('nombre')?.value }}</td>
+                <td>
+                  <form [formGroup]="formulario">
+                    <ng-container>
+                      <div class="form-check form-check-inline">
+                        <input
+                          formControlName="estadoMuestra"
+                          class="form-check-input"
+                          type="radio"
+                          name="estadoMuestra"
+                          [id]="'estado-' + i"
+                          [value]="true"
+                          [checked]="formulario?.controls?.estado?.value === true"
+                        />
+                        <label class="form-check-label" [for]="'estado-' + i">Sí</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          formControlName="estadoMuestra"
+                          class="form-check-input"
+                          type="radio"
+                          name="estadoMuestra"
+                          [id]="'estado-' + i"
+                          [value]="false"
+                          [checked]="formulario?.controls?.estado?.value === false"
+                        />
+                        <label class="form-check-label" [for]="'estado-' + i">No</label>
+                      </div>
+                      <mdb-error
+                        *ngIf="formulario?.controls?.estado?.invalid && formulario?.controls?.estado?.touched"
+                      >
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Este campo es requerido, seleccione una opción
+                      </mdb-error>
+                    </ng-container>
+                  </form>
+                </td>
+                <td>
+                  <form [formGroup]="formulario">
+                    <mdb-form-control>
+                  <textarea
+                    mdbValidate
+                    mdbInput
+                    formControlName="observacionMuestra"
+                    type="text"
+                    class="form-control">
+                  </textarea>
+                    </mdb-form-control>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <ng-container *ngIf="tableRequisitosMuestra.data?.length === 0">
+              <div class="alert alert-warning my-3 py-2">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                No se encontraron requisitos para esta inscripción
+              </div>
+            </ng-container>
+            <div class="d-flex justify-content-center" *ngIf="tableRequisitosMuestra.data?.length !== 0">
+              <button class="btn btn-primary mt-3"
+                  (click)="guardarMuestra()"
+              >Guardar muestra</button>
+            </div>
+          </div>
+        </section>
+        <!-- End lista de requisitos muestra-->
+      </div>
+    </section>
+
+  </div>
+</div>

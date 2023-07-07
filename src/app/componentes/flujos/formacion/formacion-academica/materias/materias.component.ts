@@ -12,7 +12,7 @@ import { Paralelo } from "../../../../../modelo/admin/paralelo";
 import { ParaleloService } from "../../../../../servicios/paralelo.service";
 import { AulaService } from "../../../../../servicios/aula.service";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import { ComponenteBase } from "../../../../../util/componente-base";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-materias',
@@ -32,13 +32,17 @@ export class MateriasComponent implements OnInit {
   codigoMateriaEditando: number;
   materiaForm: FormGroup;
 
+  // utils
+  loadInformation: boolean;
+  error: boolean;
+
   constructor(
     private materiasService: MateriasFormacionService,
     private materiasCatalogoService: MateriaService,
     private instructoresService: InstructorService,
     private paralelosService: ParaleloService,
     private aulasService: AulaService,
-    private builder: FormBuilder,){
+    private builder: FormBuilder,) {
     this.materias = [];
     this.instructores = [];
     this.materiasCatalogo = [];
@@ -52,75 +56,53 @@ export class MateriasComponent implements OnInit {
       { key: 'instructor', label: 'Instructores' },
       { key: 'paralelos', label: 'Paralelo' },
       { key: 'aulas', label: 'Aula' },
-      // { key: 'nombreTipoContrato', label: 'Tipo de Contrato' },
     ]
     this.estaAgregandoMateria = false;
     this.estaEditandoMateria = false;
     this.codigoMateriaEditando = 0;
     this.materiaForm = new FormGroup({});
+    this.loadInformation = false;
+    this.error = false;
 
     this.construirFormularioMateria();
 
   }
 
   ngOnInit(): void {
-    this.materiasCatalogoService.listar().subscribe({
-      next: (materias) => {
-        this.materiasCatalogo = materias;
-        console.log(this.materiasCatalogo);
-      },
-      error: () => {
-        console.error('error al listar materias');
-      }
-    });
 
-    this.materiasService.listar().subscribe({
-      next: (materias) => {
+    const combinedObservables = forkJoin([
+      this.materiasService.listar(),
+      this.instructoresService.listar(),
+      this.paralelosService.getParalelos(),
+      this.aulasService.listar(),
+      this.materiasCatalogoService.listar()
+    ]);
+
+    combinedObservables.subscribe({
+      next: ([materias, instructores, paralelos, aulas, materiasCatalogo]) => {
         this.materias = materias;
-        console.log(this.materias);
-      },
-      error: () => {
-        console.error('error al listar materias del catalogo');
-      }
-    })
-
-    this.instructoresService.listar().subscribe({
-      next: (instructores) => {
         this.instructores = instructores;
+        this.paralelos = paralelos;
+        this.aulas = aulas;
+        this.materiasCatalogo = materiasCatalogo;
+        this.loadInformation = true;
       },
       error: () => {
-        console.error('error al listar instructores');
+        console.error('Error en una o más consultas');
+        this.error = true;
+        this.loadInformation = true;
       }
     });
-
-    this.paralelosService.getParalelos().subscribe({
-      next: (paralelos) => {
-        this.paralelos = paralelos;
-      },
-      error: () => {
-        console.error('error al listar paralelos');
-      }
-    })
-
-    this.aulasService.listar().subscribe({
-      next: (aulas) => {
-        console.log(aulas);
-        this.aulas = aulas;
-      },
-      error: () => {
-        console.error('error al listar aulas');
-      }
-    })
   }
 
   private construirFormularioMateria() {
     this.materiaForm = this.builder.group({
-      codMateria      : [''],
-      codCoordinador  : [''],
-      codAsistentes   : [''],
+      codMateria: [''],
+      codCoordinador: [''],
+      codAsistentes: [''],
       codInstructores: this.builder.array([]),
-      codParalelo     : [''],
-      codAula         : [''],
+      codParalelo: [''],
+      codAula: [''],
     });
 
     this.materiaForm.get('codInstructores').valueChanges.subscribe({
@@ -138,13 +120,14 @@ export class MateriasComponent implements OnInit {
 
   private crearMateria() {
     let materia: MateriaFormacionRequest = {
-      codMateria: this.materiaForm.get('codMateria')?.value,
+      codMateria    : this.materiaForm.get('codMateria')?.value,
       codCoordinador: this.materiaForm.get('codCoordinador')?.value,
-      codAsistente: [this.materiaForm.get('codAsistentes')?.value],
-      codInstructor: this.materiaForm.get('codInstructores')?.value,
-      codParalelo: this.materiaForm.get('codParalelo')?.value,
-      codAula: this.materiaForm.get('codAula')?.value,
+      codAsistentes  : [this.materiaForm.get('codAsistentes')?.value],
+      codInstructores : this.materiaForm.get('codInstructores')?.value,
+      codParalelo   : this.materiaForm.get('codParalelo')?.value,
+      codAula       : this.materiaForm.get('codAula')?.value,
     }
+    console.log(materia);
 
     this.materiasService.crear(materia).subscribe({
       next: (res) => {
@@ -182,7 +165,9 @@ export class MateriasComponent implements OnInit {
     return this.materiaForm.get('codAsistentes');
   }
 
-
+  get codInstructoresFormArray() {
+    return this.materiaForm.get('codInstructores') as FormArray;
+  }
 
   onEditarRegistroMateria(materia: Materia) {
 
@@ -200,12 +185,8 @@ export class MateriasComponent implements OnInit {
 
   onAgregarMateria() {
     console.log('agregando materia');
-    console.log (this.materiaForm.value);
+    console.log(this.materiaForm.value);
     this.crearMateria();
-  }
-
-  get codInstructoresFormArray() {
-    return this.materiaForm.get('codInstructores') as FormArray;
   }
 
   toggleInstructorSelection(codigo: number) {

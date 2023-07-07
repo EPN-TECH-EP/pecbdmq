@@ -24,12 +24,11 @@ export class ValidacionComponent implements OnInit {
   formularioRequisitos: FormGroup[];
   loadInformation: boolean;
   headers: string[];
-  msmBtnListaRequisitos: string;
+  mensajeBtnListaRequisitos: string;
   estaExpandidoListaRequisitos: boolean = false;
   urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
 
   constructor(
-    private route: ActivatedRoute,
     private validacionInscripcionService: ValidacionInscripcionService,
     private documentosService: DocumentosService,
     private mdbNotificationService: MdbNotificationService,
@@ -43,7 +42,7 @@ export class ValidacionComponent implements OnInit {
     this.formularioRequisitos = [];
     this.loadInformation = false;
     this.headers = ['Requisito', 'Cumple el requisito', 'Observaciones'];
-    this.msmBtnListaRequisitos = 'Posición inferior de la lista de requisitos';
+    this.mensajeBtnListaRequisitos = 'Posición inferior de la lista de requisitos';
 
   }
 
@@ -58,8 +57,8 @@ export class ValidacionComponent implements OnInit {
 
     this.validacionInscripcionService.getInscripcion(this.postulanteId).subscribe({
       next: inscripcion => {
+        console.log("inscripcion", inscripcion);
         this.inscripcion = inscripcion;
-        console.log("documentos", this.inscripcion.documentos);
 
         const observables = this.inscripcion?.documentos?.map(documento =>
           this.documentosService.visualizarArchivo(documento.codDocumento)
@@ -80,6 +79,7 @@ export class ValidacionComponent implements OnInit {
 
         this.validacionInscripcionService.listarRequisitos(this.inscripcion?.codPostulante).subscribe({
           next: requisitos => {
+            console.log("requisitos", requisitos);
             this.requisitos = requisitos;
             this.construirFormulario();
             this.loadInformation = true;
@@ -147,7 +147,7 @@ export class ValidacionComponent implements OnInit {
 
   toggleListaRequisitos() {
     this.estaExpandidoListaRequisitos = !this.estaExpandidoListaRequisitos;
-    this.msmBtnListaRequisitos = this.estaExpandidoListaRequisitos ? 'Posición lateral de la lista de requisitos' : 'Posición inferior de la lista de requisitos';
+    this.mensajeBtnListaRequisitos = this.estaExpandidoListaRequisitos ? 'Posición lateral de la lista de requisitos' : 'Posición inferior de la lista de requisitos';
   }
 
 }

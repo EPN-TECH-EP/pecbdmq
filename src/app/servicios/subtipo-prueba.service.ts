@@ -32,4 +32,9 @@ export class SubtipoPruebaService {
   public eliminar(codSubtipoPrueba: any): Observable<string> {
     return this.http.delete<any>(`${this.host}/${this.nombreServicio}/${codSubtipoPrueba}`);
   }
+
+  public listarConDatosTipoPrueba(): Observable<SubtipoPrueba[]> {
+    return this.http.get<SubtipoPrueba[]>(`${this.host}/${this.nombreServicio}/listarConDatos`);
+  }
+
 }

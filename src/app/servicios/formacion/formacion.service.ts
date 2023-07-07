@@ -1,9 +1,11 @@
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {environment} from 'src/environments/environment';
-import {CustomHttpResponse} from '../../modelo/admin/custom-http-response';
-import {ModuloEstado} from "../../modelo/admin/modulo-estado";
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
+import { ModuloEstado } from "../../modelo/admin/modulo-estado";
+import { Usuario } from "../../modelo/admin/usuario";
+import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +35,7 @@ export class FormacionService {
   }
   
     getEstadosFormacion(): Observable<ModuloEstado[]> {
-    return this.http.get<ModuloEstado[]>(`${this.host}/moduloestados/bymodulo?modulo=1`);
+    return this.http.get<ModuloEstado[]>(`${ this.host }/moduloestados/bymodulo?modulo=1`);
   }
 
   getEstadoActual(): Observable<CustomHttpResponse> {
@@ -41,6 +43,6 @@ export class FormacionService {
   }
   
   actualizarEstadoActual(formData: FormData): Observable<CustomHttpResponse> {
-    return this.http.post<CustomHttpResponse>(`${this.host}/periodoacademico/actualizaEstado`, formData);
+    return this.http.post<CustomHttpResponse>(`${ this.host }/periodoacademico/actualizaEstado`, formData);
   }
 }

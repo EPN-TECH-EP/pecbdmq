@@ -270,10 +270,10 @@
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       Este campo es requerido
                     </div>
-                    <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
+                    <!-- <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
                       <i class="fas fa-exclamation-circle mb-1"></i>
                       La edad requerida es entre 18 y 28 años
-                    </div>
+                    </div> -->
                   </mdb-error>
                   <mdb-success *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched"> </mdb-success>
                 </mdb-form-control>
