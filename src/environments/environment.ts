@@ -15,6 +15,9 @@ export const environment = {
   DELAY_REINTENTOS : 2000, // 2 segundos
   DURACION_TIMEOUT : 30000, // 30 segundos
 
+  TIEMPO_ALERTA : 3000, // 3 segundos
+
+
 };
 
 /*

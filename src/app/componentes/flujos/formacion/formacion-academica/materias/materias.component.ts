@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   MateriaFormacion, MateriaFormacionRequest,
   MateriasFormacionService
@@ -13,6 +13,7 @@ import { ParaleloService } from "../../../../../servicios/paralelo.service";
 import { AulaService } from "../../../../../servicios/aula.service";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { forkJoin } from "rxjs";
+import { MdbSelectComponent } from "mdb-angular-ui-kit/select";
 
 @Component({
   selector: 'app-materias',
@@ -25,16 +26,21 @@ export class MateriasComponent implements OnInit {
   materiasCatalogo: Materia[];
   instructores: Instructor[];
   aulas: Aula[];
-  paralelos: Paralelo[];
+  paralelosCatalogo: Paralelo[];
   headers: {key: string, label: string}[];
   estaAgregandoMateria: boolean;
   estaEditandoMateria: boolean;
   codigoMateriaEditando: number;
   materiaForm: FormGroup;
+  paralelosFormGroup: FormGroup;
+  materiasFormGroup: FormGroup;
+
+  paralelosSeleccionados: Paralelo[];
 
   // utils
   loadInformation: boolean;
   error: boolean;
+
 
   constructor(
     private materiasService: MateriasFormacionService,
@@ -47,7 +53,8 @@ export class MateriasComponent implements OnInit {
     this.instructores = [];
     this.materiasCatalogo = [];
     this.aulas = [];
-    this.paralelos = [];
+    this.paralelosCatalogo = [];
+    this.paralelosSeleccionados = [];
     this.headers = [
       { key: 'materia', label: 'Materia' },
       { key: 'ejeMateria', label: 'Tipo Materia' },
@@ -64,6 +71,8 @@ export class MateriasComponent implements OnInit {
     this.loadInformation = false;
     this.error = false;
 
+    this.construirFormularios();
+
     this.construirFormularioMateria();
 
   }
@@ -71,7 +80,7 @@ export class MateriasComponent implements OnInit {
   ngOnInit(): void {
 
     const combinedObservables = forkJoin([
-      this.materiasService.listar(),
+      // this.materiasService.listar(),
       this.instructoresService.listar(),
       this.paralelosService.getParalelos(),
       this.aulasService.listar(),
@@ -79,10 +88,10 @@ export class MateriasComponent implements OnInit {
     ]);
 
     combinedObservables.subscribe({
-      next: ([materias, instructores, paralelos, aulas, materiasCatalogo]) => {
-        this.materias = materias;
+      next: ([instructores, paralelos, aulas, materiasCatalogo]) => {
+        // this.materias = materias;
         this.instructores = instructores;
-        this.paralelos = paralelos;
+        this.paralelosCatalogo = paralelos;
         this.aulas = aulas;
         this.materiasCatalogo = materiasCatalogo;
         this.loadInformation = true;
@@ -91,6 +100,28 @@ export class MateriasComponent implements OnInit {
         console.error('Error en una o más consultas');
         this.error = true;
         this.loadInformation = true;
+      }
+    });
+  }
+
+  private construirFormularios() {
+    this.paralelosFormGroup = this.builder.group({
+      codParalelos: this.builder.array([])
+    });
+
+    this.paralelosFormGroup.valueChanges.subscribe({
+      next: (value) => {
+        console.log(value);
+      }
+    });
+
+    this.materiasFormGroup = this.builder.group({
+      codMaterias: this.builder.array([])
+    });
+
+    this.materiasFormGroup.valueChanges.subscribe({
+      next: (value) => {
+        console.log(value);
       }
     });
   }
@@ -120,12 +151,12 @@ export class MateriasComponent implements OnInit {
 
   private crearMateria() {
     let materia: MateriaFormacionRequest = {
-      codMateria    : this.materiaForm.get('codMateria')?.value,
+      codMateria: this.materiaForm.get('codMateria')?.value,
       codCoordinador: this.materiaForm.get('codCoordinador')?.value,
-      codAsistentes  : [this.materiaForm.get('codAsistentes')?.value],
-      codInstructores : this.materiaForm.get('codInstructores')?.value,
-      codParalelo   : this.materiaForm.get('codParalelo')?.value,
-      codAula       : this.materiaForm.get('codAula')?.value,
+      codAsistentes: [this.materiaForm.get('codAsistentes')?.value],
+      codInstructores: this.materiaForm.get('codInstructores')?.value,
+      codParalelo: this.materiaForm.get('codParalelo')?.value,
+      codAula: this.materiaForm.get('codAula')?.value,
     }
     console.log(materia);
 
@@ -170,6 +201,10 @@ export class MateriasComponent implements OnInit {
     return this.materiaForm.get('codInstructores') as FormArray;
   }
 
+  get codParalelosFormArray() {
+    return this.paralelosFormGroup.get('codParalelos') as FormArray;
+  }
+
   onEditarRegistroMateria(materia: Materia) {
 
   }
@@ -198,5 +233,23 @@ export class MateriasComponent implements OnInit {
       codInstructores.push(this.builder.control(codigo)); // Marcar opción
     }
   }
+
+  toggleParaleloSelection(paralelo: Paralelo) {
+    const codParalelos = this.codParalelosFormArray;
+    const index = codParalelos.value.indexOf(paralelo.codParalelo);
+
+    if (index !== -1) {
+      codParalelos.removeAt(index); // Desmarcar opción
+      this.paralelosSeleccionados = this.paralelosSeleccionados.filter((par) => par.codParalelo !== paralelo.codParalelo);
+      this.selectElement.writeValue(this.paralelosSeleccionados.map((par) => par.codParalelo));
+    } else {
+      codParalelos.push(this.builder.control(paralelo.codParalelo));
+      this.paralelosSeleccionados.push(paralelo);
+    }
+
+
+  }
+
+  @ViewChild('mdbSelect') selectElement: MdbSelectComponent;
 
 }

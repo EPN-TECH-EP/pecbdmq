@@ -18,7 +18,7 @@ export class EstudianteService {
   }
 
   listar() {
-    return this.http.get<Estudiante[]>(`${ this.host }/estudiantes`);
+    return this.http.get<Estudiante[]>(`${ this.host }/estudiante/listarPA`);
   }
 
   getEstudianteById(idEstudiante: number) {

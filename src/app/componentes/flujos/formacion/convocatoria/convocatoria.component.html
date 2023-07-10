@@ -177,7 +177,7 @@
                         #dpFechaInicio="mdbDatepicker"
                         [options]="opcionesDatepicker"
                         [inline]="true"
-                        [minDate]="minDate"
+                        [minDate]="fechaActual"
                       ></mdb-datepicker>
                       <mdb-error
                         *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"
@@ -467,7 +467,7 @@
                       class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                       type="submit"
                       (click)="agregarRequisito()"
-                      [disabled]=""
+                      [disabled]="itemRequisito === null"
                     >
                       <i class="fa fa-check"></i> Agregar
                     </button>

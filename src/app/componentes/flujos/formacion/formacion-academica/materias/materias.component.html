@@ -3,6 +3,68 @@
   [link]="'/principal/formacion/academia/menu'"
 ></app-boton-volver>
 
+<mdb-stepper [linear]="true">
+  <mdb-step [stepForm]="paralelosFormGroup" [name]="'Creación paralelos'">
+    <form [formGroup]="paralelosFormGroup">
+      <mdb-form-control>
+        <mdb-select
+          #mdbSelect
+          mdbValidate
+          [filter]="true"
+          [multiple]="true"
+          class="mb-4"
+          formArrayName="codParalelos"
+        >
+          <mdb-option
+            *ngFor="let paralelo of paralelosCatalogo; let i = index"
+            (click)="toggleParaleloSelection(paralelo)"
+            [label]="paralelo.nombreParalelo"
+            [value]="paralelo">
+            {{ paralelo.nombreParalelo }}
+          </mdb-option>
+        </mdb-select>
+        <label mdbLabel class="form-label">Escoja la materia del catalogo</label>
+      </mdb-form-control>
+    </form>
+    <div
+      *ngIf="paralelosSeleccionados.length > 0"
+      class="d-flex gap-2"
+    >
+      <div class="card w-25" *ngFor="let paralelo of paralelosSeleccionados">
+        <div class="card-body py-2 px-3">
+          <div class="d-flex justify-content-between">
+            <b>{{paralelo.nombreParalelo}}</b>
+            <button
+              type="button"
+              class="btn btn-primary btn-floating bg-light text-black text-center"
+              mdbRipple
+              (click)="toggleParaleloSelection(paralelo)"
+            >
+              <i class="fa fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-primary mt-3"
+      type="submit"
+      [disabled]="paralelosSeleccionados.length === 0"
+    >Guardar paralelos</button>
+  </mdb-step>
+  <mdb-step [stepForm]="materiasFormGroup" [name]="'Selección materias del catálogo'">
+    <form [formGroup]="materiasFormGroup">
+    </form>
+  </mdb-step>
+  <mdb-step [name]="'Step 3'">
+    <mdb-form-control>
+      <input mdbInput mdbValidate type="text" id="step3" class="form-control"/>
+      <label mdbLabel class="form-label" for="step3">Step 3</label>
+    </mdb-form-control>
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </mdb-step>
+</mdb-stepper>
+
 <!-- Si hubo un error al cargar la información -->
 <div class="alert alert-danger my-4" role="alert" *ngIf="error">
   <i class="fa-solid fa-exclamation-triangle me-2"></i>
@@ -28,6 +90,8 @@
   </button>
 
   <!-- Creacion de materia -->
+
+
   <section
     *ngIf="estaAgregandoMateria"
     class="my-2"
@@ -127,7 +191,7 @@
             formControlName="codParalelo"
           >
             <mdb-option
-              *ngFor="let paralelo of paralelos"
+              *ngFor="let paralelo of paralelosCatalogo"
               [value]="paralelo.codParalelo">
               {{ paralelo.nombreParalelo }}
             </mdb-option>
