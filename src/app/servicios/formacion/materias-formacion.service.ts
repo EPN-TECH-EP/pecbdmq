@@ -20,7 +20,8 @@ export interface MateriaFormacion {
   instructores: Instructor[];
   asistentes: Instructor[];
   coordinador: Instructor;
-  aula: Aula;
+  nombreAula: string;
+  codAula: number;
 }
 
 
@@ -55,23 +56,23 @@ export class MateriasFormacionService {
   constructor(private http: HttpClient, private archivoService: ArchivoService) {
   }
 
-  listar(): Observable<MateriaFormacion[]> {
-    const cacheKey = `${ this.host }/instructorMateriaParalelo/listarRead`;
-
-    if (this.cache[cacheKey]) {
-      console.log('Recuperado de caché');
-      return of(this.cache[cacheKey].body);
-    } else {
-      return this.http.get<MateriaFormacion[]>(cacheKey, { observe: 'response', responseType: 'json' })
-        .pipe(
-          tap((res: HttpResponse<MateriaFormacion[]>) => {
-            console.log('Almacenando en caché');
-            this.cache[cacheKey] = res;
-          }),
-          map((res: HttpResponse<MateriaFormacion[]>) => res.body)
-        );
-    }
-  }
+  // listar(): Observable<MateriaFormacion[]> {
+  //   const cacheKey = `${ this.host }/instructorMateriaParalelo/listarRead`;
+  //
+  //   if (this.cache[cacheKey]) {
+  //     console.log('Recuperado de caché');
+  //     return of(this.cache[cacheKey].body);
+  //   } else {
+  //     return this.http.get<MateriaFormacion[]>(cacheKey, { observe: 'response', responseType: 'json' })
+  //       .pipe(
+  //         tap((res: HttpResponse<MateriaFormacion[]>) => {
+  //           console.log('Almacenando en caché');
+  //           this.cache[cacheKey] = res;
+  //         }),
+  //         map((res: HttpResponse<MateriaFormacion[]>) => res.body)
+  //       );
+  //   }
+  // }
 
   crear(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
     return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
@@ -79,6 +80,10 @@ export class MateriasFormacionService {
 
   asignarMateriaParalelo(data: MateriaAulaParaleloRequest) {
     return this.http.post(`${ this.host }/materiaParalelo/asignar`, data);
+  }
+
+  listarMateriasParalelos(): Observable<MateriaFormacionResponse> {
+    return this.http.get<MateriaFormacionResponse>(`${ this.host }/materiaParalelo/listarMateriasParalelos`);
   }
 
 }

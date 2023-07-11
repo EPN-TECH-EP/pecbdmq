@@ -79,7 +79,7 @@ export class InstructoresComponent implements OnInit {
         this.unidadesGestion = unidades;
         this.estacionesTrabajo = estaciones;
       },
-      error: ([instructores, procedencias]) => {
+      error: () => {
         console.error('Error en una o más peticiones');
       }
     });

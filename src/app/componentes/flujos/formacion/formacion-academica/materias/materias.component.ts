@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {
-  MateriaAula,
-  MateriaAulaParaleloRequest,
+  MateriaAulaParaleloRequest, MateriaFormacion,
   MateriaFormacionResponse,
   MateriasFormacionService
 } from "../../../../../servicios/formacion/materias-formacion.service";
@@ -19,15 +18,17 @@ import { MdbSelectComponent } from "mdb-angular-ui-kit/select";
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { MdbTabsComponent } from "mdb-angular-ui-kit/tabs";
 
 @Component({
   selector: 'app-materias',
   templateUrl: './materias.component.html',
   styleUrls: ['./materias.component.scss']
 })
-export class MateriasComponent implements OnInit {
+export class MateriasComponent implements OnInit, AfterViewInit {
 
   itemMateria: Materia
+  codMateriaEditando: number;
   materiasFormacion: MateriaFormacionResponse;
   paralelos: Paralelo[];
 
@@ -43,7 +44,6 @@ export class MateriasComponent implements OnInit {
 
   paralelosSeleccionados: Paralelo[];
   materiasSeleccionadas: Materia[];
-  aulaPorMateriaLista: MateriaAula[]
 
   // utils
   estaAgregandoMateria: boolean;
@@ -61,6 +61,7 @@ export class MateriasComponent implements OnInit {
     private aulasService: AulaService,
     private builder: FormBuilder,) {
     this.itemMateria = {} as Materia;
+    this.codMateriaEditando = 0;
     this.instructoresCatalogo = [];
     this.materiasCatalogo = [];
     this.aulasCatalogo = [];
@@ -69,11 +70,11 @@ export class MateriasComponent implements OnInit {
     this.materiasSeleccionadas = [];
     this.headers = [
       { key: 'materia', label: 'Materia' },
-      { key: 'ejeMateria', label: 'Tipo Materia' },
+      { key: 'ejeMateria', label: 'Tipo' },
+      { key: 'aulas', label: 'Aula' },
       { key: 'coordinador', label: 'Coordinador' },
       { key: 'asistente', label: 'Asistente' },
       { key: 'instructor', label: 'Instructores' },
-      { key: 'aulas', label: 'Aula' },
     ]
     this.estaAgregandoMateria = false;
     this.estaEditandoMateria = false;
@@ -81,16 +82,12 @@ export class MateriasComponent implements OnInit {
     this.loading = false;
 
     this.construirFormularios();
-    this.materiasFormacion = {} as MateriaFormacionResponse;
-
-    this.aulaPorMateriaLista = [];
     this.paralelos = [];
   }
 
   ngOnInit(): void {
 
     const combinedObservables = forkJoin([
-      // this.materiasService.listar(),
       this.instructoresService.listar(),
       this.paralelosService.getParalelos(),
       this.aulasService.listar(),
@@ -99,7 +96,6 @@ export class MateriasComponent implements OnInit {
 
     combinedObservables.subscribe({
       next: ([instructores, paralelos, aulas, materiasCatalogo]) => {
-        // this.materias = materias;
         this.instructoresCatalogo = instructores;
         this.paralelosCatalogo = paralelos;
         this.aulasCatalogo = aulas;
@@ -111,105 +107,20 @@ export class MateriasComponent implements OnInit {
       }
     });
 
-    this.materiasFormacion = {
-      paralelos: [
-        {
-          codParalelo: 1,
-          nombreParalelo: 'A',
-          estado: 'A',
-        },
-        {
-          codParalelo: 2,
-          nombreParalelo: 'B',
-          estado: 'A',
-        }
-      ],
-      materias: [
-        {
-          codMateria: 1,
-          nombreEje: 'Eje 1',
-          coordinador: {
-            codInstructor: 1,
-            codUnidadGestion: 1,
-            codTipoProcedencia: 1,
-            tipoInstructor: 'COORDINADOR',
-            nombre: 'Juan',
-            apellido: 'Perez',
-            cedula: '1234567890',
-            codTipoInstructor: 1,
-            codTipoContrato: 1,
-            tipoProcedencia: 'INTERNO',
-            unidadGestion: 'UNIDAD 1',
-            nombreZona: 'ZONA 1',
-            nombreTipoContrato: 'CONTRATO 1',
-            codEstacion: 1,
-            correoPersonal: '@afsdfasd',
-          },
-          aula: {
-            codAula: 1,
-            nombreAula: 'Aula 1',
-          },
-          asistentes: [
-            {
-              codInstructor: 1,
-              codUnidadGestion: 1,
-              codTipoProcedencia: 1,
-              tipoInstructor: 'COORDINADOR',
-              nombre: 'Juan',
-              apellido: 'Perez',
-              cedula: '1234567890',
-              codTipoInstructor: 1,
-              codTipoContrato: 1,
-              tipoProcedencia: 'INTERNO',
-              unidadGestion: 'UNIDAD 1',
-              nombreZona: 'ZONA 1',
-              nombreTipoContrato: 'CONTRATO 1',
-              codEstacion: 1,
-              correoPersonal: '@afsdfasd',
-            }
-          ],
-          nombre: 'Materia 1',
-          instructores: [
-            {
-              codInstructor: 1,
-              codUnidadGestion: 1,
-              codTipoProcedencia: 1,
-              tipoInstructor: 'COORDINADOR',
-              nombre: 'Juan',
-              apellido: 'Perez',
-              cedula: '1234567890',
-              codTipoInstructor: 1,
-              codTipoContrato: 1,
-              tipoProcedencia: 'INTERNO',
-              unidadGestion: 'UNIDAD 1',
-              nombreZona: 'ZONA 1',
-              nombreTipoContrato: 'CONTRATO 1',
-              codEstacion: 1,
-              correoPersonal: '@afsdfasd',
-            },
-            {
-              codInstructor: 1,
-              codUnidadGestion: 1,
-              codTipoProcedencia: 1,
-              tipoInstructor: 'COORDINADOR',
-              nombre: 'Juan',
-              apellido: 'Perez',
-              cedula: '1234567890',
-              codTipoInstructor: 1,
-              codTipoContrato: 1,
-              tipoProcedencia: 'INTERNO',
-              unidadGestion: 'UNIDAD 1',
-              nombreZona: 'ZONA 1',
-              nombreTipoContrato: 'CONTRATO 1',
-              codEstacion: 1,
-              correoPersonal: '@afsdfasd',
-            }
-          ]
-        }
-      ]
-    }
+    this.materiasService.listarMateriasParalelos().subscribe({
+      next: (materiasFormacion) => {
+        this.materiasFormacion = materiasFormacion;
+        console.log('materiasFormacion', materiasFormacion);
+      },
+      error: () => {
+        console.error('Error al listar las materias');
+        this.error = true;
+      }
+    });
+  }
 
-
+  ngAfterViewInit(): void {
+    this.tabs.setActiveTab(0);
   }
 
   private construirFormularios() {
@@ -253,6 +164,11 @@ export class MateriasComponent implements OnInit {
 
   get materiaAulaFormArray() {
     return this.materiaAulaFormGroup.get('materiaAula') as FormArray;
+  }
+
+  onEditarMateria(materia: MateriaFormacion) {
+    this.estaEditandoMateria = true;
+    this.codMateriaEditando = materia.codMateria;
   }
 
   agregarMateriaAula() {
@@ -314,5 +230,6 @@ export class MateriasComponent implements OnInit {
   }
 
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
+  @ViewChild('tabs') tabs: MdbTabsComponent;
 
 }
