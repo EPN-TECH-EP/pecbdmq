@@ -8,15 +8,18 @@ import { Paralelo } from "../../modelo/admin/paralelo";
 import { Aula } from "../../modelo/admin/aula";
 import { map, tap } from "rxjs/operators";
 
+export interface MateriaFormacionResponse {
+  paralelos: Paralelo[];
+  materias: MateriaFormacion[];
+}
+
 export interface MateriaFormacion {
-  codMateriaFormacion: number;
-  nombreMateria: string;
-  nombreEjeMateria: string;
-  coordinador: Instructor;
-  asistentes: Instructor[];
+  codMateria: number;
+  nombre: string;
+  nombreEje: string;
   instructores: Instructor[];
-  paralelo?: Paralelo;
-  nombreParalelo?: string;
+  asistentes: Instructor[];
+  coordinador: Instructor;
   aula: Aula;
 }
 
@@ -30,6 +33,15 @@ export interface MateriaFormacionRequest {
   codParalelo: number;
 }
 
+export interface MateriaAula {
+  codMateria: number;
+  codAula: number;
+}
+
+export interface MateriaAulaParaleloRequest {
+  materiasAulas: MateriaAula[];
+  paralelos: Paralelo[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +75,10 @@ export class MateriasFormacionService {
 
   crear(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
     return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
+  }
+
+  asignarMateriaParalelo(data: MateriaAulaParaleloRequest) {
+    return this.http.post(`${ this.host }/materiaParalelo/asignar`, data);
   }
 
 }

@@ -8,6 +8,7 @@ import { TipoProcedencia } from "../../../../../modelo/admin/tipo-procedencia";
 import { UnidadGestionService } from "../../../../../servicios/unidad-gestion.service";
 import { UnidadGestion } from "../../../../../modelo/admin/unidad-gestion";
 import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicios/estacion-trabajo.service";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-instructores',
@@ -16,19 +17,20 @@ import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicio
 })
 export class InstructoresComponent implements OnInit {
 
-  usuarios          : Usuario[];
-  instructor        : Instructor;
-  instructores      : Instructor[];
-  unidadesGestion   : UnidadGestion[];
-  estacionesTrabajo : EstacionTrabajo[];
-  headers           : {key: string, label: string}[];
-  instructorForm    : FormGroup;
-  tiposProcedencia  : TipoProcedencia[];
+  usuarios: Usuario[];
+  instructor: Instructor;
+  instructores: Instructor[];
+  unidadesGestion: UnidadGestion[];
+  estacionesTrabajo: EstacionTrabajo[];
+  headers: {key: string, label: string}[];
+  instructorForm: FormGroup;
+  tiposProcedencia: TipoProcedencia[];
 
-  estaBuscandoUsuarios    : boolean;
-  estaAgregandoInstructor : boolean;
-  existenCoincidencias    : boolean;
-  estaEditandoInstructor  : boolean;
+  estaBuscandoUsuarios: boolean;
+  estaAgregandoInstructor: boolean;
+  existenCoincidencias: boolean;
+  estaEditandoInstructor: boolean;
+  esInstructor: boolean;
   codigoInstructorEditando: number;
 
   constructor(
@@ -58,42 +60,76 @@ export class InstructoresComponent implements OnInit {
     this.estaEditandoInstructor = false;
     this.existenCoincidencias = true;
     this.codigoInstructorEditando = 0;
+    this.esInstructor = false;
   }
 
   ngOnInit(): void {
-    this.instructorService.listar().subscribe({
-      next: (instructores) => {
+
+    const combinedObservables = forkJoin([
+      this.instructorService.listar(),
+      this.tipoProcedenciaService.listar(),
+      this.unidadGestionService.listar(),
+      this.estacionTrabajoService.listar(),
+    ]);
+
+    combinedObservables.subscribe({
+      next: ([instructores, procedencias, unidades, estaciones]) => {
         this.instructores = instructores;
+        this.tiposProcedencia = procedencias;
+        this.unidadesGestion = unidades;
+        this.estacionesTrabajo = estaciones;
       },
-      error: () => {
-        console.error('error al listar instructores');
+      error: ([instructores, procedencias]) => {
+        console.error('Error en una o más peticiones');
       }
-    })
-    this.tipoProcedenciaService.listar().subscribe({
-      next: (tiposProcedencia) => {
-        this.tiposProcedencia = tiposProcedencia;
-      },
-      error: () => {
-        console.error('error al listar tipos de procedencia');
-      }
-    })
-    this.unidadGestionService.listar().subscribe({
-      next: (unidadesGestion) => {
-        this.unidadesGestion = unidadesGestion;
-      },
-      error: () => {
-        console.error('error al listar unidades de gestión');
-      }
-    })
-    this.estacionTrabajoService.listar().subscribe({
-      next: (estacionesTrabajo) => {
-        this.estacionesTrabajo = estacionesTrabajo;
-      },
-      error: () => {
-        console.error('error al listar estaciones de trabajo');
-      }
-    })
+    });
+
     this.construirFormularioInstructor();
+  }
+
+  private construirFormularioInstructor() {
+    this.instructorForm = this.builder.group({
+      codTipoProcedencia: ['', Validators.required],
+      codUnidadGestion: ['', Validators.required],
+      codZona: ['', Validators.required],
+      // codTipoContrato     : ['', Validators.required],
+    })
+  }
+
+  private editarInstructor(instructor: Instructor) {
+    instructor = {
+      ...this.instructor,
+      codTipoProcedencia: this.codTipoProcedencia?.value,
+      codUnidadGestion: this.codUnidadGestion?.value,
+      codEstacion: this.codZona?.value,
+      // codTipoContrato: this.codTipoContrato?.value,
+    }
+
+    console.log(instructor);
+
+  }
+
+  private matchDatosInstructorEnFormulario() {
+    this.instructorForm.patchValue({
+      codTipoProcedencia: this.instructor.codTipoProcedencia,
+      codUnidadGestion: this.instructor.codUnidadGestion,
+      codZona: this.instructor.codEstacion,
+      codTipoContrato: this.instructor.codTipoContrato,
+    })
+  }
+
+  private filtrarInstructores(usuario: Usuario[]) {
+    this.instructores.forEach((instructor) => {
+      this.usuarios = this.usuarios.filter((usuario) => {
+        return usuario.nombreUsuario !== instructor.cedula;
+      });
+    });
+    if (this.usuarios.length === 0) {
+      this.usuarios = [];
+      this.esInstructor = true;
+    }
+    this.esInstructor = false;
+    console.log(this.usuarios);
   }
 
   usuarioEncontrado(usuario: Usuario) {
@@ -103,14 +139,27 @@ export class InstructoresComponent implements OnInit {
       this.usuarios = [];
       return;
     }
+
     this.usuarios[0] = usuario;
     this.usuarios.splice(1);
     this.existenCoincidencias = true;
+    this.esInstructor = this.instructores.some((instructor) => {
+      return instructor.cedula === usuario.nombreUsuario;
+    });
+    if (this.esInstructor) this.usuarios = [];
+
   }
 
   usuariosEncontrados(usuarios: Usuario[]) {
+    console.log('usuarios encontrados: ', usuarios);
+    if (usuarios.length === 0) {
+      this.existenCoincidencias = false;
+      this.usuarios = [];
+      return;
+    }
     this.usuarios = usuarios;
     this.existenCoincidencias = true;
+    this.filtrarInstructores(usuarios);
   }
 
   limpiarResultados() {
@@ -148,36 +197,6 @@ export class InstructoresComponent implements OnInit {
     this.editarInstructor(this.instructor);
   }
 
-  private construirFormularioInstructor() {
-    this.instructorForm = this.builder.group({
-      codTipoProcedencia  : ['', Validators.required],
-      codUnidadGestion    : ['', Validators.required],
-      codZona             : ['', Validators.required],
-      // codTipoContrato     : ['', Validators.required],
-    })
-  }
-
-  private editarInstructor(instructor: Instructor) {
-    instructor = { ...this.instructor,
-      codTipoProcedencia: this.codTipoProcedencia?.value,
-      codUnidadGestion: this.codUnidadGestion?.value,
-      codEstacion: this.codZona?.value,
-      // codTipoContrato: this.codTipoContrato?.value,
-    }
-
-    console.log(instructor);
-
-  }
-
-  private matchDatosInstructorEnFormulario() {
-    this.instructorForm.patchValue({
-      codTipoProcedencia: this.instructor.codTipoProcedencia,
-      codUnidadGestion: this.instructor.codUnidadGestion,
-      codZona: this.instructor.codEstacion,
-      codTipoContrato: this.instructor.codTipoContrato,
-    })
-  }
-
   get codTipoProcedencia() {
     return this.instructorForm.get('codTipoProcedencia');
   }
@@ -189,10 +208,6 @@ export class InstructoresComponent implements OnInit {
   get codZona() {
     return this.instructorForm.get('codZona');
   }
-
-  // get codTipoContrato() {
-  //   return this.instructorForm.get('codTipoContrato');
-  // }
 
   protected readonly defaultInstructor = defaultInstructor;
 }

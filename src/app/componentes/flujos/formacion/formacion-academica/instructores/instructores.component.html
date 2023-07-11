@@ -41,12 +41,12 @@
 
   <section *ngIf="existenCoincidencias && estaBuscandoUsuarios" class="mt-2">
     <button
+      *ngIf="usuarios.length > 0"
       type="button"
       class="btn btn-primary mb-2"
       (click)="limpiarResultados()">
       <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
     </button>
-
     <div class="my-4 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
       <div class="col-7">
         <ul class="list-group list-group-light">
@@ -75,13 +75,23 @@
           </li>
         </ul>
       </div>
+      <hr class="hr">
     </div>
-    <div *ngIf="!existenCoincidencias" class="alert alert-danger my-3 py-1" role="alert">
+  </section>
+  <div *ngIf="!existenCoincidencias" >
+    <div class="alert alert-danger my-3 py-1" role="alert">
       <i class="fa-solid fa-circle-exclamation me-2"></i>
       No se encontró ningún usuario con los datos ingresados
     </div>
     <hr class="hr">
-  </section>
+  </div>
+  <div *ngIf="existenCoincidencias && esInstructor" >
+    <div class="alert alert-warning my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      El usuario ya es instructor
+    </div>
+    <hr class="hr">
+  </div>
   <!-- Lista de Instructores -->
   <section class="mt-4">
     <div *ngIf="instructores.length === 0"

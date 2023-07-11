@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  MateriaFormacion, MateriaFormacionRequest,
+  MateriaAula,
+  MateriaAulaParaleloRequest,
+  MateriaFormacionResponse,
   MateriasFormacionService
 } from "../../../../../servicios/formacion/materias-formacion.service";
 import { Materia } from "../../../../../modelo/admin/materias";
@@ -11,9 +13,12 @@ import { Aula } from "../../../../../modelo/admin/aula";
 import { Paralelo } from "../../../../../modelo/admin/paralelo";
 import { ParaleloService } from "../../../../../servicios/paralelo.service";
 import { AulaService } from "../../../../../servicios/aula.service";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { forkJoin } from "rxjs";
 import { MdbSelectComponent } from "mdb-angular-ui-kit/select";
+import { Notificacion } from "../../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 
 @Component({
   selector: 'app-materias',
@@ -22,59 +27,64 @@ import { MdbSelectComponent } from "mdb-angular-ui-kit/select";
 })
 export class MateriasComponent implements OnInit {
 
-  materias: MateriaFormacion[];
+  itemMateria: Materia
+  materiasFormacion: MateriaFormacionResponse;
+  paralelos: Paralelo[];
+
   materiasCatalogo: Materia[];
-  instructores: Instructor[];
-  aulas: Aula[];
   paralelosCatalogo: Paralelo[];
+  aulasCatalogo: Aula[];
+  instructoresCatalogo: Instructor[];
+
   headers: {key: string, label: string}[];
-  estaAgregandoMateria: boolean;
-  estaEditandoMateria: boolean;
-  codigoMateriaEditando: number;
-  materiaForm: FormGroup;
+
   paralelosFormGroup: FormGroup;
-  materiasFormGroup: FormGroup;
+  materiaAulaFormGroup: FormGroup;
 
   paralelosSeleccionados: Paralelo[];
+  materiasSeleccionadas: Materia[];
+  aulaPorMateriaLista: MateriaAula[]
 
   // utils
-  loadInformation: boolean;
+  estaAgregandoMateria: boolean;
+  estaEditandoMateria: boolean;
   error: boolean;
+  loading: boolean;
 
 
   constructor(
+    private mdbNotificationService: MdbNotificationService,
     private materiasService: MateriasFormacionService,
     private materiasCatalogoService: MateriaService,
     private instructoresService: InstructorService,
     private paralelosService: ParaleloService,
     private aulasService: AulaService,
     private builder: FormBuilder,) {
-    this.materias = [];
-    this.instructores = [];
+    this.itemMateria = {} as Materia;
+    this.instructoresCatalogo = [];
     this.materiasCatalogo = [];
-    this.aulas = [];
+    this.aulasCatalogo = [];
     this.paralelosCatalogo = [];
     this.paralelosSeleccionados = [];
+    this.materiasSeleccionadas = [];
     this.headers = [
       { key: 'materia', label: 'Materia' },
       { key: 'ejeMateria', label: 'Tipo Materia' },
       { key: 'coordinador', label: 'Coordinador' },
       { key: 'asistente', label: 'Asistente' },
       { key: 'instructor', label: 'Instructores' },
-      { key: 'paralelos', label: 'Paralelo' },
       { key: 'aulas', label: 'Aula' },
     ]
     this.estaAgregandoMateria = false;
     this.estaEditandoMateria = false;
-    this.codigoMateriaEditando = 0;
-    this.materiaForm = new FormGroup({});
-    this.loadInformation = false;
     this.error = false;
+    this.loading = false;
 
     this.construirFormularios();
+    this.materiasFormacion = {} as MateriaFormacionResponse;
 
-    this.construirFormularioMateria();
-
+    this.aulaPorMateriaLista = [];
+    this.paralelos = [];
   }
 
   ngOnInit(): void {
@@ -90,23 +100,121 @@ export class MateriasComponent implements OnInit {
     combinedObservables.subscribe({
       next: ([instructores, paralelos, aulas, materiasCatalogo]) => {
         // this.materias = materias;
-        this.instructores = instructores;
+        this.instructoresCatalogo = instructores;
         this.paralelosCatalogo = paralelos;
-        this.aulas = aulas;
+        this.aulasCatalogo = aulas;
         this.materiasCatalogo = materiasCatalogo;
-        this.loadInformation = true;
       },
       error: () => {
         console.error('Error en una o más consultas');
         this.error = true;
-        this.loadInformation = true;
       }
     });
+
+    this.materiasFormacion = {
+      paralelos: [
+        {
+          codParalelo: 1,
+          nombreParalelo: 'A',
+          estado: 'A',
+        },
+        {
+          codParalelo: 2,
+          nombreParalelo: 'B',
+          estado: 'A',
+        }
+      ],
+      materias: [
+        {
+          codMateria: 1,
+          nombreEje: 'Eje 1',
+          coordinador: {
+            codInstructor: 1,
+            codUnidadGestion: 1,
+            codTipoProcedencia: 1,
+            tipoInstructor: 'COORDINADOR',
+            nombre: 'Juan',
+            apellido: 'Perez',
+            cedula: '1234567890',
+            codTipoInstructor: 1,
+            codTipoContrato: 1,
+            tipoProcedencia: 'INTERNO',
+            unidadGestion: 'UNIDAD 1',
+            nombreZona: 'ZONA 1',
+            nombreTipoContrato: 'CONTRATO 1',
+            codEstacion: 1,
+            correoPersonal: '@afsdfasd',
+          },
+          aula: {
+            codAula: 1,
+            nombreAula: 'Aula 1',
+          },
+          asistentes: [
+            {
+              codInstructor: 1,
+              codUnidadGestion: 1,
+              codTipoProcedencia: 1,
+              tipoInstructor: 'COORDINADOR',
+              nombre: 'Juan',
+              apellido: 'Perez',
+              cedula: '1234567890',
+              codTipoInstructor: 1,
+              codTipoContrato: 1,
+              tipoProcedencia: 'INTERNO',
+              unidadGestion: 'UNIDAD 1',
+              nombreZona: 'ZONA 1',
+              nombreTipoContrato: 'CONTRATO 1',
+              codEstacion: 1,
+              correoPersonal: '@afsdfasd',
+            }
+          ],
+          nombre: 'Materia 1',
+          instructores: [
+            {
+              codInstructor: 1,
+              codUnidadGestion: 1,
+              codTipoProcedencia: 1,
+              tipoInstructor: 'COORDINADOR',
+              nombre: 'Juan',
+              apellido: 'Perez',
+              cedula: '1234567890',
+              codTipoInstructor: 1,
+              codTipoContrato: 1,
+              tipoProcedencia: 'INTERNO',
+              unidadGestion: 'UNIDAD 1',
+              nombreZona: 'ZONA 1',
+              nombreTipoContrato: 'CONTRATO 1',
+              codEstacion: 1,
+              correoPersonal: '@afsdfasd',
+            },
+            {
+              codInstructor: 1,
+              codUnidadGestion: 1,
+              codTipoProcedencia: 1,
+              tipoInstructor: 'COORDINADOR',
+              nombre: 'Juan',
+              apellido: 'Perez',
+              cedula: '1234567890',
+              codTipoInstructor: 1,
+              codTipoContrato: 1,
+              tipoProcedencia: 'INTERNO',
+              unidadGestion: 'UNIDAD 1',
+              nombreZona: 'ZONA 1',
+              nombreTipoContrato: 'CONTRATO 1',
+              codEstacion: 1,
+              correoPersonal: '@afsdfasd',
+            }
+          ]
+        }
+      ]
+    }
+
+
   }
 
   private construirFormularios() {
     this.paralelosFormGroup = this.builder.group({
-      codParalelos: this.builder.array([])
+      paralelos: this.builder.array([])
     });
 
     this.paralelosFormGroup.valueChanges.subscribe({
@@ -115,141 +223,96 @@ export class MateriasComponent implements OnInit {
       }
     });
 
-    this.materiasFormGroup = this.builder.group({
-      codMaterias: this.builder.array([])
-    });
+    this.materiaAulaFormGroup = this.builder.group({
+      materiaAula: this.builder.array([])
+    })
 
-    this.materiasFormGroup.valueChanges.subscribe({
+    this.materiaAulaFormGroup.valueChanges.subscribe({
       next: (value) => {
         console.log(value);
       }
     });
   }
 
-  private construirFormularioMateria() {
-    this.materiaForm = this.builder.group({
-      codMateria: [''],
-      codCoordinador: [''],
-      codAsistentes: [''],
-      codInstructores: this.builder.array([]),
-      codParalelo: [''],
-      codAula: [''],
+  private crearMateriaAula() {
+    return this.builder.group({
+      codMateria: [this.itemMateria.codMateria],
+      codAula: ['', Validators.required],
     });
-
-    this.materiaForm.get('codInstructores').valueChanges.subscribe({
-      next: (value) => {
-        console.log(value);
-      }
-    })
-
-    this.materiaForm.valueChanges.subscribe({
-      next: (value) => {
-        console.log(value);
-      }
-    })
   }
 
-  private crearMateria() {
-    let materia: MateriaFormacionRequest = {
-      codMateria: this.materiaForm.get('codMateria')?.value,
-      codCoordinador: this.materiaForm.get('codCoordinador')?.value,
-      codAsistentes: [this.materiaForm.get('codAsistentes')?.value],
-      codInstructores: this.materiaForm.get('codInstructores')?.value,
-      codParalelo: this.materiaForm.get('codParalelo')?.value,
-      codAula: this.materiaForm.get('codAula')?.value,
-    }
-    console.log(materia);
-
-    this.materiasService.crear(materia).subscribe({
-      next: (res) => {
-        if (res) {
-          this.estaAgregandoMateria = false;
-          this.materiasService.listar().subscribe({
-            next: (materias) => {
-              this.materias = materias;
-            }
-          })
-        }
-      },
-      error: () => {
-        console.error('error al agregar materia');
-      }
-    })
+  private filtrarMateriasSeleccionadas() {
+    this.materiasCatalogo = this.materiasCatalogo.filter((materia) => {
+      return !this.materiasSeleccionadas.includes(materia);
+    });
   }
 
-  get codInstructores() {
-    return this.materiaForm.get('codInstructores') as FormArray;
+  get paralelosFormArray() {
+    return this.paralelosFormGroup.get('paralelos') as FormArray;
   }
 
-  get codParalelo() {
-    return this.materiaForm.get('codParalelo');
+  get materiaAulaFormArray() {
+    return this.materiaAulaFormGroup.get('materiaAula') as FormArray;
   }
 
-  get codAula() {
-    return this.materiaForm.get('codAula');
-  }
-
-  get codCoordinador() {
-    return this.materiaForm.get('codCoordinador');
-  }
-
-  get codAsistentes() {
-    return this.materiaForm.get('codAsistentes');
-  }
-
-  get codInstructoresFormArray() {
-    return this.materiaForm.get('codInstructores') as FormArray;
-  }
-
-  get codParalelosFormArray() {
-    return this.paralelosFormGroup.get('codParalelos') as FormArray;
-  }
-
-  onEditarRegistroMateria(materia: Materia) {
-
-  }
-
-  onGuardarCambiosMateria() {
-
-  }
-
-  onCancelarEdicionMateria() {
-
-  }
-
-  onAgregarMateria() {
-    console.log('agregando materia');
-    console.log(this.materiaForm.value);
-    this.crearMateria();
-  }
-
-  toggleInstructorSelection(codigo: number) {
-    const codInstructores = this.codInstructoresFormArray;
-    const index = codInstructores.value.indexOf(codigo);
-
-    if (index !== -1) {
-      codInstructores.removeAt(index); // Desmarcar opción
-    } else {
-      codInstructores.push(this.builder.control(codigo)); // Marcar opción
-    }
+  agregarMateriaAula() {
+    this.materiasSeleccionadas.push(this.itemMateria);
+    this.filtrarMateriasSeleccionadas();
+    this.materiaAulaFormArray.push(this.crearMateriaAula());
+    this.itemMateria = {} as Materia;
   }
 
   toggleParaleloSelection(paralelo: Paralelo) {
-    const codParalelos = this.codParalelosFormArray;
-    const index = codParalelos.value.indexOf(paralelo.codParalelo);
+    const paralelos = this.paralelosFormArray;
+    const index = paralelos.value.findIndex(p => p.codParalelo === paralelo.codParalelo);
 
     if (index !== -1) {
-      codParalelos.removeAt(index); // Desmarcar opción
-      this.paralelosSeleccionados = this.paralelosSeleccionados.filter((par) => par.codParalelo !== paralelo.codParalelo);
-      this.selectElement.writeValue(this.paralelosSeleccionados.map((par) => par.codParalelo));
+      paralelos.removeAt(index); // Desmarcar opción
+      this.paralelosSeleccionados = this.paralelosSeleccionados.filter(p => p.codParalelo !== paralelo.codParalelo);
     } else {
-      codParalelos.push(this.builder.control(paralelo.codParalelo));
+      paralelos.push(this.builder.control(paralelo));
       this.paralelosSeleccionados.push(paralelo);
     }
-
+    this.selectElementParalelos.writeValue(this.paralelosSeleccionados.map(p => p));
 
   }
 
-  @ViewChild('mdbSelect') selectElement: MdbSelectComponent;
+  eliminarMateriaSeleccionada(materia: Materia) {
+    const materias = this.materiaAulaFormArray;
+    const index = materias.controls.findIndex((control: FormGroup) => control.get('codMateria')?.value === materia.codMateria);
+
+    if (index !== -1) {
+      materias.removeAt(index); // Desmarcar opción
+      this.materiasSeleccionadas = this.materiasSeleccionadas.filter((m: Materia) => m.codMateria !== materia.codMateria);
+      this.materiasCatalogo.push(materia);
+    }
+
+  }
+
+  guardarMateriasAula() {
+
+    const materiaAulaParalelo: MateriaAulaParaleloRequest = {
+      materiasAulas: this.materiaAulaFormGroup?.value?.materiaAula,
+      paralelos: this.paralelosSeleccionados
+    }
+
+    this.loading = true;
+
+    this.materiasService.asignarMateriaParalelo(materiaAulaParalelo).subscribe({
+      next: (res) => {
+        if (res) {
+          Notificacion.notificar(this.mdbNotificationService, 'Materias creadas correctamente', TipoAlerta.ALERTA_OK);
+          this.loading = false;
+        }
+      },
+      error: () => {
+        Notificacion.notificar(this.mdbNotificationService, 'Error al asignar materias', TipoAlerta.ALERTA_ERROR);
+        console.error('error al asignar materia');
+        this.loading = false;
+      }
+    })
+  }
+
+  @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
 
 }

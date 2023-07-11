@@ -91,6 +91,9 @@ import { MuestraComponent } from "../../componentes/flujos/formacion/muestra/mue
 import {
   EstudiantesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component";
+import {
+  RegistroNotasComponent
+} from "../../componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component";
 
 
 const routes: Routes = [
@@ -147,6 +150,7 @@ const routes: Routes = [
       {path: 'formacion/academia/instructores', component: InstructoresComponent},
       {path: 'formacion/academia/materias', component: MateriasComponent},
       {path: 'formacion/academia/estudiantes', component: EstudiantesComponent},
+      {path: 'formacion/academia/notas', component: RegistroNotasComponent},
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },

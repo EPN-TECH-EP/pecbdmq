@@ -4,18 +4,18 @@ import { Injectable } from '@angular/core';
 export class Aula {
   public codAula: number;
   public nombreAula: string;
-  public capacidad: number;
-  public tipo: number;
-  public pcs: string;
-  public impresoras: string;
-  public internet: string;
-  public proyectores: number;
-  public instructor: number;
-  public salaOcupada: boolean;
-  public estado: string;
+  public capacidad?: number;
+  public tipo?: number;
+  public pcs?: string;
+  public impresoras?: string;
+  public internet?: string;
+  public proyectores?: number;
+  public instructor?: number;
+  public salaOcupada?: boolean;
+  public estado?: string;
 
 
- //public active: boolean;//
- // public notLocked: boolean;//
+  //public active: boolean;//
+  // public notLocked: boolean;//
 
 }

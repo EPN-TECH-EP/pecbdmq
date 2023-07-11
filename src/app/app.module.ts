@@ -145,6 +145,7 @@ import { SubtipoParametrosComponent } from './componentes/flujos/formacion/subti
 import { ResultadosPruebasComponent } from './componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
 import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra.component';
 import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
+import { RegistroNotasComponent } from './componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component';
 
 @NgModule({
   declarations: [
@@ -217,7 +218,8 @@ import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-a
     SubtipoParametrosComponent,
     ResultadosPruebasComponent,
     MuestraComponent,
-    EstudiantesComponent
+    EstudiantesComponent,
+    RegistroNotasComponent
   ],
   imports: [
     BrowserModule,
