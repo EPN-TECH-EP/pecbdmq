@@ -7,5 +7,154 @@
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Registro de notas</h1>
   </div>
-  <p class="text-primary">Materias en la que <b>usted</b> es coordinador</p>
+
+  <section *ngIf="estaEnVistaListaMaterias">
+    <p class="text-primary">Materias en la que <b>usted</b> es coordinador</p>
+
+    <div class="d-flex gap-4 justify-content-center flex-wrap">
+      <div class="card" *ngFor="let materia of materias">
+        <h5 class="card-header"><b>{{ materia.nombre | uppercase}}</b></h5>
+        <div class="card-body">
+          <p class="card-text"><b>Materia:</b> {{ materia.nombre | titlecase}}</p>
+          <p class="card-text">Aquí puedes registrar las notas de esta materia.</p>
+          <div class="d-flex justify-content-center">
+            <button
+              class="btn btn-primary"
+              (click)="abrirRegistroDeNotas(materia)"
+            >Registrar notas
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <section *ngIf="estaEnVistaRegistroNotas">
+    <button
+      class="btn btn-primary btn-sm mb-3"
+      (click)="abrirListaDeMaterias()"
+    >
+      <i class="fas fa-arrow-left me-2"></i>
+      Regresar a lista de materias
+    </button>
+
+    <h5 class="my-3"><b>{{ materiaSeleccionada.nombre }}</b></h5>
+
+    <h6 class="my-4"><b>Lista de estudiantes</b></h6>
+
+    <!-- Lista de estudiantes por paralelo -->
+    <div>
+      <mdb-tabs [fill]="true">
+        <mdb-tab *ngFor="let estudiantePorParalelo of estudiantesPorParalelo">
+          <ng-template mdbTabTitle><span><i
+            class="fas fa-people-group me-2"></i>{{ estudiantePorParalelo.paralelo.nombreParalelo }}</span>
+          </ng-template>
+
+          <section>
+            <div class="datatable datatable-hover datatable-sm table-responsive">
+              <form [formGroup]="notaPorEstudianteForm">
+                <table
+                  class="tabla datatable-table"
+                  mdbTable
+                  #datatableEstudiante
+                  [dataSource]="estudiantePorParalelo.estudiantes"
+                  [pagination]="pagination"
+                >
+                  <thead class="datatable-header">
+                  <tr>
+                    <th *ngFor="let head of headers" class="fw-bold fs-6">
+                      {{ head.label }}
+                    </th>
+                    <th class="text-center fw-bold fs-6">Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody class="datatable-body">
+                  <!-- Lista de estudiantes -->
+                  <tr *ngFor="let estudiante of datatableEstudiante.data">
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td [style.width.px]="200">
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudienteEditando">
+                        Nota Final
+                      </ng-container>
+                      <ng-container *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudienteEditando">
+                        <mdb-form-control>
+                          <input
+                            type="number"
+                            class="form-control"
+                            formControlName="nota"
+                            placeholder="Nota"
+                            required
+                          />
+                        </mdb-form-control>
+                      </ng-container>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudienteEditando">
+                        Nota Disciplinaria
+                      </ng-container>
+                      <ng-container *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudienteEditando">
+                        <mdb-form-control>
+                        </mdb-form-control>
+                      </ng-container>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudienteEditando">
+                      </ng-container>
+                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudienteEditando">
+                        <mdb-form-control>
+                        </mdb-form-control>
+                      </ng-container>
+                    </td>
+                    <td class="text-center">
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudienteEditando">
+                        <button
+                          mdbTooltip="Editar datos de la materia"
+                          [disabled]="estaEditandoNota"
+                          class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          mdbTooltip="Eliminar registro"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditandoNota"
+                        >
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                      </ng-container>
+                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudienteEditando">
+                        <button
+                          class="m-0 p-0 shadow-0 btn btn-lg text-success"
+                        >
+                          <i class="fa fa-check"></i> &nbsp;Guardar
+                        </button>
+                        <button
+                          class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                        >
+                          <i class="fa fa-ban"></i> &nbsp;Cancelar
+                        </button>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <mdb-table-pagination
+                  #pagination
+                  [entries]="10"
+                  [rowsPerPageText]="'Registros por página'"
+                ></mdb-table-pagination>
+              </form>
+            </div>
+          </section>
+        </mdb-tab>
+      </mdb-tabs>
+    </div>
+  </section>
 </div>

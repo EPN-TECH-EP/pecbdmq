@@ -22,6 +22,8 @@ export interface MateriaFormacion {
   coordinador: Instructor;
   nombreAula: string;
   codAula: number;
+  codParalelo: number;
+  nombreParalelo: string;
 }
 
 
@@ -74,7 +76,7 @@ export class MateriasFormacionService {
   //   }
   // }
 
-  crear(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
+  asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
     return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
   }
 
@@ -83,7 +85,7 @@ export class MateriasFormacionService {
   }
 
   listarMateriasParalelos(): Observable<MateriaFormacionResponse> {
-    return this.http.get<MateriaFormacionResponse>(`${ this.host }/materiaParalelo/listarMateriasParalelos`);
+    return this.http.get<MateriaFormacionResponse>(`${ this.host }/instructorMateriaParalelo/listarMateriasParalelos`);
   }
 
 }

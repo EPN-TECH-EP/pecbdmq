@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Delegado } from "./delegado.service";
 import { Instructor } from "../../modelo/flujos/instructor";
 
@@ -16,6 +16,10 @@ export class InstructorService {
 
   listar() {
     return this.http.get<Instructor[]>(`${ this.host }/instructor/listar`);
+  }
+
+  getInstructorById(codUsuario: number) {
+    return this.http.post<Instructor>(`${ this.host }/instructor/ByUser?codUsuario=${ codUsuario }`, {});
   }
 
 }

@@ -25,9 +25,14 @@
         <mdb-select
           mdbValidate
           [disabled]="selections.size === 0"
+          [(ngModel)]="codParalelo"
         >
-          <mdb-option>
-            Paralelo 1
+          <mdb-option
+            *ngFor="let paralelo of paralelosActivos"
+            [value]="paralelo.codParalelo"
+            [label]="paralelo.nombreParalelo"
+          >
+            {{ paralelo.nombreParalelo }}
           </mdb-option>
         </mdb-select>
       </mdb-form-control>
@@ -35,9 +40,10 @@
         class="btn btn-primary btn-sm"
         type="button"
         [disabled]="selections.size === 0"
+        (click)="asignarEstudiantesAParalelo()"
       >
         <i class="fas fa-save me-1"></i>
-        Guardar
+        Asignar estudiantes al paralelo
       </button>
     </div>
     <div class="datatable datatable-hover datatable-sm datatable-striped">

@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {
-  MateriaAulaParaleloRequest, MateriaFormacion,
+  MateriaAulaParaleloRequest,
+  MateriaFormacion,
+  MateriaFormacionRequest,
   MateriaFormacionResponse,
   MateriasFormacionService
 } from "../../../../../servicios/formacion/materias-formacion.service";
@@ -27,8 +29,11 @@ import { MdbTabsComponent } from "mdb-angular-ui-kit/tabs";
 })
 export class MateriasComponent implements OnInit, AfterViewInit {
 
+  materiasPorParalelo: {paralelo: Paralelo, materias: MateriaFormacion[]}[];
+
   itemMateria: Materia
   codMateriaEditando: number;
+  materiaEditando: MateriaFormacionRequest;
   materiasFormacion: MateriaFormacionResponse;
   paralelos: Paralelo[];
 
@@ -41,6 +46,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   paralelosFormGroup: FormGroup;
   materiaAulaFormGroup: FormGroup;
+  materiasFormacionFormGroup: FormGroup;
 
   paralelosSeleccionados: Paralelo[];
   materiasSeleccionadas: Materia[];
@@ -80,7 +86,6 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.estaEditandoMateria = false;
     this.error = false;
     this.loading = false;
-
     this.construirFormularios();
     this.paralelos = [];
   }
@@ -111,6 +116,25 @@ export class MateriasComponent implements OnInit, AfterViewInit {
       next: (materiasFormacion) => {
         this.materiasFormacion = materiasFormacion;
         console.log('materiasFormacion', materiasFormacion);
+        const paralelos = this.materiasFormacion.paralelos;
+        this.materiasPorParalelo = paralelos.map(paralelo => {
+          const materias = this.materiasFormacion.materias.filter(materia => materia.codParalelo === paralelo.codParalelo);
+          return { paralelo, materias };
+        });
+
+        // ordeno las materias por alfabeticamente
+        this.materiasPorParalelo.forEach(materiasPorParalelo => {
+          materiasPorParalelo.materias.sort((a, b) => {
+            if (a.nombre > b.nombre) {
+              return 1;
+            }
+            if (a.nombre < b.nombre) {
+              return -1;
+            }
+            return 0;
+          });
+        });
+
       },
       error: () => {
         console.error('Error al listar las materias');
@@ -143,6 +167,21 @@ export class MateriasComponent implements OnInit, AfterViewInit {
         console.log(value);
       }
     });
+
+    this.materiasFormacionFormGroup = this.builder.group({
+      codMateria: [''],
+      codParalelo: [''],
+      codAula: [''],
+      codCoordinador: ['', Validators.required],
+      codAsistentes: this.builder.array([]),
+      codInstructores: this.builder.array([]),
+    })
+
+    this.materiasFormacionFormGroup.valueChanges.subscribe({
+      next: (value) => {
+        console.log(value);
+      }
+    });
   }
 
   private crearMateriaAula() {
@@ -158,6 +197,17 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private patchDatosMateriaFormacionFormGroup(materia: MateriaFormacionRequest) {
+    this.materiasFormacionFormGroup.patchValue({
+      codMateria: materia.codMateria,
+      codParalelo: materia.codParalelo,
+      codAula: materia.codAula,
+      codCoordinador: materia.codCoordinador,
+      codAsistentes: materia.codAsistentes,
+      codInstructores: materia.codInstructores,
+    })
+  }
+
   get paralelosFormArray() {
     return this.paralelosFormGroup.get('paralelos') as FormArray;
   }
@@ -166,7 +216,24 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     return this.materiaAulaFormGroup.get('materiaAula') as FormArray;
   }
 
-  onEditarMateria(materia: MateriaFormacion) {
+  get asistentesFormArray() {
+    return this.materiasFormacionFormGroup.get('codAsistentes') as FormArray;
+  }
+
+  get instructoresFormArray() {
+    return this.materiasFormacionFormGroup.get('codInstructores') as FormArray;
+  }
+
+  onEditarMateria(materia: MateriaFormacion, paralelo: Paralelo) {
+    this.materiaEditando = {
+      codMateria: materia?.codMateria,
+      codAula: materia?.codAula,
+      codAsistentes: materia?.asistentes.map(a => a?.codInstructor),
+      codCoordinador: materia?.coordinador?.codInstructor,
+      codInstructores: materia?.instructores.map(i => i?.codInstructor),
+      codParalelo: paralelo?.codParalelo,
+    }
+    this.patchDatosMateriaFormacionFormGroup(this.materiaEditando);
     this.estaEditandoMateria = true;
     this.codMateriaEditando = materia.codMateria;
   }
@@ -229,7 +296,98 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     })
   }
 
+  onGuardarMateria() {
+
+    const materiaFormacion: MateriaFormacionRequest = {
+      codMateria: this.materiasFormacionFormGroup?.value?.codMateria,
+      codParalelo: this.materiasFormacionFormGroup?.value?.codParalelo,
+      codAula: this.materiasFormacionFormGroup?.value?.codAula,
+      codAsistentes: this.materiasFormacionFormGroup?.value?.codAsistentes,
+      codCoordinador: this.materiasFormacionFormGroup?.value?.codCoordinador,
+      codInstructores: this.materiasFormacionFormGroup?.value?.codInstructores,
+    };
+
+    console.log('materia que mando al sedrvicio', materiaFormacion);
+
+    this.asignarCoordinadorTodosParalelos(materiaFormacion);
+
+    this.loading = true;
+
+    this.materiasService.asignarInstructores(materiaFormacion).subscribe({
+      next: (res) => {
+        if (res) {
+          Notificacion.notificar(this.mdbNotificationService, 'Materia asignada correctamente', TipoAlerta.ALERTA_OK);
+          this.loading = false;
+        }
+      },
+      error: () => {
+        Notificacion.notificar(this.mdbNotificationService, 'Error al asignar materia', TipoAlerta.ALERTA_ERROR);
+        console.error('error al asignar materia');
+        this.loading = false;
+      }
+    });
+
+  }
+
+  onCancelarEdicionMateria() {
+    this.estaEditandoMateria = false;
+    this.codMateriaEditando = 0;
+    this.materiaEditando = {} as MateriaFormacionRequest;
+  }
+
+  toggleAsistentesSeleccionados(codigo: number) {
+    const codAsistentes = this.asistentesFormArray;
+    const index = codAsistentes.value.indexOf(codigo);
+
+    if (index !== -1) codAsistentes.removeAt(index);// Desmarcar opción
+
+    codAsistentes.push(this.builder.control(codigo)); // Marcar opción
+  }
+
+  toggleInstructoresSeleccionados(codInstructor: number) {
+    const codInstructores = this.instructoresFormArray;
+    const index = codInstructores.value.indexOf(codInstructor);
+
+    if (index !== -1) codInstructores.removeAt(index);// Desmarcar opción
+
+    codInstructores.push(this.builder.control(codInstructor)); // Marcar opción
+  }
+
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
   @ViewChild('tabs') tabs: MdbTabsComponent;
 
+  private asignarCoordinadorTodosParalelos(materiaFormacion: MateriaFormacionRequest) {
+
+    this.materiasPorParalelo.forEach((materiaPorParalelo) => {
+
+      materiaPorParalelo.materias.forEach((materia) => {
+
+        if (materia.codMateria === materiaFormacion.codMateria && materia.codParalelo !== materiaFormacion.codParalelo) {
+
+          const materiaFormacionRequest: MateriaFormacionRequest = {
+            codMateria: materia?.codMateria,
+            codParalelo: materia?.codParalelo,
+            codAula: materia?.codAula,
+            codAsistentes: [],
+            codCoordinador: materiaFormacion.codCoordinador,
+            codInstructores: [],
+          };
+
+          this.materiasService.asignarInstructores(materiaFormacionRequest).subscribe({
+            next: (res) => {
+              if (res) {
+                console.log('asignado coordinador a materia a todas las materias');
+              }
+            },
+            error: () => {
+              console.error('error al asignar coordinador a todas las materias');
+              this.loading = false;
+            }
+          })
+        }
+      });
+
+    });
+
+  }
 }
