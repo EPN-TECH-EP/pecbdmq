@@ -1,1 +1,34 @@
-<p>resultados-pruebas works!</p>
+<app-boton-volver></app-boton-volver>
+
+<ng-container *ngIf="!esEstadoPruebas">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación</h5>
+      <p class="card-text">El proceso de formación no se encuentra en estado de PRUEBAS.</p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container-fluid" *ngIf="esEstadoPruebas">
+  <!-- Título -->
+  <div class="row mt-3 d-flex justify-content-center">
+    <div class="col-9 text-center">
+      <p class="fs-4 fw-bolder mb-3">Registro de resultados de Pruebas de Formación</p>
+    </div>
+  </div>
+
+  <!-- contenido -->
+
+  <!-- selección de prueba -->
+  <mdb-form-control>
+    <mdb-select
+      id="prueba"
+      name="prueba"
+      (valueChange)="onPruebaSeleccionada($event)"
+      [(ngModel)]="pruebaDetalleSeleccionada">
+      <mdb-option *ngFor="let pruebaItem of listaPruebaDetalleDatos" [value]="pruebaItem"
+        >{{ pruebaItem.ordenTipoPrueba }} {{ pruebaItem.subTipoPruebaNombre }} <span class="text-primary">{{ pruebaItem.estado }}</span>
+      </mdb-option>
+    </mdb-select>
+  </mdb-form-control>
+</div>

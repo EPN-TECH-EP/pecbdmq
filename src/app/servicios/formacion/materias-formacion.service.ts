@@ -8,16 +8,22 @@ import { Paralelo } from "../../modelo/admin/paralelo";
 import { Aula } from "../../modelo/admin/aula";
 import { map, tap } from "rxjs/operators";
 
+export interface MateriaFormacionResponse {
+  paralelos: Paralelo[];
+  materias: MateriaFormacion[];
+}
+
 export interface MateriaFormacion {
-  codMateriaFormacion: number;
-  nombreMateria: string;
-  nombreEjeMateria: string;
-   coordinador: Instructor;
-  asistentes: Instructor[];
+  codMateria: number;
+  nombre: string;
+  nombreEje: string;
   instructores: Instructor[];
-  paralelo?: Paralelo;
-  nombreParalelo?: string;
-  aula: Aula;
+  asistentes: Instructor[];
+  coordinador: Instructor;
+  nombreAula: string;
+  codAula: number;
+  codParalelo: number;
+  nombreParalelo: string;
 }
 
 
@@ -31,6 +37,15 @@ export interface MateriaFormacionRequest {
   codParalelo: number;
 }
 
+export interface MateriaAula {
+  codMateria: number;
+  codAula: number;
+}
+
+export interface MateriaAulaParaleloRequest {
+  materiasAulas: MateriaAula[];
+  paralelos: Paralelo[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -44,25 +59,33 @@ export class MateriasFormacionService {
   constructor(private http: HttpClient, private archivoService: ArchivoService) {
   }
 
-  listar(): Observable<MateriaFormacion[]> {
-    const cacheKey = `${ this.host }/instructorMateriaParalelo/listarRead`;
-    if (this.cache[cacheKey]) {
-      console.log('Recuperado de caché');
-      return of(this.cache[cacheKey].body);
-    } else {
-      return this.http.get<MateriaFormacion[]>(cacheKey, { observe: 'response', responseType: 'json' })
-        .pipe(
-          tap((res: HttpResponse<MateriaFormacion[]>) => {
-            console.log('Almacenando en caché');
-            this.cache[cacheKey] = res;
-          }),
-          map((res: HttpResponse<MateriaFormacion[]>) => res.body)
-        );
+  // listar(): Observable<MateriaFormacion[]> {
+  //   const cacheKey = `${ this.host }/instructorMateriaParalelo/listarRead`;
+  //
+  //   if (this.cache[cacheKey]) {
+  //     console.log('Recuperado de caché');
+  //     return of(this.cache[cacheKey].body);
+  //   } else {
+  //     return this.http.get<MateriaFormacion[]>(cacheKey, { observe: 'response', responseType: 'json' })
+  //       .pipe(
+  //         tap((res: HttpResponse<MateriaFormacion[]>) => {
+  //           console.log('Almacenando en caché');
+  //           this.cache[cacheKey] = res;
+  //         }),
+  //         map((res: HttpResponse<MateriaFormacion[]>) => res.body)
+  //       );
+  //   }
+  // }
+
+  asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
+    return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
     }
+  asignarMateriaParalelo(data: MateriaAulaParaleloRequest) {
+    return this.http.post(`${ this.host }/materiaParalelo/asignar`, data);
   }
 
-  crear(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
-    return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
+  listarMateriasParalelos(): Observable<MateriaFormacionResponse> {
+    return this.http.get<MateriaFormacionResponse>(`${ this.host }/instructorMateriaParalelo/listarMateriasParalelos`);
   }
 
 }

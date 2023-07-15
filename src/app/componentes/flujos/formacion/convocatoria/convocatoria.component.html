@@ -52,7 +52,7 @@
               <div class="container">
                 <div class="row mb-4">
                   <div class="col-3">
-                      <h6 class="text-primary">Código de la convocatoria</h6>
+                    <h6 class="text-primary">Código de la convocatoria</h6>
                     <h4><span class="badge badge-success">&nbsp;{{ codigoUnicoConvocatoria }}&nbsp;</span></h4>
                   </div>
                   <div class="col-4">
@@ -62,6 +62,7 @@
                 </div>
                 <div class="row">
                   <div class="col">
+                    <!-- nombre -->
                     <mdb-form-control>
                       <input
                         mdbInput
@@ -176,7 +177,7 @@
                         #dpFechaInicio="mdbDatepicker"
                         [options]="opcionesDatepicker"
                         [inline]="true"
-                        [minDate]="minDate"
+                        [minDate]="fechaActual"
                       ></mdb-datepicker>
                       <mdb-error
                         *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"
@@ -466,7 +467,7 @@
                       class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
                       type="submit"
                       (click)="agregarRequisito()"
-                      [disabled]=""
+                      [disabled]="itemRequisito === null"
                     >
                       <i class="fa fa-check"></i> Agregar
                     </button>
@@ -575,8 +576,8 @@
                   <b>Documento de convocatoria:</b> {{ documentoConvocatoria?.name }}
                 </p>
                 <p>
-                <b>Documento de soporte:</b> {{ documentoSoporte?.name }}
-              </p>
+                  <b>Documento de soporte:</b> {{ documentoSoporte?.name }}
+                </p>
               </div>
             </div>
           </div>

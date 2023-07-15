@@ -31,6 +31,7 @@ import { Router } from "@angular/router";
 })
 
 export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
+
   opcionesDatepicker = OPCIONES_DATEPICKER;
   correo: FormControl;
   convocatoriaForm: FormGroup;
@@ -46,7 +47,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   archivo: File;
   fechaActual: Date;
   codigoUnicoConvocatoria: string;
-  minDate: Date;
 
   // verifica el estado de formación
   existeProcesoActivo: boolean;
@@ -80,7 +80,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
-    this.itemRequisito = new Requisito()
+    this.itemRequisito = null;
     this.tamMaxArchivo = 0;
     this.subscriptions = [];
     this.requisitosConvocatoria = [];
@@ -93,8 +93,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.estaCreando = false;
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
-    this.fechaActual = new Date();
-    this.minDate = new Date();
     this.codigoUnicoConvocatoria = '';
 
   }
@@ -106,6 +104,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         return of(null);
       })
     ).subscribe((response) => {
+
       this.servicioRequisito.getRequisito().subscribe((requisitos) => {
         this.requisitos = requisitos;
         this.requisitosLista = requisitos;
@@ -129,8 +128,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
             this.matchDatosConvocatoriaFormulario(convocatoria[0]);
             this.codigoUnicoConvocatoria = convocatoria[0].codigoUnico;
             this.filtrarRequisitosConvocatoria(convocatoria[0]);
-            this.minDate = new Date(convocatoria[0].fechaActual);
-            this.fechaActual = convocatoria[0].fechaActual;
+            this.fechaActual = new Date(convocatoria[0].fechaActual);
             this.convocatoria = convocatoria[0];
             this.requisitosConvocatoria = convocatoria[0].requisitos;
             this.correo.patchValue(convocatoria[0].correo);
@@ -208,12 +206,14 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       horaFin: convocatoria?.horaFinConvocatoria,
     });
 
+    console.log('Convocatoria:', this.convocatoriaForm.value);
+
   }
 
   private filtrarRequisitosConvocatoria(convocatoria: Convocatoria) {
 
     const codigosConvocatoria = new Set(convocatoria.requisitos.map((r) => r.codigoRequisito));
-    this.requisitosLista = this.requisitos.filter((requisito) => !codigosConvocatoria.has(requisito.codigoRequisito));
+    this.requisitosLista = this.requisitos?.filter((requisito) => !codigosConvocatoria.has(requisito.codigoRequisito));
   }
 
   subirArchivo(event: any, tipo: string): void {
@@ -259,7 +259,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     this.editElementIndex = -1;
     this.addRow = false;
-    this.itemRequisito = new Requisito();
+    this.itemRequisito = null;
   }
 
   eliminarRequisito(codRequisito: number) {
@@ -275,6 +275,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   crearConvocatoria() {
+
 
     this.showLoading = true;
 
@@ -399,7 +400,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.seCreoConExito = true;
           this.showLoading = false;
-          this.router.navigate(['/principal/formacion/proceso']);
+          this.router.navigate(['/principal/formacion/proceso']).then();
 
         },
         error: (errorResponse: HttpErrorResponse) => {

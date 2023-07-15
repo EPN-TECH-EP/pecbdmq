@@ -2,7 +2,7 @@ import { Paralelo } from "../admin/paralelo";
 
 export interface Estudiante {
   codEstudiante: number;
-  codigoUnico: string;
+  codUnico: string;
   nombre: string;
   apellido: string;
   cedula: string;
@@ -15,7 +15,7 @@ export interface Estudiante {
 
 export const ESTUDIANTE_VACIO: Estudiante = {
   codEstudiante: null,
-  codigoUnico: null,
+  codUnico: null,
   nombre: null,
   apellido: null,
   cedula: null,
@@ -29,7 +29,7 @@ export const ESTUDIANTE_VACIO: Estudiante = {
 export const ESTUDIANTES: Estudiante[] = [
   {
     codEstudiante: 1,
-    codigoUnico: '123456789',
+    codUnico: '123456789',
     nombre: 'Juan',
     apellido: 'Perez',
     cedula: '123456789',
@@ -40,7 +40,7 @@ export const ESTUDIANTES: Estudiante[] = [
   },
   {
     codEstudiante: 2,
-    codigoUnico: '123456789',
+    codUnico: '123456789',
     nombre: 'Maria',
     apellido: 'Perez',
     cedula: '123456789',
@@ -51,7 +51,7 @@ export const ESTUDIANTES: Estudiante[] = [
   },
   {
     codEstudiante: 3,
-    codigoUnico: '123456789',
+    codUnico: '123456789',
     nombre: 'Pedro',
     apellido: 'Perez',
     cedula: '123456789',

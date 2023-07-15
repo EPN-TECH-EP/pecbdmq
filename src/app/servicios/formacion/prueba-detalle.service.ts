@@ -55,5 +55,12 @@ export class PruebaDetalleService {
     });
   }
 
+  // tipo de resultado que se debe registrar en la prueba
+  // endpóint tipoResultado
+  public tipoResultadoPorPrueba(codPrueba: number): Observable<HttpResponse<boolean>> {
+    return this.http.get<HttpResponse<boolean>>(`${this.host}/${this.nombreServicio}/tipoResultado/${codPrueba}`);
+  } 
+
+
     
 }

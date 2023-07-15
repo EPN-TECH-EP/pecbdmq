@@ -21,13 +21,18 @@
       Seleccione un paralelo para los estudiantes que no tienen uno asignado.
     </p>
     <div class="d-flex gap-2 my-3">
-      <mdb-form-control [style.wi]="">
+      <mdb-form-control [style.width.px]="200">
         <mdb-select
           mdbValidate
           [disabled]="selections.size === 0"
+          [(ngModel)]="codParalelo"
         >
-          <mdb-option>
-            Paralelo 1
+          <mdb-option
+            *ngFor="let paralelo of paralelosActivos"
+            [value]="paralelo.codParalelo"
+            [label]="paralelo.nombreParalelo"
+          >
+            {{ paralelo.nombreParalelo }}
           </mdb-option>
         </mdb-select>
       </mdb-form-control>
@@ -35,9 +40,10 @@
         class="btn btn-primary btn-sm"
         type="button"
         [disabled]="selections.size === 0"
+        (click)="asignarEstudiantesAParalelo()"
       >
         <i class="fas fa-save me-1"></i>
-        Guardar
+        Asignar estudiantes al paralelo
       </button>
     </div>
     <div class="datatable datatable-hover datatable-sm datatable-striped">
@@ -86,12 +92,11 @@
               </div>
             </td>
             <td>
-              {{ estudiante?.codigoUnico }}
+              {{ estudiante?.codUnico }}
             </td>
             <td>
               <div>
-                <p class="fw-bold mb-0">{{estudiante.nombre}} {{estudiante.apellido}}</p>
-                <p class="text-muted mb-0">{{estudiante.correo}}</p>
+                <p class="mb-0">{{estudiante.nombre}} {{estudiante.apellido}}</p>
               </div>
             </td>
             <td>

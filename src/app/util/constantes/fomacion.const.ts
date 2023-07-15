@@ -5,5 +5,5 @@ export const FORMACION = {
   estadoInscripcion: 'INSCRIPCION',
   estadoPruebas: 'PRUEBAS',
   estadoMuestreo: "MUESTREO",
-
+  estadoPruebasCierre: 'CIERRE'
 }

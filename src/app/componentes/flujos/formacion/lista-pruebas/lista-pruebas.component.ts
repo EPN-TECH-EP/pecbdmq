@@ -42,15 +42,7 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
   listaOrdenInicial: PruebaDetalleOrden[] = [];
   listaPruebaDetalleDatosInicial: PruebaDetalleDatos[] = [];
 
-  /* descripcionPrueba: ['', Validators.required],        
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
-        hora: ['', Validators.required],        
-        codSubtipoPrueba: ['', Validators.required],
-        ordenTipoPrueba: ['', Validators.required],
-        puntajeMinimo: [''],
-        puntajeMaximo: [''],
-        tienePuntaje: [''], */
+  // columnas
   headers = [
     { key: 'ordenTipoPrueba', label: 'Orden', width: '50px', wrap: true, start: false },
     { key: 'codSubtipoPrueba', label: 'Subtipo Prueba', width: '150px', wrap: false, start: true },

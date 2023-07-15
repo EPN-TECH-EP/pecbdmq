@@ -656,10 +656,9 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         },
         error: (errorResponse: any) => {
           
-          this.showLoadingPin = false;
 
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-          
+          this.showLoadingPin = false;
         },
       });
     }

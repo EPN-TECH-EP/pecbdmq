@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Estudiante, ESTUDIANTES } from "../../../../../modelo/flujos/Estudiante";
 import { MdbCheckboxChange } from "mdb-angular-ui-kit/checkbox";
-import { EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
+import { EstudianteParaleloRequest, EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
+import { Paralelo } from "../../../../../modelo/admin/paralelo";
 
 @Component({
   selector: 'app-estudiantes',
@@ -11,6 +12,9 @@ import { EstudianteService } from "../../../../../servicios/formacion/estudiante
 export class EstudiantesComponent implements OnInit {
 
   estudiantes: Estudiante[];
+  paralelosActivos: Paralelo[];
+
+  codParalelo: number;
 
   headers: {key: string, label: string}[];
   selections = new Set<Estudiante>();
@@ -30,6 +34,12 @@ export class EstudiantesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.estudianteService.listarParalelosActivos().subscribe({
+      next: paralelos => {
+        console.log(paralelos);
+        this.paralelosActivos = paralelos;
+      }
+    })
     this.estudianteService.listar().subscribe({
       next: estudiantes => {
         this.estudiantes = estudiantes;
@@ -78,6 +88,20 @@ export class EstudiantesComponent implements OnInit {
       this.selections.delete(value);
       console.log(this.selections);
     }
+  }
+
+  asignarEstudiantesAParalelo() {
+    const estudiantesParaleloEstudiante: EstudianteParaleloRequest = {
+      lista: Array.from(this.selections),
+      codParalelo: this.codParalelo,
+    }
+    console.log(estudiantesParaleloEstudiante);
+    this.estudianteService.asignarEstudianteMateriaParalelo(estudiantesParaleloEstudiante).subscribe({
+      next: () => {
+        console.log('Estudiantes asignados correctamente');
+      }
+    })
+
   }
 
 }

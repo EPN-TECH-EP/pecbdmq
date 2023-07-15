@@ -1,1 +1,285 @@
-<p>subtipo-parametros works!</p>
+<app-boton-volver></app-boton-volver>
+
+<ng-container *ngIf="!esEstadoPruebas">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación</h5>
+      <p class="card-text">El proceso de formación no se encuentra en estado de PRUEBAS.</p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container-fluid" *ngIf="esEstadoPruebas">
+  <!-- Título -->
+  <div class="row mt-3 d-flex justify-content-center">
+    <div class="col-9 text-center">
+      <p class="fs-4 fw-bolder mb-3">Parametrización de Pruebas de Formación</p>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row d-flex align-items-center">
+    <div class="col-12">
+      <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+        <form #form="ngForm" novalidate>
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #table="mdbTable"
+            [dataSource]="listaParametrizaPruebaResumenDatos">
+            <thead>
+              <tr>
+                <th class="text-center">Sel.</th>
+                <th
+                  *ngFor="let header of headers"
+                  [mdbTableSortHeader]="header.key"
+                  scope="col"
+                  [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
+                  <div class="fw-bold">{{ header.label | titlecase }}</div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="datatable-body">
+              <!-- datos -->
+              <tr *ngFor="let parametriza of table.data; let index = index">
+                <td class="text-center">
+                  <input
+                    type="radio"
+                    name="selection"
+                    [checked]="parametrizaSeleccionado == parametriza"
+                    (click)="onSelectRow(parametriza)"
+                    [disabled]="editElementIndex !== -1 && editElementIndex !== index" />
+                </td>
+
+                <td>
+                  <div class="text-wrap">
+                    {{ parametriza.subtipoPruebaNombre }}
+                    <span class="text-muted">({{ parametriza.tipoPruebaNombre }})</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="text-wrap">
+                    {{ parametriza.descripcion }}
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    {{ parametriza.fechaCreacion | date : 'dd/MM/yyyy' }}
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    {{ parametriza.fechaInicio | date : 'dd/MM/yyyy' }}
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    {{ parametriza.fechaFin | date : 'dd/MM/yyyy' }}
+                  </div>
+                </td>
+
+                <!-- td>
+                  <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                    <div class="text-center">
+                      <button
+                        mdbTooltip="Editar registro"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="editRow(parametriza, index)"
+                        [disabled]="editElementIndex !== -1 && editElementIndex !== index">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      < button
+                        mdbTooltip="Eliminar registro"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="confirmaEliminar($event, parametriza.codPruebaDetalle)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
+                        <i class="fa fa-trash-alt"></i>
+                      </button >
+                    </div>
+                  </ng-container>
+                </td -->
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla Detalle -->
+  <ng-container *ngIf="listaParametrizaPruebaDetalle">
+    <div class="row d-flex align-items-center">
+      <div class="col-12">
+        <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+          <form #form="ngForm" novalidate>
+            <table
+              class="table datatable-table"
+              mdbTable
+              mdbTableSort
+              #table="mdbTable"
+              [dataSource]="listaParametrizaPruebaDetalle">
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let header of headersDetalle"
+                    [mdbTableSortHeader]="header.key"
+                    scope="col"
+                    [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
+                    <div class="fw-bold">{{ header.label | titlecase }}</div>
+                  </th>
+                  <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+                </tr>
+              </thead>
+
+              <tbody class="datatable-body">
+                <!-- datos -->
+                <tr *ngFor="let detalle of table.data; let index = index">
+                  <td>
+                    <div class="text-wrap">
+                      {{ detalle.sexo }}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="text-wrap">
+                      <small class="text-muted">Desde: </small>{{ detalle.edadInicioMeses }}
+                      <small class="text-muted"> Hasta: </small>{{ detalle.edadFinMeses }}
+                    </div>
+                  </td>
+
+                  <td>
+                    <ng-container *ngIf="editElementIndex !== index">
+                      <div>
+                        {{ detalle.calificacion }}
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editElementIndex === index">
+                      <mdb-form-control>
+                        <input
+                          mdbInput
+                          id="calificacion"
+                          name="calificacion"
+                          type="text"
+                          class="form-control form-control-sm"
+                          [(ngModel)]="parametrizaPruebaDetalleEdit.calificacion"
+                          #calificacion="ngModel"
+                          min="1"
+                          max="100"
+                          inputValidation="entero"
+                          mdbTooltip="Rango: 1 - 100" />
+                      </mdb-form-control>
+                    </ng-container>
+                  </td>
+
+                  <td>
+                    <ng-container *ngIf="editElementIndex !== index">
+                      <div>
+                        {{ detalle.numeroRepeticiones }}
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editElementIndex === index">
+                      <mdb-form-control>
+                        <input
+                          mdbInput
+                          id="numeroRepeticiones"
+                          name="numeroRepeticiones"
+                          type="text"
+                          class="form-control form-control-sm"
+                          [(ngModel)]="parametrizaPruebaDetalleEdit.numeroRepeticiones"
+                          #numeroRepeticiones="ngModel"
+                          min="1"
+                          max="100"
+                          inputValidation="entero"
+                          mdbTooltip="Rango: 1 - 100" />
+                      </mdb-form-control>
+                    </ng-container>
+                  </td>
+
+                  <td>
+                    <ng-container *ngIf="editElementIndex !== index">
+                      <div>
+                        {{ detalle.minutosSegundos }}
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editElementIndex === index">
+                      <!-- input minutos y segundos-->
+
+                      <div class="d-flex flex-row justify-content-center">
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            id="minutos"
+                            name="minutos"
+                            type="text"
+                            class="form-control form-control-sm"
+                            [(ngModel)]="minutos"
+                            min="0"
+                            max="59"
+                            inputValidation="entero"
+                            mdbTooltip="Rango: 0 - 59" />
+                        </mdb-form-control>
+
+                        <div class="text-dark h6 mx-1">:</div>
+
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            id="segundos"
+                            name="segundos"
+                            type="text"
+                            class="form-control form-control-sm"
+                            [(ngModel)]="segundos"
+                            min="0"
+                            max="59"
+                            inputValidation="entero"
+                            mdbTooltip="Rango: 0 - 59" />
+                        </mdb-form-control>
+                      </div>
+                    </ng-container>
+                  </td>
+
+                  <td>
+                    <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                      <div class="text-center">
+                        <button
+                          mdbTooltip="Editar registro"
+                          class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          (click)="editRow(detalle, index)"
+                          [disabled]="editElementIndex !== -1 && editElementIndex !== index">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <!-- button
+                        mdbTooltip="Eliminar registro"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="confirmaEliminar($event, parametriza.codPruebaDetalle)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
+                        <i class="fa fa-trash-alt"></i>
+                      </button -->
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editElementIndex === index">
+                      <button
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                        (click)="actualizarParametrizaPruebaDetalle(detalle)">
+                        <i class="fa fa-check"></i> Guardar
+                      </button>
+                      <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="undoRow(index)">
+                        <i class="fa fa-ban"></i> Cancelar
+                      </button>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
