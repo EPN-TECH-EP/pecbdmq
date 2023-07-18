@@ -4,11 +4,11 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { defer, Observable, of } from "rxjs";
 import { Paralelo } from "../../modelo/admin/paralelo";
 import { MateriaFormacion } from "./materias-formacion.service";
-import { Estudiante } from "../../modelo/flujos/Estudiante";
+import { Estudiante, NotaPorEstudiante } from "../../modelo/flujos/Estudiante";
 
 export interface EstudiantesPorParalelo {
   paralelos: Paralelo[];
-  estudiantes: Estudiante[];
+  estudianteDatos: NotaPorEstudiante[];
 }
 
 export interface MateriaPorInstrutor {
@@ -32,6 +32,14 @@ export class RegistroNotasService {
 
   listarMateriasSiEsCoordinador(codInstructor: number) {
     return this.http.post<MateriaPorInstrutor[]>(`${ this.host }/materia/coordinador?codInstructor=${ codInstructor }`, {});
+  }
+
+  listarEstudiantesPorCodMateria(codMateria: number) {
+    return this.http.post<EstudiantesPorParalelo>(`${ this.host }/notasFormacion/listarEstudiantesByMateria/${ codMateria }`, {});
+  }
+
+  registrarNota(codNotaEstudiante: number, nota: NotaPorEstudiante) {
+    return this.http.put(`${ this.host }/notasFormacion/notas/${ codNotaEstudiante }`, nota);
   }
 
 }

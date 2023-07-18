@@ -1,22 +1,28 @@
 <div class="container">
-  <h4 class="text-center">Menú Formación Academia</h4>
+  <h4 class="text-center">Menú Formación Académica</h4>
 
-  <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
-    <div class="col">
-      <a routerLink="/principal/formacion/academia/estudiantes" class="link-dark">
-        <div class="card h-100 text-center hover-shadow border">
-          <i
-            class="fa-solid fa-users fa-5x mt-5 text-warning text-opacity-50"
-          ></i>
-          <div class="card-body">
-            <h5 class="card-title">Estudiantes</h5>
-            <p class="card-text">
-              Gestión de estudiantes, asignación de paralelos
-            </p>
-          </div>
-        </div>
-      </a>
+  <a
+    class="m-0 p-0"
+    (click)="basicCollapse.toggle()"
+    role="button"
+    [attr.aria-expanded]="!basicCollapse.collapsed"
+    aria-controls="collapseExample"
+    [mdbTooltip]="'Flujo correcto para la gestión de la formación académica'"
+  >
+    <i class="fas fa-info-circle text-primary"></i>
+  </a>
+  <!--Collapsed content-->
+  <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse">
+    <div class="alert alert-info" role="alert">
+      <p><b>Flujo correcto para la gestión de la formación académica</b></p>
+      1. Registrar instructores <br />
+      2. Registrar materias y los respectivos paralelos<br />
+      3. Registrar estudiantes y asignar paralelos<br />
     </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-1">
+
 
     <div class="col">
       <a routerLink="/principal/formacion/academia/instructores" class="link-dark">
@@ -43,12 +49,29 @@
           <div class="card-body">
             <h5 class="card-title">Materias</h5>
             <p class="card-text">
-              Gestión de materias
+              Gestión de materias y paralelos
             </p>
           </div>
         </div>
       </a>
     </div>
+
+    <div class="col">
+      <a routerLink="/principal/formacion/academia/estudiantes" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i
+            class="fa-solid fa-users fa-5x mt-5 text-warning text-opacity-50"
+          ></i>
+          <div class="card-body">
+            <h5 class="card-title">Estudiantes</h5>
+            <p class="card-text">
+              Gestión de estudiantes, asignación de paralelos
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+
     <div class="col">
       <a routerLink="/principal/formacion/academia/gestion-documentos" class="link-dark">
         <div class="card h-100 text-center hover-shadow border">
@@ -81,7 +104,7 @@
     </div>
 
     <div class="col">
-      <a class="link-dark">
+      <a routerLink="/principal/formacion/academia/notas-disciplina" class="link-dark">
         <div class="card h-100 text-center hover-shadow border">
           <i
             class="fa-solid fa-shield fa-5x mt-5 text-danger text-opacity-50"

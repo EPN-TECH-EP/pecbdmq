@@ -94,6 +94,9 @@ import {
 import {
   RegistroNotasComponent
 } from "../../componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component";
+import {
+  RegistroNotasDisciplinariasComponent
+} from "../../componentes/flujos/formacion/formacion-academica/registro-notas-disciplinarias/registro-notas-disciplinarias.component";
 
 
 const routes: Routes = [
@@ -151,6 +154,7 @@ const routes: Routes = [
       {path: 'formacion/academia/materias', component: MateriasComponent},
       {path: 'formacion/academia/estudiantes', component: EstudiantesComponent},
       {path: 'formacion/academia/notas', component: RegistroNotasComponent},
+      {path: 'formacion/academia/notas-disciplina', component: RegistroNotasDisciplinariasComponent},
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },

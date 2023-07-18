@@ -5,44 +5,13 @@
 
 <div class="container">
   <div class="row m-3 text-center">
-    <h1 class="fs-4 fw-bolder">Registro de notas</h1>
+    <h1 class="fs-4 fw-bolder">Registro de notas disciplinarias</h1>
   </div>
 
-  <section *ngIf="estaEnVistaListaMaterias">
-    <p class="text-primary">Materias en la que <b>usted</b> es coordinador</p>
 
-    <div class="d-flex gap-4 justify-content-center flex-wrap">
-      <div class="card" *ngFor="let materia of materias">
-        <h5 class="card-header"><b>{{ materia.nombre | uppercase}}</b></h5>
-        <div class="card-body">
-          <p class="card-text"><b>Materia:</b> {{ materia.nombre | titlecase}}</p>
-          <p class="card-text">Aquí puedes registrar las notas de esta materia.</p>
-          <div class="d-flex justify-content-center">
-            <button
-              class="btn btn-primary"
-              (click)="abrirRegistroDeNotas(materia)"
-            >Registrar notas
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <section >
 
-
-  </section>
-
-  <section *ngIf="estaEnVistaRegistroNotas">
-    <button
-      class="btn btn-primary btn-sm mb-3"
-      (click)="abrirListaDeMaterias()"
-    >
-      <i class="fas fa-arrow-left me-2"></i>
-      Regresar a lista de materias
-    </button>
-
-    <h5 class="my-3"><b>{{ materiaSeleccionada.nombre }}</b></h5>
-
-    <h6 class="my-4"><b>Lista de estudiantes por paralelo</b></h6>
+    <h6 class="my-4"><b>Lista de estudiantes</b></h6>
 
     <!-- Lista de estudiantes por paralelo -->
     <div>
@@ -64,8 +33,7 @@
                 >
                   <thead class="datatable-header">
                   <tr>
-                    <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
-                        [ngClass]="{ 'text-center': i >= headers.length - 3 }">
+                    <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6" [ngClass]="{ 'text-center': i >= headers.length - 1 }">
                       {{ head.label }}
                     </th>
                     <th class="text-center fw-bold fs-6">Acciones</th>
@@ -75,60 +43,25 @@
                   <!-- Lista de estudiantes -->
                   <tr *ngFor="let estudiante of datatableEstudiante.data">
                     <td>
-                      {{ estudiante.codUnicoEstudiante}}
+                      {{ estudiante.codUnico}}
                     </td>
                     <td>
-                      {{ estudiante.nombreCompleto }}
+                      {{ estudiante.nombre }} {{ estudiante.apellido }}
+
                     </td>
                     <td class="text-center">
                       <ng-container *ngIf="!estaEditandoNota || estudiante.codNota !== codEstudianteNotaEditando">
-                        {{ estudiante?.notaFinal || '-'}}
+                        {{ estudiante.notaDisciplina }}
                       </ng-container>
-                      <ng-container *ngIf="estaEditandoNota && estudiante.codNota === codEstudianteNotaEditando">
-                        <mdb-form-control>
+                      <ng-container
+                        *ngIf="estaEditandoNota && estudiante.codNota === codEstudianteNotaEditando">
+                        <mdb-form-control [style.width.px]="100">
                           <input
                             mdbInput
                             mdbValidate
-                            min="0"
                             type="number"
                             class="form-control"
-                            formControlName="notaFinal"
-                            required
-                          />
-                        </mdb-form-control>
-                      </ng-container>
-                    </td>
-                    <td class="text-center">
-                      <ng-container *ngIf="!estaEditandoNota || estudiante.codNota !== codEstudianteNotaEditando">
-                        {{ estudiante?.notaDisciplina || '-' }}
-                      </ng-container>
-                      <ng-container *ngIf="estaEditandoNota && estudiante.codNota === codEstudianteNotaEditando">
-                        <mdb-form-control>
-                          <input
-                            mdbInput
-                            mdbValidate
-                            min="0"
-                            type="number"
-                            class="form-control"
-                            formControlName="notaDisciplinaria"
-                            required
-                          />
-                        </mdb-form-control>
-                      </ng-container>
-                    </td>
-                    <td class="text-center">
-                      <ng-container *ngIf="!estaEditandoNota || estudiante.codNota !== codEstudianteNotaEditando">
-                        {{ estudiante?.notaSupletorio || '-' }}
-                      </ng-container>
-                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codNota === codEstudianteNotaEditando">
-                        <mdb-form-control>
-                          <input
-                            mdbInput
-                            mdbValidate
-                            min="0"
-                            type="number"
-                            class="form-control"
-                            formControlName="notaSupletorio"
+                            formControlName="notaDisciplina"
                             required
                           />
                         </mdb-form-control>
@@ -155,7 +88,6 @@
                       <ng-container *ngIf="estaEditandoNota &&  estudiante.codNota === codEstudianteNotaEditando">
                         <button
                           class="me-2 p-0 shadow-0 btn btn-lg text-success"
-                          (click)="onGuardarNota()"
                         >
                           <i class="fa fa-check"></i> &nbsp;Guardar
                         </button>

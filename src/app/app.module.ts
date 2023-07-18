@@ -146,6 +146,7 @@ import { ResultadosPruebasComponent } from './componentes/flujos/formacion/resul
 import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra.component';
 import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
 import { RegistroNotasComponent } from './componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component';
+import { RegistroNotasDisciplinariasComponent } from './componentes/flujos/formacion/formacion-academica/registro-notas-disciplinarias/registro-notas-disciplinarias.component';
 
 @NgModule({
   declarations: [
@@ -219,7 +220,8 @@ import { RegistroNotasComponent } from './componentes/flujos/formacion/formacion
     ResultadosPruebasComponent,
     MuestraComponent,
     EstudiantesComponent,
-    RegistroNotasComponent
+    RegistroNotasComponent,
+    RegistroNotasDisciplinariasComponent
   ],
   imports: [
     BrowserModule,

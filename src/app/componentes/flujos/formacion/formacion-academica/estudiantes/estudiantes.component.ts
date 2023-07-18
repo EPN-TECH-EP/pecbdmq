@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Estudiante, ESTUDIANTES } from "../../../../../modelo/flujos/Estudiante";
+import { Estudiante } from "../../../../../modelo/flujos/Estudiante";
 import { MdbCheckboxChange } from "mdb-angular-ui-kit/checkbox";
 import { EstudianteParaleloRequest, EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
 import { Paralelo } from "../../../../../modelo/admin/paralelo";
@@ -22,13 +22,12 @@ export class EstudiantesComponent implements OnInit {
   constructor(
     private estudianteService: EstudianteService,
   ) {
-    this.estudiantes = ESTUDIANTES;
+    this.estudiantes = [];
     this.headers = [
       { key: 'codigo', label: 'Código Único' },
       { key: 'nombre', label: 'Estudiante' },
       { key: 'cedula', label: 'Cédula' },
       { key: 'telefono', label: 'Teléfono' },
-      // { key: 'paralelo', label: 'Paralelo' },
     ]
 
   }
