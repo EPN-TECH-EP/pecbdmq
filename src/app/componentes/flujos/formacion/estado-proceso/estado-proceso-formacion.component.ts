@@ -7,7 +7,7 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 
 @Component({
-  selector: 'app-estado-proceso-formacion',
+  selector: 'app-estado-menu-proceso-formacion',
   templateUrl: './estado-proceso-formacion.component.html',
   styleUrls: ['./estado-proceso-formacion.component.scss']
 })

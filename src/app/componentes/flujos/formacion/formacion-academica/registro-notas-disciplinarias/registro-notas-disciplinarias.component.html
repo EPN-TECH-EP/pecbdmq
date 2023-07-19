@@ -1,6 +1,6 @@
 <app-boton-volver
   [texto]="'Regresar al menú de academia'"
-  [link]="'/principal/formacion/academia/menu'"
+  [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
 <div class="container">
@@ -9,7 +9,7 @@
   </div>
 
 
-  <section >
+  <section>
 
     <h6 class="my-4"><b>Lista de estudiantes</b></h6>
 
@@ -33,7 +33,8 @@
                 >
                   <thead class="datatable-header">
                   <tr>
-                    <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6" [ngClass]="{ 'text-center': i >= headers.length - 1 }">
+                    <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
+                        [ngClass]="{ 'text-center': i >= headers.length - 1 }">
                       {{ head.label }}
                     </th>
                     <th class="text-center fw-bold fs-6">Acciones</th>
@@ -46,19 +47,19 @@
                       {{ estudiante.codUnico}}
                     </td>
                     <td>
-                      {{ estudiante.nombre }} {{ estudiante.apellido }}
-
+                      {{ estudiante.nombreCompleto }}
                     </td>
                     <td class="text-center">
-                      <ng-container *ngIf="!estaEditandoNota || estudiante.codNota !== codEstudianteNotaEditando">
-                        {{ estudiante.notaDisciplina }}
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                        {{ estudiante.promedioDisciplinaOficialSemana || '-'}}
                       </ng-container>
                       <ng-container
-                        *ngIf="estaEditandoNota && estudiante.codNota === codEstudianteNotaEditando">
-                        <mdb-form-control [style.width.px]="100">
+                        *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudianteNotaEditando">
+                        <mdb-form-control>
                           <input
                             mdbInput
                             mdbValidate
+                            min="0"
                             type="number"
                             class="form-control"
                             formControlName="notaDisciplina"
@@ -68,7 +69,7 @@
                       </ng-container>
                     </td>
                     <td class="text-center">
-                      <ng-container *ngIf="!estaEditandoNota || estudiante.codNota !== codEstudianteNotaEditando">
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
                         <button
                           mdbTooltip="Editar notas del estudiante"
                           [disabled]="estaEditandoNota"
@@ -85,9 +86,10 @@
                           <i class="fa fa-trash-alt"></i>
                         </button>
                       </ng-container>
-                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codNota === codEstudianteNotaEditando">
+                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
                         <button
                           class="me-2 p-0 shadow-0 btn btn-lg text-success"
+                          (click)="onGuardarEdicionNota()"
                         >
                           <i class="fa fa-check"></i> &nbsp;Guardar
                         </button>

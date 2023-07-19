@@ -115,10 +115,10 @@ import { EstadoPeriodoAcademicoComponent } from './componentes/estado-periodo-ac
 import { InscripcionComponent } from './componentes/flujos/formacion/inscripcion/inscripcion.component';
 import { RolComponent } from './componentes/admin/administracion-plataforma/rol/rol.component';
 import { MenuRolComponent } from './componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
-import { MenuFormacionComponent } from './componentes/flujos/formacion/menu-formacion/menu-formacion.component';
+import { MenuFormacionComponent } from './componentes/flujos/formacion/menus/menu-administracion-formacion/menu-formacion.component';
 import { ProcesoEspecializacionComponent } from './componentes/flujos/especializacion/proceso-especializacion/proceso-especializacion.component';
 import { ProcesoProfesionalizacionComponent } from './componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
-import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/proceso-formacion/proceso-formacion.component";
+import {ProcesoFormacionComponent} from "./componentes/flujos/formacion/menus/menu-proceso-formacion/proceso-formacion.component";
 import { InputValidationDirective } from './directivas/input-validation.directive';
 import {ExpiredTokenInterceptor} from "./interceptor/expired-token.interceptor";
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
@@ -147,6 +147,11 @@ import { MuestraComponent } from './componentes/flujos/formacion/muestra/muestra
 import { EstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
 import { RegistroNotasComponent } from './componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component';
 import { RegistroNotasDisciplinariasComponent } from './componentes/flujos/formacion/formacion-academica/registro-notas-disciplinarias/registro-notas-disciplinarias.component';
+import { NotasEstudiantesComponent } from './componentes/flujos/formacion/formacion-academica/notas-estudiantes/notas-estudiantes.component';
+import { MenuConvocatoriaComponent } from './componentes/flujos/formacion/menus/menu-convocatoria/menu-convocatoria.component';
+import { MenuValidacionRequisitosComponent } from './componentes/flujos/formacion/menus/menu-validacion-requisitos/menu-validacion-requisitos.component';
+import { MenuPruebasComponent } from './componentes/flujos/formacion/menus/menu-pruebas/menu-pruebas.component';
+import { MenuGraduacionComponent } from './componentes/flujos/formacion/menus/menu-graduacion/menu-graduacion.component';
 
 @NgModule({
   declarations: [
@@ -221,7 +226,12 @@ import { RegistroNotasDisciplinariasComponent } from './componentes/flujos/forma
     MuestraComponent,
     EstudiantesComponent,
     RegistroNotasComponent,
-    RegistroNotasDisciplinariasComponent
+    RegistroNotasDisciplinariasComponent,
+    NotasEstudiantesComponent,
+    MenuConvocatoriaComponent,
+    MenuValidacionRequisitosComponent,
+    MenuPruebasComponent,
+    MenuGraduacionComponent
   ],
   imports: [
     BrowserModule,

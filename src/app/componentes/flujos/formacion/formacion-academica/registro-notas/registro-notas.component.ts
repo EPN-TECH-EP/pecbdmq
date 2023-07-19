@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  MateriaPorInstrutor,
+  MateriaPorInstructor,
   RegistroNotasService
 } from "../../../../../servicios/formacion/registro-notas.service";
 import { Notificacion } from "../../../../../util/notificacion";
@@ -23,8 +23,8 @@ import { switchMap } from "rxjs";
 export class RegistroNotasComponent implements OnInit {
 
   estudiantesPorParalelo: {paralelo: Paralelo, estudiantes: NotaPorEstudiante[]}[]
-  materias: MateriaPorInstrutor[];
-  materiaSeleccionada: MateriaPorInstrutor;
+  materias: MateriaPorInstructor[];
+  materiaSeleccionada: MateriaPorInstructor;
 
 
   estaEditandoNota: boolean;
@@ -103,6 +103,7 @@ export class RegistroNotasComponent implements OnInit {
   }
 
   private listarEstudiantesPorCodMateria(codMateria: number) {
+    console.log(codMateria);
     this.registroNotasService.listarEstudiantesPorCodMateria(codMateria).subscribe({
       next: data => {
         console.log(data);
@@ -117,7 +118,7 @@ export class RegistroNotasComponent implements OnInit {
 
   }
 
-  abrirRegistroDeNotas(materia: MateriaPorInstrutor) {
+  abrirRegistroDeNotas(materia: MateriaPorInstructor) {
     this.materiaSeleccionada = materia;
     this.estaEnVistaListaMaterias = false;
     this.estaEnVistaRegistroNotas = true;

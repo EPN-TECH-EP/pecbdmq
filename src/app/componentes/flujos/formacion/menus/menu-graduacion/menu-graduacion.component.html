@@ -1,0 +1,26 @@
+
+<div class="container">
+  <p class="fs-4 fw-bolder">Menú Graduación y Certificados</p>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col">
+      <div class="card h-100 text-center hover-shadow border">
+        <div class="card-body">
+          <i
+            class="fa-solid fa-check-circle fa-2x my-3 text-success text-opacity-50"
+          ></i>
+          <h5 class="card-title">Cálculo de nota final</h5>
+          <p class="card-text">
+            Cálculo de nota final para todos los estudiantes
+          </p>
+          <button
+            (click)="calcularNotasFinales()"
+            class="btn btn-primary"
+          >Calcular
+          </button>
+        </div>
+      </div>
+    </div>
+    <menu-item *ngFor="let item of listaSubMenu" [menu]="item"></menu-item>
+  </div>
+</div>
