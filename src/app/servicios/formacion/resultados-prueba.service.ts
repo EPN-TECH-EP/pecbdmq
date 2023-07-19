@@ -1,9 +1,62 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { PaginacionResultadosPruebasDatos } from 'src/app/modelo/flujos/formacion/paginacion-resultados-pruebas-datos';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ResultadosPruebaService {
+export class ResultadosPruebasService {
+  private host = environment.apiUrl;
+  private nombreServicioNoFisicas: string = 'pruebasNoFisicas';
+  private nombreServicioFisicas: string = 'pruebasFisicas';
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
+
+  // obtener la lista de resultados por prueba paginado
+  // url pruebasNoFisicas/resultados?page=0&size=10&subTipoPrueba=11&sort=2
+  // params: page, size, subTipoPrueba, sort
+  // retorna: lista de ResultadosPruebasDatos
+  public listarPaginado(
+    page: number,
+    size: number,
+    subTipoPrueba: number,
+    sort: number
+  ): Observable<PaginacionResultadosPruebasDatos> {
+    const params = {
+      page: page.toString(),
+      size: size.toString(),
+      subTipoPrueba: subTipoPrueba.toString(),
+      sort: sort.toString(),
+    };
+    return this.http.get<PaginacionResultadosPruebasDatos>(`${this.host}/${this.nombreServicioNoFisicas}/resultados`, {
+      params,
+    });
+  }
+
+  // cargarPlantilla NoFisicas o fisicas por tipo prueba
+  // public ResponseEntity<?> uploadFile(@RequestParam("archivo") MultipartFile archivo,@RequestParam("codPruebaDetalle") Integer codPruebaDetalle,@RequestParam("codFuncionario") Integer codFuncionario,@RequestParam("tipoResultado") String tipoResultado)
+  // url pruebasNoFisicas/cargarPlantilla
+  // params: archivo, codPruebaDetalle, codFuncionario, tipoResultado
+  // retorna: OK o HttpErrorResponse
+  public cargarPlantilla(
+    archivo: File,
+    codPruebaDetalle: number,
+    //codFuncionario: number, // codFuncionario es para pruebas bomberiles
+    tipoResultado: string,
+    esFisica: boolean
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    formData.append('codPruebaDetalle', codPruebaDetalle.toString());
+    //formData.append('codFuncionario', null);
+    formData.append('tipoResultado', tipoResultado);
+
+    if (esFisica) {
+      return this.http.post(`${this.host}/${this.nombreServicioFisicas}/cargarPlantilla`, formData);
+    } else {
+      return this.http.post(`${this.host}/${this.nombreServicioNoFisicas}/cargarPlantilla`, formData);
+    }
+  }
 }

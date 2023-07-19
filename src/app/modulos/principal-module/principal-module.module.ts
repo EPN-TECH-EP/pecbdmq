@@ -12,7 +12,7 @@ import { ModuloComponent } from '../../componentes/modulo/modulo.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
 import { RouterModule, Routes } from '@angular/router';
 import { MenuAdminComponent } from 'src/app/componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
-import { MenuFormacionComponent } from 'src/app/componentes/flujos/formacion/menu-formacion/menu-formacion.component';
+import { MenuFormacionComponent } from 'src/app/componentes/flujos/formacion/menus/menu-administracion-formacion/menu-formacion.component';
 import { MateriaComponent } from 'src/app/componentes/materia/materia.component';
 import { PrincipalComponent } from '../../componentes/principal/principal.component';
 import { UsuariosComponent } from '../../componentes/admin/administracion-plataforma/usuarios/usuarios.component';
@@ -40,7 +40,7 @@ import { LocalDataService } from 'src/app/servicios/util/local-data.service';
 import { RolComponent } from 'src/app/componentes/admin/administracion-plataforma/rol/rol.component';
 import { MenuRolComponent } from 'src/app/componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import { BotonVolverComponent } from '../../componentes/util/boton-volver/boton-volver.component';
-import { ProcesoFormacionComponent } from '../../componentes/flujos/formacion/proceso-formacion/proceso-formacion.component';
+import { ProcesoFormacionComponent } from '../../componentes/flujos/formacion/menus/menu-proceso-formacion/proceso-formacion.component';
 import { ProcesoEspecializacionComponent } from '../../componentes/flujos/especializacion/proceso-especializacion/proceso-especializacion.component';
 import { ProcesoProfesionalizacionComponent } from '../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
 import { NgModule } from '@angular/core';
@@ -62,6 +62,13 @@ import { RegistroNotasComponent } from '../../componentes/flujos/formacion/forma
 
 import { MuestraComponent } from '../../componentes/flujos/formacion/muestra/muestra.component';
 import { EstudiantesComponent } from '../../componentes/flujos/formacion/formacion-academica/estudiantes/estudiantes.component';
+import { RegistroNotasDisciplinariasComponent } from '../../componentes/flujos/formacion/formacion-academica/registro-notas-disciplinarias/registro-notas-disciplinarias.component';
+import { NotasEstudiantesComponent } from '../../componentes/flujos/formacion/formacion-academica/notas-estudiantes/notas-estudiantes.component';
+import { MenuConvocatoriaComponent } from '../../componentes/flujos/formacion/menus/menu-convocatoria/menu-convocatoria.component';
+import { MenuValidacionRequisitosComponent } from '../../componentes/flujos/formacion/menus/menu-validacion-requisitos/menu-validacion-requisitos.component';
+import { MenuPruebasComponent } from '../../componentes/flujos/formacion/menus/menu-pruebas/menu-pruebas.component';
+import { MenuGraduacionComponent } from '../../componentes/flujos/formacion/menus/menu-graduacion/menu-graduacion.component';
+
 import { SubtipoParametrosComponent } from 'src/app/componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
 import { ResultadosPruebasComponent } from 'src/app/componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
 
@@ -122,6 +129,8 @@ const routes: Routes = [
       { path: 'formacion/academia/materias', component: MateriasComponent },
       { path: 'formacion/academia/estudiantes', component: EstudiantesComponent },
       { path: 'formacion/academia/notas', component: RegistroNotasComponent },
+      { path: 'formacion/academia/notas-disciplina', component: RegistroNotasDisciplinariasComponent },
+      { path: 'formacion/academia/notas-estudiantes', component: NotasEstudiantesComponent },
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },
@@ -140,6 +149,11 @@ const routes: Routes = [
       { path: 'formacion/pruebas/subtipo-parametros', component: SubtipoParametrosComponent },
       { path: 'formacion/pruebas/lista-pruebas', component: ListaPruebasComponent },
       { path: 'formacion/pruebas/resultados-pruebas', component: ResultadosPruebasComponent },
+      { path: 'formacion/menu-convocatoria', component: MenuConvocatoriaComponent },
+      { path: 'formacion/menu-validacion', component: MenuValidacionRequisitosComponent },
+      { path: 'formacion/menu-pruebas', component: MenuPruebasComponent },
+      { path: 'formacion/menu-academia', component: MenuFormacionAcademiaComponent },
+      { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
     ],
   },
 ];

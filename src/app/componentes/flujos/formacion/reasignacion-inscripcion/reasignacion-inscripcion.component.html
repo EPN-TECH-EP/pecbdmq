@@ -1,4 +1,7 @@
-<app-boton-volver></app-boton-volver>
+<app-boton-volver
+  [link]="'/principal/formacion/menu-validacion'"
+  [texto]="'Regresar al menú de validación'"
+></app-boton-volver>
 
 <ng-container *ngIf="!esEstadoValidacion">
   <div class="card rounded-7 mt-3">

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Estudiante, ESTUDIANTES } from "../../../../../modelo/flujos/Estudiante";
+import { Estudiante } from "../../../../../modelo/flujos/Estudiante";
 import { MdbCheckboxChange } from "mdb-angular-ui-kit/checkbox";
 import { EstudianteParaleloRequest, EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
 import { Paralelo } from "../../../../../modelo/admin/paralelo";
+import { Notificacion } from "../../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 
 @Component({
   selector: 'app-estudiantes',
@@ -21,14 +24,14 @@ export class EstudiantesComponent implements OnInit {
 
   constructor(
     private estudianteService: EstudianteService,
+    private ns: MdbNotificationService
   ) {
-    this.estudiantes = ESTUDIANTES;
+    this.estudiantes = [];
     this.headers = [
       { key: 'codigo', label: 'Código Único' },
       { key: 'nombre', label: 'Estudiante' },
       { key: 'cedula', label: 'Cédula' },
       { key: 'telefono', label: 'Teléfono' },
-      // { key: 'paralelo', label: 'Paralelo' },
     ]
 
   }
@@ -98,7 +101,10 @@ export class EstudiantesComponent implements OnInit {
     console.log(estudiantesParaleloEstudiante);
     this.estudianteService.asignarEstudianteMateriaParalelo(estudiantesParaleloEstudiante).subscribe({
       next: () => {
-        console.log('Estudiantes asignados correctamente');
+        Notificacion.notificar(this.ns, 'Estudiantes asignados correctamente', TipoAlerta.ALERTA_OK);
+      },
+      error: err => {
+        Notificacion.notificar(this.ns, 'Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
       }
     })
 

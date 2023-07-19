@@ -296,6 +296,7 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
               tienePuntaje: pruebaDetalle.tienePuntaje,
               tipoPruebaNombre: subtipoPrueba.nombre,
               subTipoPruebaNombre: subtipoPrueba.tipoPrueba,
+              esFisica: subtipoPrueba.esFisica,
             };
 
             this.listaPruebaDetalleDatos.push(pruebaDetalleDatosNew);

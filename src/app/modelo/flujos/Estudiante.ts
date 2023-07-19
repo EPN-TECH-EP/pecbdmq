@@ -26,38 +26,24 @@ export const ESTUDIANTE_VACIO: Estudiante = {
   paralelo: null
 }
 
-export const ESTUDIANTES: Estudiante[] = [
-  {
-    codEstudiante: 1,
-    codUnico: '123456789',
-    nombre: 'Juan',
-    apellido: 'Perez',
-    cedula: '123456789',
-    correo: 'correo@gmail.com',
-    telefono: '0991182474',
-    codDatosPersonales: 1,
-    codUsuario: 1
-  },
-  {
-    codEstudiante: 2,
-    codUnico: '123456789',
-    nombre: 'Maria',
-    apellido: 'Perez',
-    cedula: '123456789',
-    correo: 'correo@gmail.com',
-    telefono: '0991182474',
-    codDatosPersonales: 2,
-    codUsuario: 2
-  },
-  {
-    codEstudiante: 3,
-    codUnico: '123456789',
-    nombre: 'Pedro',
-    apellido: 'Perez',
-    cedula: '123456789',
-    correo: 'correo@gmail.com',
-    telefono: '0991182474',
-    codDatosPersonales: 3,
-    codUsuario: 3
-  }
-]
+export interface NotaPorEstudiante {
+  codNota: number;
+  codUnicoEstudiante: string;
+  nombreCompleto: string;
+  cedula: string;
+  notaFinal: number;
+  notaDisciplina: number;
+  notaSupletorio: number;
+  codParalelo: number;
+  nombreParalelo: string;
+}
+
+export interface NotaDisciplina {
+  codEstudiante: number;
+  codUnico: string;
+  nombreCompleto: string;
+  cedula: string;
+  promedioDisciplinaOficialSemana: number;
+  codParalelo: number;
+}
+

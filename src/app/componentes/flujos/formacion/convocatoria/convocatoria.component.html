@@ -1,4 +1,7 @@
-<app-boton-volver></app-boton-volver>
+<app-boton-volver
+  [link]="'/principal/formacion/menu-convocatoria'"
+  [texto]="'Regresar al menú de convocatoria'"
+></app-boton-volver>
 
 <ng-container *ngIf="ocurrioErrorInicioProceso">
   <div class="alert alert-danger mt-3" role="alert">

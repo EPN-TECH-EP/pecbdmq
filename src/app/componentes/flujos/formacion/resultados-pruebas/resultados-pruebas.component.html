@@ -19,16 +19,271 @@
 
   <!-- contenido -->
 
-  <!-- selección de prueba -->
-  <mdb-form-control>
-    <mdb-select
-      id="prueba"
-      name="prueba"
-      (valueChange)="onPruebaSeleccionada($event)"
-      [(ngModel)]="pruebaDetalleSeleccionada">
-      <mdb-option *ngFor="let pruebaItem of listaPruebaDetalleDatos" [value]="pruebaItem"
-        >{{ pruebaItem.ordenTipoPrueba }} {{ pruebaItem.subTipoPruebaNombre }} <span class="text-primary">{{ pruebaItem.estado }}</span>
-      </mdb-option>
-    </mdb-select>
-  </mdb-form-control>
+  <mdb-tabs>
+    <!--
+
+      LISTADO POSTULANTES VÁLIDOS
+
+    -->
+
+    <mdb-tab title="Postulantes válidos">
+      <ng-template mdbTabContent>
+        <!-- lista postulantes válidos -->
+
+        <!-- Tabla -->
+
+        <div class="row d-flex align-items-middle">
+          <div class="col-12">
+            <!-- paginación>
+            <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('previous')">
+              <span class="h4"><</span>
+            </button>
+            <span>Pág. {{ currentPage }} de {{ totalPages }} </span>
+            <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('next')">
+              <span class="h4">></span>
+            </button -->
+
+            <ng-container [ngTemplateOutlet]="paginacion"></ng-container>
+
+            <!-- orden -->
+            <span class="text-dark mx-2">Ordenar por:</span>
+            <div class="form-check form-check-inline">
+              <input
+                mdbRadio
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadio1"
+                value="ID"
+                [(ngModel)]="orden"
+                (change)="onOrdenChange(orden)" />
+              <label class="form-check-label" for="inlineRadio1">ID</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                mdbRadio
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadio2"
+                value="APELLIDO"
+                [(ngModel)]="orden"
+                (change)="onOrdenChange(orden)" />
+              <label class="form-check-label" for="inlineRadio2">Apellido</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- tabla -->
+        <div class="row d-flex align-items-center">
+          <div class="col-12">
+            <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+              <table
+                class="table datatable-table"
+                mdbTable
+                mdbTableSort
+                #table="mdbTable"
+                [dataSource]="listaPostulantesValidos">
+                <thead>
+                  <tr>
+                    <th *ngFor="let header of headers">
+                      <div class="fw-bold">{{ header.label | titlecase }}</div>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody class="datatable-body">
+                  <!-- datos -->
+                  <tr *ngFor="let postulanteValidos of table.data; let index = index">
+                    <td>
+                      {{ postulanteValidos.idPostulante }}
+                    </td>
+
+                    <td>
+                      <div class="text-wrap">{{ postulanteValidos.apellido }} {{ postulanteValidos.nombre }}</div>
+                    </td>
+
+                    <td>
+                      <div class="text-wrap">
+                        {{ postulanteValidos.cedula }}
+                      </div>
+                    </td>
+
+                    <td>
+                      <div>
+                        {{ postulanteValidos.correoPersonal }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Tabla -->
+        <ng-container [ngTemplateOutlet]="paginacion"></ng-container>
+      </ng-template>
+    </mdb-tab>
+
+    <!--
+
+      REGISTRO DE RESULTADOS
+
+    -->
+
+    <mdb-tab title="Registro de resultados">
+      <ng-template mdbTabContent>
+        <!-- selección de prueba -->
+        <div class="container">
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-9 text-center">
+              <mdb-form-control>
+                <mdb-select
+                  id="prueba"
+                  name="prueba"
+                  (valueChange)="onPruebaSeleccionada($event)"
+                  [(ngModel)]="pruebaDetalleSeleccionada"
+                  [visibleOptions]="20">
+                  <mdb-option *ngFor="let pruebaItem of listaPruebaDetalleDatos" [value]="pruebaItem"
+                    >{{ pruebaItem.ordenTipoPrueba }} {{ pruebaItem.descripcionPrueba }}
+                    <span class="text-muted"
+                      ><small>{{ pruebaItem.subTipoPruebaNombre }} - {{ pruebaItem.tipoPruebaNombre }} </small>
+                    </span>
+                    <span class="text-primary ms-4"
+                      ><small>({{ pruebaItem.estado }})</small></span
+                    >
+                  </mdb-option>
+                </mdb-select>
+              </mdb-form-control>
+            </div>
+          </div>
+        </div>
+
+        <!-- contenido en columnas -->
+        <div class="row d-flex align-items-start mt-3">
+          <div class="col-6">
+            <p class="fs-5 fw-bolder mb-3">Resultados registrados</p>
+
+            <mdb-accordion borderless="true">
+              <mdb-accordion-item>
+                <ng-template mdbAccordionItemHeader>Cargar resultados</ng-template>
+                <ng-template mdbAccordionItemBody>
+
+                  <p>Tipo de resultado: {{tipoResultado}}</p>
+
+                  <label class="form-label" for="customFile">Seleccione un archivo de resultados (Excel)</label>
+                  <input
+                    mdbValidate
+                    accept=".xls,.xlsx"
+                    #archivoMdbInput="mdbInput"
+                    mdbInput
+                    type="file"
+                    class="form-control"                    
+                    (change)="cargarArchivo($event)" />
+                </ng-template>
+              </mdb-accordion-item>
+            </mdb-accordion>
+
+            <!-- lista resultados de prueba -->
+
+            <ng-container *ngIf="listaResultadosPruebas.length === 0">
+              <div class="container">
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-9 text-center">
+                    <div class="text-dark">No existen resultados registrados para la prueba</div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Tabla -->
+            <ng-container *ngIf="listaResultadosPruebas.length > 0">
+              <ng-container [ngTemplateOutlet]="paginacionResultados"></ng-container>
+              <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+                <table
+                  class="table datatable-table"
+                  mdbTable
+                  mdbTableSort
+                  #table="mdbTable"
+                  [dataSource]="listaResultadosPruebas">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let header of headersResultadosPruebas">
+                        <div class="fw-bold">{{ header.label | titlecase }}</div>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="datatable-body">
+                    <!-- datos -->
+                    <tr *ngFor="let resultado of table.data; let index = index">
+                      <td>
+                        {{ resultado.idPostulante }}
+                      </td>
+
+                      <ng-container *ngIf="resultado.resultado">
+                        <td>
+                          <div class="text-wrap">{{ resultado.resultado }}</div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container *ngIf="resultado.resultadoTiempo">
+                        <td>
+                          <div class="text-wrap">{{ resultado.resultadoTiempo }}</div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container *ngIf="resultado.cumplePrueba !== null">
+                        <td>
+                          <div class="text-wrap">{{ resultado.cumplePrueba === true ? 'CUMPLE' : 'NO CUMPLE' }}</div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container *ngIf="resultado.notaPromedioFinal">
+                        <td>
+                          <div class="text-wrap">{{ resultado.notaPromedioFinal }}</div>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <ng-container [ngTemplateOutlet]="paginacionResultados"></ng-container>
+            </ng-container>
+            <!-- Fin Tabla -->
+          </div>
+          <div class="col-1">
+            <div class="vr p-0"></div>
+          </div>
+          <div class="col-5">
+            <p class="fs-5 fw-bolder mb-3">Gestión de documentos</p>
+          </div>
+        </div>
+      </ng-template>
+    </mdb-tab>
+  </mdb-tabs>
 </div>
+
+<!-- sección reutilizable de paginación postulantes-->
+<ng-template #paginacion>
+  <!-- paginación -->
+  <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('previous')">
+    <span class="h4"><</span>
+  </button>
+  <span>Pág. {{ currentPage }} de {{ totalPages }} </span>
+  <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('next')">
+    <span class="h4">></span>
+  </button>
+</ng-template>
+
+<!-- sección reutilizable de paginación resultados-->
+<ng-template #paginacionResultados>
+  <!-- paginación -->
+  <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChangeResultados('previous')">
+    <span class="h4"><</span>
+  </button>
+  <span>Pág. {{ currentPageResultados }} de {{ totalPagesResultados }} </span>
+  <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChangeResultados('next')">
+    <span class="h4">></span>
+  </button>
+</ng-template>

@@ -1,6 +1,6 @@
 <app-boton-volver
   [texto]="'Regresar al menú de academia'"
-  [link]="'/principal/formacion/academia/menu'"
+  [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
 <div class="container">
@@ -10,12 +10,7 @@
 
   <!-- Lista de estudiantes -->
   <section>
-    <div
-      *ngIf="estudiantes?.length === 0"
-      class="alert alert-info" role="alert">
-      <i class="fa-solid fa-info-circle me-2"></i>
-      No se encontraron estudiantes inscritos.
-    </div>
+
     <p class="text-primary">
       <i class="fas fa-info-circle me-1"></i>
       Seleccione un paralelo para los estudiantes que no tienen uno asignado.
@@ -105,25 +100,15 @@
             <td>
               {{ estudiante?.telefono }}
             </td>
-<!--            <td>-->
-<!--              <ng-container *ngIf="estudiante.paralelo === null; else paralelo">-->
-<!--                <mdb-form-control>-->
-<!--                  <mdb-select-->
-<!--                    mdbValidate-->
-<!--                  >-->
-<!--                    <mdb-option>-->
-<!--                      Paralelo 1-->
-<!--                    </mdb-option>-->
-<!--                  </mdb-select>-->
-<!--                </mdb-form-control>-->
-<!--              </ng-container>-->
-<!--              <ng-template #paralelo>-->
-<!--                {{ estudiante?.paralelo }}-->
-<!--              </ng-template>-->
-<!--            </td>-->
           </tr>
           </tbody>
         </table>
+        <div
+          *ngIf="estudiantes?.length === 0"
+          class="alert alert-info" role="alert">
+          <i class="fa-solid fa-info-circle me-2"></i>
+          Todos los estudiantes ya han sido asignados a un paralelo.
+        </div>
         <mdb-table-pagination
           #pagination
           [entries]="10"

@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FormacionService} from "../../../../servicios/formacion/formacion.service";
-import {ModuloEstado} from "../../../../modelo/admin/modulo-estado";
-import {switchMap} from "rxjs";
-import {Notificacion} from "../../../../util/notificacion";
-import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import { Component, OnInit } from '@angular/core';
+import { FormacionService } from "../../../../servicios/formacion/formacion.service";
+import { ModuloEstado } from "../../../../modelo/admin/modulo-estado";
+import { switchMap } from "rxjs";
+import { Notificacion } from "../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
 
 @Component({
-  selector: 'app-estado-proceso-formacion',
+  selector: 'app-estado-menu-proceso-formacion',
   templateUrl: './estado-proceso-formacion.component.html',
   styleUrls: ['./estado-proceso-formacion.component.scss']
 })
@@ -55,15 +55,23 @@ export class EstadoProcesoFormacionComponent implements OnInit {
     formData.forEach((value, key) => {
       console.log(key + ': ' + value);
     });
+
+    const estadoActualAnterior = this.estados.find((estadoItem) => estadoItem.estadoActual === 'actual');
+    const estadoActualIndex = this.estados.findIndex((estadoItem) => estadoItem.estadoActual === 'actual');
+
     this.formacionService.actualizarEstadoActual(formData).subscribe(
       {
         next: (response) => {
         console.log(response);
-        Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK)
+          Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK);
       },
         error: (error) => {
           console.error(error);
-        Notificacion.notificar(this.mdbNotificationService, "Error al actualizar el estado", TipoAlerta.ALERTA_ERROR)
+          Notificacion.notificar(this.mdbNotificationService, "Error al actualizar el estado", TipoAlerta.ALERTA_ERROR);
+          if (estadoActualAnterior) {
+            this.estados[estadoActualIndex].estadoActual = 'completado';
+            window.location.reload();
+          }
       }
       }
     );

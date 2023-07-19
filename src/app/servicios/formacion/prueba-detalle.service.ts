@@ -5,6 +5,7 @@ import { PruebaDetalle } from 'src/app/modelo/flujos/formacion/prueba-detalle';
 import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
 import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
 import { environment } from 'src/environments/environment';
+import { Options } from '../../../../../../../MDBootstrap Pro/MDB5-ANGULAR-UI-KIT-Pro-Essential/code/mdb-angular-ui-kit/timepicker/timepicker.interface';
 
 
 // implementación integración servicios
@@ -57,8 +58,10 @@ export class PruebaDetalleService {
 
   // tipo de resultado que se debe registrar en la prueba
   // endpóint tipoResultado
-  public tipoResultadoPorPrueba(codPrueba: number): Observable<HttpResponse<boolean>> {
-    return this.http.get<HttpResponse<boolean>>(`${this.host}/${this.nombreServicio}/tipoResultado/${codPrueba}`);
+  public tipoResultadoPorPrueba(codPrueba: number): Observable<string> {
+    let response = this.http.get<string>(`${this.host}/${this.nombreServicio}/tipoResultado/${codPrueba}`, {responseType: 'text' as 'json'});
+
+    return response;
   } 
 
 

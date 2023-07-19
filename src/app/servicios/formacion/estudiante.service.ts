@@ -6,6 +6,10 @@ import { InscripcionItem } from "../../modelo/flujos/formacion/inscripcion-item"
 import { InscripcionCompleta } from "../../modelo/flujos/formacion/inscripcion-completa";
 import { Estudiante } from "../../modelo/flujos/Estudiante";
 import { Paralelo } from "../../modelo/admin/paralelo";
+import { DatoPersonal } from "../../modelo/admin/dato-personal";
+import {
+  NotasEstudiantesComponent
+} from "../../componentes/flujos/formacion/formacion-academica/notas-estudiantes/notas-estudiantes.component";
 
 
 export interface EstudianteParaleloRequest {
@@ -16,6 +20,26 @@ export interface EstudianteParaleloRequest {
     telefono: string;
   }[],
   codParalelo: number;
+}
+
+export interface NotasFormacion {
+  codNotaFormacionFinal: number;
+  codEstudiante: number;
+  codPeriodoAcademico: number;
+  promedioDisciplinaInstructor: number;
+  promedioDisciplinaOficialSemana: number;
+  promedioAcademico: number;
+  notaFinal: number;
+  realizoEncuesta: boolean;
+  promedioDisciplinaFinal: number;
+  ponderacionAcademica: number;
+  ponderacionDisciplina: number;
+  puntajeSancion: number;
+}
+
+export interface EstudianteNota {
+  datoPersonal: DatoPersonal;
+  notasFormacionFinal: NotasFormacion;
 }
 
 @Injectable({
@@ -41,7 +65,11 @@ export class EstudianteService {
     return this.http.post(`${ this.host }/estudianteMateriaParalelo/asignar`, request);
   }
 
-  listarParalelosActivos(){
+  listarParalelosActivos() {
     return this.http.get<Paralelo[]>(`${ this.host }/paralelo/listarPA`);
+  }
+
+  listarNotas() {
+    return this.http.get<EstudianteNota[]>(`${ this.host }/notasFormacion/listarPA`);
   }
 }

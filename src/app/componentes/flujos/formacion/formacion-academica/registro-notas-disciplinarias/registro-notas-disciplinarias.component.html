@@ -1,0 +1,119 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/formacion/menu-academia'"
+></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Registro de notas disciplinarias</h1>
+  </div>
+
+
+  <section>
+
+    <h6 class="my-4"><b>Lista de estudiantes</b></h6>
+
+    <!-- Lista de estudiantes por paralelo -->
+    <div>
+      <mdb-tabs [fill]="true">
+        <mdb-tab *ngFor="let estudiantePorParalelo of estudiantesPorParalelo">
+          <ng-template mdbTabTitle><span><i
+            class="fas fa-people-group me-2"></i>{{ estudiantePorParalelo.paralelo.nombreParalelo }}</span>
+          </ng-template>
+
+          <section>
+            <div class="datatable datatable-hover datatable-sm table-responsive">
+              <form [formGroup]="notaPorEstudianteForm">
+                <table
+                  class="tabla datatable-table"
+                  mdbTable
+                  #datatableEstudiante
+                  [dataSource]="estudiantePorParalelo.estudiantes"
+                  [pagination]="pagination"
+                >
+                  <thead class="datatable-header">
+                  <tr>
+                    <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
+                        [ngClass]="{ 'text-center': i >= headers.length - 1 }">
+                      {{ head.label }}
+                    </th>
+                    <th class="text-center fw-bold fs-6">Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody class="datatable-body">
+                  <!-- Lista de estudiantes -->
+                  <tr *ngFor="let estudiante of datatableEstudiante.data">
+                    <td>
+                      {{ estudiante.codUnico}}
+                    </td>
+                    <td>
+                      {{ estudiante.nombreCompleto }}
+                    </td>
+                    <td class="text-center">
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                        {{ estudiante.promedioDisciplinaOficialSemana || '-'}}
+                      </ng-container>
+                      <ng-container
+                        *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudianteNotaEditando">
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            mdbValidate
+                            min="0"
+                            type="number"
+                            class="form-control"
+                            formControlName="notaDisciplina"
+                            required
+                          />
+                        </mdb-form-control>
+                      </ng-container>
+                    </td>
+                    <td class="text-center">
+                      <ng-container *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                        <button
+                          mdbTooltip="Editar notas del estudiante"
+                          [disabled]="estaEditandoNota"
+                          class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                          (click)="editarNota(estudiante)"
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          mdbTooltip="Eliminar registro"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditandoNota"
+                        >
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                      </ng-container>
+                      <ng-container *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
+                        <button
+                          class="me-2 p-0 shadow-0 btn btn-lg text-success"
+                          (click)="onGuardarEdicionNota()"
+                        >
+                          <i class="fa fa-check"></i> &nbsp;Guardar
+                        </button>
+                        <button
+                          class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                          (click)="onCancelarEdicionNota()"
+                        >
+                          <i class="fa fa-ban"></i> &nbsp;Cancelar
+                        </button>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <mdb-table-pagination
+                  #pagination
+                  [entries]="10"
+                  [rowsPerPageText]="'Registros por página'"
+                ></mdb-table-pagination>
+              </form>
+            </div>
+          </section>
+        </mdb-tab>
+      </mdb-tabs>
+    </div>
+  </section>
+</div>

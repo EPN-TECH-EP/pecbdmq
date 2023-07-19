@@ -1,0 +1,63 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de graduación'"
+  [link]="'/principal/formacion/menu-graduacion'"
+></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Notas finales de los estudiantes</h1>
+  </div>
+
+  <button
+    class="btn btn-primary my-3"
+    (click)="generarListaAntiguidades()"
+  >
+    Generar lista de antigüedades
+  </button>
+
+  <div class="datatable datatable-hover datatable-sm table-responsive">
+    <table
+      class="tabla datatable-table"
+      mdbTable
+      #datatableEstudiante
+      [dataSource]="notasEstudiantes"
+      [pagination]="pagination"
+    >
+      <thead class="datatable-header">
+      <tr>
+        <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
+            [ngClass]="{ 'text-center': i >= headers.length - 3 }">
+          {{ head.label }}
+        </th>
+      </tr>
+      </thead>
+      <tbody class="datatable-body">
+      <!-- Lista de estudiantes -->
+      <tr *ngFor="let estudiante of datatableEstudiante.data">
+        <td>
+          {{ estudiante.datoPersonal.nombre }} {{ estudiante.datoPersonal.apellido }}
+        </td>
+        <td>
+          {{ estudiante.datoPersonal.correoPersonal }}
+        </td>
+        <td class="text-center">
+          {{ estudiante.notasFormacionFinal.notaFinal}}
+        </td>
+        <td class="text-center">
+          {{ estudiante.notasFormacionFinal.promedioDisciplinaFinal }}
+        </td>
+        <td class="text-center">
+          {{ estudiante.notasFormacionFinal.promedioAcademico }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <mdb-table-pagination
+      #pagination
+      [entries]="10"
+      [rowsPerPageText]="'Registros por página'"
+    ></mdb-table-pagination>
+  </div>
+
+
+</div>

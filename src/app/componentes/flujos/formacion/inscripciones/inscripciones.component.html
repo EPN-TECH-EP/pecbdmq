@@ -1,4 +1,7 @@
-<app-boton-volver [link]="'principal/formacion/proceso'"></app-boton-volver>
+<app-boton-volver
+  [link]="'/principal/formacion/menu-validacion'"
+  [texto]="'Regresar al menú de validación'"
+></app-boton-volver>
 
 <ng-container *ngIf="!esEstadoValidacion && !esEstadoMuestreo">
   <div>
@@ -231,7 +234,8 @@
       </div>
     </div>
     <section>
-      <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto mt-4 overflow-auto">
+      <div
+        class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto mt-4 overflow-auto">
         <table
           class="table table-sm datatable-table"
           mdbTable
