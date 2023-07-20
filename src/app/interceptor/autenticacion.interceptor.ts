@@ -10,9 +10,9 @@ export class AutenticacionInterceptor implements HttpInterceptor {
   constructor(private autenticacionService: AutenticacionService) {}
 
   intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<unknown>> {
+    
     // si el servicio es público, no se envía el token
     if (this.revisaServiciosPublicos(httpRequest.url)) {
-      console.log(httpRequest.url);
 
       const key = environment.APP_KEY;
       const request = httpRequest.clone({
@@ -57,6 +57,7 @@ export class AutenticacionInterceptor implements HttpInterceptor {
     const request = httpRequest.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });
+
     return httpHandler.handle(request);
   }
 

@@ -27,20 +27,19 @@ export class FormacionService {
     "mensaje": "CONVOCATORIA"
 }   */
 
-  // private estadoActual = new BehaviorSubject<string | null>(null);
-  // estadoActual$ = this.estadoActual.asObservable();
+  public getEstadoFormacion(): Observable<HttpResponse<CustomHttpResponse>> {
+    return this.http.get<CustomHttpResponse>(
+      `${this.host}/periodoacademico/validaestado`,
+      { observe: 'response' }
+    );
+  }
 
-  getEstadosFormacion(): Observable<ModuloEstado[]> {
+    getEstadosFormacion(): Observable<ModuloEstado[]> {
     return this.http.get<ModuloEstado[]>(`${ this.host }/moduloestados/bymodulo?modulo=1`);
   }
 
   getEstadoActual(): Observable<CustomHttpResponse> {
-    return this.http.get<CustomHttpResponse>(`${ this.host }/periodoacademico/validaestado`)
-    //   // .pipe(
-    //   // tap((response: CustomHttpResponse) => {
-    //   //   this.estadoActual.next(response.mensaje);
-    //   // })
-    // );
+    return this.http.get<CustomHttpResponse>(`${this.host}/periodoacademico/validaestado`);
   }
 
   actualizarEstadoActual(formData: FormData): Observable<CustomHttpResponse> {

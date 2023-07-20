@@ -33,8 +33,10 @@ export class RegistroNotasService {
 
   private host = environment.apiUrl
 
+
   constructor(private http: HttpClient) {
   }
+
 
   listarMateriasSiEsCoordinador(codInstructor: number) {
     return this.http.post<MateriaPorInstructor[]>(`${ this.host }/materia/coordinador?codInstructor=${ codInstructor }`, {});

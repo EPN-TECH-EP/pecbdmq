@@ -17,34 +17,6 @@ export class TimeoutInterceptor implements HttpInterceptor {
 
   constructor() {}
 
-  /*intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    const timeoutValue =
-      request.headers.get('timeout') || this.defaultTimeout.toString();
-
-    const timeoutMs = parseInt(timeoutValue, 10);
-    const timeout$ = timeout(timeoutMs);
-
-    return next.handle(request).pipe(
-      timeout(timeoutMs),
-      retryWhen(        
-         (errors) =>
-        errors.pipe(
-          mergeMap((error, index) => {
-            if (index < environment.NUMERO_REINTENTOS) {
-              // Retry the request after a delay
-              return timer(environment.DELAY_REINTENTOS);
-            }
-            // No more retries, propagate the error
-            return throwError(error);
-          })
-        ) 
-      )
-    );
-  }*/
-
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -80,26 +52,9 @@ export class TimeoutInterceptor implements HttpInterceptor {
   }
 
   private isRetryableError(error: HttpErrorResponse): boolean {
-    // Implement your custom logic to determine if the error is retryable
-    // For example, you can check for specific HTTP status codes or error conditions
-    console.log('isRetryableError: ' + (error.status >= 500 || error.status == 0));
+    console.log('Hay reintento: ' + (error.status >= 500 || error.status == 0));
     return error.status >= 500 || error.status == 0; // Retry for server errors (status code >= 500)
   }
 
-  /* intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      timeout(this.timeoutDuration),
-      retryWhen(errors =>
-        errors.pipe(
-          mergeMap((error, index) => {
-            if (index < this.maxRetryAttempts) {
-              // Retry the request after a delay
-              return timer(this.delayBetweenRetries);
-            }
-            // No more retries, propagate the error
-            return throwError(error);
-          })
-        )
-      )
-    ); */
+
 }
