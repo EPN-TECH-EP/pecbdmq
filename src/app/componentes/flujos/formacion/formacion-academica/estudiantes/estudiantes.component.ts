@@ -97,17 +97,51 @@ export class EstudiantesComponent implements OnInit {
     const estudiantesParaleloEstudiante: EstudianteParaleloRequest = {
       lista: Array.from(this.selections),
       codParalelo: this.codParalelo,
-    }
-    console.log(estudiantesParaleloEstudiante);
+    };
+
+    this.asignarEstudiantes(estudiantesParaleloEstudiante);
+  }
+
+  private asignarEstudiantes(estudiantesParaleloEstudiante: EstudianteParaleloRequest) {
     this.estudianteService.asignarEstudianteMateriaParalelo(estudiantesParaleloEstudiante).subscribe({
       next: () => {
-        Notificacion.notificar(this.ns, 'Estudiantes asignados correctamente', TipoAlerta.ALERTA_OK);
+        this.mostrarNotificacion('Estudiantes asignados correctamente', TipoAlerta.ALERTA_OK);
+        this.actualizarEstudiantes();
       },
       error: err => {
-        Notificacion.notificar(this.ns, 'Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
+        this.mostrarNotificacion('Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
       }
-    })
+    });
+  }
 
+  private mostrarNotificacion(mensaje: string, tipo: TipoAlerta) {
+    Notificacion.notificar(this.ns, mensaje, tipo);
+  }
+
+  private actualizarEstudiantes() {
+    this.estudianteService.listar().subscribe({
+      next: estudiantes => {
+        this.estudiantes = estudiantes;
+        if (this.estudiantes.length === 0) {
+          this.registrarEstudiantesEnTablaNotas();
+        }
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al obtener la lista de estudiantes', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+  }
+
+  private registrarEstudiantesEnTablaNotas() {
+    console.log('Registrando estudiantes en tabla notas');
+    this.estudianteService.registrarEstudiantesEnTablaNotas().subscribe({
+      next: () => {
+        console.log('Estudiantes registrados en tabla notas');
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al registrar estudiantes en tabla de notas', TipoAlerta.ALERTA_ERROR);
+      }
+    });
   }
 
 }

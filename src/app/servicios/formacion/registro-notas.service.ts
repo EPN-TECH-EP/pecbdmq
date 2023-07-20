@@ -59,7 +59,8 @@ export class RegistroNotasService {
     return this.http.post(`${ this.host }/notasFormacion/disciplinaOSemana`, notas);
   }
 
-  calcularNotasFinales(){
+  calcularNotasFinales() {
     return this.http.post(`${ this.host }/notasFormacion/calcularNotas`, {});
   }
+
 }

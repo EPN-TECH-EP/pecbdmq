@@ -72,4 +72,8 @@ export class EstudianteService {
   listarNotas() {
     return this.http.get<EstudianteNota[]>(`${ this.host }/notasFormacion/listarPA`);
   }
+
+  registrarEstudiantesEnTablaNotas() {
+    return this.http.get(`${ this.host }/notasFormacion/registroEstudiantesNotas`);
+  }
 }

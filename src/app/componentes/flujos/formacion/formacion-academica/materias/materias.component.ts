@@ -57,7 +57,6 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   error: boolean;
   loading: boolean;
 
-
   constructor(
     private mdbNotificationService: MdbNotificationService,
     private materiasService: MateriasFormacionService,
@@ -115,8 +114,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.materiasService.listarMateriasParalelos().subscribe({
       next: (materiasFormacion) => {
         this.materiasFormacion = materiasFormacion;
-        console.log('materiasFormacion', materiasFormacion);
         const paralelos = this.materiasFormacion.paralelos;
+
         this.materiasPorParalelo = paralelos.map(paralelo => {
           const materias = this.materiasFormacion.materias.filter(materia => materia.codParalelo === paralelo.codParalelo);
           return { paralelo, materias };
@@ -188,6 +187,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     return this.builder.group({
       codMateria: [this.itemMateria.codMateria],
       codAula: ['', Validators.required],
+      ponderacionMateria: ['', Validators.required],
+      notaMinimaSupletorio: ['', Validators.required],
     });
   }
 
@@ -206,6 +207,41 @@ export class MateriasComponent implements OnInit, AfterViewInit {
       codAsistentes: materia.codAsistentes,
       codInstructores: materia.codInstructores,
     })
+  }
+
+  private asignarCoordinadorTodosParalelos(materiaFormacion: MateriaFormacionRequest) {
+
+    this.materiasPorParalelo.forEach((materiaPorParalelo) => {
+
+      materiaPorParalelo.materias.forEach((materia) => {
+
+        if (materia.codMateria === materiaFormacion.codMateria && materia.codParalelo !== materiaFormacion.codParalelo) {
+
+          const materiaFormacionRequest: MateriaFormacionRequest = {
+            codMateria: materia?.codMateria,
+            codParalelo: materia?.codParalelo,
+            codAula: materia?.codAula,
+            codAsistentes: [],
+            codCoordinador: materiaFormacion.codCoordinador,
+            codInstructores: [],
+          };
+
+          this.materiasService.asignarInstructores(materiaFormacionRequest).subscribe({
+            next: (res) => {
+              if (res) {
+                console.log('asignado coordinador a materia a todas las materias');
+              }
+            },
+            error: () => {
+              console.error('error al asignar coordinador a todas las materias');
+              this.loading = false;
+            }
+          })
+        }
+      });
+
+    });
+
   }
 
   get paralelosFormArray() {
@@ -238,7 +274,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.codMateriaEditando = materia.codMateria;
   }
 
-  agregarMateriaAula() {
+  onAgregarMateriaAula() {
     this.materiasSeleccionadas.push(this.itemMateria);
     this.filtrarMateriasSeleccionadas();
     this.materiaAulaFormArray.push(this.crearMateriaAula());
@@ -260,7 +296,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   }
 
-  eliminarMateriaSeleccionada(materia: Materia) {
+  onEliminarMateriaSeleccionada(materia: Materia) {
     const materias = this.materiaAulaFormArray;
     const index = materias.controls.findIndex((control: FormGroup) => control.get('codMateria')?.value === materia.codMateria);
 
@@ -272,7 +308,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   }
 
-  guardarMateriasAula() {
+  onGuardarMateriasAula() {
 
     const materiaAulaParalelo: MateriaAulaParaleloRequest = {
       materiasAulas: this.materiaAulaFormGroup?.value?.materiaAula,
@@ -296,7 +332,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     })
   }
 
-  onGuardarMateria() {
+  onGuardarMateriaEditando() {
 
     const materiaFormacion: MateriaFormacionRequest = {
       codMateria: this.materiasFormacionFormGroup?.value?.codMateria,
@@ -307,7 +343,6 @@ export class MateriasComponent implements OnInit, AfterViewInit {
       codInstructores: this.materiasFormacionFormGroup?.value?.codInstructores,
     };
 
-    console.log('materia que mando al sedrvicio', materiaFormacion);
 
     this.asignarCoordinadorTodosParalelos(materiaFormacion);
 
@@ -356,38 +391,4 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
   @ViewChild('tabs') tabs: MdbTabsComponent;
 
-  private asignarCoordinadorTodosParalelos(materiaFormacion: MateriaFormacionRequest) {
-
-    this.materiasPorParalelo.forEach((materiaPorParalelo) => {
-
-      materiaPorParalelo.materias.forEach((materia) => {
-
-        if (materia.codMateria === materiaFormacion.codMateria && materia.codParalelo !== materiaFormacion.codParalelo) {
-
-          const materiaFormacionRequest: MateriaFormacionRequest = {
-            codMateria: materia?.codMateria,
-            codParalelo: materia?.codParalelo,
-            codAula: materia?.codAula,
-            codAsistentes: [],
-            codCoordinador: materiaFormacion.codCoordinador,
-            codInstructores: [],
-          };
-
-          this.materiasService.asignarInstructores(materiaFormacionRequest).subscribe({
-            next: (res) => {
-              if (res) {
-                console.log('asignado coordinador a materia a todas las materias');
-              }
-            },
-            error: () => {
-              console.error('error al asignar coordinador a todas las materias');
-              this.loading = false;
-            }
-          })
-        }
-      });
-
-    });
-
-  }
 }

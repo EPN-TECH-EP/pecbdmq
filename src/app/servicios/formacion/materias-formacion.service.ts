@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { HttpClient, HttpResponse } from "@angular/common/http";
-import { ArchivoService } from "../archivo.service";
-import { Observable, of } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 import { Instructor } from "../../modelo/flujos/instructor";
 import { Paralelo } from "../../modelo/admin/paralelo";
-import { Aula } from "../../modelo/admin/aula";
-import { map, tap } from "rxjs/operators";
 
 export interface MateriaFormacionResponse {
   paralelos: Paralelo[];
@@ -24,6 +21,8 @@ export interface MateriaFormacion {
   codAula: number;
   codParalelo: number;
   nombreParalelo: string;
+  ponderacionMateria?: number;
+  notaMinimaSupletorio?: number;
 }
 
 
@@ -39,6 +38,8 @@ export interface MateriaFormacionRequest {
 export interface MateriaAula {
   codMateria: number;
   codAula: number;
+  ponderacionMateria: number;
+  notaMinimaSupletorio: number;
 }
 
 export interface MateriaAulaParaleloRequest {
@@ -53,9 +54,10 @@ export interface MateriaAulaParaleloRequest {
 export class MateriasFormacionService {
 
   private host = environment.apiUrl
-  private cache: {[key: string]: HttpResponse<any>} = {};
 
-  constructor(private http: HttpClient, private archivoService: ArchivoService) {
+  // private cache: {[key: string]: HttpResponse<any>} = {};
+
+  constructor(private http: HttpClient) {
   }
 
   asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {

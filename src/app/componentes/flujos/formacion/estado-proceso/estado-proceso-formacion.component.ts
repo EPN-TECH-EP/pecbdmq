@@ -5,6 +5,7 @@ import { switchMap } from "rxjs";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { timeout } from "rxjs/operators";
 
 @Component({
   selector: 'app-estado-menu-proceso-formacion',
@@ -26,7 +27,8 @@ export class EstadoProcesoFormacionComponent implements OnInit {
   ngOnInit() {
     this.formacionService.getEstadosFormacion().pipe(
       switchMap((estados) => {
-          this.estados = estados;
+        console.log('del servicio: ', estados);
+        this.estados = estados;
         return this.formacionService.getEstadoActual();
       })
     ).subscribe((estado) => {
@@ -44,7 +46,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
         }
       });
 
-        this.stepsLoaded = true;
+      this.stepsLoaded = true;
     });
   }
 
@@ -62,17 +64,19 @@ export class EstadoProcesoFormacionComponent implements OnInit {
     this.formacionService.actualizarEstadoActual(formData).subscribe(
       {
         next: (response) => {
-        console.log(response);
+          console.log(response);
           Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK);
-      },
+        },
         error: (error) => {
           console.error(error);
           Notificacion.notificar(this.mdbNotificationService, "Error al actualizar el estado", TipoAlerta.ALERTA_ERROR);
           if (estadoActualAnterior) {
             this.estados[estadoActualIndex].estadoActual = 'completado';
-            window.location.reload();
+            // setTimeout(()=>{
+            //   window.location.reload();
+            // }, 5000);
           }
-      }
+        }
       }
     );
   }

@@ -9,7 +9,7 @@
   </div>
   <!-- Creación de materias -->
   <div class="d-flex justify-content-center">
-    <mdb-stepper [style.width.%]="60" #stepper [linear]="true" [stepperHeadClick]="false">
+    <mdb-stepper [style.width.%]="80" #stepper [linear]="true" [stepperHeadClick]="false">
       <mdb-step [stepForm]="paralelosFormGroup" [name]="'Creación paralelos'">
         <form [formGroup]="paralelosFormGroup">
           <mdb-form-control>
@@ -85,7 +85,7 @@
           <button
             class="btn btn-primary"
             type="button"
-            (click)="agregarMateriaAula()"
+            (click)="onAgregarMateriaAula()"
           >
             <i class="fas fa-add me-2"></i>
             Agregar materia
@@ -96,8 +96,41 @@
             <ul class="list-group list-group-light">
               <li *ngFor="let materia of materiasSeleccionadas; let i = index" class="list-group-item">
                 <div formGroupName="materiaAula">
-                  <div class="d-flex gap-4 align-items-center" [formGroupName]="i">
-                    <p class="m-0 p-0">{{ materia.nombre }}</p>
+                  <div class="d-flex gap-3 align-items-center" [formGroupName]="i">
+                    <p
+                      [style.width.px]="180"
+                      class="text-primary text-wrap m-0 p-0 me-2">
+                      <b>{{ materia.nombre }}</b></p>
+                    <ng-container>
+                      <mdb-form-control [style.width.px]="100">
+                        <input
+                          mdbInput
+                          mdbValidate
+                          min="0"
+                          type="number"
+                          class="form-control"
+                          formControlName="ponderacionMateria"
+                          required
+                        />
+                        <label mdbLabel class="form-label">Ponderación<span
+                          class="text-danger">*</span></label>
+                      </mdb-form-control>
+                    </ng-container>
+                    <ng-container>
+                      <mdb-form-control [style.width.px]="185">
+                        <input
+                          mdbInput
+                          mdbValidate
+                          min="0"
+                          type="number"
+                          class="form-control"
+                          formControlName="notaMinimaSupletorio"
+                          required
+                        />
+                        <label mdbLabel class="form-label">Nota mínima de supletorio<span
+                          class="text-danger">*</span></label>
+                      </mdb-form-control>
+                    </ng-container>
                     <div class="flex-fill">
                       <mdb-form-control>
                         <mdb-select mdbValidate formControlName="codAula">
@@ -107,10 +140,6 @@
                         </mdb-select>
                         <label mdbLabel class="form-label">Escoja el aula donde se impartirá la materia <span
                           class="text-danger">*</span></label>
-                        <mdb-error
-                          *ngIf="materiaAulaFormGroup.get('materiaAula').get(i.toString()).get('codAula').touched && materiaAulaFormGroup.get('materiaAula').get(i.toString()).get('codAula').errors?.required">
-                          Este campo es requerido
-                        </mdb-error>
                       </mdb-form-control>
                     </div>
                     <button
@@ -120,7 +149,7 @@
                       class="btn btn-primary btn-floating bg-light text-black text-center"
                       mdbRipple
                       type="button"
-                      (click)="eliminarMateriaSeleccionada(materia)"
+                      (click)="onEliminarMateriaSeleccionada(materia)"
                     >
                       <i class="fa fa-trash-alt"></i>
                     </button>
@@ -134,7 +163,7 @@
               class="btn btn-success mt-3"
               type="submit"
               [disabled]="materiaAulaFormGroup.invalid"
-              (click)="guardarMateriasAula()"
+              (click)="onGuardarMateriasAula()"
             >
               Guardar materias
               <i class="fas fa-arrow-right ms-2"></i>
@@ -157,7 +186,8 @@
   <section>
     <mdb-tabs [fill]="true" #tabs>
       <mdb-tab *ngFor="let materiaPorParalelo of materiasPorParalelo">
-        <ng-template mdbTabTitle><span><i class="fas fa-people-group me-2"></i>{{ materiaPorParalelo.paralelo.nombreParalelo }}</span>
+        <ng-template mdbTabTitle><span><i
+          class="fas fa-people-group me-2"></i>{{ materiaPorParalelo.paralelo.nombreParalelo }}</span>
         </ng-template>
         <section>
           <div
@@ -187,7 +217,11 @@
                 <!-- Lista de materias -->
                 <tr *ngFor="let materia of datatableMaterias.data">
                   <td [width]="160" class="text-wrap">
-                    {{ materia?.nombre }}
+                    <ng-container>
+                      <b class="fw-bold">{{ materia?.nombre }}</b>
+                      <div><b>Ponderación: </b>{{ materia.ponderacionMateria}}</div>
+                      <div><b>Min supletorio: </b>{{ materia.notaMinimaSupletorio}}</div>
+                    </ng-container>
                   </td>
                   <td [width]="90">
                     {{ materia?.nombreEje }}
@@ -340,7 +374,7 @@
                         (click)="onEditarMateria(materia, materiaPorParalelo.paralelo)"
                         mdbTooltip="Editar datos de la materia"
                         [disabled]="estaEditandoMateria"
-                        class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "s
+                        class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark " s
                       >
                         <i class="fa fa-edit"></i>
                       </button>
@@ -355,7 +389,7 @@
                     <ng-container *ngIf="estaEditandoMateria && materia.codMateria === codMateriaEditando">
                       <button
                         class="m-0 p-0 shadow-0 btn btn-lg text-success"
-                        (click)="onGuardarMateria()"
+                        (click)="onGuardarMateriaEditando()"
                       >
                         <i class="fa fa-check"></i> &nbsp;Guardar
                       </button>
