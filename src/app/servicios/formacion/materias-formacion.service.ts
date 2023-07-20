@@ -58,24 +58,6 @@ export class MateriasFormacionService {
   constructor(private http: HttpClient, private archivoService: ArchivoService) {
   }
 
-  // listar(): Observable<MateriaFormacion[]> {
-  //   const cacheKey = `${ this.host }/instructorMateriaParalelo/listarRead`;
-  //
-  //   if (this.cache[cacheKey]) {
-  //     console.log('Recuperado de caché');
-  //     return of(this.cache[cacheKey].body);
-  //   } else {
-  //     return this.http.get<MateriaFormacion[]>(cacheKey, { observe: 'response', responseType: 'json' })
-  //       .pipe(
-  //         tap((res: HttpResponse<MateriaFormacion[]>) => {
-  //           console.log('Almacenando en caché');
-  //           this.cache[cacheKey] = res;
-  //         }),
-  //         map((res: HttpResponse<MateriaFormacion[]>) => res.body)
-  //       );
-  //   }
-  // }
-
   asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
     return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
   }
