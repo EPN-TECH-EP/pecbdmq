@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from "../../../../../modelo/admin/usuario";
-import { defaultInstructor, Instructor } from "../../../../../modelo/flujos/instructor";
+import { defaultInstructor, Instructor, InstructorRequest } from "../../../../../modelo/flujos/instructor";
 import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TipoProcedenciaService } from "../../../../../servicios/tipo-procedencia.service";
@@ -102,9 +102,27 @@ export class InstructoresComponent implements OnInit {
       codTipoProcedencia: this.codTipoProcedencia?.value,
       codUnidadGestion: this.codUnidadGestion?.value,
       codEstacion: this.codZona?.value,
-      // codTipoContrato: this.codTipoContrato?.value,
     }
 
+    const instructorRequest: InstructorRequest = {
+      codDatosPersonales: instructor.codDatosPersonales,
+      codEstacion: instructor.codEstacion,
+      codTipoContrato: 1,
+      codTipoProcedencia: instructor.codTipoProcedencia,
+      codUnidadGestion: instructor.codUnidadGestion,
+    }
+    this.instructorService.crear(instructorRequest).subscribe({
+      next: () => {
+        this.estaEditandoInstructor = false;
+        this.instructor = defaultInstructor;
+        this.instructorForm.reset();
+        this.instructorService.listar().subscribe({
+          next: (instructores) => {
+            this.instructores = instructores;
+          }
+        })
+      }
+    })
     console.log(instructor);
 
   }
@@ -169,6 +187,7 @@ export class InstructoresComponent implements OnInit {
   onAgregarInstructor(usuario: Usuario) {
     this.instructor = {
       ...this.instructor,
+      codDatosPersonales: usuario.codDatosPersonales.codDatosPersonales,
       cedula: usuario.nombreUsuario,
       nombre: usuario.codDatosPersonales.nombre,
       apellido: usuario.codDatosPersonales.apellido,

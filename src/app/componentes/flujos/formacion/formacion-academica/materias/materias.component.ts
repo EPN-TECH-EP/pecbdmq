@@ -56,6 +56,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   estaEditandoMateria: boolean;
   error: boolean;
   loading: boolean;
+  totalPonderacion: number;
 
   constructor(
     private mdbNotificationService: MdbNotificationService,
@@ -65,7 +66,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     private paralelosService: ParaleloService,
     private aulasService: AulaService,
     private builder: FormBuilder,) {
-    this.itemMateria = {} as Materia;
+    this.itemMateria = null;
     this.codMateriaEditando = 0;
     this.instructoresCatalogo = [];
     this.materiasCatalogo = [];
@@ -87,6 +88,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.loading = false;
     this.construirFormularios();
     this.paralelos = [];
+    this.totalPonderacion = 0;
   }
 
   ngOnInit(): void {
@@ -111,35 +113,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.materiasService.listarMateriasParalelos().subscribe({
-      next: (materiasFormacion) => {
-        this.materiasFormacion = materiasFormacion;
-        const paralelos = this.materiasFormacion.paralelos;
+    this.actualizarMateriasFormacion();
 
-        this.materiasPorParalelo = paralelos.map(paralelo => {
-          const materias = this.materiasFormacion.materias.filter(materia => materia.codParalelo === paralelo.codParalelo);
-          return { paralelo, materias };
-        });
-
-        // ordeno las materias por alfabeticamente
-        this.materiasPorParalelo.forEach(materiasPorParalelo => {
-          materiasPorParalelo.materias.sort((a, b) => {
-            if (a.nombre > b.nombre) {
-              return 1;
-            }
-            if (a.nombre < b.nombre) {
-              return -1;
-            }
-            return 0;
-          });
-        });
-
-      },
-      error: () => {
-        console.error('Error al listar las materias');
-        this.error = true;
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -164,6 +139,10 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.materiaAulaFormGroup.valueChanges.subscribe({
       next: (value) => {
         console.log(value);
+        this.totalPonderacion = this.materiaAulaFormArray.controls.reduce((acc, curr) => {
+          return acc + curr.value.ponderacionMateria;
+        }, 0)
+        this.totalPonderacion = Number(this.totalPonderacion.toFixed(2));
       }
     });
 
@@ -185,7 +164,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   private crearMateriaAula() {
     return this.builder.group({
-      codMateria: [this.itemMateria.codMateria],
+      codMateria: [this.itemMateria?.codMateria],
       codAula: ['', Validators.required],
       ponderacionMateria: ['', Validators.required],
       notaMinimaSupletorio: ['', Validators.required],
@@ -244,6 +223,40 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   }
 
+  private actualizarMateriasFormacion() {
+    this.materiasService.listarMateriasParalelos().subscribe({
+      next: (materiasFormacion) => {
+        this.materiasFormacion = materiasFormacion;
+        const paralelos = this.materiasFormacion.paralelos;
+
+        this.materiasPorParalelo = paralelos.map(paralelo => {
+          const materias = this.materiasFormacion.materias.filter(materia => materia.codParalelo === paralelo.codParalelo);
+          return { paralelo, materias };
+        });
+
+        // ordeno las materias por alfabeticamente
+        this.materiasPorParalelo.forEach(materiasPorParalelo => {
+          materiasPorParalelo.materias.sort((a, b) => {
+            if (a.nombre > b.nombre) {
+              return 1;
+            }
+            if (a.nombre < b.nombre) {
+              return -1;
+            }
+            return 0;
+          });
+        });
+
+      },
+      error: () => {
+        console.error('Error al listar las materias');
+        this.error = true;
+      }
+    });
+
+
+  }
+
   get paralelosFormArray() {
     return this.paralelosFormGroup.get('paralelos') as FormArray;
   }
@@ -278,7 +291,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.materiasSeleccionadas.push(this.itemMateria);
     this.filtrarMateriasSeleccionadas();
     this.materiaAulaFormArray.push(this.crearMateriaAula());
-    this.itemMateria = {} as Materia;
+    this.itemMateria = null;
   }
 
   toggleParaleloSelection(paralelo: Paralelo) {
@@ -309,6 +322,11 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   }
 
   onGuardarMateriasAula() {
+
+    if(this.materiaAulaFormGroup.invalid) {
+      Notificacion.notificar(this.mdbNotificationService, 'Llene todos los campos obligatorios', TipoAlerta.ALERTA_ERROR);
+      return;
+    }
 
     const materiaAulaParalelo: MateriaAulaParaleloRequest = {
       materiasAulas: this.materiaAulaFormGroup?.value?.materiaAula,
@@ -351,7 +369,9 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.materiasService.asignarInstructores(materiaFormacion).subscribe({
       next: (res) => {
         if (res) {
-          Notificacion.notificar(this.mdbNotificationService, 'Materia asignada correctamente', TipoAlerta.ALERTA_OK);
+          Notificacion.notificar(this.mdbNotificationService, 'Materia actualizada correctamente', TipoAlerta.ALERTA_OK);
+          this.onCancelarEdicionMateria()
+          this.actualizarMateriasFormacion()
           this.loading = false;
         }
       },
@@ -367,7 +387,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   onCancelarEdicionMateria() {
     this.estaEditandoMateria = false;
     this.codMateriaEditando = 0;
-    this.materiaEditando = {} as MateriaFormacionRequest;
+    this.materiaEditando = null;
   }
 
   toggleAsistentesSeleccionados(codigo: number) {
@@ -391,4 +411,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
   @ViewChild('tabs') tabs: MdbTabsComponent;
 
+  getColorClass() {
+    return this.totalPonderacion === 1 ? 'text-success' : 'text-danger';
+  }
 }

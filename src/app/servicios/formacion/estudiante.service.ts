@@ -76,4 +76,9 @@ export class EstudianteService {
   registrarEstudiantesEnTablaNotas() {
     return this.http.get(`${ this.host }/notasFormacion/registroEstudiantesNotas`);
   }
+
+  generarListaDeAntiguedades(){
+    return this.http.get(`${ this.host }/antiguedades/generaArchivosAntiguedadesFormacion`);
+  }
+
 }
