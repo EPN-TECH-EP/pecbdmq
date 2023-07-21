@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {FormacionEstudiante} from "../../modelo/dto/";
 import {FormacionInstructor} from "../../modelo/dto/formacion-instructor.dto";
 import {Aula} from "../../modelo/admin/aula";
+import { FormacionEstudiante } from "../../modelo/dto/formacion-usuario.dto";
 
 @Injectable({
   providedIn: 'root'

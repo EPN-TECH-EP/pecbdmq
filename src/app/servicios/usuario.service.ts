@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpEvent, HttpParams,
 } from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
-import {Usuario} from '../modelo/admin/usuario';
-import {CustomHttpResponse} from '../modelo/admin/custom-http-response';
-import {UsuarioNombreApellido} from '../modelo/util/nombre-apellido';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { Usuario } from '../modelo/admin/usuario';
+import { CustomHttpResponse } from '../modelo/admin/custom-http-response';
+import { UsuarioNombreApellido } from '../modelo/util/nombre-apellido';
+import { UsuarioInfoDto } from "../modelo/dto/usuario-estudiante-instructor.dto";
 
 @Injectable({
   providedIn: 'root',
@@ -19,25 +20,25 @@ export class UsuarioService {
   }
 
   public getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.host}/usuario/lista`);
+    return this.http.get<Usuario[]>(`${ this.host }/usuario/lista`);
   }
 
   public crear(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.host}/usuario/crear`, usuario);
+    return this.http.post<Usuario>(`${ this.host }/usuario/crear`, usuario);
   }
 
   public actualizar(usuario: Usuario): Observable<Usuario> {
     console.log('Ejecuta actualizar usuario');
     console.log(usuario);
-    return this.http.post<Usuario>(`${this.host}/usuario/actualizar`, usuario);
+    return this.http.post<Usuario>(`${ this.host }/usuario/actualizar`, usuario);
   }
 
   public resetPassword(email: string): Observable<CustomHttpResponse> {
-    return this.http.get<CustomHttpResponse>(`${this.host}/usuario/resetPassword/${email}`);
+    return this.http.get<CustomHttpResponse>(`${ this.host }/usuario/resetPassword/${ email }`);
   }
 
   public actualizarImagenPerfil(formData: FormData): Observable<HttpEvent<Usuario>> {
-    return this.http.post<Usuario>(`${this.host}/usuario/actualizarImagenPerfil`, formData,
+    return this.http.post<Usuario>(`${ this.host }/usuario/actualizarImagenPerfil`, formData,
       {
         reportProgress: true,
         observe: 'events'
@@ -45,7 +46,7 @@ export class UsuarioService {
   }
 
   public eliminarUsuario(nombreUsuario: string): Observable<CustomHttpResponse> {
-    return this.http.delete<CustomHttpResponse>(`${this.host}/usuario/eliminar/${nombreUsuario}`);
+    return this.http.delete<CustomHttpResponse>(`${ this.host }/usuario/eliminar/${ nombreUsuario }`);
   }
 
   public agregarUsuariosACacheLocal(Usuarios: Usuario[]): void {
@@ -60,11 +61,11 @@ export class UsuarioService {
   }
 
   public buscarPorIdentificacion(identificacion: string): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.host}/usuario/buscar/${identificacion}`);
+    return this.http.get<Usuario>(`${ this.host }/usuario/buscar/${ identificacion }`);
   }
 
   public buscarPorNombreUsuario(nombreUsuario: string): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.host}/usuario/buscar/${nombreUsuario}`);
+    return this.http.get<Usuario>(`${ this.host }/usuario/buscar/${ nombreUsuario }`);
   }
 
   public buscarPorNombreApellido(nombreApellido: UsuarioNombreApellido): Observable<Usuario[]> {
@@ -72,9 +73,9 @@ export class UsuarioService {
       .set('nombres', nombreApellido.nombre)
       .set('apellidos', nombreApellido.apellido);
     return this.http.post<Usuario[]>(
-      `${this.host}/usuario/buscarNombresApellidos?`,
+      `${ this.host }/usuario/buscarNombresApellidos?`,
       {},
-      {params}
+      { params }
     );
   }
 
@@ -82,9 +83,19 @@ export class UsuarioService {
     const params = new HttpParams()
       .set('correo', correo);
     return this.http.post<Usuario[]>(
-      `${this.host}/usuario/buscarCorreo?`,
+      `${ this.host }/usuario/buscarCorreo?`,
       {},
-      {params}
+      { params }
+    );
+  }
+
+  buscarUsuarioInfo(codUser: number): Observable<UsuarioInfoDto> {
+    const params = new HttpParams()
+      .set('codUser', codUser);
+    return this.http.post<UsuarioInfoDto>(
+      `${ this.host }/usuario/buscarUsuarioInfo?`,
+      {},
+      { params }
     );
   }
 

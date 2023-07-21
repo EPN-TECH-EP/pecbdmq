@@ -9,6 +9,19 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../../../modelo/admin/custom-http-response";
 import {TipoAlerta} from "../../../enum/tipo-alerta";
 import {Notificacion} from "../../../util/notificacion";
+import { FormacionEstudiante } from "../../../modelo/dto/formacion-usuario.dto";
+import { EspecializacionEstudiante } from "../../../modelo/dto/especializacion-usuario.dto";
+import { ProfesionalizacionEstudiante } from "../../../modelo/dto/profesionalizacion-usuario.dto";
+import { FormacionInstructor } from "../../../modelo/dto/formacion-instructor.dto";
+import { EspecializacionInstructor } from "../../../modelo/dto/especializacion-instructor.dto";
+import { ProfesionalizacionInstructor } from "../../../modelo/dto/profesionalizacion-instructor.dto";
+import { FormacionHistoricoService } from "../../../servicios/consultaHistoricas/formacion-historico.service";
+import {
+  EspecializacionHistoricoService
+} from "../../../servicios/consultaHistoricas/especializacion-historico.service";
+import {
+  ProfesionalizacionHistoricoService
+} from "../../../servicios/consultaHistoricas/profesionalizacion-historico.service";
 
 @Component({
   selector: 'app-ficha-personal',
