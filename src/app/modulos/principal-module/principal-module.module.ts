@@ -71,6 +71,8 @@ import { MenuGraduacionComponent } from '../../componentes/flujos/formacion/menu
 
 import { SubtipoParametrosComponent } from 'src/app/componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
 import { ResultadosPruebasComponent } from 'src/app/componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
+import { FichaPersonalComponent } from "../../componentes/user/ficha-personal/ficha-personal.component";
+import { HistoricoModuloComponent } from "../../componentes/user/historico-modulo/historico-modulo.component";
 
 const routes: Routes = [
   {
@@ -154,6 +156,10 @@ const routes: Routes = [
       { path: 'formacion/menu-pruebas', component: MenuPruebasComponent },
       { path: 'formacion/menu-academia', component: MenuFormacionAcademiaComponent },
       { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
+
+      {path: 'fichaPersonal', component: FichaPersonalComponent},
+      {path: 'historicoModulo', component: HistoricoModuloComponent},
+
     ],
   },
 ];
