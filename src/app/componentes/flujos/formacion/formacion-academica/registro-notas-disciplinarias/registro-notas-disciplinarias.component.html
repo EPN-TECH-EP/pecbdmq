@@ -73,10 +73,17 @@
                         <button
                           mdbTooltip="Editar notas del estudiante"
                           [disabled]="estaEditandoNota"
-                          class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                          class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
                           (click)="editarNota(estudiante)"
                         >
                           <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                        mdbTooltip="Sanciones del estudiante"
+                          class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditandoNota"
+                        >
+                          <i class="fa fa-user-times"></i>
                         </button>
                         <button
                           mdbTooltip="Eliminar registro"

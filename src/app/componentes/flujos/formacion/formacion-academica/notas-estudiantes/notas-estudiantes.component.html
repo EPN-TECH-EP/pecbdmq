@@ -14,6 +14,10 @@
   >
     Generar lista de antigüedades
   </button>
+  <div *ngIf="seGeneroListaDeAntiguedades" class="d-flex align-items-center text-success">
+    <i class="fas fa-check-circle text-success me-2"></i>
+    <div>Puede ver el documento de las antigüedades <a routerLink="/principal/formacion/academia/gestion-documentos"><b>aquí</b></a></div>
+  </div>
 
   <div class="datatable datatable-hover datatable-sm table-responsive">
     <table

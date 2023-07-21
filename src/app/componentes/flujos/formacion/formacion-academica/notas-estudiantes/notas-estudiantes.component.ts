@@ -10,8 +10,11 @@ import { TipoAlerta } from "../../../../../enum/tipo-alerta";
   styleUrls: ['./notas-estudiantes.component.scss']
 })
 export class NotasEstudiantesComponent implements OnInit {
+
   notasEstudiantes: EstudianteNota[] = [];
   headers: {key: string, label: string}[];
+
+  seGeneroListaDeAntiguedades: boolean = false;
 
   constructor(private estudiantesService: EstudianteService, private ns: MdbNotificationService) {
     this.headers = [
@@ -41,6 +44,7 @@ export class NotasEstudiantesComponent implements OnInit {
     this.estudiantesService.generarListaDeAntiguedades().subscribe({
       next: () => {
         Notificacion.notificar(this.ns, "Lista de antigüedades generada correctamente", TipoAlerta.ALERTA_OK)
+        this.seGeneroListaDeAntiguedades = true;
       },
       error: (error) => {
         console.error(error);

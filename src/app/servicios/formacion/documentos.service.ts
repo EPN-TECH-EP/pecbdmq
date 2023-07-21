@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Observable, throwError } from "rxjs";
 import { DocumentoFormacion } from "../../modelo/flujos/formacion/documento";
@@ -17,6 +17,7 @@ export class DocumentosService {
   }
 
   listar() {
+
     return this.http.get<DocumentoFormacion[]>(`${ this.host }/periodoacademico/documentos`);
   }
 

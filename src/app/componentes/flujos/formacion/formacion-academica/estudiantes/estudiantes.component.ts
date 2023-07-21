@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Estudiante } from "../../../../../modelo/flujos/Estudiante";
+import { Estudiante, NotaDisciplina } from "../../../../../modelo/flujos/Estudiante";
 import { MdbCheckboxChange } from "mdb-angular-ui-kit/checkbox";
 import { EstudianteParaleloRequest, EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
 import { Paralelo } from "../../../../../modelo/admin/paralelo";
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { RegistroNotasService } from "../../../../../servicios/formacion/registro-notas.service";
+import { TipoBajaService } from "../../../../../servicios/tipo-baja.service";
+import { TipoBaja } from "../../../../../modelo/admin/tipo_baja";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: 'app-estudiantes',
@@ -16,27 +20,48 @@ export class EstudiantesComponent implements OnInit {
 
   estudiantes: Estudiante[];
   paralelosActivos: Paralelo[];
+  tipoBajas: TipoBaja[];
+
+  estudiantesPorParalelo: {paralelo: Paralelo, estudiantes: NotaDisciplina[]}[]
 
   codParalelo: number;
+  codEstudianteBaja: number;
+  codTipoDeBaja: FormControl;
 
   headers: {key: string, label: string}[];
   selections = new Set<Estudiante>();
 
+  estaDandoDeBaja: boolean;
+
   constructor(
     private estudianteService: EstudianteService,
-    private ns: MdbNotificationService
+    private ns: MdbNotificationService,
+    private registroNotasService: RegistroNotasService,
+    private tipoBajaService: TipoBajaService,
   ) {
+    this.tipoBajas = [];
     this.estudiantes = [];
     this.headers = [
       { key: 'codigo', label: 'Código Único' },
       { key: 'nombre', label: 'Estudiante' },
-      { key: 'cedula', label: 'Cédula' },
-      { key: 'telefono', label: 'Teléfono' },
+      { key: 'estado', label: 'Estado' },
     ]
+    this.estaDandoDeBaja = false;
+    this.codTipoDeBaja = new FormControl('');
 
   }
 
   ngOnInit(): void {
+
+    this.tipoBajaService.getTiposBaja().subscribe({
+      next: (tiposBaja) => {
+        this.tipoBajas = tiposBaja;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+
     this.estudianteService.listarParalelosActivos().subscribe({
       next: paralelos => {
         console.log(paralelos);
@@ -51,6 +76,18 @@ export class EstudiantesComponent implements OnInit {
         console.log(err);
       }
     });
+
+    this.registroNotasService.listarEstudiantesNotaDisciplina().subscribe({
+      next: (data) => {
+        const paralelos = data.paralelos;
+        this.estudiantesPorParalelo = paralelos.map(paralelo => {
+          const estudiantes = data.estudiantesNotaDisciplina.filter(estudiante =>
+            estudiante.codParalelo === paralelo.codParalelo);
+          return { paralelo, estudiantes };
+        });
+
+      }
+    })
   }
 
   allRowsSelected(): boolean {
@@ -144,4 +181,21 @@ export class EstudiantesComponent implements OnInit {
     });
   }
 
+  darDeBajaEstudiante(estudiante: NotaDisciplina) {
+
+  }
+
+  onDarDeBaja(estudiante: NotaDisciplina) {
+    this.estaDandoDeBaja = true;
+    this.codEstudianteBaja = estudiante.codEstudiante;
+  }
+
+  onCancelarBaja() {
+    this.codEstudianteBaja = 0;
+    this.estaDandoDeBaja = false;
+  }
+
+  onGuardarBaja() {
+  
+  }
 }
