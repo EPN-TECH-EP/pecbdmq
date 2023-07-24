@@ -71,7 +71,7 @@ export class RegistroNotasComponent implements OnInit {
       tap(materias => {
         if (materias.length === 0) {
           Notificacion.notificar(this.ns, 'No es coordinador, para registrar notas debe ser coordinador de una materia', TipoAlerta.ALERTA_WARNING);
-          this.router.navigate(['/principal/formacion/academia/menu']).then();
+          this.router.navigate(['/principal/formacion/menu-academia']).then();
         }
         this.materias = materias;
       })
