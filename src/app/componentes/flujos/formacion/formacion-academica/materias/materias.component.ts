@@ -142,7 +142,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
         this.totalPonderacion = this.materiaAulaFormArray.controls.reduce((acc, curr) => {
           return acc + curr.value.ponderacionMateria;
         }, 0)
-        this.totalPonderacion = Number(this.totalPonderacion.toFixed(2));
+        this.totalPonderacion = Number(this.totalPonderacion?.toFixed(2));
       }
     });
 

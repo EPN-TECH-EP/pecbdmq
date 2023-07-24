@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ArchivoService } from "../archivo.service";
 import { InscripcionItem } from "../../modelo/flujos/formacion/inscripcion-item";
 import { InscripcionCompleta } from "../../modelo/flujos/formacion/inscripcion-completa";
@@ -42,6 +42,16 @@ export interface EstudianteNota {
   notasFormacionFinal: NotasFormacion;
 }
 
+export interface NotaMateriaPorEstudiante {
+  codNotaFormacion: number;
+  nombreMateria: string;
+  notaMateria: number;
+  notaDisciplina: number;
+  notaSupletorio: number;
+  codInstructor: number;
+  nombreCompletoInstructor: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,8 +87,13 @@ export class EstudianteService {
     return this.http.get(`${ this.host }/notasFormacion/registroEstudiantesNotas`);
   }
 
-  generarListaDeAntiguedades(){
+  generarListaDeAntiguedades() {
     return this.http.get(`${ this.host }/antiguedades/generaArchivosAntiguedadesFormacion`);
+  }
+
+  listarNotasPorEstudiante(idEstudiante: number) {
+    const params: HttpParams = new HttpParams().set('codEstudiante', idEstudiante.toString());
+    return this.http.get<NotaMateriaPorEstudiante[]>(`${ this.host }/notasFormacion/listarNotaMateriaCoordinadorByEstudiante`, { params });
   }
 
 }

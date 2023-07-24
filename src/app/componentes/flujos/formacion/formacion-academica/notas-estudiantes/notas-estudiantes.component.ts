@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { EstudianteNota, EstudianteService } from "../../../../../servicios/formacion/estudiante.service";
+import {
+  EstudianteNota,
+  EstudianteService,
+  NotaMateriaPorEstudiante
+} from "../../../../../servicios/formacion/estudiante.service";
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { DatoPersonal } from "../../../../../modelo/admin/dato-personal";
 
 @Component({
   selector: 'app-notas-estudiantes',
@@ -11,10 +16,17 @@ import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 })
 export class NotasEstudiantesComponent implements OnInit {
 
-  notasEstudiantes: EstudianteNota[] = [];
+  notasEstudiantes: EstudianteNota[];
   headers: {key: string, label: string}[];
+  headersNotasPorEstudiante: {key: string, label: string}[];
+  notasMateriaPorEstudiante: NotaMateriaPorEstudiante[];
+
+  estudianteSeleccionado: DatoPersonal;
 
   seGeneroListaDeAntiguedades: boolean = false;
+
+  esVistaDeNotas: boolean = true;
+  esVistaDeNotasPorEstudiante: boolean = false;
 
   constructor(private estudiantesService: EstudianteService, private ns: MdbNotificationService) {
     this.headers = [
@@ -24,6 +36,15 @@ export class NotasEstudiantesComponent implements OnInit {
       { key: 'notaDisciplinaria', label: 'Nota Final Disciplinaria' },
       { key: 'notaDisciplinaria', label: 'Promedio académico' },
     ];
+    this.headersNotasPorEstudiante = [
+      { key: 'nombre', label: 'Materia' },
+      { key: 'nombre', label: 'Nota Final' },
+      { key: 'noFinal', label: 'Nota Final Disciplinaria' },
+      { key: 'notaDisciplinaria', label: 'Nota Supletorio' },
+    ];
+    this.estudianteSeleccionado = {} as DatoPersonal;
+    this.notasMateriaPorEstudiante = [];
+    this.notasEstudiantes = [];
   }
 
   ngOnInit(): void {
@@ -51,6 +72,30 @@ export class NotasEstudiantesComponent implements OnInit {
         Notificacion.notificar(this.ns, error.error.mensaje, TipoAlerta.ALERTA_ERROR)
       }
     })
+
+  }
+
+  verNotasPorMateria(estudiante: EstudianteNota) {
+    console.log(estudiante);
+    this.esVistaDeNotasPorEstudiante = true;
+    this.esVistaDeNotas = false;
+    this.estudianteSeleccionado = estudiante.datoPersonal;
+    this.estudiantesService.listarNotasPorEstudiante(estudiante.notasFormacionFinal.codEstudiante).subscribe({
+      next: (notas) => {
+        this.notasMateriaPorEstudiante = notas;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  volverAVistaDeNotas() {
+    this.esVistaDeNotasPorEstudiante = false;
+    this.esVistaDeNotas = true;
+  }
+
+  descargarDocumentoAntiguedades() {
 
   }
 }
