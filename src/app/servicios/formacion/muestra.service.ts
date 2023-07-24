@@ -26,8 +26,8 @@ export class MuestraService {
     return this.http.get<InscripcionCompleta>(`${ this.host }/inscripcionfor/datos/${ idPostulante }`);
   }
 
-
   guardarRequisitos(requisitos: ValidacionRequisito[]) {
     return this.http.put<ValidacionRequisito[]>(`${ this.host }/inscripcionfor/requisitosUpdate`, requisitos);
   }
+
 }

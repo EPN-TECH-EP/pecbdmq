@@ -69,7 +69,7 @@ export class MateriasFormacionService {
   }
 
   listarMateriasParalelos(): Observable<MateriaFormacionResponse> {
-    return this.http.get<MateriaFormacionResponse>(`${ this.host }/instructorMateriaParalelo/listarMateriasParalelos`);
+    return this.http.get<MateriaFormacionResponse>(`${ this.host }/instructorMateriaParalelo/listarMateriasGroupByParalelos`);
   }
 
 }

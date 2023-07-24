@@ -242,7 +242,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       );
       return;
     }
-
     if (tipo === 'convocatoria') {
       this.documentoConvocatoria = archivo;
     } else {

@@ -9,7 +9,8 @@ import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { RegistroNotasService } from "../../../../../servicios/formacion/registro-notas.service";
 import { TipoBajaService } from "../../../../../servicios/tipo-baja.service";
 import { TipoBaja } from "../../../../../modelo/admin/tipo_baja";
-import { FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-estudiantes',
@@ -18,15 +19,17 @@ import { FormControl } from "@angular/forms";
 })
 export class EstudiantesComponent implements OnInit {
 
-  estudiantes: Estudiante[];
+  estudiantesSinParalelo: Estudiante[];
+  estudiantesBaja: Estudiante[];
   paralelosActivos: Paralelo[];
   tipoBajas: TipoBaja[];
+  documentoBaja: File;
 
   estudiantesPorParalelo: {paralelo: Paralelo, estudiantes: NotaDisciplina[]}[]
 
   codParalelo: number;
   codEstudianteBaja: number;
-  codTipoDeBaja: FormControl;
+  bajaForm: FormGroup;
 
   headers: {key: string, label: string}[];
   selections = new Set<Estudiante>();
@@ -38,61 +41,128 @@ export class EstudiantesComponent implements OnInit {
     private ns: MdbNotificationService,
     private registroNotasService: RegistroNotasService,
     private tipoBajaService: TipoBajaService,
+    private builder: FormBuilder
   ) {
     this.tipoBajas = [];
-    this.estudiantes = [];
+    this.estudiantesSinParalelo = [];
+    this.estudiantesBaja = [];
     this.headers = [
       { key: 'codigo', label: 'Código Único' },
       { key: 'nombre', label: 'Estudiante' },
       { key: 'estado', label: 'Estado' },
     ]
     this.estaDandoDeBaja = false;
-    this.codTipoDeBaja = new FormControl('');
+    this.bajaForm = new FormGroup({});
+    this.documentoBaja = null;
+    this.construirFormularioBaja();
 
   }
 
   ngOnInit(): void {
-
-    this.tipoBajaService.getTiposBaja().subscribe({
-      next: (tiposBaja) => {
+    forkJoin({
+      tiposBaja: this.tipoBajaService.getTiposBaja(),
+      paralelos: this.estudianteService.listarParalelosActivos(),
+      estudiantes: this.estudianteService.listar(),
+      estudiantesBaja: this.estudianteService.listarEstudiantesBaja(),
+      estudiantesNotaDisciplina: this.registroNotasService.listarEstudiantesNotaDisciplina()
+    }).subscribe({
+      next: ({ tiposBaja, paralelos, estudiantes, estudiantesBaja, estudiantesNotaDisciplina }) => {
+        // Handle the results of each observable here
+        console.log('Tipos Baja:', tiposBaja);
         this.tipoBajas = tiposBaja;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    })
 
-    this.estudianteService.listarParalelosActivos().subscribe({
-      next: paralelos => {
-        console.log(paralelos);
+        console.log('Paralelos:', paralelos);
         this.paralelosActivos = paralelos;
-      }
-    })
-    this.estudianteService.listar().subscribe({
-      next: estudiantes => {
-        this.estudiantes = estudiantes;
-      },
-      error: err => {
-        console.log(err);
-      }
-    });
 
-    this.registroNotasService.listarEstudiantesNotaDisciplina().subscribe({
-      next: (data) => {
-        const paralelos = data.paralelos;
-        this.estudiantesPorParalelo = paralelos.map(paralelo => {
-          const estudiantes = data.estudiantesNotaDisciplina.filter(estudiante =>
+        console.log('Estudiantes:', estudiantes);
+        this.estudiantesSinParalelo = estudiantes;
+
+        console.log('Estudiantes Baja:', estudiantesBaja);
+        this.estudiantesBaja = estudiantesBaja;
+
+        console.log('Estudiantes Nota Disciplina:', estudiantesNotaDisciplina);
+        const paralelosData = estudiantesNotaDisciplina.paralelos;
+        this.estudiantesPorParalelo = paralelosData.map(paralelo => {
+          const estudiantesData = estudiantesNotaDisciplina.estudiantesNotaDisciplina.filter(estudiante =>
             estudiante.codParalelo === paralelo.codParalelo);
-          return { paralelo, estudiantes };
+          return { paralelo, estudiantes: estudiantesData };
         });
 
+        this.filtrarEstudiantesBaja();
+      },
+      error: err => {
+        console.log('Error:', err);
       }
-    })
+    });
   }
+
+  private construirFormularioBaja() {
+    this.bajaForm = this.builder.group({
+      codTipoBaja: ['', Validators.required],
+      descripcionBaja: ['', Validators.required],
+      archivos: ['', Validators.required]
+    });
+  }
+
+  private asignarEstudiantes(estudiantesParaleloEstudiante: EstudianteParaleloRequest) {
+    this.estudianteService.asignarEstudianteMateriaParalelo(estudiantesParaleloEstudiante).subscribe({
+      next: () => {
+        this.mostrarNotificacion('Estudiantes asignados correctamente', TipoAlerta.ALERTA_OK);
+        this.actualizarEstudiantes();
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+  }
+
+  private mostrarNotificacion(mensaje: string, tipo: TipoAlerta) {
+    Notificacion.notificar(this.ns, mensaje, tipo);
+  }
+
+  private actualizarEstudiantes() {
+    this.estudianteService.listar().subscribe({
+      next: estudiantes => {
+        this.estudiantesSinParalelo = estudiantes;
+        if (this.estudiantesSinParalelo.length === 0) {
+          this.registrarEstudiantesEnTablaNotas();
+        }
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al obtener la lista de estudiantes', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+  }
+
+  private registrarEstudiantesEnTablaNotas() {
+    console.log('Registrando estudiantes en tabla notas');
+    this.estudianteService.registrarEstudiantesEnTablaNotas().subscribe({
+      next: () => {
+        console.log('Estudiantes registrados en tabla notas');
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al registrar estudiantes en tabla de notas', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+  }
+
+  private filtrarEstudiantesBaja() {
+    this.estudiantesPorParalelo = this.estudiantesPorParalelo.map(paralelo => {
+      const estudiantes = paralelo.estudiantes.filter(
+        estudiante => !this.estudiantesBaja.find(
+          e => e.codEstudiante === estudiante.codEstudiante)
+      );
+      console.log('Estudiantes filtrados:', estudiantes);
+      return { paralelo: paralelo.paralelo, estudiantes };
+    });
+
+
+  }
+
 
   allRowsSelected(): boolean {
     const selectionsLength = this.selections.size;
-    const dataLength = this.estudiantes.length;
+    const dataLength = this.estudiantesSinParalelo.length;
     return selectionsLength === dataLength;
   }
 
@@ -106,11 +176,11 @@ export class EstudiantesComponent implements OnInit {
 
   toggleAll(event: MdbCheckboxChange): void {
     if (event.checked) {
-      this.estudiantes.forEach((row: Estudiante) => {
+      this.estudiantesSinParalelo.forEach((row: Estudiante) => {
         this.select(row);
       });
     } else {
-      this.estudiantes.forEach((row: Estudiante) => {
+      this.estudiantesSinParalelo.forEach((row: Estudiante) => {
         this.deselect(row);
       });
     }
@@ -139,52 +209,6 @@ export class EstudiantesComponent implements OnInit {
     this.asignarEstudiantes(estudiantesParaleloEstudiante);
   }
 
-  private asignarEstudiantes(estudiantesParaleloEstudiante: EstudianteParaleloRequest) {
-    this.estudianteService.asignarEstudianteMateriaParalelo(estudiantesParaleloEstudiante).subscribe({
-      next: () => {
-        this.mostrarNotificacion('Estudiantes asignados correctamente', TipoAlerta.ALERTA_OK);
-        this.actualizarEstudiantes();
-      },
-      error: err => {
-        this.mostrarNotificacion('Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
-      }
-    });
-  }
-
-  private mostrarNotificacion(mensaje: string, tipo: TipoAlerta) {
-    Notificacion.notificar(this.ns, mensaje, tipo);
-  }
-
-  private actualizarEstudiantes() {
-    this.estudianteService.listar().subscribe({
-      next: estudiantes => {
-        this.estudiantes = estudiantes;
-        if (this.estudiantes.length === 0) {
-          this.registrarEstudiantesEnTablaNotas();
-        }
-      },
-      error: err => {
-        this.mostrarNotificacion('Error al obtener la lista de estudiantes', TipoAlerta.ALERTA_ERROR);
-      }
-    });
-  }
-
-  private registrarEstudiantesEnTablaNotas() {
-    console.log('Registrando estudiantes en tabla notas');
-    this.estudianteService.registrarEstudiantesEnTablaNotas().subscribe({
-      next: () => {
-        console.log('Estudiantes registrados en tabla notas');
-      },
-      error: err => {
-        this.mostrarNotificacion('Error al registrar estudiantes en tabla de notas', TipoAlerta.ALERTA_ERROR);
-      }
-    });
-  }
-
-  darDeBajaEstudiante(estudiante: NotaDisciplina) {
-
-  }
-
   onDarDeBaja(estudiante: NotaDisciplina) {
     this.estaDandoDeBaja = true;
     this.codEstudianteBaja = estudiante.codEstudiante;
@@ -195,7 +219,46 @@ export class EstudiantesComponent implements OnInit {
     this.estaDandoDeBaja = false;
   }
 
-  onGuardarBaja() {
-  
+  onConfirmarBaja(estudiante: NotaDisciplina) {
+    const codTipoBaja = this.bajaForm.get('codTipoBaja')?.value;
+    const descripcionBaja = this.bajaForm.get('descripcionBaja')?.value;
+
+    if (!codTipoBaja || !descripcionBaja || !this.documentoBaja) {
+      this.mostrarNotificacion('Debe llenar todos los campos', TipoAlerta.ALERTA_ERROR);
+      return;
+    }
+
+    const bajaEstudiante = {
+      codEstudiante: estudiante.codEstudiante,
+      codTipoBaja: codTipoBaja,
+      descripcionBaja: descripcionBaja,
+    };
+
+    console.log(bajaEstudiante);
+
+    const formData = new FormData();
+    formData.append('codEstudiante', bajaEstudiante.codEstudiante.toString());
+    formData.append('codTipoBaja', bajaEstudiante.codTipoBaja.toString());
+    formData.append('descripcionBaja', bajaEstudiante.descripcionBaja);
+    formData.append('codSancion', '');
+    formData.append('archivos', this.documentoBaja);
+
+    this.estudianteService.darDeBajaEstudiante(formData).subscribe({
+      next: () => {
+        this.mostrarNotificacion('Estudiante dado de baja correctamente', TipoAlerta.ALERTA_OK);
+        this.actualizarEstudiantes();
+        this.onCancelarBaja();
+      },
+      error: err => {
+        this.mostrarNotificacion('Error al dar de baja al estudiante', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+
   }
+
+  onFileChange($event: Event) {
+    this.documentoBaja = ($event.target as HTMLInputElement).files![0];
+    console.log(this.documentoBaja.name);
+  }
+
 }

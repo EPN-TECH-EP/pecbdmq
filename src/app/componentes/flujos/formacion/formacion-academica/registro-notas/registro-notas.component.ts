@@ -26,11 +26,9 @@ export class RegistroNotasComponent implements OnInit {
   materias: MateriaPorInstructor[];
   materiaSeleccionada: MateriaPorInstructor;
 
-
   estaEditandoNota: boolean;
   estudianteNotaEditando: NotaPorEstudiante;
   codEstudianteNotaEditando: number;
-
 
   estaEnVistaListaMaterias: boolean;
   estaEnVistaRegistroNotas: boolean;

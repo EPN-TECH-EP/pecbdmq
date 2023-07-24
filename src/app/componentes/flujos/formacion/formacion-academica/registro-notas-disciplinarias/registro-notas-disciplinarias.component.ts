@@ -6,6 +6,8 @@ import { RegistroNotasService } from "../../../../../servicios/formacion/registr
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import { ModalSansionComponent } from "../modal-sansion/modal-sansion.component";
 
 @Component({
   selector: 'app-registro-notas-disciplinarias',
@@ -22,11 +24,14 @@ export class RegistroNotasDisciplinariasComponent implements OnInit {
   estudianteNotaEditando: NotaDisciplina;
   codEstudianteNotaEditando: number;
 
+  modalRef: MdbModalRef<ModalSansionComponent> | null = null;
+
 
   constructor(
     private builder: FormBuilder,
     private registroNotasService: RegistroNotasService,
     private ns: MdbNotificationService,
+    private modalService: MdbModalService
   ) {
     this.headers = [
       { key: 'nombre', label: 'Código único' },
@@ -117,4 +122,11 @@ export class RegistroNotasDisciplinariasComponent implements OnInit {
     });
   }
 
+  onVerSanciones(estudiante: NotaDisciplina) {
+    this.modalRef = this.modalService.open(ModalSansionComponent, {
+        data: { estudiante: estudiante },
+        modalClass: 'modal-lg modal-dialog-centered',
+    });
+
+  }
 }

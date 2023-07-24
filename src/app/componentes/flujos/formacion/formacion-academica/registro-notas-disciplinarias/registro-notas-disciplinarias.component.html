@@ -82,6 +82,7 @@
                         mdbTooltip="Sanciones del estudiante"
                           class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                           [disabled]="estaEditandoNota"
+                          (click)="onVerSanciones(estudiante)"
                         >
                           <i class="fa fa-user-times"></i>
                         </button>

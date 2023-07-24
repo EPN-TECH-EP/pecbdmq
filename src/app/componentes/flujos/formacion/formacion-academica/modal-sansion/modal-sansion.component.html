@@ -1,1 +1,129 @@
-<p>modal-sansion works!</p>
+<div class="modal-header">
+  <h6 class="modal-title text-primary">
+    ESTUDIANTE: <b class="fw-bold"> {{ estudiante.nombreCompleto  }}</b>
+  </h6>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body px-4">
+  <button
+    class="btn btn-primary btn-sm"
+    *ngIf="!estaCreandoFalta"
+    (click)="estaCreandoFalta = !estaCreandoFalta"
+  >
+    <i class="fas fa-plus"></i> Agregar falta
+  </button>
+  <div *ngIf="estaCreandoFalta">
+    <div class="row justify-content-center">
+      <form [formGroup]="sancionForm">
+        <mdb-form-control class="mb-2">
+          <mdb-select
+            mdbValidate
+            class="form-control"
+            formControlName="codFaltaPeriodo"
+          >
+            <mdb-option
+              *ngFor="let falta of faltas"
+              [value]="falta.codTipoFalta"
+            >
+              {{falta.nombreFalta}}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x">Tipo de falta</label>
+        </mdb-form-control>
+        <mdb-form-control class="mb-2" >
+          <textarea
+            mdbInput
+            mdbValidate
+            class="form-control"
+            rows="2"
+            formControlName="observacionSancion"
+          ></textarea>
+          <label mdbLabel class="form-label mb-2x">Descripción de la baja</label>
+        </mdb-form-control>
+        <mdb-form-control>
+          <input
+            mdbInput
+            type="file"
+            accept="application/pdf"
+            formControlName="archivo"
+            class="form-control"
+            (change)="onFileChange($event)"
+          >
+        </mdb-form-control>
+      </form>
+    </div>
+    <div class="py-3">
+      <button
+        class="btn btn-success btn-sm me-2"
+        [disabled]="!esInstructor"
+        (click)="onGuardarFalta()"
+      >
+        <i class="fas fa-save"></i> Guardar
+      </button>
+      <button
+        class="btn btn-danger btn-sm"
+        (click)="estaCreandoFalta = !estaCreandoFalta"
+      >
+        <i class="fas fa-times"></i> Cancelar
+      </button>
+    </div>
+    <p class="text-danger" *ngIf="!esInstructor">
+      No es instructor.
+      No tienes permisos para agregar faltas.
+    </p>
+  </div>
+  <hr class="hr">
+  <h6>Lista de faltas</h6>
+  <div
+    *ngIf="faltasPorEstudiante?.length > 0"
+    class="datatable datatable-hover datatable-sm datatable-striped">
+    <form>
+      <table
+        class="tabla datatable-table"
+        mdbTable
+        #faltasTable="mdbTable"
+        [responsive]="true"
+        [dataSource]="faltasPorEstudiante"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let head of headers"
+            class="fw-bold fs-6"
+          >
+            {{ head.label }}
+          </th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let falta of faltasTable.data">
+
+          <td>
+            {{ falta?.codFaltaCurso}}
+          </td>
+          <td>
+            {{ falta?.observacionSancion }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </form>
+  </div>
+  <div *ngIf="faltasPorEstudiante?.length === 0">
+    <div class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron faltas para el estudiante.
+    </div>
+  </div>
+</div>

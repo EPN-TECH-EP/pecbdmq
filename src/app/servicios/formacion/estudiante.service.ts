@@ -52,6 +52,19 @@ export interface NotaMateriaPorEstudiante {
   nombreCompletoInstructor: string;
 }
 
+export interface FaltaEstudiante {
+  codSancion: number;
+  codDocumento: number;
+  codEstudiante: number;
+  fechaSancion: Date;
+  observacionSancion: string;
+  estado: string;
+  codInstructor: number;
+  codFaltaPeriodo: number;
+  codFaltaSemestre: number;
+  codFaltaCurso: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -96,4 +109,20 @@ export class EstudianteService {
     return this.http.get<NotaMateriaPorEstudiante[]>(`${ this.host }/notasFormacion/listarNotaMateriaCoordinadorByEstudiante`, { params });
   }
 
+  darDeBajaEstudiante(data: FormData) {
+    return this.http.post(`${ this.host }/baja/crear`, data);
+  }
+
+  listarEstudiantesBaja() {
+    return this.http.get<Estudiante[]>(`${ this.host }/estudiante/listarBajaPA`);
+  }
+
+  sancionarEstudiante(data: FormData) {
+    return this.http.post(`${ this.host }/sanciones/crear`, data);
+  }
+
+  listarFaltasPorEstudiante(idEstudiante: number) {
+    const params: HttpParams = new HttpParams().set('codEstudiante', idEstudiante.toString());
+    return this.http.get<FaltaEstudiante[]>(`${ this.host }/sancion/listarSancionesByEstudiante`, { params });
+  }
 }
