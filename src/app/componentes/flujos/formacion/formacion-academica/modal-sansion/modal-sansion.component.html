@@ -28,7 +28,7 @@
           >
             <mdb-option
               *ngFor="let falta of faltas"
-              [value]="falta.codTipoFalta"
+              [value]="falta.codFaltaPeriodo"
             >
               {{falta.nombreFalta}}
             </mdb-option>
@@ -74,11 +74,11 @@
     </div>
     <p class="text-danger" *ngIf="!esInstructor">
       No es instructor.
-      No tienes permisos para agregar faltas.
+      No tienes permisos para agregar sanciones.
     </p>
   </div>
   <hr class="hr">
-  <h6>Lista de faltas</h6>
+  <h6>Lista de sanciones</h6>
   <div
     *ngIf="faltasPorEstudiante?.length > 0"
     class="datatable datatable-hover datatable-sm datatable-striped">
@@ -103,9 +103,11 @@
         </thead>
         <tbody class="datatable-body">
         <tr *ngFor="let falta of faltasTable.data">
-
           <td>
-            {{ falta?.codFaltaCurso}}
+            {{ falta?.fechaSancion}}
+          </td>
+          <td>
+            {{ falta?.faltaPeriodo?.nombreFalta }}
           </td>
           <td>
             {{ falta?.observacionSancion }}
@@ -123,7 +125,7 @@
   <div *ngIf="faltasPorEstudiante?.length === 0">
     <div class="alert alert-info" role="alert">
       <i class="fa-solid fa-info-circle me-2"></i>
-      No se encontraron faltas para el estudiante.
+      No se encontraron sanciones para el estudiante.
     </div>
   </div>
 </div>

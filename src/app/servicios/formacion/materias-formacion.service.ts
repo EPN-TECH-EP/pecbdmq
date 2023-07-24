@@ -11,7 +11,7 @@ export interface MateriaFormacionResponse {
 }
 
 export interface MateriaFormacion {
-  codMateria: number;
+  codMateriaPeriodo: number;
   nombre: string;
   nombreEje: string;
   instructores: Instructor[];

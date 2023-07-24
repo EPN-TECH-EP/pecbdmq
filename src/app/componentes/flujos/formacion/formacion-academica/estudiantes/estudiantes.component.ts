@@ -9,7 +9,7 @@ import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { RegistroNotasService } from "../../../../../servicios/formacion/registro-notas.service";
 import { TipoBajaService } from "../../../../../servicios/tipo-baja.service";
 import { TipoBaja } from "../../../../../modelo/admin/tipo_baja";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { forkJoin } from "rxjs";
 
 @Component({
@@ -32,6 +32,7 @@ export class EstudiantesComponent implements OnInit {
   bajaForm: FormGroup;
 
   headers: {key: string, label: string}[];
+  headersBaja: {key: string, label: string}[];
   selections = new Set<Estudiante>();
 
   estaDandoDeBaja: boolean;
@@ -49,8 +50,13 @@ export class EstudiantesComponent implements OnInit {
     this.headers = [
       { key: 'codigo', label: 'Código Único' },
       { key: 'nombre', label: 'Estudiante' },
-      { key: 'estado', label: 'Estado' },
+      { key: 'estado', label: 'Cédula' },
+      { key: 'telefono', label: 'Teléfono' },
     ]
+    this.headersBaja = [
+      { key: 'codigo', label: 'Código Único' },
+      { key: 'nombre', label: 'Estudiante' },
+    ];
     this.estaDandoDeBaja = false;
     this.bajaForm = new FormGroup({});
     this.documentoBaja = null;
@@ -59,14 +65,14 @@ export class EstudiantesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    forkJoin({
-      tiposBaja: this.tipoBajaService.getTiposBaja(),
-      paralelos: this.estudianteService.listarParalelosActivos(),
-      estudiantes: this.estudianteService.listar(),
-      estudiantesBaja: this.estudianteService.listarEstudiantesBaja(),
-      estudiantesNotaDisciplina: this.registroNotasService.listarEstudiantesNotaDisciplina()
-    }).subscribe({
-      next: ({ tiposBaja, paralelos, estudiantes, estudiantesBaja, estudiantesNotaDisciplina }) => {
+    forkJoin([
+      this.tipoBajaService.getTiposBaja(),
+      this.estudianteService.listarParalelosActivos(),
+      this.estudianteService.listar(),
+      this.estudianteService.listarEstudiantesBaja(),
+      this.registroNotasService.listarEstudiantesNotaDisciplina()
+    ]).subscribe({
+      next: ([tiposBaja, paralelos, estudiantes, estudiantesBaja, estudiantesNotaDisciplina]) => {
         // Handle the results of each observable here
         console.log('Tipos Baja:', tiposBaja);
         this.tipoBajas = tiposBaja;

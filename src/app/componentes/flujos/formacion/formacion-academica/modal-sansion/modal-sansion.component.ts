@@ -11,9 +11,10 @@ import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
 import { UsuarioService } from "../../../../../servicios/usuario.service";
-import { switchMap } from "rxjs";
+import { forkJoin, switchMap } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { AutenticacionService } from "../../../../../servicios/autenticacion.service";
+import { FaltaPeriodo } from "../../../../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 
 @Component({
   selector: 'app-modal-sansion',
@@ -23,7 +24,7 @@ import { AutenticacionService } from "../../../../../servicios/autenticacion.ser
 export class ModalSansionComponent implements OnInit {
 
   estudiante: NotaDisciplina;
-  faltas: ITipoFalta[];
+  faltas: FaltaPeriodo[];
   documentoFalta: File;
   faltasPorEstudiante: FaltaEstudiante[];
   sancionForm: FormGroup;
@@ -41,7 +42,8 @@ export class ModalSansionComponent implements OnInit {
     private authService: AutenticacionService,
   ) {
     this.headers = [
-      { key: 'sancion', label: 'Sanción' },
+      { key: 'sancion', label: 'Fecha Sanción' },
+      { key: 'sancion', label: 'Falta' },
       { key: 'nombre', label: 'Observaciones' },
     ];
     this.estaCreandoFalta = false;
@@ -55,14 +57,21 @@ export class ModalSansionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.faltaService.getTiposFalta().subscribe({
-      next: (data) => {
-        this.faltas = data;
-      }
-    })
-    this.estudianteService.listarFaltasPorEstudiante(this.estudiante.codEstudiante).subscribe({
-      next: (data) => {
-        this.faltasPorEstudiante = data;
+
+    forkJoin([
+      this.faltaService.listarTipoFaltaPeriodo(),
+      this.estudianteService.listarSancionesPorEstudiante(this.estudiante.codEstudiante)
+    ])
+    .subscribe({
+      next: ([faltas, faltasPorEstudiante]) => {
+        this.faltas = faltas;
+        this.faltasPorEstudiante = faltasPorEstudiante;
+        this.faltasPorEstudiante.forEach(falta =>{
+          falta.faltaPeriodo = this.faltas.find(f => f.codFaltaPeriodo == falta.codFaltaPeriodo);
+        });
+      },
+      error: err => {
+        console.log(err);
       }
     });
 
@@ -72,7 +81,6 @@ export class ModalSansionComponent implements OnInit {
         instructor => {
           if (instructor) {
             this.esInstructor = true;
-            console.log('es instructor')
             this.sancionForm.get('codInstructor')?.setValue(instructor.codInstructor);
           }
         })
@@ -108,7 +116,7 @@ export class ModalSansionComponent implements OnInit {
   private guardarFalta(formData: FormData) {
     this.estudianteService.sancionarEstudiante(formData)
       .pipe(
-        switchMap(() => this.estudianteService.listarFaltasPorEstudiante(this.estudiante.codEstudiante)),
+        switchMap(() => this.estudianteService.listarSancionesPorEstudiante(this.estudiante.codEstudiante)),
         tap((data) => {
           this.faltasPorEstudiante = data;
           this.faltasPorEstudiante = [...this.faltasPorEstudiante];

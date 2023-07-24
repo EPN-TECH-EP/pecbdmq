@@ -234,7 +234,7 @@
                     {{ materia?.nombreAula }}
                   </td>
                   <td [style.width.px]="200">
-                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateria!== codMateriaEditando">
+                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateriaPeriodo!== codMateriaEditando">
                       <div class="badge badge-success text-start">
                         <b class="text-wrap">{{ materia?.coordinador?.nombre }} {{ materia?.coordinador?.apellido }}</b>
                       </div>
@@ -242,7 +242,7 @@
                         {{ materia?.coordinador?.correoPersonal }}
                       </div>
                     </ng-container>
-                    <ng-container *ngIf="estaEditandoMateria && materia.codMateria === codMateriaEditando">
+                    <ng-container *ngIf="estaEditandoMateria && materia.codMateriaPeriodo === codMateriaEditando">
                       <mdb-form-control>
                         <mdb-select
                           [filter]="true"
@@ -261,7 +261,7 @@
                     </ng-container>
                   </td>
                   <td [style.width.px]="200">
-                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateria!== codMateriaEditando">
+                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateriaPeriodo!== codMateriaEditando">
                       <div *ngIf="materia?.asistentes?.length > 1; else asistente">
                         <div class="d-flex gap-1 align-items-center">
                           <span class="total-instructores">{{ materia.asistentes?.length }}</span>
@@ -300,7 +300,7 @@
                         </div>
                       </ng-template>
                     </ng-container>
-                    <ng-container *ngIf="estaEditandoMateria && materia.codMateria === codMateriaEditando">
+                    <ng-container *ngIf="estaEditandoMateria && materia.codMateriaPeriodo === codMateriaEditando">
                       <mdb-form-control>
                         <mdb-select
                           [filter]="true"
@@ -320,7 +320,7 @@
                     </ng-container>
                   </td>
                   <td [style.width.px]="200">
-                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateria!== codMateriaEditando">
+                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateriaPeriodo!== codMateriaEditando">
                       <div *ngIf="materia.instructores?.length > 1 ; else instructor">
                         <div class="d-flex gap-1 align-items-center">
                           <span class="total-instructores">{{ materia.instructores?.length }}</span>
@@ -353,7 +353,7 @@
                         <p class="text-muted">{{ materia?.instructores[0]?.correoPersonal  }}</p>
                       </ng-template>
                     </ng-container>
-                    <ng-container *ngIf="estaEditandoMateria && materia.codMateria === codMateriaEditando">
+                    <ng-container *ngIf="estaEditandoMateria && materia.codMateriaPeriodo === codMateriaEditando">
                       <mdb-form-control>
                         <mdb-select
                           [filter]="true"
@@ -373,12 +373,12 @@
                     </ng-container>
                   </td>
                   <td class="text-center">
-                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateria!== codMateriaEditando">
+                    <ng-container *ngIf="!estaEditandoMateria || materia.codMateriaPeriodo!== codMateriaEditando">
                       <button
                         (click)="onEditarMateria(materia, materiaPorParalelo.paralelo)"
                         mdbTooltip="Editar datos de la materia"
                         [disabled]="estaEditandoMateria"
-                        class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark " s
+                        class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
                       >
                         <i class="fa fa-edit"></i>
                       </button>
@@ -390,18 +390,18 @@
                         <i class="fa fa-trash-alt"></i>
                       </button>
                     </ng-container>
-                    <ng-container *ngIf="estaEditandoMateria && materia.codMateria === codMateriaEditando">
+                    <ng-container *ngIf="estaEditandoMateria && materia.codMateriaPeriodo === codMateriaEditando">
                       <button
-                        class="m-0 p-0 shadow-0 btn btn-lg text-success"
+                        class="m-0 me-2 p-0 shadow-0 btn btn-lg text-success"
                         (click)="onGuardarMateriaEditando()"
                       >
-                        <i class="fa fa-check"></i> &nbsp;Guardar
+                        <i class="fa fa-check"></i>Guardar
                       </button>
                       <button
                         class="m-0 p-0 shadow-0 btn btn-lg text-danger"
                         (click)="onCancelarEdicionMateria()"
                       >
-                        <i class="fa fa-ban"></i> &nbsp;Cancelar
+                        <i class="fa fa-ban"></i>Cancelar
                       </button>
                     </ng-container>
                   </td>

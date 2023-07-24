@@ -15,7 +15,6 @@
       >
       <!-- Lista de estudiantes -->
       <section>
-
         <p class="text-primary">
           <i class="fas fa-info-circle me-1"></i>
           Seleccione un paralelo para los estudiantes que no tienen uno asignado.
@@ -128,7 +127,6 @@
       ><span><i class="fas fa fa-user-times me-3"></i>Dar de baja a un estudiante</span></ng-template
       >
       <!-- Lista de estudiantes -->
-
       <div>
         <h6 class="fw-bold my-4">Lista de estudiantes por paralelo</h6>
 
@@ -138,6 +136,7 @@
               class="fas fa-people-group me-2"></i>{{ estudiantePorParalelo.paralelo.nombreParalelo }}</span>
             </ng-template>
             <div class="row justify-content-center">
+              <h5>Estudiantes</h5>
               <ol class="list-group list-group-light list-group-numbered" [style.width.%]="60">
                 <li
                   *ngFor="let estudiante of estudiantePorParalelo.estudiantes"
@@ -164,13 +163,13 @@
                           <label mdbLabel class="form-label mb-2x">Seleccione el tipo de baja</label>
                         </mdb-form-control>
                         <mdb-form-control>
-                              <textarea
-                                mdbInput
-                                mdbValidate
-                                class="form-control"
-                                rows="2"
-                                formControlName="descripcionBaja"
-                              ></textarea>
+                          <textarea
+                            mdbInput
+                            mdbValidate
+                            class="form-control"
+                            rows="2"
+                            formControlName="descripcionBaja"
+                          ></textarea>
                           <label mdbLabel class="form-label mb-2x">Descripción de la baja</label>
                         </mdb-form-control>
                         <mdb-form-control>
@@ -220,97 +219,38 @@
               </ol>
             </div>
 
-            <!--            <section>-->
-            <!--              <div class="datatable datatable-hover datatable-sm table-responsive">-->
-            <!--                  <table-->
-            <!--                    class="tabla datatable-table"-->
-            <!--                    mdbTable-->
-            <!--                    #datatableEstudiante-->
-            <!--                    [dataSource]="estudiantePorParalelo.estudiantes"-->
-            <!--                    [pagination]="pagination"-->
-            <!--                  >-->
-            <!--                    <thead class="datatable-header">-->
-            <!--                    <tr>-->
-            <!--                      <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"-->
-            <!--                      >-->
-            <!--                        {{ head.label }}-->
-            <!--                      </th>-->
-            <!--                      <th class="text-center fw-bold fs-6">Acciones</th>-->
-            <!--                    </tr>-->
-            <!--                    </thead>-->
-            <!--                    <tbody class="datatable-body">-->
-            <!--                    &lt;!&ndash; Lista de estudiantes &ndash;&gt;-->
-            <!--                    <tr *ngFor="let estudiante of datatableEstudiante.data">-->
-            <!--                      <td>-->
-            <!--                        {{ estudiante.codUnico}}-->
-            <!--                      </td>-->
-            <!--                      <td>-->
-            <!--                        {{ estudiante.nombreCompleto }}-->
-            <!--                      </td>-->
-            <!--                      <td class="text-success">-->
-            <!--                        <ng-container *ngIf="!estaDandoDeBaja || estudiante.codEstudiante !== codEstudianteBaja">-->
-            <!--                          <i class="fa fa-check"></i> Activo-->
-            <!--                        </ng-container>-->
-            <!--                        <ng-container *ngIf="estaDandoDeBaja && estudiante.codEstudiante === codEstudianteBaja">-->
-            <!--                          <mdb-form-control>-->
-            <!--                            <mdb-select-->
-            <!--                              mdbValidate-->
-            <!--                              [formControl]="codTipoDeBaja"-->
-            <!--                            >-->
-            <!--                              <mdb-option-->
-            <!--                                *ngFor="let baja of tipoBajas"-->
-            <!--                                [value]="baja.codTipoBaja"-->
-            <!--                                [label]="baja.baja"-->
-            <!--                              >-->
-            <!--                                {{ baja.baja }}-->
-            <!--                              </mdb-option>-->
-            <!--                            </mdb-select>-->
-            <!--                            <label mdbLabel class="form-label mb-2x">Seleccione el tipo de baja</label>-->
-            <!--                          </mdb-form-control>-->
-            <!--                        </ng-container>-->
-            <!--                      </td>-->
-            <!--                      <td class="text-center">-->
-            <!--                        <ng-container *ngIf="!estaDandoDeBaja || estudiante.codEstudiante !== codEstudianteBaja">-->
-            <!--                          <button-->
-            <!--                            class="btn btn-sm btn-danger"-->
-            <!--                            type="button"-->
-            <!--                            (click)="onDarDeBaja(estudiante)">-->
-            <!--                            <i class="fas fa-user-times me-1"></i>-->
-            <!--                            Dar de baja-->
-            <!--                          </button>-->
-            <!--                        </ng-container>-->
-            <!--                        <ng-container *ngIf="estaDandoDeBaja && estudiante.codEstudiante === codEstudianteBaja">-->
-            <!--                          <button-->
-            <!--                            class="me-2 p-0 shadow-0 btn btn-lg text-success"-->
-            <!--                            (click)="onGuardarBaja()"-->
-            <!--                          >-->
-            <!--                            <i class="fa fa-check"></i> &nbsp;Guardar-->
-            <!--                          </button>-->
-            <!--                          <button-->
-            <!--                            class="m-0 p-0 shadow-0 btn btn-lg text-danger"-->
-            <!--                            (click)="onCancelarBaja()"-->
-            <!--                          >-->
-            <!--                            <i class="fa fa-ban"></i> &nbsp;Cancelar-->
-            <!--                          </button>-->
-            <!--                        </ng-container>-->
-            <!--                      </td>-->
-            <!--                    </tr>-->
-            <!--                    </tbody>-->
-            <!--                  </table>-->
-            <!--                  <mdb-table-pagination-->
-            <!--                    #pagination-->
-            <!--                    [entries]="10"-->
-            <!--                    [rowsPerPageText]="'Registros por página'"-->
-            <!--                  ></mdb-table-pagination>-->
-            <!--              </div>-->
-            <!--            </section>-->
           </mdb-tab>
         </mdb-tabs>
+        <h5 class="mt-4">Estudiantes dados de baja</h5>
+        <section>
+          <div class="datatable datatable-hover datatable-sm table-responsive">
+            <table
+              class="tabla datatable-table"
+              mdbTable
+              #datatableBajas
+              [dataSource]="estudiantesBaja"
+              [pagination]="pagination">
+              <thead class="datatable-header">
+              <tr>
+                <th *ngFor="let head of headersBaja; let i = index" class="fw-bold fs-6">
+                  {{ head.label }}
+                </th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr
+                *ngFor="let estudiante of datatableBajas.data"
+                class="datatable-row"
+              >
+                <th>{{estudiante.codUnico}}</th>
+                <th>{{estudiante.nombre}} {{estudiante.apellido}}</th>
+              </tr>
+            </table>
+          </div>
+        </section>
       </div>
-
     </mdb-tab>
   </mdb-tabs>
-
 
 </div>
 

@@ -10,6 +10,7 @@ import { DatoPersonal } from "../../modelo/admin/dato-personal";
 import {
   NotasEstudiantesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/notas-estudiantes/notas-estudiantes.component";
+import { FaltaPeriodo } from "../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 
 
 export interface EstudianteParaleloRequest {
@@ -63,7 +64,10 @@ export interface FaltaEstudiante {
   codFaltaPeriodo: number;
   codFaltaSemestre: number;
   codFaltaCurso: number;
+  faltaPeriodo?: FaltaPeriodo
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -121,8 +125,7 @@ export class EstudianteService {
     return this.http.post(`${ this.host }/sanciones/crear`, data);
   }
 
-  listarFaltasPorEstudiante(idEstudiante: number) {
-    const params: HttpParams = new HttpParams().set('codEstudiante', idEstudiante.toString());
-    return this.http.get<FaltaEstudiante[]>(`${ this.host }/sancion/listarSancionesByEstudiante`, { params });
+  listarSancionesPorEstudiante(idEstudiante: number) {
+    return this.http.get<FaltaEstudiante[]>(`${ this.host }/sanciones/estudiante/${ idEstudiante }`);
   }
 }

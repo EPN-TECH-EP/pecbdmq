@@ -194,10 +194,10 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
       materiaPorParalelo.materias.forEach((materia) => {
 
-        if (materia.codMateria === materiaFormacion.codMateria && materia.codParalelo !== materiaFormacion.codParalelo) {
+        if (materia.codMateriaPeriodo === materiaFormacion.codMateria && materia.codParalelo !== materiaFormacion.codParalelo) {
 
           const materiaFormacionRequest: MateriaFormacionRequest = {
-            codMateria: materia?.codMateria,
+            codMateria: materia?.codMateriaPeriodo,
             codParalelo: materia?.codParalelo,
             codAula: materia?.codAula,
             codAsistentes: [],
@@ -247,6 +247,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
           });
         });
 
+        console.log(this.materiasPorParalelo);
+
       },
       error: () => {
         console.error('Error al listar las materias');
@@ -275,7 +277,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   onEditarMateria(materia: MateriaFormacion, paralelo: Paralelo) {
     this.materiaEditando = {
-      codMateria: materia?.codMateria,
+      codMateria: materia?.codMateriaPeriodo,
       codAula: materia?.codAula,
       codAsistentes: materia?.asistentes.map(a => a?.codInstructor),
       codCoordinador: materia?.coordinador?.codInstructor,
@@ -284,7 +286,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     }
     this.patchDatosMateriaFormacionFormGroup(this.materiaEditando);
     this.estaEditandoMateria = true;
-    this.codMateriaEditando = materia.codMateria;
+    this.codMateriaEditando = materia?.codMateriaPeriodo;
+    console.log('codigo materia editando', this.codMateriaEditando);
   }
 
   onAgregarMateriaAula() {
@@ -323,7 +326,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   onGuardarMateriasAula() {
 
-    if(this.materiaAulaFormGroup.invalid) {
+    if (this.materiaAulaFormGroup.invalid) {
       Notificacion.notificar(this.mdbNotificationService, 'Llene todos los campos obligatorios', TipoAlerta.ALERTA_ERROR);
       return;
     }
