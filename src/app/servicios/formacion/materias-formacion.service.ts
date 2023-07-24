@@ -61,7 +61,7 @@ export class MateriasFormacionService {
   }
 
   asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
-    return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/asignar`, materia);
+    return this.http.post<MateriaFormacionRequest>(`${ this.host }/instructorMateriaParalelo/actualizarInstructores`, materia);
   }
 
   asignarMateriaParalelo(data: MateriaAulaParaleloRequest) {

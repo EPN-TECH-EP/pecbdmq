@@ -376,6 +376,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
           this.onCancelarEdicionMateria()
           this.actualizarMateriasFormacion()
           this.loading = false;
+          this.materiasFormacionFormGroup.reset();
         }
       },
       error: () => {
