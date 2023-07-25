@@ -130,6 +130,16 @@ export class NotasEstudiantesComponent implements OnInit {
   }
 
   descargarDocumentoAntiguedades() {
+    this.estudiantesService.descargarDocumentoAntiguedades().subscribe({
+      next: (documento) => {
+        const blob = new Blob([documento], {type: 'application/pdf'});
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
 
   }
 }

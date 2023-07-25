@@ -231,7 +231,7 @@
                 <tbody class="datatable-body">
                 <!-- Lista de materias -->
                 <tr *ngFor="let materia of datatableMaterias.data">
-                  <td class="text-wrap" [style.width.px]="250">
+                  <td class="text-wrap">
                     <div>
                       <b class="fw-bold text-primary">{{ materia?.nombre }}</b>
                       <div><b>Ponderación: </b>{{ materia.ponderacionMateria}}</div>
@@ -247,7 +247,8 @@
                   <td [style.width.px]="200">
                     <ng-container *ngIf="!estaEditandoMateria || materia.codMateriaPeriodo!== codMateriaEditando">
                       <div class="badge badge-success text-start">
-                        <b class="text-wrap">{{ materia?.coordinador?.nombre }} {{ materia?.coordinador?.apellido }}</b>
+                        <b
+                          class="text-wrap">{{ materia?.coordinador?.nombre | uppercase }} {{ materia?.coordinador?.apellido | uppercase}}</b>
                       </div>
                       <div class="text-muted ps-2">
                         {{ materia?.coordinador?.correoPersonal }}
@@ -296,15 +297,16 @@
                             <li
                               *ngFor="let asistente of materia?.asistentes"
                               class="list-group-item p-0">
-                              <b class="text-wrap">{{asistente?.nombre}} {{ asistente?.apellido}}</b>
+                              <b
+                                class="text-wrap">{{asistente?.nombre }} {{ asistente.apellido }}</b>
                               <p class="text-muted">{{asistente?.correoPersonal}}</p>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <ng-template #asistente>
-                        <div class="badge badge-info">
-                          <b>{{ materia?.asistentes[0]?.nombre }}</b>
+                        <div class="badge badge-info text-start">
+                          <b class="text-wrap ">{{ materia?.asistentes[0]?.nombre | uppercase }} {{ materia?.asistentes[0]?.apellido | uppercase }}</b>
                         </div>
                         <div class="text-muted ps-2">
                           {{ materia?.asistentes[0]?.correoPersonal }}

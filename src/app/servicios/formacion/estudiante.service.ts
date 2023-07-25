@@ -113,8 +113,12 @@ export class EstudianteService {
     return this.http.get<NotaMateriaPorEstudiante[]>(`${ this.host }/notasFormacion/listarNotaMateriaCoordinadorByEstudiante`, { params });
   }
 
-  darDeBajaEstudiante(data: FormData) {
+  crearBajaEstudiante(data: FormData) {
     return this.http.post(`${ this.host }/baja/crear`, data);
+  }
+
+  darBajaEstudiante(idEstudiante: number) {
+    return this.http.post(`${ this.host }/baja/darDeBaja/${ idEstudiante }`,{});
   }
 
   listarEstudiantesBaja() {
@@ -127,5 +131,9 @@ export class EstudianteService {
 
   listarSancionesPorEstudiante(idEstudiante: number) {
     return this.http.get<FaltaEstudiante[]>(`${ this.host }/sanciones/estudiante/${ idEstudiante }`);
+  }
+
+  descargarDocumentoAntiguedades() {
+    return this.http.get(`${ this.host }/antiguedades/descargarArchivo?extension=pdf`, { responseType: 'blob' });
   }
 }

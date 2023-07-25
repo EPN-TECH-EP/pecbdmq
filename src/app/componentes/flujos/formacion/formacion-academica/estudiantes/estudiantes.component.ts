@@ -12,7 +12,7 @@ import { TipoBaja } from "../../../../../modelo/admin/tipo_baja";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EMPTY, forkJoin, of, switchMap } from "rxjs";
 import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
-import { catchError } from "rxjs/operators";
+import { catchError, tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { FORMACION } from "../../../../../util/constantes/fomacion.const";
@@ -65,7 +65,9 @@ export class EstudiantesComponent implements OnInit {
     ]
     this.headersBaja = [
       { key: 'codigo', label: 'Código Único' },
+      { key: 'cedula', label: 'Cédula' },
       { key: 'nombre', label: 'Estudiante' },
+      { key: 'celular', label: 'Celular' },
     ];
     this.estaDandoDeBaja = false;
     this.bajaForm = new FormGroup({});
@@ -202,7 +204,6 @@ export class EstudiantesComponent implements OnInit {
 
   }
 
-
   allRowsSelected(): boolean {
     const selectionsLength = this.selections.size;
     const dataLength = this.estudiantesSinParalelo.length;
@@ -260,6 +261,7 @@ export class EstudiantesComponent implements OnInit {
   onCancelarBaja() {
     this.codEstudianteBaja = 0;
     this.estaDandoDeBaja = false;
+    this.bajaForm.reset();
   }
 
   onConfirmarBaja(estudiante: NotaDisciplina) {
@@ -277,8 +279,6 @@ export class EstudiantesComponent implements OnInit {
       descripcionBaja: descripcionBaja,
     };
 
-    console.log(bajaEstudiante);
-
     const formData = new FormData();
     formData.append('codEstudiante', bajaEstudiante.codEstudiante.toString());
     formData.append('codTipoBaja', bajaEstudiante.codTipoBaja.toString());
@@ -286,18 +286,28 @@ export class EstudiantesComponent implements OnInit {
     formData.append('codSancion', '');
     formData.append('archivos', this.documentoBaja);
 
-    this.estudianteService.darDeBajaEstudiante(formData).subscribe({
-      next: () => {
-        this.mostrarNotificacion('Estudiante dado de baja correctamente', TipoAlerta.ALERTA_OK);
-        this.actualizarEstudiantes();
-        this.onCancelarBaja();
-      },
-      error: err => {
-        console.error(err);
-        this.mostrarNotificacion('Error al dar de baja al estudiante', TipoAlerta.ALERTA_ERROR);
-      }
+    this.estudianteService.crearBajaEstudiante(formData).pipe(
+      tap(() => this.mostrarNotificacion('Estudiante dado de baja correctamente', TipoAlerta.ALERTA_OK)),
+      catchError((err) => this.handleError('Error al dar de baja al estudiante', err))
+    ).subscribe(() => {
+      this.darBajaEstudianteAndUpdateList(estudiante.codEstudiante);
     });
+  }
 
+  darBajaEstudianteAndUpdateList(codEstudiante: number) {
+    this.estudianteService.darBajaEstudiante(codEstudiante).pipe(
+      tap(() => this.mostrarNotificacion('Estudiante dado de baja correctamente', TipoAlerta.ALERTA_OK)),
+      catchError((err) => this.handleError('Error al dar de baja al estudiante', err))
+    ).subscribe(() => {
+      this.actualizarEstudiantes();
+      this.onCancelarBaja();
+    });
+  }
+
+  handleError(errorMessage: string, error: any) {
+    console.error(error);
+    this.mostrarNotificacion(errorMessage, TipoAlerta.ALERTA_ERROR);
+    return of(null);
   }
 
   onFileChange($event: Event) {

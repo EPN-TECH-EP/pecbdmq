@@ -204,14 +204,27 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   }
 
   private patchDatosMateriaFormacionFormGroup(materia: MateriaFormacionRequest) {
+
+    if (this.asistentesFormArray.touched) {
+      console.log('asistentes touched');
+      const codAsistentesArray = this.asistentesFormArray;
+      codAsistentesArray.clear();
+    }
+
+    if (this.instructoresFormArray.touched) {
+      console.log('instructores touched');
+      const codInstructoresArray = this.instructoresFormArray;
+      codInstructoresArray.clear();
+    }
+
+
     this.materiasFormacionFormGroup.patchValue({
       codMateria: materia.codMateria,
       codParalelo: materia.codParalelo,
       codAula: materia.codAula,
       codCoordinador: materia.codCoordinador,
-      codAsistentes: materia.codAsistentes,
-      codInstructores: materia.codInstructores,
     })
+    console.log('form editando', this.materiasFormacionFormGroup.value);
   }
 
   private asignarCoordinadorTodosParalelos(materiaFormacion: MateriaFormacionRequest) {
@@ -418,24 +431,35 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.estaEditandoMateria = false;
     this.codMateriaEditando = 0;
     this.materiaEditando = null;
+    this.materiasFormacionFormGroup.reset();
+    this.asistentesFormArray.clear();
+    this.instructoresFormArray.clear();
   }
 
   toggleAsistentesSeleccionados(codigo: number) {
     const codAsistentes = this.asistentesFormArray;
     const index = codAsistentes.value.indexOf(codigo);
 
-    if (index !== -1) codAsistentes.removeAt(index);// Desmarcar opción
+    if (index !== -1) {
+      codAsistentes.removeAt(index);
+    } else {
+      codAsistentes.push(this.builder.control(codigo));
+    }
 
-    codAsistentes.push(this.builder.control(codigo)); // Marcar opción
   }
 
   toggleInstructoresSeleccionados(codInstructor: number) {
     const codInstructores = this.instructoresFormArray;
     const index = codInstructores.value.indexOf(codInstructor);
 
-    if (index !== -1) codInstructores.removeAt(index);// Desmarcar opción
+    if (index !== -1) {
+      console.log('desmarcar');
+      codInstructores.removeAt(index);
+    } else {
+      console.log('marcar');
+      codInstructores.push(this.builder.control(codInstructor)); // Marcar opción
+    }
 
-    codInstructores.push(this.builder.control(codInstructor)); // Marcar opción
   }
 
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
@@ -444,4 +468,5 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   getColorClass() {
     return this.totalPonderacion === 1 ? 'text-success' : 'text-danger';
   }
+
 }

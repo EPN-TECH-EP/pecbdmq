@@ -155,6 +155,7 @@ import { MenuGraduacionComponent } from './componentes/flujos/formacion/menus/me
 import { FichaPersonalComponent } from './componentes/user/ficha-personal/ficha-personal.component';
 import { HistoricoModuloComponent } from './componentes/user/historico-modulo/historico-modulo.component';
 import { ModalSansionComponent } from './componentes/flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component';
+import { ComponenteNotaFormacion } from './componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component';
 
 @NgModule({
   declarations: [
@@ -237,7 +238,8 @@ import { ModalSansionComponent } from './componentes/flujos/formacion/formacion-
     MenuGraduacionComponent,
     FichaPersonalComponent,
     HistoricoModuloComponent,
-    ModalSansionComponent
+    ModalSansionComponent,
+    ComponenteNotaFormacion
   ],
   imports: [
     BrowserModule,
