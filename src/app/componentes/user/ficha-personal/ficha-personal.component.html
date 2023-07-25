@@ -1,500 +1,502 @@
-<h1 class="text-center">Ficha personal</h1>
-<div class="mt-5"></div>
-<mdb-tabs [vertical]="true">
-  <mdb-tab title="Estudiante">
-    <div class="badge bg-primary text-wrap" *ngIf="sinSeccionEstudiante"> No tiene registros asociados de estudiante</div>
-    <mdb-tabs [justified]="true">
-      <mdb-tab *ngIf="!sinSeccionFormacionEs" title="Formación">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #table="mdbTable"
-          #sort1="mdbTableSort"
-          [dataSource]="formacionEstudiante"
-          [pagination]="pagination"
-          [sort]="sort1"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMap" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--<h1 class="text-center">Ficha personal</h1>-->
+<!--<div class="mt-5"></div>-->
+<!--<mdb-tabs [vertical]="true">-->
+<!--  <mdb-tab title="Estudiante">-->
+<!--    <div class="badge bg-primary text-wrap" *ngIf="sinSeccionEstudiante"> No tiene registros asociados de estudiante</div>-->
+<!--    <mdb-tabs [justified]="true">-->
+<!--      <mdb-tab *ngIf="!sinSeccionFormacionEs" title="Formación">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #table="mdbTable"-->
+<!--          #sort1="mdbTableSort"-->
+<!--          [dataSource]="formacionEstudiante"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sort1"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMap" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historico of table.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historico.nombreMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.instructor}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.porcentajeFinal}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaMinima}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.pesoMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.numeroHoras}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaPonderacion}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaDisciplina}}
-              </ng-container>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-      <mdb-tab *ngIf="!sinSeccionEspecializacionEs" title="Especialización">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #table2="mdbTable"
-          #sortes2="mdbTableSort"
-          [dataSource]="espEstudiante"
-          [pagination]="pagination"
-          [sort]="sortes2"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMapEsp" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historico of table.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.nombreMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.instructor}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.porcentajeFinal}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaMinima}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.pesoMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.numeroHoras}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaPonderacion}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaDisciplina}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--      <mdb-tab *ngIf="!sinSeccionEspecializacionEs" title="Especialización">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #table2="mdbTable"-->
+<!--          #sortes2="mdbTableSort"-->
+<!--          [dataSource]="espEstudiante"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sortes2"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMapEsp" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historicoEsp of table2.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historicoEsp.nombreTipoInstructor}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.instructor}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.nombreAula}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.nombreTipo}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.nombreCatalogo}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaInicioCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaFinCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaInicioCarga}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaFinCarga}}
-              </ng-container>
-            </td>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historicoEsp of table2.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.nombreTipoInstructor}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.instructor}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.nombreAula}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.nombreTipo}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.nombreCatalogo}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaInicioCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaFinCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaInicioCarga}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaFinCarga}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
 
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaCreaNota}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.horaCreaNota}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.usuarioModificacion}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.fechaModNota}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.horaModNota}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.notaFinal}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEsp.resultado}}
-              </ng-container>
-            </td>
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaCreaNota}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.horaCreaNota}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.usuarioModificacion}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.fechaModNota}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.horaModNota}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.notaFinal}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEsp.resultado}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
 
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-      <mdb-tab *ngIf="!sinSeccionProfesionalizacionEs" title="Profesionalización">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #table3="mdbTable"
-          #sort3="mdbTableSort"
-          [dataSource]="profEstudiante"
-          [pagination]="pagination"
-          [sort]="sort3"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMapPro" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--      <mdb-tab *ngIf="!sinSeccionProfesionalizacionEs" title="Profesionalización">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #table3="mdbTable"-->
+<!--          #sort3="mdbTableSort"-->
+<!--          [dataSource]="profEstudiante"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sort3"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMapPro" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historico of table3.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historico.nombreMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.coordinador}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaMinima}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.pesoMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.numeroHoras}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historico.notaDisciplina}}
-              </ng-container>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-    </mdb-tabs>
-  </mdb-tab>
-  <mdb-tab class="custom" title="Instructor">
-    <div class="badge bg-primary text-wrap" *ngIf="sinSeccionInstructor"> No tiene registros asociados de instructor </div>
-    <mdb-tabs [justified]="true">
-      <mdb-tab *ngIf="!sinSeccionFormacionIn" title="Formación">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #tableA="mdbTable"
-          #sortA="mdbTableSort"
-          [dataSource]="formacionInstructor"
-          [pagination]="pagination"
-          [sort]="sortA"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMapIn" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historico of table3.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.nombreMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.coordinador}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaMinima}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.pesoMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.numeroHoras}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historico.notaDisciplina}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--    </mdb-tabs>-->
+<!--  </mdb-tab>-->
+<!--  <mdb-tab class="custom" title="Instructor">-->
+<!--    <div class="badge bg-primary text-wrap" *ngIf="sinSeccionInstructor"> No tiene registros asociados de instructor </div>-->
+<!--    <mdb-tabs [justified]="true">-->
+<!--      <mdb-tab *ngIf="!sinSeccionFormacionIn" title="Formación">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #tableA="mdbTable"-->
+<!--          #sortA="mdbTableSort"-->
+<!--          [dataSource]="formacionInstructor"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sortA"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMapIn" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historicoForIn of tableA.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historicoForIn.cargo}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoForIn.rango}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoForIn.grado}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoForIn.nombreMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoForIn.codPeriodoAcademico}}
-              </ng-container>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-      <mdb-tab *ngIf="!sinSeccionEspecializacionIn" title="Especialización">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #tableB="mdbTable"
-          #sortB="mdbTableSort"
-          [dataSource]="espInstructor"
-          [pagination]="pagination"
-          [sort]="sortB"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMapIn" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historicoForIn of tableA.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoForIn.cargo}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoForIn.rango}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoForIn.grado}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoForIn.nombreMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoForIn.codPeriodoAcademico}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--      <mdb-tab *ngIf="!sinSeccionEspecializacionIn" title="Especialización">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #tableB="mdbTable"-->
+<!--          #sortB="mdbTableSort"-->
+<!--          [dataSource]="espInstructor"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sortB"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMapIn" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historicoEspIn of tableB.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreCargo}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreRango}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreGrado}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreTipoInstructor}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.instructor}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreAula}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreTipoCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.nombreCatalogoCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.fechaInicioCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.fechaFinCurso}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.fechaInicioCargaNota}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoEspIn.fechaFinCargaNota}}
-              </ng-container>
-            </td><td>
-            <ng-container>
-              {{ historicoEspIn.estadoProceso}}
-            </ng-container>
-          </td>
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-      <mdb-tab *ngIf="!sinSeccionProfesionalizacionIn" title="Profesionalización">
-        <table
-          class="table table-sm datatable-table"
-          mdbTable
-          mdbTableSort
-          #tableC="mdbTable"
-          #sortC="mdbTableSort"
-          [dataSource]="profInstructor"
-          [pagination]="pagination"
-          [sort]="sortC"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th
-              *ngFor="let header of headersMapIn" scope="col"
-              [mdbTableSortHeader]="header.name"
-            >
-              <b> {{ header.value}}</b>
-            </th>
-          </tr>
-          </thead>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historicoEspIn of tableB.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreCargo}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreRango}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreGrado}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreTipoInstructor}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.instructor}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreAula}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreTipoCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.nombreCatalogoCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.fechaInicioCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.fechaFinCurso}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.fechaInicioCargaNota}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoEspIn.fechaFinCargaNota}}-->
+<!--              </ng-container>-->
+<!--            </td><td>-->
+<!--            <ng-container>-->
+<!--              {{ historicoEspIn.estadoProceso}}-->
+<!--            </ng-container>-->
+<!--          </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--      <mdb-tab *ngIf="!sinSeccionProfesionalizacionIn" title="Profesionalización">-->
+<!--        <table-->
+<!--          class="table table-sm datatable-table"-->
+<!--          mdbTable-->
+<!--          mdbTableSort-->
+<!--          #tableC="mdbTable"-->
+<!--          #sortC="mdbTableSort"-->
+<!--          [dataSource]="profInstructor"-->
+<!--          [pagination]="pagination"-->
+<!--          [sort]="sortC"-->
+<!--        >-->
+<!--          <thead class="datatable-header">-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let header of headersMapIn" scope="col"-->
+<!--              [mdbTableSortHeader]="header.name"-->
+<!--            >-->
+<!--              <b> {{ header.value}}</b>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
 
-          <tbody class="datatable-body">
-          <!-- Add row -->
-          <!-- Edit row -->
-          <tr *ngFor="let historicoProIn of tableC.data; let index = index">
-            <td>
-              <ng-container>
-                {{ historicoProIn.nombreCargo}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoProIn.nombreRango}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoProIn.nombreGrado}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoProIn.nombreMateria}}
-              </ng-container>
-            </td>
-            <td>
-              <ng-container>
-                {{ historicoProIn.semestre}}
-              </ng-container>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          (paginationChange)="onPaginationChange($event)"
-        ></mdb-table-pagination>
-      </mdb-tab>
-    </mdb-tabs>
-  </mdb-tab>
-</mdb-tabs>
+<!--          <tbody class="datatable-body">-->
+<!--          &lt;!&ndash; Add row &ndash;&gt;-->
+<!--          &lt;!&ndash; Edit row &ndash;&gt;-->
+<!--          <tr *ngFor="let historicoProIn of tableC.data; let index = index">-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoProIn.nombreCargo}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoProIn.nombreRango}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoProIn.nombreGrado}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoProIn.nombreMateria}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ng-container>-->
+<!--                {{ historicoProIn.semestre}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--        <mdb-table-pagination-->
+<!--          #pagination-->
+<!--          [entries]="10"-->
+<!--          (paginationChange)="onPaginationChange($event)"-->
+<!--        ></mdb-table-pagination>-->
+<!--      </mdb-tab>-->
+<!--    </mdb-tabs>-->
+<!--  </mdb-tab>-->
+<!--</mdb-tabs>-->
+
+

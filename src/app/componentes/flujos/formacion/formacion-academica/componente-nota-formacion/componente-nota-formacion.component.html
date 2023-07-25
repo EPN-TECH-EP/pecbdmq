@@ -6,49 +6,108 @@
 <div class="m-5 p-5" *ngIf="showLoading">
 
   <div *ngIf="componenteNotasPeriodoAcademicoActivo.length > 0; else formulario">
-    <div *ngFor="let nota of componenteNotasPeriodoAcademicoActivo"
-         class="d-flex align-items-center gap-2 mb-2">
-      <b class="text-primary" [style.width.px]="150">{{nota.nombre}}: </b>
-      <b class="text-primary me-3" *ngIf="!estaEditando">
-        {{nota.porcentajeComponenteNota}}
-      </b>
-      <div *ngIf="estaEditando && codComponenteNotaEditando === nota.codComponenteNota">
-        {{nota.porcentajeComponenteNota}}
+    <button
+      (click)="onEditarPonderacionNota()"
+      [disabled]="estaEditando"
+      class="btn btn-primary mb-2"
+      *ngIf="!estaEditando"
+    >
+      Editar ponderación
+      <i class="ms-2 fa fa-edit"></i>
+    </button>
+    <div class="datatable datatable-hover datatable-sm table-responsive w-50">
+      <table
+        class="tabla datatable-table"
+        mdbTable
+        #datatable
+        [dataSource]="componenteNotasPeriodoAcademicoActivo"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6">
+            {{ head.label }}
+          </th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr class="datatable-row">
+          <th>
+            <ng-container>
+              {{componenteNotasPeriodoAcademicoActivo[0]?.nombre}}
+            </ng-container>
+          </th>
+          <th>
+            <ng-container *ngIf="!estaEditando">
+              {{componenteNotasPeriodoAcademicoActivo[0]?.porcentajeComponenteNota}}
+            </ng-container>
+            <ng-container *ngIf="estaEditando">
+              <mdb-form-control [style.width.px]="150">
+                <input
+                  mdbValidate
+                  mdbInput
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  class="form-control"
+                  [formControl]="ponderacionAcademico"
+                >
+                <label mdbLabel class="form-label mb-2x">Ponderación de nota</label>
+              </mdb-form-control>
+            </ng-container>
+          </th>
+        </tr>
+        <tr class="datatable-row">
+          <th>
+            <ng-container>
+              {{componenteNotasPeriodoAcademicoActivo[1]?.nombre}}
+            </ng-container>
+          </th>
+          <th>
+            <ng-container *ngIf="!estaEditando">
+              {{componenteNotasPeriodoAcademicoActivo[1]?.porcentajeComponenteNota}}
+            </ng-container>
+            <ng-container *ngIf="estaEditando">
+              <mdb-form-control [style.width.px]="150">
+                <input
+                  [formControl]="ponderacionDisciplina"
+                  mdbValidate
+                  mdbInput
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  class="form-control"
+                >
+                <label mdbLabel class="form-label mb-2x">Ponderación de nota</label>
+              </mdb-form-control>
+            </ng-container>
+          </th>
+        </tr>
+        </tbody>
+      </table>
+      <div [ngClass]="getColorClass()" class="fw-bold mb-2" *ngIf="estaEditando">
+        TOTAL: {{ totalPonderacionEditando }}
       </div>
-      <button
-        *ngIf="!estaEditando"
-        [style.width.px]="15"
-        [style.height.px]="15"
-        mdbTooltip="Editar valor"
-        class="btn btn-primary btn-floating bg-light text-black text-center"
-        mdbRipple
-        type="button"
-        (click)="onEditarPonderacionNota(nota)"
-      >
-        <i class="fa fa-edit"></i>
-      </button>
-      <div
-        *ngIf="estaEditando"
-        class="d-flex align-items-center gap-2"
-      >
+      <div *ngIf="estaEditando">
         <button
-          class="btn btn-sm btn-success me-2"
-          type="button"
-          *ngIf="estaEditando && codComponenteNotaEditando === nota.codComponenteNota"
+          class="btn btn-success me-2"
+          [disabled]="
+          ponderacionDisciplina.invalid ||
+          ponderacionAcademico.invalid ||
+          totalPonderacionEditando !== 1"
+          (click)="onActualizarNota()"
         >
-          <i class="fas fa-check"></i>
-          Confirmar baja
+          <i class="fas fa-save me-2"></i>
+          Guardar
         </button>
         <button
-          class="btn btn-sm btn-danger"
-          type="button"
+          class="btn btn-danger"
           (click)="onCancelarEdicion()"
-          *ngIf="estaEditando && codComponenteNotaEditando === nota.codComponenteNota"
         >
-          <i class="fas fa-cancel me-1"></i>
+          <i class="fas fa-cancel me-2"></i>
           Cancelar
         </button>
-
       </div>
     </div>
   </div>
