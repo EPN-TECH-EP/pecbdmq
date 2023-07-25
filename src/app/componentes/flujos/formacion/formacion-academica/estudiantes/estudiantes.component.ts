@@ -10,7 +10,12 @@ import { RegistroNotasService } from "../../../../../servicios/formacion/registr
 import { TipoBajaService } from "../../../../../servicios/tipo-baja.service";
 import { TipoBaja } from "../../../../../modelo/admin/tipo_baja";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { forkJoin } from "rxjs";
+import { EMPTY, forkJoin, of, switchMap } from "rxjs";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { catchError } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-estudiantes',
@@ -36,13 +41,18 @@ export class EstudiantesComponent implements OnInit {
   selections = new Set<Estudiante>();
 
   estaDandoDeBaja: boolean;
+  esEstadoFormacionAcademica : boolean;
+
 
   constructor(
     private estudianteService: EstudianteService,
     private ns: MdbNotificationService,
     private registroNotasService: RegistroNotasService,
     private tipoBajaService: TipoBajaService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private formacionService: FormacionService,
+    private router: Router,
+    private mdbNotificationService: MdbNotificationService
   ) {
     this.tipoBajas = [];
     this.estudiantesSinParalelo = [];
@@ -60,18 +70,41 @@ export class EstudiantesComponent implements OnInit {
     this.estaDandoDeBaja = false;
     this.bajaForm = new FormGroup({});
     this.documentoBaja = null;
+    this.codParalelo = 0;
+    this.codEstudianteBaja = 0;
+    this.esEstadoFormacionAcademica = false;
     this.construirFormularioBaja();
 
   }
 
   ngOnInit(): void {
-    forkJoin([
-      this.tipoBajaService.getTiposBaja(),
-      this.estudianteService.listarParalelosActivos(),
-      this.estudianteService.listar(),
-      this.estudianteService.listarEstudiantesBaja(),
-      this.registroNotasService.listarEstudiantesNotaDisciplina()
-    ]).subscribe({
+
+    this.formacionService.getEstadoActual().pipe(
+      catchError( (err: HttpErrorResponse)=>{
+        console.log('Error:', err);
+        return of(null)
+      }),
+      switchMap((estado) => {
+        console.log(estado);
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.mdbNotificationService, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
+        }
+
+        if (estado.mensaje === FORMACION.estadoFormacionAcademica) {
+          this.esEstadoFormacionAcademica = true;
+          return forkJoin([
+            this.tipoBajaService.getTiposBaja(),
+            this.estudianteService.listarParalelosActivos(),
+            this.estudianteService.listar(),
+            this.estudianteService.listarEstudiantesBaja(),
+            this.registroNotasService.listarEstudiantesNotaDisciplina()
+          ]);
+        }
+        return EMPTY;
+      })
+    ).subscribe({
       next: ([tiposBaja, paralelos, estudiantes, estudiantesBaja, estudiantesNotaDisciplina]) => {
         // Handle the results of each observable here
         console.log('Tipos Baja:', tiposBaja);
@@ -100,6 +133,7 @@ export class EstudiantesComponent implements OnInit {
         console.log('Error:', err);
       }
     });
+
   }
 
   private construirFormularioBaja() {
@@ -117,6 +151,7 @@ export class EstudiantesComponent implements OnInit {
         this.actualizarEstudiantes();
       },
       error: err => {
+        console.error(err)
         this.mostrarNotificacion('Error al asignar estudiantes', TipoAlerta.ALERTA_ERROR);
       }
     });
@@ -135,6 +170,7 @@ export class EstudiantesComponent implements OnInit {
         }
       },
       error: err => {
+        console.error(err);
         this.mostrarNotificacion('Error al obtener la lista de estudiantes', TipoAlerta.ALERTA_ERROR);
       }
     });
@@ -147,6 +183,7 @@ export class EstudiantesComponent implements OnInit {
         console.log('Estudiantes registrados en tabla notas');
       },
       error: err => {
+        console.error(err);
         this.mostrarNotificacion('Error al registrar estudiantes en tabla de notas', TipoAlerta.ALERTA_ERROR);
       }
     });
@@ -256,6 +293,7 @@ export class EstudiantesComponent implements OnInit {
         this.onCancelarBaja();
       },
       error: err => {
+        console.error(err);
         this.mostrarNotificacion('Error al dar de baja al estudiante', TipoAlerta.ALERTA_ERROR);
       }
     });

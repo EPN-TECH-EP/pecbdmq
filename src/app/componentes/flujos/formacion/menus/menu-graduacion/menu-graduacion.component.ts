@@ -6,6 +6,10 @@ import { Notificacion } from "../../../../../util/notificacion";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { RegistroNotasService } from "../../../../../servicios/formacion/registro-notas.service";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { catchError, tap } from "rxjs/operators";
+import { EMPTY, of } from "rxjs";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-menu-graduacion',
@@ -14,14 +18,39 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 })
 export class MenuGraduacionComponent extends Submenu implements OnInit {
 
+  esEstadoGraduacion: boolean;
+
   constructor(
-    private ns : MdbNotificationService,
+    private ns: MdbNotificationService,
     private registroNotasService: RegistroNotasService,
-    private menuService: MenuService, private router: Router) {
+    private menuService: MenuService,
+    private router: Router,
+    private formacionService: FormacionService,
+  ) {
     super();
+    this.esEstadoGraduacion = false;
   }
 
   ngOnInit(): void {
+    this.formacionService.getEstadoActual().pipe(
+      catchError((error) => {
+        console.error(error);
+        return of(null);
+      }),
+      tap((estado) => {
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.ns, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
+        }
+
+        if (estado.mensaje === FORMACION.estadoGraduacion) {
+          this.esEstadoGraduacion = true;
+        }
+
+        return EMPTY;
+      })
+    ).subscribe();
     super.initMenu(this.menuService, this.router);
   }
 

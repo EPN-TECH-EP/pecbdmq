@@ -12,8 +12,11 @@ import { Estudiante, NotaPorEstudiante, } from "../../../../../modelo/flujos/Est
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AutenticacionService } from "../../../../../servicios/autenticacion.service";
 import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
-import { tap } from "rxjs/operators";
-import { switchMap } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { EMPTY, of, switchMap } from "rxjs";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { HttpErrorResponse } from "@angular/common/http";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-registro-notas',
@@ -35,6 +38,7 @@ export class RegistroNotasComponent implements OnInit {
   headers: {key: string, label: string}[];
 
   notaPorEstudianteForm: FormGroup;
+  esEstadoRegistroNotas: boolean;
 
 
   constructor(
@@ -44,6 +48,7 @@ export class RegistroNotasComponent implements OnInit {
     private builder: FormBuilder,
     private authService: AutenticacionService,
     private instructorService: InstructorService,
+    private formacionService: FormacionService,
   ) {
     this.estaEditandoNota = false;
     this.codEstudianteNotaEditando = 0;
@@ -60,28 +65,48 @@ export class RegistroNotasComponent implements OnInit {
     this.estudianteNotaEditando = null;
     this.materias = [];
     this.notaPorEstudianteForm = new FormGroup({});
+    this.esEstadoRegistroNotas = false;
     this.construirFormulario();
   }
 
   ngOnInit(): void {
 
-    this.authService.user$.pipe(
-      switchMap(user => this.instructorService.getInstructorById(user.codUsuario)),
-      switchMap(instructor => this.registroNotasService.listarMateriasSiEsCoordinador(instructor.codInstructor)),
-      tap(materias => {
-        if (materias.length === 0) {
-          Notificacion.notificar(this.ns, 'No es coordinador, para registrar notas debe ser coordinador de una materia', TipoAlerta.ALERTA_WARNING);
-          this.router.navigate(['/principal/formacion/menu-academia']).then();
+    this.formacionService.getEstadoActual().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.error(errorResponse);
+        return of(null);
+      }),
+      switchMap((estado) => {
+        console.log(estado);
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.ns, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
         }
-        this.materias = materias;
+
+        if (estado.mensaje === FORMACION.estadoRegistroNotas) {
+          this.esEstadoRegistroNotas = true;
+          return this.authService.user$.pipe(
+            switchMap(user => this.instructorService.getInstructorById(user.codUsuario)),
+            switchMap(instructor => this.registroNotasService.listarMateriasSiEsCoordinador(instructor.codInstructor)),
+            tap(materias => {
+              if (materias.length === 0) {
+                Notificacion.notificar(this.ns, 'No es coordinador, para registrar notas debe ser coordinador de una materia', TipoAlerta.ALERTA_WARNING);
+                this.router.navigate(['/principal/formacion/menu-academia']).then();
+              }
+              this.materias = materias;
+            })
+          );
+        }
+
+        // no es estado de registro de notas
+        return EMPTY;
       })
     ).subscribe({
       error: err => {
         console.log(err);
       }
     });
-
-
   }
 
   private construirFormulario() {

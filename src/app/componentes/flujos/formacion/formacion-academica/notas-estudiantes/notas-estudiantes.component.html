@@ -3,7 +3,18 @@
   [link]="'/principal/formacion/menu-graduacion'"
 ></app-boton-volver>
 
-<div class="container">
+<ng-container *ngIf="!esEstadoGraduacion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Graduación y Certificados no activo</h5>
+      <p class="card-text">
+        El proceso de graduación y certificados no se encuentra activo en este momento.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoGraduacion">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Notas finales de los estudiantes</h1>
   </div>

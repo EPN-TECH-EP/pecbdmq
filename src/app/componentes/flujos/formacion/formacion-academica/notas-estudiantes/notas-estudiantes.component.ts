@@ -8,6 +8,11 @@ import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { DatoPersonal } from "../../../../../modelo/admin/dato-personal";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { Router } from "@angular/router";
+import { catchError, map } from "rxjs/operators";
+import { EMPTY, of, switchMap } from "rxjs";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-notas-estudiantes',
@@ -28,7 +33,14 @@ export class NotasEstudiantesComponent implements OnInit {
   esVistaDeNotas: boolean = true;
   esVistaDeNotasPorEstudiante: boolean = false;
 
-  constructor(private estudiantesService: EstudianteService, private ns: MdbNotificationService) {
+  esEstadoGraduacion: boolean = false;
+
+  constructor(
+    private estudiantesService: EstudianteService,
+    private ns: MdbNotificationService,
+    private formacionService: FormacionService,
+    private router: Router,
+  ) {
     this.headers = [
       { key: 'nombre', label: 'Estudiante' },
       { key: 'nombre', label: 'Correo electrónico' },
@@ -48,16 +60,38 @@ export class NotasEstudiantesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.estudiantesService.listarNotas().subscribe({
-        next: (notas) => {
+    this.formacionService.getEstadoActual().pipe(
+      catchError((error) => {
+        console.error(error);
+        return of(null);
+      }),
+      switchMap((estado) => {
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.ns, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
+        }
+
+        if (estado.mensaje === FORMACION.estadoGraduacion) {
+          this.esEstadoGraduacion = true;
+          return this.estudiantesService.listarNotas().pipe(
+            map((notas) => ({ estado, notas }))
+          );
+        }
+
+        return EMPTY;
+      })
+    ).subscribe({
+      next: ({ estado, notas }) => {
+        if (this.esEstadoGraduacion) {
           this.notasEstudiantes = notas;
           console.log(this.notasEstudiantes);
-        },
-        error: (error) => {
-          console.error(error);
         }
+      },
+      error: (error) => {
+        console.error(error);
       }
-    )
+    });
   }
 
   generarListaAntiguidades() {

@@ -3,7 +3,18 @@
   [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
-<div class="container">
+<ng-container *ngIf="!esEstadoFormacionAcademica">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación Académica no activo</h5>
+      <p class="card-text">
+        El proceso de formación académica no se encuentra activo, por lo que no se puede realizar ninguna acción.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoFormacionAcademica">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Gestión de Materias</h1>
   </div>

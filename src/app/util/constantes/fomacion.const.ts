@@ -5,5 +5,8 @@ export const FORMACION = {
   estadoInscripcion: 'INSCRIPCION',
   estadoPruebas: 'PRUEBAS',
   estadoMuestreo: "MUESTREO",
-  estadoPruebasCierre: 'CIERRE'
+  estadoPruebasCierre: 'CIERRE',
+  estadoFormacionAcademica: 'FORMACIÓN ACADEMICA',
+  estadoRegistroNotas: 'REGISTRO DE NOTAS',
+  estadoGraduacion: 'GRADUACIÓN Y CERTIFICADOS'
 }

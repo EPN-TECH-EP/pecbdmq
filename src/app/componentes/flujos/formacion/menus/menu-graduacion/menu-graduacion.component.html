@@ -15,10 +15,19 @@
           </p>
           <button
             (click)="calcularNotasFinales()"
+            [disabled]="!esEstadoGraduacion"
             class="btn btn-primary"
           >Calcular
           </button>
         </div>
+        <div class="card-footer pb-0 mb-0" *ngIf="!esEstadoGraduacion">
+          <div class="text-danger text-start" >
+            <i class="fa-solid fa-exclamation-circle me-2"></i>
+            No se puede calcular las notas finales porque no se ha abierto el
+            proceso de graduación
+          </div>
+        </div>
+"
       </div>
     </div>
     <menu-item *ngFor="let item of listaSubMenu" [menu]="item"></menu-item>

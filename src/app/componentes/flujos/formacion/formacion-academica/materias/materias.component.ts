@@ -15,12 +15,17 @@ import { Paralelo } from "../../../../../modelo/admin/paralelo";
 import { ParaleloService } from "../../../../../servicios/paralelo.service";
 import { AulaService } from "../../../../../servicios/aula.service";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { forkJoin } from "rxjs";
+import { EMPTY, forkJoin, of, switchMap } from "rxjs";
 import { MdbSelectComponent } from "mdb-angular-ui-kit/select";
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { MdbTabsComponent } from "mdb-angular-ui-kit/tabs";
+import { catchError } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-materias',
@@ -57,6 +62,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   error: boolean;
   loading: boolean;
   totalPonderacion: number;
+  esEstadoFormacionAcademica: boolean;
 
   constructor(
     private mdbNotificationService: MdbNotificationService,
@@ -65,7 +71,10 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     private instructoresService: InstructorService,
     private paralelosService: ParaleloService,
     private aulasService: AulaService,
-    private builder: FormBuilder,) {
+    private builder: FormBuilder,
+    private formacionService: FormacionService,
+    private router: Router
+  ) {
     this.itemMateria = null;
     this.codMateriaEditando = 0;
     this.instructoresCatalogo = [];
@@ -89,32 +98,49 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     this.construirFormularios();
     this.paralelos = [];
     this.totalPonderacion = 0;
+    this.esEstadoFormacionAcademica = false;
   }
 
   ngOnInit(): void {
 
-    const combinedObservables = forkJoin([
-      this.instructoresService.listar(),
-      this.paralelosService.getParalelos(),
-      this.aulasService.listar(),
-      this.materiasCatalogoService.listar()
-    ]);
+    this.formacionService.getEstadoActual().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.error(errorResponse);
+        return of(null);
+      }),
+      switchMap((estado) => {
+        console.log(estado);
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.mdbNotificationService, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
+        }
 
-    combinedObservables.subscribe({
+        if (estado.mensaje === FORMACION.estadoFormacionAcademica) {
+          this.esEstadoFormacionAcademica = true;
+          return forkJoin([
+            this.instructoresService.listar(),
+            this.paralelosService.getParalelos(),
+            this.aulasService.listar(),
+            this.materiasCatalogoService.listar()
+          ]);
+        }
+        // no es estado formacion academica
+        return EMPTY;
+      })
+    ).subscribe({
       next: ([instructores, paralelos, aulas, materiasCatalogo]) => {
         this.instructoresCatalogo = instructores;
         this.paralelosCatalogo = paralelos;
         this.aulasCatalogo = aulas;
         this.materiasCatalogo = materiasCatalogo;
+        this.actualizarMateriasFormacion();
       },
       error: () => {
         console.error('Error en una o más consultas');
         this.error = true;
       }
     });
-
-    this.actualizarMateriasFormacion();
-
   }
 
   ngAfterViewInit(): void {
