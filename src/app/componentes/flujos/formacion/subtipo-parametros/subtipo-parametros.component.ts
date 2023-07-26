@@ -103,8 +103,8 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
       });
 
     //TODO borrar
-    this.esEstadoPruebas = true;
-    this.cargarListaPrametrizaPruebaResumen();
+    /* this.esEstadoPruebas = true;
+    this.cargarListaPrametrizaPruebaResumen(); */
     //TODO FIN borrar
   }
 

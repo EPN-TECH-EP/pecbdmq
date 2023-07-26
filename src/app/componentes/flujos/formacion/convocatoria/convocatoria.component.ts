@@ -95,6 +95,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
     this.codigoUnicoConvocatoria = '';
+    this.fechaActual = new Date();
 
   }
 
@@ -191,11 +192,14 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     const fechaInicioOriginal = new Date(convocatoria.fechaInicioConvocatoria);
     const fechaFinOriginal = new Date(convocatoria.fechaFinConvocatoria);
+    const fechaActualOriginal = new Date(convocatoria.fechaActual);
     fechaInicioOriginal.setMinutes(fechaInicioOriginal.getMinutes() + fechaInicioOriginal.getTimezoneOffset());
     fechaFinOriginal.setMinutes(fechaFinOriginal.getMinutes() + fechaFinOriginal.getTimezoneOffset());
+    fechaActualOriginal.setMinutes(fechaActualOriginal.getMinutes() + fechaActualOriginal.getTimezoneOffset());    
 
     convocatoria.fechaInicioConvocatoria = fechaInicioOriginal;
     convocatoria.fechaFinConvocatoria = fechaFinOriginal;
+    convocatoria.fechaActual = fechaActualOriginal;
 
     this.convocatoriaForm.patchValue({
       nombre: convocatoria?.nombre,
@@ -290,6 +294,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       fechaFinConvocatoria: this.convocatoriaForm.get('fechaFin')?.value,
       requisitos: this.requisitosConvocatoria,
       correo: this.correo.value,
+      fechaActual: this.fechaActual,
       estado: 'ACTIVO',
     };
 
@@ -311,6 +316,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.seCreoConExito = true;
           this.showLoading = false;
+
+          this.router.navigate(['/principal/formacion/menu-convocatoria']).then();
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -400,7 +407,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.seCreoConExito = true;
           this.showLoading = false;
-          this.router.navigate(['/principal/formacion/proceso']).then();
+          this.router.navigate(['/principal/formacion/menu-convocatoria']).then();
 
         },
         error: (errorResponse: HttpErrorResponse) => {

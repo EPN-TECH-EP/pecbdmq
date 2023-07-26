@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { PaginacionResultadosPruebasDatos } from 'src/app/modelo/flujos/formacion/paginacion-resultados-pruebas-datos';
 import { environment } from 'src/environments/environment';
 
@@ -11,6 +11,7 @@ export class ResultadosPruebasService {
   private host = environment.apiUrl;
   private nombreServicioNoFisicas: string = 'pruebasNoFisicas';
   private nombreServicioFisicas: string = 'pruebasFisicas';
+  private nombreServicioTodo: string = 'resultadoPruebaTodo';
 
   constructor(private http: HttpClient) {}
 
@@ -30,9 +31,12 @@ export class ResultadosPruebasService {
       subTipoPrueba: subTipoPrueba.toString(),
       sort: sort.toString(),
     };
-    return this.http.get<PaginacionResultadosPruebasDatos>(`${this.host}/${this.nombreServicioNoFisicas}/resultados`, {
-      params,
-    });
+    return this.http.get<PaginacionResultadosPruebasDatos>(
+      `${this.host}/${this.nombreServicioTodo}/resultadosPaginado`,
+      {
+        params,
+      }
+    );
   }
 
   // cargarPlantilla NoFisicas o fisicas por tipo prueba
@@ -59,4 +63,43 @@ export class ResultadosPruebasService {
       return this.http.post(`${this.host}/${this.nombreServicioNoFisicas}/cargarPlantilla`, formData);
     }
   }
+
+  // generar los documentos de aprobados por prueba
+  ///resultadoPruebaTodo/generar
+  // params: subTipoPrueba
+  // retorna: OK o HttpErrorResponse
+  public generarDocumentosAprobados(subTipoPrueba: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('subTipoPrueba', subTipoPrueba.toString());
+    return this.http.post(`${this.host}/${this.nombreServicioTodo}/generar`, formData);
+  }
+
+
+  // tipo: Excel o Pdf
+  // params: id, nombreArchivo
+  // descargar(tipo: string, id: number)
+  // retorna: blob
+  
+  public descargar(tipo: string, id: number, nombrePrueba: string): Observable<any> {
+    const params = {
+      id: id.toString(),
+      nombre: 'resultadosRegistrados' + nombrePrueba,
+    };
+    return this.http.get(`${this.host}/${this.nombreServicioTodo}/descargar${tipo}`, {
+      responseType: 'blob',
+      params,
+    });
+  }
+
+
+  /*descargar(tipo: string, id: number) {
+    params: [id: id, nombreArchivo]
+    return this.http.get(`${ this.host }/${this.nombreServicioTodo}/descargar${tipo}`, {
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+          return throwError(() => error);
+        }
+      ));
+  }*/
 }

@@ -76,11 +76,11 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
       });
 
     //TODO borrar
-    this.esEstadoPruebas = true;
+    /* this.esEstadoPruebas = true;
 
     this.tipoPruebaService.getTipoPrueba().subscribe((data) => {
       this.tiposPrueba = data;
-    });
+    }); */
     //TODO FIN borrar
 
     this.initSubtipoPrueba();

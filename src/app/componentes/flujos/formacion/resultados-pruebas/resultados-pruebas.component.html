@@ -34,14 +34,69 @@
 
         <div class="row d-flex align-items-middle">
           <div class="col-12">
-            <!-- paginación>
-            <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('previous')">
-              <span class="h4"><</span>
-            </button>
-            <span>Pág. {{ currentPage }} de {{ totalPages }} </span>
-            <button type="button" class="btn btn-link" mdbRipple rippleColor="dark" (click)="onPageChange('next')">
-              <span class="h4">></span>
-            </button -->
+            <!------------------------------- 
+              búsqueda postulantes válidos
+             -------------------------------->
+            <div class="container">
+              <div class="row align-items-start">
+                <div class="col-3">
+                  <!-- radio button para tipo de filtro -->
+                  <span class="text-dark mx-2">Buscar por:</span>
+                  <div class="form-check form-check-inline">
+                    <input
+                      mdbRadio
+                      class="form-check-input"
+                      type="radio"
+                      name="inlineRadioOptions"
+                      id="inlineRadio1"
+                      [value]="TipoFiltroPostulantesValidosEnum.CEDULA"
+                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                    <label class="form-check-label" for="inlineRadio1">Cédula</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      mdbRadio
+                      class="form-check-input"
+                      type="radio"
+                      name="inlineRadioOptions"
+                      id="inlineRadio2"
+                      [value]="TipoFiltroPostulantesValidosEnum.ID_POSTULANTE"
+                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                    <label class="form-check-label" for="inlineRadio2">ID</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      mdbRadio
+                      class="form-check-input"
+                      type="radio"
+                      name="inlineRadioOptions"
+                      id="inlineRadio3"
+                      [value]="TipoFiltroPostulantesValidosEnum.APELLIDO"
+                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                    <label class="form-check-label" for="inlineRadio3">Apellido</label>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <!-- input para búsqueda -->
+                  <div class="d-flex flex-row mb-3">
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Buscar"
+                      aria-label="Buscar"
+                      aria-describedby="basic-addon2"
+                      [(ngModel)]="valorFiltroPostulantesValidos" 
+                      mdbTooltip="Ingrese texto a buscar (mín. 4 caracteres)"/>
+                    <a role="button" (click)="buscarPostulantesValidos()" mdbTooltip="Buscar">
+                      <i class="fa fa-magnifying-glass fa-lg text-primary mx-2"></i>
+                    </a>
+                    <a role="button" (click)="resetFiltroPostulantesValidos()" mdbTooltip="Limpiar filtro">
+                      <i class="fa fa-arrow-rotate-left fa-lg text-dark"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <ng-container [ngTemplateOutlet]="paginacion"></ng-container>
 
@@ -137,6 +192,16 @@
         <div class="container">
           <div class="row mt-3 d-flex justify-content-center">
             <div class="col-9 text-center">
+              <!-- mensaje de registro de resultados de pruebas cerrado -->
+              <ng-container *ngIf="verificarPruebasCerradas()">
+                <div class="jumbotron">
+                  <h1 class="display-4">Registro cerrado</h1>
+                  <p class="lead">Elregistro de resultados se encuentra cerrado</p>
+                  <hr class="my-4" />
+                  <p>Se ha terminado de registrar los resultados para todas las pruebas de Formación</p>
+                </div>
+              </ng-container>
+
               <mdb-form-control>
                 <mdb-select
                   id="prueba"
@@ -145,7 +210,8 @@
                   [(ngModel)]="pruebaDetalleSeleccionada"
                   [visibleOptions]="20">
                   <mdb-option *ngFor="let pruebaItem of listaPruebaDetalleDatos" [value]="pruebaItem"
-                    >{{ pruebaItem.ordenTipoPrueba }} {{ pruebaItem.descripcionPrueba }}
+                    ><span class="text-primary me-2">{{ pruebaItem.ordenTipoPrueba }}</span>
+                    {{ pruebaItem.descripcionPrueba }}
                     <span class="text-muted"
                       ><small>{{ pruebaItem.subTipoPruebaNombre }} - {{ pruebaItem.tipoPruebaNombre }} </small>
                     </span>
@@ -161,28 +227,61 @@
 
         <!-- contenido en columnas -->
         <div class="row d-flex align-items-start mt-3">
-          <div class="col-6">
-            <p class="fs-5 fw-bolder mb-3">Resultados registrados</p>
+          <div class="col-md-6">
+            <div class="container">
+              <div class="row d-flex align-items-start mt-3">
+                <div class="col-md-6">
+                  <p class="fs-5 fw-bolder mb-3">Resultados registrados</p>
+                </div>
 
-            <mdb-accordion borderless="true">
-              <mdb-accordion-item>
-                <ng-template mdbAccordionItemHeader>Cargar resultados</ng-template>
-                <ng-template mdbAccordionItemBody>
+                <div class="col-md-6 text-end">
+                  Acciones
+                  <button
+                    mdbTooltip="Descargar lista Excel"
+                    class="mx-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    [disabled]="estaEditando"
+                    (click)="descargarLista('Excel')">
+                    <i class="fa fa-file-excel fa-lg text-success"></i>
+                  </button>
+                  <!-- button
+                    mdbTooltip="Descargar lista PDF"
+                    class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    [disabled]="estaEditando"
+                    (click)="descargarLista('Pdf')">
+                    <i class="fa fa-file-pdf fa-lg"></i>
+                  </button -->
+                  <button
+                    mdbTooltip="Cerrar registro de resultados"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    [disabled]="estaEditando"
+                    (click)="confirmaCerrarRegistro($event)">
+                    <i class="fa fa-ban fa-lg text-danger"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
 
-                  <p>Tipo de resultado: {{tipoResultado}}</p>
+            <!-- cargar nuevos resultados -->
+            <ng-container *ngIf="pruebaDetalleSeleccionada.estado !== FORMACION.estadoPruebasCierre">
+              <mdb-accordion borderless="true">
+                <mdb-accordion-item>
+                  <ng-template mdbAccordionItemHeader>Cargar resultados</ng-template>
+                  <ng-template mdbAccordionItemBody>
+                    <p>Tipo de resultado: {{ tipoResultado }}</p>
 
-                  <label class="form-label" for="customFile">Seleccione un archivo de resultados (Excel)</label>
-                  <input
-                    mdbValidate
-                    accept=".xls,.xlsx"
-                    #archivoMdbInput="mdbInput"
-                    mdbInput
-                    type="file"
-                    class="form-control"                    
-                    (change)="cargarArchivo($event)" />
-                </ng-template>
-              </mdb-accordion-item>
-            </mdb-accordion>
+                    <label class="form-label" for="customFile">Seleccione un archivo de resultados (Excel)</label>
+                    <input
+                      mdbValidate
+                      accept=".xls,.xlsx"
+                      #archivoMdbInput="mdbInput"
+                      mdbInput
+                      type="file"
+                      class="form-control"
+                      (change)="cargarArchivo($event)" />
+                  </ng-template>
+                </mdb-accordion-item>
+              </mdb-accordion>
+            </ng-container>
 
             <!-- lista resultados de prueba -->
 
@@ -196,7 +295,7 @@
               </div>
             </ng-container>
 
-            <!-- Tabla -->
+            <!-- Tabla resultados registrados -->
             <ng-container *ngIf="listaResultadosPruebas.length > 0">
               <ng-container [ngTemplateOutlet]="paginacionResultados"></ng-container>
               <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
@@ -227,19 +326,26 @@
                         </td>
                       </ng-container>
 
-                      <ng-container *ngIf="resultado.resultadoTiempo">
+                      <ng-container *ngIf="!resultado.resultado && resultado.resultadoTiempo">
                         <td>
                           <div class="text-wrap">{{ resultado.resultadoTiempo }}</div>
                         </td>
                       </ng-container>
 
-                      <ng-container *ngIf="resultado.cumplePrueba !== null">
+                      <ng-container
+                        *ngIf="!resultado.resultado && !resultado.resultadoTiempo && resultado.cumplePrueba !== null">
                         <td>
                           <div class="text-wrap">{{ resultado.cumplePrueba === true ? 'CUMPLE' : 'NO CUMPLE' }}</div>
                         </td>
                       </ng-container>
 
-                      <ng-container *ngIf="resultado.notaPromedioFinal">
+                      <ng-container
+                        *ngIf="
+                          !resultado.resultado &&
+                          !resultado.resultadoTiempo &&
+                          !resultado.cumplePrueba &&
+                          resultado.notaPromedioFinal
+                        ">
                         <td>
                           <div class="text-wrap">{{ resultado.notaPromedioFinal }}</div>
                         </td>
@@ -252,12 +358,110 @@
             </ng-container>
             <!-- Fin Tabla -->
           </div>
-          <div class="col-1">
-            <div class="vr p-0"></div>
-          </div>
-          <div class="col-5">
+
+          <!---------------------------------------------------------------------              
+              GESTIÓN DE DOCUMENTOS
+          ---------------------------------------------------------------------->
+
+          <div class="col-md-6">
             <p class="fs-5 fw-bolder mb-3">Gestión de documentos</p>
+
+            <button class="btn btn-primary mb-3" (click)="addRow = true" [disabled]="addRow">
+              <i class="fa-solid fa-circle-plus me-2"></i>
+              Cargar documento
+            </button>
+
+            <button class="btn btn-success mb-3 ms-1" (click)="generarDocumentosAprobados()" [disabled]="addRow">
+              <i class="fa-solid fa-circle-plus me-2"></i>
+              Generar listas de aprobados
+            </button>
+
+            <!-- Add new row -->
+            <ng-container *ngIf="addRow">
+              <div>
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    accept="application/pdf"
+                    mdbInput
+                    type="file"
+                    class="form-control"
+                    (change)="cargarArchivoPrueba($event)" />
+                </mdb-form-control>
+              </div>
+
+              <div class="text-start">
+                <button
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  id="btnRegistrar"
+                  type="submit"
+                  [disabled]="archivoPrueba === null"
+                  (click)="crear()">
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="addRow = false">
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="documentos.length === 0">
+              <div class="mt-3">No existen documentos registrados para la prueba</div>
+            </ng-container>
+
+            <ng-container *ngIf="documentos.length > 0">
+              <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+                <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable" [dataSource]="documentos">
+                  <thead class="datatable-header">
+                    <tr>
+                      <th
+                        *ngFor="let header of headersArchivos"
+                        scope="col"
+                        class="fw-bold"
+                        [mdbTableSortHeader]="header.key">
+                        <b> {{ header.label | titlecase }}</b>
+                      </th>
+                      <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+                    </tr>
+                  </thead>
+                  <tbody class="datatable-body">
+                    <!-- Data -->
+                    <tr *ngFor="let documento of table.data">
+                      <td>
+                        {{ documento.nombre }}
+                      </td>
+                      <td>
+                        {{ documento.descripcion }}
+                      </td>
+
+                      <td class="text-center">
+                        <ng-container *ngIf="!addRow">
+                          <button
+                            mdbTooltip="Descargar documento"
+                            class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            [disabled]="estaEditando"
+                            (click)="descargarArchivo(documento)">
+                            <i class="fa fa-download"></i>
+                          </button>
+                          <button
+                            mdbTooltip="Eliminar registro"
+                            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                            [disabled]="estaEditando"
+                            (click)="eliminar(documento.codDocumento)">
+                            <i class="fa fa-trash-alt"></i>
+                          </button>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-container>
           </div>
+
+          <!--------------------------------------------------------------------- 
+            FIN GESTIÓN DE DOCUMENTOS
+          ---------------------------------------------------------------------->
         </div>
       </ng-template>
     </mdb-tab>

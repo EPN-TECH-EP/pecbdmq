@@ -10,15 +10,18 @@ export class AutenticacionInterceptor implements HttpInterceptor {
   constructor(private autenticacionService: AutenticacionService) {}
 
   intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<unknown>> {
-    
     // si el servicio es público, no se envía el token
     if (this.revisaServiciosPublicos(httpRequest.url)) {
-
-      const key = environment.APP_KEY;
-      const request = httpRequest.clone({
-        setHeaders: { 'X-API-Key': `${key}` },
-      }); 
-      return httpHandler.handle(request);
+      // tratamiento para el servicio de descarga de archivos
+      if (!httpRequest.url.includes('link')) {
+        const key = environment.APP_KEY;
+        const request = httpRequest.clone({
+          setHeaders: { 'X-API-Key': `${key}` },
+        });
+        return httpHandler.handle(request);
+      } else {
+        return httpHandler.handle(httpRequest);
+      }
 
       //return httpHandler.handle(httpRequest);
 
