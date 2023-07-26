@@ -6,6 +6,14 @@ import { RegistroNotasService } from "../../../../../servicios/formacion/registr
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import { ModalSansionComponent } from "../modal-sansion/modal-sansion.component";
+import { Router } from "@angular/router";
+import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
+import { catchError, map } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { EMPTY, of, switchMap } from "rxjs";
+import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 
 @Component({
   selector: 'app-registro-notas-disciplinarias',
@@ -21,12 +29,18 @@ export class RegistroNotasDisciplinariasComponent implements OnInit {
   estaEditandoNota: boolean;
   estudianteNotaEditando: NotaDisciplina;
   codEstudianteNotaEditando: number;
+  esEstadoRegistroNotas: boolean;
+
+  modalRef: MdbModalRef<ModalSansionComponent> | null = null;
 
 
   constructor(
     private builder: FormBuilder,
     private registroNotasService: RegistroNotasService,
     private ns: MdbNotificationService,
+    private modalService: MdbModalService,
+    private router: Router,
+    private formacionService: FormacionService,
   ) {
     this.headers = [
       { key: 'nombre', label: 'Código único' },
@@ -37,22 +51,47 @@ export class RegistroNotasDisciplinariasComponent implements OnInit {
     this.estudiantesPorParalelo = [];
     this.estudianteNotaEditando = null;
     this.notaPorEstudianteForm = new FormGroup({});
+    this.codEstudianteNotaEditando = 0;
+    this.esEstadoRegistroNotas = false;
     this.construirFormulario();
 
   }
-
+  
   ngOnInit(): void {
-    this.registroNotasService.listarEstudiantesNotaDisciplina().subscribe({
-      next: (data) => {
-        const paralelos = data.paralelos;
-        this.estudiantesPorParalelo = paralelos.map(paralelo => {
-          const estudiantes = data.estudiantesNotaDisciplina.filter(estudiante =>
-            estudiante.codParalelo === paralelo.codParalelo);
-          return { paralelo, estudiantes };
-        });
-
+    this.formacionService.getEstadoActual().pipe(
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.error(errorResponse);
+        return of(null);
+      }),
+      switchMap((estado) => {
+        console.log(estado);
+        if (!estado || estado.httpStatusCode !== 200) {
+          Notificacion.notificar(this.ns, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING);
+          this.router.navigate(['/formacion/proceso']).then();
+          return EMPTY;
+        }
+        if (estado.mensaje === FORMACION.estadoRegistroNotas) {
+          this.esEstadoRegistroNotas = true;
+          return this.registroNotasService.listarEstudiantesNotaDisciplina().pipe(
+            map((data) => {
+              const paralelos = data.paralelos;
+              this.estudiantesPorParalelo = paralelos.map(paralelo => {
+                const estudiantes = data.estudiantesNotaDisciplina.filter(estudiante =>
+                  estudiante.codParalelo === paralelo.codParalelo);
+                return { paralelo, estudiantes };
+              });
+            })
+          );
+        }
+        return EMPTY;
+      })
+    ).subscribe({
+      next: () => {
+      },
+      error: (err) => {
+        console.error('Error:', err);
       }
-    })
+    });
   }
 
   private construirFormulario() {
@@ -117,4 +156,11 @@ export class RegistroNotasDisciplinariasComponent implements OnInit {
     });
   }
 
+  onVerSanciones(estudiante: NotaDisciplina) {
+    this.modalRef = this.modalService.open(ModalSansionComponent, {
+      data: { estudiante: estudiante },
+      modalClass: 'modal-lg modal-dialog-centered',
+    });
+
+  }
 }

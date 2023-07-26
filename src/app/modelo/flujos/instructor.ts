@@ -1,4 +1,5 @@
 export interface Instructor {
+  codDatosPersonales : number;
   tipoInstructor    : string;
   codTipoInstructor : number;
   codInstructor     : number;
@@ -16,7 +17,16 @@ export interface Instructor {
   correoPersonal    : string;
 }
 
+export interface InstructorRequest {
+  codDatosPersonales: number;
+  codTipoProcedencia: number;
+  codEstacion       : number;
+  codUnidadGestion  : number;
+  codTipoContrato   : number;
+}
+
 export const defaultInstructor: Instructor = {
+  codDatosPersonales : 0,
   codInstructor     : 0,
   codTipoProcedencia: 0,
   tipoProcedencia   : '',

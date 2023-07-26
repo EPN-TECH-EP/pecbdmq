@@ -71,6 +71,11 @@ import { MenuGraduacionComponent } from '../../componentes/flujos/formacion/menu
 
 import { SubtipoParametrosComponent } from 'src/app/componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
 import { ResultadosPruebasComponent } from 'src/app/componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
+import { FichaPersonalComponent } from "../../componentes/user/ficha-personal/ficha-personal.component";
+import { HistoricoModuloComponent } from "../../componentes/user/historico-modulo/historico-modulo.component";
+import {
+  ComponenteNotaFormacion
+} from "../../componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component";
 
 const routes: Routes = [
   {
@@ -131,6 +136,7 @@ const routes: Routes = [
       { path: 'formacion/academia/notas', component: RegistroNotasComponent },
       { path: 'formacion/academia/notas-disciplina', component: RegistroNotasDisciplinariasComponent },
       { path: 'formacion/academia/notas-estudiantes', component: NotasEstudiantesComponent },
+      { path: 'formacion/academia/componente-nota', component: ComponenteNotaFormacion },
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },
@@ -154,6 +160,10 @@ const routes: Routes = [
       { path: 'formacion/menu-pruebas', component: MenuPruebasComponent },
       { path: 'formacion/menu-academia', component: MenuFormacionAcademiaComponent },
       { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
+
+      {path: 'fichaPersonal', component: FichaPersonalComponent},
+      {path: 'historicoModulo', component: HistoricoModuloComponent},
+
     ],
   },
 ];

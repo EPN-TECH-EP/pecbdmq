@@ -64,13 +64,13 @@ export class InscripcionesComponent implements OnInit {
       next: esDelegado => {
         if (!esDelegado) {
           Notificacion.notificar(this.mdbNotificationService, "No es usuario delegado", TipoAlerta.ALERTA_WARNING)
-          this.router.navigate(['/principal/formacion/proceso'])
+          this.router.navigate(['/principal/formacion/menu-validacion'])
           return
         }
       },
       error: () => {
         Notificacion.notificar(this.mdbNotificationService, "Ocurrió un error, inténtelo nuevamente", TipoAlerta.ALERTA_ERROR)
-        this.router.navigate(['/principal/formacion/proceso'])
+        this.router.navigate(['/principal/formacion/menu-validacion'])
         return
       }
     })
@@ -85,7 +85,7 @@ export class InscripcionesComponent implements OnInit {
 
         if (!estado || estado.httpStatusCode !== 200) {
           Notificacion.notificar(this.mdbNotificationService, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING)
-          this.router.navigate(['/formacion/proceso'])
+          this.router.navigate(['/principal/formacion/menu-validacion'])
           return;
         }
 

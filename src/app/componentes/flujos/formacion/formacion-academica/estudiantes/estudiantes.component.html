@@ -3,120 +3,267 @@
   [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
-<div class="container">
+<ng-container *ngIf="!esEstadoFormacionAcademica">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Formación Académica no activo</h5>
+      <p class="card-text">
+        El proceso de formación académica no se encuentra activo, por lo que no se puede realizar ninguna acción.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoFormacionAcademica">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Estudiantes Inscritos </h1>
   </div>
 
-  <!-- Lista de estudiantes -->
-  <section>
-
-    <p class="text-primary">
-      <i class="fas fa-info-circle me-1"></i>
-      Seleccione un paralelo para los estudiantes que no tienen uno asignado.
-    </p>
-    <div class="d-flex gap-2 my-3">
-      <mdb-form-control [style.width.px]="200">
-        <mdb-select
-          mdbValidate
-          [disabled]="selections.size === 0"
-          [(ngModel)]="codParalelo"
-        >
-          <mdb-option
-            *ngFor="let paralelo of paralelosActivos"
-            [value]="paralelo.codParalelo"
-            [label]="paralelo.nombreParalelo"
-          >
-            {{ paralelo.nombreParalelo }}
-          </mdb-option>
-        </mdb-select>
-      </mdb-form-control>
-      <button
-        class="btn btn-primary btn-sm"
-        type="button"
-        [disabled]="selections.size === 0"
-        (click)="asignarEstudiantesAParalelo()"
+  <mdb-tabs>
+    <mdb-tab>
+      <ng-template mdbTabTitle
+      ><span><i class="fas fa-people-group fa-fw me-3"></i>Asignar estudiantes a paralelo</span></ng-template
       >
-        <i class="fas fa-save me-1"></i>
-        Asignar estudiantes al paralelo
-      </button>
-    </div>
-    <div class="datatable datatable-hover datatable-sm datatable-striped">
-      <form>
-        <table
-          class="tabla datatable-table"
-          mdbTable
-          #estudiantesTable="mdbTable"
-          [responsive]="true"
-          [dataSource]="estudiantes"
-          [pagination]="pagination"
-        >
-          <thead class="datatable-header">
-          <tr>
-            <th scope="col">
-              <div class="form-check d-flex align-items-center mb-0">
-                <input
-                  mdbCheckbox
-                  class="datatable-header-checkbox form-check-input"
-                  type="checkbox"
-                  [checked]="allRowsSelected()"
-                  (checkboxChange)="toggleAll($event)"
-                />
-              </div>
-            </th>
-            <th
-              *ngFor="let head of headers"
-              class="fw-bold fs-6"
+      <!-- Lista de estudiantes -->
+      <section>
+        <p class="text-primary">
+          <i class="fas fa-info-circle me-1"></i>
+          Seleccione un paralelo para los estudiantes que no tienen uno asignado.
+        </p>
+        <div class="d-flex gap-2 my-3">
+          <mdb-form-control [style.width.px]="200">
+            <mdb-select
+              mdbValidate
+              [disabled]="selections.size === 0"
+              [(ngModel)]="codParalelo"
             >
-              {{ head.label }}
-            </th>
-          </tr>
-          </thead>
-          <tbody class="datatable-body">
-          <tr *ngFor="let estudiante of estudiantesTable.data" [class.active]="selections.has(estudiante)">
-            <td>
-              <div class="form-check">
-                <input
-                  mdbCheckbox
-                  (click)="$event.stopPropagation()"
-                  (checkboxChange)="toggleSelection($event, estudiante)"
-                  [checked]="selections.has(estudiante)"
-                  class="datatable-row-checkbox form-check-input"
-                  type="checkbox"
-                />
-              </div>
-            </td>
-            <td>
-              {{ estudiante?.codUnico }}
-            </td>
-            <td>
-              <div>
-                <p class="mb-0">{{estudiante.nombre}} {{estudiante.apellido}}</p>
-              </div>
-            </td>
-            <td>
-              {{ estudiante?.cedula }}
-            </td>
-            <td>
-              {{ estudiante?.telefono }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <div
-          *ngIf="estudiantes?.length === 0"
-          class="alert alert-info" role="alert">
-          <i class="fa-solid fa-info-circle me-2"></i>
-          Todos los estudiantes ya han sido asignados a un paralelo.
+              <mdb-option
+                *ngFor="let paralelo of paralelosActivos"
+                [value]="paralelo.codParalelo"
+                [label]="paralelo.nombreParalelo"
+              >
+                {{ paralelo.nombreParalelo }}
+              </mdb-option>
+            </mdb-select>
+          </mdb-form-control>
+          <button
+            class="btn btn-primary btn-sm"
+            type="button"
+            [disabled]="selections.size === 0"
+            (click)="asignarEstudiantesAParalelo()"
+          >
+            <i class="fas fa-save me-1"></i>
+            Asignar estudiantes al paralelo
+          </button>
         </div>
-        <mdb-table-pagination
-          #pagination
-          [entries]="10"
-          [rowsPerPageText]="'Registros por página'"
-        ></mdb-table-pagination>
-      </form>
-    </div>
-  </section>
+        <div class="datatable datatable-hover datatable-sm datatable-striped">
+          <form>
+            <table
+              class="tabla datatable-table"
+              mdbTable
+              #estudiantesTable="mdbTable"
+              [responsive]="true"
+              [dataSource]="estudiantesSinParalelo"
+              [pagination]="pagination"
+            >
+              <thead class="datatable-header">
+              <tr>
+                <th scope="col">
+                  <div class="form-check d-flex align-items-center mb-0">
+                    <input
+                      mdbCheckbox
+                      class="datatable-header-checkbox form-check-input"
+                      type="checkbox"
+                      [checked]="allRowsSelected()"
+                      (checkboxChange)="toggleAll($event)"
+                    />
+                  </div>
+                </th>
+                <th
+                  *ngFor="let head of headers"
+                  class="fw-bold fs-6"
+                >
+                  {{ head.label }}
+                </th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr *ngFor="let estudiante of estudiantesTable.data" [class.active]="selections.has(estudiante)">
+                <td>
+                  <div class="form-check">
+                    <input
+                      mdbCheckbox
+                      (click)="$event.stopPropagation()"
+                      (checkboxChange)="toggleSelection($event, estudiante)"
+                      [checked]="selections.has(estudiante)"
+                      class="datatable-row-checkbox form-check-input"
+                      type="checkbox"
+                    />
+                  </div>
+                </td>
+                <td>
+                  {{ estudiante?.codUnico }}
+                </td>
+                <td>
+                  <div>
+                    <p class="mb-0">{{estudiante.nombre}} {{estudiante.apellido}}</p>
+                  </div>
+                </td>
+                <td>
+                  {{ estudiante?.cedula }}
+                </td>
+                <td>
+                  {{ estudiante?.telefono }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div
+              *ngIf="estudiantesSinParalelo?.length === 0"
+              class="alert alert-info" role="alert">
+              <i class="fa-solid fa-info-circle me-2"></i>
+              Todos los estudiantes ya han sido asignados a un paralelo.
+            </div>
+            <mdb-table-pagination
+              #pagination
+              [entries]="10"
+              [rowsPerPageText]="'Registros por página'"
+            ></mdb-table-pagination>
+          </form>
+        </div>
+      </section>
+    </mdb-tab>
+    <mdb-tab>
+      <ng-template mdbTabTitle
+      ><span><i class="fas fa fa-user-times me-3"></i>Dar de baja a un estudiante</span></ng-template
+      >
+      <!-- Lista de estudiantes -->
+      <div>
+        <h6 class="fw-bold my-4">Lista de estudiantes por paralelo</h6>
+
+        <mdb-tabs [fill]="true">
+          <mdb-tab *ngFor="let estudiantePorParalelo of estudiantesPorParalelo">
+            <ng-template mdbTabTitle><span><i
+              class="fas fa-people-group me-2"></i>{{ estudiantePorParalelo.paralelo.nombreParalelo }}</span>
+            </ng-template>
+            <div class="row justify-content-center">
+              <h5>Estudiantes</h5>
+              <ol class="list-group list-group-light list-group-numbered" [style.width.%]="60">
+                <li
+                  *ngFor="let estudiante of estudiantePorParalelo.estudiantes"
+                  class="list-group-item d-flex justify-content-between align-items-start"
+                >
+                  <div class=" me-auto">
+                    <div class="fw-bold">{{estudiante.nombreCompleto}}</div>
+                    <div class="text-muted">Código único: {{ estudiante.codUnico }}</div>
+                    <ng-container *ngIf="estaDandoDeBaja && estudiante.codEstudiante === codEstudianteBaja">
+                      <form [formGroup]="bajaForm" class="d-flex flex-column gap-2 mt-3">
+                        <mdb-form-control>
+                          <mdb-select
+                            mdbValidate
+                            formControlName="codTipoBaja"
+                          >
+                            <mdb-option
+                              *ngFor="let baja of tipoBajas"
+                              [value]="baja.codTipoBaja"
+                              [label]="baja.baja"
+                            >
+                              {{ baja.baja }}
+                            </mdb-option>
+                          </mdb-select>
+                          <label mdbLabel class="form-label mb-2x">Seleccione el tipo de baja</label>
+                        </mdb-form-control>
+                        <mdb-form-control>
+                          <textarea
+                            mdbInput
+                            mdbValidate
+                            class="form-control"
+                            rows="2"
+                            formControlName="descripcionBaja"
+                          ></textarea>
+                          <label mdbLabel class="form-label mb-2x">Descripción de la baja</label>
+                        </mdb-form-control>
+                        <mdb-form-control>
+                          <input
+                            mdbInput
+                            type="file"
+                            accept="application/pdf"
+                            formControlName="archivos"
+                            class="form-control"
+                            (change)="onFileChange($event)"
+                          >
+                        </mdb-form-control>
+                      </form>
+                    </ng-container>
+                    <ng-container>
+                      <button
+                        class="btn btn-sm btn-success mt-2 me-2"
+                        type="button"
+                        (click)="onConfirmarBaja(estudiante)"
+                        *ngIf="estaDandoDeBaja && estudiante.codEstudiante === codEstudianteBaja"
+                      >
+                        <i class="fas fa-check"></i>
+                        Confirmar baja
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger"
+                        type="button"
+                        (click)="onCancelarBaja()"
+                        *ngIf="estaDandoDeBaja && estudiante.codEstudiante === codEstudianteBaja"
+                      >
+                        <i class="fas fa-cancel me-1"></i>
+                        Cancelar
+                      </button>
+                    </ng-container>
+                  </div>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    type="button"
+                    (click)="onDarDeBaja(estudiante)"
+                    *ngIf="!estaDandoDeBaja || estudiante.codEstudiante !== codEstudianteBaja"
+                    [disabled]="estaDandoDeBaja && estudiante.codEstudiante !== codEstudianteBaja"
+                  >
+                    <i class="fas fa-user-times me-1"></i>
+                    Dar de baja
+                  </button>
+                </li>
+              </ol>
+            </div>
+
+          </mdb-tab>
+        </mdb-tabs>
+        <h5 class="mt-4">Estudiantes dados de baja</h5>
+        <section>
+          <div class="datatable datatable-hover datatable-sm table-responsive">
+            <table
+              class="tabla datatable-table"
+              mdbTable
+              #datatableBajas
+              [dataSource]="estudiantesBaja"
+              [pagination]="pagination">
+              <thead class="datatable-header">
+              <tr>
+                <th *ngFor="let head of headersBaja; let i = index" class="fw-bold fs-6">
+                  {{ head.label }}
+                </th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr
+                *ngFor="let estudiante of datatableBajas.data"
+                class="datatable-row"
+              >
+                <th>{{estudiante.codUnico}}</th>
+                <th>{{estudiante.cedula}}</th>
+                <th>{{estudiante.nombre}} {{estudiante.apellido}}</th>
+                <th>{{estudiante.telefono}}</th>
+              </tr>
+            </table>
+          </div>
+        </section>
+      </div>
+    </mdb-tab>
+  </mdb-tabs>
 
 </div>
 

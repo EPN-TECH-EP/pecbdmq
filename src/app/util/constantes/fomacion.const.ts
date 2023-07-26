@@ -3,7 +3,10 @@ export const FORMACION = {
   estadoConvocatoria: 'CONVOCATORIA',
   estadoValidacion: 'VALIDACIÓN REQUISITOS',
   estadoInscripcion: 'INSCRIPCION',
-  estadoPruebas: 'PRUEBAS',
+  estadoPruebas: 'VALIDACIÓN PRUEBAS',
   estadoMuestreo: "MUESTREO",
-  estadoPruebasCierre: 'CIERRE'
+  estadoPruebasCierre: 'CIERRE',
+  estadoFormacionAcademica: 'FORMACIÓN ACADEMICA',
+  estadoRegistroNotas: 'REGISTRO DE NOTAS',
+  estadoGraduacion: 'GRADUACIÓN Y CERTIFICADOS'
 }

@@ -5,6 +5,7 @@ import { switchMap } from "rxjs";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { timeout } from "rxjs/operators";
 
 @Component({
   selector: 'app-estado-menu-proceso-formacion',
@@ -26,6 +27,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
   ngOnInit() {
     this.formacionService.getEstadosFormacion().pipe(
       switchMap((estados) => {
+        console.log('del servicio: ', estados);
           this.estados = estados;
         return this.formacionService.getEstadoActual();
       })
@@ -70,7 +72,9 @@ export class EstadoProcesoFormacionComponent implements OnInit {
           Notificacion.notificar(this.mdbNotificationService, "Error al actualizar el estado", TipoAlerta.ALERTA_ERROR);
           if (estadoActualAnterior) {
             this.estados[estadoActualIndex].estadoActual = 'completado';
-            window.location.reload();
+            // setTimeout(()=>{
+            //   window.location.reload();
+            // }, 5000);
           }
       }
       }

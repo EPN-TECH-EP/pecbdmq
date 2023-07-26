@@ -248,10 +248,15 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
       // conforma el nuevo objeto con los datos complementarios
 
       // obtener el valor máximo de orden para asignar el siguiente
-      const ordenMaximo = this.listaPruebaDetalleDatos.reduce(
+      let ordenMaximo = this.listaPruebaDetalleDatos.reduce(
         (max, pruebaDetalle) => (pruebaDetalle.ordenTipoPrueba > max ? pruebaDetalle.ordenTipoPrueba : max),
-        this.listaPruebaDetalleDatos[0].ordenTipoPrueba
+        this.listaPruebaDetalleDatos[0]?.ordenTipoPrueba
       );
+
+      if (ordenMaximo === undefined || ordenMaximo === null)
+      { 
+       ordenMaximo = 0;
+      }
 
       const pruebaDetalleNew: PruebaDetalle = {
         codPruebaDetalle: pruebaDetalleFormulario.codPruebaDetalle,
@@ -315,6 +320,8 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
       // obtener el objeto de la lista
       const pruebaDetalleDatos = this.listaPruebaDetalleDatos[this.editElementIndex];
 
+      this.codigo = pruebaDetalleDatos.codPruebaDetalle;
+
       const pruebaDetalleEdit: PruebaDetalle = {
         codPruebaDetalle: pruebaDetalleDatos.codPruebaDetalle,
         descripcionPrueba: pruebaDetalleFormulario.descripcionPrueba,
@@ -326,8 +333,8 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
         codCursoEspecializacion: pruebaDetalleDatos.codCursoEspecializacion,
         codSubtipoPrueba: pruebaDetalleFormulario.codSubtipoPrueba,
         ordenTipoPrueba: pruebaDetalleDatos.ordenTipoPrueba,
-        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo,
-        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo,
+        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo?pruebaDetalleFormulario.puntajeMinimo:0,
+        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo?pruebaDetalleFormulario.puntajeMaximo:0,
         tienePuntaje: pruebaDetalleFormulario.tienePuntaje,
       };
 

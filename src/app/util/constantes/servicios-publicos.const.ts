@@ -10,7 +10,7 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
 '/inscripcionfor/crear',
 '/inscripcionfor/generaPin',
 '/inscripcionfor/validaPin',
-'/inscripcionfor/reenviaPin',
+'/inscripcionfor/reenvioPin',
 '/inscripcionfor/validafechas',
 '/inscripcionfor/validaEdad',
 '/periodoacademico/validaestado',

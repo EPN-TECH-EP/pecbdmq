@@ -5,7 +5,6 @@ import { PruebaDetalle } from 'src/app/modelo/flujos/formacion/prueba-detalle';
 import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
 import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
 import { environment } from 'src/environments/environment';
-import { Options } from '../../../../../../../MDBootstrap Pro/MDB5-ANGULAR-UI-KIT-Pro-Essential/code/mdb-angular-ui-kit/timepicker/timepicker.interface';
 
 
 // implementación integración servicios

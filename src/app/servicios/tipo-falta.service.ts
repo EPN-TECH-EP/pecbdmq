@@ -3,6 +3,7 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {ITipoFalta} from "../modelo/admin/tipo_falta";
+import { FaltaPeriodo } from "../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class TipoFaltaService {
 
   deleteTipoFalta(cod_tipo_falta: number): Observable<string>{
     return this.http.delete<string>(`${this.host}/gen_tipo_falta/${cod_tipo_falta}`);
+  }
+
+  listarTipoFaltaPeriodo(){
+    return this.http.get<FaltaPeriodo[]>(`${this.host}/faltaperiodo/listarPA`);
   }
 
 }

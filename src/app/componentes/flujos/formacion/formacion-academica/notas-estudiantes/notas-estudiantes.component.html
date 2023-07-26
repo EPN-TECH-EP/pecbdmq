@@ -3,61 +3,153 @@
   [link]="'/principal/formacion/menu-graduacion'"
 ></app-boton-volver>
 
-<div class="container">
+<ng-container *ngIf="!esEstadoGraduacion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de Graduación y Certificados no activo</h5>
+      <p class="card-text">
+        El proceso de graduación y certificados no se encuentra activo en este momento.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoGraduacion">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Notas finales de los estudiantes</h1>
   </div>
 
-  <button
-    class="btn btn-primary my-3"
-    (click)="generarListaAntiguidades()"
-  >
-    Generar lista de antigüedades
-  </button>
-
-  <div class="datatable datatable-hover datatable-sm table-responsive">
-    <table
-      class="tabla datatable-table"
-      mdbTable
-      #datatableEstudiante
-      [dataSource]="notasEstudiantes"
-      [pagination]="pagination"
+  <div *ngIf="esVistaDeNotas">
+    <button
+      class="btn btn-primary my-3"
+      (click)="generarListaAntiguidades()"
     >
-      <thead class="datatable-header">
-      <tr>
-        <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
-            [ngClass]="{ 'text-center': i >= headers.length - 3 }">
-          {{ head.label }}
-        </th>
-      </tr>
-      </thead>
-      <tbody class="datatable-body">
-      <!-- Lista de estudiantes -->
-      <tr *ngFor="let estudiante of datatableEstudiante.data">
-        <td>
-          {{ estudiante.datoPersonal.nombre }} {{ estudiante.datoPersonal.apellido }}
-        </td>
-        <td>
-          {{ estudiante.datoPersonal.correoPersonal }}
-        </td>
-        <td class="text-center">
-          {{ estudiante.notasFormacionFinal.notaFinal}}
-        </td>
-        <td class="text-center">
-          {{ estudiante.notasFormacionFinal.promedioDisciplinaFinal }}
-        </td>
-        <td class="text-center">
-          {{ estudiante.notasFormacionFinal.promedioAcademico }}
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <mdb-table-pagination
-      #pagination
-      [entries]="10"
-      [rowsPerPageText]="'Registros por página'"
-    ></mdb-table-pagination>
+      Generar lista de antigüedades
+    </button>
+    <div *ngIf="seGeneroListaDeAntiguedades" class="d-flex align-items-center text-success mb-3">
+      <i class="fas fa-check-circle text-success me-2"></i>
+      <div>
+        Puede descargar el documento de las antigüedades
+      </div>
+      <button (click)="descargarDocumentoAntiguedades()" class="btn btn-link  ms-2">
+        <i class="fas fa-download"></i>
+        Descargar
+      </button>
+    </div>
+    <div class="datatable datatable-hover datatable-sm table-responsive">
+      <table
+        class="tabla datatable-table"
+        mdbTable
+        #datatableEstudiante
+        [dataSource]="notasEstudiantes"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
+              [ngClass]="{ 'text-center': i >= headers.length - 3 }">
+            {{ head.label }}
+          </th>
+          <th class="text-center fw-bold fs-6">Acciones</th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <!-- Lista de estudiantes -->
+        <tr *ngFor="let estudiante of datatableEstudiante.data">
+          <td>
+            {{ estudiante.datoPersonal.nombre }} {{ estudiante.datoPersonal.apellido }}
+          </td>
+          <td>
+            {{ estudiante.datoPersonal.correoPersonal }}
+          </td>
+          <td class="text-center">
+            {{ estudiante.notasFormacionFinal.notaFinal}}
+          </td>
+          <td class="text-center">
+            {{ estudiante.notasFormacionFinal.promedioDisciplinaFinal }}
+          </td>
+          <td class="text-center">
+            {{ estudiante.notasFormacionFinal.promedioAcademico }}
+          </td>
+          <td class="text-center">
+            <button
+              [mdbTooltip]="'Ver notas por materia'"
+              class="me-2 m-0 p-0 shadow-0 btn btn-lg"
+              (click)="verNotasPorMateria(estudiante)"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </div>
   </div>
 
+  <div *ngIf="esVistaDeNotasPorEstudiante">
+    <button class="btn btn-primary my-4" (click)="volverAVistaDeNotas()">
+      <i class="fas fa-arrow-left me-2"></i>
+      Volver a la lista de notas
+    </button>
+    <div class="row mb-2">
+      <h5 class="fw-bolder">Notas por materia</h5>
+    </div>
+    <div class="row mb-3">
+      <h6 class="text-primary fw-bolder">
+        ESTUDIANTE: {{estudianteSeleccionado.nombre}} {{estudianteSeleccionado.apellido}}</h6>
+    </div>
+    <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
+      <table
+        class="tabla datatable-table"
+        mdbTable
+        #datatableNotasPorMateria
+        [dataSource]="notasMateriaPorEstudiante"
+        [pagination]="paginationNotas"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th *ngFor="let head of headersNotasPorEstudiante; let i = index" class="fw-bold fs-6"
+              [ngClass]="{ 'text-center': i >= headers.length - 3 }">
+            {{ head.label }}
+          </th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <!-- Lista de estudiantes -->
+        <tr *ngFor="let nota of datatableNotasPorMateria.data">
+          <td>
+            <div class="fw-bold text-primary">
+              {{ nota.nombreMateria | uppercase }}
+            </div>
+            <div class="text-muted">
+              <b class="fw-bold">COORDINADOR:</b> {{ nota.nombreCompletoInstructor | uppercase }}
+            </div>
+          </td>
+          <td class="text-center">
+            {{ nota.notaMateria }}
+          </td>
+          <td class="text-center">
+            {{ nota.notaDisciplina }}
+          </td>
+          <td class="text-center">
+            {{ nota.notaSupletorio }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #paginationNotas
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </div>
+
+
+  </div>
 
 </div>
