@@ -8,5 +8,6 @@ export const FORMACION = {
   estadoPruebasCierre: 'CIERRE',
   estadoFormacionAcademica: 'FORMACIÓN ACADEMICA',
   estadoRegistroNotas: 'REGISTRO DE NOTAS',
-  estadoGraduacion: 'GRADUACIÓN Y CERTIFICADOS'
+  estadoGraduacion: 'GRADUACIÓN Y CERTIFICADOS',
+  estadoCierre: 'CIERRE',
 }

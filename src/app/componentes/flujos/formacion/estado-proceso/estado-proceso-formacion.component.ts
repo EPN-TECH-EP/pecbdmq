@@ -6,6 +6,8 @@ import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { timeout } from "rxjs/operators";
+import { FORMACION } from "../../../../util/constantes/fomacion.const";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-estado-menu-proceso-formacion',
@@ -16,10 +18,12 @@ export class EstadoProcesoFormacionComponent implements OnInit {
 
   estados: ModuloEstado[];
   stepsLoaded = false;
+  esEstadoCierre = false;
 
   constructor(
     private formacionService: FormacionService,
-    private mdbNotificationService: MdbNotificationService
+    private mdbNotificationService: MdbNotificationService,
+    private router: Router,
   ) {
     this.estados = [];
   }
@@ -33,7 +37,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
       })
     ).subscribe((estado) => {
       const estadoCatalogoActual = this.estados.find(
-        (estadoItem) => estadoItem.estadoCatalogo === estado.mensaje.toUpperCase()
+        (estadoItem) => estadoItem?.estadoCatalogo === estado?.mensaje.toUpperCase()
       );
 
       this.estados.forEach((estadoItem) => {
@@ -45,6 +49,10 @@ export class EstadoProcesoFormacionComponent implements OnInit {
           estadoItem.estadoActual = 'siguiente';
         }
       });
+
+      if (estadoCatalogoActual?.estadoCatalogo === FORMACION.estadoCierre) {
+        this.esEstadoCierre = true;
+      }
 
       this.stepsLoaded = true;
     });
@@ -58,14 +66,22 @@ export class EstadoProcesoFormacionComponent implements OnInit {
       console.log(key + ': ' + value);
     });
 
+
     const estadoActualAnterior = this.estados.find((estadoItem) => estadoItem.estadoActual === 'actual');
     const estadoActualIndex = this.estados.findIndex((estadoItem) => estadoItem.estadoActual === 'actual');
+    const estadoActual = this.estados.find((estadoItem) => estadoItem.codigo === codigo);
+    console.log('estado actual: ', estadoActual);
+
+    if (estadoActual.estadoCatalogo === FORMACION.estadoCierre) {
+      this.esEstadoCierre = true;
+    }
 
     this.formacionService.actualizarEstadoActual(formData).subscribe(
       {
         next: (response) => {
           console.log(response);
           Notificacion.notificar(this.mdbNotificationService, "Estado actualizado con éxito", TipoAlerta.ALERTA_OK);
+
         },
         error: (error) => {
           console.error(error);
@@ -79,5 +95,21 @@ export class EstadoProcesoFormacionComponent implements OnInit {
         }
       }
     );
+  }
+
+  cerrarProceso() {
+    this.formacionService.cerrarProcesoFormacion().subscribe({
+      next: (response) => {
+        if (response) {
+          Notificacion.notificar(this.mdbNotificationService, "Proceso cerrado con éxito", TipoAlerta.ALERTA_OK);
+          this.router.navigate(['/principal/bienvenida']).then();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        Notificacion.notificar(this.mdbNotificationService, "Error al cerrar el proceso", TipoAlerta.ALERTA_ERROR);
+      }
+    })
+
   }
 }

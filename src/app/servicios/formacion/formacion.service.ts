@@ -48,4 +48,8 @@ export class FormacionService {
     return this.http.put(`${ this.host }/componenteNota/${ codComponenteNota }`, data);
   }
 
+  cerrarProcesoFormacion() {
+    return this.http.get<Boolean>(`${ this.host }/periodoacademico/cerrarPeriodo`);
+  }
+
 }
