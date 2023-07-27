@@ -95,7 +95,6 @@ export class NotasEstudiantesComponent implements OnInit {
   }
 
   generarListaAntiguidades() {
-
     this.estudiantesService.generarListaDeAntiguedades().subscribe({
       next: () => {
         Notificacion.notificar(this.ns, "Lista de antigüedades generada correctamente", TipoAlerta.ALERTA_OK)

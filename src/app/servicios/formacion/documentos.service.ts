@@ -17,7 +17,6 @@ export class DocumentosService {
   }
 
   listar() {
-
     return this.http.get<DocumentoFormacion[]>(`${ this.host }/periodoacademico/documentos`);
   }
 

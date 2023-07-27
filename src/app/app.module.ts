@@ -156,6 +156,10 @@ import { FichaPersonalComponent } from './componentes/user/ficha-personal/ficha-
 import { HistoricoModuloComponent } from './componentes/user/historico-modulo/historico-modulo.component';
 import { ModalSansionComponent } from './componentes/flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component';
 import { ComponenteNotaFormacion } from './componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component';
+import { MenuConsultasComponent } from './componentes/flujos/formacion/menus/menu-consultas/menu-consultas.component';
+import { PeriodoAcademicoComponent } from './componentes/flujos/formacion/periodo-academico/periodo-academico.component';
+import { ApelacionesComponent } from './componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component';
+import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 
 @NgModule({
   declarations: [
@@ -239,7 +243,11 @@ import { ComponenteNotaFormacion } from './componentes/flujos/formacion/formacio
     FichaPersonalComponent,
     HistoricoModuloComponent,
     ModalSansionComponent,
-    ComponenteNotaFormacion
+    ComponenteNotaFormacion,
+    MenuConsultasComponent,
+    PeriodoAcademicoComponent,
+    ApelacionesComponent,
+    ModalApelacionComponent
   ],
   imports: [
     BrowserModule,

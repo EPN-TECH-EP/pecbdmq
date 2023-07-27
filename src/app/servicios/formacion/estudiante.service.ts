@@ -136,4 +136,17 @@ export class EstudianteService {
   descargarDocumentoAntiguedades() {
     return this.http.get(`${ this.host }/antiguedades/descargarArchivo?extension=pdf`, { responseType: 'blob' });
   }
+
+  // creación de estudiantes que aprobaron etapa de pruebas de formación
+  // url estudiante/crearEstudiantes
+  // POST
+  // params: ninguno
+  // retorna: OK o HttpErrorResponse
+  crearEstudiantes() {
+    return this.http.post(`${ this.host }/estudiante/crearEstudiantes`, {});
+  }
+
+  esEstudiante(nombreUsuario: string) {
+    return this.http.post<Estudiante>(`${ this.host }/estudiante/esEstudiante/${ nombreUsuario }`, {});
+  }
 }

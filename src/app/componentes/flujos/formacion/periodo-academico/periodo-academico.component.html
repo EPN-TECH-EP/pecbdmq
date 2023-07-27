@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Periodos Académicos </h1>
+  </div>
+
+  <div class="d-flex justify-content-center" *ngIf="esVistaListaPeriodosAcademicos">
+    <div class="w-50">
+      <ul class="list-group list-group-light flex-fill">
+        <li
+          *ngFor="let periodo of periodosAcademicos"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{periodo.descripcion}}</div>
+            <div>Fecha inicio: {{periodo.fechaInicio}}</div>
+            <div>Fecha fin: {{periodo.fechaFin}}</div>
+          </div>
+          <button
+            class="btn btn-primary"
+            (click)="verDocumentosAsociados(periodo)"
+          >
+            <i class="fas fa-file-archive me-2"></i>
+            Ver documentos asociados
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="esVistaDocumentosAsociados">
+    <button class="btn btn-primary" (click)="volverAListaPeriodosAcademicos()">
+      <i class="fas fa-arrow-left me-2"></i>
+      Volver a lista de periodos académicos
+    </button>
+    <div class="d-flex justify-content-center">
+      <div class="m-5 w-75">
+        <h5 class="text-primary">{{periodoAcademico.descripcion}}</h5>
+        <h6><b>Fecha inicio: </b>{{periodoAcademico.fechaInicio}}</h6>
+        <h6><b>Fecha fin: </b>{{periodoAcademico.fechaFin}}</h6>
+        <div class="datatable datatable-hover datatable-sm datatable-striped">
+          <form>
+            <table
+              class="tabla datatable-table"
+              mdbTable
+              #tablaDocumentos="mdbTable"
+              [responsive]="true"
+              [dataSource]="periodoAcademico.documentos"
+              [pagination]="pagination"
+            >
+              <thead class="datatable-header">
+              <tr>
+                <th *ngFor="let head of headers" class="fw-bold fs-6">
+                  {{ head.label }}
+                </th>
+                <th class="fw-bold fs-6">Acciones</th>
+              </tr>
+              </thead>
+              <tbody class="datatable-body">
+              <tr *ngFor="let documento of tablaDocumentos.data">
+                <td>
+                  {{documento.nombre}}
+                </td>
+                <td>
+                  {{ documento.descripcion }}
+                </td>
+                <td>
+                  <button class="btn btn-primary" (click)="descargarDocumento(documento)">
+                    <i class="fas fa-download me-2"></i>
+                    Descargar
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <mdb-table-pagination
+              #pagination
+              [entries]="10"
+              [rowsPerPageText]="'Registros por página'"
+            ></mdb-table-pagination>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

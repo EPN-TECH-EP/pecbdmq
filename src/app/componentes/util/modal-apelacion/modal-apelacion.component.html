@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h6 class="modal-title text-primary">
+    <b class="fw-bold"> HACER UNA APELACIÓN </b>
+  </h6>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body px-4">
+  <p class="fw-bold">MATERIA: {{nota.nombreMateria}}</p>
+  <form [formGroup]="apelacionForm">
+    <label>Motivo de la apelación</label>
+    <mdb-form-control>
+      <textarea
+        mdbInput
+        mdbValidate
+        class="form-control"
+        rows="3"
+        formControlName="observacionEstudiante"
+      ></textarea>
+    </mdb-form-control>
+  </form>
+  <button
+    type="button"
+    (click)="crearApelacion()"
+    class="btn btn-success btn-sm my-3"
+  >
+    <i class="fas fa-save"></i> Crear una apelación
+  </button>
+  <hr class="hr">
+
+<!--  <div-->
+<!--    *ngIf="apleaciones?.length > 0"-->
+<!--    class="datatable datatable-hover datatable-sm datatable-striped">-->
+<!--    <form>-->
+<!--      <table-->
+<!--        class="tabla datatable-table"-->
+<!--        mdbTable-->
+<!--        #apelacionesTabla="mdbTable"-->
+<!--        [responsive]="true"-->
+<!--        [dataSource]="apleaciones"-->
+<!--        [pagination]="pagination"-->
+<!--      >-->
+<!--        <thead class="datatable-header">-->
+<!--        <tr>-->
+<!--          <th-->
+<!--            *ngFor="let head of headers"-->
+<!--            class="fw-bold fs-6"-->
+<!--          >-->
+<!--            {{ head.label }}-->
+<!--          </th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody class="datatable-body">-->
+<!--        <tr *ngFor="let apelacion of apelacionesTabla.data">-->
+<!--          <td>-->
+<!--            {{ apelacion?.fechaSolicitud | date: 'dd-MM-yyyy' }}-->
+<!--          </td>-->
+<!--          <td>-->
+<!--            {{ apelacion?.observacionEstudiante }}-->
+<!--          </td>-->
+<!--          <td>-->
+<!--            <span *ngIf="apelacion.estado" class="badge rounded-pill badge-success">-->
+<!--              {{ apelacion?.estado }}-->
+<!--            </span>-->
+<!--            <span *ngIf="!apelacion.estado" class="badge rounded-pill badge-success">-->
+<!--              {{ apelacion?.estado }}-->
+<!--            </span>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--      <mdb-table-pagination-->
+<!--        #pagination-->
+<!--        [entries]="10"-->
+<!--        [rowsPerPageText]="'Registros por página'"-->
+<!--      ></mdb-table-pagination>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--  <div *ngIf="apleaciones?.length === 0">-->
+<!--    <div class="alert alert-info" role="alert">-->
+<!--      <i class="fa-solid fa-info-circle me-2"></i>-->
+<!--      No se encontraron apelaciones para esta materia-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>

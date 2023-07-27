@@ -134,7 +134,6 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           if (estado.mensaje === FORMACION.estadoInscripcion) {
             this.esEstadoInscripcion = 'T';
 
-
             // valida fechas
             this.subscriptions.push(
               this.inscripcionService.validarFechas().subscribe({
@@ -143,7 +142,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
                   this.validaFechas = true;
 
                   if (this.esFechaValida) {
-                    this.cargarCatalogos();            
+                    this.cargarCatalogos();
                   }
 
                 },
@@ -154,7 +153,6 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
               })
             );
 
-            
           } else {
             this.esEstadoInscripcion = 'F';
           }
@@ -203,7 +201,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         ],
         nombres: [
           '',
-          [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]          
+          [Validators.required, Validators.minLength(3), Validators.maxLength(50), MyValidators.onlyLetters()]
         ],
         apellidos: [
           '',
@@ -291,7 +289,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['nombreTitulo'].disable();
       this.formularioInscripcion.controls['meritoAcademico'].disable();
       this.formularioInscripcion.controls['meritoDeportivo'].disable();
-      this.formularioInscripcion.controls['docSoporte'].disable();    
+      this.formularioInscripcion.controls['docSoporte'].disable();
     } else {
       this.formularioInscripcion.controls['nombres'].enable();
       this.formularioInscripcion.controls['apellidos'].enable();
@@ -314,7 +312,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['nombreTitulo'].enable();
       this.formularioInscripcion.controls['meritoAcademico'].enable();
       this.formularioInscripcion.controls['meritoDeportivo'].enable();
-      this.formularioInscripcion.controls['docSoporte'].enable();    
+      this.formularioInscripcion.controls['docSoporte'].enable();
     }
   }
 
@@ -655,7 +653,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           );
         },
         error: (errorResponse: any) => {
-          
+
 
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           this.showLoadingPin = false;
@@ -721,8 +719,11 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     // consulta datos ciudadano
     this.subscriptions.push(
       this.ciudadanoService.getByCedula(this.cedulaField.value).subscribe({
-        next: (response: any) => {
+        next: (response) => {
           ciudadano = response[0];
+
+          console.log(ciudadano);
+
           this.existenDatosCiudadano = true;
           this.cedulaValida = true;
           this.ultimaCedulaValida = this.cedulaField.value;
@@ -739,6 +740,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           const nombres = partesNombre[2] + ' ' + partesNombre[3];
           this.nombresField.setValue(nombres);
           this.apellidosField.setValue(apellidos);
+          this.nombreTituloField.setValue(ciudadano.profesion);
 
           this.validarEdad(ciudadano.fechaNacimiento);
         },
