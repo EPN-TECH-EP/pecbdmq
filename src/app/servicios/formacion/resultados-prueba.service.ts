@@ -12,6 +12,7 @@ export class ResultadosPruebasService {
   private nombreServicioNoFisicas: string = 'pruebasNoFisicas';
   private nombreServicioFisicas: string = 'pruebasFisicas';
   private nombreServicioTodo: string = 'resultadoPruebaTodo';
+  private nombreServicioNotificacionPruebas: string = 'notificacionprueba';
 
   constructor(private http: HttpClient) {}
 
@@ -92,14 +93,16 @@ export class ResultadosPruebasService {
   }
 
 
-  /*descargar(tipo: string, id: number) {
-    params: [id: id, nombreArchivo]
-    return this.http.get(`${ this.host }/${this.nombreServicioTodo}/descargar${tipo}`, {
-      responseType: 'blob',
-    }).pipe(
-      catchError(error => {
-          return throwError(() => error);
-        }
-      ));
-  }*/
+  // notificar a los postulantes que aprobaron
+  // url notificacionprueba/notificacionAprobados?codSubTipoPrueba=7
+  // params: codSubTipoPrueba
+  // retorna: OK o HttpErrorResponse
+  public notificarAprobados(codSubTipoPrueba: number): Observable<any> {
+    const params = {
+      codSubTipoPrueba: codSubTipoPrueba.toString(),
+    };
+    return this.http.get(`${this.host}/${this.nombreServicioNotificacionPruebas}/aprobadosPorPrueba`, {
+      params,
+    });
+  }
 }

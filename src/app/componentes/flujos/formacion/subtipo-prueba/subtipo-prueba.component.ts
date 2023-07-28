@@ -169,7 +169,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(subtipoPrueba: SubtipoPrueba, formValue: SubtipoPrueba): void {
 
-    this.subtipoPruebaEdit = {...this.subtipoPruebaEdit, 
+    this.subtipoPruebaEdit = {//...this.subtipoPruebaEdit, 
     codSubtipoPrueba: formValue.codSubtipoPrueba,
     codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
     nombre: formValue.nombre,

@@ -148,6 +148,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   ) {
     super(notificationServiceLocal, mdbPopconfirmServiceLocal);
 
+    this.showLoading = false;
+
     this.autenticacionService.user$.subscribe({
       next: (usuario) => {
         this.usuario = usuario;
@@ -197,6 +199,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   // cargar lista de postulantes validos del servicio postulantesValidosService
 
   cargarPostulantesValidos() {
+    this.showLoading = true;
     this.subscriptions.push(
       this.postulantesValidosService.listarPaginado(this.currentPage - 1, this.size, this.orden).subscribe({
         next: (paginacion: PaginacionPostulantesValidos) => {
@@ -207,9 +210,12 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
           this.first = paginacion.first;
           this.last = paginacion.last;
           this.totalPages = paginacion.totalPages;
+
+          this.showLoading = false;
         },
         error: (errorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          this.showLoading = false;
         },
       })
     );
@@ -235,6 +241,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
   // buscar postulantes válidos por filtro con servicio postulantesValidosService
   buscarPostulantesValidos() {
+    this.showLoading = true;
     // verifica vacíos en tipo filtro y valor filtro
     if (this.tipoFiltroPostulantesValidos === '' || this.valorFiltroPostulantesValidos === '') {
       Notificacion.notificacion(
@@ -243,6 +250,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
         null,
         'Debe seleccionar un tipo de filtro y un valor para realizar la búsqueda'
       );
+
+      this.showLoading = false;
 
       return;
     }
@@ -256,6 +265,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
         'Debe ingresar al menos 4 caracteres para realizar la búsqueda'
       );
 
+      this.showLoading = false;
+
       return;
     }
 
@@ -266,9 +277,13 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
           next: (lista: PostulanteValido[]) => {
             this.listaPostulantesValidos = lista;
             this.listaPostulantesValidos = [...this.listaPostulantesValidos];
+
+            this.showLoading = false;
           },
           error: (errorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+
+            this.showLoading = false;
           },
         })
     );
@@ -281,6 +296,9 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   }
 
   cargaListaPruebas() {
+
+    this.showLoading = true;
+
     this.subscriptions.push(
       this.pruebaDetalleService.listarConDatosTipoPrueba().subscribe({
         next: (lista: PruebaDetalleDatos[]) => {
@@ -297,12 +315,17 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
               this.listarArchivosPrueba();
 
+              this.showLoading = false;
+
               break;
+
             }
           }
         },
         error: (errorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+
+          this.showLoading = false;
         },
       })
     );
@@ -350,6 +373,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
   // selección de prueba para el registro de resultados
   onPruebaSeleccionada($event) {
+    this.showLoading = true;
+
     this.pruebaDetalleSeleccionada = $event;
 
     this.listaResultadosPruebas = [];
@@ -359,6 +384,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     this.obtenerTipoResultado();
 
     this.listarArchivosPrueba();
+
+    this.showLoading = false;
   }
 
   // obtiene el tipo de resultado de la prueba seleccionada. servicio pruebaDetalleService
@@ -395,9 +422,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   }
 
   cargarArchivo(event: any) {
-    console.log(event.target);
-
-    console.log(this.inputArchivo);
+    this.showLoading = true;
 
     this.archivo = event.target.files[0];
 
@@ -424,11 +449,15 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             this.cargarResultadosPrueba();
 
             this.inputArchivo.value = '';
+
+            this.showLoading = false;
           },
           error: (errorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
 
             this.inputArchivo.value = '';
+
+            this.showLoading = false;
           },
         })
     );
@@ -526,6 +555,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
 
   descargarLista(tipo: string) {
+    this.showLoading = true;
 
     const contentType = tipo === 'Pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
@@ -539,10 +569,14 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
         link.download = 'resultadosRegistrados' + this.pruebaDetalleSeleccionada.descripcionPrueba + '.' + (tipo === 'Pdf' ? 'pdf' : 'xlsx');
         link.click();
         window.URL.revokeObjectURL(url);
+
+        this.showLoading = false;
       },
       error: (error) => {
         console.log('Error al descargar documento', error);
         Notificacion.notificar(this.notificationServiceLocal, 'Error al descargar documento', TipoAlerta.ALERTA_ERROR);
+
+        this.showLoading = false;
       },
     });
   }
@@ -610,6 +644,10 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
               'Registro cerrado correctamente'
             );
 
+            this.enviarNotificacion();
+
+            this.generarDocumentosAprobados();
+
             // en caso de que corresponda a la última prueba, se realiza la creación de estudiantes
             if (this.verificarUltimaPrueba()) {
               // llamada a this.estudianteService.crearEstudiantes();
@@ -633,6 +671,44 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           },
         })
+    );
+  }
+
+  //enviar notificación a postulantes aprobados con servicio resultadosPruebaService método notificarPrueba
+  enviarNotificacion() {
+
+    // verifica si la prueba seleccionada está en estado cierre, si no está en estado cierre no hace nada
+    if (this.pruebaDetalleSeleccionada.estado !== FORMACION.estadoPruebasCierre) {
+      
+      Notificacion.notificacion(
+        this.notificationRef,
+        this.notificationServiceLocal,
+        null,
+        'No se puede enviar notificación, la prueba seleccionada no se encuentra cerrada'
+      );
+      
+      return;
+    }
+
+    this.showLoading = true;
+
+    this.subscriptions.push(
+      this.resultadosPruebasService.notificarAprobados(this.pruebaDetalleSeleccionada.codSubtipoPrueba).subscribe({
+        next: (resultado) => {
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'Notificación enviada correctamente'            
+          );
+
+          this.showLoading = false;
+        },
+        error: (errorResponse) => {
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+
+          this.showLoading = false;
+        },
+      })
     );
   }
 

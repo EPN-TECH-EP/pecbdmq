@@ -76,6 +76,15 @@ import { HistoricoModuloComponent } from "../../componentes/user/historico-modul
 import {
   ComponenteNotaFormacion
 } from "../../componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component";
+import {
+  MenuConsultasComponent
+} from "../../componentes/flujos/formacion/menus/menu-consultas/menu-consultas.component";
+import {
+  PeriodoAcademicoComponent
+} from "../../componentes/flujos/formacion/periodo-academico/periodo-academico.component";
+import {
+  ApelacionesComponent
+} from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
 
 const routes: Routes = [
   {
@@ -137,6 +146,7 @@ const routes: Routes = [
       { path: 'formacion/academia/notas-disciplina', component: RegistroNotasDisciplinariasComponent },
       { path: 'formacion/academia/notas-estudiantes', component: NotasEstudiantesComponent },
       { path: 'formacion/academia/componente-nota', component: ComponenteNotaFormacion },
+      { path: 'formacion/academia/apelaciones', component: ApelacionesComponent },
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },
@@ -160,6 +170,8 @@ const routes: Routes = [
       { path: 'formacion/menu-pruebas', component: MenuPruebasComponent },
       { path: 'formacion/menu-academia', component: MenuFormacionAcademiaComponent },
       { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
+      { path: 'formacion/menu-consultas', component: MenuConsultasComponent },
+      { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
 
       {path: 'fichaPersonal', component: FichaPersonalComponent},
       {path: 'historicoModulo', component: HistoricoModuloComponent},

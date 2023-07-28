@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {FormacionInstructor} from "../../modelo/dto/formacion-instructor.dto";
-import {Aula} from "../../modelo/admin/aula";
+import { environment } from "../../../environments/environment";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { FormacionInstructor } from "../../modelo/dto/formacion-instructor.dto";
+import { Aula } from "../../modelo/admin/aula";
 import { FormacionEstudiante } from "../../modelo/dto/formacion-usuario.dto";
+import { Estudiante } from "../../modelo/flujos/Estudiante";
+import { NotaMateriaPorEstudiante } from "../formacion/estudiante.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +14,34 @@ import { FormacionEstudiante } from "../../modelo/dto/formacion-usuario.dto";
 export class FormacionHistoricoService {
 
   private host = environment.apiUrl;
-  constructor(private http:HttpClient) {
-  }
-  public getMateriasFormacionHistoricos(codUnico:string):Observable<FormacionEstudiante[]>{
-    const params= new HttpParams()
-      .set('codUnico',codUnico);
-    return this.http.post<FormacionEstudiante[]>(
-      `${this.host}/historicoFor/estudiante?`,
-      {},
-      {params}
-    );
+
+  constructor(private http: HttpClient) {
   }
 
-  public getMateriasFormacionHistoricosIn(codInstructor:number):Observable<FormacionInstructor[]>{
-    const params= new HttpParams()
-      .set('codInstructor',codInstructor);
+  listarNotasPorMateria(idEstudiante: number){
+      const params: HttpParams = new HttpParams().set('codEstudiante', idEstudiante.toString());
+      return this.http.get<NotaMateriaPorEstudiante[]>(`${ this.host }/notasFormacion/listarNotaMateriaCoordinadorByEstudiante`, { params });
+  }
+
+  getMateriasFormacionHistoricosIn(codInstructor: number): Observable<FormacionInstructor[]> {
+    const params = new HttpParams()
+      .set('codInstructor', codInstructor);
     return this.http.post<FormacionInstructor[]>(
-      `${this.host}/historicoFor/instructor?`,
+      `${ this.host }/historicoFor/instructor?`,
       {},
-      {params}
+      { params }
     );
   }
 
-  public getMateriasGeneral():Observable<Array<unknown>>{
-    return this.http.get<Array<unknown>>(`${this.host}/historicoFor/materias`);
+  getMateriasGeneral(): Observable<Array<unknown>> {
+    return this.http.get<Array<unknown>>(`${ this.host }/historicoFor/materias`);
   }
+
+  esEstudiante(codUsuario: string) {
+    const params = new HttpParams()
+      .set('codUsuario', codUsuario);
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/ByUser`, { params });
+
+  }
+
 }

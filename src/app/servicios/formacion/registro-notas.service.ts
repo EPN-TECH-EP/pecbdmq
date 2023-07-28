@@ -62,4 +62,9 @@ export class RegistroNotasService {
   calcularNotasFinales() {
     return this.http.post(`${ this.host }/notasFormacion/calcularNotas`, {});
   }
+
+  getNotaByCodNota(codNota: number) {
+    return this.http.get<NotaPorEstudiante>(`${ this.host }/notasFormacion/${ codNota }`);
+  }
+
 }
