@@ -82,6 +82,9 @@ import {
 import {
   PeriodoAcademicoComponent
 } from "../../componentes/flujos/formacion/periodo-academico/periodo-academico.component";
+import {
+  ApelacionesComponent
+} from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
 
 const routes: Routes = [
   {
@@ -143,6 +146,7 @@ const routes: Routes = [
       { path: 'formacion/academia/notas-disciplina', component: RegistroNotasDisciplinariasComponent },
       { path: 'formacion/academia/notas-estudiantes', component: NotasEstudiantesComponent },
       { path: 'formacion/academia/componente-nota', component: ComponenteNotaFormacion },
+      { path: 'formacion/academia/apelaciones', component: ApelacionesComponent },
 
       { path: 'paralelo', component: ParaleloComponent },
       { path: 'tipoInstruccion', component: TipoInstruccionComponent },

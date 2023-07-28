@@ -132,14 +132,24 @@
                     </thead>
                     <tbody class="datatable-body">
                     <tr *ngFor="let apelacion of apelacionesTabla.data">
-                      <td>
+                      <td [style.width.px]="75">
                         {{ apelacion?.fechaSolicitud | date: 'dd-MM-yyyy' }}
                       </td>
-                      <td>
+                      <td class="text-primary text-wrap" [style.width.px]="150">
                         {{ apelacion?.nombreMateria | uppercase }}
                       </td>
                       <td>
+                        <div>
+                          <p class="p-0 m-0"><b class="fw-bold">Nota anterior: </b> {{ apelacion.notaActual}}</p>
+                          <p><b class="fw-bold">Nota nueva: </b> {{ apelacion.notaNueva || 'N/A'}}</p>
+                        </div>
+                      </td>
+                      <td>
                         {{ apelacion?.observacionEstudiante }}
+                        <div>
+                          <p class="p-0 m-0"><b class="fw-bold">Observación
+                            instructor: </b> {{ apelacion.observacionInstructor || 'N/A'}}</p>
+                        </div>
                       </td>
                       <td>
                           <span *ngIf="apelacion.aprobacion && true" class="badge rounded-pill badge-success">

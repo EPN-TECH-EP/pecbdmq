@@ -150,9 +150,11 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
       { key: 'noFinal', label: 'Nota Final Disciplinaria' },
       { key: 'notaDisciplinaria', label: 'Nota Supletorio' },
     ];
+
     this.headers = [
       { key: 'fecha', label: 'Fecha' },
-      { key: 'fecha', label: 'Materia' },
+      { key: 'materia', label: 'Materia' },
+      { key: 'nota', label: 'Nota Actual' },
       { key: 'observacionEstudiante', label: 'Observación' },
       { key: 'estado', label: 'Estado' },
     ];
@@ -162,16 +164,13 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
   ngOnInit(): void {
 
     this.autenticacionService.user$.pipe(
-      // switchMap((user) => this.formacionHistoricoService.esEstudiante(user.nombreUsuario))
-      switchMap((user) => this.formacionHistoricoService.esEstudiante('1713999604'))
+      switchMap((user) => this.formacionHistoricoService.esEstudiante(user.nombreUsuario))
     ).subscribe({
       next: (estudiante) => {
         if (estudiante) {
           this.estudiante = estudiante;
-          // this.cargarFormacion(estudiante.codUnico);
-          // this.cargarApelaciones(estudiante.codEstudiante);
-          this.cargarFormacion(31);
-          this.cargarApelaciones(31);
+          this.cargarFormacion(estudiante.codEstudiante);
+          this.cargarApelaciones(estudiante.codEstudiante);
         }
 
       },
@@ -204,13 +203,13 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     this.apelacionService.listarPorEstudiante(codUnico).pipe(
       mergeMap((data) => {
         const apelaciones$ = data.map((apelacion) =>
-          this.apelacionService.getMateriaByCodNotaYCodEstudiante(apelacion.codNotaFormacion, 31).pipe(
+          this.apelacionService.getMateriaByCodNotaYCodEstudiante(apelacion.codNotaFormacion, this.estudiante.codEstudiante).pipe(
             map((materia) => {
               apelacion.nombreMateria = materia.nombreMateria;
               return apelacion;
             }),
             catchError((error) => {
-              Notificacion.notificar(this.ns, error, TipoAlerta.ALERTA_ERROR );
+              Notificacion.notificar(this.ns, error, TipoAlerta.ALERTA_ERROR);
               return throwError(error);
             })
           )

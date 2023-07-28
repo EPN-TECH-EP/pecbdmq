@@ -134,7 +134,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
 
-    //objeto para crear    
+    //objeto para crear
 
     this.subscriptions.push(
       this.subtipoPruebaService.crear(this.subtipoPruebaEdit).subscribe({
@@ -146,17 +146,18 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.addRow = false;
           this.initSubtipoPrueba();
           this.showLoading = false;
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
           this.showLoading = false;
         }
       }
-    ));    
+    ));
   }
 
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
-    this.estaEditando = true;    
+    this.estaEditando = true;
     this.editIndex = index;
     this.subtipoPruebaEdit = {...subtipoPrueba};
   }
@@ -169,16 +170,16 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(subtipoPrueba: SubtipoPrueba, formValue: SubtipoPrueba): void {
 
-    this.subtipoPruebaEdit = {...this.subtipoPruebaEdit, 
+    this.subtipoPruebaEdit = {...this.subtipoPruebaEdit,
     codSubtipoPrueba: formValue.codSubtipoPrueba,
     codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
     nombre: formValue.nombre,
     estado: formValue.estado
     };
-    
+
     // validación vacios
     if (formValue.nombre === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -194,6 +195,8 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
           this.estaEditando = false;
           this.editIndex = -1;
+          this.initSubtipoPrueba();
+
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);

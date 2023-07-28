@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { NotaMateriaPorEstudiante } from "./estudiante.service";
+import { MateriaPorInstructor } from "./registro-notas.service";
+import { Instructor } from "../../modelo/flujos/instructor";
 
 export interface ApelacionRequest {
   codNotaFormacion: number;
@@ -20,7 +22,11 @@ export interface ApelacionResponse {
   codNotaFormacion: number,
   codNotaProfesionalizacion: number
   nombreMateria?: string,
+  nombreEstudiante?: string,
+  codEstudiante?: number,
 }
+
+
 
 
 @Injectable({
@@ -30,8 +36,11 @@ export interface ApelacionResponse {
 export class ApelacionesService {
 
   private host = environment.apiUrl;
+  materia: MateriaPorInstructor;
+  instructor: Instructor;
 
   constructor(private http: HttpClient) {
+    this.materia = null;
   }
 
   crear(apelacion: ApelacionRequest) {
@@ -49,4 +58,14 @@ export class ApelacionesService {
     return this.http.get<NotaMateriaPorEstudiante>(`${ this.host }/notasFormacion/listarMateriaWithCoordinador`, { params });
   }
 
+  listarPorMateria(codMateria: number) {
+    // return this.http.get<ApelacionResponse[]>(`${ this.host }/apelacionesPorMateria/${ codMateria }`);
+    return this.http.get<ApelacionResponse[]>(`${ this.host }/apelacion/listarByEstudiante/${ codMateria }`);
+
+  }
+
+  actualizar(apelacion: ApelacionResponse) {
+    return this.http.put(`${ this.host }/apelacion/${apelacion.codApelacion}`, apelacion);
+
+  }
 }
