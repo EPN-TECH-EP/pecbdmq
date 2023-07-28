@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap } from "rxjs";
+import { forkJoin, switchMap, throwError } from "rxjs";
 import { ComponenteBase } from "../../../util/componente-base";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
@@ -21,6 +21,7 @@ import {
   ModalSansionComponent
 } from "../../flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component";
 import { ModalApelacionComponent } from "../../util/modal-apelacion/modal-apelacion.component";
+import { catchError, map, mergeMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-ficha-personal',
@@ -200,22 +201,25 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
   }
 
   private cargarApelaciones(codUnico: number) {
-    this.apelacionService.listarPorEstudiante(codUnico).subscribe({
-      next: (data) => {
-        this.apelaciones = data;
-        this.apelaciones.forEach((apelacion) => {
-          this.apelacionService.getMateriaByCodNotaYCodEstudiante(apelacion.codNotaFormacion, 31).subscribe({
-            next: (materia) => {
+    this.apelacionService.listarPorEstudiante(codUnico).pipe(
+      mergeMap((data) => {
+        const apelaciones$ = data.map((apelacion) =>
+          this.apelacionService.getMateriaByCodNotaYCodEstudiante(apelacion.codNotaFormacion, 31).pipe(
+            map((materia) => {
               apelacion.nombreMateria = materia.nombreMateria;
-            }
-          })
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.mostrarNorificaion(errorResponse.error.mensaje, TipoAlerta.ALERTA_ERROR);
-      }
+              return apelacion;
+            }),
+            catchError((error) => {
+              Notificacion.notificar(this.ns, error, TipoAlerta.ALERTA_ERROR );
+              return throwError(error);
+            })
+          )
+        );
+        return forkJoin(apelaciones$);
+      })
+    ).subscribe((apelaciones) => {
+      this.apelaciones = apelaciones;
     });
-
   }
 
   onApelarNota(nota: NotaMateriaPorEstudiante) {
