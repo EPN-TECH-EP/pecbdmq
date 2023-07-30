@@ -158,6 +158,7 @@ import { FichaPersonalComponent } from './componentes/user/ficha-personal/ficha-
 import { HistoricoModuloComponent } from './componentes/user/historico-modulo/historico-modulo.component';
 import { ModalSansionComponent } from './componentes/flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component';
 import { ComponenteNotaFormacion } from './componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component';
+import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
 
 @NgModule({
   declarations: [
@@ -241,7 +242,8 @@ import { ComponenteNotaFormacion } from './componentes/flujos/formacion/formacio
     FichaPersonalComponent,
     HistoricoModuloComponent,
     ModalSansionComponent,
-    ComponenteNotaFormacion
+    ComponenteNotaFormacion,
+    CatalogoCursoComponent
   ],
   imports: [
     BrowserModule,

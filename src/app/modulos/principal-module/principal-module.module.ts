@@ -76,6 +76,7 @@ import { HistoricoModuloComponent } from "../../componentes/user/historico-modul
 import {
   ComponenteNotaFormacion
 } from "../../componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component";
+import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
 
 const routes: Routes = [
   {
@@ -147,6 +148,7 @@ const routes: Routes = [
       { path: 'formacion/proceso', component: ProcesoFormacionComponent },
       { path: 'convocatoria', component: ConvocatoriaComponent },
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
+      { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent },
       { path: 'requisito', component: RequisitoComponent },
       { path: 'perfil', component: PerfilComponent },
