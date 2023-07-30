@@ -31,10 +31,20 @@
           <p class="card-text">Aquí puedes registrar las notas de esta materia.</p>
           <div class="d-flex justify-content-center">
             <button
-              class="btn btn-primary"
+              class="btn btn-primary mb-4"
               (click)="abrirRegistroDeNotas(materia)"
             >Registrar notas
             </button>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-center">
+              <button
+                class="btn btn-danger"
+                (click)="abrirApelaciones(materia)"
+              ><i class="fas fa-warning me-2"></i>
+                Apelaciones
+              </button>
+            </div>
           </div>
         </div>
       </div>

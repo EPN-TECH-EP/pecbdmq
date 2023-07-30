@@ -17,6 +17,8 @@ import { EMPTY, of, switchMap } from "rxjs";
 import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { FORMACION } from "../../../../../util/constantes/fomacion.const";
+import { ApelacionesService } from "../../../../../servicios/formacion/apelaciones.service";
+import { Instructor } from "../../../../../modelo/flujos/instructor";
 
 @Component({
   selector: 'app-registro-notas',
@@ -28,6 +30,7 @@ export class RegistroNotasComponent implements OnInit {
   estudiantesPorParalelo: {paralelo: Paralelo, estudiantes: NotaPorEstudiante[]}[]
   materias: MateriaPorInstructor[];
   materiaSeleccionada: MateriaPorInstructor;
+  instructor: Instructor;
 
   estaEditandoNota: boolean;
   estudianteNotaEditando: NotaPorEstudiante;
@@ -49,6 +52,7 @@ export class RegistroNotasComponent implements OnInit {
     private authService: AutenticacionService,
     private instructorService: InstructorService,
     private formacionService: FormacionService,
+    private apelaconService: ApelacionesService
   ) {
     this.estaEditandoNota = false;
     this.codEstudianteNotaEditando = 0;
@@ -88,6 +92,7 @@ export class RegistroNotasComponent implements OnInit {
           this.esEstadoRegistroNotas = true;
           return this.authService.user$.pipe(
             switchMap(user => this.instructorService.getInstructorById(user.codUsuario)),
+            tap(instructor => this.instructor = instructor),
             switchMap(instructor => this.registroNotasService.listarMateriasSiEsCoordinador(instructor.codInstructor)),
             tap(materias => {
               if (materias.length === 0) {
@@ -95,7 +100,7 @@ export class RegistroNotasComponent implements OnInit {
                 this.router.navigate(['/principal/formacion/menu-academia']).then();
               }
               this.materias = materias;
-            })
+            }),
           );
         }
 
@@ -202,5 +207,11 @@ export class RegistroNotasComponent implements OnInit {
       }
     });
 
+  }
+
+  abrirApelaciones(materia: MateriaPorInstructor) {
+    this.apelaconService.materia = materia;
+    this.apelaconService.instructor = this.instructor;
+    this.router.navigate(['/principal/formacion/academia/apelaciones']).then();
   }
 }

@@ -145,4 +145,8 @@ export class EstudianteService {
   crearEstudiantes() {
     return this.http.post(`${ this.host }/estudiante/crearEstudiantes`, {});
   }
+
+  esEstudiante(nombreUsuario: string) {
+    return this.http.post<Estudiante>(`${ this.host }/estudiante/esEstudiante/${ nombreUsuario }`, {});
+  }
 }

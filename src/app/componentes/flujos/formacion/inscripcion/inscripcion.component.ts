@@ -551,10 +551,12 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     } else {
       this.step = stepper.activeStepIndex;
       this.showLoading = true;
+      this.showLoadingFull = true;
     }
 
     // paso 1 ingreso de datos personales
     if (this.step == 0) {
+
       this.crearInscripcion();
 
       // crear inscripcion
@@ -575,12 +577,14 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         )
         .subscribe({
           next: (response: any) => {
+            this.showLoadingFull = false;
             this.showLoading = false;
             this.pasoActual = 1;
             stepper.next();
           },
           error: (errorResponse: any) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+            this.showLoadingFull = false;
             this.showLoading = false;
             stepper.setNewActiveStep(0);
           },
@@ -594,6 +598,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       if (ValidacionUtil.isNullOrEmpty(this.pinField.value)) {
         Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Debe ingresar el pin');
         this.showLoading = false;
+        this.showLoadingFull = false;
         stepper.setNewActiveStep(1);
         return;
       } else {
@@ -608,6 +613,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
             next: (response: any) => {
               this.idPostulante = response.mensaje;
               this.showLoading = false;
+              this.showLoadingFull = false;
               this.pasoActual = 2;
               this.finInscripcion = true;
               stepper.next();
@@ -615,6 +621,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
             error: (errorResponse: any) => {
               Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
               this.showLoading = false;
+              this.showLoadingFull = false;
               stepper.setNewActiveStep(1);
 
               this.pinIncorrecto = true;
