@@ -44,11 +44,12 @@ export class FormacionService {
     return this.http.get<ComponenteNota[]>(`${ this.host }/componenteNota/listarPA`);
   }
 
-  actualizarComponenteNota(data: {nombre: string, porcentajeComponenteNota: number, estado: string}, codComponenteNota: number) {
+  actualizarComponenteNota(data: {
+    nombre: string,
+    porcentajeComponenteNota: number,
+    estado: string
+  }, codComponenteNota: number) {
     return this.http.put(`${ this.host }/componenteNota/${ codComponenteNota }`, data);
-  }
-    cerrarProcesoFormacion() {
-    return this.http.get<Boolean>(`${ this.host }/periodoacademico/cerrarPeriodo`);
   }
 
   cerrarProcesoFormacion() {
