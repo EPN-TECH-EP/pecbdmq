@@ -163,6 +163,7 @@ import { PeriodoAcademicoComponent } from './componentes/flujos/formacion/period
 import { ApelacionesComponent } from './componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component';
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
+import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
 
 @NgModule({
   declarations: [
@@ -251,7 +252,8 @@ import { ListaCursosComponent } from './componentes/flujos/especializacion/util/
     PeriodoAcademicoComponent,
     ApelacionesComponent,
     ModalApelacionComponent,
-    ListaCursosComponent
+    ListaCursosComponent,
+    CatalogoCursoComponent,
   ],
   imports: [
     BrowserModule,

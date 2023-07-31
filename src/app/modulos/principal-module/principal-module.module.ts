@@ -85,6 +85,7 @@ import {
 import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
+import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
 
 const routes: Routes = [
   {
@@ -157,6 +158,7 @@ const routes: Routes = [
       { path: 'formacion/proceso', component: ProcesoFormacionComponent },
       { path: 'convocatoria', component: ConvocatoriaComponent },
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
+      { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent },
       { path: 'requisito', component: RequisitoComponent },
       { path: 'perfil', component: PerfilComponent },

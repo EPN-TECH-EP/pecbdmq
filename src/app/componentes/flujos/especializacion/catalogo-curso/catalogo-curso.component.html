@@ -1,0 +1,373 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+<div class="row">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Catálogo Cursos</p>
+  </div>
+</div>
+
+<!-- Contenido principal-->
+<div class="row justify-content">
+  <div class="col-12">
+    <!------------------------------
+        Tabla Tipos Curso 
+    ------------------------------->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <!-- Agregar -->
+          <button
+            class="btn btn-primary btn-sm mb-3"
+            [disabled]="editElementIndexN1 !== -1 || addRowN2 || editElementIndexN1 !== -1 || editElementIndexN2 !== -1"
+            (click)="agregarTipoCurso(); addRowN1 = true"
+          >
+            <i class="fa fa-plus"></i> &nbsp;Agregar
+          </button>
+        </div>
+        <div class="col-md-10">
+          Tipos Curso
+          <i
+            class="fa-solid fa-circle-info text-primary"
+            mdbTooltip="Tipos de Cursos de Especialización. Es obligatorio incluir el nombre."
+          ></i>
+        </div>
+      </div>
+    </div>
+    <div
+      class="datatable table-editor datatable-striped datatable-hover datatable-sm"
+    >
+      <form #form="ngForm" novalidate>
+        <table
+          class="table datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          #sortN1="mdbTableSort"
+          [sort]="sortN1"
+          [dataSource]="tipos"
+        >
+          <thead class="datatable-header">
+            <tr>
+              <th class="text-center">Sel.</th>
+              <th
+                *ngFor="let header of headersMapN1"
+                [mdbTableSortHeader]="header.name"
+                scope="col"
+              >
+                <b> {{ header.value | titlecase }}</b>
+              </th>
+              <th class="text-center"><b>Acciones</b></th>
+            </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+            <tr *ngIf="addRowN1">
+              <td></td>
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbInput="mdbInput"
+                    id="nombreTipoCurso"
+                    name="nombreTipoCurso"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="tipoCurso.nombreTipoCurso"
+                    required
+                  />
+                </mdb-form-control>
+              </td>
+
+              <td>
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  type="submit"
+                  (click)="registroTipoCurso(form.value)"
+                >
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button
+                  name="eliminar"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="addRowN1 = false"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngFor="let tipoCurso of table.data; let index = index" scope="row">
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="selection"
+                  [checked]="selectedRow == tipoCurso"
+                  (click)="onSelectRowTipoCurso(tipoCurso)"
+                  [disabled]="addRowN1 || addRowN2 || editElementIndexN1 !== -1 || editElementIndexN2 !== -1"
+                />
+              </td>
+
+              <td>
+                <ng-container *ngIf="editElementIndexN1 !== index">
+                  {{ tipoCurso.nombreTipoCurso }}
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="nombreTipoCurso"
+                      name="nombreTipoCurso"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="tipoCursoEditForm.nombreTipoCurso"
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+
+              <td class="text-center">
+                <ng-container
+                  *ngIf="
+                    editElementIndexN1 === -1 || editElementIndexN1 !== index
+                  "
+                >
+                  <button
+                    mdbTooltip="Editar registro"
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="editarTipoCurso(index)"
+                    [disabled]="
+                      (editElementIndexN1 !== -1 && editElementIndexN1 !== index) || addRowN1 || addRowN2 || editElementIndexN2 !== -1
+                    "
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="confirmaEliminarTipoCurso($event, tipoCurso.codTipoCurso)"
+                    [disabled]="
+                      (editElementIndexN1 !== -1 && editElementIndexN1 !== index) || addRowN1 || addRowN2 || editElementIndexN2 !== -1
+                    "
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editElementIndexN1 === index">
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    (click)="actualizarTipoCurso(tipoCurso, form.value)"
+                  >
+                    <i class="fa fa-check"></i> Guardar
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="editElementIndexN1 = -1"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <!------------------------------
+        Tabla Catálogos Curso 
+    ------------------------------->
+
+    <ng-container *ngIf="tipoCursoSeleccionado">
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-md-2">
+            <!-- Agregar -->
+            <button
+              class="btn btn-primary btn-sm mb-3"
+              [disabled]="editElementIndexN2 !== -1 || addRowN1 || editElementIndexN1 !== -1 || editElementIndexN2 !== -1"
+              (click)="agregarCatalogoCurso(); addRowN2 = true"
+            >
+              <i class="fa fa-plus"></i> &nbsp;Agregar
+            </button>
+          </div>
+          <div class="col-md-10">
+            Catálogos Cursos 
+            <span class="text-primary">{{ tipoCursoSeleccionado.nombreTipoCurso }} </span>
+            <i
+              class="fa-solid fa-circle-info text-primary"
+              mdbTooltip="Catálogos de cursos de especialización. Es obligatorio el nombre y descripción."
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div
+        class="datatable table-editor datatable-striped datatable-hover datatable-sm"
+      >
+        <form #form="ngForm" novalidate>
+          <table
+            class="table table-sm datatable-table"
+            mdbTable
+            mdbTableSort
+            #tableN2="mdbTable"
+            #sortN2="mdbTableSort"
+            [sort]="sortN2"
+            [dataSource]="catalogos"
+          >
+            <thead class="datatable-header">
+              <tr>
+                <th
+                  *ngFor="let header of headersMapN2"
+                  [mdbTableSortHeader]="header.name"
+                  scope="col"
+                >
+                  <b> {{ header.value | titlecase }}</b>
+                </th>
+                <th class="text-center"><b>Acciones</b></th>
+              </tr>
+            </thead>
+
+            <tbody class="datatable-body">
+              <tr *ngIf="addRowN2">
+                <td>
+                  <mdb-form-control>
+                    <input
+                      mdbInput="mdbInput"
+                      id="nombreCatalogoCurso"
+                      name="nombreCatalogoCurso"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="catalogoCurso.nombreCatalogoCurso"
+                      required
+                    />
+                  </mdb-form-control>
+                </td>
+
+                <td>
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      id="descripcionCatalogoCurso"
+                      name="descripcionCatalogoCurso"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="catalogoCurso.descripcionCatalogoCurso"
+                      #orden="ngModel"
+                    />
+                    <label mdbLabel class="form-label" for="formControlReadonly"
+                      >Ingrese </label
+                    >
+                  </mdb-form-control>
+                </td>
+
+                <td>
+                  <button
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    type="submit"
+                    (click)="registroCatalogoCurso(form.value)"
+                  >
+                    <i class="fa fa-check"></i> Agregar
+                  </button>
+                  <button
+                    name="eliminar"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="addRowN2 = false"
+                  >
+                    <i class="fa fa-ban"></i> Cancelar
+                  </button>
+                </td>
+              </tr>
+
+              <tr
+                *ngFor="let catalogoCurso of tableN2.data; let index = index"
+                scope="row"
+              >
+
+                <td>
+                  <ng-container *ngIf="editElementIndexN2 !== index">
+                    {{ catalogoCurso.nombreCatalogoCurso }}
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        id="nombreCatalogoCurso"
+                        name="nombreCatalogoCurso"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="catalogoCursoEditForm.nombreCatalogoCurso"
+                      />
+                    </mdb-form-control>
+                  </ng-container>
+                </td>
+
+                <td style="min-width: 40px; max-width: 50px">
+                  <ng-container *ngIf="editElementIndexN2 !== index">
+                    {{ catalogoCurso.descripcionCatalogoCurso }}
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        id="descripcionCatalogoCurso"
+                        name="descripcionCatalogoCurso"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="catalogoCursoEditForm.descripcionCatalogoCurso"
+                        #orden="ngModel"
+                      />
+                    </mdb-form-control>
+                  </ng-container>
+                </td>
+
+                <td class="text-center">
+                  <ng-container
+                    *ngIf="
+                      editElementIndexN2 === -1 || editElementIndexN2 !== index
+                    "
+                  >
+                    <button
+                      mdbTooltip="Editar registro"
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="editarCatalogoCurso(index)"
+                      [disabled]="
+                        (editElementIndexN2 !== -1 &&
+                        editElementIndexN2 !== index) || addRowN1 || addRowN2 || editElementIndexN1 !== -1
+                      "
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      mdbTooltip="Eliminar registro"
+                      class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="confirmaEliminarCatalogoCurso($event, catalogoCurso.codCatalogoCursos)"
+                      [disabled]="
+                        (editElementIndexN2 !== -1 &&
+                        editElementIndexN2 !== index) || addRowN1 || addRowN2 || editElementIndexN1 !== -1
+                      "
+                    >
+                      <i class="fa fa-trash-alt"></i>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="editElementIndexN2 === index">
+                    <button
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                      (click)="actualizarCatalogoCurso(catalogoCurso, form.value)"
+                    >
+                      <i class="fa fa-check"></i> Guardar
+                    </button>
+                    <button
+                      class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                      (click)="editElementIndexN2 = -1"
+                    >
+                      <i class="fa fa-ban"></i> Cancelar
+                    </button>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </ng-container>
+  </div>
+</div>
