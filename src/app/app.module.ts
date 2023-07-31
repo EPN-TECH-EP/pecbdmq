@@ -78,7 +78,6 @@ import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-pr
 import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { MenuEspecializacionComponent } from './componentes/flujos/especializacion/menu-especializacion/menu-especializacion.component';
 import { MenuProfesionalizacionComponent } from './componentes/flujos/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from './componentes/flujos/formacion/validacion/validacion.component';
@@ -163,6 +162,8 @@ import { PeriodoAcademicoComponent } from './componentes/flujos/formacion/period
 import { ApelacionesComponent } from './componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component';
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
+import { MenuAdministracionEspecializacionComponent } from './componentes/flujos/especializacion/menus/menu-administracion-especializacion/menu-administracion-especializacion.component';
+import { EstadoProcesoCursoComponent } from './componentes/flujos/especializacion/estado-proceso-curso/estado-proceso-curso.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +188,6 @@ import { ListaCursosComponent } from './componentes/flujos/especializacion/util/
     TipoBajaComponent,
     TipoFaltaComponent,
     PopconfirmComponent,
-    MenuEspecializacionComponent,
     MenuProfesionalizacionComponent,
     MenuFormacionComponent,
     MenuAdminComponent,
@@ -251,7 +251,9 @@ import { ListaCursosComponent } from './componentes/flujos/especializacion/util/
     PeriodoAcademicoComponent,
     ApelacionesComponent,
     ModalApelacionComponent,
-    ListaCursosComponent
+    ListaCursosComponent,
+    MenuAdministracionEspecializacionComponent,
+    EstadoProcesoCursoComponent
   ],
   imports: [
     BrowserModule,
