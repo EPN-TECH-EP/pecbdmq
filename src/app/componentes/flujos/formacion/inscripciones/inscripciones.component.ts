@@ -135,10 +135,12 @@ export class InscripcionesComponent implements OnInit {
   }
 
   asignar(idPostulante: number) {
+
     const usuarioAsignado: UsuarioAsignado = {
       codPostulante: idPostulante,
       codUsuario: this.usuario.codUsuario,
     }
+
     this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
       next: (data) => {
         console.log(data)

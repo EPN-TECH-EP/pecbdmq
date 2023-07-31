@@ -47,4 +47,6 @@ export class ValidacionInscripcionService {
   reasignarInscripcion(usuarioAsignado: UsuarioAsignado) {
     return this.http.put<InscripcionItem>(`${this.host}/inscripcionfor/postulanteAsignar`, usuarioAsignado);
   }
+
+
 }

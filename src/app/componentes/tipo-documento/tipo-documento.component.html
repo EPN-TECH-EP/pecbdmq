@@ -15,19 +15,19 @@
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
-    <mdb-form-control>
-      <input
-        mdbInput
-        type="text"
-        class="form-control"
-        id="search-input"
-        (keyup)="buscar($event)"
-      >
-      <label mdbLabel class="form-label" for="search-input">Buscar</label>
-    </mdb-form-control>
+<!--    <mdb-form-control>-->
+<!--      <input-->
+<!--        mdbInput-->
+<!--        type="text"-->
+<!--        class="form-control"-->
+<!--        id="search-input"-->
+<!--        (keyup)="buscar($event)"-->
+<!--      >-->
+<!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
+<!--    </mdb-form-control>-->
 
     <hr/>
-    <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+    <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -39,19 +39,19 @@
           [sort]="sort"
         >
           <thead class="datatable-header">
-            <tr>
+          <tr>
             <th
               *ngFor="let header of headers"
               scope="col"
-                class="fw-bold"
+              style="font-size: medium"
             >
               <b> {{ header | titlecase }}</b>
             </th>
-              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
           </tr>
           </thead>
           <tbody class="datatable-body">
-          <tr *ngIf="addRow" scope="row">
+          <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
                 <input
@@ -68,7 +68,7 @@
               </mdb-form-control>
             </td>
 
-            <td class="text-center">
+            <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
@@ -86,7 +86,7 @@
             </td>
           </tr>
 
-          <tr *ngFor="let tipoDocumento of table.data; let index = index" scope="row">
+          <tr *ngFor="let tipoDocumento of table.data; let index = index">
             <td style="min-width: 10px; max-width: 10px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ tipoDocumento.tipoDocumento }}
@@ -108,7 +108,7 @@
               </ng-container>
             </td>
 
-            <td align="center">
+            <td>
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

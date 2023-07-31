@@ -53,7 +53,7 @@ export class ValidacionComponent implements OnInit {
       Notificacion.notificar(this.mdbNotificationService, "No se ha seleccionado un postulante", TipoAlerta.ALERTA_ERROR);
       this.router.navigate(['principal/formacion/inscripciones']).then();
       return;
-        }
+    }
 
     this.validacionInscripcionService.getInscripcion(this.postulanteId).subscribe({
       next: inscripcion => {
@@ -62,7 +62,7 @@ export class ValidacionComponent implements OnInit {
 
         const observables = this.inscripcion?.documentos?.map(documento =>
           this.documentosService.visualizarArchivo(documento.codDocumento)
-          );
+        );
 
         if (observables && observables.length > 0) {
           forkJoin(observables).subscribe({
@@ -139,7 +139,7 @@ export class ValidacionComponent implements OnInit {
       error: err => {
         Notificacion.notificar(this.mdbNotificationService, 'No se pudo guardar los requisitos', TipoAlerta.ALERTA_ERROR);
         console.log("No se pudo guardar los requisitos", err);
-    }
+      }
     });
 
   }

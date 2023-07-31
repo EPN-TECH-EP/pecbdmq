@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, OnChanges {
 
 /*     router.events.subscribe((val) => {
       // see also
-      console.log(val) 
+      console.log(val)
       });*/
   }
 

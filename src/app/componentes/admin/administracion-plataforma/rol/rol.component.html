@@ -27,7 +27,7 @@
     </mdb-form-control>
 
 
-    <div class="datatable table-editor mt-1 datatable-striped datatable-hover datatable-sm">
+    <div class="datatable table-editor mt-4">
       <form #form="ngForm" novalidate>
         <table
           class="table table-sm datatable-table"
@@ -46,7 +46,7 @@
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th class="text-center fw-bold"><b>Acciones</b></th>
+            <th class="text-center"><b>Acciones</b></th>
           </tr>
           </thead>
 
@@ -83,7 +83,7 @@
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
-                (click)="crear(form.value);"
+                (click)="crear(form.value); addRow = false"
               >
                 <i class="fa fa-check"></i> Agregar
               </button>
@@ -150,7 +150,7 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                  (click)="confirmaEliminar($event,rol.codRol)"
+                  (click)="confirmarEliminar($event,rol.codRol)"
                   [disabled]="estaEditando"
                 >
                   <i class="fa fa-trash-alt"></i>

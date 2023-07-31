@@ -19,7 +19,7 @@ export class BotonVolverComponent {
     if (this.link !== '') {
       this.rotuer.navigate([this.link]);
     } else {
-    this.location.back();
+      this.location.back();
     }
   }
 

@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'cargaArchivo', component: CargaArchivoComponent },
   { path: 'inscripcion', component: InscripcionComponent },
+
   {
     path: 'principal',
     component: PrincipalComponent,

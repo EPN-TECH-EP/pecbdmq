@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class PruebaDetalleService {
-  
+
   private host = environment.apiUrl;
   private nombreServicio: string = 'pruebadetalle';
 
@@ -61,8 +61,8 @@ export class PruebaDetalleService {
     let response = this.http.get<string>(`${this.host}/${this.nombreServicio}/tipoResultado/${codPrueba}`, {responseType: 'text' as 'json'});
 
     return response;
-  } 
+  }
 
 
-    
+
 }

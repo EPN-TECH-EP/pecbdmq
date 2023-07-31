@@ -39,6 +39,7 @@ export class PeriodoAcademicoService {
   public getPeriodo(): Observable<Periodo[]> {
     return this.http.get<Periodo[]>(`${ this.host }/periodoacademico/listarActivos`);
   }
+
   public getEstadoPeriodoAcademico(): Observable<Periodo[]> {
     return this.http.get<Periodo[]>(`${ this.host }/periodoacademico/validaestado`);
   }
@@ -47,9 +48,9 @@ export class PeriodoAcademicoService {
     return this.http.post<Periodo>(`${ this.host }/periodoacademico/crear`, periodo, { observe: 'response' });
   }
 
-    public eliminarPeriodoAcademico(codigo: number): Observable<string> {
+  public eliminarPeriodoAcademico(codigo: number): Observable<string> {
     return this.http.delete<string>(`${ this.host }/periodoacademico/${ codigo }`);
-    }
+  }
 
   public actualizarPeriodoAcademico(periodo: Periodo, codigo: any): Observable<HttpResponse<Periodo>> {
     return this.http.put<Periodo>(`${ this.host }/periodoacademico/${ codigo }`, periodo, { observe: 'response' });

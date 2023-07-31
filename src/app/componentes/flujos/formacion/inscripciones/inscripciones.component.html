@@ -20,12 +20,14 @@
   </div>
 </ng-container>
 
+<!-- VALIDACIÓN -->
 <div class="container" *ngIf="inscripcionesLoaded && esEstadoValidacion">
   <div class="row m-3 text-center">
     <p class="fs-4 fw-bolder mb-3">
       Lista de Inscritos
     </p>
   </div>
+  <!-- Asignadas -->
   <div class="d-flex align-items-center gap-2">
     <h5>
       <span class="badge badge-success p-2 mt-2">
@@ -85,7 +87,7 @@
     </div>
     <hr class="hr">
   </section>
-
+  <!-- Pendientes -->
   <div class="d-flex align-items-center gap-2">
     <h5>
     <span class="badge badge-primary p-2 mt-2">

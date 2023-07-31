@@ -69,7 +69,7 @@ export class InscripcionService {
 
 //   pin: string,
 //  codigoDatoPersonal: number,
-//  codigoPostulante: number 
+//  codigoPostulante: number
 
   public validarPin(validaPin: ValidaPinInscripcionUtil): Observable<CustomHttpResponse> {
     return this.http.post<CustomHttpResponse>(

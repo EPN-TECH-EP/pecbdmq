@@ -12,11 +12,12 @@ export const environment = {
 
   // seguridades, gestión de timeout y reintentos
   APP_KEY: 'vQ9sdpG52a3Rm4LZYc8fDlNKjnWbHIXheU6YiAzS1VJ0o7OtTwgxqpukCFREz',
-  NUMERO_REINTENTOS : 0, 
-  DELAY_REINTENTOS : 15000, // 15 segundos
-  DURACION_TIMEOUT : 300000, // 300 segundos
+  NUMERO_REINTENTOS : 3,
+  DELAY_REINTENTOS : 2000, // 2 segundos
+  DURACION_TIMEOUT : 30000, // 30 segundos
 
   TIEMPO_ALERTA : 3000, // 3 segundos
+
 
 };
 

@@ -70,24 +70,24 @@ export class ReasignacionInscripcionComponent extends ComponenteBase implements 
 
         if (estado.mensaje === FORMACION.estadoValidacion) {
           this.esEstadoValidacion = true
-    this.validacionInscripcionService.listarInscripciones().subscribe({
-      next: inscripciones => {
-        this.inscripciones = inscripciones
-      },
-      error: err => {
-        Notificacion.notificar(this.mdbNotificationService, "No se pudo cargar las inscripciones", TipoAlerta.ALERTA_ERROR)
-        console.log(err)
-      }
-    });
-    this.delegadoService.listar().subscribe({
-      next: delegados => {
-        this.delegados = delegados
-      },
-      error: err => {
-        Notificacion.notificar(this.mdbNotificationService, "No se pudo cargar los delegados", TipoAlerta.ALERTA_ERROR)
-        console.log(err)
-      }
-    })
+          this.validacionInscripcionService.listarInscripciones().subscribe({
+            next: inscripciones => {
+              this.inscripciones = inscripciones
+            },
+            error: err => {
+              Notificacion.notificar(this.mdbNotificationService, "No se pudo cargar las inscripciones", TipoAlerta.ALERTA_ERROR)
+              console.log(err)
+            }
+          });
+          this.delegadoService.listar().subscribe({
+            next: delegados => {
+              this.delegados = delegados
+            },
+            error: err => {
+              Notificacion.notificar(this.mdbNotificationService, "No se pudo cargar los delegados", TipoAlerta.ALERTA_ERROR)
+              console.log(err)
+            }
+          })
         }
       }
     });

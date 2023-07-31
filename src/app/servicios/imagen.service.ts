@@ -20,29 +20,30 @@ export class ImagenService {
 
   cargar(formData: FormData): Observable<HttpResponse<any>> {
     return this.http.post<HttpResponse<any>>(
-        `${this.host}/datopersonal/guardarImagen`,
-        formData,
-        {
-          reportProgress: true,
-          observe: 'response',
+      `${this.host}/datopersonal/guardarImagen`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'response',
         headers: new HttpHeaders({Accept: 'application/json'}),
-        }
+      }
     ).pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      );
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
+      })
+    );
   }
+
 
   descargar(id: number) {
     return this.http.get(`${this.host}/link/${id}`, {
-        responseType: 'blob',
+      responseType: 'blob',
     }).pipe(
       catchError(error => {
-          console.error('Error al descargar archivo:', error);
-          return throwError(() => error);
-        })
-      );
+        console.error('Error al descargar archivo:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   visualizar(id: number): Observable<SafeResourceUrl> {
@@ -50,14 +51,14 @@ export class ImagenService {
       map(data => {
         const blob = new Blob([data], {type: 'application/pdf'});
         const archivo = new File([blob], 'imagen-perfil', {type: 'application/pdf'});
-          const url = URL.createObjectURL(archivo);
-          return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        })
+        const url = URL.createObjectURL(archivo);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      })
     ).pipe(
       catchError(error => {
-          console.error('Error al visualizar archivo:', error);
-          return throwError(() => error);
-        })
-      );
+        console.error('Error al visualizar archivo:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }

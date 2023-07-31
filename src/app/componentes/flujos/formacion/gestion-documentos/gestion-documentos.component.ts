@@ -141,12 +141,12 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
         Notificacion.notificar(this.notificationServiceLocal, 'Documento actualizado correctamente', TipoAlerta.ALERTA_OK);
         this.documentoForm.reset();
         this.estaEditando = false;
-        },
-        error: (error) => {
+      },
+      error: (error) => {
         console.log('Error al actualizar documento', error);
         Notificacion.notificar(this.notificationServiceLocal, 'Error al actualizar documento', TipoAlerta.ALERTA_ERROR);
-        }
-      });
+      }
+    });
 
   }
 

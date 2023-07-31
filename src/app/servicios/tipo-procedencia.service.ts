@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TipoProcedenciaService {
+
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -29,5 +30,5 @@ export class TipoProcedenciaService {
 
   eliminar(TipoProcedenciaId: any): Observable<string> {
     return this.http.delete<string>(`${ this.host }/tipoprocedencia/${ TipoProcedenciaId }`);
-    }
+  }
 }

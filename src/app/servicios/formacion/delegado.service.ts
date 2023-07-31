@@ -36,7 +36,6 @@ export class DelegadoService {
     return this.http.post<Delegado>(`${this.host}/delegado/crear`, delegado);
   }
 
-
   eliminar(id: number) {
     return this.http.delete(`${this.host}/delegado/${id}`);
   }

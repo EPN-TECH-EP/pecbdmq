@@ -24,33 +24,14 @@ export class FormacionService {
 
   constructor(private http: HttpClient) {}
 
-  // servicio de consulta de estado de período académico de formación
-  // GET periodoacademico/validaestado
-
-  /* RESPUESTA
-  {
-    "timeStamp": "18-05-2023 09:06:47",
-    "httpStatusCode": 200,
-    "httpStatus": "OK",
-    "razon": "OK",
-    "mensaje": "CONVOCATORIA"
-}   */
-
-  public getEstadoFormacion(): Observable<HttpResponse<CustomHttpResponse>> {
-    return this.http.get<CustomHttpResponse>(
-      `${this.host}/periodoacademico/validaestado`,
-      { observe: 'response' }
-    );
-  }
-  
-    getEstadosFormacion(): Observable<ModuloEstado[]> {
+  getEstadosFormacion(): Observable<ModuloEstado[]> {
     return this.http.get<ModuloEstado[]>(`${ this.host }/moduloestados/bymodulo?modulo=1`);
   }
 
   getEstadoActual(): Observable<CustomHttpResponse> {
     return this.http.get<CustomHttpResponse>(`${ this.host }/periodoacademico/validaestado`);
   }
-  
+
   actualizarEstadoActual(formData: FormData): Observable<CustomHttpResponse> {
     return this.http.post<CustomHttpResponse>(`${ this.host }/periodoacademico/actualizaEstado`, formData);
   }
@@ -63,10 +44,15 @@ export class FormacionService {
     return this.http.get<ComponenteNota[]>(`${ this.host }/componenteNota/listarPA`);
   }
 
-  actualizarComponenteNota(data: {nombre: string, porcentajeComponenteNota: number, estado: string}, codComponenteNota: number) {
+  actualizarComponenteNota(data: {
+    nombre: string,
+    porcentajeComponenteNota: number,
+    estado: string
+  }, codComponenteNota: number) {
     return this.http.put(`${ this.host }/componenteNota/${ codComponenteNota }`, data);
   }
-    cerrarProcesoFormacion() {
+
+  cerrarProcesoFormacion() {
     return this.http.get<Boolean>(`${ this.host }/periodoacademico/cerrarPeriodo`);
   }
 
