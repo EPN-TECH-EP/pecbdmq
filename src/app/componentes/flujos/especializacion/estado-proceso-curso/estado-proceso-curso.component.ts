@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
 import { concatMap, forkJoin } from "rxjs";
-import { map, mergeMap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-estado-proceso-curso',

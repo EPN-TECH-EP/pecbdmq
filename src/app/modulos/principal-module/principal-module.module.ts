@@ -138,6 +138,9 @@ import {
 import {
   EstadoProcesoCursoComponent
 } from "../../componentes/flujos/especializacion/estado-proceso-curso/estado-proceso-curso.component";
+import {
+  InscripcionEspecializacionComponent
+} from "../../componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
 
 const routes: Routes = [
   {

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { MateriaPorInstructor } from "../formacion/registro-notas.service";
-import { Instructor } from "../../modelo/flujos/instructor";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Curso, TipoCurso } from "../../modelo/flujos/especializacion/Curso";
 import { EstadoEspecializacion } from "../../modelo/flujos/especializacion/EstadoEspecializacion";
@@ -31,6 +29,14 @@ export class CursosService {
 
   listarEstadosPorCurso(codTipoCurso: number) {
     return this.http.get<EstadoEspecializacion[]>(`${ this.host }/cursoEstado/listarEstados/${ codTipoCurso }`);
+  }
+
+  obtenerEstadoActual(codCurso: number) {
+    return this.http.get<EstadoEspecializacion>(`${ this.host }/cursoEstado/activo/${ codCurso }`);
+  }
+
+  actualizarEstadoCurso(codCurso: number, codEstado: number) {
+    return this.http.put(`${ this.host }/cursoEstado/${ codCurso }/${ codEstado }`, {});
   }
 
 }
