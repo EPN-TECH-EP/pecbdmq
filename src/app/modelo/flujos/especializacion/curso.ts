@@ -17,5 +17,5 @@ export interface Curso {
   codUsuarioValidacion: number;
   nombre: string;
 }
-
+//
 
