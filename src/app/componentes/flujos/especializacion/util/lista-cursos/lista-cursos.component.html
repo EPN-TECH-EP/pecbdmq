@@ -1,0 +1,40 @@
+<ul class="list-group list-group-light">
+  <li
+    *ngFor="let curso of cursos"
+    class="list-group-item d-flex justify-content-between align-items-start pb-0">
+    <div [style.width.px]="250">
+      <div class="d-flex align-items-center ">
+        <div class="ms-3">
+          <p class="fw-bold mb-1 text-primary"> {{curso.tipoCurso.nombreCatalogoCurso | uppercase}}</p>
+          <div class="text-muted mb-0">
+            <p class="fw-medium mb-0">Creado por:
+              <span>{{curso?.creadoPor?.nombre}} {{curso?.creadoPor?.apellido}}</span>
+            </p>
+            <p class="fw-medium">Aprobado
+              por:<span>{{curso?.aprobadoPor?.nombre}} {{curso?.aprobadoPor?.apellido}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center" [style.width.px]="250">
+      <p class="fw-bold mb-1">Estado Actual</p>
+      <span class="badge rounded-pill py-2 px-4" [ngClass]="getEstadoClass(curso.estado)">{{ curso.estado }}</span>
+    </div>
+    <div class="flex-fill">
+      <div class="d-flex justify-content-center align-items-center ">
+        <button
+          [style.width.px]="20"
+          [style.height.px]="20"
+          mdbTooltip="Cambiar de estado"
+          class="btn btn-primary btn-floating bg-light text-black text-center"
+          mdbRipple
+          type="button"
+          (click)="elegirCurso(curso)"
+        >
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
+    </div>
+  </li>
+</ul>

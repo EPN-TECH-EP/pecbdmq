@@ -8,6 +8,9 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { Usuario } from './modelo/admin/usuario';
 import { CargaArchivoComponent } from './componentes/util/carga-archivo/carga-archivo.component';
 import { AutenticacionChildGuard } from './guard/autenticacion-child.guard';
+import {
+  InscripcionEspecializacionComponent
+} from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,6 +18,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'cargaArchivo', component: CargaArchivoComponent },
   { path: 'inscripcion', component: InscripcionComponent },
+  { path: 'especializacion/inscripcion', component: InscripcionEspecializacionComponent },
 
   {
     path: 'principal',

@@ -1,11 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CustomHttpResponse } from '../../modelo/admin/custom-http-response';
 import { ModuloEstado } from "../../modelo/admin/modulo-estado";
-import { Usuario } from "../../modelo/admin/usuario";
-import { tap } from "rxjs/operators";
 
 export interface ComponenteNota {
   codComponenteNota: number;

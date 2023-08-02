@@ -19,22 +19,18 @@ export class Submenu {
       const rutaActual = router.url;
 
       // todo eliminar log
-      //console.log(this.listaMenu);
-      //console.log('ruta actual: ' + rutaActual);
 
-      // busca el id del menú padre
+      // // busca el id del menú padre
       for (let index = 0; index < this.listaMenu.length; index++) {
         const menu = this.listaMenu[index];
 
-        if (rutaActual.includes(menu.ruta)) {
+        if (this.containsAllSubroutes(rutaActual, String(menu.ruta))) {
           this.idMenuPadre = menu.codMenu;
-
-          // todo eliminar log
-          //console.log('id menu padre: ' + this.idMenuPadre);
 
           break;
         }
       }
+
 
       // obtiene los menús hijos
       for (let index = 0; index < this.listaMenu.length; index++) {
@@ -42,8 +38,15 @@ export class Submenu {
 
         if (menu.menuPadre === this.idMenuPadre) {
           this.listaSubMenu.push(menu);
+          console.log('lista submenu', this.listaSubMenu);
         }
       }
     }
+  }
+
+
+  containsAllSubroutes(rutaActual, menuRuta) {
+    const regex = new RegExp(`(^|/)${menuRuta}(/|$)`);
+    return regex.test(rutaActual);
   }
 }

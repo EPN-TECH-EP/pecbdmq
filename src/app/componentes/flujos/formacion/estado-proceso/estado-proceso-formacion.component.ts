@@ -66,15 +66,12 @@ export class EstadoProcesoFormacionComponent implements OnInit {
       console.log(key + ': ' + value);
     });
 
-
     const estadoActualAnterior = this.estados.find((estadoItem) => estadoItem.estadoActual === 'actual');
     const estadoActualIndex = this.estados.findIndex((estadoItem) => estadoItem.estadoActual === 'actual');
     const estadoActual = this.estados.find((estadoItem) => estadoItem.codigo === codigo);
     console.log('estado actual: ', estadoActual);
 
-    if (estadoActual.estadoCatalogo === FORMACION.estadoCierre) {
-      this.esEstadoCierre = true;
-    }
+    this.esEstadoCierre = estadoActual.estadoCatalogo === FORMACION.estadoCierre;
 
     this.formacionService.actualizarEstadoActual(formData).subscribe(
       {
