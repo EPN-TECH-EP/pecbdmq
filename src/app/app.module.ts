@@ -164,6 +164,7 @@ import { ApelacionesComponent } from './componentes/flujos/formacion/formacion-a
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
 import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import { CrearCursoComponent } from './componentes/flujos/especializacion/crear-curso/crear-curso.component';
 
 @NgModule({
   declarations: [
@@ -254,6 +255,7 @@ import { CatalogoCursoComponent } from './componentes/flujos/especializacion/cat
     ModalApelacionComponent,
     ListaCursosComponent,
     CatalogoCursoComponent,
+    CrearCursoComponent,
   ],
   imports: [
     BrowserModule,
