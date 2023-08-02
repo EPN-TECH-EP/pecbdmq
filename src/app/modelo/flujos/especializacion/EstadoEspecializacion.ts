@@ -1,5 +1,8 @@
 export interface EstadoEspecializacion {
-  codigo: number
-  nombre: string
-  estado: string
+  codigo: number;
+  modulo: null;
+  estadoCatalogo: string;
+  orden: number;
+  estado: string;
+  estadoActual?: string;
 }
