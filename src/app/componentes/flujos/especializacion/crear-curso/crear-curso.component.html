@@ -279,7 +279,7 @@
               </button>
               <div
                 class="m-5"
-                *ngIf="requisitosConvocatoria.length === 0"
+                *ngIf="requisitosCurso.length === 0"
                 [hidden]="addRow"
               >
                 <h5 class="text-center">No hay requisitos</h5>
@@ -289,10 +289,10 @@
                 class="table datatable-table"
                 mdbTable
                 #table="mdbTable"
-                [dataSource]="requisitosConvocatoria"
+                [dataSource]="requisitosCurso"
               >
                 <thead
-                  *ngIf="requisitosConvocatoria.length > 0"
+                  *ngIf="requisitosCurso.length > 0"
                   class="datatable-header"
                 >
                 <tr>
@@ -311,7 +311,7 @@
                         name="nevoRequisito"
                       >
                         <mdb-option
-                          *ngFor="let requisito of requisitosLista"
+                          *ngFor="let requisito of listaRequisitos"
                           [value]="requisito"
                           class="text-wrap"
                         >
@@ -378,7 +378,7 @@
               id="next-step-3"
               class="btn btn-primary"
               (click)="stepper.next()"
-              [disabled]="requisitosConvocatoria.length === 0"
+              [disabled]="requisitosCurso.length === 0"
             >
               Siguiente
             </button>
@@ -766,7 +766,7 @@
               </button>
               <div
                 class="m-5"
-                *ngIf="requisitosConvocatoria.length === 0"
+                *ngIf="requisitosCurso.length === 0"
                 [hidden]="addRow"
               >
                 <h5 class="text-center">No hay requerimientos</h5>
@@ -776,10 +776,10 @@
                 class="table datatable-table"
                 mdbTable
                 #table="mdbTable"
-                [dataSource]="requisitosConvocatoria"
+                [dataSource]="requisitosCurso"
               >
                 <thead
-                  *ngIf="requisitosConvocatoria.length > 0"
+                  *ngIf="requisitosCurso.length > 0"
                   class="datatable-header"
                 >
                 <tr>
@@ -865,7 +865,7 @@
               id="next-step-3"
               class="btn btn-primary"
               (click)="stepper.next()"
-              [disabled]="requisitosConvocatoria.length === 0"
+              [disabled]="requisitosCurso.length === 0"
             >
               Siguiente
             </button>
@@ -901,7 +901,7 @@
             <h4 class="mb-3">Lista de requisitos</h4>
             <div>
               <ul class="list-group list-group-light list-group-small list-group-numbered">
-                <li *ngFor="let requisito of requisitosConvocatoria"
+                <li *ngFor="let requisito of requisitosCurso"
                     class="list-group-item">
                   {{ requisito.nombre }}
                 </li>
