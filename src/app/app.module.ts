@@ -163,6 +163,11 @@ import { PeriodoAcademicoComponent } from './componentes/flujos/formacion/period
 import { ApelacionesComponent } from './componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component';
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import { MenuValidacionRequisitosEspComponent } from './componentes/flujos/especializacion/menus/menu-validacion-requisitos-esp/menu-validacion-requisitos-esp.component';
+import { InscripcionesEspecializacionComponent } from './componentes/flujos/especializacion/inscripciones-especializacion/inscripciones-especializacion.component';
+import { ValidacionEspecializacionComponent } from './componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
+import { GestionDelegadosEspComponent } from './componentes/flujos/especializacion/gestion-delegados-esp/gestion-delegados-esp.component';
+import { ReasignacionInscripcionEspComponent } from './componentes/flujos/especializacion/reasignacion-inscripcion-esp/reasignacion-inscripcion-esp.component';
 
 @NgModule({
   declarations: [
@@ -251,7 +256,13 @@ import { CatalogoCursoComponent } from './componentes/flujos/especializacion/cat
     PeriodoAcademicoComponent,
     ApelacionesComponent,
     ModalApelacionComponent,
-    CatalogoCursoComponent
+    CatalogoCursoComponent,
+    MenuValidacionRequisitosEspComponent,
+    InscripcionesEspecializacionComponent,
+    ValidacionEspecializacionComponent,
+    GestionDelegadosEspComponent,
+    InscripcionesEspecializacionComponent,
+    ReasignacionInscripcionEspComponent,
   ],
   imports: [
     BrowserModule,

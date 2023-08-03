@@ -4,14 +4,14 @@
     <p class="col text-center fs-4 fw-bolder">
       Validación de la inscripción
       <span class="badge  badge-info">
-          {{ inscripcion?.idPostulante }}
+          {{ inscripcion?.codInscripcion }}
         </span>
     </p>
   </div>
   <div class="col">
     <p class="badge badge-success py-3 fs-6">
       <i class="fas fa-calendar-check me-3"></i>
-      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaPostulacion | date: 'dd/MM/yyyy' }}</p>
+      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaInscripcion | date: 'dd/MM/yyyy' }}</p>
   </div>
 
   <div class="row" *ngIf="loadInformation">
@@ -176,7 +176,7 @@
                   <textarea
                     mdbValidate
                     mdbInput
-                    formControlName="observaciones"
+                    formControlName="observacion"
                     type="text"
                     class="form-control">
                   </textarea>

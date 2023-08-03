@@ -4,11 +4,11 @@ import { Router } from "@angular/router";
 import { Submenu } from "../../../../../modelo/util/submenu";
 
 @Component({
-  selector: 'app-menu-validacion-requisitos',
-  templateUrl: './menu-validacion-requisitos.component.html',
-  styleUrls: ['./menu-validacion-requisitos.component.scss']
+  selector: 'app-menu-validacion-requisitos-esp',
+  templateUrl: './menu-validacion-requisitos-esp.component.html',
+  styleUrls: ['./menu-validacion-requisitos-esp.component.scss']
 })
-export class MenuValidacionRequisitosComponent extends Submenu implements OnInit {
+export class MenuValidacionRequisitosEspComponent extends Submenu implements OnInit {
 
   constructor(private menuService: MenuService, private router: Router) {
     super();

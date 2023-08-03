@@ -6,21 +6,23 @@ import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { InscripcionCompleta } from "../../../../modelo/flujos/formacion/inscripcion-completa";
 import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
 import { forkJoin } from "rxjs";
 import { SafeResourceUrl } from "@angular/platform-browser";
+import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
+import { InscripcionCompletaEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-completa-esp';
+import { ValidacionRequisitoEsp } from 'src/app/modelo/flujos/especializacion/requisito';
 
 @Component({
-  selector: 'app-validacion',
-  templateUrl: './validacion.component.html',
-  styleUrls: ['./validacion.component.scss']
+  selector: 'app-validacion-especializacion',
+  templateUrl: './validacion-especializacion.component.html',
+  styleUrls: ['./validacion-especializacion.component.scss']
 })
-export class ValidacionComponent implements OnInit {
+export class ValidacionEspecializacionComponent implements OnInit {
 
-  postulanteId: number | null;
-  inscripcion: InscripcionCompleta | null;
-  requisitos: ValidacionRequisito[];
+  inscripcionId: number | null;
+  inscripcion: InscripcionCompletaEsp | null;
+  requisitos: ValidacionRequisitoEsp[];
   formularioRequisitos: FormGroup[];
   loadInformation: boolean;
   headers: string[];
@@ -29,13 +31,13 @@ export class ValidacionComponent implements OnInit {
   urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
 
   constructor(
-    private validacionInscripcionService: ValidacionInscripcionService,
+    private inscripcionService: InscripcionService,
     private documentosService: DocumentosService,
     private mdbNotificationService: MdbNotificationService,
     private builder: FormBuilder,
     private router: Router
   ) {
-    this.postulanteId = null;
+    this.inscripcionId = null;
     this.inscripcion = null;
     this.requisitos = [];
     this.urlsArchivo = [];
@@ -48,14 +50,14 @@ export class ValidacionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.postulanteId = this.validacionInscripcionService.idPostulante;
-    if (!this.postulanteId) {
-      Notificacion.notificar(this.mdbNotificationService, "No se ha seleccionado un postulante", TipoAlerta.ALERTA_ERROR);
+    this.inscripcionId = this.inscripcionService.idInscripcion;
+    if (!this.inscripcionId) {
+      Notificacion.notificar(this.mdbNotificationService, "No se ha seleccionado una inscripción", TipoAlerta.ALERTA_ERROR);
       this.router.navigate(['principal/especializacion/inscripciones']).then();
       return;
-        }
+    }
 
-    this.validacionInscripcionService.getInscripcion(this.postulanteId).subscribe({
+    this.inscripcionService.getInscripcion(this.inscripcionId).subscribe({
       next: inscripcion => {
         console.log("inscripcion", inscripcion);
         this.inscripcion = inscripcion;
@@ -77,7 +79,7 @@ export class ValidacionComponent implements OnInit {
           });
         }
 
-        this.validacionInscripcionService.listarRequisitos(this.inscripcion?.codPostulante).subscribe({
+        this.inscripcionService.listarRequisitos(this.inscripcionId).subscribe({
           next: requisitos => {
             console.log("requisitos", requisitos);
             this.requisitos = requisitos;
@@ -89,11 +91,11 @@ export class ValidacionComponent implements OnInit {
       },
       error: err => {
         console.log("No se pudo obtener la inscripción", err);
-        this.router.navigate(['principal/formacion/inscripciones']);
+        this.router.navigate(['principal/especializacion/inscripciones']);
       }
     });
 
-    this.validacionInscripcionService.idPostulante = null;
+    this.inscripcionService.idInscripcion = null;
 
   }
 
@@ -101,14 +103,12 @@ export class ValidacionComponent implements OnInit {
 
     this.requisitos.forEach(requisito => {
       const requisitoFormGroup = this.builder.group({
-        codRequisitos: [requisito?.codRequisitos],
-        codValidacion: [requisito?.codValidacion],
-        codPostulante: [requisito?.codPostulante],
+        codValidacionRequisito: [requisito?.codValidacionRequisito],
+        codRequisito: [requisito?.codRequisito],
+        codInscripcion: [requisito?.codInscripcion],
         nombre: [requisito?.nombreRequisito],
         estado: [requisito?.estado],
-        observaciones: [requisito?.observaciones],
-        estadoMuestra: [requisito?.estadoMuestra],
-        observacionMuestra: [requisito?.observacionMuestra]
+        observacion: [requisito?.observacion],
       });
 
       this.formularioRequisitos.push(requisitoFormGroup);
@@ -126,15 +126,15 @@ export class ValidacionComponent implements OnInit {
     const hayRequisitosTocados = this.formularioRequisitos.some(requisito => requisito.touched);
     if (!hayRequisitosTocados) return;
     // solo guardo los requisitos que han sido tocados
-    const requisitos: ValidacionRequisito[] = this.formularioRequisitos.filter(
+    const requisitos: ValidacionRequisitoEsp[] = this.formularioRequisitos.filter(
       requisito => (requisito.touched && requisito.valid)
     ).map(requisito => requisito.value);
     console.log(requisitos);
 
-    this.validacionInscripcionService.guardarRequisitos(requisitos).subscribe({
+    this.inscripcionService.guardarRequisitos(requisitos).subscribe({
       next: () => {
         Notificacion.notificar(this.mdbNotificationService, 'Se guardaron los requisitos', TipoAlerta.ALERTA_INFO);
-        this.router.navigate(['principal/formacion/inscripciones']);
+        this.router.navigate(['principal/especializacion/inscripciones']);
       },
       error: err => {
         Notificacion.notificar(this.mdbNotificationService, 'No se pudo guardar los requisitos', TipoAlerta.ALERTA_ERROR);

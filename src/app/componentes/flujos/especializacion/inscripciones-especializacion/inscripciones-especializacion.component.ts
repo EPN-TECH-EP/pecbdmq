@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { InscripcionItem } from "../../../../modelo/flujos/formacion/inscripcion-item";
-import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
 import { DatoPersonalService } from "../../../../servicios/dato-personal.service";
 import { Router } from "@angular/router";
 import { Usuario } from "../../../../modelo/admin/usuario";
 import { AutenticacionService } from "../../../../servicios/autenticacion.service";
-import { UsuarioAsignado } from "../../../../modelo/flujos/formacion/asignar-usuario";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
@@ -16,17 +14,19 @@ import { of } from "rxjs";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
 import { MuestraService } from "../../../../servicios/formacion/muestra.service";
+import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
+import { InscripcionEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-esp';
 
 @Component({
-  selector: 'app-inscripciones',
-  templateUrl: './inscripciones.component.html',
-  styleUrls: ['./inscripciones.component.scss']
+  selector: 'app-inscripciones-especializacion',
+  templateUrl: './inscripciones-especializacion.component.html',
+  styleUrls: ['./inscripciones-especializacion.component.scss']
 })
-export class InscripcionesComponent implements OnInit {
+export class InscripcionesEspecializacionComponent implements OnInit {
 
   usuario: Usuario = null;
-  inscripciones: InscripcionItem[]
-  inscripcionesAsignadas: InscripcionItem[]
+  inscripciones: InscripcionEsp[]
+  inscripcionesAsignadas: InscripcionEsp[]
   inscripcionesLoaded = false
   esEstadoValidacion = false
   esEstadoMuestreo = false
@@ -39,7 +39,7 @@ export class InscripcionesComponent implements OnInit {
   ]
 
   constructor(
-    private validacionInscripcionService: ValidacionInscripcionService,
+    private inscripcionService: InscripcionService,
     private datoPersonalService: DatoPersonalService,
     private router: Router,
     private autenticacionService: AutenticacionService,
@@ -64,7 +64,7 @@ export class InscripcionesComponent implements OnInit {
       next: esDelegado => {
         if (!esDelegado) {
           Notificacion.notificar(this.mdbNotificationService, "No es usuario delegado", TipoAlerta.ALERTA_WARNING)
-          this.router.navigate(['/principal/formacion/menu-validacion'])
+          this.router.navigate(['/principal/especializacion/menu-validacion'])
           return
         }
       },
@@ -93,7 +93,7 @@ export class InscripcionesComponent implements OnInit {
 
           this.esEstadoValidacion = true
 
-          this.validacionInscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
+          this.inscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
             next: inscripciones => {
               console.log(inscripciones)
               this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
@@ -104,49 +104,26 @@ export class InscripcionesComponent implements OnInit {
           });
         }
 
-        if (estado.mensaje === FORMACION.estadoMuestreo) {
-
-          this.esEstadoMuestreo = true
-
-          this.muestraService.listarByIdUsuario(this.usuario.codUsuario).subscribe({
-            next: muestras => {
-              console.log(muestras)
-              this.inscripcionesAsignadas = muestras.filter(inscripcion => inscripcion.estado === 'ASIGNADO MUESTRA');
-              this.inscripciones = muestras.filter(inscripcion => inscripcion.estado === 'MUESTRA');
-              this.inscripcionesLoaded = true
-            }
-          })
-        }
       }
     })
 
 
   }
 
-  validar(inscripcion: InscripcionItem) {
-    this.validacionInscripcionService.idPostulante = inscripcion.codPostulante;
+  validar(inscripcion: InscripcionEsp) {
+    this.inscripcionService.idInscripcion = inscripcion.codInscripcion;
     this.router.navigate(['principal/especializacion/validacion']).then()
   }
 
-  validarMuestra(inscripcion: InscripcionItem) {
-    this.muestraService.idMuestra = inscripcion.codPostulante;
-    console.log(this,this.muestraService.idMuestra)
-    this.router.navigate(['principal/especializacion/muestra']).then()
-  }
-
-  asignar(idPostulante: number) {
-    const usuarioAsignado: UsuarioAsignado = {
-      codPostulante: idPostulante,
-      codUsuario: this.usuario.codUsuario,
-    }
-    this.validacionInscripcionService.asignarValidador(usuarioAsignado).subscribe({
+  asignar(idInscripcion: number) {
+    this.inscripcionService.asignarValidador(idInscripcion, this.usuario.codUsuario).subscribe({
       next: (data) => {
         console.log(data)
-        const index = this.inscripciones.findIndex(inscripcion => inscripcion.codPostulante === idPostulante);
+        const index = this.inscripciones.findIndex(inscripcion => inscripcion.codInscripcion === idInscripcion);
         if (index !== -1) {
           const inscripcion = this.inscripciones.splice(index, 1)[0];
           this.inscripcionesAsignadas.push(inscripcion);
-          this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
+          this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codInscripcion !== idInscripcion)
         }
         Notificacion.notificar(this.mdbNotificationService, "Usuario asignado correctamente", TipoAlerta.ALERTA_OK)
       },
@@ -155,7 +132,7 @@ export class InscripcionesComponent implements OnInit {
           Notificacion.notificar(this.mdbNotificationService, "Error al asignar usuario", TipoAlerta.ALERTA_ERROR)
         }
         Notificacion.notificar(this.mdbNotificationService, "El usuario ya se encuentra asignado", TipoAlerta.ALERTA_WARNING)
-        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codPostulante !== idPostulante)
+        this.inscripciones = this.inscripciones.filter(inscripcion => inscripcion.codInscripcion !== idInscripcion)
         console.error(err)
       }
     })
