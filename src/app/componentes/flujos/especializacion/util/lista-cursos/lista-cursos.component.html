@@ -5,7 +5,7 @@
     <div [style.width.px]="250">
       <div class="d-flex align-items-center ">
         <div class="ms-3">
-          <p class="fw-bold mb-1 text-primary"> {{curso.tipoCurso.nombreCatalogoCurso | uppercase}}</p>
+          <p class="fw-bold mb-1 text-primary"> {{curso.nombre | uppercase}}</p>
           <div class="text-muted mb-0">
             <p class="fw-medium mb-0">Creado por:
               <span>{{curso?.creadoPor?.nombre}} {{curso?.creadoPor?.apellido}}</span>
@@ -22,18 +22,18 @@
       <span class="badge rounded-pill py-2 px-4" [ngClass]="getEstadoClass(curso.estado)">{{ curso.estado }}</span>
     </div>
     <div class="flex-fill">
-      <div class="d-flex justify-content-center align-items-center ">
-        <button
-          [style.width.px]="20"
-          [style.height.px]="20"
-          mdbTooltip="Cambiar de estado"
-          class="btn btn-primary btn-floating bg-light text-black text-center"
-          mdbRipple
-          type="button"
-          (click)="elegirCurso(curso)"
-        >
-          <i class="fa fa-edit"></i>
-        </button>
+      <div class="d-flex justify-content-center align-items-center">
+          <button
+            [style.width.px]="20"
+            [style.height.px]="20"
+            mdbTooltip="Seleccionar Curso"
+            class="btn btn-floating bg-light text-black d-flex justify-content-center align-items-center mt-3"
+            mdbRipple
+            type="button"
+            (click)="elegirCurso(curso)"
+          >
+            <i class="fas fa-arrow-pointer p-0 m-0"></i>
+          </button>
       </div>
     </div>
   </li>

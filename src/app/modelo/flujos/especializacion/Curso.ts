@@ -16,6 +16,7 @@ export interface Curso {
   emailNotificacion: string
   tieneModulos: any
 
+  nombre?: string
   documentos?: any[]
   requisitos?: any[]
   tipoCurso?: TipoCurso

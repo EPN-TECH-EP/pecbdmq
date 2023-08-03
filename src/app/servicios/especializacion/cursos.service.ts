@@ -40,4 +40,11 @@ export class CursosService {
     return this.http.get(`${ this.host }/cursoEstado/actualizarEstado/${ codCurso }/${ codEstado }`);
   }
 
+  obtenerCurso(codigo: number) {
+    return this.http.get<Curso>(`${ this.host }/curso/${ codigo }`);
+  }
+
+  aprobar(codCursoEspecializacion: number) {
+    return this.http.get(`${ this.host }/curso/updateEstadoAprobadoValidado `);
+  }
 }
