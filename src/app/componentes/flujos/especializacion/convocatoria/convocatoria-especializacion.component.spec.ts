@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConvocatoriaComponent } from './convocatoria.component';
+import { ConvocatoriaEspecializacionComponent } from './convocatoria-especializacion.component';
 
 describe('ConvocatoriaComponent', () => {
-  let component: ConvocatoriaComponent;
-  let fixture: ComponentFixture<ConvocatoriaComponent>;
+  let component: ConvocatoriaEspecializacionComponent;
+  let fixture: ComponentFixture<ConvocatoriaEspecializacionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConvocatoriaComponent ]
+      declarations: [ ConvocatoriaEspecializacionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConvocatoriaComponent);
+    fixture = TestBed.createComponent(ConvocatoriaEspecializacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

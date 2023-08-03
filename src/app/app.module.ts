@@ -227,8 +227,13 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
-import { ValidacionCursoComponent } from './componentes/flujos/especializacion/validacion-curso/validacion-curso.component';
+import {
+  ValidacionCursoComponent
+} from './componentes/flujos/especializacion/validacion-curso/validacion-curso.component';
 import { BooleanPipe } from './pipes/boolean.pipe';
+import {
+  ConvocatoriaEspecializacionComponent
+} from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
 
 @NgModule({
   declarations: [
@@ -321,7 +326,8 @@ import { BooleanPipe } from './pipes/boolean.pipe';
     EstadoProcesoCursoComponent,
     InscripcionEspecializacionComponent,
     ValidacionCursoComponent,
-    BooleanPipe
+    BooleanPipe,
+    ConvocatoriaEspecializacionComponent
   ],
   imports: [
     BrowserModule,
