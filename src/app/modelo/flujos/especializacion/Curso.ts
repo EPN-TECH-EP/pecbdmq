@@ -20,6 +20,7 @@ export interface Curso {
   codUsuarioCreacion?: number
   codUsuarioValidacion?: number
   nombre?: string
+  observacionesValidacion?: string
 
   documentos?: any[]
   requisitos?: any[]
