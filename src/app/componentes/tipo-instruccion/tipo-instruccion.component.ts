@@ -175,7 +175,7 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizar(tipoInstruccion,tipoInstruccion.codigoTipoInstruccion).subscribe({

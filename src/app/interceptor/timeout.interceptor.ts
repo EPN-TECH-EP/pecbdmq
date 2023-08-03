@@ -10,12 +10,19 @@ import { Observable, throwError, timer } from 'rxjs';
 import { catchError, mergeMap, retryWhen, timeout } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
+import { Notificacion } from '../util/notificacion';
+import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
+import { AlertaComponent } from '../componentes/util/alerta/alerta.component';
 
 @Injectable()
 export class TimeoutInterceptor implements HttpInterceptor {
   private readonly defaultTimeout = environment.DURACION_TIMEOUT; // 30 segundos
 
-  constructor() {}
+  notificationRefLocal: MdbNotificationRef<AlertaComponent> | null = null;
+
+  constructor(
+    private notificationServiceLocal: MdbNotificationService,
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -31,11 +38,16 @@ export class TimeoutInterceptor implements HttpInterceptor {
               this.isRetryableError(error)
             ) {
               console.log('Reintentando...');
+
+              Notificacion.notificacion(this.notificationRefLocal, this.notificationServiceLocal, null, 'Se perdió la comunicación con el servidor. Reintentando...');
+
               // Retry the request after a delay
               return timer(environment.DELAY_REINTENTOS);
             }
 
             console.log('Fin reintentos, sale con error');
+
+            Notificacion.notificacion(this.notificationRefLocal, this.notificationServiceLocal, null, 'Se perdió la comunicación con el servidor. Contacte al administrador.');
 
             // No more retries or non-retryable error, propagate the error
             return throwError(error);

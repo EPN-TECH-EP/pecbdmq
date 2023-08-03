@@ -60,8 +60,8 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido
 
     this.listaMenuInicial = this.menuService.getMenu();
-    //console.log(this.listaMenu);
-    //console.log(this.menuService.getMenu());
+    console.log(this.listaMenu);
+    console.log(this.menuService.getMenu());
 
     if (
       this.listaMenuInicial === undefined ||

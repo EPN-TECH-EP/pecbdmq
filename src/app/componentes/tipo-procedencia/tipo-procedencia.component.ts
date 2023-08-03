@@ -164,9 +164,9 @@ validacionUtil = ValidacionUtil;
   //actualizar
   public actualizar(tipoProcedencia: TipoProcedencia, formValue): void {
 
-    
+
     tipoProcedencia = {...tipoProcedencia, nombre: formValue.nombre, estado: 'ACTIVO'};
-    
+
     if (formValue.nombre === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;

@@ -92,16 +92,16 @@ export class DatoPersonalComponent implements OnInit {
       error: (error) => {console.log(error)}
     });
     if (this.datosPersonales.codProvinciaNacimiento) {
-    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.codProvinciaNacimiento).subscribe({
-      next: (cantones) => {this.cantonesNacimiento = cantones},
-      error: (error) => {console.log(error)}
-    });
+      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.codProvinciaNacimiento).subscribe({
+        next: (cantones) => {this.cantonesNacimiento = cantones},
+        error: (error) => {console.log(error)}
+      });
     }
     if (this.datosPersonales.codProvinciaResidencia) {
-    this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.codProvinciaResidencia).subscribe({
-      next: (cantones) => {this.cantonesResidencia = cantones},
-      error: (error) => {console.log(error)}
-    });
+      this.provinciaService.getCantonesPorProvincia(this.datosPersonales?.codProvinciaResidencia).subscribe({
+        next: (cantones) => {this.cantonesResidencia = cantones},
+        error: (error) => {console.log(error)}
+      });
     }
     this.gradoService.getGrados().subscribe({
       next: (grados) => {this.grados = grados},
@@ -123,38 +123,39 @@ export class DatoPersonalComponent implements OnInit {
     }
     this.construirFormulario();
     this.matchDatosPersonales();
+
   }
 
   private construirFormulario() {
     this.formularioDatoPersonal = this.builder.group({
 
-      nombre:                     ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
-      apellido:                   ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      nombre: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
+      apellido: ['', [Validators.required, Validators.minLength(3), MyValidators.onlyLetters()]],
       correoPersonal: ['', [Validators.required, Validators.email], MyValidators.emailExist(this.usuarioService)],
-      correoInstitucional:        ['', [Validators.email]],
-      fechaNacimiento:            ['', [Validators.required]],
-      telfConvencional:           ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
-      telfCelular:                ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
-      tipoSangre:                 [''],
-      sexo:                     ['', [Validators.required]],
-      tipoNacionalidad:           ['', [Validators.required]],
-      provinciaNacimiento:        ['', [Validators.required]],
+      correoInstitucional: ['', [Validators.email]],
+      fechaNacimiento: ['', [Validators.required]],
+      telfConvencional: ['', [Validators.minLength(9), Validators.maxLength(9), MyValidators.onlyNumbers()]],
+      telfCelular: ['', [Validators.minLength(10), Validators.maxLength(10), MyValidators.onlyNumbers()]],
+      tipoSangre: [''],
+      sexo: ['', [Validators.required]],
+      tipoNacionalidad: ['', [Validators.required]],
+      provinciaNacimiento: ['', [Validators.required]],
       cantonNacimiento: [{ value: '', disabled: true }, [Validators.required]],
-      provinciaResidencia:        [''],
+      provinciaResidencia: [''],
       cantonResidencia: [{ value: '', disabled: true }],
-      callePrincipalResidencia:   [''],
-      calleSecundariaResidencia:  [''],
-      numeroCasa:                 [''],
-      colegio:                    [''],
-      nombreTituloSegundoNivel:               [''],
-      paisTituloSegundoNivel:                 [''],
-      ciudadTituloSegundoNivel:               [''],
+      callePrincipalResidencia: [''],
+      calleSecundariaResidencia: [''],
+      numeroCasa: [''],
+      colegio: [''],
+      nombreTituloSegundoNivel: [''],
+      paisTituloSegundoNivel: [''],
+      ciudadTituloSegundoNivel: [''],
       meritoDeportivoDescripcion: [''],
       meritoAcademicoDescripcion: [''],
-      unidadGestion:              [''],
-      grado:                      [''],
+      unidadGestion: [''],
+      grado: [''],
       rango: [{ value: '', disabled: true }],
-      cargo:                      [''],
+      cargo: [''],
     }, { updateOn: 'change' });
   }
 
@@ -162,33 +163,33 @@ export class DatoPersonalComponent implements OnInit {
     this.tieneMeritoAcademico = this.datosPersonales.tieneMeritoAcademico;
     this.tieneMeritoDeportivo = this.datosPersonales.tieneMeritoDeportivo;
     this.formularioDatoPersonal.patchValue({
-      nombre:                     this.datosPersonales.nombre,
-      apellido:                   this.datosPersonales.apellido,
-      correoPersonal:             this.datosPersonales.correoPersonal,
-      correoInstitucional:        this.datosPersonales.correoInstitucional,
-      fechaNacimiento:            this.datosPersonales.fechaNacimiento,
-      telfConvencional:           this.datosPersonales.numTelefConvencional,
-      telfCelular:                this.datosPersonales.numTelefCelular,
-      tipoSangre:                 this.datosPersonales.tipoSangre,
-      sexo:                     this.datosPersonales.sexo,
-      tipoNacionalidad:           this.datosPersonales.tipoNacionalidad,
-      provinciaNacimiento:        this.datosPersonales.codProvinciaNacimiento,
-      cantonNacimiento:           this.datosPersonales.codCantonNacimiento,
-      provinciaResidencia:        this.datosPersonales.codProvinciaResidencia,
-      cantonResidencia:           this.datosPersonales.codCantonResidencia,
-      callePrincipalResidencia:   this.datosPersonales.callePrincipalResidencia,
-      calleSecundariaResidencia:  this.datosPersonales.calleSecundariaResidencia,
-      numeroCasa:                 this.datosPersonales.numeroCasa,
-      colegio:                    this.datosPersonales.colegio,
-      nombreTituloSegundoNivel:               this.datosPersonales.nombreTituloSegundoNivel,
-      paisTituloSegundoNivel:                 this.datosPersonales.paisTituloSegundoNivel,
-      ciudadTituloSegundoNivel:               this.datosPersonales.ciudadTituloSegundoNivel,
+      nombre: this.datosPersonales.nombre,
+      apellido: this.datosPersonales.apellido,
+      correoPersonal: this.datosPersonales.correoPersonal,
+      correoInstitucional: this.datosPersonales.correoInstitucional,
+      fechaNacimiento: this.datosPersonales.fechaNacimiento,
+      telfConvencional: this.datosPersonales.numTelefConvencional,
+      telfCelular: this.datosPersonales.numTelefCelular,
+      tipoSangre: this.datosPersonales.tipoSangre,
+      sexo: this.datosPersonales.sexo,
+      tipoNacionalidad: this.datosPersonales.tipoNacionalidad,
+      provinciaNacimiento: this.datosPersonales.codProvinciaNacimiento,
+      cantonNacimiento: this.datosPersonales.codCantonNacimiento,
+      provinciaResidencia: this.datosPersonales.codProvinciaResidencia,
+      cantonResidencia: this.datosPersonales.codCantonResidencia,
+      callePrincipalResidencia: this.datosPersonales.callePrincipalResidencia,
+      calleSecundariaResidencia: this.datosPersonales.calleSecundariaResidencia,
+      numeroCasa: this.datosPersonales.numeroCasa,
+      colegio: this.datosPersonales.colegio,
+      nombreTituloSegundoNivel: this.datosPersonales.nombreTituloSegundoNivel,
+      paisTituloSegundoNivel: this.datosPersonales.paisTituloSegundoNivel,
+      ciudadTituloSegundoNivel: this.datosPersonales.ciudadTituloSegundoNivel,
       meritoDeportivoDescripcion: this.datosPersonales.meritoDeportivoDescripcion,
       meritoAcademicoDescripcion: this.datosPersonales.meritoAcademicoDescripcion,
-      unidadGestion:              this.datosPersonales.codUnidadGestion,
-      grado:                      this.datosPersonales.codGrado,
-      rango:                      this.datosPersonales.codRango,
-      cargo:                      this.datosPersonales.codCargo,
+      unidadGestion: this.datosPersonales.codUnidadGestion,
+      grado: this.datosPersonales.codGrado,
+      rango: this.datosPersonales.codRango,
+      cargo: this.datosPersonales.codCargo,
     });
     this.datosPersonales.codCantonNacimiento === null ? this.cantonNacimientoField.disable() : this.cantonNacimientoField.enable();
     this.datosPersonales.codCantonResidencia === null ? this.cantonResidenciaField.disable() : this.cantonResidenciaField.enable();
@@ -375,7 +376,6 @@ export class DatoPersonalComponent implements OnInit {
 
     this.provinciaNacimientoField.setValue('');
     this.cantonNacimientoField.setValue('');
-
   }
 
   onChangeCantonNacimiento(event: any) {
@@ -385,7 +385,7 @@ export class DatoPersonalComponent implements OnInit {
         this.formularioDatoPersonal.get('cantonNacimiento')?.enable();
         this.cantonesNacimiento = cantones;
         this.cantonNacimientoField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }
@@ -398,7 +398,7 @@ export class DatoPersonalComponent implements OnInit {
         this.cantonesResidencia = cantones;
         this.cantonResidenciaField.setValidators([Validators.required]);
         this.cantonResidenciaField.setValue('');
-        },
+      },
       error: (err) => {console.log(err)}
     });
   }

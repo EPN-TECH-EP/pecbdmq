@@ -16,7 +16,7 @@ export class ComponenteBase implements OnDestroy {
   protected subscriptions: Subscription[] = [];
   protected notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
   public showLoading: boolean = false;
-  
+
   paginaActual: number = 0;
   entradasPorPagina: number = 0;
   indiceAuxRegistro: number = 0;
@@ -33,7 +33,7 @@ export class ComponenteBase implements OnDestroy {
   validacionUtil = ValidacionUtil;
 
   constructor(notificationService: MdbNotificationService,
-    popconfirmService: MdbPopconfirmService) {    
+    popconfirmService: MdbPopconfirmService) {
     this.notificationService = notificationService;
     this.popconfirmService = popconfirmService;
     this.showLoading = false;
@@ -60,7 +60,7 @@ export class ComponenteBase implements OnDestroy {
   // Funcionalidad de confirmación
 
   openPopconfirm(event: Event, confirmCallback: () => void, cancelCallback?: () => void) {
-    
+
     const target = event.target as HTMLElement;
 
     this.popconfirmRef = this.popconfirmService.open(
@@ -95,6 +95,6 @@ export class ComponenteBase implements OnDestroy {
     if (this.paginaActual > 0) {
       this.indiceAuxRegistro = this.paginaActual * this.entradasPorPagina;
     }
-  } 
+  }
 
 }

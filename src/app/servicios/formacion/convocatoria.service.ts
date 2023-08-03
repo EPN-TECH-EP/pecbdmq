@@ -23,13 +23,13 @@ export class ConvocatoriaService {
   crear(formData: FormData): Observable<CustomHttpResponse> {
     return this.http.post<CustomHttpResponse>(`${this.host}/convocatoriafor/crear`, formData);
   }
-  
+
   getConvocatoriaActiva() {
     return this.http.get(`${this.host}/convocatoria/activa`);
-    }
-    
-      actualizar(formData: FormData) {
+  }
+
+  actualizar(formData: FormData) {
     return this.http.post(`${this.host}/convocatoriafor/actualizar`, formData);
   }
-    
+
 }

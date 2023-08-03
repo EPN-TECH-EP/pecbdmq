@@ -27,8 +27,6 @@ export interface ApelacionResponse {
 }
 
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -59,13 +57,11 @@ export class ApelacionesService {
   }
 
   listarPorMateria(codMateria: number) {
-    // return this.http.get<ApelacionResponse[]>(`${ this.host }/apelacionesPorMateria/${ codMateria }`);
-    return this.http.get<ApelacionResponse[]>(`${ this.host }/apelacion/listarByEstudiante/${ codMateria }`);
-
+    return this.http.get<ApelacionResponse[]>(`${ this.host }/apelacion/apelacionesPorMateria/${ codMateria }`);
   }
 
   actualizar(apelacion: ApelacionResponse) {
-    return this.http.put(`${ this.host }/apelacion/${apelacion.codApelacion}`, apelacion);
+    return this.http.put(`${ this.host }/apelacion/${ apelacion.codApelacion }`, apelacion);
 
   }
 }

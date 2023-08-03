@@ -25,7 +25,7 @@ export class AutenticacionService {
   constructor(private http: HttpClient, private lds: LocalDataService) {
   }
 
-    public login(usuario: Usuario): Observable<HttpResponse<Usuario>> {
+  public login(usuario: Usuario): Observable<HttpResponse<Usuario>> {
     return this.http.post<Usuario>(`${this.host}/usuario/login`, usuario, {observe: 'response'})
   }
 
@@ -89,7 +89,6 @@ export class AutenticacionService {
       this.logOut();
       respuesta = false;
     }
-
 
 
     return respuesta;

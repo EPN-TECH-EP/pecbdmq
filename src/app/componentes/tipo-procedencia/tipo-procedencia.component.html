@@ -31,7 +31,7 @@
 
     <hr/>
 
-    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <div class="datatable table-editor mt-4">
       <form #form="ngForm">
         <table
           class="table table-sm datatable-table"
@@ -45,11 +45,11 @@
             <th
               *ngFor="let header of headers"
               scope="col"
-              class="fw-bold"
+              style="font-size: medium"
             >
               <b> {{ header | titlecase }}</b>
             </th>
-            <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            <th scope="col" style="font-size: medium"><b>Acciones</b></th>
           </tr>
           </thead>
           <tbody class="datatable-body">
@@ -104,13 +104,13 @@
                     [(ngModel)]="tipoProcedenciaEditForm.nombre"
                     #nombre="ngModel"
                     required
-                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"                    
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
                   />
                 </mdb-form-control>
               </ng-container>
             </td>
 
-            <td class="text-center">
+            <td>
               <ng-container
                 *ngIf="editElementIndex === -1 || editElementIndex !== index"
               >

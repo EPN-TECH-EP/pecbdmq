@@ -44,10 +44,6 @@ export class UsuariosComponent implements OnInit {
     { key: 'nombre', label: 'Nombres' },
     { key: 'apellido', label: 'Apellidos' },
     { key: 'correo_personal', label: 'Correo personal' },
-    { key: 'fechaRegistro', label: 'Fecha de registro' },
-    { key: 'fechaUltimoLogin', label: 'Fecha último ingreso' },
-    { key: 'active', label: 'Activo?' },
-    { key: 'notLocked', label: 'Habilitado?' }
   ]
   mensajeConfirmacion: string;
   currentRoute: string;
@@ -325,9 +321,9 @@ export class UsuariosComponent implements OnInit {
           this.usuarios.push(usuario);
           this.usuarios = [...this.usuarios];
           Notificacion.notificar(this.mdbNotificationService, 'Usuario creado correctamente', TipoAlerta.ALERTA_OK);
-          }
-        },
-      );
+        }
+      },
+    );
   }
 
 }

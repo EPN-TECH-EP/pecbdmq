@@ -3,20 +3,15 @@ import {
   MdbNotificationRef,
   MdbNotificationService,
 } from 'mdb-angular-ui-kit/notification';
-import { Rol } from 'src/app/modelo/admin/rol';
-import { AlertaComponent } from '../../../util/alerta/alerta.component';
-import { Subscription } from 'rxjs';
-import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { RolService } from 'src/app/servicios/rol.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from '../../../../enum/tipo-alerta';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
-import { RolUsuarioService } from 'src/app/servicios/rol-usuario.service';
-import { MenuRol } from 'src/app/modelo/admin/menu-rol';
-import { MenuRolService } from 'src/app/servicios/menu-rol.service';
+import {Rol} from 'src/app/modelo/admin/rol';
+import {AlertaComponent} from '../../../util/alerta/alerta.component';
+import {MdbTableDirective} from 'mdb-angular-ui-kit/table';
+import {RolService} from 'src/app/servicios/rol.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Notificacion} from 'src/app/util/notificacion';
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-rol',
@@ -24,35 +19,25 @@ import { MenuRolService } from 'src/app/servicios/menu-rol.service';
   styleUrls: ['./rol.component.scss'],
 })
 export class RolComponent extends ComponenteBase implements OnInit {
-  //modelo
   roles: Rol[];
   rol: Rol;
   rolEditForm: Rol;
-
-  //utils
   notificationRef: MdbNotificationRef<AlertaComponent> | null = null;
-  //private subscriptions: Subscription[] = [];
-
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
-
-  //table
   @ViewChild('table') table!: MdbTableDirective<Rol>;
   addRow = false;
-
   headers = ['Nombre', 'Descripcion'];
   estaEditando = false;
   codigoRolEditando = 0;
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService,
-    private rolService: RolService,
-    private rolUsuarioService: RolUsuarioService,
-    private menuRolService: MenuRolService
+    private popConfirmServiceLocal: MdbPopconfirmService,
+    private rolService: RolService
   ) {
-    super(notificationServiceLocal, popconfirmServiceLocal);
+    super(notificationServiceLocal, popConfirmServiceLocal);
 
     this.roles = [];
     this.subscriptions = [];
@@ -66,13 +51,13 @@ export class RolComponent extends ComponenteBase implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   search(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   errorNotification(mensaje: string) {
@@ -83,7 +68,7 @@ export class RolComponent extends ComponenteBase implements OnInit {
     );
   }
 
- crear(rol: Rol): void {
+  crear(rol: Rol): void {
     //rol={...rol, estado:'ACTIVO'};
     if (rol.nombre === '' || rol.descripcion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
@@ -109,9 +94,6 @@ export class RolComponent extends ComponenteBase implements OnInit {
             this.notificationServiceLocal,
             'Rol creado con éxito'
           );
-
-          this.addRow = false;
-
           this.rol = {
             codRol: 0,
             nombre: '',
@@ -145,6 +127,8 @@ export class RolComponent extends ComponenteBase implements OnInit {
   }
 
   actualizar(rol: Rol, formValue): void {
+    console.log(formValue);
+
     if (formValue.nombre === '' || formValue.descripcion === '') {
       this.errorNotification('Todos los campos deben estar llenos');
       return;
@@ -167,7 +151,6 @@ export class RolComponent extends ComponenteBase implements OnInit {
           this.estaEditando = false;
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Rol actualizado con éxito');
         },
-
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
@@ -175,65 +158,13 @@ export class RolComponent extends ComponenteBase implements OnInit {
     );
   }
 
-  // eliminar
-  public confirmaEliminar(event: Event, codigo: number): void {
-    // valida si el rol tiene usuarios asignados
-    this.subscriptions.push(
-      this.rolUsuarioService.getRolUsuarioPorRol(codigo).subscribe({
-        next: (response) => {
-          if (response.length > 0) {
-            Notificacion.notificacion(
-              this.notificationRef,
-              this.notificationServiceLocal,
-              null,
-              'No se puede eliminar el rol porque tiene usuarios asignados'
-            );
-            return;
-          } else {
-            // valida si el rol tiene menus asignados
-            this.subscriptions.push(
-              this.menuRolService.getMenuRolPorRol(codigo).subscribe({
-                next: (response) => {
-                  if (response.length > 0) {
-                    Notificacion.notificacion(
-                      this.notificationRef,
-                      this.notificationServiceLocal,
-                      null,
-                      'No se puede eliminar el rol porque tiene menus asignados'
-                    );
-                    return;
-                  } else {
-                    // si pasa validaciones procede con la eliminación
-                    super.confirmaEliminarMensaje();
-                    this.codigo = codigo;
-                    super.openPopconfirm(event, this.eliminar.bind(this));
-                  }
-                },
-                error: (errorResponse: HttpErrorResponse) => {
-                  Notificacion.notificacion(
-                    this.notificationRef,
-                    this.notificationServiceLocal,
-                    errorResponse
-                  );
-                  return;
-                },
-              })
-            );
-          }
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            errorResponse
-          );
-          return;
-        },
-      })
-    );
+  confirmarEliminar(event: Event, codigo: number): void {
+    super.confirmaEliminarMensaje();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.eliminar.bind(this));
   }
 
-  public eliminar(): void {
+  eliminar(): void {
     this.showLoading = true;
     this.subscriptions.push(
       this.rolService.eliminarRol(this.codigo).subscribe({

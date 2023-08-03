@@ -21,7 +21,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   aulas: Aula[];
   aula: Aula;
   aulaEditForm: Aula;
-
   // codigo de item a modificar o eliminar
   codigo: number;
   showLoading = false;
@@ -29,7 +28,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   validacionUtil = ValidacionUtil;
   @ViewChild('table') table!: MdbTableDirective<Aula>;
   addRow = false;
-
   headers = [
     'Nombre',
     'Capacidad',
@@ -167,7 +165,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     };
   }
 
-
   public actualizar(aula: Aula, formValue): void {
 
     if (
@@ -240,7 +237,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       })
     );
   }
-
 
 }
 

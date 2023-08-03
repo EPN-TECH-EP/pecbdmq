@@ -15,7 +15,7 @@ export class Aula {
   public estado?: string;
 
 
- //public active: boolean;//
- // public notLocked: boolean;//
+  //public active: boolean;//
+  // public notLocked: boolean;//
 
 }
