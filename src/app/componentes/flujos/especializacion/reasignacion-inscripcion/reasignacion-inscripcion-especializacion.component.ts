@@ -18,11 +18,11 @@ import { InscripcionEsp } from 'src/app/modelo/flujos/especializacion/inscripcio
 import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
 
 @Component({
-  selector: 'app-reasignacion-inscripcion-esp',
-  templateUrl: './reasignacion-inscripcion-esp.component.html',
-  styleUrls: ['./reasignacion-inscripcion-esp.component.scss']
+  selector: 'app-reasignacion-inscripcion-especializacion',
+  templateUrl: './reasignacion-inscripcion-especializacion.component.html',
+  styleUrls: ['./reasignacion-inscripcion-especializacion.component.scss']
 })
-export class ReasignacionInscripcionEspComponent extends ComponenteBase implements OnInit {
+export class ReasignacionInscripcionEspecializacionComponent extends ComponenteBase implements OnInit {
 
   inscripciones: InscripcionEsp[]
   estaReasignando: boolean

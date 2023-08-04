@@ -13,11 +13,11 @@ import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { ComponenteBase } from "../../../../util/componente-base";
 
 @Component({
-  selector: 'app-gestion-delegados-esp',
-  templateUrl: './gestion-delegados-esp.component.html',
-  styleUrls: ['./gestion-delegados-esp.component.scss']
+  selector: 'app-gestion-delegados-especializacion',
+  templateUrl: './gestion-delegados-especializacion.component.html',
+  styleUrls: ['./gestion-delegados-especializacion.component.scss']
 })
-export class GestionDelegadosEspComponent extends ComponenteBase implements OnInit {
+export class GestionDelegadosEspecializacionComponent extends ComponenteBase implements OnInit {
 
   estaAgregandoDelegado: boolean;
   existenCoincidencias: boolean;

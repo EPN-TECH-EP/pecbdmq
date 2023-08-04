@@ -133,11 +133,11 @@ import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
 import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
-import { MenuValidacionRequisitosEspComponent } from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos-esp/menu-validacion-requisitos-esp.component';
+import { MenuValidacionRequisitosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
 import { ValidacionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
-import { GestionDelegadosEspComponent } from 'src/app/componentes/flujos/especializacion/gestion-delegados-esp/gestion-delegados-esp.component';
-import { InscripcionesEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/inscripciones-especializacion/inscripciones-especializacion.component';
-import { ReasignacionInscripcionEspComponent } from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion-esp/reasignacion-inscripcion-esp.component';
+import { GestionDelegadosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
+import { InscripcionesEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
+import { ReasignacionInscripcionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
 import {CrearCursoComponent} from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
 import {
   MenuAdministracionEspecializacionComponent
@@ -218,11 +218,11 @@ const routes: Routes = [
       { path: 'convocatoria', component: ConvocatoriaComponent },
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
-      { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspComponent },
+      { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent },
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
-      { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspComponent },
+      { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
       { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
-      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspComponent },
+      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspecializacionComponent },
       { path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent },
       { path: 'requisito', component: RequisitoComponent },
       { path: 'perfil', component: PerfilComponent },

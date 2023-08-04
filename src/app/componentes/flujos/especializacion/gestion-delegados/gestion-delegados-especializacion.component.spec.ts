@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionDelegadosEspComponent } from './gestion-delegados-esp.component';
+import { GestionDelegadosEspComponent } from './gestion-delegados-especializacion.component';
 
 describe('GestionDelegadosComponent', () => {
   let component: GestionDelegadosEspComponent;

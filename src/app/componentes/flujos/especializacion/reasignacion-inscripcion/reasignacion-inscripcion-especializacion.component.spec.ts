@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReasignacionInscripcionEspComponent } from './reasignacion-inscripcion-esp.component';
+import { ReasignacionInscripcionEspComponent } from './reasignacion-inscripcion-especializacion.component';
 
 describe('ReasignacionInscripcionComponent', () => {
   let component: ReasignacionInscripcionEspComponent;

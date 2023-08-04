@@ -219,11 +219,11 @@ import {
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
 import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
-import { MenuValidacionRequisitosEspComponent } from './componentes/flujos/especializacion/menus/menu-validacion-requisitos-esp/menu-validacion-requisitos-esp.component';
-import { InscripcionesEspecializacionComponent } from './componentes/flujos/especializacion/inscripciones-especializacion/inscripciones-especializacion.component';
+import { MenuValidacionRequisitosEspecializacionComponent } from './componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
+import { InscripcionesEspecializacionComponent } from './componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
 import { ValidacionEspecializacionComponent } from './componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
-import { GestionDelegadosEspComponent } from './componentes/flujos/especializacion/gestion-delegados-esp/gestion-delegados-esp.component';
-import { ReasignacionInscripcionEspComponent } from './componentes/flujos/especializacion/reasignacion-inscripcion-esp/reasignacion-inscripcion-esp.component';
+import { GestionDelegadosEspecializacionComponent } from './componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
+import { ReasignacionInscripcionEspecializacionComponent } from './componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
 import { CrearCursoComponent } from './componentes/flujos/especializacion/crear-curso/crear-curso.component';
 import {
   MenuAdministracionEspecializacionComponent
@@ -321,11 +321,11 @@ import {
     PeriodoAcademicoComponent,
     ApelacionesComponent,
     ModalApelacionComponent,
-    MenuValidacionRequisitosEspComponent,
+    MenuValidacionRequisitosEspecializacionComponent,
     InscripcionesEspecializacionComponent,
     ValidacionEspecializacionComponent,
-    GestionDelegadosEspComponent,
-    ReasignacionInscripcionEspComponent,
+    GestionDelegadosEspecializacionComponent,
+    ReasignacionInscripcionEspecializacionComponent,
     ListaCursosComponent,
     CatalogoCursoComponent,
     CrearCursoComponent,
