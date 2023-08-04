@@ -25,6 +25,8 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
   menusRol: MenuRol[] = [];
   menusAsignados: MenuAsignado[] = [];
 
+  showLoadingFull: boolean = false;
+
   rolSeleccionado: Rol = new Rol();
   step: number = 0;
 
@@ -99,6 +101,9 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
 
   public guardarCambios(): void {
     if (this.cambiosPendientes) {
+
+      this.showLoadingFull = true;
+
       let nuevaAsignacion: MenuRol[] = [];
 
       this.menusAsignados.forEach((menuAsignado) => {
@@ -109,9 +114,10 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
           menuRol.menuRolId.codRol = this.rolSeleccionado.codRol;
           nuevaAsignacion.push(menuRol);
         }
-      });      
+      });
 
-      this.menuRolService.asignarMenuRol(nuevaAsignacion).subscribe((data) => {
+      this.menuRolService.asignarMenuRol(nuevaAsignacion).subscribe({
+        next: (data) => {
         console.log(data);
         this.cambiosPendientes = false;
 
@@ -120,7 +126,20 @@ export class MenuRolComponent extends ComponenteBase implements OnInit {
           this.notificationServiceLocal,
           'Se guardaron los cambios'
         );
+
+        this.showLoadingFull = false;
+      },
+      error: (error) => {
+        console.log(error);
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          error
+        );
+        this.showLoadingFull = false;
+      }
       });
+
     }
   }
 

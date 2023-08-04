@@ -1,0 +1,158 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/formacion/menu-academia'"
+></app-boton-volver>
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="!estaCargando && esVistaConvocatoriaCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row my-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+    <h6>Realizado por: <span
+      class="text-muted">{{ cursoSeleccionado?.creadoPor?.nombre}} {{cursoSeleccionado?.creadoPor?.apellido}}</span>
+    </h6>
+    <h6>Aprobado por: <span
+      class="text-muted">{{ cursoSeleccionado?.aprobadoPor?.nombre}} {{cursoSeleccionado?.aprobadoPor?.apellido}}</span>
+    </h6>
+    <h6>Cupos: <span
+      class="text-muted">{{ cursoSeleccionado?.numeroCupo }}</span>
+    </h6>
+    <div class="d-flex gap-3 my-3">
+      <h6>Fecha de inicio: <span
+        class="text-muted">{{ cursoSeleccionado?.fechaInicioCurso}}</span>
+      </h6>
+      <h6>Fecha de fin: <span
+        class="text-muted">{{ cursoSeleccionado?.fechaFinCurso}}</span>
+      </h6>
+    </div>
+  </div>
+  <hr class="hr">
+  <div>
+    <h2 class="fs-4 fw-bolder mb-3 text-uppercase">Convocatoria Para el Curso</h2>
+    <div>
+      <h6 class="text-primary"><i class="fas fa-calendar-check me-1"></i> Fecha de creación de la convocatoria</h6>
+      <h4><span class="badge badge-info mb-3">&nbsp;{{ fechaActual | date:'yyyy-MM-dd'  }}&nbsp;</span></h4>
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title text-primary"><i class="fas fa-info-circle me-2"></i> Seleccionar fechas de inicio y fin
+            de la inscripción del curso</p>
+          <form [formGroup]="convocatoriaCursoForm" class="mt-3">
+            <div class="row">
+              <div class="col">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    mdbValidate
+                    [mdbDatepicker]="dpFechaInicio"
+                    type="text"
+                    id="fechaInicio"
+                    class="form-control mb-5"
+                    formControlName="fechaInicio"
+                    (click)="dpFechaInicio.open()"
+                    readonly="true"
+                  />
+                  <label
+                    mdbLabel
+                    class="form-label mb-2x"
+                    for="fechaInicio"
+                  >Seleccionar Fecha Inicio</label
+                  >
+                  <mdb-datepicker-toggle
+                    [mdbDatepicker]="dpFechaInicio"
+                    (click)="fechaInicioField.markAsTouched()"
+                  ></mdb-datepicker-toggle>
+                  <mdb-datepicker
+                    #dpFechaInicio="mdbDatepicker"
+                    [options]="OPCIONES_DATEPICKER"
+                    [inline]="true"
+                    [minDate]="fechaActual"
+                  ></mdb-datepicker>
+                  <mdb-error *ngIf="fechaInicioField.invalid &&(fechaInicioField.dirty || fechaInicioField.touched)">
+                    <i class="fas fa-exclamation-circle me-2"></i>Fecha de inicio es requerida
+                  </mdb-error>
+                </mdb-form-control>
+              </div>
+              <div class="col">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    mdbValidate
+                    [mdbDatepicker]="dpFechaFin"
+                    type="text"
+                    id="fechaFin"
+                    class="form-control mb-5"
+                    formControlName="fechaFin"
+                    (click)="dpFechaFin.open()"
+                    readonly="true"
+                  />
+                  <label mdbLabel class="form-label mb-2x" for="fechaFin"
+                  >Seleccionar Fecha Fin</label
+                  >
+                  <mdb-datepicker-toggle
+                    [mdbDatepicker]="dpFechaFin"
+                    (click)="fechaFinField.markAsTouched()"
+                  ></mdb-datepicker-toggle>
+                  <mdb-datepicker
+                    #dpFechaFin="mdbDatepicker"
+                    [options]="OPCIONES_DATEPICKER"
+                    [inline]="true"
+                    [minDate]="OPCIONES_DATEPICKER.minDate"
+                  ></mdb-datepicker>
+                  <mdb-error *ngIf="fechaFinField.invalid &&(fechaFinField.dirty || fechaFinField.touched)">
+                  <i class="fas fa-exclamation-circle me-2"></i>Fecha de fin es requerida
+                  </mdb-error>
+                </mdb-form-control>
+              </div>
+            </div>
+          </form>
+          <button (click)="onCrearConvocatoria()" class="btn btn-primary">Crear Convocatoria</button>
+        </div>
+        <div class="card-footer text-muted"></div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<div
+  *ngIf="estaCargando"
+  class="d-flex justify-content-center align-items-center m-5 p-5"
+>
+  <div class="spinner-border text-info" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span class="ms-3 text-info">Cargando información...</span>
+</div>
+
+

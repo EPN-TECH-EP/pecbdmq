@@ -1,4 +1,20 @@
-<div class="container" xmlns="http://www.w3.org/1999/html">
+<div class="container" *ngIf="!esEstadoInscripcion && !isLoading">
+  <div class="card text-center mt-5">
+    <div class="card-header bg-danger">
+      <h4 class="card-title text-white">Proceso de inscripción finalizado</h4>
+    </div>
+    <div class="card-body">
+      <i class="fa-solid fa-warning fa-2xl mb-4 text-danger"></i>
+      <p class="card-text">El proceso de inscripción ha finalizado, por lo que no puede continuar con el proceso de
+        inscripción</p>
+    </div>
+    <div class="card-footer">
+    </div>
+  </div>
+</div>
+
+
+<div class="container" *ngIf="esEstadoInscripcion && isLoading">
   <div class="row mt-3">
     <div class="col-3">
       <img src="assets/logo-bomberos.svg" alt=""/>
@@ -15,6 +31,7 @@
   <div class="row">
     <div class="col text-center">
       <h3 class="fw-bolder">Formulario de inscripción</h3>
+      <h2 class="fw-bold text-primary my-4">CURSO: {{ curso.nombre || 'NOMBRE DEL CURSO' | uppercase}}</h2>
       <p class="fw-bold">Fecha de inscripción: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
     </div>
   </div>
@@ -22,7 +39,7 @@
   <hr class="hr hr-blurry"/>
   <div class="row justify-content-center">
     <div class="col-4">
-      <p class="fw-bold text-primary">Por favor, ingrese su cédula para continuar</p>
+      <p class="fw-bold text-muted">Por favor, ingrese su cédula para continuar</p>
       <mdb-form-control>
         <input
           mdbValidate
@@ -78,21 +95,22 @@
         <div class="card-body text-center">
           <h5 class="card-title">Por favor, confirme su inscripción y que sus datos sean correctos</h5>
           <p class="card-text">Si sus datos son correctos, por favor, presione el botón "Confirmar inscripción"</p>
-            <div *ngIf="datoPersonal.correoPersonal === null" class="d-flex justify-content-center mb-4">
-              <mdb-form-control [style.width.px]="400">
-                <input
-                  mdbValidate
-                  mdbInput
-                  class="form-control"
-                  [formControl]="correoPersonal"
-                >
-                <label mdbLabel class="form-label mb-2x">Correo personal</label>
-              </mdb-form-control>
-            </div>
-            <button
-              class="btn btn-success"
-              (click)="confirmarInscripcion()"
-            >Confirmar inscripción</button>
+          <div *ngIf="datoPersonal.correoPersonal === null" class="d-flex justify-content-center mb-4">
+            <mdb-form-control [style.width.px]="400">
+              <input
+                mdbValidate
+                mdbInput
+                class="form-control"
+                [formControl]="correoPersonal"
+              >
+              <label mdbLabel class="form-label mb-2x">Correo personal</label>
+            </mdb-form-control>
+          </div>
+          <button
+            class="btn btn-success"
+            (click)="confirmarInscripcion()"
+          >Confirmar inscripción
+          </button>
         </div>
       </div>
     </div>

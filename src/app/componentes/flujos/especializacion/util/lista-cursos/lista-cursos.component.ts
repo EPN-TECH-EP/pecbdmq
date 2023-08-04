@@ -42,7 +42,6 @@ export class ListaCursosComponent implements OnInit {
     return estadoClassMap.get(estado) || 'badge-primary';
   }
 
-
   elegirCurso(curso: Curso) {
     this.cursoSeleccionado.emit(curso);
   }

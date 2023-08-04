@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { of } from "rxjs";
+import { DatoPersonal } from "../../modelo/admin/dato-personal";
+import { Estudiante } from "../../modelo/flujos/Estudiante";
+
+export interface PostulanteEspecializacion {
+  datoPersonal: DatoPersonal;
+  estudiante: Estudiante;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +18,8 @@ export class EspInscripcionService {
 
   constructor(private http: HttpClient) { }
 
-  getDatosPostulante(cedula: string) {
-    // return this.http.get(`${ this.host }/postulante/${ cedula }`);
-    const mockData = {
-      nombre: 'John',
-      apellido: 'Doe',
-    };
-    // Return a mock observable with the mock data
-    return of(mockData);
+  obtenerDatosDelPostulante(cedula: string) {
+    return this.http.get<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/informacion/${ cedula }`);
   }
-
 
 }

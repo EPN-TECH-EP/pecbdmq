@@ -234,6 +234,15 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import { ListaPruebasCursoComponent } from './componentes/flujos/especializacion/lista-pruebas-curso/lista-pruebas-curso.component';
+import { ResultadosPruebasCursoComponent } from './componentes/flujos/especializacion/resultados-pruebas-curso/resultados-pruebas-curso.component';
+import {
+  ValidacionCursoComponent
+} from './componentes/flujos/especializacion/validacion-curso/validacion-curso.component';
+import { BooleanPipe } from './pipes/boolean.pipe';
+import {
+  ConvocatoriaEspecializacionComponent
+} from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
 import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
 
@@ -334,6 +343,11 @@ import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/espec
     MenuAdministracionEspecializacionComponent,
     EstadoProcesoCursoComponent,
     InscripcionEspecializacionComponent,
+    ListaPruebasCursoComponent,
+    ResultadosPruebasCursoComponent,
+    ValidacionCursoComponent,
+    BooleanPipe,
+    ConvocatoriaEspecializacionComponent,
     InstructoresEspecializacionComponent,
     MenuEspecializacionAcademiaComponent,
   ],

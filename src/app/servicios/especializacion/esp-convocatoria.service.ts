@@ -1,0 +1,18 @@
+import { Injectable } from '@angular/core';
+import { environment } from "../../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EspConvocatoriaService {
+
+  private host = environment.apiUrl;
+
+  constructor(private http: HttpClient) { }
+
+  crear(){
+    return this.http.post(`${ this.host }/convocatoriaEsp/crear`, {});
+  }
+
+}

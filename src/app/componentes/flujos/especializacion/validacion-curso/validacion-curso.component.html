@@ -1,0 +1,208 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/formacion/menu-academia'"
+></app-boton-volver>
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="!estaCargando && esVistaValidacionCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row my-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+    <h6>Realizado por: <span
+      class="text-muted">{{ cursoSeleccionado?.creadoPor?.nombre}} {{cursoSeleccionado?.creadoPor?.apellido}}</span>
+    </h6>
+    <hr class="hr">
+  </div>
+
+  <div class="row">
+    <h2 class="fs-4 fw-bolder"> Información del Curso</h2>
+
+    <section class="d-flex flex-column gap-4 my-4 ms-3">
+      <div>
+        <h3 class="fs-5 fw-bold mb-3">Información general</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <h6><b>Total cupos: </b><span
+              class="text-muted">{{ cursoSeleccionado?.numeroCupo }}</span></h6>
+            <h6><b>Fecha de inicio: </b><span
+              class="text-muted">{{ cursoSeleccionado?.fechaInicioCurso | date: 'dd/MM/yyyy'}}</span></h6>
+            <h6><b>Fecha de fin: </b> <span
+              class="text-muted">{{ cursoSeleccionado?.fechaFinCurso| date: 'dd/MM/yyyy'}}</span>
+            </h6>
+            <h6><b>Nota mínima de aprobación: </b> <span
+              class="text-muted">{{ cursoSeleccionado?.notaMinima}}</span>
+            </h6>
+            <h6><b>Tiene módulos: </b> <span
+              class="text-muted">{{ cursoSeleccionado?.tieneModulos | boolean  }}</span>
+            </h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h3 class="fs-5 fw-bold mb-3">Lista de requisitos</h3>
+          <ol class="list-group list-group-light list-group-numbered">
+            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
+            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
+            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
+            <li class="list-group-item p-1" *ngFor="let requisito of cursoSeleccionado.requisitos">
+              <b>Requisito: </b> {{requisito}}
+            </li>
+          </ol>
+        </div>
+        <div class="col">
+          <h3 class="fs-5 fw-bold mb-3">Documentos</h3>
+          <ol class="list-group list-group-light list-group-numbered">
+            <li class="list-group-item p-1">
+              <b>Documento: </b>
+              Nombre documento
+              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
+                <i class="fas fa-download"></i>
+              </button>
+            </li>
+            <li class="list-group-item p-1">
+              <b>Documento: </b>
+              Nombre documento
+              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
+                <i class="fas fa-download"></i>
+              </button>
+            </li>
+            <li class="list-group-item p-1">
+              <b>Documento: </b>
+              Nombre documento
+              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
+                <i class="fas fa-download"></i>
+              </button>
+            </li>
+            <li class="list-group-item p-1" *ngFor="let documento of cursoSeleccionado.documentos">
+              <b>Documento: </b>
+              Nombre documento
+              <button
+                class="btn btn-link btn-sm mx-1"
+                [mdbTooltip]="'Descargar documento'"
+              >
+                <i class="fas fa-download"></i>
+              </button>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <hr class="hr">
+    <section>
+      <h2 class="fs-4 fw-bolder mb-4">Aprobación del curso</h2>
+
+      <form [formGroup]="aprobarCursoForm" class="ms-3">
+        <div class="d-flex gap-3 align-items-center my-2">
+          <h6><b class="text-primary">Aprobado: </b></h6>
+          <div>
+            <div class="form-check form-check-inline">
+              <input
+                mdbRadio
+                formControlName="aprobado"
+                class="form-check-input"
+                type="radio"
+                name="aprobado"
+                id="si"
+                [value]="true"
+              />
+              <label class="form-check-label" for="si">Si</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                mdbRadio
+                formControlName="aprobado"
+                class="form-check-input"
+                type="radio"
+                name="aprobado"
+                id="no"
+                [value]="false"
+              />
+              <label class="form-check-label" for="no">No</label>
+            </div>
+          </div>
+        </div>
+        <p
+          class="text-danger"
+          [style.font-size.px]="11"
+          *ngIf="
+                aprobarCursoForm.get('aprobado').hasError('required') &&
+                aprobarCursoForm.get('aprobado').touched">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          Debe seleccionar si el curso es aprobado o no
+        </p>
+        <mdb-form-control>
+            <textarea
+              mdbValidate
+              formControlName="observaciones"
+              mdbInput
+              type="text"
+              class="form-control mb-4"
+              rows="3"
+              placeholder="Escriba aquí las observaciones del curso"
+            ></textarea>
+          <label mdbLabel class="form-label mb-2x">Observaciones</label>
+          <mdb-error
+            *ngIf="
+              aprobarCursoForm.get('observaciones').hasError('required') &&
+              aprobarCursoForm.get('observaciones').touched
+            "
+          >
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            Si el curso no es aprobado, debe escribir las observaciones
+          </mdb-error>
+        </mdb-form-control>
+      </form>
+
+      <button
+        class="btn btn-primary btn-sm m-3"
+        type="button"
+        (click)="onAprobarCurso()"
+      >
+        <i class="fas fa-save me-1"></i>
+        Guardar
+      </button>
+    </section>
+  </div>
+</section>
+
+<div
+  *ngIf="estaCargando"
+  class="d-flex justify-content-center align-items-center m-5 p-5"
+>
+  <div class="spinner-border text-info" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span class="ms-3 text-info">Cargando información...</span>
+</div>
