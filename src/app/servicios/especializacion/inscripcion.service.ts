@@ -1,10 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {InscripcionItem} from "../../modelo/flujos/formacion/inscripcion-item";
-import {UsuarioAsignado} from "../../modelo/flujos/formacion/asignar-usuario";
-import {ValidacionRequisito} from "../../modelo/flujos/formacion/requisito";
-import {InscripcionCompleta} from "../../modelo/flujos/formacion/inscripcion-completa";
 import { InscripcionEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-esp';
 import { InscripcionCompletaEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-completa-esp';
 import { ValidacionRequisitoEsp } from 'src/app/modelo/flujos/especializacion/requisito';
