@@ -148,6 +148,8 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "../../componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import { MenuEspecializacionAcademiaComponent } from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { InstructoresEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 
 const routes: Routes = [
   {
@@ -216,13 +218,6 @@ const routes: Routes = [
       { path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent },
       { path: 'formacion/proceso', component: ProcesoFormacionComponent },
       { path: 'convocatoria', component: ConvocatoriaComponent },
-      { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
-      { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
-      { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent },
-      { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
-      { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
-      { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
-      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspecializacionComponent },
       { path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent },
       { path: 'requisito', component: RequisitoComponent },
       { path: 'perfil', component: PerfilComponent },
@@ -243,6 +238,13 @@ const routes: Routes = [
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
+      { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent },
+      { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
+      { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
+      { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
+      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspecializacionComponent },
+      { path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent },
+      { path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { InscripcionItem } from "../../../../modelo/flujos/formacion/inscripcion-item";
-import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
