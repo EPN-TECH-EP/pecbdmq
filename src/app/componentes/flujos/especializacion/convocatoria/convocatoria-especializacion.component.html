@@ -3,12 +3,13 @@
   [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
-<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
-  <div class="row m-3">
-    <div class="col text-center">
-      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
-    </div>
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de Convocatorias por Curso</h1>
   </div>
+</div>
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
   <p>Número total de cursos: {{cursos.length}}</p>
 
   <div class="row justify-content-center">
@@ -43,6 +44,9 @@
     </h6>
     <h6>Aprobado por: <span
       class="text-muted">{{ cursoSeleccionado?.aprobadoPor?.nombre}} {{cursoSeleccionado?.aprobadoPor?.apellido}}</span>
+    </h6>
+    <h6>Porcentaje mínimo de estudiantes inscritos para aprobación: <span
+      class="text-muted">{{ cursoSeleccionado?.porcentajeAceptacionCurso }} </span>
     </h6>
     <h6>Cupos: <span
       class="text-muted">{{ cursoSeleccionado?.numeroCupo }}</span>
@@ -129,13 +133,45 @@
                     [minDate]="OPCIONES_DATEPICKER.minDate"
                   ></mdb-datepicker>
                   <mdb-error *ngIf="fechaFinField.invalid &&(fechaFinField.dirty || fechaFinField.touched)">
-                  <i class="fas fa-exclamation-circle me-2"></i>Fecha de fin es requerida
+                    <i class="fas fa-exclamation-circle me-2"></i>Fecha de fin es requerida
+                  </mdb-error>
+                </mdb-form-control>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-title text-primary"><i class="fas fa-info-circle me-2"></i>
+                  Ingrese un correo para enviar la convocatoria
+                </p>
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    mdbValidate
+                    formControlName="correo"
+                    type="email"
+                    class="form-control mb-5"
+                    id="correo"
+                  >
+                  <label mdbLabel class="form-label mb-2x" for="correo">Correo</label>
+                  <mdb-error *ngIf="correoField.invalid &&(correoField.dirty || correoField.touched)">
+                    <i class="fas fa-exclamation-circle me-2"></i>Correo es requerido
                   </mdb-error>
                 </mdb-form-control>
               </div>
             </div>
           </form>
-          <button (click)="onCrearConvocatoria()" class="btn btn-primary">Crear Convocatoria</button>
+          <button
+            (click)="onCrearConvocatoria()"
+            class="btn btn-primary me-2">
+            Crear Convocatoria
+          </button>
+
+          <button
+            *ngIf="seCreoConvocatoria"
+            (click)="onEnviarNotificacion()"
+            class="btn btn-warning">
+            Enviar Notificación
+          </button>
         </div>
         <div class="card-footer text-muted"></div>
       </div>

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PopconfirmComponent} from "../popconfirm/popconfirm.component";
-import {MdbPopconfirmRef, MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PopconfirmComponent } from "../popconfirm/popconfirm.component";
+import { MdbPopconfirmRef, MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-estado-proceso-stepper',
@@ -11,6 +11,9 @@ export class EstadoProcesoStepperComponent implements OnInit {
 
   @Input("steps") set changeSteps(newSteps: any[]) {
     this.steps = newSteps;
+    if (this.steps === null || this.steps === undefined) {
+      this.steps = [];
+    }
   }
 
   @Output() updatedStep = new EventEmitter<number>();
@@ -104,7 +107,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
     const target = event.target as HTMLElement;
 
     this.openPopConfirm(target,
-      `¿Está seguro que desea cambiar el estado del proceso a ${this.nextStep?.estadoCatalogo}?`,
+      `¿Está seguro que desea cambiar el estado del proceso a ${ this.nextStep?.estadoCatalogo }?`,
       () => {
         this.getNextStep();
       });
@@ -114,7 +117,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
     const target = event.target as HTMLElement;
 
     this.openPopConfirm(target,
-      `¿Está seguro que desea cambiar el estado del proceso a ${this.previousStep?.estadoCatalogo}?`
+      `¿Está seguro que desea cambiar el estado del proceso a ${ this.previousStep?.estadoCatalogo }?`
       , () => {
         this.getPreviousStep();
       });
@@ -124,7 +127,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
     this.popConfirmRef = this.popConfirmService.open(
       PopconfirmComponent,
       target,
-      {popconfirmMode: 'modal', data: {mensaje: message}}
+      { popconfirmMode: 'modal', data: { mensaje: message } }
     );
 
     if (this.popConfirmRef.onConfirm) {

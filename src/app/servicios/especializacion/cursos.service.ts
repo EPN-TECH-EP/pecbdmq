@@ -44,7 +44,13 @@ export class CursosService {
     return this.http.get<Curso>(`${ this.host }/curso/${ codigo }`);
   }
 
-  aprobar(codCursoEspecializacion: number) {
-    return this.http.get(`${ this.host }/curso/updateEstadoAprobadoValidado `);
+  aprobar(aprobado: boolean, observaciones: string, codUsuarioAprueba: number, codCurso: number) {
+    const data = {
+      aprueba: aprobado,
+      observaciones: observaciones,
+      codUsuarioAprueba: codUsuarioAprueba
+    }
+    return this.http.patch(`${ this.host }/curso/validar/${ codCurso }`, data);
   }
+
 }

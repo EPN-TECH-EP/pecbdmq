@@ -3,14 +3,14 @@
   [link]="'/principal/formacion/menu-academia'"
 ></app-boton-volver>
 
-<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
-  <div class="row m-3">
-    <div class="col text-center">
-      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
-    </div>
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de Validación por Cursos</h1>
   </div>
-  <p>Número total de cursos: {{cursos.length}}</p>
+</div>
 
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <p>Número total de cursos: {{cursos.length}}</p>
   <div class="row justify-content-center">
     <app-lista-cursos
       [cursos]="cursos"
@@ -31,7 +31,7 @@
     Volver a lista de cursos
   </button>
 
-  <div class="row my-4">
+  <div class="row mt-4">
     <hr class="hr">
     <div class="d-flex gap-2">
       <h1 class="fs-4 fw-bolder">CURSO: </h1>
@@ -46,7 +46,6 @@
 
   <div class="row">
     <h2 class="fs-4 fw-bolder"> Información del Curso</h2>
-
     <section class="d-flex flex-column gap-4 my-4 ms-3">
       <div>
         <h3 class="fs-5 fw-bold mb-3">Información general</h3>
@@ -55,12 +54,15 @@
             <h6><b>Total cupos: </b><span
               class="text-muted">{{ cursoSeleccionado?.numeroCupo }}</span></h6>
             <h6><b>Fecha de inicio: </b><span
-              class="text-muted">{{ cursoSeleccionado?.fechaInicioCurso | date: 'dd/MM/yyyy'}}</span></h6>
+              class="text-muted">{{ cursoSeleccionado?.fechaInicioCurso | date: 'yyyy-MM-dd'}}</span></h6>
             <h6><b>Fecha de fin: </b> <span
-              class="text-muted">{{ cursoSeleccionado?.fechaFinCurso| date: 'dd/MM/yyyy'}}</span>
+              class="text-muted">{{ cursoSeleccionado?.fechaFinCurso| date: 'yyyy-MM-dd'}}</span>
             </h6>
             <h6><b>Nota mínima de aprobación: </b> <span
               class="text-muted">{{ cursoSeleccionado?.notaMinima}}</span>
+            </h6>
+            <h6><b>Porcentaje mínimo de estudiantes inscritos para aprobación: </b> <span
+              class="text-muted">{{ cursoSeleccionado?.porcentajeAceptacionCurso}}</span>
             </h6>
             <h6><b>Tiene módulos: </b> <span
               class="text-muted">{{ cursoSeleccionado?.tieneModulos | boolean  }}</span>

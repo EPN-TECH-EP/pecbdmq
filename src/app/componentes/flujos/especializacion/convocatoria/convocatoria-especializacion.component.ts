@@ -7,7 +7,10 @@ import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { Notificacion } from "../../../../util/notificacion";
 import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
 import { OPCIONES_DATEPICKER } from "../../../../util/constantes/opciones-datepicker.const";
-import { EspConvocatoriaService } from "../../../../servicios/especializacion/esp-convocatoria.service";
+import {
+  ConvocatoriaEspecializacion,
+  EspConvocatoriaService
+} from "../../../../servicios/especializacion/esp-convocatoria.service";
 
 @Component({
   selector: 'app-convocatoria',
@@ -26,6 +29,9 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   convocatoriaCursoForm: FormGroup;
   fechaActual: Date;
 
+  seCreoConvocatoria: boolean;
+  codConvocatoriaCreada: number;
+
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
 
   constructor(
@@ -36,8 +42,10 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   ) {
     this.cursoSeleccionado = null;
     this.estaCargando = true;
+    this.codConvocatoriaCreada = 0
     this.esVistaListaCursos = true;
     this.esVistaConvocatoriaCurso = false;
+    this.seCreoConvocatoria = false;
     this.cursos = []
     this.fechaActual = new Date();
     this.convocatoriaCursoForm = new FormGroup({});
@@ -45,6 +53,10 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listarCursos();
+  }
+
+  private listarCursos() {
     this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.CONVOCAORIA).subscribe({
       next: (cursos) => {
         this.cursos = cursos
@@ -64,11 +76,13 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     this.convocatoriaCursoForm = this.builder.group({
       fechaInicio: ['', Validators.required],
       fechaFin: ['', Validators.required],
+      correo: ['', [Validators.required, Validators.email]]
     });
+
   }
 
-  private async cargarInformacionCurso(curso: Curso) {
-    await this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
+  private cargarInformacionCurso(curso: Curso) {
+    this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
       next: (tipoCurso) => {
         this.cursoSeleccionado.tipoCurso = tipoCurso;
       },
@@ -79,10 +93,30 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   }
 
   private crearConvocatoria() {
-    this.convocatoriaService.crear().subscribe({
+
+    // formateo de fechas YYYY-MM-DD para el backend
+    const fechaInicioDate: Date = this.fechaInicioField.value;
+    const fechaFinDate: Date = this.fechaFinField.value;
+
+    const fechaInicio = `${ fechaInicioDate.getFullYear() }-${ fechaInicioDate.getMonth() + 1 < 10 ? `0${ fechaInicioDate.getMonth() + 1 }` : fechaInicioDate.getMonth() + 1 }-${ fechaInicioDate.getDate() }`;
+    const fechaFin = `${ fechaFinDate.getFullYear() }-${ fechaFinDate.getMonth() + 1 < 10 ? `0${ fechaFinDate.getMonth() + 1 }` : fechaFinDate.getMonth() + 1 }-${ fechaFinDate.getDate() }`;
+
+
+    const convocatoria: ConvocatoriaEspecializacion = {
+      correo: this.correoField.value,
+      nombreConvocatoria: `Convocatoria: ${ this.cursoSeleccionado.nombre }`,
+      fechaFinConvocatoria: fechaInicio,
+      fechaInicioConvocatoria: fechaFin,
+      codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
+    }
+    console.log(convocatoria);
+
+    this.convocatoriaService.crear(convocatoria).subscribe({
       next: (convocatoria) => {
         console.log(convocatoria);
         this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
+        this.seCreoConvocatoria = true;
+        this.codConvocatoriaCreada = convocatoria.codConvocatoria;
       },
       error: (err) => {
         console.error(err);
@@ -92,14 +126,13 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   }
 
   cursoSeleccionadoEvent($event: Curso) {
-    this.cursoSeleccionado = $event;
-    this.cargarInformacionCurso(this.cursoSeleccionado).then(
-      () => {
-        this.esVistaListaCursos = false;
-        this.esVistaConvocatoriaCurso = true;
-      }
-    );
-    console.log($event)
+    if ($event) {
+      this.cursoSeleccionado = $event;
+      this.cargarInformacionCurso(this.cursoSeleccionado)
+      this.esVistaListaCursos = false;
+      this.esVistaConvocatoriaCurso = true;
+      console.log($event)
+    }
   }
 
   volverAListaCursos() {
@@ -117,12 +150,32 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     return this.convocatoriaCursoForm.get('fechaFin');
   }
 
+  get correoField() {
+    return this.convocatoriaCursoForm.get('correo');
+  }
+
   onCrearConvocatoria() {
     if (this.convocatoriaCursoForm.invalid) {
       this.notificar('Debe ingresar todos los campos', TipoAlerta.ALERTA_WARNING);
       this.convocatoriaCursoForm.markAllAsTouched();
       return;
     }
+
     this.crearConvocatoria();
+  };
+
+
+  onEnviarNotificacion() {
+    this.convocatoriaService.enviarNotificacion(this.codConvocatoriaCreada).subscribe({
+      next: (resp) => {
+        console.log(resp);
+        this.notificar('Notificaciones enviadas correctamente', TipoAlerta.ALERTA_OK);
+      },
+      error: (err) => {
+        console.error(err);
+        this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
+      }
+    });
+
   }
 }

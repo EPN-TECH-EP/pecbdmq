@@ -83,16 +83,16 @@
     <hr class="hr hr-blurry"/>
     <div class="col-7">
       <h5 class="fw-bold mb-4 text-center">Datos personales</h5>
-      <div class="d-flex gap-5 justify-content-center mb-3">
-        <p><b>Nombre: </b> {{datoPersonal?.nombre}} {{datoPersonal?.apellido}}</p>
-        <p><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
+      <div class="d-flex gap-5 justify-content-center mb-3 align-items-center">
+        <p class="m-0"><b>Nombre: </b> {{datoPersonal?.nombre | titlecase}} {{datoPersonal?.apellido | titlecase}}</p>
+        <p class="m-0"><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
       </div>
       <div class="card">
         <h5 class="card-header text-success">
           <i class="fa-solid fa-check-circle me-2"></i>
           Confirmar inscripción
         </h5>
-        <div class="card-body text-center">
+        <div class="card-body text-center" *ngIf="!esInscripcionCompletada">
           <h5 class="card-title">Por favor, confirme su inscripción y que sus datos sean correctos</h5>
           <p class="card-text">Si sus datos son correctos, por favor, presione el botón "Confirmar inscripción"</p>
           <div *ngIf="datoPersonal.correoPersonal === null" class="d-flex justify-content-center mb-4">
@@ -105,16 +105,33 @@
               >
               <label mdbLabel class="form-label mb-2x">Correo personal</label>
             </mdb-form-control>
+            <button
+              [mdbTooltip]="'Guardar correo personal'"
+              class="btn btn-primary ms-3"
+              (click)="onActualizarCorreoPersonal()"
+            >Guardar
+            </button>
           </div>
           <button
+            [disabled]="esBotonDeshabilitado"
             class="btn btn-success"
-            (click)="confirmarInscripcion()"
+            (click)="onConfirmarInscripcion()"
           >Confirmar inscripción
           </button>
         </div>
       </div>
+      <div class="card-body text-center text-success" *ngIf="esInscripcionCompletada">
+        <i class="far fa-check-circle fa-5x"></i>
+        <h5 class="card-title">Su inscripción ha sido completada</h5>
+      </div>
     </div>
   </div>
-
-
 </div>
+
+<mdb-loading [show]="loading" [fullscreen]="true">
+  <div class="loading-spinner">
+    <div class="spinner-border loading-icon text-primary" role="status"></div>
+
+    <span class="loading-text text-primary">Cargando datos...</span>
+  </div>
+</mdb-loading>
