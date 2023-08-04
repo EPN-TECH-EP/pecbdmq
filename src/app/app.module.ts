@@ -229,6 +229,8 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import { ListaPruebasCursoComponent } from './componentes/flujos/especializacion/lista-pruebas-curso/lista-pruebas-curso.component';
+import { ResultadosPruebasCursoComponent } from './componentes/flujos/especializacion/resultados-pruebas-curso/resultados-pruebas-curso.component';
 
 @NgModule({
   declarations: [
@@ -322,6 +324,8 @@ import {
     MenuAdministracionEspecializacionComponent,
     EstadoProcesoCursoComponent,
     InscripcionEspecializacionComponent,
+    ListaPruebasCursoComponent,
+    ResultadosPruebasCursoComponent,
   ],
   imports: [
     BrowserModule,

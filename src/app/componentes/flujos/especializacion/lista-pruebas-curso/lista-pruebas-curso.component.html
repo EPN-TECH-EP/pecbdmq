@@ -1,19 +1,29 @@
 <app-boton-volver></app-boton-volver>
 
-<ng-container *ngIf="!esEstadoPruebas">
-  <div class="card rounded-7 mt-3">
-    <div class="card-body">
-      <h5 class="card-title text-primary">Proceso de Formación</h5>
-      <p class="card-text">El proceso de formación no se encuentra en estado de PRUEBAS.</p>
+<!-- Selección de curso -->
+<section *ngIf="esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Seleccionar un curso</h1>
     </div>
   </div>
-</ng-container>
+  <p>Número total de cursos: {{cursos.length}}</p>
 
-<div class="container-fluid" *ngIf="esEstadoPruebas">
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<div class="container-fluid">
   <!-- Título -->
   <div class="row mt-3 d-flex justify-content-center">
     <div class="col-9 text-center">
-      <p class="fs-4 fw-bolder mb-3">Lista de Pruebas de Formación</p>
+      <p class="fs-4 fw-bolder mb-3">Lista de Pruebas de Curso</p>
     </div>
   </div>
 
@@ -272,107 +282,107 @@
             #table="mdbTable"
             [dataSource]="listaPruebaDetalleDatos">
             <thead>
-              <tr>
-                <th
-                  *ngFor="let header of headers"
-                  [mdbTableSortHeader]="header.key"
-                  scope="col"
-                  [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
-                  <div class="fw-bold">{{ header.label | titlecase }}</div>
-                </th>
-                <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
-              </tr>
+            <tr>
+              <th
+                *ngFor="let header of headers"
+                [mdbTableSortHeader]="header.key"
+                scope="col"
+                [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
+                <div class="fw-bold">{{ header.label | titlecase }}</div>
+              </th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            </tr>
             </thead>
 
             <tbody class="datatable-body">
-              <!-- datos -->
-              <tr *ngFor="let pruebaDetalle of table.data; let index = index">
-                <td class="text-center">
-                  <ng-container *ngIf="editElementIndex !== index">
-                    {{ pruebaDetalle.ordenTipoPrueba }}
-                  </ng-container>
-                </td>
+            <!-- datos -->
+            <tr *ngFor="let pruebaDetalle of table.data; let index = index">
+              <td class="text-center">
+                <ng-container *ngIf="editElementIndex !== index">
+                  {{ pruebaDetalle.ordenTipoPrueba }}
+                </ng-container>
+              </td>
 
-                <td>
-                  <ng-container *ngIf="editElementIndex !== index">
-                    <div class="text-wrap">
-                      <p class="fw-normal mb-0">{{ pruebaDetalle.subTipoPruebaNombre }}</p>
-                      <p class="text-muted mb-0 small">{{ pruebaDetalle.tipoPruebaNombre }}</p>
-                    </div>
-                  </ng-container>
-                </td>
+              <td>
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div class="text-wrap">
+                    <p class="fw-normal mb-0">{{ pruebaDetalle.subTipoPruebaNombre }}</p>
+                    <p class="text-muted mb-0 small">{{ pruebaDetalle.tipoPruebaNombre }}</p>
+                  </div>
+                </ng-container>
+              </td>
 
-                <td>
-                  <ng-container *ngIf="editElementIndex !== index">
-                    <div class="text-wrap">
-                      {{ pruebaDetalle.descripcionPrueba }}
-                    </div>
-                  </ng-container>
-                </td>
+              <td>
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div class="text-wrap">
+                    {{ pruebaDetalle.descripcionPrueba }}
+                  </div>
+                </ng-container>
+              </td>
 
-                <td>
-                  <ng-container *ngIf="editElementIndex !== index">
-                    <div>
-                      <span class="text-muted">Fecha inicio:</span>
-                      {{ pruebaDetalle.fechaInicio | date : 'dd/MM/yyyy' }} <br />
-                      <span class="text-muted">Fecha fin:</span> {{ pruebaDetalle.fechaFin | date : 'dd/MM/yyyy' }}
+              <td>
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div>
+                    <span class="text-muted">Fecha inicio:</span>
+                    {{ pruebaDetalle.fechaInicio | date : 'dd/MM/yyyy' }} <br />
+                    <span class="text-muted">Fecha fin:</span> {{ pruebaDetalle.fechaFin | date : 'dd/MM/yyyy' }}
+                    <br />
+
+                    <span class="text-muted">Hora:</span> {{ pruebaDetalle.hora }}
+                  </div>
+                </ng-container>
+              </td>
+
+              <td>
+                <ng-container *ngIf="editElementIndex !== index">
+                  <div>
+                    <span class="text-muted">Puntajes:</span> {{ pruebaDetalle.tienePuntaje ? 'Sí' : 'No' }}
+                    <br />
+                    <div *ngIf="pruebaDetalle.tienePuntaje">
+                      <span class="text-muted">Mínimo:</span> {{ pruebaDetalle.puntajeMinimo }}
                       <br />
-
-                      <span class="text-muted">Hora:</span> {{ pruebaDetalle.hora }}
+                      <span class="text-muted">Máximo:</span> {{ pruebaDetalle.puntajeMaximo }}
                     </div>
-                  </ng-container>
-                </td>
+                  </div>
+                </ng-container>
+              </td>
 
-                <td>
-                  <ng-container *ngIf="editElementIndex !== index">
-                    <div>
-                      <span class="text-muted">Puntajes:</span> {{ pruebaDetalle.tienePuntaje ? 'Sí' : 'No' }}
-                      <br />
-                      <div *ngIf="pruebaDetalle.tienePuntaje">
-                        <span class="text-muted">Mínimo:</span> {{ pruebaDetalle.puntajeMinimo }}
-                        <br />
-                        <span class="text-muted">Máximo:</span> {{ pruebaDetalle.puntajeMaximo }}
-                      </div>
-                    </div>
-                  </ng-container>
-                </td>
+              <td>
+                <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                  <div class="text-center">
+                    <button
+                      mdbTooltip="Editar registro"
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="editRow(pruebaDetalle, index)"
+                      [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      mdbTooltip="Eliminar registro"
+                      class="mx-2 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="confirmaEliminar($event, pruebaDetalle.codPruebaDetalle)"
+                      [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
+                      <i class="fa fa-trash-alt"></i>
+                    </button>
 
-                <td>
-                  <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
-                    <div class="text-center">
-                      <button
-                        mdbTooltip="Editar registro"
-                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="editRow(pruebaDetalle, index)"
-                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
-                        <i class="fa fa-edit"></i>
-                      </button>
-                      <button
-                        mdbTooltip="Eliminar registro"
-                        class="mx-2 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="confirmaEliminar($event, pruebaDetalle.codPruebaDetalle)"
-                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
-                        <i class="fa fa-trash-alt"></i>
-                      </button>
-
-                      <button
-                        mdbTooltip="Orden anterior"
-                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="moverAntes(pruebaDetalle, index)"
-                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow">
-                        <i class="fa fa-arrow-up text-primary"></i>
-                      </button>
-                      <button
-                        mdbTooltip="Orden siguiente"
-                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="moverDespues(pruebaDetalle, index)"
-                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow">
-                        <i class="fa fa-arrow-down text-primary"></i>
-                      </button>
-                    </div>
-                  </ng-container>
-                </td>
-              </tr>
+                    <button
+                      mdbTooltip="Orden anterior"
+                      class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="moverAntes(pruebaDetalle, index)"
+                      [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow">
+                      <i class="fa fa-arrow-up text-primary"></i>
+                    </button>
+                    <button
+                      mdbTooltip="Orden siguiente"
+                      class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                      (click)="moverDespues(pruebaDetalle, index)"
+                      [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow">
+                      <i class="fa fa-arrow-down text-primary"></i>
+                    </button>
+                  </div>
+                </ng-container>
+              </td>
+            </tr>
             </tbody>
           </table>
         </form>
