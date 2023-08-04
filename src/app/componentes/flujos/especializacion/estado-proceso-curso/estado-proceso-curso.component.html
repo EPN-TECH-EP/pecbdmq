@@ -38,8 +38,10 @@
     </div>
     <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso.descripcionCatalogoCurso}}</span></h6>
     <hr class="hr">
-    <app-estado-proceso-stepper [steps]="cursoSeleccionado.estados">
-
+    <app-estado-proceso-stepper
+      [steps]="cursoSeleccionado.estados"
+      (updatedStep)="actualizarEstado($event)"
+    >
     </app-estado-proceso-stepper>
   </div>
 

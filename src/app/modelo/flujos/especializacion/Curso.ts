@@ -22,6 +22,7 @@ export interface Curso {
   nombre?: string
   observacionesValidacion?: string
 
+  nombre?: string
   documentos?: any[]
   requisitos?: any[]
   tipoCurso?: TipoCurso

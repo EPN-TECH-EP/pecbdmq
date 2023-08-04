@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'cargaArchivo', component: CargaArchivoComponent },
   { path: 'inscripcion', component: InscripcionComponent },
-  { path: 'especializacion/inscripcion', component: InscripcionEspecializacionComponent },
+  { path: 'especializacion/inscripcion/:codCurso', component: InscripcionEspecializacionComponent },
 
   {
     path: 'principal',

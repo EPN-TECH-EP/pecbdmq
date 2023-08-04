@@ -143,6 +143,12 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "../../componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import {
+  ValidacionCursoComponent
+} from "../../componentes/flujos/especializacion/validacion-curso/validacion-curso.component";
+import {
+  ConvocatoriaEspecializacionComponent
+} from "../../componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
 
 const routes: Routes = [
   {
@@ -238,6 +244,8 @@ const routes: Routes = [
 
       { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/cursos/estados', component: EstadoProcesoCursoComponent },
+      { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
+      { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
 
     ],
   },
