@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Curso } from "../../../../../modelo/flujos/especializacion/Curso";
-import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacion.const";
 
 
 const estadoClassMap = new Map<string, string>([

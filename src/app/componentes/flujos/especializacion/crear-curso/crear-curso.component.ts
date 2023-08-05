@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ESPECIALIZACION} from 'src/app/util/constantes/especializacion.const';
+import {CURSO_COMPLETO_ESTADO} from 'src/app/util/constantes/especializacion.const';
 import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
 import {ComponenteBase} from "../../../../util/componente-base";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -32,7 +32,7 @@ import {CursoService} from "../../../../servicios/especializacion/curso.service"
 })
 export class CrearCursoComponent extends ComponenteBase implements OnInit {
   // referencia a la constante ESPECIALIZACION
-  public ESPECIALIZACION = ESPECIALIZACION;
+  public ESPECIALIZACION = CURSO_COMPLETO_ESTADO;
 
   // fechas
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
@@ -541,6 +541,16 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
 
   // creacion de curso
   public crearCurso() {
+
+    // verificar que fechainicio sea menor a fechafin
+
+    const fInicio: Date = this.fechaInicioCursoField.getRawValue();
+    const fFin: Date = this.fechaFinCursoField.getRawValue();
+
+    if (fInicio >= fFin) {
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null, 'La fecha de inicio debe ser menor a la fecha de fin');
+    }
+
     this.showLoading = true;
 
     this.initCurso();

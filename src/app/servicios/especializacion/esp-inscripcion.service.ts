@@ -22,4 +22,7 @@ export class EspInscripcionService {
     return this.http.get<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/informacion/${ cedula }`);
   }
 
+  // obtener lista de inscritos por curso
+  // endpoint: inscripcionEsp/porCurso/{codCurso}
+
 }

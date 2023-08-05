@@ -1,26 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { SubtipoPruebaDatos } from 'src/app/modelo/admin/subtipo-prueba-datos';
-import { PruebaDetalle } from 'src/app/modelo/flujos/formacion/prueba-detalle';
-import { SubtipoPruebaService } from 'src/app/servicios/subtipo-prueba.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { Notificacion } from 'src/app/util/notificacion';
-import { PruebaDetalleService } from '../../../../servicios/formacion/prueba-detalle.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MyValidators } from 'src/app/util/validators';
-import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import {catchError, of, switchMap} from 'rxjs';
-import { FORMACION } from 'src/app/util/constantes/fomacion.const';
-import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
-import { OPCIONES_DATEPICKER } from 'src/app/util/constantes/opciones-datepicker.const';
-import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MdbNotificationService} from 'mdb-angular-ui-kit/notification';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {SubtipoPruebaDatos} from 'src/app/modelo/admin/subtipo-prueba-datos';
+import {PruebaDetalle} from 'src/app/modelo/flujos/formacion/prueba-detalle';
+import {SubtipoPruebaService} from 'src/app/servicios/subtipo-prueba.service';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {Notificacion} from 'src/app/util/notificacion';
+import {PruebaDetalleService} from '../../../../servicios/formacion/prueba-detalle.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MyValidators} from 'src/app/util/validators';
+import {FormacionService} from 'src/app/servicios/formacion/formacion.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {PruebaDetalleDatos} from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
+import {OPCIONES_DATEPICKER} from 'src/app/util/constantes/opciones-datepicker.const';
+import {PruebaDetalleOrden} from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
 import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
 import {CursosService} from "../../../../servicios/especializacion/cursos.service";
 import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-lista-pruebas-curso',
@@ -291,7 +287,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
             Notificacion.notificacionOK(
               this.notificationRef,
               this.notificationServiceLocal,
-              'Prueba de formación creada con éxito'
+              'Prueba registrada con éxito'
             );
 
             const pruebaDetalleDatosNew: PruebaDetalleDatos = {
@@ -355,7 +351,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
             Notificacion.notificacionOK(
               this.notificationRef,
               this.notificationServiceLocal,
-              'Prueba de formación actualizada con éxito'
+              'Prueba actualizada con éxito'
             );
             const pruebaDetalleDatosEdit = this.listaPruebaDetalleDatos[this.editElementIndex];
 
@@ -415,7 +411,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Prueba de formación eliminada con éxito'
+            'Prueba eliminada con éxito'
           );
           this.showLoading = false;
           const index = this.listaPruebaDetalleDatos.findIndex(
@@ -546,7 +542,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Orden de pruebas de formación guardado con éxito'
+            'Orden de pruebas guardado con éxito'
           );
 
           this.listaOrdenInicial = [];

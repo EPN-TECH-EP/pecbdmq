@@ -63,6 +63,9 @@ export class PruebaDetalleService {
     return response;
   }
 
-
+  // especialización
+  public listarConDatosTipoPruebaDeCurso(codCurso): Observable<PruebaDetalle[]> {
+    return this.http.get<PruebaDetalle[]>(`${this.host}/${this.nombreServicio}/listarConDatos/${codCurso}`);
+  }
 
 }

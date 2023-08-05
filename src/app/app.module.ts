@@ -238,6 +238,16 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 import {
   ConvocatoriaEspecializacionComponent
 } from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
+import {
+  MenuPruebasEspecializacionComponent
+} from "./componentes/flujos/especializacion/menus/menu-pruebas-esp/menu-pruebas-especializacion.component";
+import { MenuGestionComponent } from './componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component';
+import { MenuValidacionComponent } from './componentes/flujos/especializacion/menus/menu-validacion/menu-validacion.component';
+import { MenuNotasComponent } from './componentes/flujos/especializacion/menus/menu-notas/menu-notas.component';
+import { MenuConsultasEspComponent } from './componentes/flujos/especializacion/menus/menu-consultas-esp/menu-consultas-esp.component';
+import {
+  MenuConvocatoriaEspecializacionComponent
+} from "./componentes/flujos/especializacion/menus/menu-convocatoria-esp/menu-convocatoria-especializacion.component";
 
 @NgModule({
   declarations: [
@@ -335,7 +345,13 @@ import {
     ResultadosPruebasCursoComponent,
     ValidacionCursoComponent,
     BooleanPipe,
-    ConvocatoriaEspecializacionComponent
+    ConvocatoriaEspecializacionComponent,
+    MenuPruebasEspecializacionComponent,
+    MenuGestionComponent,
+    MenuValidacionComponent,
+    MenuNotasComponent,
+    MenuConsultasEspComponent,
+    MenuConvocatoriaEspecializacionComponent,
   ],
   imports: [
     BrowserModule,

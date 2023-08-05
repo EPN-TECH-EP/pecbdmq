@@ -149,6 +149,26 @@ import {
 import {
   ConvocatoriaEspecializacionComponent
 } from "../../componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
+import {
+  ListaPruebasCursoComponent
+} from "../../componentes/flujos/especializacion/lista-pruebas-curso/lista-pruebas-curso.component";
+import {
+  ResultadosPruebasCursoComponent
+} from "../../componentes/flujos/especializacion/resultados-pruebas-curso/resultados-pruebas-curso.component";
+import {
+  MenuPruebasEspecializacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-pruebas-esp/menu-pruebas-especializacion.component";
+import {
+  MenuValidacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-validacion/menu-validacion.component";
+import {
+  MenuConsultasEspComponent
+} from "../../componentes/flujos/especializacion/menus/menu-consultas-esp/menu-consultas-esp.component";
+import {
+  MenuConvocatoriaEspecializacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-convocatoria-esp/menu-convocatoria-especializacion.component";
+import {MenuGestionComponent} from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
+import {MenuNotasComponent} from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
 
 const routes: Routes = [
   {
@@ -238,14 +258,23 @@ const routes: Routes = [
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
 
+      { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
+      { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },
+
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },
 
-
-      { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/cursos/estados', component: EstadoProcesoCursoComponent },
       { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
+
+      { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
+      { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
+      { path: 'especializacion/menu-validacion', component: MenuValidacionComponent },
+      { path: 'especializacion/menu-consultas', component: MenuConsultasEspComponent },
+      { path: 'especializacion/menu-convocatoria', component: MenuConvocatoriaEspecializacionComponent },
+      { path: 'especializacion/menu-gestion', component: MenuGestionComponent },
+      { path: 'especializacion/menu-notas', component: MenuNotasComponent },
 
     ],
   },
