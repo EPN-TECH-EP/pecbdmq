@@ -11,14 +11,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MyValidators } from 'src/app/util/validators';
 import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
+import {catchError, of, switchMap} from 'rxjs';
 import { FORMACION } from 'src/app/util/constantes/fomacion.const';
 import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
 import { OPCIONES_DATEPICKER } from 'src/app/util/constantes/opciones-datepicker.const';
 import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
 import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
 import {CursosService} from "../../../../servicios/especializacion/cursos.service";
-import {ESPECIALIZACION} from "../../../../util/constantes/especializacion.const";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-lista-pruebas-curso',
@@ -128,32 +130,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // Métodos de inicialización
   //////////////////////////////////////////
   ngOnInit(): void {
-    this.formacionService
-      .getEstadoActual()
-      .pipe(
-        catchError((errorResponse: HttpErrorResponse) => {
-          console.error(errorResponse);
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: (estado) => {
-          if (!estado || estado.httpStatusCode !== 200) {
-            return;
-          }
-
-          if (estado.mensaje === FORMACION.estadoPruebas) {
-            this.esEstadoPruebas = true;
-
-            this.cargarListaSubtipoPrueba();
-          }
-        },
-      });
-
-    //TODO borrar
-    //this.esEstadoPruebas = true;
-    //this.cargarListaSubtipoPrueba();
-    //TODO FIN borrar
+    this.cargarListaCursos();
   }
 
   // obtiene la lista de subtipos de prueba registrados
@@ -177,7 +154,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // obtiene la lista de prueba detalle desde el servicio
   cargarListaPruebaDetalle() {
     this.subscriptions.push(
-      this.pruebaDetalleService.listarConDatosTipoPrueba().subscribe({
+      this.pruebaDetalleService.listarConDatosTipoPruebaDeCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (lista: PruebaDetalleDatos[]) => {
           this.listaPruebaDetalleDatos = lista;
           console.log('listaPruebaDetalle', lista);
@@ -192,7 +169,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // lista de cursos con estado VALIDACIÓN. usar cursosService.listarCursosPorEstado
   cargarListaCursos() {
     this.subscriptions.push(
-      this.cursosService.listarCursosPorEstado("VALIDACIÓN").subscribe({
+      this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_PRUEBAS).subscribe({
         next: (lista: Curso[]) => {
           this.cursos = lista;
           console.log('listaCursos', lista);
@@ -297,8 +274,8 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         fechaFin: pruebaDetalleFormulario.fechaFin,
         hora: pruebaDetalleFormulario.hora,
         estado: 'ACTIVO',
-        codPeriodoAcademico: pruebaDetalleFormulario.codPeriodoAcademico,
-        codCursoEspecializacion: pruebaDetalleFormulario.codCursoEspecializacion,
+        codPeriodoAcademico: null,
+        codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
         codSubtipoPrueba: pruebaDetalleFormulario.codSubtipoPrueba,
         ordenTipoPrueba: ordenMaximo + 1,
         puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo,
@@ -624,7 +601,31 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
       this.cursoSeleccionado = $event;
       this.esVistaCurso = true;
       this.esVistaListaCursos = false;
+
+      this.cargarInformacionCurso(this.cursoSeleccionado);
+
+      this.cargarListaSubtipoPrueba();
+
+      this.cargarListaPruebaDetalle();
+
       console.log($event);
     }
+  }
+
+  volverAListaCursos() {
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
+  }
+
+  private async cargarInformacionCurso(curso: Curso) {
+    await this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
+      next: (tipoCurso) => {
+        this.cursoSeleccionado.tipoCurso = tipoCurso;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 }
