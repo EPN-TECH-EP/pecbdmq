@@ -14,6 +14,10 @@ import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { FormacionService } from "../../../../servicios/formacion/formacion.service";
 import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
 import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
+import { ActivatedRoute } from '@angular/router';
+import { CursosService } from '../../../../servicios/especializacion/cursos.service';
+import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
+import { CURSO_COMPLETO_ESTADO } from '../../../../util/constantes/especializacon.const';
 
 @Component({
   selector: 'app-reasignacion-inscripcion-especializacion',
@@ -23,12 +27,12 @@ import { EspInscripcionService } from '../../../../servicios/especializacion/esp
 export class ReasignacionInscripcionEspecializacionComponent extends ComponenteBase implements OnInit {
 
   inscripciones: InscripcionEsp[]
+  curso: Curso
   estaReasignando: boolean
   codigoInscripcionReasignando: number
   codigoUsuarioReasignado: FormControl<number>
   delegados: Delegado[]
   esEstadoValidacion = false
-
 
   headers = [
     { key: 'id', label: 'ID' },
@@ -39,14 +43,17 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
   ]
 
   constructor(
+    private route: ActivatedRoute,
     private inscripcionService: EspInscripcionService,
     private mdbNotificationService: MdbNotificationService,
     private delegadoService: DelegadoService,
     private popConfirmServiceLocal: MdbPopconfirmService,
-    private formacionService: FormacionService
+    private formacionService: FormacionService,
+    private cursosService: CursosService,
   ) {
     super(mdbNotificationService, popConfirmServiceLocal);
 
+    this.curso = null
     this.inscripciones = []
     this.estaReasignando = false
     this.codigoInscripcionReasignando = 0
@@ -55,6 +62,17 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
   }
 
   ngOnInit(): void {
+
+    this.route.params.subscribe(params => {
+      const codigo = params['codCurso'];
+      if (codigo) {
+        this.obtenerDatosCurso(codigo);
+      }
+    });
+
+    if (this.esEstadoValidacion) {
+
+    }
 
     this.formacionService.getEstadoActual().pipe(
       catchError((errorResponse: HttpErrorResponse) => {
@@ -102,6 +120,23 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
         console.log(value)
       }
     )
+  }
+
+  private obtenerDatosCurso(codigo: number) {
+    this.cursosService.obtenerCurso(codigo).subscribe({
+      next: (curso) => {
+        this.curso = curso;
+        this.verificarEstadoCurso();
+      }
+    });
+  }
+
+  private verificarEstadoCurso() {
+    this.cursosService.obtenerEstadoActual(this.curso.codCursoEspecializacion).subscribe({
+      next: (estado) => {
+        this.esEstadoValidacion = estado.mensaje === CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS;
+      }
+    })
   }
 
   confirmarReasignar(event: any) {
