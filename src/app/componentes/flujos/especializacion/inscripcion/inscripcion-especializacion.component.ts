@@ -8,7 +8,10 @@ import { Estudiante } from "../../../../modelo/flujos/Estudiante";
 import { ActivatedRoute } from "@angular/router";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { Notificacion } from "../../../../util/notificacion";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 
 @Component({
   selector: 'app-inscripcion',
@@ -25,13 +28,19 @@ export class InscripcionEspecializacionComponent implements OnInit {
   correoPersonal: FormControl;
   esEstadoInscripcion: boolean;
   isLoading: boolean;
+  esBotonDeshabilitado: boolean;
+  loading: boolean;
+  esInscripcionCompletada: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private inscripcionService: EspInscripcionService,
     private cursosService: CursosService,
+    private ns: MdbNotificationService
   ) {
     this.esEstadoInscripcion = false;
+    this.esInscripcionCompletada = false;
+    this.esBotonDeshabilitado = false;
     this.isLoading = false;
     this.fechaActual = new Date();
     this.datoPersonal = null;
@@ -48,7 +57,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
       Validators.required,
       Validators.email,
     ]);
-
+    this.loading = false;
     this.escucharCedula()
   }
 
@@ -57,6 +66,26 @@ export class InscripcionEspecializacionComponent implements OnInit {
       const codigo = params['codCurso'];
       if (codigo) {
         this.obtenerDatosCurso(codigo);
+      }
+    });
+  }
+
+  private mostrarNotificacion(mensaje: string, tipo: TipoAlerta,) {
+    Notificacion.notificar(this.ns, mensaje, tipo)
+  }
+
+  private guardarCorreo() {
+    this.loading = true;
+    this.inscripcionService.colocarCorreoPersonal(this.datoPersonal).subscribe({
+      next: (datos) => {
+        this.datoPersonal = datos.datoPersonal;
+        this.estudiante = datos.estudiante;
+        this.esBotonDeshabilitado = false;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        this.datoPersonal.correoPersonal = null;
       }
     });
   }
@@ -74,7 +103,9 @@ export class InscripcionEspecializacionComponent implements OnInit {
     });
   }
 
+
   private obtenerDatos(cedula: string) {
+    this.loading = true;
     this.inscripcionService.obtenerDatosDelPostulante(cedula).subscribe({
       next: (datos) => {
         this.datoPersonal = datos.datoPersonal;
@@ -82,7 +113,11 @@ export class InscripcionEspecializacionComponent implements OnInit {
         if (this.datoPersonal.correoPersonal !== null && this.datoPersonal.correoPersonal !== '') {
           this.correoPersonal.clearValidators();
           this.correoPersonal.updateValueAndValidity();
+          this.loading = false;
+          return;
         }
+        this.esBotonDeshabilitado = true;
+        this.loading = false;
       }
     })
   }
@@ -105,14 +140,26 @@ export class InscripcionEspecializacionComponent implements OnInit {
     })
   }
 
-  confirmarInscripcion() {
-    if (this.correoPersonal.invalid) {
-      this.correoPersonal.markAllAsTouched();
-      console.log('correo invalido');
-      return;
-    }
-    console.log('confirmar inscripcion');
+  onConfirmarInscripcion() {
+    this.inscripcionService.confirmarInscripcion(this.curso.codCursoEspecializacion, this.estudiante.codEstudiante).subscribe({
+      next: () => {
+        this.mostrarNotificacion('Inscripción realizada con éxito', TipoAlerta.ALERTA_OK);
+        this.esInscripcionCompletada = true;
+      },
+      error: (err) => {
+        this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+      }
+    });
+
   }
 
-
+  onActualizarCorreoPersonal() {
+    if (this.correoPersonal.invalid) {
+      this.correoPersonal.markAllAsTouched();
+      this.mostrarNotificacion('Ingrese un correo válido', TipoAlerta.ALERTA_WARNING);
+      return;
+    }
+    this.datoPersonal.correoPersonal = this.correoPersonal.value;
+    this.guardarCorreo()
+  }
 }

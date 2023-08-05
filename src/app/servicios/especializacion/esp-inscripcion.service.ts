@@ -25,4 +25,17 @@ export class EspInscripcionService {
   // obtener lista de inscritos por curso
   // endpoint: inscripcionEsp/porCurso/{codCurso}
 
+
+  colocarCorreoPersonal(datoPersonal: DatoPersonal) {
+    return this.http.patch<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
+  }
+
+  confirmarInscripcion(codCurso: number, codEstudiante: number) {
+    const data = {
+      codCursoEspecializacion: codCurso,
+      codEstudiante: codEstudiante
+    }
+    return this.http.post(`${ this.host }/inscripcionEsp/crear`, data);
+  }
+
 }

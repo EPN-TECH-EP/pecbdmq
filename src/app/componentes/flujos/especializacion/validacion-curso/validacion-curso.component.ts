@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { Usuario } from "../../../../modelo/admin/usuario";
+import { AutenticacionService } from "../../../../servicios/autenticacion.service";
 
 @Component({
   selector: 'app-validacion-curso',
@@ -14,6 +16,7 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 })
 export class ValidacionCursoComponent implements OnInit {
 
+  usuario: Usuario;
   cursoSeleccionado: Curso;
   cursos: Curso[]
   estaCargando: boolean;
@@ -24,8 +27,10 @@ export class ValidacionCursoComponent implements OnInit {
   constructor(
     private cursosService: CursosService,
     private builder: FormBuilder,
-    private ns: MdbNotificationService) {
+    private ns: MdbNotificationService,
+    private auth: AutenticacionService) {
     this.cursoSeleccionado = null;
+    this.usuario = null
     this.estaCargando = true;
     this.esVistaListaCursos = true;
     this.esVistaValidacionCurso = false;
@@ -35,15 +40,12 @@ export class ValidacionCursoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_CURSO).subscribe({
-      next: (cursos) => {
-        this.cursos = cursos
-        this.estaCargando = false;
-      },
-      error: (err) => {
-        console.error(err);
+    this.auth.user$.subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
       }
-    })
+    });
+    this.listarCursos();
   }
 
   private construirFormulario() {
@@ -74,11 +76,29 @@ export class ValidacionCursoComponent implements OnInit {
     });
   }
 
+  private listarCursos() {
+    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_CURSO).subscribe({
+      next: (cursos) => {
+        this.cursos = cursos
+        this.estaCargando = false;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
   private aprobarCurso() {
-    this.cursosService.aprobar(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+    this.cursosService.aprobar(
+      this.aprobarCursoForm.controls['aprobado'].value,
+      this.aprobarCursoForm.controls['observaciones'].value,
+      this.usuario.codUsuario,
+      this.cursoSeleccionado.codCursoEspecializacion,
+    ).subscribe({
       next: () => {
         this.notificar('Curso aprobado correctamente', TipoAlerta.ALERTA_OK);
         this.volverAListaCursos();
+        this.listarCursos();
       },
       error: (err) => {
         this.notificar('Hubo un error al guardar el estado del curso', TipoAlerta.ALERTA_ERROR);

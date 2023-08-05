@@ -1,5 +1,5 @@
-import {DatoPersonal} from "../../admin/dato-personal";
-import {EstadoEspecializacion} from "./EstadoEspecializacion";
+import { DatoPersonal } from "../../admin/dato-personal";
+import { EstadoEspecializacion } from "./EstadoEspecializacion";
 
 export interface Curso {
   codCursoEspecializacion: number
