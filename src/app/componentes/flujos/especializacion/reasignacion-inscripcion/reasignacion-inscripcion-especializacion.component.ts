@@ -12,8 +12,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { of } from "rxjs";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { FormacionService } from "../../../../servicios/formacion/formacion.service";
-import { InscripcionEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-esp';
-import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
+import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
+import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 
 @Component({
   selector: 'app-reasignacion-inscripcion-especializacion',
@@ -39,7 +39,7 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
   ]
 
   constructor(
-    private inscripcionService: InscripcionService,
+    private inscripcionService: EspInscripcionService,
     private mdbNotificationService: MdbNotificationService,
     private delegadoService: DelegadoService,
     private popConfirmServiceLocal: MdbPopconfirmService,

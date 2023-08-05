@@ -6,17 +6,17 @@ import {
 } from 'mdb-angular-ui-kit/notification';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { MdbTableDirective } from 'mdb-angular-ui-kit/table';
-import { AlertaComponent } from 'src/app/componentes/util/alerta/alerta.component';
-import { Menu } from 'src/app/modelo/admin/menu';
-import { CatalogoCurso } from 'src/app/modelo/flujos/especializacion/catalogo-curso';
-import { Curso } from 'src/app/modelo/flujos/especializacion/curso';
-import { TipoCurso } from 'src/app/modelo/flujos/especializacion/tipo-curso';
+import { AlertaComponent } from '../../../../componentes/util/alerta/alerta.component';
+import { Menu } from '../../../../modelo/admin/menu';
+import { CatalogoCurso } from '../../../../modelo/flujos/especializacion/catalogo-curso';
+import { TipoCurso } from '../../../../modelo/flujos/especializacion/tipo-curso';
 import { CatalogoCursoService } from 'src/app/servicios/especializacion/catalogo-curso.service';
-import { CursoService } from 'src/app/servicios/especializacion/curso.service';
-import { TipoCursoService } from 'src/app/servicios/especializacion/tipo-curso.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { Notificacion } from 'src/app/util/notificacion';
-import { ValidacionUtil } from 'src/app/util/validacion-util';
+import { CursoService } from '../../../../servicios/especializacion/curso.service';
+import { TipoCursoService } from '../../../../servicios/especializacion/tipo-curso.service';
+import { ComponenteBase } from '../../../../util/componente-base';
+import { Notificacion } from '../../../../util/notificacion';
+import { ValidacionUtil } from '../../../../util/validacion-util';
+import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
 
 @Component({
   selector: 'app-catalogo-curso',

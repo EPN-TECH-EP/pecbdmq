@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
-import { ValidacionRequisito } from "../../../../modelo/flujos/formacion/requisito";
+import { Router } from "@angular/router";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
@@ -9,9 +7,9 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
 import { forkJoin } from "rxjs";
 import { SafeResourceUrl } from "@angular/platform-browser";
-import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
-import { InscripcionCompletaEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-completa-esp';
-import { ValidacionRequisitoEsp } from 'src/app/modelo/flujos/especializacion/requisito';
+import { InscripcionCompletaEsp } from '../../../../modelo/flujos/especializacion/inscripcion-completa-esp';
+import { ValidacionRequisitoEsp } from '../../../../modelo/flujos/especializacion/requisito';
+import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 
 @Component({
   selector: 'app-validacion-especializacion',
@@ -31,7 +29,7 @@ export class ValidacionEspecializacionComponent implements OnInit {
   urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
 
   constructor(
-    private inscripcionService: InscripcionService,
+    private inscripcionService: EspInscripcionService,
     private documentosService: DocumentosService,
     private mdbNotificationService: MdbNotificationService,
     private builder: FormBuilder,

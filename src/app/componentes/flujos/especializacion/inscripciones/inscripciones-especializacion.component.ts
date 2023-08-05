@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { InscripcionItem } from "../../../../modelo/flujos/formacion/inscripcion-item";
-import { DatoPersonalService } from "../../../../servicios/dato-personal.service";
 import { Router } from "@angular/router";
 import { Usuario } from "../../../../modelo/admin/usuario";
 import { AutenticacionService } from "../../../../servicios/autenticacion.service";
@@ -13,9 +11,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { of } from "rxjs";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
-import { MuestraService } from "../../../../servicios/formacion/muestra.service";
-import { InscripcionService } from 'src/app/servicios/especializacion/inscripcion.service';
-import { InscripcionEsp } from 'src/app/modelo/flujos/especializacion/inscripcion-esp';
+import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
+import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 
 @Component({
   selector: 'app-inscripciones-especializacion',
@@ -39,14 +36,12 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   ]
 
   constructor(
-    private inscripcionService: InscripcionService,
-    private datoPersonalService: DatoPersonalService,
+    private inscripcionService: EspInscripcionService,
     private router: Router,
     private autenticacionService: AutenticacionService,
     private mdbNotificationService: MdbNotificationService,
     private formacionService: FormacionService,
     private delegadoService: DelegadoService,
-    private muestraService: MuestraService
   ) {
     this.inscripcionesAsignadas = []
     this.inscripciones = []

@@ -9,6 +9,10 @@ import { UnidadGestionService } from "../../../../../servicios/unidad-gestion.se
 import { UnidadGestion } from "../../../../../modelo/admin/unidad-gestion";
 import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicios/estacion-trabajo.service";
 import { forkJoin } from "rxjs";
+import { ActivatedRoute } from '@angular/router';
+import { CursosService } from 'src/app/servicios/especializacion/cursos.service';
+import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
+import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
 
 @Component({
   selector: 'app-instructores-especializacion',
@@ -25,6 +29,7 @@ export class InstructoresEspecializacionComponent implements OnInit {
   headers: {key: string, label: string}[];
   instructorForm: FormGroup;
   tiposProcedencia: TipoProcedencia[];
+  curso: Curso;
 
   estaBuscandoUsuarios: boolean;
   estaAgregandoInstructor: boolean;
@@ -33,7 +38,12 @@ export class InstructoresEspecializacionComponent implements OnInit {
   esInstructor: boolean;
   codigoInstructorEditando: number;
 
+  esEstadoCurso: boolean;
+  isLoading: boolean;
+
   constructor(
+    private route: ActivatedRoute,
+    private cursosService: CursosService,
     private instructorService: InstructorService,
     private builder: FormBuilder,
     private tipoProcedenciaService: TipoProcedenciaService,
@@ -65,26 +75,35 @@ export class InstructoresEspecializacionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const combinedObservables = forkJoin([
-      this.instructorService.listar(),
-      this.tipoProcedenciaService.listar(),
-      this.unidadGestionService.listar(),
-      this.estacionTrabajoService.listar(),
-    ]);
-
-    combinedObservables.subscribe({
-      next: ([instructores, procedencias, unidades, estaciones]) => {
-        this.instructores = instructores;
-        this.tiposProcedencia = procedencias;
-        this.unidadesGestion = unidades;
-        this.estacionesTrabajo = estaciones;
-      },
-      error: () => {
-        console.error('Error en una o más peticiones');
+    this.route.params.subscribe(params => {
+      const codigo = params['codCurso'];
+      if (codigo) {
+        this.obtenerDatosCurso(codigo);
       }
     });
 
-    this.construirFormularioInstructor();
+    if (this.esEstadoCurso) {
+      const combinedObservables = forkJoin([
+        this.instructorService.listar(),
+        this.tipoProcedenciaService.listar(),
+        this.unidadGestionService.listar(),
+        this.estacionTrabajoService.listar(),
+      ]);
+  
+      combinedObservables.subscribe({
+        next: ([instructores, procedencias, unidades, estaciones]) => {
+          this.instructores = instructores;
+          this.tiposProcedencia = procedencias;
+          this.unidadesGestion = unidades;
+          this.estacionesTrabajo = estaciones;
+        },
+        error: () => {
+          console.error('Error en una o más peticiones');
+        }
+      });
+  
+      this.construirFormularioInstructor();
+    }
   }
 
   private construirFormularioInstructor() {
@@ -93,6 +112,24 @@ export class InstructoresEspecializacionComponent implements OnInit {
       codUnidadGestion: ['', Validators.required],
       codZona: ['', Validators.required],
       // codTipoContrato     : ['', Validators.required],
+    })
+  }
+
+  private obtenerDatosCurso(codigo: number) {
+    this.cursosService.obtenerCurso(codigo).subscribe({
+      next: (curso) => {
+        this.curso = curso;
+        this.verificarEstadoCurso();
+      }
+    });
+  }
+
+  private verificarEstadoCurso() {
+    this.cursosService.obtenerEstadoActual(this.curso.codCursoEspecializacion).subscribe({
+      next: (estado) => {
+        this.esEstadoCurso = estado.mensaje === CURSO_COMPLETO_ESTADO.CURSO;
+        this.isLoading = this.esEstadoCurso;
+      }
     })
   }
 
