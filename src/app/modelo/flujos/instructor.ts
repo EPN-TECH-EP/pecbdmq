@@ -43,3 +43,14 @@ export const defaultInstructor: Instructor = {
   tipoInstructor    : '',
   codTipoInstructor : 0,
 }
+
+export interface EspInstructorRequest {
+  codDatosPersonales     : number;
+  codTipoProcedencia     : number;
+  codEstacion            : number;
+  codUnidadGestion       : number;
+  codTipoContrato        : number;
+  codCursoEspecializacion: number;
+  codTipoInstructor      : number;
+  descripcion            : string;
+}

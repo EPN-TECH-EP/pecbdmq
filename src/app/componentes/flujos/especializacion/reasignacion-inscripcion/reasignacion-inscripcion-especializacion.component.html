@@ -1,0 +1,117 @@
+<app-boton-volver
+  [link]="'/principal/especializacion/menu-validacion'"
+  [texto]="'Regresar al menú de validación'"
+></app-boton-volver>
+
+<ng-container *ngIf="!esEstadoValidacion">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de validación no activo</h5>
+      <p class="card-text">
+        El proceso de validación de inscripciones no se encuentra activo.
+        Por lo tanto, no se puede realizar la reasignación de inscripciones.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<div class="container" *ngIf="esEstadoValidacion">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Reasignación de inscripciones</h1>
+    </div>
+  </div>
+  <p>Número total de inscripciones: <span class="badge badge-primary">{{ inscripciones?.length }}</span></p>
+
+  <section>
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm overflow-auto">
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #tablaInscripciones="mdbTable"
+        [dataSource]="inscripciones"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr class="fw-bold fs-6">
+          <th *ngFor="let head of headers">
+            <b>{{ head.label }}</b>
+          </th>
+          <th class="text-center"><b>Acciones</b></th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let inscripcion of tablaInscripciones.data">
+          <td>{{ inscripcion?.codInscripcion }}</td>
+          <td>{{ inscripcion?.cedula }}</td>
+          <td>{{ inscripcion?.nombre }}</td>
+          <td>{{ inscripcion?.apellido }}</td>
+
+          <td>
+            <ng-container
+              *ngIf="!estaReasignando || codigoInscripcionReasignando !== inscripcion.codInscripcion"
+            >
+              <div class="fw-bold">{{ inscripcion?.nombreUsuario }}</div>
+              <div class="text-muted">{{inscripcion?.correoUsuario}}</div>
+            </ng-container>
+            <ng-container *ngIf="estaReasignando && codigoInscripcionReasignando === inscripcion.codInscripcion">
+              <mdb-form-control>
+                <mdb-select
+                  [filter]="true"
+                  [formControl]="codigoUsuarioReasignado"
+                >
+                  <mdb-option
+                    *ngFor="let delegado of delegados"
+                    [label]="delegado.nombre + ' ' + delegado.apellido"
+                    [value]="delegado.cod_usuario">
+                    {{ delegado.nombre }} {{ delegado.apellido}}
+                    <span class="option-secondary-text">{{delegado.cedula}}</span>
+                  </mdb-option>
+                </mdb-select>
+                <label mdbLabel class="form-label">Escoja a un delegado</label>
+              </mdb-form-control>
+            </ng-container>
+          </td>
+          <td class="text-center">
+
+            <ng-container
+              *ngIf="!estaReasignando || codigoInscripcionReasignando !== inscripcion.codInscripcion"
+            >
+              <button
+                mdbTooltip="Reasignar"
+                class="m-0 p-0 shadow-0 btn text-dark"
+                (click)="editarFila(inscripcion)"
+              >
+                <i class="fas fa-lg fa-user-check"></i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="estaReasignando && codigoInscripcionReasignando === inscripcion.codInscripcion">
+              <button
+                class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                (click)="confirmarReasignar($event)"
+              >
+                <i class="fa fa-check"></i> Reasignar
+              </button>
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="estaReasignando = false; codigoInscripcionReasignando = 0"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </ng-container>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </div>
+
+  </section>
+
+</div>
