@@ -21,7 +21,7 @@ export class EspInscripcionService {
 
   private host = environment.apiUrl;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.idInscripcion = null
   }
 
@@ -42,7 +42,8 @@ export class EspInscripcionService {
       codCursoEspecializacion: codCurso,
       codEstudiante: codEstudiante
     }
-    return this.http.post(`${ this.host }/inscripcionEsp/crear`, data);
+    return this.http.post(`${this.host}/inscripcionEsp/crear`, data);
+  }
 
     listarInscripciones() {
     return this.http.get<InscripcionEsp[]>(`${this.host}/inscripcionEsp/listarPaginado`);

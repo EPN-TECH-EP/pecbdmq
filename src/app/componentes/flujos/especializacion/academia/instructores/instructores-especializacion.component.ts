@@ -11,8 +11,9 @@ import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicio
 import { forkJoin } from "rxjs";
 import { ActivatedRoute } from '@angular/router';
 import { CursosService } from 'src/app/servicios/especializacion/cursos.service';
-import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
+
 import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
+import {CURSO_COMPLETO_ESTADO} from "../../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-instructores-especializacion',
@@ -89,7 +90,7 @@ export class InstructoresEspecializacionComponent implements OnInit {
         this.unidadGestionService.listar(),
         this.estacionTrabajoService.listar(),
       ]);
-  
+
       combinedObservables.subscribe({
         next: ([instructores, procedencias, unidades, estaciones]) => {
           this.instructores = instructores;
@@ -101,7 +102,7 @@ export class InstructoresEspecializacionComponent implements OnInit {
           console.error('Error en una o más peticiones');
         }
       });
-  
+
       this.construirFormularioInstructor();
     }
   }

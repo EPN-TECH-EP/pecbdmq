@@ -8,10 +8,11 @@ import { Estudiante } from "../../../../modelo/flujos/Estudiante";
 import { ActivatedRoute } from "@angular/router";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-inscripcion',
