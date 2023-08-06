@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CursosService } from 'src/app/servicios/especializacion/cursos.service';
 import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
 import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
+import { EspInstructorService } from 'src/app/servicios/especializacion/esp-instructor.service';
 
 @Component({
   selector: 'app-instructores-especializacion',
@@ -44,7 +45,7 @@ export class InstructoresEspecializacionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cursosService: CursosService,
-    private instructorService: InstructorService,
+    private instructorService: EspInstructorService,
     private builder: FormBuilder,
     private tipoProcedenciaService: TipoProcedenciaService,
     private unidadGestionService: UnidadGestionService,
@@ -82,28 +83,30 @@ export class InstructoresEspecializacionComponent implements OnInit {
       }
     });
 
-    if (this.esEstadoCurso) {
-      const combinedObservables = forkJoin([
-        this.instructorService.listar(),
-        this.tipoProcedenciaService.listar(),
-        this.unidadGestionService.listar(),
-        this.estacionTrabajoService.listar(),
-      ]);
-  
-      combinedObservables.subscribe({
-        next: ([instructores, procedencias, unidades, estaciones]) => {
-          this.instructores = instructores;
-          this.tiposProcedencia = procedencias;
-          this.unidadesGestion = unidades;
-          this.estacionesTrabajo = estaciones;
-        },
-        error: () => {
-          console.error('Error en una o más peticiones');
-        }
-      });
-  
-      this.construirFormularioInstructor();
+    if (!this.esEstadoCurso) {
+      return;
     }
+
+    const combinedObservables = forkJoin([
+      this.instructorService.listar(),
+      this.tipoProcedenciaService.listar(),
+      this.unidadGestionService.listar(),
+      this.estacionTrabajoService.listar(),
+    ]);
+
+    combinedObservables.subscribe({
+      next: ([instructores, procedencias, unidades, estaciones]) => {
+        this.instructores = instructores;
+        this.tiposProcedencia = procedencias;
+        this.unidadesGestion = unidades;
+        this.estacionesTrabajo = estaciones;
+      },
+      error: () => {
+        console.error('Error en una o más peticiones');
+      }
+    });
+
+    this.construirFormularioInstructor();
   }
 
   private construirFormularioInstructor() {

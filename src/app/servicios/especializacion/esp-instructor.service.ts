@@ -17,6 +17,10 @@ export class EspInstructorService {
     return this.http.get<Instructor[]>(`${ this.host }/cursoInstructor/listar`);
   }
 
+  listarPorCurso(codCurso: number) {
+    return this.http.get<Instructor[]>(`${ this.host }/cursoInstructor/listarInstructoresCurso/${ codCurso }`);
+  }
+
   getInstructorById(codUsuario: number) {
     return this.http.post<Instructor>(`${ this.host }/cursoInstructor/ByUser?codUsuario=${ codUsuario }`, {});
   }

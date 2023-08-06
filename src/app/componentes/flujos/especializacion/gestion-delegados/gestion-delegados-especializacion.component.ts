@@ -8,9 +8,10 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { UsuarioNombreApellido } from "../../../../modelo/util/nombre-apellido";
-import { Delegado, DelegadoCreate, DelegadoService } from "../../../../servicios/formacion/delegado.service";
+import { Delegado } from "../../../../servicios/formacion/delegado.service";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { ComponenteBase } from "../../../../util/componente-base";
+import { EspDelegadoService, EspDelegadoCreate } from 'src/app/servicios/especializacion/esp-delegado.service';
 
 @Component({
   selector: 'app-gestion-delegados-especializacion',
@@ -37,7 +38,7 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
     private mdbNotificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private builder: FormBuilder,
-    private delegadoService: DelegadoService,
+    private delegadoService: EspDelegadoService,
     private popConfirmService: MdbPopconfirmService,
   ) {
     super(mdbNotificationService, popConfirmService);
@@ -234,9 +235,8 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
   }
 
   asignarComoDelegado(usuario: Usuario) {
-    const delegado: DelegadoCreate = {
+    const delegado: EspDelegadoCreate = {
       codUsuario: usuario.codUsuario,
-      codPeriodoAcademico: null,
       estado: 'ACTIVO'
     }
 

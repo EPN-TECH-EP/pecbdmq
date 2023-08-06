@@ -70,8 +70,8 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
       }
     });
 
-    if (this.esEstadoValidacion) {
-
+    if (!this.esEstadoValidacion) {
+      return;
     }
 
     this.formacionService.getEstadoActual().pipe(
@@ -112,16 +112,6 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
 
   }
 
-  editarFila(inscripcion: InscripcionEsp) {
-    this.codigoInscripcionReasignando = inscripcion.codInscripcion;
-    this.estaReasignando = true
-    this.codigoUsuarioReasignado.valueChanges.subscribe(
-      value => {
-        console.log(value)
-      }
-    )
-  }
-
   private obtenerDatosCurso(codigo: number) {
     this.cursosService.obtenerCurso(codigo).subscribe({
       next: (curso) => {
@@ -137,6 +127,16 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
         this.esEstadoValidacion = estado.mensaje === CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS;
       }
     })
+  }
+
+  editarFila(inscripcion: InscripcionEsp) {
+    this.codigoInscripcionReasignando = inscripcion.codInscripcion;
+    this.estaReasignando = true
+    this.codigoUsuarioReasignado.valueChanges.subscribe(
+      value => {
+        console.log(value)
+      }
+    )
   }
 
   confirmarReasignar(event: any) {
