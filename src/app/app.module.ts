@@ -218,6 +218,8 @@ import {
 } from './componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component';
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
+import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import { CrearCursoComponent } from './componentes/flujos/especializacion/crear-curso/crear-curso.component';
 import {
   MenuAdministracionEspecializacionComponent
 } from './componentes/flujos/especializacion/menus/menu-administracion-especializacion/menu-administracion-especializacion.component';
@@ -227,6 +229,8 @@ import {
 import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import { ListaPruebasCursoComponent } from './componentes/flujos/especializacion/lista-pruebas-curso/lista-pruebas-curso.component';
+import { ResultadosPruebasCursoComponent } from './componentes/flujos/especializacion/resultados-pruebas-curso/resultados-pruebas-curso.component';
 import {
   ValidacionCursoComponent
 } from './componentes/flujos/especializacion/validacion-curso/validacion-curso.component';
@@ -322,9 +326,13 @@ import {
     ApelacionesComponent,
     ModalApelacionComponent,
     ListaCursosComponent,
+    CatalogoCursoComponent,
+    CrearCursoComponent,
     MenuAdministracionEspecializacionComponent,
     EstadoProcesoCursoComponent,
     InscripcionEspecializacionComponent,
+    ListaPruebasCursoComponent,
+    ResultadosPruebasCursoComponent,
     ValidacionCursoComponent,
     BooleanPipe,
     ConvocatoriaEspecializacionComponent

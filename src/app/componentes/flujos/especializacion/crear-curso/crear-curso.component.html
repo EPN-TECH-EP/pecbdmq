@@ -1,0 +1,838 @@
+<app-boton-volver
+  [link]="ESPECIALIZACION.MENU_CURSO"
+  [texto]="'Regresar al menú anterior'"
+></app-boton-volver>
+
+
+<div class="container">
+
+  <div class="row m-3 text-center">
+    <p class="fs-4 fw-bolder mb-3">
+      Crear curso
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col">
+
+      <!-- Stepper: usar stepperHeadClick en false para evitar saltos entre los pasos -->
+      <mdb-stepper #stepper [linear]="true" [stepperHeadClick]="false"
+                   (stepChange)="onStepChange($event)">
+
+        <!---------------------------->
+        <!-- PASO UNO: Tipo de curso-->
+        <!---------------------------->
+
+        <mdb-step [name]="'Tipo de curso'">
+
+          <div class="container">
+            <div class="row d-flex justify-content-center">
+              <div class="col-10">
+                <!-- Tipo de curso input -->
+                <mdb-form-control>
+                  <mdb-select
+                    [(ngModel)]="tipoCursoSeleccionado"
+                    name="nevoRequisito"
+                    (selected)="onTipoCursoChange()"
+                  >
+                    <mdb-option
+                      *ngFor="let tipo of listaTipoCurso"
+                      [value]="tipo"
+                      class="text-wrap"
+                    >
+                      {{ tipo.nombreTipoCurso }}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label"
+                  >Seleccione un tipo de curso</label
+                  >
+                </mdb-form-control>
+
+                <!-- Catálogo curso input -->
+                <mdb-form-control class="my-3">
+                  <mdb-select
+                    [(ngModel)]="catalogoCursoSeleccionado"
+                    name="nevoRequisito"
+                  >
+                    <mdb-option
+                      *ngFor="let catalogo of listaCatalogoCurso"
+                      [value]="catalogo"
+                      class="text-wrap"
+                    >
+                      {{ catalogo.nombreCatalogoCurso }}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label"
+                  >Seleccione un curso de la lista</label
+                  >
+                </mdb-form-control>
+
+                <button
+                  id="next-step-1"
+                  class="btn btn-primary col-4"
+                  (click)="stepper.next()"
+                  [disabled]="tipoCursoSeleccionado == null || catalogoCursoSeleccionado == null"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </mdb-step>
+
+        <!-------------------------->
+        <!-- PASO DOS: Formulario -->
+        <!-------------------------->
+        <mdb-step name="Datos del curso" [stepForm]="cursoForm">
+          <form [formGroup]="cursoForm">
+
+            <div class="container">
+
+              <div class="row mb-2">
+                <div class="col">
+                  TIpo de curso: <span class="text-primary"> {{ tipoCursoSeleccionado?.nombreTipoCurso }} -
+                  {{ catalogoCursoSeleccionado?.nombreCatalogoCurso }}</span>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col">
+                  <!-- nombre -->
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      type="text"
+                      id="nombre"
+                      class="form-control mb-5"
+                      formControlName="nombre"
+                    />
+                    <label mdbLabel class="form-label mb-2x" for="nombre">Nombre del curso</label>
+                    <mdb-error *ngIf="nombreField?.invalid && nombreField?.touched">
+                      <i class="fas fa-times-circle"></i>
+                      Campo Obligatorio
+                    </mdb-error>
+                    <mdb-success *ngIf="nombreField?.valid && nombreField?.touched">
+                    </mdb-success>
+                  </mdb-form-control>
+                </div>
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <!-- Cupos -->
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        type="text"
+                        id="numeroCupo"
+                        class="form-control mb-5"
+                        formControlName="numeroCupo"
+                        min="1"
+                        max="100"
+                        inputValidation="entero"
+                        mdbTooltip="Rango: 1 - 100"
+                      />
+                      <label
+                        mdbLabel
+                        class="form-label mb-2x"
+                        for="numeroCupo"
+                      >Número de Cupos</label
+                      >
+                      <mdb-error
+                        *ngIf="numeroCupoField?.invalid && numeroCupoField?.touched"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success
+                        *ngIf="numeroCupoField?.valid && numeroCupoField?.touched"
+                      >
+                      </mdb-success>
+                    </mdb-form-control>
+
+                  </div>
+
+                  <div class="col">
+
+                    <!-- Nota mínima -->
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        type="text"
+                        id="notaMinima"
+                        class="form-control mb-5"
+                        formControlName="notaMinima"
+                        min="1"
+                        max="100"
+                        inputValidation="decimal"
+                        mdbTooltip="Rango: 1 - 100"
+                      />
+                      <label
+                        mdbLabel
+                        class="form-label mb-2x"
+                        for="notaMinima"
+                      >Nota mínima</label
+                      >
+                      <mdb-error
+                        *ngIf="notaMinimaField?.invalid && notaMinimaField?.touched"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success
+                        *ngIf="notaMinimaField?.valid && notaMinimaField?.touched"
+                      >
+                      </mdb-success>
+                    </mdb-form-control>
+
+                  </div>
+
+                  <div class="col">
+
+                    <!-- Porcentaje aceptación -->
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        type="text"
+                        id="porcentajeAceptacionCurso"
+                        class="form-control mb-5"
+                        formControlName="porcentajeAceptacionCurso"
+                        min="1"
+                        max="100"
+                        inputValidation="decimal"
+                        mdbTooltip="Rango: 1 - 100"
+                      />
+                      <label
+                        mdbLabel
+                        class="form-label mb-2x"
+                        for="porcentajeAceptacionCurso"
+                      >% de estudiantes</label
+                      >
+                      <mdb-error
+                        *ngIf="porcentajeAceptacionCursoField?.invalid && porcentajeAceptacionCursoField?.touched"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success
+                        *ngIf="porcentajeAceptacionCursoField?.valid && porcentajeAceptacionCursoField?.touched"
+                      >
+                      </mdb-success>
+                    </mdb-form-control>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <!-- Fecha Inicio-->
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      [mdbDatepicker]="dpFechaInicioCurso"
+                      type="text"
+                      id="fechaInicioCurso"
+                      class="form-control mb-5"
+                      formControlName="fechaInicioCurso"
+                      (click)="dpFechaInicioCurso.open()"
+                      readonly="true"
+                    />
+                    <label
+                      mdbLabel
+                      class="form-label mb-2x"
+                      for="fechaInicioCurso"
+                    >Seleccionar Fecha Inicio</label
+                    >
+                    <mdb-datepicker-toggle
+                      [mdbDatepicker]="dpFechaInicioCurso"
+                      (click)="fechaInicioCursoField.markAsTouched()"
+                    ></mdb-datepicker-toggle>
+                    <mdb-datepicker
+                      #dpFechaInicioCurso="mdbDatepicker"
+                      [options]="OPCIONES_DATEPICKER"
+                      [inline]="true"
+                      [minDate]="fechaActual"
+                    ></mdb-datepicker>
+                    <mdb-error
+                      *ngIf="fechaInicioCursoField?.invalid && fechaInicioCursoField?.touched"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                      Campo Obligatorio
+                    </mdb-error>
+                    <mdb-success
+                      *ngIf="fechaInicioCursoField?.valid && fechaInicioCursoField?.touched"
+                    >
+                    </mdb-success>
+                  </mdb-form-control>
+                </div>
+
+                <div class="col">
+                  <!-- Fecha Fin-->
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      [mdbDatepicker]="dpFechaFinCurso"
+                      type="text"
+                      id="fechaFinCurso"
+                      class="form-control mb-5"
+                      formControlName="fechaFinCurso"
+                      (click)="dpFechaFinCurso.open()"
+                      readonly="true"
+                    />
+                    <label
+                      mdbLabel
+                      class="form-label mb-2x"
+                      for="fechaFinCurso"
+                    >Seleccionar Fecha Fin</label
+                    >
+                    <mdb-datepicker-toggle
+                      [mdbDatepicker]="dpFechaFinCurso"
+                      (click)="fechaFinCursoField.markAsTouched()"
+                    ></mdb-datepicker-toggle>
+                    <mdb-datepicker
+                      #dpFechaFinCurso="mdbDatepicker"
+                      [options]="OPCIONES_DATEPICKER"
+                      [inline]="true"
+                      [minDate]="fechaActual"
+                    ></mdb-datepicker>
+                    <mdb-error
+                      *ngIf="fechaFinCursoField?.invalid && fechaFinCursoField?.touched"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                      Campo Obligatorio
+                    </mdb-error>
+                    <mdb-success
+                      *ngIf="fechaFinCursoField?.valid && fechaFinCursoField?.touched"
+                    >
+                    </mdb-success>
+                  </mdb-form-control>
+                </div>
+
+                <!--<div class="row">
+
+                  <div class="col">
+                    &lt;!&ndash; Fecha Inicio notas&ndash;&gt;
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        [mdbDatepicker]="dpFechaInicioCargaNotaCurso"
+                        type="text"
+                        id="fechaInicioCargaNota"
+                        class="form-control mb-5"
+                        formControlName="fechaInicioCargaNota"
+                        (click)="dpFechaInicioCargaNotaCurso.open()"
+                        readonly="true"
+                      />
+                      <label
+                        mdbLabel
+                        class="form-label mb-2x"
+                        for="fechaInicioCargaNota"
+                      >Fecha Inicio Registro notas</label
+                      >
+                      <mdb-datepicker-toggle
+                        [mdbDatepicker]="dpFechaInicioCargaNotaCurso"
+                        (click)="fechaInicioCargaNotaField.markAsTouched()"
+                      ></mdb-datepicker-toggle>
+                      <mdb-datepicker
+                        #dpFechaInicioCargaNotaCurso="mdbDatepicker"
+                        [options]="OPCIONES_DATEPICKER"
+                        [inline]="true"
+                        [minDate]="fechaActual"
+                      ></mdb-datepicker>
+                      <mdb-error
+                        *ngIf="fechaInicioCargaNotaField?.invalid && fechaInicioCargaNotaField?.touched"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success
+                        *ngIf="fechaInicioCargaNotaField?.valid && fechaInicioCargaNotaField?.touched"
+                      >
+                      </mdb-success>
+                    </mdb-form-control>
+                  </div>
+
+                  <div class="col">
+                    &lt;!&ndash; Fecha Inicio notas&ndash;&gt;
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        [mdbDatepicker]="dpFechaFinCargaNotaCurso"
+                        type="text"
+                        id="fechaFinCargaNota"
+                        class="form-control mb-5"
+                        formControlName="fechaFinCargaNota"
+                        (click)="dpFechaFinCargaNotaCurso.open()"
+                        readonly="true"
+                      />
+                      <label
+                        mdbLabel
+                        class="form-label mb-2x"
+                        for="fechaFinCargaNota"
+                      >Fecha Fin Carga notas</label
+                      >
+                      <mdb-datepicker-toggle
+                        [mdbDatepicker]="dpFechaFinCargaNotaCurso"
+                        (click)="fechaFinCargaNotaField.markAsTouched()"
+                      ></mdb-datepicker-toggle>
+                      <mdb-datepicker
+                        #dpFechaFinCargaNotaCurso="mdbDatepicker"
+                        [options]="OPCIONES_DATEPICKER"
+                        [inline]="true"
+                        [minDate]="fechaActual"
+                      ></mdb-datepicker>
+                      <mdb-error
+                        *ngIf="fechaFinCargaNotaField?.invalid && fechaFinCargaNotaField?.touched"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                        Campo Obligatorio
+                      </mdb-error>
+                      <mdb-success
+                        *ngIf="fechaFinCargaNotaField?.valid && fechaFinCargaNotaField?.touched"
+                      >
+                      </mdb-success>
+                    </mdb-form-control>
+                  </div>
+                </div>-->
+              </div>
+
+              <div class="row mb-2">
+
+                <div class="col">
+                  <mdb-form-control>
+                    <mdb-select mdbValidate formControlName="codAula">
+                      <mdb-option *ngFor="let aula of aulasCatalogo;" [value]="aula.codAula">
+                        {{ aula.nombreAula }}
+                      </mdb-option>
+                    </mdb-select>
+                    <label mdbLabel class="form-label">Aula<span
+                      class="text-danger">*</span></label>
+                  </mdb-form-control>
+                </div>
+
+                <div class="col">
+                  <div class="form-check">
+                    <input
+                      mdbCheckbox
+                      class="form-check-input"
+                      type="checkbox"
+                      value="true"
+                      id="tieneModulosCheck"
+                      formControlName="tieneModulos"
+                    />
+                    <label class="form-check-label fs-6" for="tieneModulosCheck"> ¿Tiene módulos? </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="alert alert-primary p-2 mb-3" role="alert">
+                    <i class="fas fa-info-circle mx-1"></i>
+                    Ingrese una dirección de email a la que podamos enviar
+                    la notificación de la creación del curso
+                  </div>
+                  <mdb-form-control>
+                    <input
+                      mdbValidate
+                      mdbInput
+                      type="email"
+                      id="email"
+                      class="form-control mb-5 mt-4"
+                      formControlName="emailNotificacion"
+                    />
+                    <label mdbLabel class="form-label mb-3" for="email">Correo Electrónico</label>
+                    <mdb-error *ngIf="emailNotificacionField.invalid && emailNotificacionField.touched">
+                      <i class="fas fa-times-circle"></i>
+                      Correo electrónico inválido
+                    </mdb-error>
+                    <mdb-success *ngIf="emailNotificacionField.valid">
+                    </mdb-success>
+                  </mdb-form-control>
+                </div>
+              </div>
+
+            </div>
+
+          </form>
+
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-1"
+              class="btn btn-primary"
+              (click)="stepper.previous()"
+            >
+              Anterior
+            </button>
+            <button
+              id="next-step-2"
+              class="btn btn-primary"
+              (click)="stepper.next()"
+              [disabled]="cursoForm.invalid"
+            >
+              Siguiente
+            </button>
+          </div>
+
+        </mdb-step>
+
+        <!--------------------------->
+        <!-- PASO TRES: Requisitos -->
+        <!--------------------------->
+        <mdb-step [name]="'Requisitos'">
+          <ng-template mdbStepIcon><i class="fas fa-envelope"></i></ng-template>
+          <h3 class="text-center">Lista Requisitos</h3>
+
+          <div class="row d-flex justify-content-center">
+            <div class="datatable table-editor mt-3 col-10">
+              <button
+                class="btn btn-primary btn-sm ms-3"
+                id="btnAgregarFila"
+                [disabled]="editElementIndex !== -1"
+                (click)="addRow = true"
+              >
+                <i class="fa fa-plus"></i> &nbsp;Agregar requisito
+              </button>
+              <div
+                class="m-5"
+                *ngIf="requisitosCurso.length === 0"
+                [hidden]="addRow"
+              >
+                <h5 class="text-center">No hay requisitos</h5>
+                <h6 class="text-center">Por favor agregue un requisito</h6>
+              </div>
+              <table
+                class="table datatable-table"
+                mdbTable
+                #table="mdbTable"
+                [dataSource]="requisitosCurso"
+              >
+                <thead
+                  *ngIf="requisitosCurso.length > 0"
+                  class="datatable-header"
+                >
+                <tr>
+                  <th>
+                    <b> Requerimiento </b>
+                  </th>
+                  <th scope="col" class="text-center"><b>Acciones</b></th>
+                </tr>
+                </thead>
+                <tbody class="datatable-body">
+                <tr *ngIf="addRow">
+                  <td>
+                    <mdb-form-control>
+                      <mdb-select
+                        [(ngModel)]="itemRequisito"
+                        name="nevoRequisito"
+                      >
+                        <mdb-option
+                          *ngFor="let requisito of listaRequisitos"
+                          [value]="requisito"
+                          class="text-wrap"
+                        >
+                          {{ requisito.nombre }}
+                        </mdb-option>
+                      </mdb-select>
+                      <label mdbLabel class="form-label"
+                      >Seleccione un requisito</label
+                      >
+                    </mdb-form-control>
+                  </td>
+                  <td class="text-center">
+                    <!-- Agregar -->
+                    <button
+                      class="me-4 m-0 p-0 shadow-0 btn btn-lg text-success"
+                      type="submit"
+                      (click)="agregarRequisito()"
+                      [disabled]="itemRequisito === null"
+                    >
+                      <i class="fa fa-check"></i> Agregar
+                    </button>
+                    <!-- Cancelar -->
+                    <button
+                      class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                      (click)="addRow = false"
+                    >
+                      <i class="fa fa-ban"></i> Cancelar
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- Filas de datos -->
+                <tr *ngFor="let requisito of table.data; let index = index">
+                  <td>
+                    {{ requisito.nombre }}
+                  </td>
+                  <td class="text-center">
+                    <ng-container
+                      *ngIf="editElementIndex === -1 || editElementIndex !== index">
+                      <button
+                        mdbTooltip="Eliminar requisito"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        [disabled]="editElementIndex !== -1 && editElementIndex !== index"
+                        (click)="eliminarRequisito(requisito.codigoRequisito)"
+                      >
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                    </ng-container>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-2"
+              class="btn btn-primary"
+              (click)="stepper.previous()"
+            >
+              Anterior
+            </button>
+            <button
+              id="next-step-3"
+              class="btn btn-primary"
+              (click)="stepper.next()"
+              [disabled]="requisitosCurso.length === 0"
+            >
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+
+        <!---------------------------------------->
+        <!-- PASO CUATRO: GESTIÓN DE DOCUMENTOS -->
+        <!---------------------------------------->
+        <mdb-step name="Datos del curso" [stepForm]="cursoForm">
+
+          <div class="col-md-6">
+            <p class="fs-5 fw-bolder mb-3">Gestión de documentos</p>
+
+            <button class="btn btn-primary mb-3" (click)="addRow = true" [disabled]="addRow">
+              <i class="fa-solid fa-circle-plus me-2"></i>
+              Cargar documento
+            </button>
+
+            <!-- Add new row -->
+            <ng-container *ngIf="addRow">
+              <div>
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    #archivoMdbInput="mdbInput"
+                    mdbInput
+                    type="file"
+                    class="form-control"
+                    (change)="cargarArchivoCurso($event)"/>
+                </mdb-form-control>
+              </div>
+
+              <!--<div class="text-start">
+                <button
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  id="btnRegistrar"
+                  type="submit"
+                  [disabled]="archivoCurso === null"
+                  (click)="crear()">
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="addRow = false">
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </div>-->
+            </ng-container>
+
+            <ng-container *ngIf="listaArchivosCurso.length === 0">
+              <div class="mt-3">No existen documentos registrados para el curso</div>
+            </ng-container>
+
+            <ng-container *ngIf="listaArchivosCurso.length > 0">
+              <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+                <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable"
+                       [dataSource]="listaArchivosCurso">
+                  <thead class="datatable-header">
+                  <tr>
+                    <th
+                      *ngFor="let header of headersArchivos"
+                      scope="col"
+                      class="fw-bold"
+                      [mdbTableSortHeader]="header.key">
+                      <b> {{ header.label | titlecase }}</b>
+                    </th>
+                    <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+                  </tr>
+                  </thead>
+                  <tbody class="datatable-body">
+                  <!-- Data -->
+                  <tr *ngFor="let documento of table.data; let index = index">
+                    <td>
+                      {{ documento.name }}
+                    </td>
+
+
+                    <td class="text-center">
+                      <ng-container *ngIf="!addRow">
+                        <button
+                          mdbTooltip="Descargar documento"
+                          class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          (click)="descargar(index)">
+                          <i class="fa fa-download"></i>
+                        </button>
+                        <button
+                          mdbTooltip="Eliminar registro"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          (click)="eliminar(index)">
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-3"
+              class="btn btn-primary"
+              (click)="stepper.previous()"
+            >
+              Anterior
+            </button>
+            <button
+              id="next-step-4"
+              class="btn btn-primary"
+              (click)="stepper.next()"
+              [disabled]="requisitosCurso.length === 0"
+            >
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+
+        <!---------------------------------------------------------------------
+          FIN GESTIÓN DE DOCUMENTOS
+        ---------------------------------------------------------------------->
+
+
+        <!---------------------------------------->
+        <!-- PASO cinco: RESUMEN -->
+        <!---------------------------------------->
+        <mdb-step name="Resumen">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="fs-5 fw-bolder mb-3">Resumen</p>
+              </div>
+            </div>
+
+            <div class="row d-md-flex gap-5 d-md-block justify-content-center">
+
+              <!-- DATOS DEL CURSO -->
+              <div class="col">
+
+
+                <div>Tipo:<span class="fw-bold text-primary">{{ tipoCursoSeleccionado?.nombreTipoCurso }}</span></div>
+                <div>Curso: <span class="fw-bold text-dark">{{ catalogoCursoSeleccionado?.nombreCatalogoCurso }}</span>
+                </div>
+
+
+                <div><span class="fw-bold">Nombre:</span> {{ curso.nombre }}</div>
+                <div><span class="fw-bold">Cupo:</span> {{ curso.numeroCupo }}</div>
+                <div><span class="fw-bold">% Mínimo Estudiantes:</span> {{ curso.porcentajeAceptacionCurso }}</div>
+                <div><span class="fw-bold">Fecha de inicio:</span> {{ curso.fechaInicioCurso | date: 'dd/MM/yyyy' }}
+                </div>
+                <div><span class="fw-bold">Fecha de fin:</span> {{ curso.fechaFinCurso | date: 'dd/MM/yyyy' }}</div>
+                <div><span class="fw-bold">Nota mínima:</span> {{ curso.notaMinima }}</div>
+                <div><span class="fw-bold">Enviar notificación a:</span> {{ curso.emailNotificacion }}</div>
+                <div><span class="fw-bold">¿Tiene módulos?:</span>
+                  {{ curso.tieneModulos ? 'Si' : 'No' }}</div>
+
+
+              </div>
+
+              <!-- listas de requisitos y documentos -->
+              <div class="col">
+                <div class="fw-bolder">Requisitos</div>
+                <div *ngFor="let requisito of requisitosCurso">
+                  <div>{{ requisito.nombre }}</div>
+                </div>
+                <div class="fw-bolder mt-3">Documentos</div>
+                <div *ngFor="let documento of listaArchivosCurso">
+                  <div>{{ documento.name }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row d-md-flex gap-5 d-md-block justify-content-center">
+              <div class="col">
+                <button
+                  id="previous-step-4"
+                  class="btn btn-primary"
+                  (click)="stepper.previous()"
+                >
+                  Anterior
+                </button>
+
+                <button
+                  id="next-step-5"
+                  class="btn btn-primary mx-2"
+                  (click)="crearCurso()"
+                >
+                   <span
+                     *ngIf="showLoading"
+                     class="spinner-border spinner-border-sm me-2"
+                     role="status"
+                     aria-hidden="true"
+                   ></span>
+                  <span *ngIf="showLoading">Espere...</span>
+                  <span *ngIf="!showLoading"><i class="fa fa-check"></i>
+                  Crear curso</span>
+
+
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </mdb-step>
+
+        <!---------------------------------------------------------------------
+          PASO SEIS: CONFIRMACIÓN DE CREACIÓN DE CURSO
+        ---------------------------------------------------------------------->
+
+        <mdb-step
+          [name]="'Confirmación'"
+          [editable]="false"
+          id="confirmacion">
+          <ng-template mdbStepIcon>
+            <i class="far fa-check-circle"></i>
+          </ng-template>
+          <div class="alert alert-success d-grid col-9 mx-auto" role="alert">
+            <i class="far fa-check-circle fa-5x"></i>
+            <h4 class="alert-heading">CURSO CREADO EXITOSAMENTE</h4>
+          </div>
+        </mdb-step>
+
+      </mdb-stepper>
+
+    </div>
+  </div>
+</div>

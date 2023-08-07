@@ -1,5 +1,5 @@
-import { DatoPersonal } from "../../admin/dato-personal";
 import { EstadoEspecializacion } from "./EstadoEspecializacion";
+import { DatoPersonal } from "../../admin/dato-personal";
 
 export interface Curso {
   codCursoEspecializacion: number
@@ -37,3 +37,7 @@ export interface TipoCurso {
   codTipoCurso: number
   estado: string
 }
+
+
+
+

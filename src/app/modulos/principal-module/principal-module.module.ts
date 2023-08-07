@@ -132,6 +132,8 @@ import {
 import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
+import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import {CrearCursoComponent} from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
 import {
   MenuAdministracionEspecializacionComponent
 } from "../../componentes/flujos/especializacion/menus/menu-administracion-especializacion/menu-administracion-especializacion.component";
@@ -215,7 +217,6 @@ const routes: Routes = [
       { path: 'estadoPeriodoAcademico', component: EstadoPeriodoAcademicoComponent },
       { path: 'formacion/proceso', component: ProcesoFormacionComponent },
       { path: 'convocatoria', component: ConvocatoriaComponent },
-      { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'profesionalizacion/proceso', component: ProcesoProfesionalizacionComponent },
       { path: 'requisito', component: RequisitoComponent },
       { path: 'perfil', component: PerfilComponent },
@@ -231,6 +232,11 @@ const routes: Routes = [
       { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
       { path: 'formacion/menu-consultas', component: MenuConsultasComponent },
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
+
+      // especialización
+      { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
+      { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
+      { path: 'especializacion/crear-curso', component: CrearCursoComponent },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },
