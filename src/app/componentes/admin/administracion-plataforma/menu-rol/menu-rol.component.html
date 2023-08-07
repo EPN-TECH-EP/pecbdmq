@@ -16,7 +16,7 @@
       <div class="col-md-6">
         <mdb-form-control>
           <mdb-form-control>
-            <mdb-select [(ngModel)]="rolSeleccionado">
+            <mdb-select [(ngModel)]="rolSeleccionado" [visibleOptions]=10>
               <mdb-option
                 *ngFor="let rol of roles"
                 [value]="rol"

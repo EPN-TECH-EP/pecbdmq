@@ -15,7 +15,8 @@ import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscri
 import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
 import { CursosService } from '../../../../servicios/especializacion/cursos.service';
-import { CURSO_COMPLETO_ESTADO } from '../../../../util/constantes/especializacon.const';
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+
 
 @Component({
   selector: 'app-inscripciones-especializacion',

@@ -17,7 +17,8 @@ import { EspInscripcionService } from '../../../../servicios/especializacion/esp
 import { ActivatedRoute } from '@angular/router';
 import { CursosService } from '../../../../servicios/especializacion/cursos.service';
 import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
-import { CURSO_COMPLETO_ESTADO } from '../../../../util/constantes/especializacon.const';
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+
 
 @Component({
   selector: 'app-reasignacion-inscripcion-especializacion',

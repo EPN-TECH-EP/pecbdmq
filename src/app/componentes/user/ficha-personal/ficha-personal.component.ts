@@ -176,6 +176,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
       },
       error: (errorResponse: HttpErrorResponse) => {
         console.log('Error checking if user is estudiante:', errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.ns, errorResponse);
       }
     });
 
