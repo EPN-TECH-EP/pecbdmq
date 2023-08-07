@@ -238,6 +238,7 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 import {
   ConvocatoriaEspecializacionComponent
 } from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
+import { DocumentosCursoComponent } from './componentes/flujos/especializacion/documentos-curso/documentos-curso.component';
 
 @NgModule({
   declarations: [
@@ -335,7 +336,8 @@ import {
     ResultadosPruebasCursoComponent,
     ValidacionCursoComponent,
     BooleanPipe,
-    ConvocatoriaEspecializacionComponent
+    ConvocatoriaEspecializacionComponent,
+    DocumentosCursoComponent
   ],
   imports: [
     BrowserModule,

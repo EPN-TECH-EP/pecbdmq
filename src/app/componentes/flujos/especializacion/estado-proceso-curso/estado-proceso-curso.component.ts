@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
-import { concatMap, forkJoin, switchMap } from "rxjs";
-import { catchError, map, tap } from "rxjs/operators";
+import { switchMap } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
@@ -56,6 +56,7 @@ export class EstadoProcesoCursoComponent implements OnInit {
         return this.cursosService.listarEstadosPorCurso(tipoCurso.codTipoCurso).pipe(
           tap((estados) => {
             this.cursoSeleccionado.tipoCurso = tipoCurso;
+            console.log({ estados })
             this.cursoSeleccionado.estados = estados;
           }),
           catchError((err) => {

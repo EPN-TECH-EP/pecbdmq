@@ -149,6 +149,9 @@ import {
 import {
   ConvocatoriaEspecializacionComponent
 } from "../../componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
+import {
+  DocumentosCursoComponent
+} from "../../componentes/flujos/especializacion/documentos-curso/documentos-curso.component";
 
 const routes: Routes = [
   {
@@ -246,6 +249,7 @@ const routes: Routes = [
       { path: 'especializacion/cursos/estados', component: EstadoProcesoCursoComponent },
       { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
+      { path: 'especializacion/cursos/documentos', component: DocumentosCursoComponent },
 
     ],
   },
