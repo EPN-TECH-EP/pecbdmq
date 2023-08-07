@@ -7,11 +7,8 @@ import { ComponenteBase } from "../../../../util/componente-base";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { UsuarioAsignado } from "../../../../modelo/flujos/formacion/asignar-usuario";
 import { FormControl } from "@angular/forms";
-import { catchError } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
-import { of } from "rxjs";
-import { FORMACION } from "../../../../util/constantes/fomacion.const";
-import { FormacionService } from "../../../../servicios/formacion/formacion.service";
+import { concatMap, map } from "rxjs/operators";
+import { forkJoin } from "rxjs";
 import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
 import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 import { ActivatedRoute } from '@angular/router';
@@ -35,6 +32,12 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
   delegados: Delegado[]
   esEstadoValidacion = false
 
+  cursos: Curso[];
+  cursoSeleccionado: Curso;
+  esVistaCurso: boolean;
+  esVistaListaCursos: boolean;
+  estaCargando: boolean;
+
   headers = [
     { key: 'id', label: 'ID' },
     { key: 'cedula', label: 'Cédula' },
@@ -49,7 +52,6 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
     private mdbNotificationService: MdbNotificationService,
     private delegadoService: DelegadoService,
     private popConfirmServiceLocal: MdbPopconfirmService,
-    private formacionService: FormacionService,
     private cursosService: CursosService,
   ) {
     super(mdbNotificationService, popConfirmServiceLocal);
@@ -60,35 +62,57 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
     this.codigoInscripcionReasignando = 0
     this.delegados = []
     this.codigoUsuarioReasignado = new FormControl<number>(0)
+
+    this.cursos = [];
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
+    this.estaCargando = false;
   }
 
   ngOnInit(): void {
+    this.consultarCursos();
+  }
 
-    this.route.params.subscribe(params => {
-      const codigo = params['codCurso'];
-      if (codigo) {
-        this.obtenerDatosCurso(codigo);
-      }
-    });
+  private consultarCursos() {
+    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS).pipe(
+      concatMap((cursos) => {
+        const cursosWithTipoCurso$ = cursos.map((curso) => {
+          return this.cursosService.getTipoCurso(curso.codCatalogoCursos).pipe(
+            map((tipoCurso) => ({ ...curso, tipoCurso }))
+          );
+        });
 
-    if (this.esEstadoValidacion) {
+        return forkJoin(cursosWithTipoCurso$);
+      }),
+      concatMap((cursosConTipo) => {
+        const estadosObservables = cursosConTipo.map((curso) => {
+          return this.cursosService.listarEstadosPorCurso(curso.tipoCurso.codTipoCurso).pipe(
+            map((estados) => ({ ...curso, estados }))
+          );
+        });
 
-    }
-
-    this.formacionService.getEstadoActual().pipe(
-      catchError((errorResponse: HttpErrorResponse) => {
-        console.error(errorResponse)
-        return of(null);
+        return forkJoin(estadosObservables);
       })
     ).subscribe({
-      next: estado => {
+      next: (cursosConEstados) => {
+        this.cursos = cursosConEstados;
+        this.estaCargando = true;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
 
-        if (!estado || estado.httpStatusCode !== 200) {
-          return;
-        }
+  cursoSeleccionadoEvent($event: Curso) {
+    if ($event !== null) {
+      this.cursoSeleccionado = $event;
+      this.esVistaCurso = true;
+      this.esVistaListaCursos = false;
+      console.log($event);
+    }
 
-        if (estado.mensaje === FORMACION.estadoValidacion) {
-          this.esEstadoValidacion = true
     this.inscripcionService.listarInscripciones().subscribe({
       next: inscripciones => {
         this.inscripciones = inscripciones
@@ -106,11 +130,14 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
         Notificacion.notificar(this.mdbNotificationService, "No se pudo cargar los delegados", TipoAlerta.ALERTA_ERROR)
         console.log(err)
       }
-    })
-        }
-      }
     });
 
+  }
+
+  volverAListaCursos() {
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
   }
 
   editarFila(inscripcion: InscripcionEsp) {
@@ -121,23 +148,6 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
         console.log(value)
       }
     )
-  }
-
-  private obtenerDatosCurso(codigo: number) {
-    this.cursosService.obtenerCurso(codigo).subscribe({
-      next: (curso) => {
-        this.curso = curso;
-        this.verificarEstadoCurso();
-      }
-    });
-  }
-
-  private verificarEstadoCurso() {
-    this.cursosService.obtenerEstadoActual(this.curso.codCursoEspecializacion).subscribe({
-      next: (estado) => {
-        this.esEstadoValidacion = estado.mensaje === CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS;
-      }
-    })
   }
 
   confirmarReasignar(event: any) {

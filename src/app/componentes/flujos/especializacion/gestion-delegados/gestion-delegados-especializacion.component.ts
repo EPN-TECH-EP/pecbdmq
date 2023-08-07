@@ -8,9 +8,10 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { UsuarioNombreApellido } from "../../../../modelo/util/nombre-apellido";
-import { Delegado, DelegadoCreate, DelegadoService } from "../../../../servicios/formacion/delegado.service";
+import { Delegado } from "../../../../servicios/formacion/delegado.service";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { ComponenteBase } from "../../../../util/componente-base";
+import { EspDelegadoService, EspDelegadoCreate, EspDelegado } from 'src/app/servicios/especializacion/esp-delegado.service';
 
 @Component({
   selector: 'app-gestion-delegados-especializacion',
@@ -23,7 +24,7 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
   existenCoincidencias: boolean;
   esUsuarioDelegado: boolean;
   usuarios: Usuario[];
-  usuariosDelegados: Delegado[];
+  usuariosDelegados: EspDelegado[];
   buscarUsuarioForm: FormGroup;
 
   headers = [
@@ -37,7 +38,7 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
     private mdbNotificationService: MdbNotificationService,
     private usuarioService: UsuarioService,
     private builder: FormBuilder,
-    private delegadoService: DelegadoService,
+    private delegadoService: EspDelegadoService,
     private popConfirmService: MdbPopconfirmService,
   ) {
     super(mdbNotificationService, popConfirmService);
@@ -84,7 +85,7 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
 
   private filtrarUsuariosDelegados(usuarios: Usuario[]) {
     this.usuariosDelegados.forEach((delegado) => {
-      usuarios = usuarios.filter((usuario) => usuario.codUsuario !== delegado.cod_usuario);
+      usuarios = usuarios.filter((usuario) => usuario.codUsuario !== delegado.codUsuario);
     })
     return usuarios;
   }
@@ -93,8 +94,9 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
 
     this.delegadoService.eliminar(id).subscribe({
       next: () => {
-        this.usuariosDelegados = this.usuariosDelegados.filter((delegadoFiltrado) => delegadoFiltrado.cod_usuario !== id);
+        this.usuariosDelegados = this.usuariosDelegados.filter((delegadoFiltrado) => delegadoFiltrado.codEspDelegado !== id);
         this.usuariosDelegados = [...this.usuariosDelegados];
+        console.log("ArrayList: " + this.usuariosDelegados.length);
         Notificacion.notificar(this.mdbNotificationService, "Delegado eliminado correctamente", TipoAlerta.ALERTA_OK);
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -134,7 +136,7 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
           }
 
           // Revisar si el usuario ya es delegado
-          const esUsuarioDelegado = this.usuariosDelegados.some((delegado) => delegado.cod_usuario === usuario.codUsuario);
+          const esUsuarioDelegado = this.usuariosDelegados.some((delegado) => delegado.codUsuario === usuario.codUsuario);
           if (esUsuarioDelegado) {
             console.log('es delegado')
             this.esUsuarioDelegado = true;
@@ -234,9 +236,8 @@ export class GestionDelegadosEspecializacionComponent extends ComponenteBase imp
   }
 
   asignarComoDelegado(usuario: Usuario) {
-    const delegado: DelegadoCreate = {
+    const delegado: EspDelegadoCreate = {
       codUsuario: usuario.codUsuario,
-      codPeriodoAcademico: null,
       estado: 'ACTIVO'
     }
 

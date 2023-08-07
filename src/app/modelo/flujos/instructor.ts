@@ -44,10 +44,10 @@ export const defaultInstructor: Instructor = {
   codTipoInstructor : 0,
 }
 
-export interface EspInstructorDto {
+export interface EspInstructorRequest {
   codInstructorCurso     : number;
-  codDatosPersonales     : number;
   codInstructor          : number;
+  codDatosPersonales     : number;
   codTipoProcedencia     : number;
   codEstacion            : number;
   codUnidadGestion       : number;
@@ -55,5 +55,52 @@ export interface EspInstructorDto {
   codCursoEspecializacion: number;
   codTipoInstructor      : number;
   descripcion            : string;
-  estado                 : string;
+}
+
+export interface EspInstructorResponse {
+  codInstructorCurso      : number;
+  codInstructor           : number;
+  cedula                  : string;
+	nombre                  : string;
+	apellido                : string;
+  codCursoEspecializacion : number;
+  nombreCatalogoCurso     : string;
+	codTipoInstructor       : number;
+	nombreTipoInstructor    : string;
+  correoPersonal          : string;
+  correoInstitucional     : string;
+  codDatosPersonales     : number;
+  codTipoProcedencia     : number;
+  codEstacion            : number;
+  codUnidadGestion       : number;
+  codTipoContrato        : number;
+  descripcion            : string;
+  tipoProcedencia        : string;
+  nombreZona             : string;
+  unidadGestion          : string;
+  nombreTipoContrato     : string;
+}
+
+export const defaultEspInstructor: EspInstructorResponse = {
+  codInstructorCurso      : 0,
+  codInstructor           : 0,
+  codDatosPersonales      : 0,
+  codTipoProcedencia      : 0,
+  codEstacion             : 0,
+  codUnidadGestion        : 0,
+  codTipoContrato         : 0,
+  codCursoEspecializacion : 0,
+  codTipoInstructor       : 0,
+  cedula                  : '',
+	nombre                  : '',
+	apellido                : '',
+  nombreCatalogoCurso     : '',
+	nombreTipoInstructor    : '',
+  correoPersonal          : '',
+  correoInstitucional     : '',
+  descripcion             : '',
+  tipoProcedencia         : '',
+  nombreZona              : '',
+  unidadGestion           : '',
+  nombreTipoContrato      : '',
 }
