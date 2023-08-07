@@ -3,10 +3,21 @@
   [link]="'/principal/especializacion/menu-academia'"
 ></app-boton-volver>
 
+<ng-container *ngIf="cursos.length === 0">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">No existen cursos</h5>
+      <p class="card-text">
+        No existen cursos en estado en Curso, por lo tanto no hay datos para mostrar.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
 <section *ngIf="estaCargando && esVistaListaCursos" class="container">
   <div class="row m-3">
     <div class="col text-center">
-      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
+      <h1 class="fs-4 fw-bolder">Listado de cursos</h1>
     </div>
   </div>
   <p>Número total de cursos: {{cursos.length}}</p>
@@ -404,6 +415,7 @@
                 <button
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="onEliminarInstructor($event, instructor.codInstructorCurso)"
                   [disabled]="estaEditandoInstructor"
                 >
                   <i class="fa fa-trash-alt"></i>

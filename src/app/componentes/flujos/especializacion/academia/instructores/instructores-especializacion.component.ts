@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { Usuario } from "../../../../../modelo/admin/usuario";
-import { defaultEspInstructor, defaultInstructor, EspInstructorRequest, EspInstructorResponse, Instructor, InstructorRequest } from "../../../../../modelo/flujos/instructor";
-import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
+import { defaultEspInstructor, EspInstructorRequest, EspInstructorResponse } from "../../../../../modelo/flujos/instructor";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TipoProcedenciaService } from "../../../../../servicios/tipo-procedencia.service";
 import { TipoProcedencia } from "../../../../../modelo/admin/tipo-procedencia";
@@ -10,19 +11,23 @@ import { UnidadGestion } from "../../../../../modelo/admin/unidad-gestion";
 import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicios/estacion-trabajo.service";
 import { concatMap, forkJoin, map } from "rxjs";
 import { ActivatedRoute } from '@angular/router';
-import { CursosService } from 'src/app/servicios/especializacion/cursos.service';
+import { CursosService } from '../../../../../servicios/especializacion/cursos.service';
 import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
 import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
-import { EspInstructorService } from 'src/app/servicios/especializacion/esp-instructor.service';
-import { TipoInstructor } from 'src/app/modelo/admin/tipo-instructor';
-import { TipoInstructorService } from 'src/app/servicios/tipo-instructor.service';
+import { EspInstructorService } from '../../../../../servicios/especializacion/esp-instructor.service';
+import { TipoInstructor } from '../../../../../modelo/admin/tipo-instructor';
+import { TipoInstructorService } from '../../../../../servicios/tipo-instructor.service';
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { Notificacion } from 'src/app/util/notificacion';
+import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-instructores-especializacion',
   templateUrl: './instructores-especializacion.component.html',
   styleUrls: ['./instructores-especializacion.component.scss']
 })
-export class InstructoresEspecializacionComponent implements OnInit {
+export class InstructoresEspecializacionComponent extends ComponenteBase implements OnInit {
 
   usuarios: Usuario[];
   instructor: EspInstructorResponse;
@@ -57,7 +62,10 @@ export class InstructoresEspecializacionComponent implements OnInit {
     private unidadGestionService: UnidadGestionService,
     private estacionTrabajoService: EstacionTrabajoService,
     private tipoInstructorService: TipoInstructorService,
+    private mdbNotificationService: MdbNotificationService,
+    private popConfirmService: MdbPopconfirmService,
   ) {
+    super(mdbNotificationService, popConfirmService);
     this.instructor = defaultEspInstructor;
     this.usuarios = [];
     this.instructores = [];
@@ -198,6 +206,7 @@ export class InstructoresEspecializacionComponent implements OnInit {
     this.instructorService.crear(instructorRequest).subscribe({
       next: () => {
         this.estaEditandoInstructor = false;
+        this.estaAgregandoInstructor = false;
         this.instructor = defaultEspInstructor;
         this.instructorForm.reset();
         this.instructorService.listarPorCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
@@ -301,6 +310,27 @@ export class InstructoresEspecializacionComponent implements OnInit {
 
   onGuardarCambiosInstructor() {
     this.editarInstructor(this.instructor);
+  }
+
+  onEliminarInstructor(event: Event, codigo: number) {
+    super.mensajeConfirmacion = "¿Está seguro de eliminar el delegado?";
+    super.openPopconfirm(event, this.eliminarInstructor.bind(this, codigo));
+  }
+
+  private eliminarInstructor(id: number) {
+
+    this.instructorService.eliminar(id).subscribe({
+      next: () => {
+        this.instructores = this.instructores.filter((instructorFiltrado) => instructorFiltrado.codInstructorCurso !== id);
+        this.instructores = [...this.instructores];
+        console.log("ArrayList: " + this.instructores.length);
+        Notificacion.notificar(this.mdbNotificationService, "Instructor eliminado correctamente", TipoAlerta.ALERTA_OK);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        Notificacion.notificar(this.mdbNotificationService, 'No se pudo eliminar el instructor', TipoAlerta.ALERTA_ERROR);
+        console.error(errorResponse);
+      }
+    })
   }
 
   get codTipoProcedencia() {

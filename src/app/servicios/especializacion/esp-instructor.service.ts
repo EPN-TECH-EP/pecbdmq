@@ -33,4 +33,8 @@ export class EspInstructorService {
     return this.http.put<EspInstructorRequest>(`${ this.host }/cursoInstructor/crear`, instructor);
   }
 
+  eliminar(id: number) {
+    return this.http.delete(`${this.host}/cursoInstructor/${id}`);
+  }
+
 }

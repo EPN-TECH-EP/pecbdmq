@@ -3,24 +3,47 @@
   [texto]="'Regresar al menú de validación'"
 ></app-boton-volver>
 
-<ng-container *ngIf="!esEstadoValidacion && !esEstadoMuestreo">
-  <div>
-    <span class="badge badge-success mt-3">
-    Es usuario delegado
-    </span>
-  </div>
-
+<ng-container *ngIf="cursos.length === 0">
   <div class="card rounded-7 mt-3">
     <div class="card-body">
-      <h5 class="card-title text-primary">Proceso de validación no activo</h5>
+      <h5 class="card-title text-primary">No existen cursos</h5>
       <p class="card-text">
-        El proceso de validación de inscripciones no se encuentra activo.
+        No existen cursos en estado de Validación de Requisitos, por lo tanto no hay datos para mostrar.
       </p>
     </div>
   </div>
 </ng-container>
 
-<div class="container" *ngIf="inscripcionesLoaded && esEstadoValidacion">
+<section *ngIf="estaCargando && esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Listado de cursos</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+<section *ngIf="estaCargando && esVistaCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+</section>
+
+<div class="container" *ngIf="inscripcionesLoaded && esVistaCurso">
   <div class="row m-3 text-center">
     <p class="fs-4 fw-bolder mb-3">
       Lista de Inscritos

@@ -5,17 +5,14 @@ import { AutenticacionService } from "../../../../servicios/autenticacion.servic
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { FormacionService } from "../../../../servicios/formacion/formacion.service";
-import { catchError } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
-import { of } from "rxjs";
-import { FORMACION } from "../../../../util/constantes/fomacion.const";
-import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
+import { concatMap, map } from "rxjs/operators";
+import { forkJoin, of } from "rxjs";
 import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
 import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
 import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
 import { CursosService } from '../../../../servicios/especializacion/cursos.service';
 import { CURSO_COMPLETO_ESTADO } from '../../../../util/constantes/especializacon.const';
+import { EspDelegadoService } from '../../../../servicios/especializacion/esp-delegado.service';
 
 @Component({
   selector: 'app-inscripciones-especializacion',
@@ -32,6 +29,12 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   esEstadoValidacion = false
   esEstadoMuestreo = false
 
+  cursos: Curso[];
+  cursoSeleccionado: Curso;
+  esVistaCurso: boolean;
+  esVistaListaCursos: boolean;
+  estaCargando: boolean;
+
   headers = [
     { key: 'id', label: 'ID' },
     { key: 'cedula', label: 'Cédula' },
@@ -45,8 +48,7 @@ export class InscripcionesEspecializacionComponent implements OnInit {
     private router: Router,
     private autenticacionService: AutenticacionService,
     private mdbNotificationService: MdbNotificationService,
-    private formacionService: FormacionService,
-    private delegadoService: DelegadoService,
+    private delegadoService: EspDelegadoService,
     private cursosService: CursosService,
   ) {
     this.inscripcionesAsignadas = []
@@ -57,19 +59,55 @@ export class InscripcionesEspecializacionComponent implements OnInit {
       }
     })
 
+    this.cursos = [];
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
+    this.estaCargando = false;
+
   }
 
   ngOnInit(): void {
+    this.consultarCursos();
+  }
 
-    this.route.params.subscribe(params => {
-      const codigo = params['codCurso'];
-      if (codigo) {
-        this.obtenerDatosCurso(codigo);
+  private consultarCursos() {
+    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS).pipe(
+      concatMap((cursos) => {
+        const cursosWithTipoCurso$ = cursos.map((curso) => {
+          return this.cursosService.getTipoCurso(curso.codCatalogoCursos).pipe(
+            map((tipoCurso) => ({ ...curso, tipoCurso }))
+          );
+        });
+
+        return forkJoin(cursosWithTipoCurso$);
+      }),
+      concatMap((cursosConTipo) => {
+        const estadosObservables = cursosConTipo.map((curso) => {
+          return this.cursosService.listarEstadosPorCurso(curso.tipoCurso.codTipoCurso).pipe(
+            map((estados) => ({ ...curso, estados }))
+          );
+        });
+
+        return forkJoin(estadosObservables);
+      })
+    ).subscribe({
+      next: (cursosConEstados) => {
+        this.cursos = cursosConEstados;
+        this.estaCargando = true;
+      },
+      error: (error) => {
+        console.error(error);
       }
     });
+  }
 
-    if (!this.esEstadoValidacion) {
-      return;
+  cursoSeleccionadoEvent($event: Curso) {
+    if ($event !== null) {
+      this.cursoSeleccionado = $event;
+      this.esVistaCurso = true;
+      this.esVistaListaCursos = false;
+      console.log($event);
     }
 
     this.delegadoService.esDelegado(this.usuario.codUsuario).subscribe({
@@ -87,56 +125,22 @@ export class InscripcionesEspecializacionComponent implements OnInit {
       }
     })
 
-    this.formacionService.getEstadoActual().pipe(
-      catchError((errorResponse: HttpErrorResponse) => {
-        console.error(errorResponse)
-        return of(null);
-      })
-    ).subscribe({
-      next: estado => {
-
-        if (!estado || estado.httpStatusCode !== 200) {
-          Notificacion.notificar(this.mdbNotificationService, "No se pudo obtener el estado actual", TipoAlerta.ALERTA_WARNING)
-          this.router.navigate(['/principal/especializacion/menu-validacion'])
-          return;
-        }
-
-        if (estado.mensaje === FORMACION.estadoValidacion) {
-
-          this.esEstadoValidacion = true
-
-          this.inscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
-            next: inscripciones => {
-              console.log(inscripciones)
-              this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
-              this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
-              this.inscripcionesLoaded = true
-            },
-            error: err => console.log(err)
-          });
-        }
-
-      }
-    })
-
-
-  }
-
-  private obtenerDatosCurso(codigo: number) {
-    this.cursosService.obtenerCurso(codigo).subscribe({
-      next: (curso) => {
-        this.curso = curso;
-        this.verificarEstadoCurso();
-      }
+    this.inscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
+      next: inscripciones => {
+        console.log(inscripciones)
+        this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
+        this.inscripciones = inscripciones.filter(inscripcion => inscripcion.estado === 'PENDIENTE')
+        this.inscripcionesLoaded = true
+      },
+      error: err => console.log(err)
     });
+
   }
 
-  private verificarEstadoCurso() {
-    this.cursosService.obtenerEstadoActual(this.curso.codCursoEspecializacion).subscribe({
-      next: (estado) => {
-        this.esEstadoValidacion = estado.mensaje === CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS;
-      }
-    })
+  volverAListaCursos() {
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
   }
 
   validar(inscripcion: InscripcionEsp) {

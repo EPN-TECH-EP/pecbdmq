@@ -38,6 +38,7 @@ export class EspDelegadoService {
   eliminar(id: number) {
     return this.http.delete(`${this.host}/delegadoEsp/${id}`);
   }
+  
   esDelegado(id: number) {
     return this.http.get(`${this.host}/delegadoEsp/esDelegado/${id}`);
   }
