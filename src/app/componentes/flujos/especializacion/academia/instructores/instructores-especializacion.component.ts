@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from "../../../../../modelo/admin/usuario";
-import { defaultInstructor, Instructor, InstructorRequest } from "../../../../../modelo/flujos/instructor";
+import { defaultInstructor, EspInstructorRequest, Instructor, InstructorRequest } from "../../../../../modelo/flujos/instructor";
 import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TipoProcedenciaService } from "../../../../../servicios/tipo-procedencia.service";
@@ -41,6 +41,12 @@ export class InstructoresEspecializacionComponent implements OnInit {
 
   esEstadoCurso: boolean;
   isLoading: boolean;
+
+  cursos: Curso[];
+  cursoSeleccionado: Curso;
+  esVistaCurso: boolean;
+  esVistaListaCursos: boolean;
+  estaCargando: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -118,6 +124,21 @@ export class InstructoresEspecializacionComponent implements OnInit {
     })
   }
 
+  cursoSeleccionadoEvent($event: Curso) {
+    if ($event !== null) {
+      this.cursoSeleccionado = $event;
+      this.esVistaCurso = true;
+      this.esVistaListaCursos = false;
+      console.log($event);
+    }
+  }
+
+  volverAListaCursos() {
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
+  }
+
   private obtenerDatosCurso(codigo: number) {
     this.cursosService.obtenerCurso(codigo).subscribe({
       next: (curso) => {
@@ -144,12 +165,15 @@ export class InstructoresEspecializacionComponent implements OnInit {
       codEstacion: this.codZona?.value,
     }
 
-    const instructorRequest: InstructorRequest = {
+    const instructorRequest: EspInstructorRequest = {
       codDatosPersonales: instructor.codDatosPersonales,
       codEstacion: instructor.codEstacion,
       codTipoContrato: 1,
       codTipoProcedencia: instructor.codTipoProcedencia,
       codUnidadGestion: instructor.codUnidadGestion,
+      codCursoEspecializacion: instructor.codDatosPersonales,
+      codTipoInstructor: instructor.codInstructor,
+      descripcion: '',
     }
     this.instructorService.crear(instructorRequest).subscribe({
       next: () => {

@@ -15,6 +15,36 @@
   </div>
 </ng-container>
 
+<section *ngIf="estaCargando && esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Estados por curso</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+<section *ngIf="estaCargando && esVistaCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+</section>
+
+
 <div class="container" *ngIf="esEstadoCurso">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Gestión de instructores</h1>
