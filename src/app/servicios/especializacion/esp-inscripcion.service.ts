@@ -6,6 +6,7 @@ import { Estudiante } from "../../modelo/flujos/Estudiante";
 import { InscripcionEsp } from '../../modelo/flujos/especializacion/inscripcion-esp';
 import { InscripcionCompletaEsp } from '../../modelo/flujos/especializacion/inscripcion-completa-esp';
 import { ValidacionRequisitoEsp } from '../../modelo/flujos/especializacion/requisito';
+import {InscripcionDatosEspecializacion} from "../../modelo/flujos/especializacion/inscripcion-datos-esp";
 
 export interface PostulanteEspecializacion {
   datoPersonal: DatoPersonal;
@@ -30,7 +31,10 @@ export class EspInscripcionService {
   }
 
   // obtener lista de inscritos por curso
-  // endpoint: inscripcionEsp/porCurso/{codCurso}
+  // endpoint: inscripcionEsp/inscripcionesVaidas/{codCurso}
+  obtenerInscritosVaidosPorCurso(codCurso: number) {
+    return this.http.get<InscripcionDatosEspecializacion[]>(`${ this.host }/inscripcionEsp/inscripcionesValidas/${ codCurso }`);
+  }
 
 
   colocarCorreoPersonal(datoPersonal: DatoPersonal) {

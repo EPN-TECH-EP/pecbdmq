@@ -17,4 +17,6 @@ export interface InscripcionDatosEspecializacion {
     nombre: string;
     apellido: string;
     nombreCatalogoCurso: string;
+    correoPersonal ?: string;
+    codigoUnicoEstudiante ?: string;
 }

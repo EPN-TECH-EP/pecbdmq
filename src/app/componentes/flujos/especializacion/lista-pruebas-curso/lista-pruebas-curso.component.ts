@@ -53,15 +53,15 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
 
   // columnas
   headers = [
-    { key: 'ordenTipoPrueba', label: 'Orden', width: '50px', wrap: true, start: false },
-    { key: 'codSubtipoPrueba', label: 'Subtipo Prueba', width: '150px', wrap: false, start: true },
-    { key: 'descripcionPrueba', label: 'Descripción', width: '150px', wrap: false, start: true },
-    { key: 'fecha', label: 'Fechas', width: '100px', wrap: true, start: true },
+    {key: 'ordenTipoPrueba', label: 'Orden', width: '50px', wrap: true, start: false},
+    {key: 'codSubtipoPrueba', label: 'Subtipo Prueba', width: '150px', wrap: false, start: true},
+    {key: 'descripcionPrueba', label: 'Descripción', width: '150px', wrap: false, start: true},
+    {key: 'fecha', label: 'Fechas', width: '100px', wrap: true, start: true},
     /*{ key: 'fechaInicio', label: 'Fecha Inicio', width: '100px', wrap: true },
     { key: 'fechaFin', label: 'Fecha Fin', width: '100px', wrap: true },
     { key: 'hora', label: 'Hora', width: '50px', wrap: true },*/
 
-    { key: 'puntaje', label: 'Puntajes', width: '50px', wrap: true, start: true },
+    {key: 'puntaje', label: 'Puntajes', width: '50px', wrap: true, start: true},
     /*{ key: 'puntajeMinimo', label: 'Puntaje Mínimo', width: '50px', wrap: true },
     { key: 'puntajeMaximo', label: 'Puntaje Máximo', width: '50px', wrap: true },
     { key: 'tienePuntaje', label: 'Tiene Puntaje', width: '50px', wrap: true },*/
@@ -97,27 +97,35 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   get descripcionPruebaField() {
     return this.pruebaDetalleForm.get('descripcionPrueba');
   }
+
   get fechaInicioField() {
     return this.pruebaDetalleForm.get('fechaInicio');
   }
+
   get fechaFinField() {
     return this.pruebaDetalleForm.get('fechaFin');
   }
+
   get horaField() {
     return this.pruebaDetalleForm.get('hora');
   }
+
   get codSubtipoPruebaField() {
     return this.pruebaDetalleForm.get('codSubtipoPrueba');
   }
+
   get ordenTipoPruebaField() {
     return this.pruebaDetalleForm.get('ordenTipoPrueba');
   }
+
   get puntajeMinimoField() {
     return this.pruebaDetalleForm.get('puntajeMinimo');
   }
+
   get puntajeMaximoField() {
     return this.pruebaDetalleForm.get('puntajeMaximo');
   }
+
   get tienePuntajeField() {
     return this.pruebaDetalleForm.get('tienePuntaje');
   }
@@ -258,8 +266,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         this.listaPruebaDetalleDatos[0]?.ordenTipoPrueba
       );
 
-      if (ordenMaximo === undefined || ordenMaximo === null)
-      {
+      if (ordenMaximo === undefined || ordenMaximo === null) {
         ordenMaximo = 0;
       }
 
@@ -338,8 +345,8 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         codCursoEspecializacion: pruebaDetalleDatos.codCursoEspecializacion,
         codSubtipoPrueba: pruebaDetalleFormulario.codSubtipoPrueba,
         ordenTipoPrueba: pruebaDetalleDatos.ordenTipoPrueba,
-        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo?pruebaDetalleFormulario.puntajeMinimo:0,
-        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo?pruebaDetalleFormulario.puntajeMaximo:0,
+        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo ? pruebaDetalleFormulario.puntajeMinimo : 0,
+        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo ? pruebaDetalleFormulario.puntajeMaximo : 0,
         tienePuntaje: pruebaDetalleFormulario.tienePuntaje,
       };
 

@@ -34,7 +34,7 @@
 
         <div class="row d-flex align-items-middle">
           <div class="col-12">
-            <!------------------------------- 
+            <!-------------------------------
               búsqueda postulantes válidos
              -------------------------------->
             <div class="container">
@@ -85,7 +85,7 @@
                       placeholder="Buscar"
                       aria-label="Buscar"
                       aria-describedby="basic-addon2"
-                      [(ngModel)]="valorFiltroPostulantesValidos" 
+                      [(ngModel)]="valorFiltroPostulantesValidos"
                       mdbTooltip="Ingrese texto a buscar (mín. 4 caracteres)"/>
                     <a role="button" (click)="buscarPostulantesValidos()" mdbTooltip="Buscar">
                       <i class="fa fa-magnifying-glass fa-lg text-primary mx-2"></i>
@@ -271,6 +271,7 @@
 
                     <label class="form-label" for="customFile">Seleccione un archivo de resultados (Excel)</label>
                     <input
+                      id="customFile"
                       mdbValidate
                       accept=".xls,.xlsx"
                       #archivoMdbInput="mdbInput"
@@ -359,7 +360,7 @@
             <!-- Fin Tabla -->
           </div>
 
-          <!---------------------------------------------------------------------              
+          <!---------------------------------------------------------------------
               GESTIÓN DE DOCUMENTOS
           ---------------------------------------------------------------------->
 
@@ -464,7 +465,7 @@
             </ng-container>
           </div>
 
-          <!--------------------------------------------------------------------- 
+          <!---------------------------------------------------------------------
             FIN GESTIÓN DE DOCUMENTOS
           ---------------------------------------------------------------------->
         </div>

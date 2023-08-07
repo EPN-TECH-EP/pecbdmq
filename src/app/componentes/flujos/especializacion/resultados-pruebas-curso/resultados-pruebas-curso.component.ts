@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ComponenteBase} from "../../../../util/componente-base";
 import {PruebaDetalleDatos} from "../../../../modelo/flujos/formacion/prueba-detalle-datos";
-import {PostulanteValido} from "../../../../modelo/flujos/formacion/postulante-valido";
-import {PaginacionPostulantesValidos} from "../../../../modelo/flujos/formacion/paginacion-postulantes-validos";
 import {ResultadosPruebasDatos} from "../../../../modelo/flujos/formacion/resultados-pruebas-datos";
 import {
   PaginacionResultadosPruebasDatos
@@ -13,7 +11,6 @@ import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 import {FormacionService} from "../../../../servicios/formacion/formacion.service";
 import {PruebaDetalleService} from "../../../../servicios/formacion/prueba-detalle.service";
-import {PostulantesValidosService} from "../../../../servicios/formacion/postulantes-validos.service";
 import {ResultadosPruebasService} from "../../../../servicios/formacion/resultados-prueba.service";
 import {AutenticacionService} from "../../../../servicios/autenticacion.service";
 import {DocumentoPruebaService} from "../../../../servicios/formacion/documento-prueba.service";
@@ -24,6 +21,11 @@ import {Notificacion} from "../../../../util/notificacion";
 import {TipoAlerta} from "../../../../enum/tipo-alerta";
 import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
 import {CursosService} from "../../../../servicios/especializacion/cursos.service";
+import {InscripcionEsp} from "../../../../modelo/flujos/especializacion/inscripcion-esp";
+import {EspInscripcionService} from "../../../../servicios/especializacion/esp-inscripcion.service";
+import {FORMACION} from "../../../../util/constantes/fomacion.const";
+import {InscripcionDatosEspecializacion} from "../../../../modelo/flujos/especializacion/inscripcion-datos-esp";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-resultados-pruebas-curso',
@@ -31,6 +33,8 @@ import {CursosService} from "../../../../servicios/especializacion/cursos.servic
   styleUrls: ['./resultados-pruebas-curso.component.scss']
 })
 export class ResultadosPruebasCursoComponent extends ComponenteBase implements OnInit {
+
+  FORMACION = FORMACION;
 
   // selección de curso
   cursos: Curso[];
@@ -40,24 +44,15 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   esVistaListaCursos: boolean;
 
 
-  FORMACION = FORMACION;
-  TipoFiltroPostulantesValidosEnum = TipoFiltroPostulantesValidosEnum;
-
   // datos
   listaPruebaDetalleDatos: PruebaDetalleDatos[];
   pruebaDetalleSeleccionada: PruebaDetalleDatos;
   tipoResultado: string; // tipo de resultado de la prueba seleccionada
 
-  listaPostulantesValidos: PostulanteValido[];
-  paginacionPostulantesValidos: PaginacionPostulantesValidos;
-  tipoFiltroPostulantesValidos: string;
-  valorFiltroPostulantesValidos: string;
+  listaInscripcionesValidas: InscripcionDatosEspecializacion[];
 
   listaResultadosPruebas: ResultadosPruebasDatos[];
   paginacionResultadosPruebas: PaginacionResultadosPruebasDatos;
-
-  // estado proceso
-  esEstadoPruebas = false;
 
   // componentes
   @ViewChild('table') table: any;
@@ -137,18 +132,16 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   documentos: DocumentoFormacion[] = [];
   archivoPrueba: File = null;
   headersArchivos = [
-    { key: 'nombre', label: 'Nombre' },
-    { key: 'descripcion', label: 'Descripción' },
+    {key: 'nombre', label: 'Nombre'},
+    {key: 'descripcion', label: 'Descripción'},
   ];
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
     private mdbPopconfirmServiceLocal: MdbPopconfirmService,
     private cursosService: CursosService,
-
-    private formacionService: FormacionService,
     private pruebaDetalleService: PruebaDetalleService,
-    private postulantesValidosService: PostulantesValidosService,
+    private espInscripcionService: EspInscripcionService,
     private resultadosPruebasService: ResultadosPruebasService,
     private autenticacionService: AutenticacionService,
     // gestión archivos pruebas
@@ -162,6 +155,8 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
 
+    this.listaInscripcionesValidas = [];
+
     this.showLoading = false;
 
     this.autenticacionService.user$.subscribe({
@@ -172,58 +167,22 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   }
 
   ngOnInit(): void {
-    //console.log(this.archivoComponent);
-
-    this.formacionService
-      .getEstadoActual()
-      .pipe(
-        catchError((errorResponse: HttpErrorResponse) => {
-          console.error(errorResponse);
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: (estado) => {
-          if (!estado || estado.httpStatusCode !== 200) {
-            return;
-          }
-
-          if (estado.mensaje === FORMACION.estadoPruebas) {
-            this.esEstadoPruebas = true;
-
-            this.cargaListaPruebas();
-
-            this.cargarPostulantesValidos();
-          }
-        },
-      });
-
-    //TODO borrar
-    /* this.esEstadoPruebas = true;
-
-    this.cargaListaPruebas();
-    this.cargarPostulantesValidos(); */
-    //TODO FIN borrar
+    this.cargarListaCursos();
   }
 
   ////////////////////////////
-  // postulantes válidos
+  // Inscripciones válidos
   ////////////////////////////
 
-  // cargar lista de postulantes validos del servicio postulantesValidosService
+  // cargar lista de Inscripciones válidas del servicio InscripcionesValidasService
 
-  cargarPostulantesValidos() {
+  cargarInscripcionesValidas() {
     this.showLoading = true;
     this.subscriptions.push(
-      this.postulantesValidosService.listarPaginado(this.currentPage - 1, this.size, this.orden).subscribe({
-        next: (paginacion: PaginacionPostulantesValidos) => {
-          this.paginacionPostulantesValidos = paginacion;
-          this.listaPostulantesValidos = paginacion.content;
-          this.listaPostulantesValidos = [...this.listaPostulantesValidos];
-
-          this.first = paginacion.first;
-          this.last = paginacion.last;
-          this.totalPages = paginacion.totalPages;
+      this.espInscripcionService.obtenerInscritosVaidosPorCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+        next: (inscripciones) => {
+          this.listaInscripcionesValidas = inscripciones;
+          this.listaInscripcionesValidas = [...this.listaInscripcionesValidas];
 
           this.showLoading = false;
         },
@@ -235,86 +194,12 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     );
   }
 
-  onPageChange(direction: string) {
-    if (direction === 'next') {
-      // validar que no se pase de la última página
-      if (this.currentPage === this.totalPages) {
-        return;
-      }
-      this.currentPage++;
-    } else {
-      // validar que no se pase de la primera página
-      if (this.currentPage === 1) {
-        return;
-      }
-      this.currentPage--;
-    }
-
-    this.cargarPostulantesValidos();
-  }
-
-  // buscar postulantes válidos por filtro con servicio postulantesValidosService
-  buscarPostulantesValidos() {
-    this.showLoading = true;
-    // verifica vacíos en tipo filtro y valor filtro
-    if (this.tipoFiltroPostulantesValidos === '' || this.valorFiltroPostulantesValidos === '') {
-      Notificacion.notificacion(
-        this.notificationRef,
-        this.notificationServiceLocal,
-        null,
-        'Debe seleccionar un tipo de filtro y un valor para realizar la búsqueda'
-      );
-
-      this.showLoading = false;
-
-      return;
-    }
-
-    // verificar que longitud mínima de valor sea 4
-    if (this.valorFiltroPostulantesValidos.length < 4) {
-      Notificacion.notificacion(
-        this.notificationRef,
-        this.notificationServiceLocal,
-        null,
-        'Debe ingresar al menos 4 caracteres para realizar la búsqueda'
-      );
-
-      this.showLoading = false;
-
-      return;
-    }
-
-    this.subscriptions.push(
-      this.postulantesValidosService
-        .buscarPorFiltro(this.tipoFiltroPostulantesValidos, this.valorFiltroPostulantesValidos)
-        .subscribe({
-          next: (lista: PostulanteValido[]) => {
-            this.listaPostulantesValidos = lista;
-            this.listaPostulantesValidos = [...this.listaPostulantesValidos];
-
-            this.showLoading = false;
-          },
-          error: (errorResponse) => {
-            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-
-            this.showLoading = false;
-          },
-        })
-    );
-  }
-
-  resetFiltroPostulantesValidos() {
-    this.tipoFiltroPostulantesValidos = '';
-    this.valorFiltroPostulantesValidos = '';
-    this.cargarPostulantesValidos();
-  }
-
   cargaListaPruebas() {
 
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.pruebaDetalleService.listarConDatosTipoPrueba().subscribe({
+      this.pruebaDetalleService.listarConDatosTipoPruebaDeCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (lista: PruebaDetalleDatos[]) => {
           this.listaPruebaDetalleDatos = lista;
 
@@ -335,7 +220,9 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
             }
           }
+
         },
+
         error: (errorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
 
@@ -349,11 +236,12 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   cargarResultadosPrueba() {
     this.subscriptions.push(
       this.resultadosPruebasService
-        .listarPaginado(
+        .listarPaginadoCurso(
           this.currentPageResultados - 1,
           this.sizeResultados,
           this.pruebaDetalleSeleccionada.codSubtipoPrueba,
-          this.ordenColumna
+          this.ordenColumna,
+          this.cursoSeleccionado.codCursoEspecializacion
         )
         .subscribe({
           next: (paginacion: PaginacionResultadosPruebasDatos) => {
@@ -378,7 +266,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.orden = $event;
     console.log(this.orden);
 
-    this.cargarPostulantesValidos();
+    this.cargarInscripcionesValidas();
   }
 
   /////////////////////////////////////////////////
@@ -573,10 +461,13 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
     const contentType = tipo === 'Pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-    this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba,
-      this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
+    this.resultadosPruebasService.descargarCurso(
+      tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba,
+      this.pruebaDetalleSeleccionada.descripcionPrueba,
+      this.cursoSeleccionado.codCursoEspecializacion,
+      ).subscribe({
       next: (data) => {
-        const blob = new Blob([data] , { type: contentType });
+        const blob = new Blob([data], {type: contentType});
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -594,25 +485,6 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
       },
     });
   }
-
-  /*  descargarLista(tipo: string) {
-      // descargar mediante servicio ResultadosPruebasService
-      this.subscriptions.push(
-        this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codPruebaDetalle,
-          this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
-          next: () => {
-            Notificacion.notificacionOK(
-              this.notificationRef,
-              this.notificationServiceLocal,
-              'Archivo descargado correctamente'
-            );
-          },
-          error: (errorResponse) => {
-            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-          }
-        })
-      );
-    }*/
 
   public confirmaCerrarRegistro(event: Event): void {
 
@@ -633,7 +505,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
     if (this.verificarUltimaPrueba()) {
       this.mensajeConfirmacion =
-        '¿Está seguro de cerrar el registro de resultados? Al confirmar ya no será posible cargar más resultados para esta prueba. Al cierre de la última fase de pruebas, se registrará de forma automática  a los postulantes que aprobaron la fase de pruebas como estudiantes de acuerdo a los cupos disponibles.';
+        '¿Está seguro de cerrar el registro de resultados? Al confirmar ya no será posible cargar más resultados para esta prueba. Al cierre de la última fase de pruebas, se registrará de forma automática  a los Inscripciones que aprobaron la fase de pruebas como estudiantes de acuerdo a los cupos disponibles.';
     } else {
       this.mensajeConfirmacion =
         '¿Está seguro de cerrar el registro de resultados? Al confirmar ya no será posible cargar más resultados para esta prueba.';
@@ -662,24 +534,6 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
             this.generarDocumentosAprobados();
 
-            // en caso de que corresponda a la última prueba, se realiza la creación de estudiantes
-            if (this.verificarUltimaPrueba()) {
-              // llamada a this.estudianteService.crearEstudiantes();
-              this.subscriptions.push(
-                this.estudianteService.crearEstudiantes().subscribe({
-                  next: (resultado) => {
-                    Notificacion.notificacionOK(
-                      this.notificationRef,
-                      this.notificationServiceLocal,
-                      'Estudiantes creados correctamente'
-                    );
-                  },
-                  error: (errorResponse) => {
-                    Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-                  },
-                })
-              );
-            }
           },
           error: (errorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
@@ -688,7 +542,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     );
   }
 
-  //enviar notificación a postulantes aprobados con servicio resultadosPruebaService método notificarPrueba
+  //enviar notificación a Inscripciones aprobados con servicio resultadosPruebaService método notificarPrueba
   enviarNotificacion() {
 
     // verifica si la prueba seleccionada está en estado cierre, si no está en estado cierre no hace nada
@@ -704,10 +558,23 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
       return;
     }
 
+    // verifica si es prueba física y luego valida si corresponde a la última prueba física
+    if (this.pruebaDetalleSeleccionada.esFisica) {
+      if (!this.verificarUltimaPruebaFisica()) {
+        Notificacion.notificacionOK(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          'No se envía notificación, no corresponde a la última prueba física'
+        );
+
+        return;
+      }
+    }
+
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.resultadosPruebasService.notificarAprobados(this.pruebaDetalleSeleccionada.codSubtipoPrueba).subscribe({
+      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion ).subscribe({
         next: (resultado) => {
           Notificacion.notificacionOK(
             this.notificationRef,
@@ -752,11 +619,11 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     }
   }
 
-  // generar dociumentos de aprobados. Servicio resultadosPruebaService método generarDocumentosAprobados
+  // generar documentos de aprobados. Servicio resultadosPruebaService método generarDocumentosAprobadosCurso
   generarDocumentosAprobados() {
     this.subscriptions.push(
       this.resultadosPruebasService
-        .generarDocumentosAprobados(this.pruebaDetalleSeleccionada.codSubtipoPrueba)
+        .generarDocumentosAprobadosCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion)
         .subscribe({
           next: (resultado) => {
             Notificacion.notificacionOK(
@@ -798,9 +665,47 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     }
   }
 
+  // verifica si es la última prueba física para enviar notificación
+  verificarUltimaPruebaFisica() {
+
+    // recorre lista y busca las físicas
+    let listaPruebasFisicas =
+      this.listaPruebaDetalleDatos.filter((prueba) => prueba.esFisica === true);
+
+    // si no hay pruebas físicas, retorna false
+    if (listaPruebasFisicas.length === 0) {
+      return false;
+    } else {
+      // si hay pruebas físicas, verifica si la prueba seleccionada es la última física
+      let ultimaPruebaFisica = listaPruebasFisicas.reduce((prev, current) => (prev.ordenTipoPrueba > current.ordenTipoPrueba) ? prev : current);
+
+      if (this.pruebaDetalleSeleccionada.ordenTipoPrueba === ultimaPruebaFisica.ordenTipoPrueba) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   ////////////////////////////////////////////
   ///////// Lista y Selección de curso  //////
   ////////////////////////////////////////////
+
+  // lista de cursos con estado VALIDACIÓN. usar cursosService.listarCursosPorEstado
+  cargarListaCursos() {
+    this.subscriptions.push(
+      this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_PRUEBAS).subscribe({
+        next: (lista: Curso[]) => {
+          this.cursos = lista;
+          console.log('listaCursos', lista);
+        },
+        error: (errorResponse) => {
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+        },
+      })
+    );
+  }
+
   cursoSeleccionadoEvent($event: Curso) {
     if ($event !== null) {
       this.cursoSeleccionado = $event;
@@ -809,7 +714,11 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
       this.cargarInformacionCurso(this.cursoSeleccionado);
 
-      console.log($event);
+      this.cargarInscripcionesValidas();
+
+      this.cargaListaPruebas();
+
+      //console.log($event);
     }
   }
 
