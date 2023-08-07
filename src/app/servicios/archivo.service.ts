@@ -50,7 +50,7 @@ export class ArchivoService {
   visualizar(id: string): Observable<SafeResourceUrl> {
     return this.descargar(id).pipe(
       map(data => {
-        const blob = new Blob([data], {type: 'application/pdf'});
+        const blob = new Blob([data]);
         const archivo = new File([blob], 'archivo.pdf', {type: 'application/pdf'});
         const url = URL.createObjectURL(archivo);
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);
