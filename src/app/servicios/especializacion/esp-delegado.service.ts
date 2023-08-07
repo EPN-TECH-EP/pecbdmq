@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 
-export interface Delegado {
-
-  cod_usuario: number;
-  cod_datos_personales: number;
+export interface EspDelegado {
+  codEspDelegado: number;
+  codUsuario: number;
+  codDatosPersonales: number;
   estado: string;
   cedula: number;
   nombre: string;
@@ -28,18 +28,18 @@ export class EspDelegadoService {
   }
 
   listar() {
-    return this.http.get<Delegado[]>(`${this.host}/delegado/obtenerDelegado`);
+    return this.http.get<EspDelegado[]>(`${this.host}/delegadoEsp/obtenerDelegado`);
   }
 
   asignar(delegado: EspDelegadoCreate) {
-    return this.http.post<Delegado>(`${this.host}/delegado/crear`, delegado);
+    return this.http.post<EspDelegado>(`${this.host}/delegadoEsp/crear`, delegado);
   }
 
   eliminar(id: number) {
-    return this.http.delete(`${this.host}/delegado/${id}`);
+    return this.http.delete(`${this.host}/delegadoEsp/${id}`);
   }
   esDelegado(id: number) {
-    return this.http.get(`${this.host}/delegado/esDelegado/${id}`);
+    return this.http.get(`${this.host}/delegadoEsp/esDelegado/${id}`);
   }
 
 }
