@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Usuario } from "../../../../modelo/admin/usuario";
 import { AutenticacionService } from "../../../../servicios/autenticacion.service";
 import { Notificacion } from "../../../../util/notificacion";
@@ -13,6 +13,9 @@ import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { DelegadoService } from "../../../../servicios/formacion/delegado.service";
 import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
 import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
+import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
+import { CursosService } from '../../../../servicios/especializacion/cursos.service';
+import { CURSO_COMPLETO_ESTADO } from '../../../../util/constantes/especializacon.const';
 
 @Component({
   selector: 'app-inscripciones-especializacion',
@@ -21,9 +24,10 @@ import { EspInscripcionService } from '../../../../servicios/especializacion/esp
 })
 export class InscripcionesEspecializacionComponent implements OnInit {
 
-  usuario: Usuario = null;
+  usuario: Usuario = null
   inscripciones: InscripcionEsp[]
   inscripcionesAsignadas: InscripcionEsp[]
+  curso: Curso
   inscripcionesLoaded = false
   esEstadoValidacion = false
   esEstadoMuestreo = false
@@ -36,12 +40,14 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   ]
 
   constructor(
+    private route: ActivatedRoute,
     private inscripcionService: EspInscripcionService,
     private router: Router,
     private autenticacionService: AutenticacionService,
     private mdbNotificationService: MdbNotificationService,
     private formacionService: FormacionService,
     private delegadoService: DelegadoService,
+    private cursosService: CursosService,
   ) {
     this.inscripcionesAsignadas = []
     this.inscripciones = []
@@ -54,6 +60,17 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.route.params.subscribe(params => {
+      const codigo = params['codCurso'];
+      if (codigo) {
+        this.obtenerDatosCurso(codigo);
+      }
+    });
+
+    if (!this.esEstadoValidacion) {
+      return;
+    }
 
     this.delegadoService.esDelegado(this.usuario.codUsuario).subscribe({
       next: esDelegado => {
@@ -103,6 +120,23 @@ export class InscripcionesEspecializacionComponent implements OnInit {
     })
 
 
+  }
+
+  private obtenerDatosCurso(codigo: number) {
+    this.cursosService.obtenerCurso(codigo).subscribe({
+      next: (curso) => {
+        this.curso = curso;
+        this.verificarEstadoCurso();
+      }
+    });
+  }
+
+  private verificarEstadoCurso() {
+    this.cursosService.obtenerEstadoActual(this.curso.codCursoEspecializacion).subscribe({
+      next: (estado) => {
+        this.esEstadoValidacion = estado.mensaje === CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS;
+      }
+    })
   }
 
   validar(inscripcion: InscripcionEsp) {
