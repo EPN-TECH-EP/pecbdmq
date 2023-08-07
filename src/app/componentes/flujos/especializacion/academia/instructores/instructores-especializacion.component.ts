@@ -12,7 +12,7 @@ import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicio
 import { concatMap, forkJoin, map } from "rxjs";
 import { ActivatedRoute } from '@angular/router';
 import { CursosService } from '../../../../../servicios/especializacion/cursos.service';
-import { CURSO_COMPLETO_ESTADO } from "../../../../../util/constantes/especializacon.const";
+
 import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
 import { EspInstructorService } from '../../../../../servicios/especializacion/esp-instructor.service';
 import { TipoInstructor } from '../../../../../modelo/admin/tipo-instructor';
@@ -21,6 +21,7 @@ import { ComponenteBase } from 'src/app/util/componente-base';
 import { Notificacion } from 'src/app/util/notificacion';
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { HttpErrorResponse } from '@angular/common/http';
+import {CURSO_COMPLETO_ESTADO} from "../../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-instructores-especializacion',

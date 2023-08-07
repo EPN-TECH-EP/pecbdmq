@@ -184,6 +184,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   private mostrarNorificaion(mensaje: string, tipo: TipoAlerta) {
     Notificacion.notificar(this.ns, mensaje, tipo);
+
   }
 
   private cargarFormacion(idEstudiante: number): void {
