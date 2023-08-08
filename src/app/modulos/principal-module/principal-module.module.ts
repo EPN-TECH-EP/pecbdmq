@@ -202,6 +202,9 @@ import {
 import {
   MenuReportesEspComponent
 } from "../../componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component";
+import {
+  CursosCerradosComponent
+} from "../../componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component";
 
 
 const routes: Routes = [
@@ -312,6 +315,7 @@ const routes: Routes = [
       { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
       { path: 'especializacion/cursos/documentos/:estado', component: DocumentosCursoComponent },
+      { path: 'especializacion/cursos/cerrados', component: CursosCerradosComponent },
 
       { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
