@@ -133,6 +133,11 @@ import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
 import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import { MenuValidacionRequisitosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
+import { ValidacionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
+import { GestionDelegadosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
+import { InscripcionesEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
+import { ReasignacionInscripcionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
 import {CrearCursoComponent} from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
 import {
   MenuAdministracionEspecializacionComponent
@@ -152,6 +157,31 @@ import {
 import {
   DocumentosCursoComponent
 } from "../../componentes/flujos/especializacion/documentos-curso/documentos-curso.component";
+
+import {
+  ListaPruebasCursoComponent
+} from "../../componentes/flujos/especializacion/lista-pruebas-curso/lista-pruebas-curso.component";
+import {
+  ResultadosPruebasCursoComponent
+} from "../../componentes/flujos/especializacion/resultados-pruebas-curso/resultados-pruebas-curso.component";
+import {
+  MenuPruebasEspecializacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-pruebas-esp/menu-pruebas-especializacion.component";
+import {
+  MenuValidacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-validacion/menu-validacion.component";
+import {
+  MenuConsultasEspComponent
+} from "../../componentes/flujos/especializacion/menus/menu-consultas-esp/menu-consultas-esp.component";
+import {
+  MenuConvocatoriaEspecializacionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-convocatoria-esp/menu-convocatoria-especializacion.component";
+import {MenuGestionComponent} from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
+import {MenuNotasComponent} from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
+
+import { MenuEspecializacionAcademiaComponent } from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { InstructoresEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+
 
 const routes: Routes = [
   {
@@ -240,16 +270,32 @@ const routes: Routes = [
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
+      { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent },
+      { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
+      { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
+      { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
+      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspecializacionComponent },
+      { path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent },
+      { path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent },
+
+      { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
+      { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },
 
-
-      { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/cursos/estados', component: EstadoProcesoCursoComponent },
       { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
       { path: 'especializacion/cursos/documentos', component: DocumentosCursoComponent },
+
+      { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
+      { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
+      { path: 'especializacion/menu-validacion', component: MenuValidacionComponent },
+      { path: 'especializacion/menu-consultas', component: MenuConsultasEspComponent },
+      { path: 'especializacion/menu-convocatoria', component: MenuConvocatoriaEspecializacionComponent },
+      { path: 'especializacion/menu-gestion', component: MenuGestionComponent },
+      { path: 'especializacion/menu-notas', component: MenuNotasComponent },
 
     ],
   },

@@ -219,6 +219,11 @@ import {
 import { ModalApelacionComponent } from './componentes/util/modal-apelacion/modal-apelacion.component';
 import { ListaCursosComponent } from './componentes/flujos/especializacion/util/lista-cursos/lista-cursos.component';
 import { CatalogoCursoComponent } from './componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import { MenuValidacionRequisitosEspecializacionComponent } from './componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
+import { InscripcionesEspecializacionComponent } from './componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
+import { ValidacionEspecializacionComponent } from './componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
+import { GestionDelegadosEspecializacionComponent } from './componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
+import { ReasignacionInscripcionEspecializacionComponent } from './componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
 import { CrearCursoComponent } from './componentes/flujos/especializacion/crear-curso/crear-curso.component';
 import {
   MenuAdministracionEspecializacionComponent
@@ -239,6 +244,21 @@ import {
   ConvocatoriaEspecializacionComponent
 } from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
 import { DocumentosCursoComponent } from './componentes/flujos/especializacion/documentos-curso/documentos-curso.component';
+
+import {
+  MenuPruebasEspecializacionComponent
+} from "./componentes/flujos/especializacion/menus/menu-pruebas-esp/menu-pruebas-especializacion.component";
+import { MenuGestionComponent } from './componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component';
+import { MenuValidacionComponent } from './componentes/flujos/especializacion/menus/menu-validacion/menu-validacion.component';
+import { MenuNotasComponent } from './componentes/flujos/especializacion/menus/menu-notas/menu-notas.component';
+import { MenuConsultasEspComponent } from './componentes/flujos/especializacion/menus/menu-consultas-esp/menu-consultas-esp.component';
+import {
+  MenuConvocatoriaEspecializacionComponent
+} from "./componentes/flujos/especializacion/menus/menu-convocatoria-esp/menu-convocatoria-especializacion.component";
+
+import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+
 
 @NgModule({
   declarations: [
@@ -326,6 +346,11 @@ import { DocumentosCursoComponent } from './componentes/flujos/especializacion/d
     PeriodoAcademicoComponent,
     ApelacionesComponent,
     ModalApelacionComponent,
+    MenuValidacionRequisitosEspecializacionComponent,
+    InscripcionesEspecializacionComponent,
+    ValidacionEspecializacionComponent,
+    GestionDelegadosEspecializacionComponent,
+    ReasignacionInscripcionEspecializacionComponent,
     ListaCursosComponent,
     CatalogoCursoComponent,
     CrearCursoComponent,
@@ -337,8 +362,18 @@ import { DocumentosCursoComponent } from './componentes/flujos/especializacion/d
     ValidacionCursoComponent,
     BooleanPipe,
     ConvocatoriaEspecializacionComponent,
-    DocumentosCursoComponent
-  ],
+    DocumentosCursoComponent,
+    MenuPruebasEspecializacionComponent,
+    MenuGestionComponent,
+    MenuValidacionComponent,
+    MenuNotasComponent,
+    MenuConsultasEspComponent,
+    MenuConvocatoriaEspecializacionComponent,
+
+    InstructoresEspecializacionComponent,
+    MenuEspecializacionAcademiaComponent,
+
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -50,7 +50,7 @@ export class ResultadosPruebasService {
     codPruebaDetalle: number,
     //codFuncionario: number, // codFuncionario es para pruebas bomberiles
     tipoResultado: string,
-    esFisica: boolean
+    esFisica: boolean,
   ): Observable<any> {
     const formData = new FormData();
     formData.append('archivo', archivo);
@@ -80,7 +80,7 @@ export class ResultadosPruebasService {
   // params: id, nombreArchivo
   // descargar(tipo: string, id: number)
   // retorna: blob
-  
+
   public descargar(tipo: string, id: number, nombrePrueba: string): Observable<any> {
     const params = {
       id: id.toString(),
@@ -105,4 +105,74 @@ export class ResultadosPruebasService {
       params,
     });
   }
+
+  //////////////// cursos ///////////////////////
+  // generar los documentos de aprobados por prueba
+  ///resultadoPruebaTodo/generar
+  // params: subTipoPrueba
+  // retorna: OK o HttpErrorResponse
+  public generarDocumentosAprobadosCurso(subTipoPrueba: number, codCurso: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('subTipoPrueba', subTipoPrueba.toString());
+    formData.append('codCurso', codCurso.toString());
+    return this.http.post(`${this.host}/${this.nombreServicioTodo}/generarParaCurso`, formData);
+  }
+
+  // notificar a los postulantes que aprobaron
+  // url notificacionprueba/notificacionAprobados?codSubTipoPrueba=7
+  // params: codSubTipoPrueba
+  // retorna: OK o HttpErrorResponse
+  public notificarAprobadosPruebasCurso(codSubTipoPrueba: number, codCurso: number): Observable<any> {
+    const params = {
+      codSubTipoPrueba: codSubTipoPrueba.toString(),
+      codCurso: codCurso.toString(),
+    };
+    return this.http.get(`${this.host}/${this.nombreServicioNotificacionPruebas}/aprobadosPorPruebaCurso`, {
+      params,
+    });
+  }
+
+  // obtener la lista de resultados por prueba paginado
+  // url pruebasNoFisicas/resultados?page=0&size=10&subTipoPrueba=11&sort=2
+  // params: page, size, subTipoPrueba, sort
+  // retorna: lista de ResultadosPruebasDatos
+  public listarPaginadoCurso(
+    page: number,
+    size: number,
+    subTipoPrueba: number,
+    sort: number,
+    codCurso: number
+  ): Observable<PaginacionResultadosPruebasDatos> {
+    const params = {
+      page: page.toString(),
+      size: size.toString(),
+      sort: sort.toString(),
+      subTipoPrueba: subTipoPrueba.toString(),
+      codCurso: codCurso.toString(),
+    };
+    return this.http.get<PaginacionResultadosPruebasDatos>(
+      `${this.host}/${this.nombreServicioTodo}/resultadosPaginadoCurso`,
+      {
+        params,
+      }
+    );
+  }
+
+  // tipo: Excel o Pdf
+  // params: id, nombreArchivo
+  // descargar(tipo: string, id: number)
+  // retorna: blob
+
+  public descargarCurso(tipo: string, id: number, nombrePrueba: string, codCurso: number): Observable<any> {
+    const params = {
+      id: id.toString(),
+      nombre: 'resultadosRegistrados' + nombrePrueba,
+      codCurso: codCurso.toString(),
+    };
+    return this.http.get(`${this.host}/${this.nombreServicioTodo}/descargar${tipo}Curso`, {
+      responseType: 'blob',
+      params,
+    });
+  }
+
 }

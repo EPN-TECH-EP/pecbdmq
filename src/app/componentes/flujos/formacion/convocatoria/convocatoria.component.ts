@@ -195,7 +195,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     const fechaActualOriginal = new Date(convocatoria.fechaActual);
     fechaInicioOriginal.setMinutes(fechaInicioOriginal.getMinutes() + fechaInicioOriginal.getTimezoneOffset());
     fechaFinOriginal.setMinutes(fechaFinOriginal.getMinutes() + fechaFinOriginal.getTimezoneOffset());
-    fechaActualOriginal.setMinutes(fechaActualOriginal.getMinutes() + fechaActualOriginal.getTimezoneOffset());    
+    fechaActualOriginal.setMinutes(fechaActualOriginal.getMinutes() + fechaActualOriginal.getTimezoneOffset());
 
     convocatoria.fechaInicioConvocatoria = fechaInicioOriginal;
     convocatoria.fechaFinConvocatoria = fechaFinOriginal;

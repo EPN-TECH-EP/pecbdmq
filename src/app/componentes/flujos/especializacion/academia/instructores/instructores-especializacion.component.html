@@ -1,0 +1,451 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/especializacion/menu-academia'"
+></app-boton-volver>
+
+<ng-container *ngIf="cursos.length === 0">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">No existen cursos</h5>
+      <p class="card-text">
+        No existen cursos en estado en Curso, por lo tanto no hay datos para mostrar.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<section *ngIf="estaCargando && esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Listado de cursos</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+<section *ngIf="estaCargando && esVistaCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+</section>
+
+
+<div class="container" *ngIf="esVistaCurso">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de instructores</h1>
+  </div>
+  <button
+    class="btn btn-primary mb-1"
+    (click)="estaBuscandoUsuarios = !estaBuscandoUsuarios"
+  >
+    <i class="fa-solid fa-circle-plus me-2"></i>
+    Crear instructor
+  </button>
+  <!-- Busqueda de usuarios -->
+  <section *ngIf="estaBuscandoUsuarios">
+    <hr class="hr">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        [mdbTooltip]="'Cerrar'"
+        class="btn btn-danger btn-floating mb-2 d-flex justify-content-center align-items-center"
+        style="width: 15px; height: 15px;"
+        (click)="estaBuscandoUsuarios = false"
+      >
+        <i class="fas fa-x fa-sm"></i>
+      </button>
+    </div>
+    <div class="alert alert-success py-2" role="alert" style="width: fit-content">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      <span>Para crear un instructor, primero debe buscar un usuario en el sistema</span>
+    </div>
+    <app-busqueda-usuario
+      (usuarioEncontrados)="usuarioEncontrado($event)"
+      (usuariosEncontrados)="usuariosEncontrados($event)"
+    ></app-busqueda-usuario>
+    <hr class="hr">
+  </section>
+  <!-- Lista Usuarios -->
+
+  <section *ngIf="existenCoincidencias && estaBuscandoUsuarios" class="mt-2">
+    <button
+      *ngIf="usuarios.length > 0"
+      type="button"
+      class="btn btn-primary mb-2"
+      (click)="limpiarResultados()">
+      <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
+    </button>
+    <div class="my-4 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
+      <div class="col-7">
+        <ul class="list-group list-group-light">
+          <li
+            *ngFor="let usuario of usuarios; let i = index"
+            class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-bold d-flex align-items-center gap-2">
+                <div class="span-number">{{ i + 1}}</div>
+                {{usuario?.codDatosPersonales?.nombre}} {{usuario?.codDatosPersonales?.apellido}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-id-card me-1"></i>
+                {{usuario?.codDatosPersonales?.cedula}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-envelope me-1"></i>
+                {{usuario?.codDatosPersonales?.correoPersonal}}
+              </div>
+            </div>
+            <button
+              class="btn btn-sm btn-rounded"
+              (click)="onAgregarInstructor(usuario)"
+            >Asignar como instructor
+            </button>
+          </li>
+        </ul>
+      </div>
+      <hr class="hr">
+    </div>
+  </section>
+  <div *ngIf="!existenCoincidencias" >
+    <div class="alert alert-danger my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      No se encontró ningún usuario con los datos ingresados
+    </div>
+    <hr class="hr">
+  </div>
+  <div *ngIf="existenCoincidencias && esInstructor" >
+    <div class="alert alert-warning my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      El usuario ya es instructor
+    </div>
+    <hr class="hr">
+  </div>
+  <!-- Lista de Instructores -->
+  <section class="mt-4">
+    <div *ngIf="instructores.length === 0"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron instructores
+    </div>
+
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+      <form [formGroup]="instructorForm">
+        <table
+          class="table datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="instructores"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              class="fw-bold fs-6"
+            >
+              {{ header.label | titlecase }}
+            </th>
+            <th class="text-center fw-bold fs-6">Acciones</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngIf="estaAgregandoInstructor">
+            <td>
+              {{ instructor?.cedula }}
+            </td>
+            <td>
+              <div class="fw-bold">{{ instructor?.nombre }} {{ instructor?.apellido }}</div>
+              <div class="text-muted">{{ instructor?.correoPersonal }}</div>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select
+                  mdbValidate
+                  id="codTipoProcedencia"
+                  formControlName="codTipoProcedencia"
+                  class="mb-5"
+                >
+                  <mdb-option
+                    *ngFor="let tipoProcedencia of tiposProcedencia"
+                    class="text-wrap"
+                    [label]="tipoProcedencia.nombre"
+                    [value]="tipoProcedencia.codigo"
+                  >
+                    {{ tipoProcedencia.nombre }}
+                  </mdb-option>
+                </mdb-select>
+                <mdb-error *ngIf="codTipoProcedencia?.touched || codTipoProcedencia?.dirty">
+                  <span *ngIf="codTipoProcedencia?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select
+                  mdbValidate
+                  id="codUnidadGestion"
+                  formControlName="codUnidadGestion"
+                  class="mb-5"
+                >
+                  <mdb-option
+                    *ngFor="let unidadGestion of unidadesGestion"
+                    [label]="unidadGestion.nombre"
+                    [value]="unidadGestion.codigo"
+                    class="text-wrap"
+                  >
+                    {{ unidadGestion.nombre }}
+                  </mdb-option>
+                </mdb-select>
+                <mdb-error *ngIf="codUnidadGestion?.touched || codUnidadGestion?.dirty">
+                  <span *ngIf="codUnidadGestion?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codZona"
+                    formControlName="codZona"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let zona of estacionesTrabajo"
+                      class="text-wrap"
+                      [label]="zona.nombre"
+                      [value]="zona.codigo"
+                    >
+                      {{ zona.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <mdb-error *ngIf="codZona?.touched || codZona?.dirty">
+                    <span *ngIf="codZona?.hasError('required')">
+                      <i class="fa-solid fa-circle-exclamation me-1"></i>
+                      Este campo es requerido
+                    </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codTipoInstructor"
+                    formControlName="codTipoInstructor"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let tipoInstructor of tiposInstructor"
+                      class="text-wrap"
+                      [label]="tipoInstructor.nombre"
+                      [value]="tipoInstructor.codigo"
+                    >
+                      {{ tipoInstructor.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <mdb-error *ngIf="codTipoInstructor?.touched || codTipoInstructor?.dirty">
+                    <span *ngIf="codTipoInstructor?.hasError('required')">
+                      <i class="fa-solid fa-circle-exclamation me-1"></i>
+                      Este campo es requerido
+                    </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </mdb-form-control>
+            </td>
+            <td class="text-center">
+              <button
+                class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit"
+                [disabled]="instructorForm.invalid"
+                (click)="onGuardarCambiosInstructor()"
+              >
+                <i class="fa fa-check"></i>Agregar
+
+              </button>
+              <!-- Cancelar -->
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="this.estaAgregandoInstructor = false; instructor = defaultEspInstructor;"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+
+          </tr>
+          <tr *ngFor="let instructor of table.data;">
+            <td>
+              {{ instructor?.cedula }}
+            </td>
+            <td>
+              <ng-container>
+                <div class="fw-bold">{{ instructor?.nombre }} {{ instructor?.apellido }}</div>
+                <div class="text-muted">{{ instructor?.correoPersonal }}</div>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoInstructor || instructor?.codInstructor!== codigoInstructorEditando">
+                {{ instructor?.tipoProcedencia}}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoInstructor && instructor?.codInstructor=== codigoInstructorEditando">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codTipoProcedenciaEditar"
+                    formControlName="codTipoProcedencia"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let tipoProcedencia of tiposProcedencia"
+                      class="text-wrap"
+                      [value]="tipoProcedencia.codigo"
+                    >
+                      {{ tipoProcedencia.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoInstructor || instructor?.codInstructor!== codigoInstructorEditando">
+                {{ instructor?.unidadGestion }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoInstructor && instructor?.codInstructor=== codigoInstructorEditando">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codUnidadGestionEditar"
+                    formControlName="codUnidadGestion"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let unidadGestion of unidadesGestion"
+                      [label]="unidadGestion.nombre"
+                      [value]="unidadGestion.codigo"
+                      class="text-wrap"
+                    >
+                      {{ unidadGestion.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label"></label>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoInstructor || instructor?.codInstructor!== codigoInstructorEditando">
+                {{ instructor?.nombreZona}}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoInstructor && instructor?.codInstructor=== codigoInstructorEditando">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codZonaEditar"
+                    formControlName="codZona"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let zona of estacionesTrabajo"
+                      class="text-wrap"
+                      [label]="zona.nombre"
+                      [value]="zona.codigo"
+                    >
+                      {{ zona.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoInstructor || instructor?.codInstructor!== codigoInstructorEditando">
+                {{ instructor?.nombreTipoInstructor}}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoInstructor && instructor?.codInstructor=== codigoInstructorEditando">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codTipoInstructorEditar"
+                    formControlName="codTipoInstructor"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let tipoInstructor of tiposInstructor"
+                      class="text-wrap"
+                      [label]="tipoInstructor.nombre"
+                      [value]="tipoInstructor.codigo"
+                    >
+                      {{ tipoInstructor.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="!estaEditandoInstructor || codigoInstructorEditando !== instructor.codInstructor">
+                <button
+                  mdbTooltip="Editar datos del instructor"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="estaEditandoInstructor"
+                  (click)="onEditarRegistroInstructor(instructor)"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="onEliminarInstructor($event, instructor.codInstructorCurso)"
+                  [disabled]="estaEditandoInstructor"
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estaEditandoInstructor && codigoInstructorEditando === instructor.codInstructor">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  type="submit"
+                  (click)="onGuardarCambiosInstructor()"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="onCancelarEdicionInstructor()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </section>
+</div>

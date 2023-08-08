@@ -1,0 +1,15 @@
+p {
+  margin-bottom: 0.6rem;
+}
+
+
+.expanded {
+  flex-basis: 100%;
+  max-width: 100%;
+  transition: width 0.3s ease;
+
+}
+
+.accordion-button{
+  padding: 0;
+}

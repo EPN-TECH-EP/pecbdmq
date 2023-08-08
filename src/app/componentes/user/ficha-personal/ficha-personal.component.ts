@@ -176,6 +176,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
       },
       error: (errorResponse: HttpErrorResponse) => {
         console.log('Error checking if user is estudiante:', errorResponse);
+        Notificacion.notificacion(this.notificationRef, this.ns, errorResponse);
       }
     });
 
@@ -183,6 +184,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   private mostrarNorificaion(mensaje: string, tipo: TipoAlerta) {
     Notificacion.notificar(this.ns, mensaje, tipo);
+
   }
 
   private cargarFormacion(idEstudiante: number): void {

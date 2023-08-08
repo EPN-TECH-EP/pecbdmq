@@ -5,7 +5,7 @@ import { CursosService } from "../../../../servicios/especializacion/cursos.serv
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { Notificacion } from "../../../../util/notificacion";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 import { OPCIONES_DATEPICKER } from "../../../../util/constantes/opciones-datepicker.const";
 import {
   ConvocatoriaEspecializacion,

@@ -1,24 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { SubtipoPruebaDatos } from 'src/app/modelo/admin/subtipo-prueba-datos';
-import { PruebaDetalle } from 'src/app/modelo/flujos/formacion/prueba-detalle';
-import { SubtipoPruebaService } from 'src/app/servicios/subtipo-prueba.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { Notificacion } from 'src/app/util/notificacion';
-import { PruebaDetalleService } from '../../../../servicios/formacion/prueba-detalle.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MyValidators } from 'src/app/util/validators';
-import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
-import { FORMACION } from 'src/app/util/constantes/fomacion.const';
-import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
-import { OPCIONES_DATEPICKER } from 'src/app/util/constantes/opciones-datepicker.const';
-import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MdbNotificationService} from 'mdb-angular-ui-kit/notification';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {SubtipoPruebaDatos} from 'src/app/modelo/admin/subtipo-prueba-datos';
+import {PruebaDetalle} from 'src/app/modelo/flujos/formacion/prueba-detalle';
+import {SubtipoPruebaService} from 'src/app/servicios/subtipo-prueba.service';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {Notificacion} from 'src/app/util/notificacion';
+import {PruebaDetalleService} from '../../../../servicios/formacion/prueba-detalle.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MyValidators} from 'src/app/util/validators';
+import {FormacionService} from 'src/app/servicios/formacion/formacion.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {PruebaDetalleDatos} from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
+import {OPCIONES_DATEPICKER} from 'src/app/util/constantes/opciones-datepicker.const';
+import {PruebaDetalleOrden} from 'src/app/modelo/flujos/formacion/prueba-detalle-orden';
 import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
 import {CursosService} from "../../../../servicios/especializacion/cursos.service";
-import {ESPECIALIZACION} from "../../../../util/constantes/especializacion.const";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-lista-pruebas-curso',
@@ -55,15 +53,15 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
 
   // columnas
   headers = [
-    { key: 'ordenTipoPrueba', label: 'Orden', width: '50px', wrap: true, start: false },
-    { key: 'codSubtipoPrueba', label: 'Subtipo Prueba', width: '150px', wrap: false, start: true },
-    { key: 'descripcionPrueba', label: 'Descripción', width: '150px', wrap: false, start: true },
-    { key: 'fecha', label: 'Fechas', width: '100px', wrap: true, start: true },
+    {key: 'ordenTipoPrueba', label: 'Orden', width: '50px', wrap: true, start: false},
+    {key: 'codSubtipoPrueba', label: 'Subtipo Prueba', width: '150px', wrap: false, start: true},
+    {key: 'descripcionPrueba', label: 'Descripción', width: '150px', wrap: false, start: true},
+    {key: 'fecha', label: 'Fechas', width: '100px', wrap: true, start: true},
     /*{ key: 'fechaInicio', label: 'Fecha Inicio', width: '100px', wrap: true },
     { key: 'fechaFin', label: 'Fecha Fin', width: '100px', wrap: true },
     { key: 'hora', label: 'Hora', width: '50px', wrap: true },*/
 
-    { key: 'puntaje', label: 'Puntajes', width: '50px', wrap: true, start: true },
+    {key: 'puntaje', label: 'Puntajes', width: '50px', wrap: true, start: true},
     /*{ key: 'puntajeMinimo', label: 'Puntaje Mínimo', width: '50px', wrap: true },
     { key: 'puntajeMaximo', label: 'Puntaje Máximo', width: '50px', wrap: true },
     { key: 'tienePuntaje', label: 'Tiene Puntaje', width: '50px', wrap: true },*/
@@ -99,27 +97,35 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   get descripcionPruebaField() {
     return this.pruebaDetalleForm.get('descripcionPrueba');
   }
+
   get fechaInicioField() {
     return this.pruebaDetalleForm.get('fechaInicio');
   }
+
   get fechaFinField() {
     return this.pruebaDetalleForm.get('fechaFin');
   }
+
   get horaField() {
     return this.pruebaDetalleForm.get('hora');
   }
+
   get codSubtipoPruebaField() {
     return this.pruebaDetalleForm.get('codSubtipoPrueba');
   }
+
   get ordenTipoPruebaField() {
     return this.pruebaDetalleForm.get('ordenTipoPrueba');
   }
+
   get puntajeMinimoField() {
     return this.pruebaDetalleForm.get('puntajeMinimo');
   }
+
   get puntajeMaximoField() {
     return this.pruebaDetalleForm.get('puntajeMaximo');
   }
+
   get tienePuntajeField() {
     return this.pruebaDetalleForm.get('tienePuntaje');
   }
@@ -128,32 +134,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // Métodos de inicialización
   //////////////////////////////////////////
   ngOnInit(): void {
-    this.formacionService
-      .getEstadoActual()
-      .pipe(
-        catchError((errorResponse: HttpErrorResponse) => {
-          console.error(errorResponse);
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: (estado) => {
-          if (!estado || estado.httpStatusCode !== 200) {
-            return;
-          }
-
-          if (estado.mensaje === FORMACION.estadoPruebas) {
-            this.esEstadoPruebas = true;
-
-            this.cargarListaSubtipoPrueba();
-          }
-        },
-      });
-
-    //TODO borrar
-    //this.esEstadoPruebas = true;
-    //this.cargarListaSubtipoPrueba();
-    //TODO FIN borrar
+    this.cargarListaCursos();
   }
 
   // obtiene la lista de subtipos de prueba registrados
@@ -177,7 +158,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // obtiene la lista de prueba detalle desde el servicio
   cargarListaPruebaDetalle() {
     this.subscriptions.push(
-      this.pruebaDetalleService.listarConDatosTipoPrueba().subscribe({
+      this.pruebaDetalleService.listarConDatosTipoPruebaDeCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (lista: PruebaDetalleDatos[]) => {
           this.listaPruebaDetalleDatos = lista;
           console.log('listaPruebaDetalle', lista);
@@ -192,7 +173,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   // lista de cursos con estado VALIDACIÓN. usar cursosService.listarCursosPorEstado
   cargarListaCursos() {
     this.subscriptions.push(
-      this.cursosService.listarCursosPorEstado("VALIDACIÓN").subscribe({
+      this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_PRUEBAS).subscribe({
         next: (lista: Curso[]) => {
           this.cursos = lista;
           console.log('listaCursos', lista);
@@ -285,8 +266,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         this.listaPruebaDetalleDatos[0]?.ordenTipoPrueba
       );
 
-      if (ordenMaximo === undefined || ordenMaximo === null)
-      {
+      if (ordenMaximo === undefined || ordenMaximo === null) {
         ordenMaximo = 0;
       }
 
@@ -297,8 +277,8 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         fechaFin: pruebaDetalleFormulario.fechaFin,
         hora: pruebaDetalleFormulario.hora,
         estado: 'ACTIVO',
-        codPeriodoAcademico: pruebaDetalleFormulario.codPeriodoAcademico,
-        codCursoEspecializacion: pruebaDetalleFormulario.codCursoEspecializacion,
+        codPeriodoAcademico: null,
+        codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
         codSubtipoPrueba: pruebaDetalleFormulario.codSubtipoPrueba,
         ordenTipoPrueba: ordenMaximo + 1,
         puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo,
@@ -314,7 +294,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
             Notificacion.notificacionOK(
               this.notificationRef,
               this.notificationServiceLocal,
-              'Prueba de formación creada con éxito'
+              'Prueba registrada con éxito'
             );
 
             const pruebaDetalleDatosNew: PruebaDetalleDatos = {
@@ -365,8 +345,8 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
         codCursoEspecializacion: pruebaDetalleDatos.codCursoEspecializacion,
         codSubtipoPrueba: pruebaDetalleFormulario.codSubtipoPrueba,
         ordenTipoPrueba: pruebaDetalleDatos.ordenTipoPrueba,
-        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo?pruebaDetalleFormulario.puntajeMinimo:0,
-        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo?pruebaDetalleFormulario.puntajeMaximo:0,
+        puntajeMinimo: pruebaDetalleFormulario.puntajeMinimo ? pruebaDetalleFormulario.puntajeMinimo : 0,
+        puntajeMaximo: pruebaDetalleFormulario.puntajeMaximo ? pruebaDetalleFormulario.puntajeMaximo : 0,
         tienePuntaje: pruebaDetalleFormulario.tienePuntaje,
       };
 
@@ -378,7 +358,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
             Notificacion.notificacionOK(
               this.notificationRef,
               this.notificationServiceLocal,
-              'Prueba de formación actualizada con éxito'
+              'Prueba actualizada con éxito'
             );
             const pruebaDetalleDatosEdit = this.listaPruebaDetalleDatos[this.editElementIndex];
 
@@ -438,7 +418,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Prueba de formación eliminada con éxito'
+            'Prueba eliminada con éxito'
           );
           this.showLoading = false;
           const index = this.listaPruebaDetalleDatos.findIndex(
@@ -569,7 +549,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Orden de pruebas de formación guardado con éxito'
+            'Orden de pruebas guardado con éxito'
           );
 
           this.listaOrdenInicial = [];
@@ -624,7 +604,31 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
       this.cursoSeleccionado = $event;
       this.esVistaCurso = true;
       this.esVistaListaCursos = false;
+
+      this.cargarInformacionCurso(this.cursoSeleccionado);
+
+      this.cargarListaSubtipoPrueba();
+
+      this.cargarListaPruebaDetalle();
+
       console.log($event);
     }
+  }
+
+  volverAListaCursos() {
+    this.cursoSeleccionado = null;
+    this.esVistaCurso = false;
+    this.esVistaListaCursos = true;
+  }
+
+  private async cargarInformacionCurso(curso: Curso) {
+    await this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
+      next: (tipoCurso) => {
+        this.cursoSeleccionado.tipoCurso = tipoCurso;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 }

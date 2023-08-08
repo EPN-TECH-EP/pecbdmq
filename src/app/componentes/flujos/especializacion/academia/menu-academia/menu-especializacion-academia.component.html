@@ -1,0 +1,27 @@
+<div class="container">
+  <h4 class="text-center">Menú Especialización Académica</h4>
+
+  <a
+    class="my-4 p-0"
+    (click)="basicCollapse.toggle()"
+    role="button"
+    [attr.aria-expanded]="!basicCollapse.collapsed"
+    aria-controls="collapseExample"
+    [mdbTooltip]="'Flujo correcto para la gestión de la especialización académica'"
+  >
+    <i class="fas fa-info-circle text-primary"></i>
+  </a>
+  <!--Collapsed content-->
+  <div class="my-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse">
+    <div class="alert alert-info" role="alert">
+      <p><b>Flujo correcto para la gestión de la especialización académica</b></p>
+      1. Registrar instructores <br/>
+      2. Registrar materias y los respectivos paralelos<br/>
+      3. Registrar estudiantes y asignar paralelos<br/>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <menu-item *ngFor="let item of listaSubMenu" [menu]="item"></menu-item>
+  </div>
+</div>

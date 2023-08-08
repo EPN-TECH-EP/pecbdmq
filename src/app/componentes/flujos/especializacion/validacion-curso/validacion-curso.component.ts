@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
