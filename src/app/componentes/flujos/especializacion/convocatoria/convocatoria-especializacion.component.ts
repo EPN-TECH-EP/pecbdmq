@@ -98,15 +98,15 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     const fechaInicioDate: Date = this.fechaInicioField.value;
     const fechaFinDate: Date = this.fechaFinField.value;
 
-    const fechaInicio = `${ fechaInicioDate.getFullYear() }-${ fechaInicioDate.getMonth() + 1 < 10 ? `0${ fechaInicioDate.getMonth() + 1 }` : fechaInicioDate.getMonth() + 1 }-${ fechaInicioDate.getDate() }`;
-    const fechaFin = `${ fechaFinDate.getFullYear() }-${ fechaFinDate.getMonth() + 1 < 10 ? `0${ fechaFinDate.getMonth() + 1 }` : fechaFinDate.getMonth() + 1 }-${ fechaFinDate.getDate() }`;
-
+    // const fechaInicio = `${ fechaInicioDate.getFullYear() }-${ fechaInicioDate.getMonth() + 1 < 10 ? `0${ fechaInicioDate.getMonth() + 1 }` : fechaInicioDate.getMonth() + 1 }-${ fechaInicioDate.getDate() }`;
+    // const fechaFin = `${ fechaFinDate.getFullYear() }-${ fechaFinDate.getMonth() + 1 < 10 ? `0${ fechaFinDate.getMonth() + 1 }` : fechaFinDate.getMonth() + 1 }-${ fechaFinDate.getDate() }`;
+    //
 
     const convocatoria: ConvocatoriaEspecializacion = {
       correo: this.correoField.value,
       nombreConvocatoria: `Convocatoria: ${ this.cursoSeleccionado.nombre }`,
-      fechaFinConvocatoria: fechaInicio,
-      fechaInicioConvocatoria: fechaFin,
+      fechaInicioConvocatoria: fechaInicioDate,
+      fechaFinConvocatoria: fechaFinDate,
       codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
     }
     console.log(convocatoria);

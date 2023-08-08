@@ -12,7 +12,7 @@ import { CursosService } from "../../../../servicios/especializacion/cursos.serv
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-inscripcion',
@@ -87,6 +87,8 @@ export class InscripcionEspecializacionComponent implements OnInit {
       error: (err) => {
         this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
         this.datoPersonal.correoPersonal = null;
+        this.esBotonDeshabilitado = true;
+        this.loading = false;
       }
     });
   }
@@ -104,7 +106,6 @@ export class InscripcionEspecializacionComponent implements OnInit {
     });
   }
 
-
   private obtenerDatos(cedula: string) {
     this.loading = true;
     this.inscripcionService.obtenerDatosDelPostulante(cedula).subscribe({
@@ -119,6 +120,12 @@ export class InscripcionEspecializacionComponent implements OnInit {
         }
         this.esBotonDeshabilitado = true;
         this.loading = false;
+      },
+      error: (err) => {
+        this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        this.datoPersonal = null;
+        this.estudiante = null;
+        this.loading = false;
       }
     })
   }
@@ -128,6 +135,10 @@ export class InscripcionEspecializacionComponent implements OnInit {
       next: (curso) => {
         this.curso = curso;
         this.verificarEstadoInscripcion();
+      },
+      error: (err) => {
+        this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        this.curso = null;
       }
     });
   }
@@ -137,6 +148,11 @@ export class InscripcionEspecializacionComponent implements OnInit {
       next: (estado) => {
         this.esEstadoInscripcion = estado.mensaje === CURSO_COMPLETO_ESTADO.INSCRIPCION;
         this.isLoading = this.esEstadoInscripcion;
+      },
+      error: (err) => {
+        this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        this.esEstadoInscripcion = false;
+        this.isLoading = false;
       }
     })
   }
@@ -163,4 +179,5 @@ export class InscripcionEspecializacionComponent implements OnInit {
     this.datoPersonal.correoPersonal = this.correoPersonal.value;
     this.guardarCorreo()
   }
+
 }

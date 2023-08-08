@@ -85,37 +85,22 @@
         </div>
         <div class="col">
           <h3 class="fs-5 fw-bold mb-3">Documentos</h3>
-          <ol class="list-group list-group-light list-group-numbered">
-            <li class="list-group-item p-1">
-              <b>Documento: </b>
-              Nombre documento
-              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
-                <i class="fas fa-download"></i>
-              </button>
-            </li>
-            <li class="list-group-item p-1">
-              <b>Documento: </b>
-              Nombre documento
-              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
-                <i class="fas fa-download"></i>
-              </button>
-            </li>
-            <li class="list-group-item p-1">
-              <b>Documento: </b>
-              Nombre documento
-              <button class="btn btn-link btn-sm mx-1" [mdbTooltip]="'Descargar documento'">
-                <i class="fas fa-download"></i>
-              </button>
-            </li>
-            <li class="list-group-item p-1" *ngFor="let documento of cursoSeleccionado.documentos">
-              <b>Documento: </b>
-              Nombre documento
-              <button
-                class="btn btn-link btn-sm mx-1"
-                [mdbTooltip]="'Descargar documento'"
-              >
-                <i class="fas fa-download"></i>
-              </button>
+          <ol class="list-group list-group-light">
+            <li class="list-group-item p-1"
+                *ngFor="let documento of cursoSeleccionado.documentos">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <b>Documento: </b>
+                  {{documento.nombreDocumento}}
+                </div>
+                <button
+                  class="btn btn-link btn-sm mx-1"
+                  [mdbTooltip]="'Descargar documento'"
+                  (click)="descargarDocumento(documento.codigoDocumento)"
+                >
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
             </li>
           </ol>
         </div>

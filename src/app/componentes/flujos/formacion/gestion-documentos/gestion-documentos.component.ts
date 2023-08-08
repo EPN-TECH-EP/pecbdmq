@@ -95,8 +95,6 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
 
   cargarArchivo(event: any) {
     this.archivo = event.target.files[0];
-    console.log(this.archivo);
-
   }
 
   crear() {

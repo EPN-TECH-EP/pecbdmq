@@ -10,6 +10,7 @@ export const CURSO_COMPLETO_ESTADO = {
   ABIERTOS: 'ABIERTOS',
   MENU_CURSO: '/principal/especializacion/menu-gestion',
   INICIO: 'INICIO',
+  TODOS: 'TODOS',  
 }
 
 

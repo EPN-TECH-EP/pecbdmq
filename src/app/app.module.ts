@@ -243,6 +243,7 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 import {
   ConvocatoriaEspecializacionComponent
 } from "./componentes/flujos/especializacion/convocatoria/convocatoria-especializacion.component";
+import { DocumentosCursoComponent } from './componentes/flujos/especializacion/documentos-curso/documentos-curso.component';
 
 import {
   MenuPruebasEspecializacionComponent
@@ -257,6 +258,7 @@ import {
 
 import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 
 
 @NgModule({
@@ -361,7 +363,7 @@ import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/espec
     ValidacionCursoComponent,
     BooleanPipe,
     ConvocatoriaEspecializacionComponent,
-
+    DocumentosCursoComponent,
     MenuPruebasEspecializacionComponent,
     MenuGestionComponent,
     MenuValidacionComponent,
@@ -371,6 +373,7 @@ import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/espec
 
     InstructoresEspecializacionComponent,
     MenuEspecializacionAcademiaComponent,
+    MenuReportesEspComponent,
 
     ],
   imports: [
