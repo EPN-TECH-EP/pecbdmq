@@ -3,7 +3,7 @@ import { CursosService } from "../../../../servicios/especializacion/cursos.serv
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
 import { switchMap } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";

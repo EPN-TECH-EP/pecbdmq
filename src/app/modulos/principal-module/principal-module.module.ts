@@ -132,13 +132,25 @@ import {
 import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
-import { CatalogoCursoComponent } from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
-import { MenuValidacionRequisitosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
-import { ValidacionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
-import { GestionDelegadosEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
-import { InscripcionesEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
-import { ReasignacionInscripcionEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
-import {CrearCursoComponent} from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
+import {
+  CatalogoCursoComponent
+} from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
+import {
+  MenuValidacionRequisitosEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
+import {
+  ValidacionEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
+import {
+  GestionDelegadosEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
+import {
+  InscripcionesEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
+import {
+  ReasignacionInscripcionEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
+import { CrearCursoComponent } from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
 import {
   MenuAdministracionEspecializacionComponent
 } from "../../componentes/flujos/especializacion/menus/menu-administracion-especializacion/menu-administracion-especializacion.component";
@@ -176,11 +188,20 @@ import {
 import {
   MenuConvocatoriaEspecializacionComponent
 } from "../../componentes/flujos/especializacion/menus/menu-convocatoria-esp/menu-convocatoria-especializacion.component";
-import {MenuGestionComponent} from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
-import {MenuNotasComponent} from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
+import {
+  MenuGestionComponent
+} from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
+import { MenuNotasComponent } from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
 
-import { MenuEspecializacionAcademiaComponent } from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
-import { InstructoresEspecializacionComponent } from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+import {
+  MenuEspecializacionAcademiaComponent
+} from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import {
+  InstructoresEspecializacionComponent
+} from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+import {
+  MenuReportesEspComponent
+} from "../../componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component";
 
 
 const routes: Routes = [
@@ -274,7 +295,10 @@ const routes: Routes = [
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
       { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
       { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
-      { path: 'especializacion/reasignacion-inscripciones', component: ReasignacionInscripcionEspecializacionComponent },
+      {
+        path: 'especializacion/reasignacion-inscripciones',
+        component: ReasignacionInscripcionEspecializacionComponent
+      },
       { path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent },
       { path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent },
 
@@ -287,7 +311,7 @@ const routes: Routes = [
       { path: 'especializacion/cursos/estados', component: EstadoProcesoCursoComponent },
       { path: 'especializacion/validacion/curso', component: ValidacionCursoComponent },
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
-      { path: 'especializacion/cursos/documentos', component: DocumentosCursoComponent },
+      { path: 'especializacion/cursos/documentos/:estado', component: DocumentosCursoComponent },
 
       { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
@@ -296,6 +320,7 @@ const routes: Routes = [
       { path: 'especializacion/menu-convocatoria', component: MenuConvocatoriaEspecializacionComponent },
       { path: 'especializacion/menu-gestion', component: MenuGestionComponent },
       { path: 'especializacion/menu-notas', component: MenuNotasComponent },
+      { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
 
     ],
   },

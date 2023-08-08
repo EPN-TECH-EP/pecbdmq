@@ -5,8 +5,8 @@ import { Convocatoria } from "../../modelo/admin/convocatoria";
 
 export interface ConvocatoriaEspecializacion {
   nombreConvocatoria: string;
-  fechaInicioConvocatoria: string;
-  fechaFinConvocatoria: string;
+  fechaInicioConvocatoria: Date;
+  fechaFinConvocatoria: Date;
   codCursoEspecializacion: number;
   correo: string;
 }

@@ -8,6 +8,7 @@ export const CURSO_COMPLETO_ESTADO = {
   REGISTRO_NOTAS: 'REGISTRO DE NOTAS',
   CIERRE: 'CIERRE CURSO',
   ABIERTOS: 'ABIERTOS',
+  TODOS: 'TODOS',
   MENU_CURSO: '/principal/especializacion/curso',
 }
 

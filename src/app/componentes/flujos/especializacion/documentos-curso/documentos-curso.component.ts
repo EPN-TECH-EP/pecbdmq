@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacon.const";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DocumentoFormacion } from "../../../../modelo/flujos/formacion/documento";
@@ -8,6 +8,7 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { DocumentosCursoService } from "../../../../servicios/especializacion/documentos-curso.service";
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-documentos-curso',
@@ -27,14 +28,17 @@ export class DocumentosCursoComponent implements OnInit {
     { key: 'nombre', label: 'Nombre' },
   ]
   addRow: boolean;
-  estaEditando: boolean;
   codigoDocumentoEditando: number;
+
+  estado: string;
 
   constructor(
     private cursosService: CursosService,
     private formBuilder: FormBuilder,
     private ns: MdbNotificationService,
-    private documentosCursoService: DocumentosCursoService
+    private documentosCursoService: DocumentosCursoService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.esVistaListaCursos = true;
     this.estaCargando = true;
@@ -44,14 +48,36 @@ export class DocumentosCursoComponent implements OnInit {
     this.documentoForm = new FormGroup({});
     this.documentos = [];
     this.addRow = false;
-    this.estaEditando = false;
     this.codigoDocumentoEditando = 0;
     this.archivo = new File([], '');
+    this.estado = '';
     this.construirFormulario();
   }
 
   ngOnInit(): void {
-    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.TODOS).subscribe({
+    this.route.params.subscribe(params => {
+
+      const estado = params['estado'];
+
+      if (estado && estado === CURSO_COMPLETO_ESTADO.ABIERTOS.toLowerCase()) {
+        this.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.ABIERTOS);
+        this.estado = CURSO_COMPLETO_ESTADO.ABIERTOS;
+        return;
+      }
+
+      if (estado && estado === CURSO_COMPLETO_ESTADO.TODOS.toLowerCase()) {
+        this.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.TODOS);
+        this.estado = CURSO_COMPLETO_ESTADO.TODOS;
+        return;
+      }
+
+      this.router.navigate(['/principal/especializacion/menu-convocatoria']).then();
+
+    });
+  }
+
+  private listarCursosPorEstado(estado: string) {
+    this.cursosService.listarCursosPorEstado(estado).subscribe({
       next: (cursos) => {
         this.cursos = cursos
         this.estaCargando = false;
@@ -64,8 +90,6 @@ export class DocumentosCursoComponent implements OnInit {
 
   private construirFormulario() {
     this.documentoForm = this.formBuilder.group({
-      descripcion: [''],
-      observaciones: [''],
       archivo: ['', [Validators.required,]],
     });
   }
@@ -88,6 +112,7 @@ export class DocumentosCursoComponent implements OnInit {
 
   cursoSeleccionadoEvent($event: Curso) {
     if ($event) {
+      console.log($event);
       this.cursoSeleccionado = $event;
       this.esVistaListaCursos = false;
       this.esVistaValidacionCurso = true;
@@ -109,15 +134,16 @@ export class DocumentosCursoComponent implements OnInit {
 
     if (this.documentoForm.invalid) return;
 
+    if (this.estado === CURSO_COMPLETO_ESTADO.TODOS) return;
+
     const formData = new FormData();
-    // formData.append('descripcion', this.documentoForm.get('descripcion')?.value);
-    // formData.append('observaciones', this.documentoForm.get('observaciones')?.value);
     formData.append('archivos', this.archivo);
     formData.append('codCursoEspecializacion', this.cursoSeleccionado.codCursoEspecializacion.toString());
 
     this.documentosCursoService.cargar(formData).subscribe({
-      next: (documento) => {
+      next: () => {
         Notificacion.notificar(this.ns, 'Documento cargado correctamente', TipoAlerta.ALERTA_OK);
+        this.addRow = false;
         this.documentosCursoService.listarPorCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
           next: (documentos) => {
             this.documentos = documentos as DocumentoFormacion[];
@@ -150,18 +176,10 @@ export class DocumentosCursoComponent implements OnInit {
       });
   }
 
-  editRow(documento: DocumentoFormacion) {
-    this.documentoForm.patchValue({
-      descripcion: documento.descripcion,
-      observaciones: documento.observaciones,
-      archivo: documento.nombre
-    });
-    this.estaEditando = true;
-    this.codigoDocumentoEditando = documento.codDocumento;
-  }
 
   eliminar(codDocumento: number) {
 
+    console.log('Eliminando documento', codDocumento, this.cursoSeleccionado.codCursoEspecializacion);
     this.documentosCursoService.eliminar(codDocumento, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
       next: () => {
         let index = this.documentos.findIndex((documento) => documento.codDocumento == codDocumento);
@@ -176,32 +194,5 @@ export class DocumentosCursoComponent implements OnInit {
     });
   }
 
-  actualizar(documento: DocumentoFormacion) {
-    const formData = new FormData();
-    formData.append('archivo', this.archivo);
-    formData.append('descripcion', this.documentoForm.get('descripcion')?.value);
-    formData.append('observacion', this.documentoForm.get('observaciones')?.value);
-    formData.append('tipo', '61');
-
-    this.documentosCursoService.actualizar(formData, documento.codDocumento).subscribe({
-      next: (documento) => {
-        let index = this.documentos.findIndex((documento) => documento.codDocumento == this.codigoDocumentoEditando);
-        this.documentos[index] = <DocumentoFormacion>documento;
-        this.documentos = [...this.documentos]
-        Notificacion.notificar(this.ns, 'Documento actualizado correctamente', TipoAlerta.ALERTA_OK);
-        this.documentoForm.reset();
-        this.estaEditando = false;
-      },
-      error: (error) => {
-        console.log('Error al actualizar documento', error);
-        Notificacion.notificar(this.ns, 'Error al actualizar documento', TipoAlerta.ALERTA_ERROR);
-      }
-    });
-  }
-
-  undoRow() {
-    this.documentoForm.reset();
-    this.estaEditando = false;
-    this.codigoDocumentoEditando = 0;
-  }
+  protected readonly CURSO_COMPLETO_ESTADO = CURSO_COMPLETO_ESTADO;
 }

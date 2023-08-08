@@ -564,6 +564,9 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
     // asigna el objeto curso al formData
     formData.append('datos', JSON.stringify(this.curso));
 
+    console.log(this.curso)
+    console.log(JSON.stringify(this.curso))
+
     // asigna la lista de archivos al formData
     for (let i = 0; i < this.listaArchivosCurso.length; i++) {
       formData.append('documentos', this.listaArchivosCurso[i]);

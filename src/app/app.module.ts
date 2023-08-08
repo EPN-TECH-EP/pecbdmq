@@ -258,6 +258,7 @@ import {
 
 import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 
 
 @NgModule({
@@ -372,6 +373,7 @@ import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/espec
 
     InstructoresEspecializacionComponent,
     MenuEspecializacionAcademiaComponent,
+    MenuReportesEspComponent,
 
     ],
   imports: [

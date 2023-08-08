@@ -50,9 +50,9 @@
     <hr class="hr">
     <section>
       <button
+        *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
         class="btn btn-primary mb-3"
         (click)="addRow = true"
-        [disabled]="estaEditando"
       >
         <i class="fa-solid fa-circle-plus me-2"></i>
         Cargar documento
@@ -90,28 +90,6 @@
                   />
                 </mdb-form-control>
               </td>
-              <td>
-                <mdb-form-control>
-              <textarea
-                mdbValidate
-                mdbInput
-                type="text"
-                class="form-control"
-                formControlName="descripcion"
-              ></textarea>
-                </mdb-form-control>
-              </td>
-              <td>
-                <mdb-form-control>
-              <textarea
-                mdbValidate
-                mdbInput
-                type="text"
-                class="form-control"
-                formControlName="observaciones"
-              ></textarea>
-                </mdb-form-control>
-              </td>
               <td class="text-center">
                 <button
                   class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
@@ -133,61 +111,27 @@
             <!-- Data -->
             <tr *ngFor="let documento of table.data;">
               <td>
-                <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
+                <ng-container *ngIf="codigoDocumentoEditando !== documento.codDocumento">
                   {{ documento.nombre }}
-                </ng-container>
-                <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
-                  <input
-                    mdbInput
-                    mdbValidate
-                    type="file"
-                    accept="application/pdf"
-                    class="form-control"
-                    id="archivo"
-                    (change)="cargarArchivo($event)"
-                  />
-                  <ng-container *ngIf="documentoForm.get('archivo').value">
-                    <div>
-                      <p class="fw-bold mb-0 mt-2">Nombre del documento actual: </p>
-                      <p
-                        class="badge rounded-pill badge-primary f px-3 py-2">{{ documentoForm.get('archivo').value }}</p>
-                    </div>
-                  </ng-container>
                 </ng-container>
               </td>
 
               <td class="text-center">
-                <ng-container *ngIf="!estaEditando || codigoDocumentoEditando !== documento.codDocumento">
+                <ng-container *ngIf="codigoDocumentoEditando !== documento.codDocumento">
                   <button
                     mdbTooltip="Descargar documento"
                     class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    [disabled]="estaEditando"
                     (click)="descargarArchivo(documento)"
                   >
                     <i class="fa fa-download"></i>
                   </button>
                   <button
+                    *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
                     mdbTooltip="Eliminar registro"
                     class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                    [disabled]="estaEditando"
                     (click)="eliminar(documento.codDocumento)"
                   >
                     <i class="fa fa-trash-alt"></i>
-                  </button>
-                </ng-container>
-                <ng-container *ngIf="estaEditando && codigoDocumentoEditando === documento.codDocumento">
-                  <button
-                    class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
-                    [disabled]="documentoForm.invalid"
-                    (click)="actualizar(documento)"
-                  >
-                    <i class="fa fa-check"></i> Guardar
-                  </button>
-                  <button
-                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
-                    (click)="undoRow()"
-                  >
-                    <i class="fa fa-ban"></i> Cancelar
                   </button>
                 </ng-container>
               </td>
