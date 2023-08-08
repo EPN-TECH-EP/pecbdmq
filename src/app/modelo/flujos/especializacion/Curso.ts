@@ -1,6 +1,7 @@
 import { EstadoEspecializacion } from "./EstadoEspecializacion";
 import { DatoPersonal } from "../../admin/dato-personal";
 import { Documento } from "../../../servicios/periodo-academico.service";
+import { Requisito } from "../../admin/requisito";
 
 export interface Curso {
   codCursoEspecializacion: number
@@ -24,7 +25,7 @@ export interface Curso {
   observacionesValidacion?: string
 
   documentos?: Documento[]
-  requisitos?: any[]
+  requisitos?: Requisito[]
   tipoCurso?: TipoCurso
   estados?: EstadoEspecializacion[]
   creadoPor?: DatoPersonal

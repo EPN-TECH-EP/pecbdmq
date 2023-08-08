@@ -75,11 +75,8 @@
         <div class="col">
           <h3 class="fs-5 fw-bold mb-3">Lista de requisitos</h3>
           <ol class="list-group list-group-light list-group-numbered">
-            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
-            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
-            <li class="list-group-item p-1"><b>Requisito: </b> Nombre del requisto</li>
             <li class="list-group-item p-1" *ngFor="let requisito of cursoSeleccionado.requisitos">
-              <b>Requisito: </b> {{requisito}}
+              <b>Requisito: </b> {{requisito.nombre}}
             </li>
           </ol>
         </div>
