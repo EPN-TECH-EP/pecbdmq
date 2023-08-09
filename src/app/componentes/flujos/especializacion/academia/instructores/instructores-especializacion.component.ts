@@ -17,9 +17,9 @@ import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
 import { EspInstructorService } from '../../../../../servicios/especializacion/esp-instructor.service';
 import { TipoInstructor } from '../../../../../modelo/admin/tipo-instructor';
 import { TipoInstructorService } from '../../../../../servicios/tipo-instructor.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { Notificacion } from 'src/app/util/notificacion';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
+import { ComponenteBase } from '../../../../../util/componente-base';
+import { Notificacion } from '../../../../../util/notificacion';
+import { TipoAlerta } from '../../../../../enum/tipo-alerta';
 import { HttpErrorResponse } from '@angular/common/http';
 import {CURSO_COMPLETO_ESTADO} from "../../../../../util/constantes/especializacion.const";
 

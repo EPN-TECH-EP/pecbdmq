@@ -24,6 +24,13 @@ export class CursosService {
     return this.http.get<Curso[]>(`${ this.host }/curso/listarPorEstado`, { params });
   }
 
+  listarCursosPorInstructorAndEstado(codigoInstructor: number, estado: string) {
+    const params: HttpParams = new HttpParams()
+      .set('codigoInstructor', String(codigoInstructor))
+      .set('estado', String(estado));
+    return this.http.get<Curso[]>(`${ this.host }/curso/listarPorInstructorEstado`, { params });
+  }
+
   getTipoCurso(codCatalogoCurso: number) {
     return this.http.get<TipoCurso>(`${ this.host }/catalogoCurso/${ codCatalogoCurso }`);
   }

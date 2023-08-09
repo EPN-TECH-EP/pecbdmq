@@ -258,6 +258,7 @@ import {
 
 import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { RegistroNotasEspecializacionComponent } from './componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
 import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 
 
@@ -373,6 +374,7 @@ import { MenuReportesEspComponent } from './componentes/flujos/especializacion/m
 
     InstructoresEspecializacionComponent,
     MenuEspecializacionAcademiaComponent,
+    RegistroNotasEspecializacionComponent,
     MenuReportesEspComponent,
 
     ],
