@@ -113,6 +113,14 @@ export class EstadoProcesoCursoComponent implements OnInit {
     this.cursosService.actualizarEstadoCurso(this.cursoSeleccionado.codCursoEspecializacion, $estado?.codigo).subscribe({
       next: () => {
         this.notificar("Estado del curso actualizado correctamente", TipoAlerta.ALERTA_OK);
+        this.cursosService.comprobarMininoEstudiantes(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+          next: (comprobacion) => {
+            console.log(comprobacion);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        })
         this.listarCursos();
       },
       error: (error) => {
