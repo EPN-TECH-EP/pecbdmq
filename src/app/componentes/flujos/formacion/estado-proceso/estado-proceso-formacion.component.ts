@@ -5,7 +5,6 @@ import { switchMap } from "rxjs";
 import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { timeout } from "rxjs/operators";
 import { FORMACION } from "../../../../util/constantes/fomacion.const";
 import { Router } from "@angular/router";
 
@@ -58,9 +57,9 @@ export class EstadoProcesoFormacionComponent implements OnInit {
     });
   }
 
-  updateStep(codigo: number) {
+  updateStep(estado: any) {
     const formData = new FormData();
-    formData.append('estado', codigo.toString());
+    formData.append('estado', estado?.codigo.toString());
     formData.append('proceso', 'FORMACIÓN');
     formData.forEach((value, key) => {
       console.log(key + ': ' + value);
@@ -68,7 +67,7 @@ export class EstadoProcesoFormacionComponent implements OnInit {
 
     const estadoActualAnterior = this.estados.find((estadoItem) => estadoItem.estadoActual === 'actual');
     const estadoActualIndex = this.estados.findIndex((estadoItem) => estadoItem.estadoActual === 'actual');
-    const estadoActual = this.estados.find((estadoItem) => estadoItem.codigo === codigo);
+    const estadoActual = this.estados.find((estadoItem) => estadoItem.codigo === estado?.codigo);
     console.log('estado actual: ', estadoActual);
 
     this.esEstadoCierre = estadoActual.estadoCatalogo === FORMACION.estadoCierre;

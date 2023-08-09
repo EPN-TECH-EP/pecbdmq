@@ -1,0 +1,62 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+  [link]="'/principal/formacion/menu-academia'"
+></app-boton-volver>
+
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Cursos cerrados</h1>
+  </div>
+</div>
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="!estaCargando && esVistaCierreCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row my-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+    <h6>Realizado por: <span
+      class="text-muted">{{ cursoSeleccionado?.creadoPor?.nombre}} {{cursoSeleccionado?.creadoPor?.apellido}}</span>
+    </h6>
+    <h6>Aprobado por: <span
+      class="text-muted">{{ cursoSeleccionado?.aprobadoPor?.nombre}} {{cursoSeleccionado?.aprobadoPor?.apellido}}</span>
+    </h6>
+  </div>
+
+</section>
+
+<div
+  *ngIf="estaCargando"
+  class="d-flex justify-content-center align-items-center m-5 p-5"
+>
+  <div class="spinner-border text-info" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span class="ms-3 text-info">Cargando información...</span>
+</div>
+
+

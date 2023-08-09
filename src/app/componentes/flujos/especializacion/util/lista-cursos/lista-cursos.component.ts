@@ -11,7 +11,7 @@ const estadoClassMap = new Map<string, string>([
   [CURSO_COMPLETO_ESTADO.VALIDACION_PRUEBAS, 'badge-light'],
   [CURSO_COMPLETO_ESTADO.CURSO, 'badge-warning'],
   [CURSO_COMPLETO_ESTADO.REGISTRO_NOTAS, 'badge-success'],
-  [CURSO_COMPLETO_ESTADO.CIERRE, 'badge-danger']
+  [CURSO_COMPLETO_ESTADO.CIERRE_PROCESO, 'badge-danger']
 ]);
 
 @Component({
