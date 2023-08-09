@@ -18,4 +18,5 @@ export class MenuNotasComponent extends Submenu implements OnInit {
     super.initMenu(this.menuService, this.router);
   }
 
+
 }

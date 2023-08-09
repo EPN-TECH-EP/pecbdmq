@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { environment } from "../../../environments/environment";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Curso, TipoCurso } from "../../modelo/flujos/especializacion/Curso";
-import { EstadoEspecializacion } from "../../modelo/flujos/especializacion/EstadoEspecializacion";
-import { CustomHttpResponse } from "../../modelo/admin/custom-http-response";
+import {Injectable} from '@angular/core';
+import {environment} from "../../../environments/environment";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Curso, TipoCurso} from "../../modelo/flujos/especializacion/Curso";
+import {EstadoEspecializacion} from "../../modelo/flujos/especializacion/EstadoEspecializacion";
+import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
 
 @Injectable({
   providedIn: 'root'
@@ -21,27 +21,27 @@ export class CursosService {
   listarCursosPorEstado(estado: string) {
     const params: HttpParams = new HttpParams()
       .set('estado', String(estado));
-    return this.http.get<Curso[]>(`${ this.host }/curso/listarPorEstado`, { params });
+    return this.http.get<Curso[]>(`${this.host}/curso/listarPorEstado`, {params});
   }
 
   getTipoCurso(codCatalogoCurso: number) {
-    return this.http.get<TipoCurso>(`${ this.host }/catalogoCurso/${ codCatalogoCurso }`);
+    return this.http.get<TipoCurso>(`${this.host}/catalogoCurso/${codCatalogoCurso}`);
   }
 
   listarEstadosPorCurso(codTipoCurso: number) {
-    return this.http.get<EstadoEspecializacion[]>(`${ this.host }/cursoEstado/listarModuloEstados/${ codTipoCurso }`);
+    return this.http.get<EstadoEspecializacion[]>(`${this.host}/cursoEstado/listarModuloEstados/${codTipoCurso}`);
   }
 
   obtenerEstadoActual(codCurso: number) {
-    return this.http.get<CustomHttpResponse>(`${ this.host }/cursoEstado/activo/${ codCurso }`);
+    return this.http.get<CustomHttpResponse>(`${this.host}/cursoEstado/activo/${codCurso}`);
   }
 
   actualizarEstadoCurso(codCurso: number, codEstado: number) {
-    return this.http.get(`${ this.host }/cursoEstado/actualizarEstado/${ codCurso }/${ codEstado }`);
+    return this.http.get(`${this.host}/cursoEstado/actualizarEstado/${codCurso}/${codEstado}`);
   }
 
   obtenerCurso(codigo: number) {
-    return this.http.get<Curso>(`${ this.host }/curso/${ codigo }`);
+    return this.http.get<Curso>(`${this.host}/curso/${codigo}`);
   }
 
   aprobar(aprobado: boolean, observaciones: string, codUsuarioAprueba: number, codCurso: number) {
@@ -50,7 +50,10 @@ export class CursosService {
       observaciones: observaciones,
       codUsuarioAprueba: codUsuarioAprueba
     }
-    return this.http.patch(`${ this.host }/curso/validar/${ codCurso }`, data);
+    return this.http.patch(`${this.host}/curso/validar/${codCurso}`, data);
   }
 
+  generarListaAprobados(codCursoEspecializacion: number) {
+    return this.http.get(`${this.host}/antiguedades/generaArchivosAntiguedadesEspecializacion/${codCursoEspecializacion}`);
+  }
 }

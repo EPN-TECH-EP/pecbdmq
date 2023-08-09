@@ -260,6 +260,7 @@ import { InstructoresEspecializacionComponent } from './componentes/flujos/espec
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
 import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 import { CursosCerradosComponent } from './componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component';
+import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component';
 
 
 @NgModule({
@@ -376,6 +377,7 @@ import { CursosCerradosComponent } from './componentes/flujos/especializacion/cu
     MenuEspecializacionAcademiaComponent,
     MenuReportesEspComponent,
     CursosCerradosComponent,
+    MenuCalculoNotaFinalComponent,
 
     ],
   imports: [

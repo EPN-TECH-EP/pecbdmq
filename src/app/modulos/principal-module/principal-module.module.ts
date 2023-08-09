@@ -205,6 +205,9 @@ import {
 import {
   CursosCerradosComponent
 } from "../../componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component";
+import {
+  MenuCalculoNotaFinalComponent
+} from "../../componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component";
 
 
 const routes: Routes = [
@@ -325,6 +328,7 @@ const routes: Routes = [
       { path: 'especializacion/menu-gestion', component: MenuGestionComponent },
       { path: 'especializacion/menu-notas', component: MenuNotasComponent },
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
+      { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
 
     ],
   },
