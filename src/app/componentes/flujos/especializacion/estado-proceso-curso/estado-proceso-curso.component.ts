@@ -107,9 +107,10 @@ export class EstadoProcesoCursoComponent implements OnInit {
     this.esVistaListaCursos = true;
   }
 
-  actualizarEstado(codigo: number) {
-    console.log("Curso: ", this.cursoSeleccionado, "Codigo estado", codigo);
-    this.cursosService.actualizarEstadoCurso(this.cursoSeleccionado.codCursoEspecializacion, codigo).subscribe({
+  actualizarEstado($estado: any) {
+    console.log("Curso: ", this.cursoSeleccionado, "Codigo estado", $estado);
+
+    this.cursosService.actualizarEstadoCurso(this.cursoSeleccionado.codCursoEspecializacion, $estado?.codigo).subscribe({
       next: () => {
         this.notificar("Estado del curso actualizado correctamente", TipoAlerta.ALERTA_OK);
         this.listarCursos();

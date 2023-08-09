@@ -16,7 +16,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
     }
   }
 
-  @Output() updatedStep = new EventEmitter<number>();
+  @Output() updatedStep = new EventEmitter<any>();
 
   disabledPreviousButton = false;
   disabledNextButton = false;
@@ -71,7 +71,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
         this.disabledNextButton = false;
         this.currentStep = step;
         this.foundCurrentStep();
-        this.updatedStep.emit(this.currentStep?.codigo);
+        this.updatedStep.emit(this.currentStep);
       }
       if (i === 0 && !foundPrevious) {
         step.estadoActual = 'actual';
@@ -95,7 +95,7 @@ export class EstadoProcesoStepperComponent implements OnInit {
         this.disabledPreviousButton = false;
         this.currentStep = step;
         this.foundCurrentStep();
-        this.updatedStep.emit(this.currentStep?.codigo);
+        this.updatedStep.emit(this.currentStep);
       }
       if (i === this.steps.length - 1 && foundNext) {
         this.disabledNextButton = true;
