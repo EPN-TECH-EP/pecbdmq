@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import {
   MateriaPorInstructor,
-  RegistroNotasService
 } from "../../../../../servicios/formacion/registro-notas.service";
 import { Notificacion } from "../../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { Router } from "@angular/router";
-import { Paralelo } from "../../../../../modelo/admin/paralelo";
-import { NotaPorEstudiante, } from "../../../../../modelo/flujos/Estudiante";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { AutenticacionService } from "../../../../../servicios/autenticacion.service";
-import { InstructorService } from "../../../../../servicios/formacion/instructor.service";
-import { catchError, concatMap, map, tap } from "rxjs/operators";
-import { EMPTY, forkJoin, of, switchMap } from "rxjs";
-import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { FORMACION } from "../../../../../util/constantes/fomacion.const";
+import { concatMap, map } from "rxjs/operators";
+import { forkJoin } from "rxjs";
 import { ApelacionesService } from "../../../../../servicios/formacion/apelaciones.service";
-import { Instructor } from "../../../../../modelo/flujos/instructor";
+import { EspInstructorResponse } from "../../../../../modelo/flujos/instructor";
 import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
 import { CURSO_COMPLETO_ESTADO } from 'src/app/util/constantes/especializacion.const';
 import { CursosService } from '../../../../../servicios/especializacion/cursos.service';
+import { EspInstructorService } from '../../../../../servicios/especializacion/esp-instructor.service';
+import { Usuario } from '../../../../../modelo/admin/usuario';
+import { EspRegistroNotasService } from 'src/app/servicios/especializacion/esp-registro-notas.service';
+import { NotaEspecializacion } from 'src/app/modelo/flujos/especializacion/nota-especializacion';
 
 @Component({
   selector: 'app-registro-notas-especializacion',
@@ -30,17 +27,14 @@ import { CursosService } from '../../../../../servicios/especializacion/cursos.s
 })
 export class RegistroNotasEspecializacionComponent implements OnInit {
 
-  estudiantesPorParalelo: {paralelo: Paralelo, estudiantes: NotaPorEstudiante[]}[]
-  materias: MateriaPorInstructor[];
-  materiaSeleccionada: MateriaPorInstructor;
-  instructor: Instructor;
+  notasEstudiantes: NotaEspecializacion[];
+  instructor: EspInstructorResponse;
+  usuario: Usuario = null
 
   estaEditandoNota: boolean;
-  estudianteNotaEditando: NotaPorEstudiante;
+  estudianteNotaEditando: NotaEspecializacion;
   codEstudianteNotaEditando: number;
 
-  estaEnVistaListaMaterias: boolean;
-  estaEnVistaRegistroNotas: boolean;
   headers: {key: string, label: string}[];
 
   notaPorEstudianteForm: FormGroup;
@@ -53,33 +47,33 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   estaCargando: boolean;
 
   constructor(
-    private registroNotasService: RegistroNotasService,
-    private ns: MdbNotificationService,
+    private registroNotasService: EspRegistroNotasService,
+    private mdbNotificationService: MdbNotificationService,
     private router: Router,
     private builder: FormBuilder,
     private authService: AutenticacionService,
-    private instructorService: InstructorService,
-    private formacionService: FormacionService,
-    private apelaconService: ApelacionesService,
     private cursosService: CursosService,
+    private instructorService: EspInstructorService,
   ) {
     this.estaEditandoNota = false;
     this.codEstudianteNotaEditando = 0;
-    this.estaEnVistaListaMaterias = true;
-    this.estaEnVistaRegistroNotas = false;
     this.headers = [
-      { key: 'nombre', label: 'Código único' },
+      { key: 'codUnicoEstudiante', label: 'Código único' },
       { key: 'nombre', label: 'Estudiante' },
       { key: 'noFinal', label: 'Nota Final' },
-      { key: 'notaDisciplinaria', label: 'Nota Final Disciplinaria' },
-      { key: 'notaDisciplinaria', label: 'Nota Final Supletorio' },
+      { key: 'notaSupletorio', label: 'Nota Final Supletorio' },
     ];
-    this.estudiantesPorParalelo = [];
+    this.notasEstudiantes = [];
     this.estudianteNotaEditando = null;
-    this.materias = [];
     this.notaPorEstudianteForm = new FormGroup({});
     this.esEstadoRegistroNotas = false;
     this.construirFormulario();
+
+    this.authService.user$.subscribe({
+      next: usuario => {
+        this.usuario = usuario
+      }
+    })
 
     this.cursos = [];
     this.cursoSeleccionado = null;
@@ -89,11 +83,25 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.consultarCursos();
+    this.instructorService.getInstructorById(this.usuario.codUsuario).subscribe({
+      next: esInstructor => {
+        if (!esInstructor) {
+          Notificacion.notificar(this.mdbNotificationService, "No es usuario instructor", TipoAlerta.ALERTA_WARNING)
+          this.router.navigate(['/principal/especializacion/menu-academia'])
+        } else {
+          this.instructor = esInstructor;
+          this.consultarCursos();
+        }
+      },
+      error: () => {
+        Notificacion.notificar(this.mdbNotificationService, "Ocurrió un error, inténtelo nuevamente", TipoAlerta.ALERTA_ERROR)
+        this.router.navigate(['/principal/especializacion/menu-academia'])
+      }
+    })
   }
 
   private consultarCursos() {
-    this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.REGISTRO_NOTAS).pipe(
+    this.cursosService.listarCursosPorInstructorAndEstado(this.instructor.codInstructorCurso, CURSO_COMPLETO_ESTADO.REGISTRO_NOTAS).pipe(
       concatMap((cursos) => {
         const cursosWithTipoCurso$ = cursos.map((curso) => {
           return this.cursosService.getTipoCurso(curso.codCatalogoCursos).pipe(
@@ -132,18 +140,13 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
       console.log($event);
     }
 
-    return this.authService.user$.pipe(
-      switchMap(user => this.instructorService.getInstructorById(user.codUsuario)),
-      tap(instructor => this.instructor = instructor),
-      switchMap(instructor => this.registroNotasService.listarMateriasSiEsCoordinador(instructor.codInstructor)),
-      tap(materias => {
-        if (materias.length === 0) {
-          Notificacion.notificar(this.ns, 'No es coordinador, para registrar notas debe ser coordinador de una materia', TipoAlerta.ALERTA_WARNING);
-          this.router.navigate(['/principal/formacion/menu-academia']).then();
-        }
-        this.materias = materias;
-      }),
-    );
+    this.registroNotasService.getByCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      next: notas => {
+        console.log(notas)
+        this.notasEstudiantes = notas
+      },
+      error: err => console.log(err)
+    });
   }
 
   volverAListaCursos() {
@@ -156,7 +159,6 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
     this.notaPorEstudianteForm = this.builder.group({
       codNota: [''],
       notaFinal: [''],
-      notaDisciplinaria: [''],
       notaSupletorio: [''],
     });
 
@@ -168,43 +170,13 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
 
   }
 
-  private listarEstudiantesPorCodMateria(codMateria: number) {
-    console.log(codMateria);
-    this.registroNotasService.listarEstudiantesPorCodMateria(codMateria).subscribe({
-      next: data => {
-        console.log(data);
-        const paralelos = data.paralelos;
-        this.estudiantesPorParalelo = paralelos.map(paralelo => {
-          const estudiantes = data.estudianteDatos.filter(estudiante =>
-            estudiante.codParalelo === paralelo.codParalelo);
-          return { paralelo, estudiantes }
-        });
-      }
-    });
-
-  }
-
-  abrirRegistroDeNotas(materia: MateriaPorInstructor) {
-    this.materiaSeleccionada = materia;
-    this.estaEnVistaListaMaterias = false;
-    this.estaEnVistaRegistroNotas = true;
-    this.listarEstudiantesPorCodMateria(materia.codMateria);
-  }
-
-  abrirListaDeMaterias() {
-    this.estaEnVistaListaMaterias = true;
-    this.estaEnVistaRegistroNotas = false;
-    this.materiaSeleccionada = null;
-  }
-
-  editarNota(estudiante: NotaPorEstudiante) {
+  editarNota(estudiante: NotaEspecializacion) {
     this.estaEditandoNota = true;
-    this.codEstudianteNotaEditando = estudiante.codNota;
+    this.codEstudianteNotaEditando = estudiante.codNotaEspecializacion;
     this.estudianteNotaEditando = estudiante;
     this.notaPorEstudianteForm.patchValue({
-      codNota: estudiante.codNota,
-      notaFinal: estudiante.notaFinal,
-      notaDisciplinaria: estudiante.notaDisciplina,
+      codNota: estudiante.codNotaEspecializacion,
+      notaFinal: estudiante.notaFinalEspecializacion,
       notaSupletorio: estudiante.notaSupletorio,
     });
   }
@@ -216,40 +188,37 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   }
 
   onGuardarNota() {
-    const notaPorEstudiante: NotaPorEstudiante = {
-      codNota: this.notaPorEstudianteForm.get('codNota').value,
-      notaFinal: this.notaPorEstudianteForm.get('notaFinal').value,
-      notaDisciplina: this.notaPorEstudianteForm.get('notaDisciplinaria').value,
+    const notaPorEstudiante: NotaEspecializacion = {
+      codNotaEspecializacion: this.notaPorEstudianteForm.get('codNota').value,
+      notaFinalEspecializacion: this.notaPorEstudianteForm.get('notaFinal').value,
       notaSupletorio: this.notaPorEstudianteForm.get('notaSupletorio').value,
-      codParalelo: this.estudianteNotaEditando.codParalelo,
-      nombreParalelo: this.estudianteNotaEditando.nombreParalelo,
       cedula: this.estudianteNotaEditando.cedula,
-      codUnicoEstudiante: this.estudianteNotaEditando.codUnicoEstudiante,
-      nombreCompleto: this.estudianteNotaEditando.nombreCompleto,
+      nombre: this.estudianteNotaEditando.nombre,
+      apellido: this.estudianteNotaEditando.apellido,
+      correoPersonal: this.estudianteNotaEditando.correoPersonal,
+      correoInstitucional: this.estudianteNotaEditando.correoInstitucional,
+      codigoUnicoEstudiante: this.estudianteNotaEditando.codigoUnicoEstudiante,
+      codCursoEspecializacion: this.estudianteNotaEditando.codCursoEspecializacion,
+      codEstudiante: this.estudianteNotaEditando.codEstudiante,
+      codInscripcion: this.estudianteNotaEditando.codInscripcion,
+      codInstructor: this.instructor.codInstructor,
     };
 
-
-    this.registroNotasService.registrarNota(notaPorEstudiante.codNota, notaPorEstudiante).subscribe({
+    this.registroNotasService.crear(notaPorEstudiante).subscribe({
       next: () => {
-        Notificacion.notificar(this.ns, 'Nota registrada con éxito', TipoAlerta.ALERTA_OK);
+        Notificacion.notificar(this.mdbNotificationService, 'Nota registrada con éxito', TipoAlerta.ALERTA_OK);
 
-        const indexParalelo = this.estudiantesPorParalelo.findIndex(paralelo => paralelo.paralelo.codParalelo === notaPorEstudiante.codParalelo);
-        const indexEstudiante = this.estudiantesPorParalelo[indexParalelo].estudiantes.findIndex(estudiante => estudiante.codNota === notaPorEstudiante.codNota);
-        this.estudiantesPorParalelo[indexParalelo].estudiantes[indexEstudiante] = notaPorEstudiante;
-        this.estudiantesPorParalelo[indexParalelo].estudiantes = [...this.estudiantesPorParalelo[indexParalelo].estudiantes];
+        const indexEstudiante = this.notasEstudiantes.findIndex(estudiante => estudiante.codEstudiante === notaPorEstudiante.codEstudiante);
+        this.notasEstudiantes[indexEstudiante] = notaPorEstudiante;
+        this.notasEstudiantes = [...this.notasEstudiantes];
 
         this.onCancelarEdicionNota();
       },
       error: err => {
-        Notificacion.notificar(this.ns, err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificar(this.mdbNotificationService, err.error.mensaje, TipoAlerta.ALERTA_ERROR);
       }
     });
 
   }
 
-  abrirApelaciones(materia: MateriaPorInstructor) {
-    this.apelaconService.materia = materia;
-    this.apelaconService.instructor = this.instructor;
-    this.router.navigate(['/principal/formacion/academia/apelaciones']).then();
-  }
 }

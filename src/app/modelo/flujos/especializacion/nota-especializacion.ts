@@ -1,0 +1,15 @@
+export interface NotaEspecializacion {
+  codEstudiante: number,
+  codCursoEspecializacion: number,
+  codNotaEspecializacion: number,
+  codigoUnicoEstudiante: string,
+  cedula: string,
+  nombre: string,
+  apellido: string,
+  correoPersonal: string,
+  correoInstitucional: string,
+  notaFinalEspecializacion: number,
+  notaSupletorio: number,
+  codInscripcion: number,
+  codInstructor: number,
+}
