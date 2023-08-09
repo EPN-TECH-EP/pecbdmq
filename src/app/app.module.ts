@@ -258,6 +258,7 @@ import {
 
 import { InstructoresEspecializacionComponent } from './componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { MenuEspecializacionAcademiaComponent } from './componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { RegistroNotasEspecializacionComponent } from './componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
 import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 import { CursosCerradosComponent } from './componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component';
 import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component';
@@ -375,6 +376,7 @@ import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializac
 
     InstructoresEspecializacionComponent,
     MenuEspecializacionAcademiaComponent,
+    RegistroNotasEspecializacionComponent,
     MenuReportesEspComponent,
     CursosCerradosComponent,
     MenuCalculoNotaFinalComponent,

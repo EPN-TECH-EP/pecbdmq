@@ -795,6 +795,7 @@
                   id="next-step-5"
                   class="btn btn-primary mx-2"
                   (click)="crearCurso()"
+                  [disabled]="showLoading"
                 >
                    <span
                      *ngIf="showLoading"

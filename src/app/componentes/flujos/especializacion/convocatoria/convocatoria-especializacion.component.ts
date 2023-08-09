@@ -12,13 +12,15 @@ import {
   EspConvocatoriaService
 } from "../../../../servicios/especializacion/esp-convocatoria.service";
 import { Convocatoria } from "../../../../modelo/admin/convocatoria";
+import {ComponenteBase} from "../../../../util/componente-base";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-convocatoria',
   templateUrl: './convocatoria-especializacion.component.html',
   styleUrls: ['./convocatoria-especializacion.component.scss']
 })
-export class ConvocatoriaEspecializacionComponent implements OnInit {
+export class ConvocatoriaEspecializacionComponent extends ComponenteBase implements OnInit {
 
   cursoSeleccionado: Curso;
   cursos: Curso[]
@@ -34,13 +36,16 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   codConvocatoriaCreada: number;
 
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
+  showLoading: boolean = false;
 
   constructor(
     private cursosService: CursosService,
     private builder: FormBuilder,
     private ns: MdbNotificationService,
+    private popConfirmServiceLocal: MdbPopconfirmService,
     private convocatoriaService: EspConvocatoriaService
   ) {
+    super(ns, popConfirmServiceLocal);
     this.cursoSeleccionado = null;
     this.estaCargando = true;
     this.codConvocatoriaCreada = 0
@@ -107,6 +112,8 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
 
   private crearConvocatoria() {
 
+    this.showLoading = true;
+
     const convocatoria = this.crearObjetoConvocatoria();
 
     this.convocatoriaService.crear(convocatoria).subscribe({
@@ -115,15 +122,21 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
         this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
         this.seCreoConvocatoria = true;
         this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        this.showLoading = false;
       }
     })
   }
 
   private actualizarConvocatoria() {
+
+    this.showLoading = true;
 
     const convocatoria = this.crearObjetoConvocatoria();
 
@@ -132,10 +145,15 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
         this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
         this.seCreoConvocatoria = true;
         this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+
+        this.showLoading = false;
       }
     })
   }
@@ -208,14 +226,20 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
 
 
   onEnviarNotificacion() {
+    this.showLoading = true;
     this.convocatoriaService.enviarNotificacion(this.codConvocatoriaCreada).subscribe({
       next: (resp) => {
         console.log(resp);
         this.notificar('Notificaciones enviadas correctamente', TipoAlerta.ALERTA_OK);
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
+
+        this.showLoading = false;
       }
     });
 

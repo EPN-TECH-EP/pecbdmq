@@ -28,6 +28,7 @@ import {
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
+
 import {
   MenuProfesionalizacionComponent
 } from '../../componentes/flujos/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
@@ -158,9 +159,6 @@ import {
   EstadoProcesoCursoComponent
 } from "../../componentes/flujos/especializacion/estado-proceso-curso/estado-proceso-curso.component";
 import {
-  InscripcionEspecializacionComponent
-} from "../../componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
-import {
   ValidacionCursoComponent
 } from "../../componentes/flujos/especializacion/validacion-curso/validacion-curso.component";
 import {
@@ -193,12 +191,10 @@ import {
 } from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
 import { MenuNotasComponent } from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
 
-import {
-  MenuEspecializacionAcademiaComponent
-} from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
-import {
-  InstructoresEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+
+import { MenuEspecializacionAcademiaComponent } from '../../componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { InstructoresEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+import { RegistroNotasEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
 import {
   MenuReportesEspComponent
 } from "../../componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component";
@@ -294,6 +290,7 @@ const routes: Routes = [
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
 
       // especialización
+
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
@@ -307,6 +304,7 @@ const routes: Routes = [
       },
       { path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent },
       { path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent },
+      { path: 'especializacion/academia/notas', component: RegistroNotasEspecializacionComponent },
 
       { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
       { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },

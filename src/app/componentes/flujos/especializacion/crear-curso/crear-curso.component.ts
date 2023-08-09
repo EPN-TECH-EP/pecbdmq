@@ -387,7 +387,7 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
       notaMinima: 0,
       apruebaCreacionCurso: false,
       codCatalogoCursos: this.catalogoCursoSeleccionado ? this.catalogoCursoSeleccionado.codCatalogoCursos : null,
-      estado: 'ACTIVO',
+      estado: this.ESPECIALIZACION.INICIO,
       emailNotificacion: null,
       tieneModulos: false,
       porcentajeAceptacionCurso: 0,
@@ -520,7 +520,7 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
     console.log('activeStep', activeStep);
     console.log('previousStep', previousStep);
 
-
+    this.copiarValoresFormCurso();
 
     switch (activeStep) {
       case 0:
@@ -549,6 +549,7 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
 
     if (fInicio >= fFin) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null, 'La fecha de inicio debe ser menor a la fecha de fin');
+      return;
     }
 
     this.showLoading = true;
@@ -557,7 +558,7 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
     this.copiarValoresFormCurso();
 
     // asigna la lista de requisitos al objeto curso
-    this.curso.requisitos = this.listaRequisitos;
+    this.curso.requisitos = this.requisitosCurso;
 
     const formData = new FormData();
 

@@ -46,18 +46,18 @@ export class AutenticacionChildGuard {
           this.subscriptions.push(
             this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
               next: (response: Menu[]) => {
-                // this.listaMenuInicial = response;
-                // this.menuService.setMenu(response);
-                // this.urlsPermitidos = this.menuService.getMenu()?.map(menu => menu.ruta ); //obtenemos los urlsPermitidos
-                // this.verificarAcceso(url1);
-                // if (this.listaMenuInicial.length === 0) {
-                //   this.sinMenu = true;
-                // } else {
-                //   this.conformarMenu();
-                // }
-                // if (this.router.url === '/principal') {
-                //   this.router.navigate(['/principal/bienvenida']);
-                // }
+                 this.listaMenuInicial = response;
+                 this.menuService.setMenu(response);
+                 this.urlsPermitidos = this.menuService.getMenu()?.map(menu => menu.ruta ); //obtenemos los urlsPermitidos
+                 this.verificarAcceso(url1);
+                 if (this.listaMenuInicial.length === 0) {
+                   this.sinMenu = true;
+                 } else {
+                   this.conformarMenu();
+                 }
+                 if (this.router.url === '/principal') {
+                   this.router.navigate(['/principal/bienvenida']);
+                 }
               },
             })
           );

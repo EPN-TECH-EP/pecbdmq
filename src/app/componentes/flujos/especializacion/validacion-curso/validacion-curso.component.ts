@@ -24,6 +24,7 @@ export class ValidacionCursoComponent implements OnInit {
   esVistaListaCursos: boolean;
   esVistaValidacionCurso: boolean;
   aprobarCursoForm: FormGroup;
+  showLoading: boolean;
 
   constructor(
     private cursosService: CursosService,
@@ -39,6 +40,7 @@ export class ValidacionCursoComponent implements OnInit {
     this.aprobarCursoForm = new FormGroup({});
     this.cursos = []
     this.construirFormulario();
+    this.showLoading = false;
   }
 
   ngOnInit(): void {
@@ -91,6 +93,9 @@ export class ValidacionCursoComponent implements OnInit {
   }
 
   private aprobarCurso() {
+
+    this.showLoading = true;
+
     this.cursosService.aprobar(
       this.aprobarCursoForm.controls['aprobado'].value,
       this.aprobarCursoForm.controls['observaciones'].value,
@@ -98,13 +103,18 @@ export class ValidacionCursoComponent implements OnInit {
       this.cursoSeleccionado.codCursoEspecializacion,
     ).subscribe({
       next: () => {
-        this.notificar('Curso aprobado correctamente', TipoAlerta.ALERTA_OK);
+        this.notificar('Curso validado correctamente', TipoAlerta.ALERTA_OK);
         this.volverAListaCursos();
         this.listarCursos();
+
+        this.showLoading = false;
+
       },
       error: (err) => {
         this.notificar('Hubo un error al guardar el estado del curso', TipoAlerta.ALERTA_ERROR);
         console.error(err)
+
+        this.showLoading = false;
       }
     });
   }

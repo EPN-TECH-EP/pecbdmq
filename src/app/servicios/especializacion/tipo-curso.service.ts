@@ -1,8 +1,8 @@
  import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
  import { Injectable } from '@angular/core';
  import { Observable } from 'rxjs';
- import { environment } from 'src/environments/environment';
-import { TipoCurso } from 'src/app/modelo/flujos/especializacion/tipo-curso';
+ import { environment } from '../../../environments/environment';
+import { TipoCurso } from '../../modelo/flujos/especializacion/tipo-curso';
 
  @Injectable({
    providedIn: 'root'

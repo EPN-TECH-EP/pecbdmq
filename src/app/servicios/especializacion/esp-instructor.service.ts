@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { EspInstructorRequest, EspInstructorResponse, Instructor } from "../../modelo/flujos/instructor";
+import { EspInstructorRequest, EspInstructorResponse } from "../../modelo/flujos/instructor";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class EspInstructorService {
   }
 
   getInstructorById(codUsuario: number) {
-    return this.http.post<Instructor>(`${ this.host }/cursoInstructor/ByUser?codUsuario=${ codUsuario }`, {});
+    return this.http.get<EspInstructorResponse>(`${ this.host }/cursoInstructor/byUser?codUsuario=${ codUsuario }`, {});
   }
 
   crear(instructor: EspInstructorRequest) {

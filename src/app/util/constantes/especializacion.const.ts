@@ -12,9 +12,10 @@ export const CURSO_COMPLETO_ESTADO = {
   CIERRE_VALIDACION: 'CIERRE VALIDACIÓN',
   CIERRE_INSCRITOS: 'CIERRE INSCRITOS',
   ABIERTOS: 'ABIERTOS',
+  MENU_CURSO: '/principal/especializacion/menu-gestion',
+  INICIO: 'INICIO',
   TODOS: 'TODOS',
   TODOS_CERRADOS: 'CERRADOS',
-  MENU_CURSO: '/principal/especializacion/curso',
 }
 
 
