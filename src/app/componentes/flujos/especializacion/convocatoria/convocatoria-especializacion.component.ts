@@ -34,6 +34,7 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
   codConvocatoriaCreada: number;
 
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
+  showLoading: boolean = false;
 
   constructor(
     private cursosService: CursosService,
@@ -107,6 +108,8 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
 
   private crearConvocatoria() {
 
+    this.showLoading = true;
+
     const convocatoria = this.crearObjetoConvocatoria();
 
     this.convocatoriaService.crear(convocatoria).subscribe({
@@ -115,15 +118,20 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
         this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
         this.seCreoConvocatoria = true;
         this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
         this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        this.showLoading = false;
       }
     })
   }
 
   private actualizarConvocatoria() {
+
+    this.showLoading = true;
 
     const convocatoria = this.crearObjetoConvocatoria();
 
@@ -132,10 +140,14 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
         this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
         this.seCreoConvocatoria = true;
         this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
         this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+
+        this.showLoading = false;
       }
     })
   }
@@ -208,14 +220,19 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
 
 
   onEnviarNotificacion() {
+    this.showLoading = true;
     this.convocatoriaService.enviarNotificacion(this.codConvocatoriaCreada).subscribe({
       next: (resp) => {
         console.log(resp);
         this.notificar('Notificaciones enviadas correctamente', TipoAlerta.ALERTA_OK);
+
+        this.showLoading = false;
       },
       error: (err) => {
         console.error(err);
         this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
+
+        this.showLoading = false;
       }
     });
 

@@ -163,22 +163,51 @@
           <button
             *ngIf="!seCreoConvocatoria"
             (click)="onCrearConvocatoria()"
+            [disabled]="showLoading"
             class="btn btn-primary me-2">
-            Crear Convocatoria
+            <span
+              *ngIf="showLoading"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="showLoading">Espere...</span>
+            <span *ngIf="!showLoading"><i class="fas fa-save me-1"></i>
+        Crear Convocatoria</span>
+
           </button>
 
           <button
             *ngIf="seCreoConvocatoria"
             (click)="onActualizarConvocatoria()"
+            [disabled]="showLoading"
             class="btn btn-info me-2">
-            Actualizar Convocatoria
+            <span
+              *ngIf="showLoading"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="showLoading">Espere...</span>
+            <span *ngIf="!showLoading"><i class="fas fa-save me-1"></i>
+        Actualizar Convocatoria</span>
           </button>
 
           <button
             *ngIf="seCreoConvocatoria"
             (click)="onEnviarNotificacion()"
+            [disabled]="showLoading"
             class="btn btn-warning">
-            Enviar Notificación
+            <span
+              *ngIf="showLoading"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="showLoading">Espere...</span>
+            <span *ngIf="!showLoading"><i class="fas fa-mail me-1"></i>
+        Enviar Notificación</span>
+
           </button>
         </div>
         <div class="card-footer text-muted"></div>

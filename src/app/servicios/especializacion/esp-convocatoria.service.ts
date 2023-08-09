@@ -25,7 +25,7 @@ export class EspConvocatoriaService {
   }
 
   actualizar(convocatoria: ConvocatoriaEspecializacion, codConvocatoria: number) {
-    return this.http.put<Convocatoria>(`${ this.host }/convocatoriaCurso/actualizar/${codConvocatoria}`, convocatoria);
+    return this.http.put<Convocatoria>(`${ this.host }/convocatoriaCurso/${codConvocatoria}`, convocatoria);
   }
 
   enviarNotificacion(codConvocatoria: number) {

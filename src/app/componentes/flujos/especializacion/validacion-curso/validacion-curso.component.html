@@ -173,9 +173,18 @@
         class="btn btn-primary btn-sm m-3"
         type="button"
         (click)="onAprobarCurso()"
-      >
-        <i class="fas fa-save me-1"></i>
-        Guardar
+        [disabled]="showLoading"
+
+      ><span
+        *ngIf="showLoading"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+        <span *ngIf="showLoading">Espere...</span>
+        <span *ngIf="!showLoading"><i class="fas fa-save me-1"></i>
+        Guardar</span>
+
       </button>
     </section>
   </div>

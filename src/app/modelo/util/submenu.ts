@@ -38,7 +38,7 @@ export class Submenu {
 
         if (menu.menuPadre === this.idMenuPadre) {
           this.listaSubMenu.push(menu);
-          console.log('lista submenu', this.listaSubMenu);
+          //console.log('lista submenu', this.listaSubMenu);
         }
       }
     }
