@@ -38,7 +38,7 @@ export class EspInscripcionService {
 
 
   colocarCorreoPersonal(datoPersonal: DatoPersonal) {
-    return this.http.patch<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
+    return this.http.put<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
   }
 
   confirmarInscripcion(codCurso: number, codEstudiante: number) {

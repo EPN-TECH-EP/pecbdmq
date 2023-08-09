@@ -45,9 +45,12 @@ export class TimeoutInterceptor implements HttpInterceptor {
               return timer(environment.DELAY_REINTENTOS);
             }
 
-            console.log('Fin reintentos, sale con error');
 
-            Notificacion.notificacion(this.notificationRefLocal, this.notificationServiceLocal, null, 'Se perdió la comunicación con el servidor. Contacte al administrador.');
+            if (this.isRetryableError(error)) {
+              console.log('Fin reintentos, sale con error');
+
+              Notificacion.notificacion(this.notificationRefLocal, this.notificationServiceLocal, null, 'Se perdió la comunicación con el servidor. Contacte al administrador.');
+            }
 
             // No more retries or non-retryable error, propagate the error
             return throwError(error);

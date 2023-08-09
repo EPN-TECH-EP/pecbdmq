@@ -12,13 +12,15 @@ import {
   EspConvocatoriaService
 } from "../../../../servicios/especializacion/esp-convocatoria.service";
 import { Convocatoria } from "../../../../modelo/admin/convocatoria";
+import {ComponenteBase} from "../../../../util/componente-base";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-convocatoria',
   templateUrl: './convocatoria-especializacion.component.html',
   styleUrls: ['./convocatoria-especializacion.component.scss']
 })
-export class ConvocatoriaEspecializacionComponent implements OnInit {
+export class ConvocatoriaEspecializacionComponent extends ComponenteBase implements OnInit {
 
   cursoSeleccionado: Curso;
   cursos: Curso[]
@@ -40,8 +42,10 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     private cursosService: CursosService,
     private builder: FormBuilder,
     private ns: MdbNotificationService,
+    private popConfirmServiceLocal: MdbPopconfirmService,
     private convocatoriaService: EspConvocatoriaService
   ) {
+    super(ns, popConfirmServiceLocal);
     this.cursoSeleccionado = null;
     this.estaCargando = true;
     this.codConvocatoriaCreada = 0
@@ -123,7 +127,8 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
         this.showLoading = false;
       }
     })
@@ -145,7 +150,8 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
 
         this.showLoading = false;
       }
@@ -230,7 +236,8 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
+        //this.notificar('Error al enviar las notificaciones', TipoAlerta.ALERTA_ERROR);
 
         this.showLoading = false;
       }

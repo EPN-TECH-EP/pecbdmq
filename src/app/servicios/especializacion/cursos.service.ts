@@ -57,7 +57,7 @@ export class CursosService {
       observaciones: observaciones,
       codUsuarioAprueba: codUsuarioAprueba
     }
-    return this.http.patch(`${ this.host }/curso/validar/${ codCurso }`, data);
+    return this.http.put(`${ this.host }/curso/validar/${ codCurso }`, data);
   }
 
 }

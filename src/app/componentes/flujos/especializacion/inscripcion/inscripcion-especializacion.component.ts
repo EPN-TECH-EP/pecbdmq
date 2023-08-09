@@ -101,12 +101,14 @@ export class InscripcionEspecializacionComponent implements OnInit {
           this.estudiante = null;
           return;
         }
+
         this.obtenerDatos(value);
       }
     });
   }
 
   private obtenerDatos(cedula: string) {
+    this.esInscripcionCompletada = false;
     this.loading = true;
     this.inscripcionService.obtenerDatosDelPostulante(cedula).subscribe({
       next: (datos) => {
