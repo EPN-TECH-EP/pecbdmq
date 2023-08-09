@@ -14,7 +14,15 @@
   </div>
 </ng-container>
 
-<section *ngIf="estaCargando && esVistaListaCursos" class="container">
+<ng-container *ngIf="!esInstructor">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-danger">No tiene permisos</h5>
+    </div>
+  </div>
+</ng-container>
+
+<section *ngIf="estaCargando && esVistaListaCursos && esInstructor" class="container">
   <div class="row m-3">
     <div class="col text-center">
       <h1 class="fs-4 fw-bolder">Listado de cursos</h1>
@@ -32,7 +40,7 @@
   </div>
 </section>
 
-<section *ngIf="estaCargando && esVistaCurso" class="container my-5">
+<section *ngIf="estaCargando && esVistaCurso && esInstructor" class="container my-5">
 
   <button
     class="btn btn-primary"
@@ -89,10 +97,12 @@
                 {{ estudiante.nombre }} {{ estudiante.apellido }}
               </td>
               <td class="text-center">
-                <ng-container *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
                   {{ estudiante?.notaFinalEspecializacion || '-'}}
                 </ng-container>
-                <ng-container *ngIf="estaEditandoNota && estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="estaEditandoNota && estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -107,10 +117,12 @@
                 </ng-container>
               </td>
               <td class="text-center">
-                <ng-container *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
                   {{ estudiante?.notaSupletorio || '-' }}
                 </ng-container>
-                <ng-container *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -125,7 +137,8 @@
                 </ng-container>
               </td>
               <td class="text-center">
-                <ng-container *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
                   <button
                     mdbTooltip="Editar notas del estudiante"
                     [disabled]="estaEditandoNota"
@@ -135,7 +148,8 @@
                     <i class="fa fa-edit"></i>
                   </button>
                 </ng-container>
-                <ng-container *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                <ng-container
+                  *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
                   <button
                     class="me-2 p-0 shadow-0 btn btn-lg text-success"
                     (click)="onGuardarNota()"
