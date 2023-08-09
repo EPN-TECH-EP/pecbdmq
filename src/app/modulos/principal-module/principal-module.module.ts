@@ -18,7 +18,6 @@ import {
 } from '../../componentes/admin/administracion-plataforma/menu-admin/menu-admin.component';
 import {
   MenuFormacionComponent
-<<<<<<< HEAD
 } from '../../componentes/flujos/formacion/menus/menu-administracion-formacion/menu-formacion.component';
 import { MateriaComponent } from '../../componentes/materia/materia.component';
 import { PrincipalComponent } from '../../componentes/principal/principal.component';
@@ -29,25 +28,13 @@ import {
 import { TipoDocumentoComponent } from '../../componentes/tipo-documento/tipo-documento.component';
 import { TipoNotaComponent } from '../../componentes/tipo-nota/tipo-nota.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-=======
-} from 'src/app/componentes/flujos/formacion/menus/menu-administracion-formacion/menu-formacion.component';
-import {MateriaComponent} from 'src/app/componentes/materia/materia.component';
-import {PrincipalComponent} from '../../componentes/principal/principal.component';
-import {UsuariosComponent} from '../../componentes/admin/administracion-plataforma/usuarios/usuarios.component';
-import {
-  RolUsuarioComponent
-} from '../../componentes/admin/administracion-plataforma/rol-usuario/rol-usuario.component';
-import {TipoDocumentoComponent} from 'src/app/componentes/tipo-documento/tipo-documento.component';
-import {TipoNotaComponent} from 'src/app/componentes/tipo-nota/tipo-nota.component';
-import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
+
 import {
   MenuProfesionalizacionComponent
 } from '../../componentes/flujos/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import {BienvenidaComponent} from '../../componentes/bienvenida/bienvenida.component';
 import {ValidacionComponent} from '../../componentes/flujos/formacion/validacion/validacion.component';
 
-<<<<<<< HEAD
 import { ParaleloComponent } from '../../componentes/paralelo/paralelo.component';
 import { TipoInstruccionComponent } from '../../componentes/tipo-instruccion/tipo-instruccion.component';
 import { TipoBajaComponent } from '../../componentes/tipo-baja/tipo-baja.component';
@@ -63,23 +50,6 @@ import { LocalDataService } from '../../servicios/util/local-data.service';
 import { RolComponent } from '../../componentes/admin/administracion-plataforma/rol/rol.component';
 import { MenuRolComponent } from '../../componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
 import { BotonVolverComponent } from '../../componentes/util/boton-volver/boton-volver.component';
-=======
-import {ParaleloComponent} from 'src/app/componentes/paralelo/paralelo.component';
-import {TipoInstruccionComponent} from '../../componentes/tipo-instruccion/tipo-instruccion.component';
-import {TipoBajaComponent} from '../../componentes/tipo-baja/tipo-baja.component';
-import {TipoFaltaComponent} from '../../componentes/tipo-falta/tipo-falta.component';
-import {ComponenteNotaComponent} from '../../componentes/componente-nota/componente-nota.component';
-import {CambiosPendientesGuard} from 'src/app/guard/cambios-pendientes.guard';
-import {ConvocatoriaComponent} from 'src/app/componentes/flujos/formacion/convocatoria/convocatoria.component';
-import {RequisitoComponent} from 'src/app/componentes/requisito/requisito.component';
-
-//import { MenuItemComponent } from 'src/app/componentes/util/menu-item/menu-item.component';
-import {CommonModule} from '@angular/common';
-import {LocalDataService} from 'src/app/servicios/util/local-data.service';
-import {RolComponent} from 'src/app/componentes/admin/administracion-plataforma/rol/rol.component';
-import {MenuRolComponent} from 'src/app/componentes/admin/administracion-plataforma/menu-rol/menu-rol.component';
-import {BotonVolverComponent} from '../../componentes/util/boton-volver/boton-volver.component';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
 import {
   ProcesoFormacionComponent
 } from '../../componentes/flujos/formacion/menus/menu-proceso-formacion/proceso-formacion.component';
@@ -89,28 +59,18 @@ import {
 import {
   ProcesoProfesionalizacionComponent
 } from '../../componentes/flujos/profesionalizacion/proceso-profesionalizacion/proceso-profesionalizacion.component';
-<<<<<<< HEAD
 import { NgModule } from '@angular/core';
 import { PerfilComponent } from '../../componentes/user/perfil/perfil.component';
 import { MenuComponent } from '../../componentes/admin/administracion-plataforma/menu/menu.component';
-=======
-import {NgModule} from '@angular/core';
-import {PerfilComponent} from '../../componentes/user/perfil/perfil.component';
-import {MenuComponent} from 'src/app/componentes/admin/administracion-plataforma/menu/menu.component';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
 import {
   GestionDocumentosComponent
 } from '../../componentes/flujos/formacion/gestion-documentos/gestion-documentos.component';
 import {
   EstadoProcesoFormacionComponent
 } from '../../componentes/flujos/formacion/estado-proceso/estado-proceso-formacion.component';
-<<<<<<< HEAD
 import { AutenticacionChildGuard } from '../../guard/autenticacion-child.guard';
 import { InscripcionesComponent } from '../../componentes/flujos/formacion/inscripciones/inscripciones.component';
-=======
-import {AutenticacionChildGuard} from 'src/app/guard/autenticacion-child.guard';
-import {InscripcionesComponent} from 'src/app/componentes/flujos/formacion/inscripciones/inscripciones.component';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
+
 import {
   GestionDelegadosComponent
 } from '../../componentes/flujos/formacion/gestion-delegados/gestion-delegados.component';
@@ -126,15 +86,10 @@ import {
 import {
   InstructoresComponent
 } from '../../componentes/flujos/formacion/formacion-academica/instructores/instructores.component';
-<<<<<<< HEAD
 import { MateriasComponent } from '../../componentes/flujos/formacion/formacion-academica/materias/materias.component';
 import { SubtipoPruebaComponent } from '../../componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
 import { ListaPruebasComponent } from '../../componentes/flujos/formacion/lista-pruebas/lista-pruebas.component';
-=======
-import {MateriasComponent} from '../../componentes/flujos/formacion/formacion-academica/materias/materias.component';
-import {SubtipoPruebaComponent} from 'src/app/componentes/flujos/formacion/subtipo-prueba/subtipo-prueba.component';
-import {ListaPruebasComponent} from 'src/app/componentes/flujos/formacion/lista-pruebas/lista-pruebas.component';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
+
 import {
   RegistroNotasComponent
 } from '../../componentes/flujos/formacion/formacion-academica/registro-notas/registro-notas.component';
@@ -165,15 +120,9 @@ import {
 } from '../../componentes/flujos/formacion/subtipo-parametros/subtipo-parametros.component';
 import {
   ResultadosPruebasComponent
-<<<<<<< HEAD
 } from '../../componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
 import { FichaPersonalComponent } from "../../componentes/user/ficha-personal/ficha-personal.component";
 import { HistoricoModuloComponent } from "../../componentes/user/historico-modulo/historico-modulo.component";
-=======
-} from 'src/app/componentes/flujos/formacion/resultados-pruebas/resultados-pruebas.component';
-import {FichaPersonalComponent} from "../../componentes/user/ficha-personal/ficha-personal.component";
-import {HistoricoModuloComponent} from "../../componentes/user/historico-modulo/historico-modulo.component";
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
 import {
   ComponenteNotaFormacion
 } from "../../componentes/flujos/formacion/formacion-academica/componente-nota-formacion/componente-nota-formacion.component";
@@ -186,33 +135,14 @@ import {
 import {
   ApelacionesComponent
 } from "../../componentes/flujos/formacion/formacion-academica/apelaciones/apelaciones.component";
-<<<<<<< HEAD
+
 import { CatalogoCursoComponent } from '../../componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
 import { MenuValidacionRequisitosEspecializacionComponent } from '../../componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
 import { ValidacionEspecializacionComponent } from '../../componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
 import { GestionDelegadosEspecializacionComponent } from '../../componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
 import { InscripcionesEspecializacionComponent } from '../../componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
 import { ReasignacionInscripcionEspecializacionComponent } from '../../componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
-=======
-import {
-  CatalogoCursoComponent
-} from 'src/app/componentes/flujos/especializacion/catalogo-curso/catalogo-curso.component';
-import {
-  MenuValidacionRequisitosEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/menus/menu-validacion-requisitos/menu-validacion-requisitos-especializacion.component';
-import {
-  ValidacionEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/validacion-especializacion/validacion-especializacion.component';
-import {
-  GestionDelegadosEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/gestion-delegados/gestion-delegados-especializacion.component';
-import {
-  InscripcionesEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/inscripciones/inscripciones-especializacion.component';
-import {
-  ReasignacionInscripcionEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/reasignacion-inscripcion/reasignacion-inscripcion-especializacion.component';
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
+
 import {CrearCursoComponent} from "../../componentes/flujos/especializacion/crear-curso/crear-curso.component";
 import {
   MenuAdministracionEspecializacionComponent
@@ -256,21 +186,13 @@ import {
 } from "../../componentes/flujos/especializacion/menus/menu-gestion/menu-gestion.component";
 import {MenuNotasComponent} from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
 
-<<<<<<< HEAD
+
 import { MenuEspecializacionAcademiaComponent } from '../../componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
 import { InstructoresEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import { RegistroNotasEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
-=======
-import {
-  MenuEspecializacionAcademiaComponent
-} from 'src/app/componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
-import {
-  InstructoresEspecializacionComponent
-} from 'src/app/componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
 import {
   MenuReportesEspComponent
 } from "../../componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component";
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
 
 
 const routes: Routes = [
@@ -357,7 +279,7 @@ const routes: Routes = [
       {path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent},
 
       // especialización
-<<<<<<< HEAD
+
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
@@ -369,21 +291,6 @@ const routes: Routes = [
       { path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent },
       { path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent },
       { path: 'especializacion/academia/notas', component: RegistroNotasEspecializacionComponent },
-=======
-      {path: 'especializacion/proceso', component: ProcesoEspecializacionComponent},
-      {path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent},
-      {path: 'especializacion/crear-curso', component: CrearCursoComponent},
-      {path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent},
-      {path: 'especializacion/validacion', component: ValidacionEspecializacionComponent},
-      {path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent},
-      {path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent},
-      {
-        path: 'especializacion/reasignacion-inscripciones',
-        component: ReasignacionInscripcionEspecializacionComponent
-      },
-      {path: 'especializacion/menu-academia', component: MenuEspecializacionAcademiaComponent},
-      {path: 'especializacion/academia/instructores', component: InstructoresEspecializacionComponent},
->>>>>>> 4630ba701c51586e779d4fddbc997f3fc50e38e8
 
       {path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent},
       {path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent},
