@@ -8,6 +8,7 @@ import { Notificacion } from "../../../../util/notificacion";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { Usuario } from "../../../../modelo/admin/usuario";
 import { AutenticacionService } from "../../../../servicios/autenticacion.service";
+import { ArchivoService } from "../../../../servicios/archivo.service";
 
 @Component({
   selector: 'app-validacion-curso',
@@ -28,7 +29,8 @@ export class ValidacionCursoComponent implements OnInit {
     private cursosService: CursosService,
     private builder: FormBuilder,
     private ns: MdbNotificationService,
-    private auth: AutenticacionService) {
+    private auth: AutenticacionService,
+    private archivoService: ArchivoService) {
     this.cursoSeleccionado = null;
     this.usuario = null
     this.estaCargando = true;
@@ -135,5 +137,14 @@ export class ValidacionCursoComponent implements OnInit {
       return;
     }
     this.aprobarCurso();
+  }
+
+  descargarDocumento(codDocumento: number) {
+    this.archivoService.descargar(String(codDocumento)).subscribe({
+      next: (archivo) => {
+        const url = window.URL.createObjectURL(archivo);
+        window.open(url);
+      }
+    })
   }
 }

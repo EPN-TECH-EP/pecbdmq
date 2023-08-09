@@ -11,6 +11,7 @@ import {
   ConvocatoriaEspecializacion,
   EspConvocatoriaService
 } from "../../../../servicios/especializacion/esp-convocatoria.service";
+import { Convocatoria } from "../../../../modelo/admin/convocatoria";
 
 @Component({
   selector: 'app-convocatoria',
@@ -92,24 +93,21 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     });
   }
 
-  private crearConvocatoria() {
-
-    // formateo de fechas YYYY-MM-DD para el backend
+  private crearObjetoConvocatoria(): ConvocatoriaEspecializacion {
     const fechaInicioDate: Date = this.fechaInicioField.value;
     const fechaFinDate: Date = this.fechaFinField.value;
-
-    const fechaInicio = `${ fechaInicioDate.getFullYear() }-${ fechaInicioDate.getMonth() + 1 < 10 ? `0${ fechaInicioDate.getMonth() + 1 }` : fechaInicioDate.getMonth() + 1 }-${ fechaInicioDate.getDate() }`;
-    const fechaFin = `${ fechaFinDate.getFullYear() }-${ fechaFinDate.getMonth() + 1 < 10 ? `0${ fechaFinDate.getMonth() + 1 }` : fechaFinDate.getMonth() + 1 }-${ fechaFinDate.getDate() }`;
-
-
-    const convocatoria: ConvocatoriaEspecializacion = {
+    return {
       correo: this.correoField.value,
       nombreConvocatoria: `Convocatoria: ${ this.cursoSeleccionado.nombre }`,
-      fechaFinConvocatoria: fechaInicio,
-      fechaInicioConvocatoria: fechaFin,
+      fechaInicioConvocatoria: fechaInicioDate,
+      fechaFinConvocatoria: fechaFinDate,
       codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
-    }
-    console.log(convocatoria);
+    };
+  }
+
+  private crearConvocatoria() {
+
+    const convocatoria = this.crearObjetoConvocatoria();
 
     this.convocatoriaService.crear(convocatoria).subscribe({
       next: (convocatoria) => {
@@ -125,9 +123,53 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
     })
   }
 
+  private actualizarConvocatoria() {
+
+    const convocatoria = this.crearObjetoConvocatoria();
+
+    this.convocatoriaService.actualizar(convocatoria, this.codConvocatoriaCreada).subscribe({
+      next: (convocatoria) => {
+        this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
+        this.seCreoConvocatoria = true;
+        this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+      },
+      error: (err) => {
+        console.error(err);
+        this.notificar('Error al crear la convocatoria', TipoAlerta.ALERTA_ERROR);
+      }
+    })
+  }
+
+  private matchDatosConvocatoriaEnFormulario(convocatoria: Convocatoria) {
+    const fechaInicio = new Date(convocatoria.fechaInicioConvocatoria);
+    const fechaFin = new Date(convocatoria.fechaFinConvocatoria);
+    this.fechaInicioField.setValue(fechaInicio);
+    this.fechaFinField.setValue(fechaFin);
+    this.correoField.setValue(convocatoria.correo);
+  }
+
+  private validarActualizacionCurso() {
+    this.convocatoriaService.obtenerByCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      next: (convocatoria) => {
+        if (convocatoria) {
+          console.log('Ya existe una convocatoria para este curso', convocatoria);
+          this.notificar('Ya existe una convocatoria para este curso, puede actualizarla', TipoAlerta.ALERTA_WARNING);
+          this.matchDatosConvocatoriaEnFormulario(convocatoria);
+          this.codConvocatoriaCreada = convocatoria.codConvocatoria;
+          this.seCreoConvocatoria = true;
+        }
+
+      },
+      error: (err) => {
+        console.error('Error al traer datos',err);
+      }
+    });
+  }
+
   cursoSeleccionadoEvent($event: Curso) {
     if ($event) {
       this.cursoSeleccionado = $event;
+      this.validarActualizacionCurso();
       this.cargarInformacionCurso(this.cursoSeleccionado)
       this.esVistaListaCursos = false;
       this.esVistaConvocatoriaCurso = true;
@@ -177,5 +219,14 @@ export class ConvocatoriaEspecializacionComponent implements OnInit {
       }
     });
 
+  }
+
+  onActualizarConvocatoria() {
+    if (this.convocatoriaCursoForm.invalid) {
+      this.notificar('Debe ingresar todos los campos', TipoAlerta.ALERTA_WARNING);
+      this.convocatoriaCursoForm.markAllAsTouched();
+      return;
+    }
+    this.actualizarConvocatoria();
   }
 }

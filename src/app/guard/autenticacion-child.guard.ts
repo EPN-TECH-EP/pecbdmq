@@ -15,7 +15,7 @@ export class AutenticacionChildGuard {
 
   menuRutas: string[] = [];
   private subscriptions: Subscription[] = [];
-  listaMenuInicial: Menu[] = null; 
+  listaMenuInicial: Menu[] = null;
   sinMenu: boolean = false;
   estructuraMenu: Map<number, number[]> = new Map();
   listaMenu: Menu[] = null;
@@ -27,7 +27,7 @@ export class AutenticacionChildGuard {
     private menuService: MenuService,
     private router: Router
     ) {
-      
+
      }
 
 
@@ -39,31 +39,31 @@ export class AutenticacionChildGuard {
     this.listaMenuInicial = this.menuService.getMenu();//para verificar si es undefined
     const url1 = state.url;// Obtenemos el segmento de la ruta actual del URL.
     this.urlsPermitidos = this.menuService.getMenu()?.map(menu => menu.ruta );//intentamos obtener los urlPermitidos
-      
+
     if (this.autenticacionService.isUsuarioLoggedIn()) {
 
       if (this.urlsPermitidos === undefined) {
           this.subscriptions.push(
             this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
               next: (response: Menu[]) => {
-                this.listaMenuInicial = response;
-                this.menuService.setMenu(response);
-                this.urlsPermitidos = this.menuService.getMenu()?.map(menu => menu.ruta ); //obtenemos los urlsPermitidos
-                this.verificarAcceso(url1);
-                if (this.listaMenuInicial.length === 0) {
-                  this.sinMenu = true;
-                } else {
-                  this.conformarMenu();
-                }
-                if (this.router.url === '/principal') {
-                  this.router.navigate(['/principal/bienvenida']);
-                }
-              }, 
+                 this.listaMenuInicial = response;
+                 this.menuService.setMenu(response);
+                 this.urlsPermitidos = this.menuService.getMenu()?.map(menu => menu.ruta ); //obtenemos los urlsPermitidos
+                 this.verificarAcceso(url1);
+                 if (this.listaMenuInicial.length === 0) {
+                   this.sinMenu = true;
+                 } else {
+                   this.conformarMenu();
+                 }
+                 if (this.router.url === '/principal') {
+                   this.router.navigate(['/principal/bienvenida']);
+                 }
+              },
             })
           );
         } else {
           this.conformarMenu();
-          
+
         }
     } else {
       // Si el usuario no está autenticado, redirigir al login.
@@ -71,7 +71,7 @@ export class AutenticacionChildGuard {
       return false;
     }
 
-    
+
   }
   verificarAcceso(url: string) {
     let tieneAcceso = this.urlsPermitidos?.some(endpoint => url.includes(endpoint));
@@ -82,7 +82,7 @@ export class AutenticacionChildGuard {
       // Si el usuario no tiene permiso, redirigir a la página principal.
       this.router.navigate(['/principal/bienvenida']);
       return false;
-      
+
     }
   }
   conformarMenu() {

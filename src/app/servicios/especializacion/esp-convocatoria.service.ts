@@ -5,8 +5,8 @@ import { Convocatoria } from "../../modelo/admin/convocatoria";
 
 export interface ConvocatoriaEspecializacion {
   nombreConvocatoria: string;
-  fechaInicioConvocatoria: string;
-  fechaFinConvocatoria: string;
+  fechaInicioConvocatoria: Date;
+  fechaFinConvocatoria: Date;
   codCursoEspecializacion: number;
   correo: string;
 }
@@ -24,10 +24,18 @@ export class EspConvocatoriaService {
     return this.http.post<Convocatoria>(`${ this.host }/convocatoriaCurso/crear`, convocatoria);
   }
 
+  actualizar(convocatoria: ConvocatoriaEspecializacion, codConvocatoria: number) {
+    return this.http.put<Convocatoria>(`${ this.host }/convocatoriaCurso/actualizar/${codConvocatoria}`, convocatoria);
+  }
+
   enviarNotificacion(codConvocatoria: number) {
     const formData = new FormData();
     formData.append('codConvocatoria', `${ codConvocatoria }`);
     return this.http.post(`${ this.host }/convocatoriaCurso/notificar`, formData);
+  }
+
+  obtenerByCurso(codCurso: number) {
+    return this.http.get<Convocatoria>(`${ this.host }/convocatoriaCurso/byCurso/${ codCurso }`);
   }
 
 }

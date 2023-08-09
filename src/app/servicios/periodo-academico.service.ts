@@ -21,6 +21,8 @@ export interface Documento {
   tipo: any
   descripcion: any
   nombre: string
+  nombreDocumento?: string
+  codigoDocumento?: number
   observaciones: any
   ruta: string
   estado: string
