@@ -621,6 +621,9 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
 
   // generar documentos de aprobados. Servicio resultadosPruebaService método generarDocumentosAprobadosCurso
   generarDocumentosAprobados() {
+
+    this.showLoading = true;
+
     this.subscriptions.push(
       this.resultadosPruebasService
         .generarDocumentosAprobadosCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion)
@@ -632,12 +635,16 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
               'Documentos generados correctamente'
             );
 
+            this.showLoading = false;
+
             // obtener nuevamente los documentos por prueba
             this.documentos = [];
             this.listarArchivosPrueba();
           },
           error: (errorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+
+            this.showLoading = false;
           },
         })
     );

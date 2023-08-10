@@ -108,6 +108,7 @@
                       id="nombre"
                       class="form-control mb-5"
                       formControlName="nombre"
+                      autocomplete="cc-csc"
                     />
                     <label mdbLabel class="form-label mb-2x" for="nombre">Nombre del curso</label>
                     <mdb-error *ngIf="nombreField?.invalid && nombreField?.touched">
@@ -136,6 +137,7 @@
                         max="100"
                         inputValidation="entero"
                         mdbTooltip="Rango: 1 - 100"
+                        autocomplete="cc-csc"
                       />
                       <label
                         mdbLabel
@@ -172,6 +174,7 @@
                         max="100"
                         inputValidation="decimal"
                         mdbTooltip="Rango: 1 - 100"
+                        autocomplete="cc-csc"
                       />
                       <label
                         mdbLabel
@@ -208,6 +211,7 @@
                         max="100"
                         inputValidation="decimal"
                         mdbTooltip="Rango: 1 - 100"
+                        autocomplete="cc-csc"
                       />
                       <label
                         mdbLabel
