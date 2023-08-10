@@ -10,4 +10,5 @@ export const FORMACION = {
   estadoRegistroNotas: 'REGISTRO DE NOTAS',
   estadoGraduacion: 'GRADUACIÓN Y CERTIFICADOS',
   estadoCierre: 'CIERRE PROCESO',
+  estadoActivo: 'ACTIVO',
 }

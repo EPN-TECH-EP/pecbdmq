@@ -518,28 +518,8 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   cerrarRegistroConfirmado() {
     this.pruebaDetalleSeleccionada.estado = FORMACION.estadoPruebasCierre;
 
-    // actualiza el estado de pruebaDetalle a cerrado con servicio PruebaDetalleService
-    this.subscriptions.push(
-      this.pruebaDetalleService
-        .actualizar(this.pruebaDetalleSeleccionada, this.pruebaDetalleSeleccionada.codPruebaDetalle)
-        .subscribe({
-          next: (resultado) => {
-            Notificacion.notificacionOK(
-              this.notificationRef,
-              this.notificationServiceLocal,
-              'Registro cerrado correctamente'
-            );
+    this.generarDocumentosAprobados();
 
-            this.enviarNotificacion();
-
-            this.generarDocumentosAprobados();
-
-          },
-          error: (errorResponse) => {
-            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-          },
-        })
-    );
   }
 
   //enviar notificación a Inscripciones aprobados con servicio resultadosPruebaService método notificarPrueba
@@ -640,6 +620,32 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
             // obtener nuevamente los documentos por prueba
             this.documentos = [];
             this.listarArchivosPrueba();
+
+            // en caso de cierre se actualiza la prueba
+            if(this.pruebaDetalleSeleccionada.estado === FORMACION.estadoPruebasCierre) {
+              // actualiza el estado de pruebaDetalle a cerrado con servicio PruebaDetalleService
+              this.subscriptions.push(
+                this.pruebaDetalleService
+                  .actualizar(this.pruebaDetalleSeleccionada, this.pruebaDetalleSeleccionada.codPruebaDetalle)
+                  .subscribe({
+                    next: (resultado) => {
+                      Notificacion.notificacionOK(
+                        this.notificationRef,
+                        this.notificationServiceLocal,
+                        'Registro cerrado correctamente'
+                      );
+
+                      this.enviarNotificacion();
+
+                    },
+                    error: (errorResponse) => {
+                      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+                      this.pruebaDetalleSeleccionada.estado = FORMACION.estadoActivo;
+                    },
+                  })
+              );
+            }
+
           },
           error: (errorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
