@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from "@angular/forms";
-import { MyValidators } from "../../../../util/validators";
-import { debounceTime } from "rxjs/operators";
-import { EspInscripcionService } from "../../../../servicios/especializacion/esp-inscripcion.service";
-import { DatoPersonal } from "../../../../modelo/admin/dato-personal";
-import { Estudiante } from "../../../../modelo/flujos/Estudiante";
-import { ActivatedRoute } from "@angular/router";
-import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
-import { CursosService } from "../../../../servicios/especializacion/cursos.service";
+import {Component, OnInit} from '@angular/core';
+import {FormControl, Validators} from "@angular/forms";
+import {MyValidators} from "../../../../util/validators";
+import {debounceTime} from "rxjs/operators";
+import {EspInscripcionService} from "../../../../servicios/especializacion/esp-inscripcion.service";
+import {DatoPersonal} from "../../../../modelo/admin/dato-personal";
+import {Estudiante} from "../../../../modelo/flujos/Estudiante";
+import {ActivatedRoute} from "@angular/router";
+import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
+import {CursosService} from "../../../../servicios/especializacion/cursos.service";
 
-import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { Notificacion } from "../../../../util/notificacion";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {Notificacion} from "../../../../util/notificacion";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
 
 @Component({
   selector: 'app-inscripcion',
@@ -22,16 +22,19 @@ import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializaci
 export class InscripcionEspecializacionComponent implements OnInit {
 
   fechaActual: Date;
-  cedula: FormControl;
+  archivo: File;
   datoPersonal: DatoPersonal;
   estudiante: Estudiante;
   curso: Curso;
-  correoPersonal: FormControl;
   esEstadoInscripcion: boolean;
   isLoading: boolean;
   esBotonDeshabilitado: boolean;
   loading: boolean;
   esInscripcionCompletada: boolean;
+  correoPersonal: FormControl;
+  cedula: FormControl;
+  archivoForm: FormControl;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -58,6 +61,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
       Validators.required,
       Validators.email,
     ]);
+    this.archivoForm = new FormControl('', Validators.required)
     this.loading = false;
     this.escucharCedula()
   }
@@ -160,13 +164,29 @@ export class InscripcionEspecializacionComponent implements OnInit {
   }
 
   onConfirmarInscripcion() {
-    this.inscripcionService.confirmarInscripcion(this.curso.codCursoEspecializacion, this.estudiante.codEstudiante).subscribe({
+    if (this.archivoForm.invalid) {
+      this.archivoForm.markAllAsTouched();
+      this.mostrarNotificacion('Seleccione un archivo', TipoAlerta.ALERTA_WARNING);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('documentos', this.archivo);
+    formData.append('datos', JSON.stringify({
+      codEstudiante: this.estudiante.codEstudiante,
+      codCursoEspecializacion: this.curso.codCursoEspecializacion
+    }));
+
+    this.inscripcionService.confirmarInscripcion(formData).subscribe({
       next: () => {
         this.mostrarNotificacion('Inscripción realizada con éxito', TipoAlerta.ALERTA_OK);
         this.esInscripcionCompletada = true;
       },
       error: (err) => {
         this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
+        if (err.error.httpStatusCode === 400) {
+          this.esInscripcionCompletada = true;
+        }
       }
     });
 
@@ -182,4 +202,9 @@ export class InscripcionEspecializacionComponent implements OnInit {
     this.guardarCorreo()
   }
 
+  agregarArchivo($event: Event) {
+    const archivo = ($event.target as HTMLInputElement).files[0];
+    this.archivo = archivo;
+    this.archivoForm.setValue(archivo.name);
+  }
 }

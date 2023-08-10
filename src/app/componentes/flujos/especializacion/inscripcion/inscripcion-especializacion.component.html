@@ -28,102 +28,128 @@
   </div>
   <hr class="hr hr-blurry"/>
 
-  <div class="row">
-    <div class="col text-center">
-      <h3 class="fw-bolder">Formulario de inscripción</h3>
-      <h2 class="fw-bold text-primary my-4">CURSO: {{ curso.nombre || 'NOMBRE DEL CURSO' | uppercase}}</h2>
-      <p class="fw-bold">Fecha de inscripción: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
-    </div>
-  </div>
+  <div *ngIf="!esInscripcionCompletada">
 
-  <hr class="hr hr-blurry"/>
-  <div class="row justify-content-center">
-    <div class="col-4">
-      <p class="fw-bold text-muted">Por favor, ingrese su cédula para continuar</p>
-      <mdb-form-control>
-        <input
-          mdbValidate
-          mdbInput
-          [minLength]="10"
-          [maxLength]="10"
-          class="form-control"
-          [formControl]="cedula"
-        >
-        <label mdbLabel class="form-label mb-2x">Cédula</label>
-        <mdb-error
-          *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('required')"
-          class="error"
-        >
-          <i class="fa-solid fa-exclamation-circle me-1"></i>
-          La cédula es requerida
-        </mdb-error>
-        <mdb-error
-          *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('invalid_numbers')"
-          class="error"
-        >
-          <i class="fa-solid fa-exclamation-circle me-1"></i>
-          La cédula debe contener solo números
-        </mdb-error>
-        <mdb-error
-          *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('invalid_identification') && !cedula.hasError('required')"
-          class="error"
-        >
-          <i class="fa-solid fa-exclamation-circle me-1"></i>
-          No es una cédula válida
-        </mdb-error>
-        <mdb-success *ngIf="cedula.valid" class="success">
-          <i class="fa-solid fa-check-circle me-1"></i>
-          Cédula válida
-        </mdb-success>
-      </mdb-form-control>
-    </div>
-  </div>
-
-  <div *ngIf="datoPersonal !== null" class="mt-5 row justify-content-center">
-    <hr class="hr hr-blurry"/>
-    <div class="col-7">
-      <h5 class="fw-bold mb-4 text-center">Datos personales</h5>
-      <div class="d-flex gap-5 justify-content-center mb-3 align-items-center">
-        <p class="m-0"><b>Nombre: </b> {{datoPersonal?.nombre | titlecase}} {{datoPersonal?.apellido | titlecase}}</p>
-        <p class="m-0"><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
+    <div class="row">
+      <div class="col text-center">
+        <h3 class="fw-bolder">Formulario de inscripción</h3>
+        <h2 class="fw-bold text-primary my-4">CURSO: {{ curso.nombre || 'NOMBRE DEL CURSO' | uppercase}}</h2>
+        <p class="fw-bold">Fecha de inscripción: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
       </div>
-      <div class="card">
-        <h5 class="card-header text-success">
-          <i class="fa-solid fa-check-circle me-2"></i>
-          Confirmar inscripción
-        </h5>
-        <div class="card-body text-center" *ngIf="!esInscripcionCompletada">
-          <h5 class="card-title">Por favor, confirme su inscripción y que sus datos sean correctos</h5>
-          <p class="card-text">Si sus datos son correctos, por favor, presione el botón "Confirmar inscripción"</p>
-          <div *ngIf="datoPersonal.correoPersonal === null" class="d-flex justify-content-center mb-4">
-            <mdb-form-control [style.width.px]="400">
-              <input
-                mdbValidate
-                mdbInput
-                class="form-control"
-                [formControl]="correoPersonal"
-              >
-              <label mdbLabel class="form-label mb-2x">Correo personal</label>
-            </mdb-form-control>
+    </div>
+
+    <hr class="hr hr-blurry"/>
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <p class="fw-bold text-muted">Por favor, ingrese su cédula para continuar</p>
+        <mdb-form-control>
+          <input
+            mdbValidate
+            mdbInput
+            [minLength]="10"
+            [maxLength]="10"
+            class="form-control"
+            [formControl]="cedula"
+          >
+          <label mdbLabel class="form-label mb-2x">Cédula</label>
+          <mdb-error
+            *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('required')"
+            class="error"
+          >
+            <i class="fa-solid fa-exclamation-circle me-1"></i>
+            La cédula es requerida
+          </mdb-error>
+          <mdb-error
+            *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('invalid_numbers')"
+            class="error"
+          >
+            <i class="fa-solid fa-exclamation-circle me-1"></i>
+            La cédula debe contener solo números
+          </mdb-error>
+          <mdb-error
+            *ngIf=" (cedula.touched||cedula.dirty) && cedula.hasError('invalid_identification') && !cedula.hasError('required')"
+            class="error"
+          >
+            <i class="fa-solid fa-exclamation-circle me-1"></i>
+            No es una cédula válida
+          </mdb-error>
+          <mdb-success *ngIf="cedula.valid" class="success">
+            <i class="fa-solid fa-check-circle me-1"></i>
+            Cédula válida
+          </mdb-success>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <div *ngIf="datoPersonal !== null" class="mt-5 row justify-content-center">
+      <hr class="hr hr-blurry"/>
+      <div class="col-7">
+        <h5 class="fw-bold mb-4 text-center">Datos personales</h5>
+        <div class="d-flex gap-5 justify-content-center mb-3 align-items-center">
+          <p class="m-0"><b>Nombre: </b> {{datoPersonal?.nombre | titlecase}} {{datoPersonal?.apellido | titlecase}}</p>
+          <p class="m-0"><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
+        </div>
+        <div class="mb-3">
+          <p class="text-primary"><i class="fas fa-info-circle me-2"></i> Por favor, suba su documento asociado </p>
+          <mdb-form-control [style.width.px]="400">
+            <input
+              mdbValidate
+              mdbInput
+              type="file"
+              accept="application/pdf"
+              class="form-control"
+              (change)="agregarArchivo($event)"
+              [formControl]="archivoForm"
+            >
+          </mdb-form-control>
+        </div>
+        <div class="card">
+          <h5 class="card-header text-success">
+            <i class="fa-solid fa-check-circle me-2"></i>
+            Confirmar inscripción
+          </h5>
+          <div class="card-body text-center">
+            <h5 class="card-title">Por favor, confirme su inscripción y que sus datos sean correctos</h5>
+            <p class="card-text">Si sus datos son correctos, por favor, presione el botón "Confirmar inscripción"</p>
+            <div *ngIf="datoPersonal.correoPersonal === null" class="d-flex justify-content-center mb-4">
+              <mdb-form-control [style.width.px]="400">
+                <input
+                  mdbValidate
+                  mdbInput
+                  class="form-control"
+                  [formControl]="correoPersonal"
+                >
+                <label mdbLabel class="form-label mb-2x">Correo personal</label>
+              </mdb-form-control>
+              <button
+                [mdbTooltip]="'Guardar correo personal'"
+                class="btn btn-primary ms-3"
+                (click)="onActualizarCorreoPersonal()"
+              >Guardar
+              </button>
+            </div>
             <button
-              [mdbTooltip]="'Guardar correo personal'"
-              class="btn btn-primary ms-3"
-              (click)="onActualizarCorreoPersonal()"
-            >Guardar
+              [disabled]="esBotonDeshabilitado"
+              class="btn btn-success"
+              (click)="onConfirmarInscripcion()"
+            >Confirmar inscripción
             </button>
           </div>
-          <button
-            [disabled]="esBotonDeshabilitado"
-            class="btn btn-success"
-            (click)="onConfirmarInscripcion()"
-          >Confirmar inscripción
-          </button>
-        </div>
-        <div class="card-body text-center text-success" *ngIf="esInscripcionCompletada">
-          <i class="far fa-check-circle fa-5x mb-3"></i>
-          <h5 class="card-title">Su inscripción ha sido completada</h5>
         </div>
       </div>
+    </div>
+  </div>
+  <div *ngIf="esInscripcionCompletada" class="card">
+    <h5 class="card-header text-success">
+      <i class="fa-solid fa-check-circle me-2"></i>
+      Inscripción completada
+    </h5>
+    <div class="card-body text-center text-success" *ngIf="esInscripcionCompletada">
+      <i class="far fa-check-circle fa-5x mb-3"></i>
+      <h5 class="card-title">Su inscripción ha sido completada</h5>
+    </div>
+    <div class="card-footer text-danger">
+      <i class="fas fa-info-circle"></i> Puede cerrar esta ventana
     </div>
   </div>
 </div>

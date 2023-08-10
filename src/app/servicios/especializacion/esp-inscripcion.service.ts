@@ -41,12 +41,8 @@ export class EspInscripcionService {
     return this.http.put<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
   }
 
-  confirmarInscripcion(codCurso: number, codEstudiante: number) {
-    const data = {
-      codCursoEspecializacion: codCurso,
-      codEstudiante: codEstudiante
-    }
-    return this.http.post(`${this.host}/inscripcionEsp/crear`, data);
+  confirmarInscripcion(form: FormData) {
+    return this.http.post(`${this.host}/inscripcionEsp/crearFully`, form);
   }
 
     listarInscripciones() {
