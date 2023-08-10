@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
-import { Notificacion } from "../../../../util/notificacion";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
-import { forkJoin } from "rxjs";
-import { SafeResourceUrl } from "@angular/platform-browser";
-import { InscripcionCompletaEsp } from '../../../../modelo/flujos/especializacion/inscripcion-completa-esp';
-import { ValidacionRequisitoEsp } from '../../../../modelo/flujos/especializacion/requisito';
-import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+import {Notificacion} from "../../../../util/notificacion";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {DocumentosService} from "../../../../servicios/formacion/documentos.service";
+import {forkJoin} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
+import {InscripcionCompletaEsp} from '../../../../modelo/flujos/especializacion/inscripcion-completa-esp';
+import {ValidacionRequisitoEsp} from '../../../../modelo/flujos/especializacion/requisito';
+import {EspInscripcionService} from '../../../../servicios/especializacion/esp-inscripcion.service';
 
 @Component({
   selector: 'app-validacion-especializacion',
@@ -26,7 +26,7 @@ export class ValidacionEspecializacionComponent implements OnInit {
   headers: string[];
   mensajeBtnListaRequisitos: string;
   estaExpandidoListaRequisitos: boolean = false;
-  urlsArchivo: {urlSafe: SafeResourceUrl, nombreArchivo: string}[];
+  urlsArchivo: { urlSafe: SafeResourceUrl, nombreArchivo: string }[];
 
   constructor(
     private inscripcionService: EspInscripcionService,
@@ -60,16 +60,18 @@ export class ValidacionEspecializacionComponent implements OnInit {
         console.log("inscripcion", inscripcion);
         this.inscripcion = inscripcion;
 
-        const observables = this.inscripcion?.documentos?.map(documento =>
-          this.documentosService.visualizarArchivo(documento.codDocumento)
-          );
+        console.log("documentos", this.inscripcion?.documentos);
+
+        const observables = this.inscripcion?.documentos?.map(docEsp =>
+          this.documentosService.visualizarArchivo(docEsp.documento.codDocumento)
+        );
 
         if (observables && observables.length > 0) {
           forkJoin(observables).subscribe({
             next: urls => {
               this.urlsArchivo = urls.map((url, index) => ({
                 urlSafe: url,
-                nombreArchivo: this.inscripcion?.documentos[index]?.nombre
+                nombreArchivo: this.inscripcion?.documentos[index]?.documento?.nombre
               }));
               console.log("urlsArchivo", this.urlsArchivo);
             },
@@ -137,7 +139,7 @@ export class ValidacionEspecializacionComponent implements OnInit {
       error: err => {
         Notificacion.notificar(this.mdbNotificationService, 'No se pudo guardar los requisitos', TipoAlerta.ALERTA_ERROR);
         console.log("No se pudo guardar los requisitos", err);
-    }
+      }
     });
 
   }
