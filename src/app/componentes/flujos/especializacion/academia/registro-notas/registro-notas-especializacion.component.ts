@@ -46,6 +46,8 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   esVistaListaCursos: boolean;
   estaCargando: boolean;
 
+  esInstructor: boolean;
+
   constructor(
     private registroNotasService: EspRegistroNotasService,
     private mdbNotificationService: MdbNotificationService,
@@ -67,6 +69,7 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
     this.estudianteNotaEditando = null;
     this.notaPorEstudianteForm = new FormGroup({});
     this.esEstadoRegistroNotas = false;
+    this.esInstructor = false;
     this.construirFormulario();
 
     this.authService.user$.subscribe({
@@ -87,15 +90,14 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
       next: esInstructor => {
         if (!esInstructor) {
           Notificacion.notificar(this.mdbNotificationService, "No es usuario instructor", TipoAlerta.ALERTA_WARNING)
-          this.router.navigate(['/principal/especializacion/menu-academia'])
         } else {
           this.instructor = esInstructor;
           this.consultarCursos();
+          this.esInstructor = true;
         }
       },
       error: () => {
         Notificacion.notificar(this.mdbNotificationService, "Ocurrió un error, inténtelo nuevamente", TipoAlerta.ALERTA_ERROR)
-        this.router.navigate(['/principal/especializacion/menu-academia'])
       }
     })
   }
