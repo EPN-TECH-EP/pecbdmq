@@ -76,7 +76,6 @@
             mdbTable
             #datatableEstudiante
             [dataSource]="notasEstudiantes"
-            [pagination]="pagination"
           >
             <thead class="datatable-header">
             <tr>
@@ -98,11 +97,11 @@
               </td>
               <td class="text-center">
                 <ng-container
-                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
                   {{ estudiante?.notaFinalEspecializacion || '-'}}
                 </ng-container>
                 <ng-container
-                  *ngIf="estaEditandoNota && estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                  *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudianteNotaEditando">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -118,11 +117,11 @@
               </td>
               <td class="text-center">
                 <ng-container
-                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
                   {{ estudiante?.notaSupletorio || '-' }}
                 </ng-container>
                 <ng-container
-                  *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                  *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
                   <mdb-form-control>
                     <input
                       mdbInput
@@ -138,7 +137,7 @@
               </td>
               <td class="text-center">
                 <ng-container
-                  *ngIf="!estaEditandoNota || estudiante.codNotaEspecializacion !== codEstudianteNotaEditando">
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
                   <button
                     mdbTooltip="Editar notas del estudiante"
                     [disabled]="estaEditandoNota"
@@ -149,7 +148,7 @@
                   </button>
                 </ng-container>
                 <ng-container
-                  *ngIf="estaEditandoNota &&  estudiante.codNotaEspecializacion === codEstudianteNotaEditando">
+                  *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
                   <button
                     class="me-2 p-0 shadow-0 btn btn-lg text-success"
                     (click)="onGuardarNota()"
@@ -167,11 +166,7 @@
             </tr>
             </tbody>
           </table>
-          <mdb-table-pagination
-            #pagination
-            [entries]="10"
-            [rowsPerPageText]="'Registros por página'"
-          ></mdb-table-pagination>
+
         </form>
       </div>
     </section>

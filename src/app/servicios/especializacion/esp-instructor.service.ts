@@ -22,7 +22,7 @@ export class EspInstructorService {
   }
 
   getInstructorById(codUsuario: number) {
-    return this.http.get<EspInstructorResponse>(`${ this.host }/cursoInstructor/byUser?codUsuario=${ codUsuario }`, {});
+    return this.http.get<EspInstructorResponse[]>(`${ this.host }/cursoInstructor/byUser?codUsuario=${ codUsuario }`, {});
   }
 
   crear(instructor: EspInstructorRequest) {

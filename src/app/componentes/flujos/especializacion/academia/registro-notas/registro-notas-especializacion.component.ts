@@ -1,31 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   MateriaPorInstructor,
 } from "../../../../../servicios/formacion/registro-notas.service";
-import { Notificacion } from "../../../../../util/notificacion";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { TipoAlerta } from "../../../../../enum/tipo-alerta";
-import { Router } from "@angular/router";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { AutenticacionService } from "../../../../../servicios/autenticacion.service";
-import { concatMap, map } from "rxjs/operators";
-import { forkJoin } from "rxjs";
-import { ApelacionesService } from "../../../../../servicios/formacion/apelaciones.service";
-import { EspInstructorResponse } from "../../../../../modelo/flujos/instructor";
-import { Curso } from '../../../../../modelo/flujos/especializacion/Curso';
-import { CURSO_COMPLETO_ESTADO } from 'src/app/util/constantes/especializacion.const';
-import { CursosService } from '../../../../../servicios/especializacion/cursos.service';
-import { EspInstructorService } from '../../../../../servicios/especializacion/esp-instructor.service';
-import { Usuario } from '../../../../../modelo/admin/usuario';
-import { EspRegistroNotasService } from 'src/app/servicios/especializacion/esp-registro-notas.service';
-import { NotaEspecializacion } from 'src/app/modelo/flujos/especializacion/nota-especializacion';
+import {Notificacion} from "../../../../../util/notificacion";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {TipoAlerta} from "../../../../../enum/tipo-alerta";
+import {Router} from "@angular/router";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {AutenticacionService} from "../../../../../servicios/autenticacion.service";
+import {concatMap, map} from "rxjs/operators";
+import {forkJoin} from "rxjs";
+import {ApelacionesService} from "../../../../../servicios/formacion/apelaciones.service";
+import {EspInstructorResponse} from "../../../../../modelo/flujos/instructor";
+import {Curso} from '../../../../../modelo/flujos/especializacion/Curso';
+import {CURSO_COMPLETO_ESTADO} from 'src/app/util/constantes/especializacion.const';
+import {CursosService} from '../../../../../servicios/especializacion/cursos.service';
+import {EspInstructorService} from '../../../../../servicios/especializacion/esp-instructor.service';
+import {Usuario} from '../../../../../modelo/admin/usuario';
+import {EspRegistroNotasService} from 'src/app/servicios/especializacion/esp-registro-notas.service';
+import {NotaEspecializacion} from 'src/app/modelo/flujos/especializacion/nota-especializacion';
+import {ComponenteBase} from "../../../../../util/componente-base";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-registro-notas-especializacion',
   templateUrl: './registro-notas-especializacion.component.html',
   styleUrls: ['./registro-notas-especializacion.component.scss']
 })
-export class RegistroNotasEspecializacionComponent implements OnInit {
+export class RegistroNotasEspecializacionComponent extends ComponenteBase implements OnInit {
 
   notasEstudiantes: NotaEspecializacion[];
   instructor: EspInstructorResponse;
@@ -35,7 +37,7 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   estudianteNotaEditando: NotaEspecializacion;
   codEstudianteNotaEditando: number;
 
-  headers: {key: string, label: string}[];
+  headers: { key: string, label: string }[];
 
   notaPorEstudianteForm: FormGroup;
   esEstadoRegistroNotas: boolean;
@@ -45,6 +47,8 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   esVistaCurso: boolean;
   esVistaListaCursos: boolean;
   estaCargando: boolean;
+
+  listaCursoInstructor: EspInstructorResponse[];
 
   esInstructor: boolean;
 
@@ -56,14 +60,16 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
     private authService: AutenticacionService,
     private cursosService: CursosService,
     private instructorService: EspInstructorService,
+    private popUpService: MdbPopconfirmService
   ) {
+    super(mdbNotificationService, popUpService);
     this.estaEditandoNota = false;
     this.codEstudianteNotaEditando = 0;
     this.headers = [
-      { key: 'codUnicoEstudiante', label: 'Código único' },
-      { key: 'nombre', label: 'Estudiante' },
-      { key: 'noFinal', label: 'Nota Final' },
-      { key: 'notaSupletorio', label: 'Nota Final Supletorio' },
+      {key: 'codUnicoEstudiante', label: 'Código único'},
+      {key: 'nombre', label: 'Estudiante'},
+      {key: 'noFinal', label: 'Nota Final'},
+      {key: 'notaSupletorio', label: 'Nota Final Supletorio'},
     ];
     this.notasEstudiantes = [];
     this.estudianteNotaEditando = null;
@@ -87,11 +93,14 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.instructorService.getInstructorById(this.usuario.codUsuario).subscribe({
-      next: esInstructor => {
-        if (!esInstructor) {
+      next: listaCursoInstructor => {
+
+        console.log(listaCursoInstructor);
+
+        if (listaCursoInstructor === null || listaCursoInstructor === undefined || listaCursoInstructor.length === 0) {
           Notificacion.notificar(this.mdbNotificationService, "No es usuario instructor", TipoAlerta.ALERTA_WARNING)
         } else {
-          this.instructor = esInstructor;
+          this.listaCursoInstructor = listaCursoInstructor;
           this.consultarCursos();
           this.esInstructor = true;
         }
@@ -103,11 +112,11 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   }
 
   private consultarCursos() {
-    this.cursosService.listarCursosPorInstructorAndEstado(this.instructor.codInstructorCurso, CURSO_COMPLETO_ESTADO.REGISTRO_NOTAS).pipe(
+    this.cursosService.listarCursosPorInstructorAndEstado(this.usuario.codUsuario, CURSO_COMPLETO_ESTADO.REGISTRO_NOTAS).pipe(
       concatMap((cursos) => {
         const cursosWithTipoCurso$ = cursos.map((curso) => {
           return this.cursosService.getTipoCurso(curso.codCatalogoCursos).pipe(
-            map((tipoCurso) => ({ ...curso, tipoCurso }))
+            map((tipoCurso) => ({...curso, tipoCurso}))
           );
         });
 
@@ -116,7 +125,7 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
       concatMap((cursosConTipo) => {
         const estadosObservables = cursosConTipo.map((curso) => {
           return this.cursosService.listarEstadosPorCurso(curso.tipoCurso.codTipoCurso).pipe(
-            map((estados) => ({ ...curso, estados }))
+            map((estados) => ({...curso, estados}))
           );
         });
 
@@ -140,6 +149,15 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
       this.esVistaCurso = true;
       this.esVistaListaCursos = false;
       console.log($event);
+
+
+      // busca codInstructor en base al curso selecciondo de listaCursoInstructor
+      this.listaCursoInstructor.forEach((curso) => {
+          if (curso.codCursoEspecializacion === this.cursoSeleccionado.codCursoEspecializacion) {
+            this.instructor = curso;
+          }
+        }
+      );
     }
 
     this.registroNotasService.getByCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
@@ -174,7 +192,7 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
 
   editarNota(estudiante: NotaEspecializacion) {
     this.estaEditandoNota = true;
-    this.codEstudianteNotaEditando = estudiante.codNotaEspecializacion;
+    this.codEstudianteNotaEditando = estudiante.codEstudiante;
     this.estudianteNotaEditando = estudiante;
     this.notaPorEstudianteForm.patchValue({
       codNota: estudiante.codNotaEspecializacion,
@@ -190,6 +208,12 @@ export class RegistroNotasEspecializacionComponent implements OnInit {
   }
 
   onGuardarNota() {
+
+    // verifica vacíos
+    if ((this.notaPorEstudianteForm.get('notaFinal').value === '') || (this.notaPorEstudianteForm.get('notaFinal').value === null)) {
+      Notificacion.notificacion(this.notificationRef, this.mdbNotificationService, null, "Ingrese una nota final");
+      return;
+    }
     const notaPorEstudiante: NotaEspecializacion = {
       codNotaEspecializacion: this.notaPorEstudianteForm.get('codNota').value,
       notaFinalEspecializacion: this.notaPorEstudianteForm.get('notaFinal').value,
