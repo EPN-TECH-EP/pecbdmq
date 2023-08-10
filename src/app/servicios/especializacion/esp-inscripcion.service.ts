@@ -36,7 +36,6 @@ export class EspInscripcionService {
     return this.http.get<InscripcionDatosEspecializacion[]>(`${ this.host }/inscripcionEsp/inscripcionesValidas/${ codCurso }`);
   }
 
-
   colocarCorreoPersonal(datoPersonal: DatoPersonal) {
     return this.http.put<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
   }
@@ -49,13 +48,14 @@ export class EspInscripcionService {
     return this.http.post(`${this.host}/inscripcionEsp/crear`, data);
   }
 
-    listarInscripciones() {
-    return this.http.get<InscripcionEsp[]>(`${this.host}/inscripcionEsp/listarPaginado`);
+  listarInscripcionesByIdCurso(idCurso: number) {
+    const params = {page: '0', size: '50'}
+    return this.http.get<InscripcionEsp[]>(`${this.host}/inscripcionEsp/listarPorCurso/${idCurso}`, {params});
   }
 
-  listarInscripcionesByIdUsuario(idUsuario: number) {
+  listarInscripcionesByIdCursoAndIdUsuario(idCurso: number, idUsuario: number) {
     const params = {page: '0', size: '50'}
-    return this.http.get<InscripcionEsp[]>(`${this.host}/inscripcionEsp/listarPorUsuarioPaginado/${idUsuario}`, {params});
+    return this.http.get<InscripcionEsp[]>(`${this.host}/inscripcionEsp/listarPorCurso/${idCurso}/usuario/${idUsuario}`, {params});
   }
 
   asignarValidador(idInscripcion: number, idUsuario: number) {

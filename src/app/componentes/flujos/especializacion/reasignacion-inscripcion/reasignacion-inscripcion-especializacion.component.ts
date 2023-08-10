@@ -113,7 +113,7 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
       console.log($event);
     }
 
-    this.inscripcionService.listarInscripciones().subscribe({
+    this.inscripcionService.listarInscripcionesByIdCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
       next: inscripciones => {
         this.inscripciones = inscripciones
       },
@@ -172,7 +172,7 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
         this.codigoInscripcionReasignando = 0
         this.codigoUsuarioReasignado.setValue(0)
 
-        this.inscripcionService.listarInscripciones().subscribe(
+        this.inscripcionService.listarInscripcionesByIdCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe(
           inscripciones => {
             this.inscripciones = inscripciones
           }

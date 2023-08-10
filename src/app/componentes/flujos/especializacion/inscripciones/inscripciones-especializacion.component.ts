@@ -126,7 +126,7 @@ export class InscripcionesEspecializacionComponent implements OnInit {
       }
     })
 
-    this.inscripcionService.listarInscripcionesByIdUsuario(this.usuario.codUsuario).subscribe({
+    this.inscripcionService.listarInscripcionesByIdCursoAndIdUsuario(this.cursoSeleccionado.codCursoEspecializacion, this.usuario.codUsuario).subscribe({
       next: inscripciones => {
         console.log(inscripciones)
         this.inscripcionesAsignadas = inscripciones.filter(inscripcion => inscripcion.estado === 'ASIGNADO')
