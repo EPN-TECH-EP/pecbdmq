@@ -67,8 +67,8 @@ export class TimeoutInterceptor implements HttpInterceptor {
   }
 
   private isRetryableError(error: HttpErrorResponse): boolean {
-    console.log('Hay reintento: ' + (error.status >= 500 || error.status == 0));
-    return error.status >= 500 || error.status == 0; // Retry for server errors (status code >= 500)
+    console.log('Hay reintento: ' + (error.status == 503 || error.status == 0));
+    return error.status == 503 || error.status == 0; // Retry for server errors (status code >= 500)
   }
 
 

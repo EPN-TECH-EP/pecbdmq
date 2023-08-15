@@ -47,6 +47,18 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Semestre'];
 
+  /**
+    * Inicializa un nuevo objeto "Semestre" con valores por defecto.
+    * 
+    * @returns {Semestre} Un objeto "Semestre" con valores predeterminados.
+  */
+  initializeSemestre(): Semestre {
+    return {
+      codSemestre: 0,
+      semestre: '',
+      estado: 'ACTIVO',
+    };
+  }
 
 
 
@@ -58,23 +70,17 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.semestres= [];
-    this.subscriptions = [];
-    this.semestre = {
-      codSemestre:0,
-      semestre:'',
-      estado:'ACTIVO'
-    }
-    this.semestreEditForm = {
-      codSemestre: 0,
-      semestre:'',
-      estado:'ACTIVO'
-    };
+
+    this.semestre = this.initializeSemestre();// Llamada al método initializeSemestre
+    this.semestreEditForm = this.initializeSemestre();// Llamada al método initializeSemestre
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.Api.getSemestre().subscribe(data => {
       this.semestres = data;
     })
+    );
   }
 
   search(event: Event): void {
@@ -126,11 +132,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
           this.semestres.push(nuevaSemestre);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Semestre creada con éxito');
 
-          this.semestre ={
-          codSemestre: 0,
-          semestre:'',
-          estado: 'ACTIVO'
-          }
+          this.semestre = this.initializeSemestre();// Llamada al método initializeSemestre
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -145,22 +147,12 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.semestreEditForm = {
-      codSemestre: 0,
-      semestre:'',
-      estado: 'ACTIVO'
-    };
+    this.semestreEditForm = this.initializeSemestre();// Llamada al método initializeSemestre
     this.editElementIndex = -1;
   }
 
 
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
+  
 
   //actualizar
   public actualizar(semestre: Semestre, formValue): void {
@@ -168,7 +160,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
     semestre={...semestre, semestre: formValue.semestre, estado:'ACTIVO'}
     
     if(formValue.semestre == ''){
-      this.errorNotification('Todos los campos son obligatorios');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos son obligatorios');
       return;
     }
 
@@ -180,11 +172,7 @@ export class SemestreComponent extends ComponenteBase implements OnInit {
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Semestre actualizado con éxito');
         this.semestres[this.editElementIndex] = response.body;
         this.showLoading = false;
-        this.semestre ={
-          codSemestre: 0,
-          semestre:'',
-          estado: 'ACTIVO'
-          }
+        this.semestre = this.initializeSemestre();// Llamada al método initializeSemestre
         this.editElementIndex=-1;
       },
       error: (errorResponse: HttpErrorResponse) => {

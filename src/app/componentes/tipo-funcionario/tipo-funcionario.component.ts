@@ -49,6 +49,20 @@ editElementIndex = -1;
 addRow = false;
 headers = ['Nombre'];
 
+  /**
+    * Inicializa un nuevo objeto "TipoFuncionario" con valores por defecto.
+    * 
+    * @returns {TipoFuncionario} Un objeto "TipoFuncionario" con valores predeterminados.
+  */
+  initializeTipoFuncionario(): TipoFuncionario {
+    return {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO',
+    };
+  }
+
+
   constructor(
     private ApiTipoFuncionario: TipoFuncionarioService,
     private notificationServiceLocal: MdbNotificationService,
@@ -57,25 +71,19 @@ headers = ['Nombre'];
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposFuncionario = [];
-    this.subscriptions = [];
-    this.tipoFuncionario = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    }
-    this.tipoFuncionarioEditForm = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    };
+
+    this.tipoFuncionario = this.initializeTipoFuncionario();// Llamada al método initializeTipoFuncionario
+    this.tipoFuncionarioEditForm = this.initializeTipoFuncionario();// Llamada al método initializeTipoFuncionario
    }
 
 
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.ApiTipoFuncionario.getTipoFuncionario().subscribe(data => {
       this.tiposFuncionario = data;
     })
+    );
   }
 
 
@@ -137,11 +145,7 @@ headers = ['Nombre'];
           this.tiposFuncionario.push(nuevoTipoFuncionario);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo funcionario creado con éxito');
 
-          this.tipoFuncionario = {
-            codigo: 0,
-            nombre: '',
-            estado: 'ACTIVO'
-          }
+          this.tipoFuncionario = this.initializeTipoFuncionario();// Llamada al método initializeTipoFuncionario
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -157,11 +161,7 @@ headers = ['Nombre'];
   }
 
   undoRow() {
-    this.tipoFuncionarioEditForm = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    };
+    this.tipoFuncionarioEditForm = this.initializeTipoFuncionario();// Llamada al método initializeTipoFuncionario
     this.editElementIndex = -1;
   }
 
@@ -183,11 +183,7 @@ headers = ['Nombre'];
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo funcionario actualizado con éxito');
         this.tiposFuncionario[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.tipoFuncionario = {
-            codigo: 0,
-            nombre: '',
-            estado: 'ACTIVO'
-          }
+          this.tipoFuncionario = this.initializeTipoFuncionario();// Llamada al método initializeTipoFuncionario
           this.editElementIndex = -1;
 
       },

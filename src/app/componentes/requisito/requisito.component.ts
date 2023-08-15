@@ -43,24 +43,13 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
 
   validacionUtil = ValidacionUtil;
 
-  constructor(
-    private Api: RequisitoService,
-    private notificationServiceLocal: MdbNotificationService,
-    private popconfirmServiceLocal: MdbPopconfirmService
-  ) {
-    super(notificationServiceLocal, popconfirmServiceLocal);
-
-    this.requisitos = [];
-    this.subscriptions = [];
-    this.requisito = {
-      codigoRequisito: 0,
-      codFuncionario: 0,
-      nombre: '',
-      descripcion: '',
-      esDocumento: false,
-      estado: 'ACTIVO',
-    };
-    this.requisitoEditForm = {
+  /**
+    * Inicializa un nuevo objeto "Requisito" con valores por defecto.
+    * 
+    * @returns {Requisito} Un objeto "Requisito" con valores predeterminados.
+  */
+  initializeRequisito(): Requisito {
+    return {
       codigoRequisito: 0,
       codFuncionario: 0,
       nombre: '',
@@ -70,10 +59,26 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
     };
   }
 
+
+  constructor(
+    private Api: RequisitoService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popconfirmServiceLocal: MdbPopconfirmService
+  ) {
+    super(notificationServiceLocal, popconfirmServiceLocal);
+
+    this.requisitos = [];
+  
+    this.requisito = this.initializeRequisito(); // Llamada al método initializeRequisito
+    this.requisitoEditForm = this.initializeRequisito();// Llamada al método initializeRequisito 
+  }
+
   ngOnInit(): void {
+    this.subscriptions.push(
     this.Api.getRequisito().subscribe((data) => {
       this.requisitos = data;
-    });
+      })
+    );
   }
   /*
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -136,14 +141,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           this.Api.getRequisito().subscribe((data) => {
             this.requisitos = data;
           });
-          this.requisito = {
-            codigoRequisito: 0,
-            codFuncionario: 0,
-            nombre: '',
-            descripcion: '',
-            esDocumento: false,
-            estado: 'ACTIVO',
-          };
+          this.requisito = this.initializeRequisito(); // Llamada al método initializeRequisito
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(
@@ -162,14 +160,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.requisitoEditForm = {
-      codigoRequisito: 0,
-      codFuncionario: 0,
-      nombre: '',
-      descripcion: '',
-      esDocumento: false,
-      estado: 'ACTIVO',
-    };
+    this.requisitoEditForm = this.initializeRequisito();// Llamada al método initializeRequisito 
     this.editElementIndex = -1;
   }
 
@@ -210,14 +201,7 @@ export class RequisitoComponent extends ComponenteBase implements OnInit {
           );
           this.requisitos[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.requisito = {
-            codigoRequisito: 0,
-            codFuncionario: 0,
-            nombre: '',
-            descripcion: '',
-            esDocumento: false,
-            estado: 'ACTIVO',
-          };
+          this.requisito = this.initializeRequisito(); // Llamada al método initializeRequisito
           this.editElementIndex = -1;
         },
 

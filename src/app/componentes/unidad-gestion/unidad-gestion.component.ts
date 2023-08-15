@@ -56,6 +56,20 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   addRow = false;
   headers = ['Nombre'];
 
+  /**
+    * Inicializa un nuevo objeto "Unidad" con valores por defecto.
+    * 
+    * @returns {UnidadGestion} Un objeto "Unidad" con valores predeterminados.
+  */
+  initializeUnidad(): UnidadGestion {
+    return {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO',
+    };
+  }
+
+
   constructor(
     private ApiUnidad: UnidadGestionService,
     private notificationServiceLocal: MdbNotificationService,
@@ -64,23 +78,17 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.unidades = [];
-    this.subscriptions = [];
-    this.Unidad = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    }
-    this.UnidadEditForm = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    };
+  
+    this.Unidad = this.initializeUnidad();// Llamada al método initializeUnidad
+    this.UnidadEditForm = this.initializeUnidad();// Llamada al método initializeUnidad
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.ApiUnidad.listar().subscribe((data) => {
       this.unidades = data;
-    });
+      })
+    );
   }
 /*
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -115,7 +123,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   public registro(unidad: UnidadGestion): void {
 
     if (unidad.nombre == '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos deben estar llenos');
       return;
     }
 
@@ -127,11 +135,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
           this.unidades.push(nuevaUnidad);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión creada con éxito');
 
-          this.Unidad = {
-            codigo: 0,
-            nombre: '',
-            estado: 'ACTIVO'
-          }
+          this.Unidad = this.initializeUnidad();// Llamada al método initializeUnidad
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -146,27 +150,17 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
   }
 
   undoRow() {
-    this.UnidadEditForm = {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO'
-    };
+    this.UnidadEditForm = this.initializeUnidad();// Llamada al método initializeUnidad
     this.editElementIndex = -1;
   }
 
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
+
 
   //actualizar
   public actualizar(unidad: UnidadGestion, formValue): void {
 
     if (formValue.nombre == '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos deben estar llenos');
       return;
     }
 
@@ -179,11 +173,7 @@ export class UnidadGestionComponent extends ComponenteBase implements OnInit, Ca
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Unidad de gestión actualizada con éxito');
           this.unidades[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.Unidad = {
-            codigo: 0,
-            nombre: '',
-            estado: 'ACTIVO'
-          }
+          this.Unidad = this.initializeUnidad();// Llamada al método initializeUnidad
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {

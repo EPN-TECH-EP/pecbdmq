@@ -48,6 +48,20 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Nombre'];
 
+  /**
+    * Inicializa un nuevo objeto "TipoNota" con valores por defecto.
+    * 
+    * @returns {TipoNota} Un objeto "TipoNota" con valores predeterminados.
+  */
+  initializeTipoNota(): TipoNota {
+    return {
+      codTipoNota: 0,
+      nota: '',
+      estado: 'ACTIVO',
+    };
+  }
+
+
   constructor(
     private ApiTipoNota: TipoNotaService,
     private notificationServiceLocal: MdbNotificationService,
@@ -56,23 +70,17 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposNota = [];
-    this.subscriptions = [];
-    this.tipoNota = {
-      codTipoNota: 0,
-      nota: '',
-      estado: 'ACTIVO'
-    }
-    this.tipoNotaEditForm = {
-      codTipoNota: 0,
-      nota: '',
-      estado: 'ACTIVO'
-    };
+    
+    this.tipoNota = this.initializeTipoNota();// Llamada al método initializeTipoNota
+    this.tipoNotaEditForm = this.initializeTipoNota(); // Llamada al método initializeTipoNota
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.ApiTipoNota.getTipoNota().subscribe(data => {
       this.tiposNota = data;
     })
+    );
   }
 
 /*
@@ -132,11 +140,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
           this.tiposNota.push(nuevoTipoNota);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota creado con éxito');
 
-          this.tipoNota = {
-            codTipoNota: 0,
-            nota: '',
-            estado: 'ACTIVO'
-          }
+          this.tipoNota = this.initializeTipoNota();// Llamada al método initializeTipoNota
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -153,11 +157,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.tipoNotaEditForm = {
-      codTipoNota: 0,
-      nota: '',
-      estado: 'ACTIVO'
-    };
+    this.tipoNotaEditForm = this.initializeTipoNota(); // Llamada al método initializeTipoNota
     this.editElementIndex = -1;
   }
 
@@ -179,11 +179,7 @@ export class TipoNotaComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de nota actualizado con éxito');
           this.tiposNota[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.tipoNota = {
-            codTipoNota: 0,
-            nota: '',
-            estado: 'ACTIVO'
-          }
+          this.tipoNota = this.initializeTipoNota();// Llamada al método initializeTipoNota
           this.editElementIndex = -1;
 
         },

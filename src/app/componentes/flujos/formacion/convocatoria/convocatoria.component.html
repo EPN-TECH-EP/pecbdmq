@@ -55,11 +55,11 @@
               <div class="container">
                 <div class="row mb-4">
                   <div class="col-3">
-                    <h6 class="text-primary">Código de la convocatoria</h6>
+                    <h6 class="text-primary">Código de la convocatoria<span class="text-danger">*</span></h6>
                     <h4><span class="badge badge-success">&nbsp;{{ codigoUnicoConvocatoria }}&nbsp;</span></h4>
                   </div>
                   <div class="col-4">
-                    <h6 class="text-primary">Fecha de creación de la convocatoria</h6>
+                    <h6 class="text-primary">Fecha de creación de la convocatoria<span class="text-danger">*</span></h6>
                     <h4><span class="badge badge-info">&nbsp;{{ fechaActual | date:'yyyy-MM-dd'  }}&nbsp;</span></h4>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
                         class="form-control mb-5"
                         formControlName="nombre"
                       />
-                      <label mdbLabel class="form-label mb-2x" for="nombre">Nombre de la convocatoria</label>
+                      <label mdbLabel class="form-label mb-2x" for="nombre">Nombre de la convocatoria<span class="text-danger">*</span></label>
                       <mdb-error *ngIf="nombreField?.invalid && nombreField?.touched">
                         <i class="fas fa-times-circle"></i>
                         Campo Obligatorio
@@ -102,7 +102,7 @@
                         mdbLabel
                         class="form-label mb-2x"
                         for="cuposHombres"
-                      >Cupos Hombres</label
+                      >Cupos Hombres<span class="text-danger">*</span></label
                       >
                       <mdb-error
                         *ngIf="cuposHombresField?.invalid && cuposHombresField?.touched"
@@ -134,7 +134,7 @@
                         mdbLabel
                         class="form-label mb-2x"
                         for="cuposMujeres"
-                      >Cupos Mujeres</label
+                      >Cupos Mujeres<span class="text-danger">*</span></label
                       >
                       <mdb-error
                         *ngIf="cuposMujeresField?.invalid && cuposMujeresField?.touched"
@@ -170,7 +170,7 @@
                         mdbLabel
                         class="form-label mb-2x"
                         for="fechaInicio"
-                      >Seleccionar Fecha Inicio</label
+                      >Seleccionar Fecha Inicio<span class="text-danger">*</span></label
                       >
                       <mdb-datepicker-toggle
                         [mdbDatepicker]="dpFechaInicio"
@@ -212,7 +212,7 @@
                         readonly="true"
                       />
                       <label mdbLabel class="form-label mb-5" for="horaInicio"
-                      >Insertar hora de incio</label
+                      >Insertar hora de incio<span class="text-danger">*</span></label
                       >
                       <mdb-timepicker-toggle
                         [mdbTimepickerToggle]="tpHoraInicio"
@@ -254,7 +254,7 @@
                         readonly="true"
                       />
                       <label mdbLabel class="form-label mb-2x" for="fechaFin"
-                      >Seleccionar Fecha Fin</label
+                      >Seleccionar Fecha Fin<span class="text-danger">*</span></label
                       >
                       <mdb-datepicker-toggle
                         [mdbDatepicker]="dpFechaFin"
@@ -305,7 +305,7 @@
                         readonly="true"
                       />
                       <label mdbLabel class="form-label mb-5" for="horaFin"
-                      >Insertar hora de fin</label
+                      >Insertar hora de fin<span class="text-danger">*</span></label
                       >
                       <mdb-timepicker-toggle
                         [mdbTimepickerToggle]="tpHoraFin"
@@ -352,7 +352,6 @@
                     <input
                       mdbInput
                       mdbValidate
-                      accept="application/pdf"
                       type="file"
                       class="form-control mb-5"
                       placeholder="Seleccione un documento"
@@ -379,7 +378,6 @@
                   <mdb-form-control>
                     <input
                       mdbInput
-                      accept="application/pdf"
                       type="file"
                       class="form-control mb-5"
                       id="documentoSoporte"
@@ -404,9 +402,9 @@
           </div>
         </mdb-step>
         <!-- PASO DOS -->
-        <mdb-step [name]="'Requerimientos'">
+        <mdb-step [name]="'Requisitos'">
           <ng-template mdbStepIcon><i class="fas fa-envelope"></i></ng-template>
-          <h3 class="text-center">Lista Requerimientos</h3>
+          <h3 class="text-center">Lista Requisitos</h3>
 
           <div class="row d-flex justify-content-center">
             <div class="datatable table-editor mt-3 col-10">
@@ -416,15 +414,15 @@
                 [disabled]="editElementIndex !== -1"
                 (click)="addRow = true"
               >
-                <i class="fa fa-plus"></i> &nbsp;Agregar requerimiento
+                <i class="fa fa-plus"></i> &nbsp;Agregar requisito<span class="text-danger">*</span>
               </button>
               <div
                 class="m-5"
                 *ngIf="requisitosConvocatoria.length === 0"
                 [hidden]="addRow"
               >
-                <h5 class="text-center">No hay requerimientos</h5>
-                <h6 class="text-center">Por favor agregue un requerimiento</h6>
+                <h5 class="text-center">No hay requisitos</h5>
+                <h6 class="text-center">Por favor agregue un requisito</h6>
               </div>
               <table
                 class="table datatable-table"
@@ -438,7 +436,7 @@
                 >
                 <tr>
                   <th>
-                    <b> Requerimiento </b>
+                    <b> Requisito </b>
                   </th>
                   <th scope="col" class="text-center"><b>Acciones</b></th>
                 </tr>
@@ -530,7 +528,7 @@
           <ng-template mdbStepIcon
           ><i class="fas fa-check fa-lg"></i
           ></ng-template>
-          <h4>Datos de convocatoria</h4>
+          <h4>Datos de Convocatoria Pública</h4>
           <hr/>
           <div class="row">
             <div class="col-md-6">
@@ -585,11 +583,12 @@
             </div>
           </div>
           <hr/>
-          <h4 class="mb-3">Confirmación de Correo Electrónico:</h4>
+          <h4 class="mb-3">Confirmación de Correo Electrónico:<span class="text-danger">*</span></h4>
           <div class="alert alert-primary p-2 mb-3" role="alert">
             <i class="fas fa-info-circle mx-1"></i>
             Ingrese una dirección de correo electrónico a la que podamos enviar
-            la notificación con el link de descarga del documento de Convocatoria
+            la notificación con el link de descarga del documento de Convocatoria. Si
+            requiere enviar a más de una dirección, por favor separe cada correo con una coma (,).
           </div>
           <mdb-form-control>
             <input

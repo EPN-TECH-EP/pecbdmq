@@ -13,7 +13,7 @@
 
   &.actual {
     background: rgba(234, 246, 255, 0.73);
-    border-radius: 5px;
+    border-radius: 10px;
   }
 
   .step__order {
@@ -26,10 +26,10 @@
       justify-content: center;
       align-items: center;
       border-radius: 100%;
-      width: 19.2px;
-      height: 19.2px;
+      width: 39.2px;
+      height: 39.2px;
       color: #fff;
-      font-size: 11px;
+      font-size: 14px;
     }
   }
 

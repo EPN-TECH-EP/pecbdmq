@@ -204,6 +204,7 @@ import {
 import {
   MenuCalculoNotaFinalComponent
 } from "../../componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component";
+import {EditarCursoComponent} from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
 
 
 const routes: Routes = [
@@ -294,6 +295,7 @@ const routes: Routes = [
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
       { path: 'especializacion/catalogo-curso', component: CatalogoCursoComponent },
       { path: 'especializacion/crear-curso', component: CrearCursoComponent },
+      { path: 'especializacion/editar-curso', component: EditarCursoComponent },
       { path: 'especializacion/menu-validacion', component: MenuValidacionRequisitosEspecializacionComponent },
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
       { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },

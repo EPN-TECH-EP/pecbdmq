@@ -49,6 +49,21 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Módulo', 'Descripción'];
 
+  /**
+    * Inicializa un nuevo objeto "Modulo" con valores por defecto.
+    * 
+    * @returns {Modulo} Un objeto "Modulo" con valores predeterminados.
+  */
+  initializeModulo(): Modulo {
+    return {
+        codModulo: 0,
+        etiqueta: '',
+        descripcion: '',
+        estado: 'ACTIVO'
+    };
+  }
+
+
   constructor(
     private ApiModulo: ModuloService,
     private notificationServiceLocal: MdbNotificationService,
@@ -58,25 +73,17 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.Modulos = [];
-    this.subscriptions = [];
-    this.Modulo = {
-      codModulo: 0,
-      etiqueta: '',
-      descripcion: '',
-      estado: 'ACTIVO'
-    }
-    this.ModuloEditForm = {
-      codModulo: 0,
-      etiqueta: '',
-      descripcion: '',
-      estado: 'ACTIVO'
-    };
+
+    this.Modulo = this.initializeModulo();// Llamada al método initializeModulo 
+    this.ModuloEditForm = this.initializeModulo();// Llamada al método initializeModulo 
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.ApiModulo.getModulo().subscribe(data => {
       this.Modulos = data;
     })
+    );
   }
 /*
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -113,7 +120,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   public registro(modulo: Modulo): void {
 
     if(this.Modulo.etiqueta == '' || this.Modulo.descripcion == ''){
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos deben estar llenos');
       return;
     }
 
@@ -126,12 +133,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
           this.Modulos.push(nuevoModulo);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo creado con éxito');
 
-          this.Modulo = {
-            codModulo: 0,
-            etiqueta: '',
-            descripcion: '',
-            estado: 'ACTIVO'
-          }
+          this.Modulo = this.initializeModulo();// Llamada al método initializeModulo 
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -146,35 +148,24 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.ModuloEditForm = {
-      codModulo: 0,
-      etiqueta: '',
-      descripcion: '',
-      estado: 'ACTIVO'
-    };
+    this.ModuloEditForm = this.initializeModulo();// Llamada al método initializeModulo para inicializar el objeto 'ModuloEditForm' con valores predeterminados
     this.editElementIndex = -1;
   }
 
-  public errorNotification(mensaje: string) {
-    this.notificationRef = Notificacion.notificar(
-      this.notificationServiceLocal,
-      mensaje,
-      TipoAlerta.ALERTA_ERROR
-    );
-  }
+  
 
   //actualizar
   public actualizar(Modulo: Modulo, formValue): void {
 
     if(this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == ''){
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos deben estar llenos');
       return;
     }
 
     Modulo = {...Modulo, etiqueta: formValue.etiqueta, descripcion: formValue.descripcion, estado: 'ACTIVO'};
 
     if (this.ModuloEditForm.etiqueta == '' || this.ModuloEditForm.descripcion == '') {
-      this.errorNotification('Todos los campos deben estar llenos');
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,null,'Todos los campos deben estar llenos');
       return;
     }
 
@@ -186,12 +177,7 @@ export class ModuloComponent extends ComponenteBase implements OnInit {
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Módulo actualizado con éxito');
           this.Modulos[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.Modulo = {
-            codModulo: 0,
-            etiqueta: '',
-            descripcion: '',
-            estado: 'ACTIVO'
-          }
+          this.Modulo = this.initializeModulo();// Llamada al método initializeModulo para inicializar el objeto 'Modulo' con valores predeterminados
           this.editElementIndex = -1;
 
         },

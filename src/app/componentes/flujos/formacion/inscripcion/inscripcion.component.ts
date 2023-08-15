@@ -451,6 +451,9 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   subirArchivo(event: any): void {
+
+    this.showLoadingFull = true;
+
     let doc: File;
     let docName: string;
     //Para validar tamaño y extension pdf
@@ -477,6 +480,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Archivo cargado');
       }
     }
+    this.showLoadingFull = false;
   }
 
   onChangeCantonNacimiento(event: any) {
