@@ -150,4 +150,19 @@ export class ValidacionComponent implements OnInit {
     this.mensajeBtnListaRequisitos = this.estaExpandidoListaRequisitos ? 'Posición lateral de la lista de requisitos' : 'Posición inferior de la lista de requisitos';
   }
 
+  // retornar edad en años y meses a la fecha de inscripción
+  calcularEdad(fechaNacimiento?: string, fechaInscripcion?: string): string {
+
+    // si un parámetro es null, retornar cadena vacía
+    if (!fechaNacimiento || !fechaInscripcion) return '';
+    // si un parámetro es vacío, retornar cadena vacía
+    if (fechaNacimiento.trim() === '' || fechaInscripcion.trim() === '') return '';
+
+    const fechaNacimientoDate = new Date(fechaNacimiento);
+    const fechaInscripcionDate = new Date(fechaInscripcion);
+    const anios = fechaInscripcionDate.getFullYear() - fechaNacimientoDate.getFullYear();
+    const meses = fechaInscripcionDate.getMonth() - fechaNacimientoDate.getMonth();
+    return `${anios} años y ${meses} meses`;
+  }
+
 }

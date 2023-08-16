@@ -35,6 +35,7 @@ import { TipoFiltroPostulantesValidosEnum } from '../../../../enum/tipo-filtro-p
 export class ResultadosPruebasComponent extends ComponenteBase implements OnInit {
   FORMACION = FORMACION;
   TipoFiltroPostulantesValidosEnum = TipoFiltroPostulantesValidosEnum;
+  fechaActual = new Date();
 
   // datos
   listaPruebaDetalleDatos: PruebaDetalleDatos[];
@@ -84,7 +85,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   usuario: Usuario;
 
   // headers
-  /* 
+  /*
   idPostulante: string;
     cedula: string;
     correoPersonal: string;
@@ -308,6 +309,14 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
           for (let index = 0; index < this.listaPruebaDetalleDatos.length; index++) {
             if (this.listaPruebaDetalleDatos[index].estado !== FORMACION.estadoPruebasCierre) {
               this.pruebaDetalleSeleccionada = this.listaPruebaDetalleDatos[index];
+
+              // filtra solo las pruebas que no tengan codCursoEspecializacion
+              this.listaPruebaDetalleDatos = this.listaPruebaDetalleDatos.filter(
+                (prueba) => prueba.codCursoEspecializacion === null
+              );
+
+              this.listaPruebaDetalleDatos = [...this.listaPruebaDetalleDatos];
+
 
               this.cargarResultadosPrueba();
 
@@ -559,7 +568,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
     const contentType = tipo === 'Pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-    this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba, 
+    this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba,
       this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
       next: (data) => {
         const blob = new Blob([data] , { type: contentType });
@@ -584,7 +593,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 /*  descargarLista(tipo: string) {
     // descargar mediante servicio ResultadosPruebasService
     this.subscriptions.push(
-      this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codPruebaDetalle, 
+      this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codPruebaDetalle,
         this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
         next: () => {
           Notificacion.notificacionOK(
@@ -592,7 +601,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             this.notificationServiceLocal,
             'Archivo descargado correctamente'
           );
-        }, 
+        },
         error: (errorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         }
@@ -679,14 +688,14 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
     // verifica si la prueba seleccionada está en estado cierre, si no está en estado cierre no hace nada
     if (this.pruebaDetalleSeleccionada.estado !== FORMACION.estadoPruebasCierre) {
-      
+
       Notificacion.notificacion(
         this.notificationRef,
         this.notificationServiceLocal,
         null,
         'No se puede enviar notificación, la prueba seleccionada no se encuentra cerrada'
       );
-      
+
       return;
     }
 
@@ -698,7 +707,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            'Notificación enviada correctamente'            
+            'Notificación enviada correctamente'
           );
 
           this.showLoading = false;

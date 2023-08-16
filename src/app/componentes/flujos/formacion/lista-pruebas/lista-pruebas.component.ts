@@ -25,6 +25,8 @@ import { PruebaDetalleOrden } from 'src/app/modelo/flujos/formacion/prueba-detal
 export class ListaPruebasComponent extends ComponenteBase implements OnInit {
   opcionesDatepicker = OPCIONES_DATEPICKER;
 
+  fechaActual = new Date();
+
   // datos
   listaSubtipoPrueba: SubtipoPruebaDatos[];
   listaPruebaDetalle: PruebaDetalle[];
@@ -254,7 +256,7 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
       );
 
       if (ordenMaximo === undefined || ordenMaximo === null)
-      { 
+      {
        ordenMaximo = 0;
       }
 
@@ -526,10 +528,10 @@ export class ListaPruebasComponent extends ComponenteBase implements OnInit {
   }
 
   guardarOrdenServicio(elimina: boolean) {
-    
+
     if (!elimina) {
       this.guardarOrdenNuevo();
-    }     
+    }
 
     this.subscriptions.push(
       this.pruebaDetalleService.reordenar(this.listaOrden).subscribe({

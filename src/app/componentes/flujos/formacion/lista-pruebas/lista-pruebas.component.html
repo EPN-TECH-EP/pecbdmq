@@ -116,7 +116,8 @@
                 class="form-control"
                 formControlName="fechaInicio"
                 (click)="dpFechaInicio.open()"
-                readonly="true" />
+                readonly="true"
+              />
               <label mdbLabel class="form-label" for="fechaInicio">Seleccionar Fecha Inicio</label>
               <mdb-datepicker-toggle
                 [mdbDatepicker]="dpFechaInicio"
@@ -124,7 +125,9 @@
               <mdb-datepicker
                 #dpFechaInicio="mdbDatepicker"
                 [options]="opcionesDatepicker"
-                [inline]="true"></mdb-datepicker>
+                [inline]="true"
+                [minDate]="opcionesDatepicker.minDate"
+              ></mdb-datepicker>
               <mdb-error *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"> </mdb-error>
               <mdb-success *ngIf="fechaInicioField?.valid && fechaInicioField?.touched"> </mdb-success>
             </mdb-form-control>
@@ -150,7 +153,9 @@
               <mdb-datepicker
                 #dpFechaFin="mdbDatepicker"
                 [options]="opcionesDatepicker"
-                [inline]="true"></mdb-datepicker>
+                [inline]="true"
+                [minDate]="opcionesDatepicker.minDate"
+              ></mdb-datepicker>
               <mdb-error *ngIf="fechaFinField?.invalid && fechaFinField?.touched"> </mdb-error>
               <mdb-success *ngIf="fechaFinField?.valid && fechaFinField?.touched"> </mdb-success>
             </mdb-form-control>
