@@ -1,0 +1,47 @@
+<!-- Seleccionar Items from select data -->
+<div class="col-md-12">
+  <div class="container">
+    <div class="col-md-6">
+      <label for="semestreSelect">{{apiService.selectLabel}}</label>
+      <mdb-select id="semestreSelect" [(ngModel)]="selectedItem" (ngModelChange)="onSelectChange($event)">
+        <mdb-option *ngFor="let item of selectList" [value]="item">
+          {{ item[apiService.idSelectListFieldName] }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+    <!-- Asignación -->
+    <div class="row mt-3">
+      <!-- Item Disponibles -->
+      <div class="col-md-6">
+        <h5>{{title}} Disponibles</h5>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of itemList">
+            {{ apiService.getFieldLabel(item) }}
+            <button
+              [disabled]="!selectedItem"
+              class="btn btn-sm btn-primary float-end"
+              (click)="moveItem(item, 'added')"
+            >
+              Agregar
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!-- Semestre -->
+      <div class="col-md-6">
+        <h5>Cohorte</h5>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of associationList">
+            {{ apiService.getFieldLabel(item) }}
+            <button
+              class="btn btn-sm btn-secondary float-end"
+              (click)="moveItem(item, 'available')"
+            >
+              Quitar
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

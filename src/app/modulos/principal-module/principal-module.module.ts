@@ -218,10 +218,7 @@ const routes: Routes = [
       { path: 'admin', component: MenuAdminComponent /*, pathMatch: 'full' , outlet: 'principal-outlet'*/ },
       { path: 'menuFormacion', component: MenuFormacionComponent /*, pathMatch: 'full' , outlet: 'principal-outlet'*/ },
 
-      {
-        path: 'menuProfesionalizacion',
-        component: MenuProfesionalizacionComponent /*, pathMatch: 'full' , outlet: 'principal-outlet'*/,
-      },
+
       // componentes funcionales
       { path: 'materia', component: MateriaComponent },
       {

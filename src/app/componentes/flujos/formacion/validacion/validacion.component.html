@@ -39,7 +39,7 @@
               <div class="col">
                 <p><b>Nombre:</b> {{ inscripcion?.nombre }} {{ inscripcion?.apellido }}</p>
                 <p><b>Fecha de nacimiento:</b> {{ inscripcion?.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
-                <p><b>Edad:</b> {{ calcularEdad(inscripcion?.edadPostulacion}}</p>
+                <p><b>Edad:</b> {{ inscripcion?.edadPostulacion }}</p>
               </div>
               <div class="col">
                 <p><b>Teléfono celular:</b> {{ inscripcion?.numTelefCelular }}</p>

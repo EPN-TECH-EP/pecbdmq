@@ -12,6 +12,7 @@ export class Materia {
   public notaMinima: number;*/
   public codEjeMateria: number;
   public estado: string;
+  public esProyecto: boolean
 
  //public paralelos: number;//
  //public active: boolean;//

@@ -99,6 +99,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     return {
       codMateria: 0,
       nombre: '',
+      esProyecto: false,
       /*numHoras: 1,
       tipoMateria: '',
       observacionMateria: '',

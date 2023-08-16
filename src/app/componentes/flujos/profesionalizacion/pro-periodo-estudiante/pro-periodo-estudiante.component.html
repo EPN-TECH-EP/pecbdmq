@@ -1,0 +1,192 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Asignación de Estudiante a Cohorte</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10 m-3">
+      <!-- Seleccionar Items from select data -->
+      <div class="col-md-12">
+        <div class="container">
+          <div class="col-md-6">
+            <label for="periodoSelect">Seleccione un Cohorte</label>
+            <mdb-select id="periodoSelect" [(ngModel)]="selectedItemPeriodo" (ngModelChange)="onSelectChange($event)">
+              <mdb-option *ngFor="let item of selectListPeriodos" [value]="item.codigoPeriodo">
+                {{ item.nombrePeriodo }}
+              </mdb-option>
+            </mdb-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center" *ngIf="selectedItemPeriodo>0">
+    <div class="col-10">.
+      <button class="btn btn-primary mb-1" (click)="estaBuscandoUsuarios = !estaBuscandoUsuarios">
+        <i class="fa-solid fa-circle-plus me-2"></i>
+        Asignar estudiante
+      </button>
+    </div>
+  </div>
+
+  <!-- Busqueda de usuarios -->
+  <section *ngIf="estaBuscandoUsuarios && selectedItemPeriodo>0">
+    <hr class="hr">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        [mdbTooltip]="'Cerrar'"
+        class="btn btn-danger btn-floating mb-2 d-flex justify-content-center align-items-center"
+        style="width: 15px; height: 15px;"
+        (click)="estaBuscandoUsuarios=false">
+        <i class="fas fa-x fa-sm"></i>
+      </button>
+    </div>
+    <div class="alert alert-success py-2" role="alert" style="width: fit-content">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      <span>Para crear un instructor, primero debe buscar un usuario en el sistema</span>
+    </div>
+    <app-generic-search [service]="periodoEstudianteService"
+                        (usuarioEncontrados)="estudianteEncontrado($event)"
+                        (usuariosEncontrados)="estudiantesEncontrados($event)"
+    ></app-generic-search>
+    <hr class="hr">
+  </section>
+  <!-- Lista Usuarios -->
+  <section *ngIf="existenCoincidencias && estaBuscandoUsuarios && selectedItemPeriodo>0" class="mt-2">
+    <button
+      type="button"
+      class="btn btn-primary mb-2"
+      (click)="limpiarResultados()">
+      <i class="fa-solid fa-broom-ball"></i>&nbsp;&nbsp;Limpiar registros
+    </button>
+
+    <div class="my-4 row d-flex justify-content-center" *ngIf="usuarios.length > 0">
+      <div class="col-7">
+        <ul class="list-group list-group-light">
+          <li
+            *ngFor="let usuario1 of usuarios; let i = index"
+            class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-bold d-flex align-items-center gap-2">
+                <div class="span-number">{{ i + 1}}</div>
+                {{usuario1?.nombre}} {{usuario1?.apellido}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-id-card me-1"></i>
+                {{usuario1?.cedula}}
+              </div>
+              <div class="text-muted ms-4">
+                <i class="fa-solid fa-envelope me-1"></i>
+                {{usuario1?.correoPersonal}}
+              </div>
+            </div>
+            <button
+              class="btn btn-sm btn-rounded"
+              (click)="onAgregarItem(usuario1)">Asignar Estudiante
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="!existenCoincidencias" class="alert alert-danger my-3 py-1" role="alert">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      No se encontró ningún usuario con los datos ingresados
+    </div>
+    <hr class="hr">
+  </section>
+
+  <div class="row" *ngIf="selectedItemPeriodo>0">
+    <div *ngIf="listadoAsignacion.length === 0"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron estudiantes
+    </div>
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+      <form [formGroup]="formGroup">
+        <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable"
+               [dataSource]="listadoAsignacion" [pagination]="pagination">
+          <thead class="datatable-header">
+          <tr>
+            <th *ngFor="let header of headers" class="fw-bold fs-6">
+              {{ header.label | titlecase }}
+            </th>
+            <th class="text-center fw-bold fs-6">Acciones</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngIf="estaAgregandoItem">
+            <td>
+              {{ selectedItem?.cedula }}
+            </td>
+            <td>
+              <ng-container>
+                <div class="fw-bold">{{ selectedItem?.nombre }} {{ selectedItem?.apellido }}</div>
+                <div class="text-muted">{{ selectedItem?.correoPersonal }}</div>
+              </ng-container>
+            </td>
+            <td class="text-center">
+              <button
+                class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit" (click)="onGuardarCambios()" [disabled]="formGroup.invalid">
+                <i class="fa fa-check"></i>Agregar
+              </button>
+              <!-- Cancelar -->
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="this.estaAgregandoItem = false; selectedItem = defaultItem;">
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+
+          </tr>
+          <tr *ngFor="let item of table.data;">
+            <td>
+              {{ item?.cedula }}
+            </td>
+            <td>
+              <ng-container>
+                <div class="fw-bold">{{ item?.nombre }} {{ item?.apellido }}</div>
+                <div class="text-muted">{{ item?.correoPersonal }}</div>
+              </ng-container>
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="!estadoEditandoItem || codigoItemEditando !== item?.codPeriodoEstudiante">
+                <!--<button
+                  mdbTooltip="Editar datos del instructor" class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="estadoEditandoItem" (click)="OnEditarRegistroEstudiante(item)">
+                  <i class="fa fa-edit"></i>
+                </button>-->
+                <button
+                  mdbTooltip="Eliminar registro" class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="estadoEditandoItem" (click)="OnEliminarRegistro(item)">
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estadoEditandoItem && codigoItemEditando === item.codPeriodoEstudiante">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success" type="submit" (click)="onGuardarCambios()">
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="onCancelarEdicion()">
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </div>
+</div>

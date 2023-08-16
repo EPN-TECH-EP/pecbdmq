@@ -1,0 +1,267 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión de Materias</p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-8">
+    <button
+      id="btnAgregarFila"
+      class="btn btn-primary btn-sm mb-3"
+      [disabled]="estaEditando"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="estaEditando"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <hr/>
+
+    <div class="datatable table-editor mt-4">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          id="materiaTbl"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="materias"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="text-wrap"
+            >
+              {{ header | titlecase }}
+            </th>
+            <th scope="col">Acciones</th>
+          </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="registroNombre"
+                  name="nombre"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="materia.nombre"
+                  required
+                  #nombre="ngModel"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombre)"
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select mdbValidate id="codEjeMateriaEditar" class="mb-5" name="codEjeMateria"
+                            [(ngModel)]="materiaEditForm.codEjeMateria">
+                  <mdb-option
+                    *ngFor="let estudianteDto of ejeMateriaList" class="text-wrap"
+                    [label]="estudianteDto.nombreEjeMateria"
+                    [value]="estudianteDto.coddEjeMateria">
+                    <div class="fw-bold">{{ estudianteDto?.nombreEjeMateria }}</div>
+                  </mdb-option>
+                </mdb-select>
+              </mdb-form-control>
+
+              <!--<mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="registroTipoMateria"
+                  name="codEjeMateria"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="materia.codEjeMateria"
+                  required
+                  #codEjeMateria="ngModel"
+                  (change)="
+                      validacionUtil.onInputChange(
+                        $event,
+                        'catalogo',
+                        codEjeMateria
+                      )
+                    "
+                />
+              </mdb-form-control>-->
+            </td>
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbCheckbox
+                  name="esProyecto"
+                  #esProyecto="ngModel"
+                  class="form-check-input"
+                  type="checkbox"
+                  [(ngModel)]="materiaEditForm.esProyecto"
+                  id="esProyecto"/>
+              </mdb-form-control>
+            </td>
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                id="btnRegistrar"
+                type="submit"
+                (click)="crear(form.value); addRow = false;"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="añadir"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let materia of table.data; let index = index">
+            <td style="min-width: 50px">
+              <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
+                <div class="text-wrap">
+                  {{ materia.nombre }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="materiaEditForm.nombre"
+                    #nombre="ngModel"
+                    required
+                    (change)="
+                        validacionUtil.onInputChange($event, 'catalogo', nombre)
+                      "
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
+                <div class="text-wrap">
+                  {{ getEjeMateria(materia.codEjeMateria) }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
+                <mdb-form-control>
+                  <mdb-select id="codEjeMateria" class="mb-5" name="codEjeMateria" #codEjeMateria="ngModel"
+                              [(ngModel)]="materiaEditForm.codEjeMateria">
+                    <mdb-option
+                      *ngFor="let estudianteDto of ejeMateriaList" class="text-wrap"
+                      [label]="estudianteDto.nombreEjeMateria"
+                      [value]="estudianteDto.coddEjeMateria">
+                      <div class="fw-bold">{{ estudianteDto?.nombreEjeMateria }}</div>
+                    </mdb-option>
+                  </mdb-select>
+                </mdb-form-control>
+                <!--<mdb-form-control>
+                  <input
+                    mdbInput
+                    id="codEjeMateria"
+                    name="codEjeMateria"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="materiaEditForm.codEjeMateria"
+                    #codEjeMateria="ngModel"
+                    required
+                    (change)="
+                        validacionUtil.onInputChange(
+                          $event,
+                          'catalogo',
+                          codEjeMateria
+                        )
+                      "
+                  />
+                </mdb-form-control>-->
+              </ng-container>
+            </td>
+            <td style="min-width: 50px; max-width: 50px">
+              <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
+                <div class="text-wrap">
+                  {{ materia.esProyecto ? 'Si': 'No' }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
+                <mdb-form-control>
+                  <input
+                    mdbCheckbox
+                    name="esProyecto"
+                    #esProyecto="ngModel"
+                    class="form-check-input"
+                    type="checkbox"
+                    [(ngModel)]="materiaEditForm.esProyecto"
+                    id="esProyectoEdit"/>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container                *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria"              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(materia); estaEditando = true"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmarEliminar($event, materia.codMateria)"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoMateriaEditando === materia.codMateria">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(materia, form.value)"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+          (paginationChange)="onPaginationChange($event)"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </div>
+</div>

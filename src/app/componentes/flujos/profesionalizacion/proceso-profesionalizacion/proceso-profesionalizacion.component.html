@@ -2,20 +2,33 @@
   <p class="fs-4 fw-bolder">Proceso de Profesionalización</p>
 
   <div class="row row-cols-1 row-cols-md-4 g-4">
+
     <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
+      <a routerLink="/principal/profesionalizacion/pro-flujo" class="link-dark">
         <div class="card h-100 text-center hover-shadow border">
-          <i class="fa-solid fa-circle-plus fa-5x mt-5 text-success text-opacity-50"></i>
+          <i class="fa-solid fa-book-open  fa-5x mt-5 text-primary text-opacity-50"></i>
           <div class="card-body">
-            <h5 class="card-title">Creación Curso Especialización</h5>
-            <p class="card-text">Creación de cursos</p>
+            <h5 class="card-title">Flujo</h5>
+            <p class="card-text">Flujo</p>
           </div>
         </div>
       </a>
     </div>
 
     <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
+      <a routerLink="/principal/profesionalizacion/periodo" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-clipboard fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión de Cohortes</h5>
+            <p class="card-text">Gestión de cohortes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/convocatoria" class="link-dark">
         <div class="card h-100 text-center hover-shadow border">
           <i class="fa-solid fa-bullhorn fa-5x mt-5 text-warning text-opacity-50"></i>
           <div class="card-body">
@@ -27,64 +40,292 @@
     </div>
 
     <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
-        <div class="card h-100 text-center hover-shadow border">
-          <i class="fa-solid fa-address-card fa-5x mt-5 text-primary text-opacity-50"></i>
-          <div class="card-body">
-            <h5 class="card-title">Inscripción</h5>
-            <p class="card-text">Proceso de inscripciones</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
-        <div class="card h-100 text-center hover-shadow border">
-          <i class="fa-solid fa-square-check fa-5x mt-5 text-success text-opacity-50"></i>
-          <div class="card-body">
-            <h5 class="card-title">Validación Requisitos</h5>
-            <p class="card-text">Validación de requisitos</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
-        <div class="card h-100 text-center hover-shadow border">
-          <i class="fa-solid fa-spell-check fa-5x mt-5 text-primary text-opacity-50"></i>
-          <div class="card-body">
-            <h5 class="card-title">Pruebas</h5>
-            <p class="card-text">Pruebas</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
-        <div class="card h-100 text-center hover-shadow border">
-          <i class="fa-solid fa-clipboard fa-5x mt-5 text-primary text-opacity-50"></i>
-          <div class="card-body">
-            <h5 class="card-title">Gestión de Curso</h5>
-            <p class="card-text">Gestión de cursos</p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col">
-      <a routerLink="/principal/admin/usuarios" class="link-dark">
+      <a routerLink="/principal/profesionalizacion/pro-delegados" class="link-dark">
         <div class="card h-100 text-center hover-shadow border">
           <i class="fa-solid fa-graduation-cap fa-5x mt-5 text-success text-opacity-50"></i>
           <div class="card-body">
-            <h5 class="card-title">Encuesta de Satisfacción</h5>
-            <p class="card-text">Encuestas de satisfacción</p>
+            <h5 class="card-title">Gestión Delegados</h5>
+            <p class="card-text">Gestión delegados</p>
           </div>
         </div>
       </a>
     </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-inscripcion-delegado" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book-open-reader fa-5x mt-5 text-warning text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Delegados</h5>
+            <p class="card-text">Asignación de delegados a inscripciones</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-listado-inscripcion-delegado" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-square-check fa-5x mt-5 text-success text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Listado Validación Requisitos</h5>
+            <p class="card-text">Validación de requisitos por delegados</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/tipo-proyecto" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-list-alt   fa-5x mt-5 text-success text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Tipo Proyecto</h5>
+            <p class="card-text">Gestión Tipo Proyecto</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-proyecto" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-square-check fa-5x mt-5 text-success text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Proyecto </h5>
+            <p class="card-text">Gestión Proyecto </p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+   <!-- <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-etapas" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-server fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión de Etapas</h5>
+            <p class="card-text">Gestión de Etapas</p>
+          </div>
+        </div>
+      </a>
+    </div>-->
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/academia/instructores" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-address-card  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Instructores</h5>
+            <p class="card-text">Gestión de instructores</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/paralelo" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-sitemap  fa-5x mt-5 text-warning text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Paralelos</h5>
+            <p class="card-text">Gestión de paralelos</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/semestre" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-tasks  fa-5x mt-5 text-success text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Nivel</h5>
+            <p class="card-text">Gestión de Nivel</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/materia" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-folder  fa-5x mt-5 text-success text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestión Materias</h5>
+            <p class="card-text">Gestión de materias</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-periodo-semestre" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-school-circle-check  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Nivel Cohorte</h5>
+            <p class="card-text">Asignación de niveles a cohorte</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/materia-semestre" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-table  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Materia Nivel</h5>
+            <p class="card-text">Asignación de materias a nivel</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-paralelo-materiare" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-chalkboard  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Paralelo y Proyectos Materia</h5>
+            <p class="card-text">Asignación de paralelos y proyectos a materia</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-periodo-estudiante" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book-bookmark  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Estudiantes Cohorte</h5>
+            <p class="card-text">Asignación de estudiantes a cohorte</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-estudiantes-paralelo" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Estudiantes Paralelo/Proyectos</h5>
+            <p class="card-text">Asignación de estudiantes a paralelo y proyectos</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-paralelo-instructor" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-chalkboard-teacher  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Asignación Instructor Paralelo/Proyecto</h5>
+            <p class="card-text">Asignación de instructores a paralelos y proyectos</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/nota-materia" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-cubes  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Registro Notas</h5>
+            <p class="card-text">Registro notas por materia/paralelo</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <!--<div class="col">
+      <a routerLink="/principal/profesionalizacion/nota-final" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book-open  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Registro Notas Finales</h5>
+            <p class="card-text">Registro de notas finales de estudiantes</p>
+          </div>
+        </div>
+      </a>
+    </div>-->
+
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/reportes/rep-periodo-semestre-materia" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book-open  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Reporte Materia por Nivel/Cohorte</h5>
+            <p class="card-text">Reporte materia por nivel/cohorte</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col">
+      <a routerLink="/principal/profesionalizacion/reportes/rep-notas" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-book-open  fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Reporte Notas</h5>
+            <p class="card-text">Reporte notas</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+
+
+
+
+<!--    <div class="col">
+      <a routerLink="/principal/profesionalizacion/pro-proyecto" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-cubes   fa-5x mt-5 text-primary text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestion Proyecto</h5>
+            <p class="card-text">Gestion Proyecto</p>
+          </div>
+        </div>
+      </a>
+    </div>-->
+
+<!--    <div class="col">
+      <a routerLink="/principal/profesionalizacion/estudiante-semestre-materia-paralelo" class="link-dark">
+        <div class="card h-100 text-center hover-shadow border">
+          <i class="fa-solid fa-users    fa-5x mt-5 text-warning text-opacity-50"></i>
+          <div class="card-body">
+            <h5 class="card-title">Gestion Estudiante Paralelo</h5>
+            <p class="card-text">Gestion Estudiante Paralelo</p>
+          </div>
+        </div>
+      </a>
+    </div>-->
+
+
+
   </div>
+
+
+
+<!--  <ul class="mt-3">
+    <li><a routerLink="/principal/profesionalizacion/materia">Materias</a></li>
+    <li><a routerLink="/principal/profesionalizacion/academia/instructores">Instructores</a></li>
+    <li><a routerLink="/principal/profesionalizacion/paralelo">Paralelo</a></li>
+    <li><a routerLink="/principal/profesionalizacion/semestre">Semestre</a></li>
+    <li><a routerLink="/principal/profesionalizacion/materia-semestre">Materia Semestre</a></li>
+    <li><a routerLink="/principal/profesionalizacion/estudiante-semestre">Estudiante Semestre</a></li>
+    <li><a routerLink="/principal/profesionalizacion/tipo-proyecto">Tipo Proyecto</a></li>
+    <li><a routerLink="/principal/profesionalizacion/pro-proyecto">Proyecto</a></li>
+    <li><a routerLink="/principal/profesionalizacion/estudiante-semestre-materia-paralelo">Estudiante Paralelo</a></li>
+    <li><a routerLink="/principal/profesionalizacion/pro-delegados">Delegados</a></li>
+    <li><a routerLink="/principal/profesionalizacion/inscripcion">Inscripcion</a></li>
+  </ul>
+  </ul>-->
 
 </div>

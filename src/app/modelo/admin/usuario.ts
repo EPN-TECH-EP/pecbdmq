@@ -4,6 +4,7 @@ import { DatoPersonal } from './dato-personal';
 @Injectable()
 export class Usuario {
   public codUsuario: number;
+  public codEstudiante?: number;
   public codModulo: string;
   //public nombres: string;
   //public apellidos: string;

@@ -1,0 +1,264 @@
+<ng-container *ngIf="showServicioNoDisponible">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Proceso de inscripción no activo</h5>
+      <p class="card-text">El proceso de inscripciones no se encuentra activo.</p>
+    </div>
+  </div>
+</ng-container>
+<!-- Formulario de inscripción-->
+<div
+  class="container"
+  xmlns="http://www.w3.org/1999/html"
+  *ngIf="!showServicioNoDisponible">
+  <div class="row mt-3">
+    <div class="column col-3">
+      <img src="assets/logo-bomberos.svg" alt=""/>
+    </div>
+    <div class="column col-9 text-end">
+      <h4 class="ms-5">
+        <i class="fa-solid fa-user-graduate"></i>
+        Plataforma Educativa
+      </h4>
+    </div>
+  </div>
+
+  <hr class="hr hr-blurry"/>
+
+  <div class="row">
+    <div class="column text-center">
+      <h4>Formulario de inscripción para Profesionalización</h4>
+      <p class="fw-bold">Fecha de postulación: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="formularioInscripcion">
+    <!---------------------------->
+    <!-- Definición formGroup-->
+    <!---------------------------->
+    <div>
+      <!-- Datos iniciales -->
+
+      <div class="row">
+        <div class="col-md"><h5>Datos iniciales:</h5></div>
+        <div class="col-md"><p class="text-primary"></p></div>
+      </div>
+
+      <!-- Sección de errores -->
+      <div class="alert alert-warning" role="alert" *ngIf="cedulaField?.invalid && cedulaField?.touched">
+        <div *ngIf="cedulaField?.hasError('invalid_numbers') || cedulaField?.hasError('required')">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Campo Cédula es requerido y solo acepta números
+        </div>
+        <div
+          *ngIf="
+                cedulaField?.hasError('invalid_identification') &&
+                !cedulaField?.hasError('invalid_numbers') &&
+                !cedulaField?.hasError('required')
+              "
+          class="mb-2">
+          <i class="fas fa-exclamation-circle mb-1"></i>
+          Cédula inválida
+        </div>
+      </div>
+
+      <!-- FIN Sección de errores -->
+
+      <div class="container">
+        <div class="row">
+          <!-- Columna 1 -->
+          <div class="col-md">
+            <!-- Cédula -->
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                id="cedula"
+                type="text"
+                class="form-control mb-3"
+                formControlName="cedula"
+                [maxlength]="10"/>
+              <label mdbLabel class="form-label mb-2x" for="cedula">
+                <span class="text-primary">*</span>
+                Cédula</label
+              >
+            </mdb-form-control>
+            <!-- Apellidos -->
+            <mdb-form-control>
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="apellidos"
+                class="form-control mb-3"
+                formControlName="apellidos"/>
+              <label mdbLabel class="form-label mb-2x" for="apellidos">
+                <span class="text-primary">*</span>
+                Apellidos</label
+              >
+              <mdb-error *ngIf="apellidosField?.invalid && (apellidosField?.dirty || apellidosField?.touched)">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido y solo acepta letras
+              </mdb-error>
+              <mdb-success *ngIf="apellidosField?.valid && (apellidosField?.dirty || apellidosField?.touched)">
+              </mdb-success>
+            </mdb-form-control>
+            <!-- Nombres -->
+            <mdb-form-control>
+              <input
+                mdbValidate
+                mdbInput
+                type="text"
+                id="nombres"
+                class="form-control mb-3"
+                formControlName="nombres"/>
+              <label mdbLabel class="form-label mb-2x" for="nombres">
+                <span class="text-primary">*</span>
+                Nombres</label
+              >
+              <mdb-error *ngIf="nombresField?.invalid && (nombresField?.dirty || nombresField?.touched)">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido y solo acepta letras
+              </mdb-error>
+              <mdb-success *ngIf="nombresField?.valid && (nombresField?.dirty || nombresField?.touched)">
+              </mdb-success>
+            </mdb-form-control>
+          </div>
+          <!-- Columna 2 -->
+          <div class="col-md">
+            <!-- Email -->
+            <mdb-form-control>
+              <input
+                mdbValidate
+                mdbInput
+                type="email"
+                id="email"
+                class="form-control mb-3"
+                formControlName="email"/>
+              <label mdbLabel class="form-label mb-2x" for="email"> <span class="text-primary">*</span>
+                Email</label>
+              <mdb-error *ngIf="emailField?.invalid && (emailField?.dirty || emailField?.touched)">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </mdb-error>
+              <mdb-success *ngIf="emailField?.valid && (emailField?.dirty || emailField?.touched)"></mdb-success>
+            </mdb-form-control>
+
+            <!-- Fecha de nacimiento -->
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                [mdbDatepicker]="dpFechaNacimiento"
+                type="text"
+                id="fechaNacimiento"
+                class="form-control mb-3"
+                formControlName="fechaNacimiento"
+                (click)="cedulaValida ? dpFechaNacimiento.open() : null"
+              />
+              <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">
+                <span class="text-primary">*</span>
+                Fecha de nacimiento:</label
+              >
+              <mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaNacimiento"
+                (click)="fechaNacimientoField.markAsTouched()"
+                [disabled]="existenDatosCiudadano"></mdb-datepicker-toggle>
+              <mdb-datepicker
+                #dpFechaNacimiento="mdbDatepicker"
+                [options]="translationOptions"
+                [inline]="true"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+                [startDate]="maxDate"></mdb-datepicker>
+              <mdb-error *ngIf="fechaNacimientoField?.invalid && fechaNacimientoField?.touched">
+                <div *ngIf="fechaNacimientoField?.hasError('required')">
+                  <i class="fas fa-exclamation-circle mb-1"></i>
+                  Este campo es requerido
+                </div>
+                <!-- <div *ngIf="fechaNacimientoField?.hasError('invalid_age')">
+                  <i class="fas fa-exclamation-circle mb-1"></i>
+                  La edad requerida es entre 18 y 28 años
+                </div> -->
+              </mdb-error>
+              <mdb-success *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched"></mdb-success>
+            </mdb-form-control>
+          </div>
+        </div>
+      </div>
+
+      <hr class="hr hr-blurry"/>
+
+      <!-- Carga de documentos -->
+      <h5>Carga de expediente:</h5>
+      <div class="alert alert-info" role="alert">
+        <p>Indicaciones: Subir el expediente en un solo archivo, en formato pdf, que incluya:</p>
+        <ul class="list-unstyled">
+          <li *ngFor="let req of requisitos; let index = index" class="mb-1">
+            <i class="fas fa-check-circle me-2 text-success"></i>{{index + 1}}. {{req.nombreRequisito}}
+            <!-- TODO implement from name -->
+          </li>
+        </ul>
+      </div>
+      <div class="container">
+        <div class="row">
+          <!-- Columna 1 -->
+          <div class="col-md">
+            <h5><span class="text-primary">*</span>
+              Documentos soporte:</h5>
+            <!-- Documentos de soporte -->
+            <mdb-form-control>
+              <input
+                mdbInput
+                mdbValidate
+                type="file"
+                accept="application/pdf"
+                class="form-control"
+                id="customFile"
+                formControlName="docSoporte"
+                (change)="subirArchivo($event)"/>
+              <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
+                <i class="fas fa-exclamation-circle mb-1"></i>
+                Este campo es requerido
+              </mdb-error>
+              <mdb-success *ngIf="docSoporteField?.valid && docSoporteField?.touched"></mdb-success>
+            </mdb-form-control>
+          </div>
+          <!-- Columna 2 -->
+          <div class="col-md"></div>
+          <!-- Columna 3 -->
+          <div class="col-md"></div>
+        </div>
+      </div>
+
+      <!-- Botón siguiente -->
+      <div class="row m-3">
+        <div class="column text-center">
+          <button
+            id="next-step"
+            (click)="onSubmit($event)"
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!formularioInscripcion.valid || showLoading"
+          >
+                <span
+                  *ngIf="showLoading"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"></span>
+            <span *ngIf="showLoading">Espere...</span>
+            <span *ngIf="!showLoading">Inscribirse</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<ng-component>
+  <mdb-loading [show]="showLoadingFull" [fullscreen]="true">
+    <div class="loading-spinner bg-light">
+      <div class="spinner-border loading-icon" role="status"></div>
+      <span class="loading-text">Espere...</span>
+    </div>
+  </mdb-loading>
+</ng-component>

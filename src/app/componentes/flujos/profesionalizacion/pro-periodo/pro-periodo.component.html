@@ -1,0 +1,267 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión de Cohorte</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-10">
+    <button
+      class="btn btn-primary btn-sm mb-3"
+      id="btnAgregarFila"
+      [disabled]="editElementIndex !== -1"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
+
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="editElementIndex !== -1"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+
+    <hr>
+
+    <div class="datatable table-editor mt-3 datatable-striped datatable-hover datatable-sm">
+      <form #form="ngForm">
+        <table
+          class="table table-sm datatable-table"
+          id="tblPeriodo"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="periodos"
+        >
+          <thead class="datatable-header">
+          <tr>
+
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              class="fw-bold"
+            >
+              <b class="text-start"> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="periodoRegistro"
+                  name="nombrePeriodo"
+                  class="form-control"
+                  [(ngModel)]="periodo.nombrePeriodo"
+                  required
+                  #periodoRegistro="ngModel"
+                  type="text"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', periodoRegistro)"
+                />
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <mdb-form-control>
+
+                <input
+                  mdbInput="mdbInput"
+                  id="fechaInicioRegistro"
+                  name="fechaInicio"
+                  class="form-control"
+                  [mdbDatepicker]="dpFechaNacimiento"
+                  [(ngModel)]="periodo.fechaInicio"
+                  required
+                  #fechaInicioRegistro="ngModel"
+                  type="date"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', fechaInicioRegistro)"
+                />
+              </mdb-form-control>
+
+              <!--<mdb-datepicker-toggle
+                [mdbDatepicker]="dpFechaNacimiento"
+                (click)="fechaInicio.markAsTouched()"></mdb-datepicker-toggle>-->
+              <mdb-datepicker
+                #dpFechaNacimiento="mdbDatepicker"
+                [options]=""
+                [inline]="true"
+                [minDate]=""
+                [maxDate]=""
+                [startDate]=""></mdb-datepicker>
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  id="fechaFinRegistro"
+                  name="fechaFin"
+                  class="form-control"
+                  [(ngModel)]="periodo.fechaFin"
+                  required
+                  #fechaFinRegistro="ngModel"
+                  type="date"
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', fechaFinRegistro)"
+                />
+              </mdb-form-control>
+            </td>
+
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                id="btnRegistrar"
+                type="submit"
+                (click)="registro(form.value); addRow = false;"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let periodo of table.data; let index = index">
+            <td style="min-width: 10px; max-width: 10px">
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.nombrePeriodo }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="periodoActualizar"
+                    name="nombrePeriodo"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="periodoEditForm.nombrePeriodo"
+                    required
+                    #periodoActualizar="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', periodoActualizar)"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.fechaInicio | date:'dd-MM-yyyy' }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index"> <!-- TODO fix load date from object -->
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    [mdbDatepicker]="datepickerInicio"
+                    type="text"
+                    class="form-control"
+                    id="fechaInicio"
+                    name="fechaInicio"
+                    [(ngModel)]="periodoEditForm.fechaInicio"
+                    [value]="periodo.fechaInicio | date:'dd-MM-yyy'"
+                    #fechaInicioActualizar="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', fechaInicioActualizar)"
+                  />
+                  <label mdbLabel for="fechaInicio" class="form-label">Fecha de inicio del periodo</label>
+                  <mdb-datepicker-toggle
+                    [mdbDatepicker]="datepickerInicio"
+                  ></mdb-datepicker-toggle>
+                  <mdb-datepicker
+                    [inline]="true"
+                    #datepickerInicio="mdbDatepicker"
+                    [options]="opcionesDatepicker"
+                  ></mdb-datepicker>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ periodo.fechaFin | date:'dd-MM-yyyy' }}
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    [mdbDatepicker]="datepickerFin"
+                    type="text"
+                    class="form-control"
+                    id="fechaFin"
+                    name="fechaFin"
+                    [(ngModel)]="periodoEditForm.fechaFin"
+                    [value]="periodo.fechaFin | date:'dd-MM-yyy'"
+                    required
+                    #fechaFinActualizar="ngModel"
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', fechaFinActualizar)"
+                  />
+                  <label mdbLabel for="fechaFin" class="form-label">Fecha de fin del periodo</label>
+                  <mdb-datepicker-toggle [mdbDatepicker]="datepickerFin"></mdb-datepicker-toggle>
+                  <mdb-datepicker [inline]="true" #datepickerFin></mdb-datepicker>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td class="text-center">
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(index)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmarEliminar($event,periodo.codigoPeriodo)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(periodo, form.value);"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+

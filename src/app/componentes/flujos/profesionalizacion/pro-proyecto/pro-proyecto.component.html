@@ -1,0 +1,205 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Gestión de Proyectos</p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-8">
+    <button
+      id="btnAgregarFila"
+      class="btn btn-primary btn-sm mb-3"
+      [disabled]="estaEditando"
+      (click)="addRow = true"
+    >
+      <i class="fa fa-plus"></i> &nbsp;Agregar
+    </button>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        [disabled]="estaEditando"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <hr/>
+
+    <div class="datatable table-editor mt-4">
+      <form [formGroup]="formGroup">
+        <table
+          class="table table-sm datatable-table"
+          id="proyectoTbl"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="proyectos"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="text-wrap"
+            >
+              {{ header | titlecase }}
+            </th>
+            <th scope="col">Acciones</th>
+          </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  formControlName="nombreCatalogo"
+                  mdbInput="mdbInput"
+                  id="nombreCatalogo"
+                  name="nombreCatalogo"
+                  type="text"
+                  class="form-control"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select mdbValidate id="codigo" formControlName="codigoTipoProyecto" class="mb-5">
+                  <mdb-option
+                    *ngFor="let itemTipoProyecto of tipoProyectoList" class="text-wrap"
+                    [label]="itemTipoProyecto.nombreTipo"
+                    [value]="itemTipoProyecto.codigo">
+                    {{ itemTipoProyecto.nombreTipo }}
+                  </mdb-option>
+                </mdb-select>
+                <!--                <mdb-error *ngIf="codigoFrm?.touched || codigoFrm?.dirty">-->
+                <!--                  <span *ngIf="codigoFrm?.hasError('required')">-->
+                <!--                    <i class="fa-solid fa-circle-exclamation me-1"></i>-->
+                <!--                    Este campo es requerido-->
+                <!--                  </span>-->
+                <!--                </mdb-error>-->
+              </mdb-form-control>
+            </td>
+            <td>
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                id="btnRegistrar"
+                type="submit"
+                (click)="crear(); addRow = false;"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="añadir"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="onCancel()"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let proyecto of table.data; let index = index">
+            <td style="min-width: 50px">
+              <ng-container *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo">
+                <div class="text-wrap">
+                  {{ proyecto.nombreCatalogo }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoProyectoEditando === proyecto.codigo">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    formControlName="nombreCatalogo"
+                    id="nombreCatalogoedit"
+                    name="nombreCatalogo"
+                    type="text"
+                    class="form-control"
+                    required
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <ng-container *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo">
+                <div class="text-wrap">
+                  {{ getProyectLabel(proyecto.codigoTipoProyecto) }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoProyectoEditando === proyecto.codigo">
+                <mdb-form-control>
+                  <mdb-select mdbValidate id="codigoEdit" formControlName="codigoTipoProyecto" class="mb-5">
+                    <mdb-option
+                      *ngFor="let itemTipoProyecto of tipoProyectoList" class="text-wrap"
+                      [label]="itemTipoProyecto.nombreTipo"
+                      [value]="itemTipoProyecto.codigo">
+                      {{ itemTipoProyecto.nombreTipo }}
+                    </mdb-option>
+                  </mdb-select>
+                  <!--                <mdb-error *ngIf="codigoFrm?.touched || codigoFrm?.dirty">-->
+                  <!--                  <span *ngIf="codigoFrm?.hasError('required')">-->
+                  <!--                    <i class="fa-solid fa-circle-exclamation me-1"></i>-->
+                  <!--                    Este campo es requerido-->
+                  <!--                  </span>-->
+                  <!--                </mdb-error>-->
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <ng-container
+                *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo"
+              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(proyecto); estaEditando = true"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmarEliminar($event, proyecto.codigo)"
+                  [disabled]="estaEditando"
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoProyectoEditando === proyecto.codigo">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(proyecto, formGroup.value)"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+          (paginationChange)="onPaginationChange($event)"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </div>
+</div>

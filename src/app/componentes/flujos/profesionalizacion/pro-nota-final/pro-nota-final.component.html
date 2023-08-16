@@ -1,0 +1,121 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Asignación de notas Finales</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 m-3">
+      <div class="row">
+        <div class="col-md-8 mt-2">
+          <div class="container">
+            <div class="col-md-6">
+              <label for="periodoSelect">Seleccione un Cohorte</label>
+              <mdb-select id="periodoSelect" [(ngModel)]="selectedPeriodo" (ngModelChange)="onSelectChange()">
+                <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
+                  {{ item.nombrePeriodo }}
+                </mdb-option>
+              </mdb-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 mt-2">
+          <div class="container">
+            <div class="col-md-6">
+              <label for="semestreSelect">Seleccione un nivel</label>
+              <mdb-select id="semestreSelect" [(ngModel)]="selectedPeriodoSemestre"
+                          (ngModelChange)="onSelectSemestreChange()">
+                <mdb-option *ngFor="let item of selectedListSemestres" [value]="item">
+                  {{ item.nombreSemestre }}
+                </mdb-option>
+              </mdb-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngIf="notasForm.length === 0; else notasListContainer"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron estudiantes asignados
+    </div>
+    <ng-template #notasListContainer>
+      <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+        <table
+          mdbTable
+          mdbTableSort
+          #notasTable="mdbTable"
+          [dataSource]="notasForm">
+          <thead>
+          <tr>
+            <th>Cod.</th>
+            <th>Estudiante</th>
+            <th>Nota Parcial 1</th>
+            <th>Nota Parcial 2</th>
+            <th>Nota Práctica</th>
+            <th>Nota Asistencia</th>
+            <th>Nota Final</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let notaForm of notasTable.data; let i = index">
+            <tr [formGroup]="notaForm">
+              <td>{{ notaForm?.get('codEstudiante')?.value }}</td>
+              <td>{{ notaForm?.get('nombreLabel')?.value }}</td>
+              <td>
+                <input type="number" min="0" formControlName="notaParcial1" class="form-control">
+              </td>
+              <td>
+                <mdb-form-control>
+                  <input mdbInput type="number" min="0" formControlName="notaParcial2" class="form-control">
+                </mdb-form-control>
+              </td>
+              <td>
+                <mdb-form-control>
+                  <input mdbInput type="number" min="0" formControlName="notaPractica" class="form-control">
+                </mdb-form-control>
+              </td>
+              <td>
+                <mdb-form-control>
+                  <input mdbInput type="number" min="0" formControlName="notaAsistencia" class="form-control">
+                </mdb-form-control>
+              </td>
+              <td>
+                <mdb-form-control>
+                  <input mdbInput type="number" min="0" formControlName="notaFinal" class="form-control">
+                </mdb-form-control>
+              </td>
+            </tr>
+          </ng-container>
+
+          </tbody>
+        </table>
+        <button
+          id="next-step"
+          (click)="loadModifiedNotas()"
+          type="submit"
+          class="btn btn-primary float-end"
+          [disabled]="showLoading"
+        >
+                <span
+                  *ngIf="showLoading"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"></span>
+          <span *ngIf="showLoading">Espere...</span>
+          <span *ngIf="!showLoading">Cargar Notas</span>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+
+</div>

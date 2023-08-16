@@ -1,0 +1,199 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+    <div class="column text-center">
+        <p class="fs-4 fw-bolder">Asignación instructor a {{tipoMateriaLabel}}</p>
+    </div>
+</div>
+<mdb-tabs (activeTabChange)="changeType($event)">
+  <mdb-tab title="Materias"></mdb-tab>
+  <mdb-tab title="Proyectos"></mdb-tab>
+</mdb-tabs>
+<div class="container" *ngIf="shouldRender">
+    <div class="row justify-content-center">
+        <div class="col-12 m-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <label for="periodoSelect">Seleccione un Cohorte</label>
+                            <mdb-select id="periodoSelect" [(ngModel)]="seletedItemPeriodo" (ngModelChange)="onSelectChange($event)">
+                                <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
+                                    {{ item.nombrePeriodo }}
+                                </mdb-option>
+                            </mdb-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <label for="semestreSelect">Seleccione un nivel</label>
+                            <mdb-select id="semestreSelect" [(ngModel)]="seletedItemSemestre"
+                                        (ngModelChange)="onSelectChangeMateriaSemestre($event)">
+                                <mdb-option *ngFor="let item of selectedListSemestres" [value]="item.codPeriodoSemestre">
+                                    {{ item.nombreSemestre }}
+                                </mdb-option>
+                            </mdb-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <label for="materiaSelect">Seleccione {{isMateria ? 'una' : 'una Materia tipo'}} {{tipoMateriaLabel}}</label>
+                            <mdb-select id="materiaSelect" [(ngModel)]="seletedItemMateria"
+                                        (ngModelChange)="onSelectChangeMateriaParalelo($event)">
+                                <mdb-option *ngFor="let item of selectedListMaterias" [value]="item">
+                                    {{ item.nombreMateria}}
+                                </mdb-option>
+                            </mdb-select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <label for="paraleloSelect">Seleccione un {{isMateria ? 'Paralelo' : 'Tema de Proyecto'}}</label>
+                            <mdb-select id="paraleloSelect" [(ngModel)]="seletedItemParalelo"
+                                        (ngModelChange)="onSelectChangeParaleloInstructor($event)">
+                                <mdb-option *ngFor="let item of selectedListParalelo" [value]="item.codSemestreMateriaParalelo">
+                                  {{ item.nombreParalelo}} {{item.nombreProyecto}}
+                                </mdb-option>
+                            </mdb-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-10">.
+                <button class="btn btn-primary mb-1" (click)="onAgregarItem()" *ngIf="listadoAsignacion.length<1 && seletedItemParalelo != null">
+                    <i class="fa-solid fa-circle-plus me-2"></i>
+                    Asignar Instructor
+                </button>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div *ngIf="listadoAsignacion.length === 0"
+                 class="alert alert-info" role="alert">
+                <i class="fa-solid fa-info-circle me-2"></i>
+                No se encontraron instructores
+            </div>
+            <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+                <form [formGroup]="formGroup">
+                    <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable"
+                           [dataSource]="listadoAsignacion" [pagination]="pagination">
+                        <thead class="datatable-header">
+                        <tr>
+                            <th *ngFor="let header of headers" class="fw-bold fs-6">
+                                {{ header.label | titlecase }}
+                            </th>
+                            <th class="text-center fw-bold fs-6">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody class="datatable-body">
+                        <tr *ngIf="estaAgregandoItem">
+                            <td>
+                                <mdb-form-control>
+                                    <mdb-select mdbValidate id="codInstructor" formControlName="codInstructor" class="mb-5">
+                                        <mdb-option
+                                                *ngFor="let itemInstructor of instructorList" class="text-wrap"
+                                                [label]="itemInstructor.nombre + ' ' + itemInstructor.apellido"
+                                                [value]="itemInstructor.codInstructor">
+                                            {{ itemInstructor.nombre }} {{ itemInstructor.apellido }}
+                                        </mdb-option>
+                                    </mdb-select>
+                                    <mdb-error *ngIf="codInstructor?.touched || codInstructor?.dirty">
+                                          <span *ngIf="codInstructor?.hasError('required')">
+                                            <i class="fa-solid fa-circle-exclamation me-1"></i>
+                                            Este campo es requerido
+                                          </span>
+                                    </mdb-error>
+                                </mdb-form-control>
+                            </td>
+
+                            <td class="text-center">
+                                <button
+                                        class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                                        type="submit" (click)="onGuardarCambios()" [disabled]="formGroup.invalid">
+                                    <i class="fa fa-check"></i>Agregar
+                                </button>
+                                <!-- Cancelar -->
+                                <button
+                                        class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                                        (click)="this.estaAgregandoItem = false; selectedItem = defaultParaleloInsructor;">
+                                    <i class="fa fa-ban"></i> Cancelar
+                                </button>
+                            </td>
+
+                        </tr>
+                        <tr *ngFor="let item of table.data;">
+                            <td>
+                                <ng-container *ngIf="!estaEditandoItem || item?.codPeriodoSemestreMateriaParaleloInstructor!== codigoItemEditando">
+                                    {{ item?.nombre + " " +item?.apellido}}
+                                </ng-container>
+                                <ng-container *ngIf="estaEditandoItem && item?.codPeriodoSemestreMateriaParaleloInstructor === codigoItemEditando">
+                                    <mdb-form-control>
+                                        <mdb-select mdbValidate id="codInstructorEditar" formControlName="codInstructor" class="mb-5">
+                                            <mdb-option
+                                                    *ngFor="let itemInstructor of instructorList" class="text-wrap"
+                                                    [label]="itemInstructor.nombre + ' ' + itemInstructor.apellido"
+                                                    [value]="itemInstructor.codInstructor">
+                                              {{ itemInstructor.nombre }} {{ itemInstructor.apellido }}
+                                            </mdb-option>
+                                        </mdb-select>
+                                        <mdb-error *ngIf="codInstructor?.touched || codInstructor?.dirty">
+                                                  <span *ngIf="codInstructor?.hasError('required')">
+                                                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                                                    Este campo es requerido
+                                                  </span>
+                                        </mdb-error>
+                                    </mdb-form-control>
+                                </ng-container>
+                            </td>
+
+                            <td class="text-center">
+                                <ng-container *ngIf="!estaEditandoItem || codigoItemEditando !== item?.codPeriodoSemestreMateriaParaleloInstructor">
+                                    <button
+                                            mdbTooltip="Editar datos del instructor" class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                                            [disabled]="estaEditandoItem" (click)="onEditarRegistroInstructor(item)">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button
+                                            mdbTooltip="Eliminar registro" class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                                            [disabled]="estaEditandoItem" (click)="onEliminarRegistro(item)">
+                                        <i class="fa fa-trash-alt"></i>
+                                    </button>
+                                </ng-container>
+                                <ng-container *ngIf="estaEditandoItem && codigoItemEditando === item.codPeriodoSemestreMateriaParaleloInstructor">
+                                    <button
+                                            class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success" type="submit" (click)="onGuardarCambios()">
+                                        <i class="fa fa-check"></i> Guardar
+                                    </button>
+                                    <button
+                                            class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="onCancelarEdicion()">
+                                        <i class="fa fa-ban"></i> Cancelar
+                                    </button>
+                                </ng-container>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <mdb-table-pagination
+                        #pagination
+                        [entries]="10"
+                        [rowsPerPageText]="'Registros por página'"
+                    ></mdb-table-pagination>
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
