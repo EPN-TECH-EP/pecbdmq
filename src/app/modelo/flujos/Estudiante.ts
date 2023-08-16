@@ -9,6 +9,7 @@ export interface Estudiante {
   correo: string;
   telefono: string;
   codDatosPersonales: number;
+  codUnicoEstudiante?: string;
   codUsuario: number;
   paralelo?: Paralelo;
 }

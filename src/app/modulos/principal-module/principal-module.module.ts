@@ -205,6 +205,7 @@ import {
   MenuCalculoNotaFinalComponent
 } from "../../componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component";
 import {EditarCursoComponent} from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
+import { UtilModule } from '../../componentes/util/util.module';
 
 
 const routes: Routes = [
@@ -336,10 +337,10 @@ const routes: Routes = [
     //MenuFormacionComponent,
     //MenuAdminComponent,
     //MenuItemComponent,
-    BotonVolverComponent,
+    //BotonVolverComponent,
   ],
-  imports: [RouterModule.forChild(routes), CommonModule],
-  exports: [RouterModule, BotonVolverComponent],
+  imports: [RouterModule.forChild(routes), CommonModule, UtilModule],
+  exports: [RouterModule],
   providers: [MdbPopconfirmService, CambiosPendientesGuard, LocalDataService],
 })
 export class PrincipalModuleModule {

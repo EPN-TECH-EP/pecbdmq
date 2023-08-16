@@ -6,6 +6,9 @@ export class Semestre {
   public codSemestre: number;
   public semestre: string;
   public estado: string;
+  public descripcion?: string;
+  public fechaInicioSemestre?: Date;
+  public fechaFinSemestre?: Date;
 
   // constructor($codSemestre: number,  $semestre: string, $estado: string) {
 	// 	this.codSemestre = $codSemestre;
