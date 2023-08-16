@@ -828,6 +828,14 @@
                 <i class="fas fa-check-circle me-2 text-success"></i>
                 {{ requisito.nombre }}
               </li>
+              <li class="mb-1" *ngIf="hayMeritoAcademico">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ 'Respaldo del mérito académico' | uppercase }}
+              </li>
+              <li class="mb-1" *ngIf="hayMeritoDeportivo">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ 'Respaldo del mérito deportivo' | uppercase }}
+              </li>
             </ul>
           </div>
           <div class="container">
