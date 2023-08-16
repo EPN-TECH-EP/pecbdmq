@@ -27,6 +27,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FORMACION } from 'src/app/util/constantes/fomacion.const';
 import { ThisReceiver } from '@angular/compiler';
 import { debounceTime } from 'rxjs/operators';
+import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
+import { ValidacionRequisito } from "../../../../modelo/flujos/formacion/requisito";
+import { ConvocatoriaService } from "../../../../servicios/formacion/convocatoria.service";
+import { Convocatoria } from "../../../../modelo/admin/convocatoria";
 
 @Component({
   selector: 'app-inscripcion',
@@ -83,6 +87,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
   // error general
   showServicioNoDisponible: boolean = false;
 
+  convocatoria: Convocatoria;
+
   constructor(
     private cargaArchivoService: CargaArchivoService,
     private notificationServiceLocal: MdbNotificationService,
@@ -91,7 +97,8 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     private inscripcionService: InscripcionService,
     private provinciaService: ProvinciaService,
     private ciudadanoService: CiudadanoService,
-    private formacionService: FormacionService
+    private formacionService: FormacionService,
+    private convocatoriaService: ConvocatoriaService
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
@@ -104,6 +111,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     this.cantonesResidencia = [];
     this.provincias = [];
     this.fechaActual = new Date();
+    this.convocatoria = {} as Convocatoria;
   }
 
   ngOnInit(): void {
@@ -183,6 +191,14 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         console.log(error);
       },
     });
+
+    this.convocatoriaService.getConvocatoriaActiva().subscribe({
+      next: (convocatoria) => {
+        this.convocatoria = convocatoria[0];
+      }
+    })
+
+
   }
 
   private construirFormularios() {

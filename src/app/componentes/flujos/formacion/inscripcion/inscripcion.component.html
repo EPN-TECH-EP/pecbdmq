@@ -371,8 +371,12 @@
                     id="extranjero"
                     formControlName="nacionalidad"
                     value="Extranjero"
-                    (change)="toggleValidationsNacionalidad()" />
-                  <label class="form-check-label" for="extranjero"> Extranjero </label>
+                    (change)="toggleValidationsNacionalidad()"/>
+                  <label class="form-check-label" for="extranjero"> Extranjero
+                    <i class="fas fa-info-circle ms-1 text-primary"
+                       mdbTooltip="Las personas nacidas en el extranjero de madre o padre nacidos en el Ecuador; y sus descendientes hasta el tercer grado de consanguinidad"
+                       placement="top"></i>
+                  </label>
                 </div>
 
                 <div class="form-check">
@@ -382,8 +386,11 @@
                     id="comunidadFrontera"
                     formControlName="nacionalidad"
                     value="Comunidad Frontera"
-                    (change)="toggleValidationsNacionalidad()" />
-                  <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera </label>
+                    (change)="toggleValidationsNacionalidad()"/>
+                  <label class="form-check-label" for="comunidadFrontera"> Comunidad frontera
+                    <i class="fas fa-info-circle ms-1 text-primary" mdbTooltip="Las personas pertenecientes a comunidades, pueblos o nacionalidades reconocidos por el Ecuador con
+                  presencia en las zonas de frontera" placement="top"></i>
+                  </label>
                 </div>
 
                 <span class="text-danger" *ngIf="nacionalidadField?.invalid && nacionalidadField.touched">
@@ -823,14 +830,22 @@
           <h5>Carga de expediente:</h5>
           <div class="alert alert-info" role="alert">
             <p>Indicaciones: <span class="text-danger">Subir el expediente en un solo archivo, en formato pdf, que incluya:</span> </p>
-            <ul class="list-unstyled">
-              <li class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>1. Cargar título de Bachiller</li>
-              <li class="mb-1">
-                <i class="fas fa-check-circle me-2 text-success"></i>2. Cargar planilla de agua o luz
+          <ul class="list-group list-unstyled">
+              <li class="mb-1" *ngFor="let requisito of convocatoria.requisitos">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ requisito.nombre }}
               </li>
-              <li class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>3. Cargar copia de cédula</li>
-              <li class="mb-1">
-                <i class="fas fa-check-circle me-2 text-success"></i>4. Cargar copia de papeleta de votación
+              <li class="mb-1" *ngIf="hayMeritoAcademico">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ 'Respaldo del mérito académico' | uppercase }}
+              </li>
+              <li class="mb-1" *ngIf="hayMeritoDeportivo">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ 'Respaldo del mérito deportivo' | uppercase }}
+              </li>
+              <li class="mb-1" *ngIf="nacionalidadField?.value === 'Extranjero'">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ 'cédula padre/madre/familiar hasta 4to grado' | uppercase }}
               </li>
             </ul>
           </div>
