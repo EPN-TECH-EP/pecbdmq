@@ -151,12 +151,10 @@ export class ValidacionComponent implements OnInit {
   }
 
   // retornar edad en años y meses a la fecha de inscripción
-  calcularEdad(fechaNacimiento?: string, fechaInscripcion?: string): string {
+  calcularEdad(fechaNacimiento?: Date, fechaInscripcion?: Date): string {
 
     // si un parámetro es null, retornar cadena vacía
     if (!fechaNacimiento || !fechaInscripcion) return '';
-    // si un parámetro es vacío, retornar cadena vacía
-    if (fechaNacimiento.trim() === '' || fechaInscripcion.trim() === '') return '';
 
     const fechaNacimientoDate = new Date(fechaNacimiento);
     const fechaInscripcionDate = new Date(fechaInscripcion);
