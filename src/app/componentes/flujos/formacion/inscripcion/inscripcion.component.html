@@ -98,7 +98,7 @@
         <!---------------------------->
         <div>
           <!-- Datos iniciales -->
-          
+
           <div class="row">
             <div class="col-md"><h5>Datos iniciales:</h5></div>
             <div class="col-md"><p class="text-primary">Ingrese una cédula válida para iniciar la inscripción</p></div>
@@ -159,7 +159,7 @@
                     </div>
                   </mdb-error -->
                   <mdb-success *ngIf="cedulaField?.valid && (cedulaField?.dirty || cedulaField?.touched)">
-                    <!-- 
+                    <!--
                     -->
                   </mdb-success>
                 </mdb-form-control>
@@ -229,7 +229,7 @@
                     <mdb-option value="MASCULINO">Masculino</mdb-option>
                     <mdb-option value="FEMENINO">Femenino</mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="sexo"> 
+                  <label mdbLabel class="form-label mb-2x" for="sexo">
                     <span class="text-primary">*</span>
                     Sexo</label>
                   <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
@@ -823,14 +823,10 @@
           <h5>Carga de expediente:</h5>
           <div class="alert alert-info" role="alert">
             <p>Indicaciones: Subir el expediente en un solo archivo, en formato pdf, que incluya:</p>
-            <ul class="list-unstyled">
-              <li class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>1. Cargar título de Bachiller</li>
-              <li class="mb-1">
-                <i class="fas fa-check-circle me-2 text-success"></i>2. Cargar planilla de agua o luz
-              </li>
-              <li class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>3. Cargar copia de cédula</li>
-              <li class="mb-1">
-                <i class="fas fa-check-circle me-2 text-success"></i>4. Cargar copia de papeleta de votación
+            <ul class="list-group list-unstyled">
+              <li class="mb-1" *ngFor="let requisito of convocatoria.requisitos">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ requisito.nombre }}
               </li>
             </ul>
           </div>
