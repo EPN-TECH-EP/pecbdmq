@@ -14,7 +14,7 @@ import {
 import {AlertaComponent} from '../util/alerta/alerta.component';
 import {TipoAlerta} from 'src/app/enum/tipo-alerta';
 import {Usuario} from "../../modelo/admin/usuario";
-import {MdbSidenavComponent} from 'mdb-angular-ui-kit/sidenav';
+import { MdbSidenavComponent } from 'mdb-angular-ui-kit/sidenav';
 
 @Component({
   selector: 'app-principal',
@@ -60,12 +60,12 @@ export class PrincipalComponent implements OnInit, OnDestroy {
     this.nombreUsuario = usuario?.codDatosPersonales.nombre + " " + usuario?.codDatosPersonales.apellido
 
     this.listaMenuInicial = this.menuService.getMenu();
-    //console.log(this.listaMenu);
-    //console.log(this.menuService.getMenu());
+    console.log(this.listaMenu);
+    console.log(this.menuService.getMenu());
 
     if (
-      this.listaMenuInicial === undefined || this.listaMenuInicial === null ||
-      this.listaMenuInicial?.length == 0
+      this.listaMenuInicial === undefined ||
+      this.listaMenuInicial.length == 0
     ) {
       this.subscriptions.push(
         this.menuService.obtenerMenuPorUsuario(usuario).subscribe({
@@ -79,11 +79,9 @@ export class PrincipalComponent implements OnInit, OnDestroy {
               this.conformarMenu();
             }
 
-            this.autenticacionService.agregaMenuACache(this.menuService.getMenu());
-
-            /*if (this.router.url === '/principal') {
+            if (this.router.url === '/principal') {
               this.router.navigate(['/principal/bienvenida']);
-            }*/
+            }
           },
           error: (errorResponse: HttpErrorResponse) => {
             console.error(errorResponse);
@@ -92,10 +90,6 @@ export class PrincipalComponent implements OnInit, OnDestroy {
       );
     } else {
       this.conformarMenu();
-    }
-
-    if (this.router.url === '/principal') {
-      this.router.navigate(['/principal/bienvenida']);
     }
 
     //TODO eliminar

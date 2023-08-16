@@ -43,21 +43,21 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
     this.tiposBaja = [];
-    
+    this.subscriptions = [];
     this.tipoBajaEditForm = {codTipoBaja: 0, estado: 'ACTIVO', baja: ''};
     this.tiposBajaForm = new FormGroup({});
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.apiTipoBaja.getTiposBaja().subscribe(data => {
       this.tiposBaja = data;
     })
-    );
     this.buildForm();
   }
 
-
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   private buildForm() {
     this.tiposBajaForm = this.formBuilder.group({
@@ -65,14 +65,34 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
     });
   }
 
+  private errorResponseNotification(errorResponse: HttpErrorResponse) {
+    let customError: CustomHttpResponse = errorResponse.error;
+    let tipoAlerta: TipoAlerta = TipoAlerta.ALERTA_ERROR;
+    let messageError = customError.mensaje
 
+    if (!messageError) {
+      messageError = 'Error inesperado';
+      tipoAlerta = TipoAlerta.ALERTA_ERROR
+    }
 
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      messageError,
+      tipoAlerta
+    )
+  }
 
   get bajaField() {
     return this.tiposBajaForm.get('baja');
   }
 
-  
+  okNotification(mensaje: string) {
+    this.notificationRef = Notificacion.notificar(
+      this.notificationServiceLocal,
+      mensaje,
+      TipoAlerta.ALERTA_OK
+    );
+  }
 
   editRow(index: number) {
     this.editElementIndex = index;
@@ -100,12 +120,12 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
           let newTipoBaja: TipoBaja = response.body;
           this.tiposBaja.push(newTipoBaja);
           this.tiposBaja = [...this.tiposBaja]
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal,'Tipo de baja creado correctamente');
+          this.okNotification('Tipo de baja creado correctamente');
           this.tiposBajaForm.reset();
           this.addRow = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.errorResponseNotification(errorResponse);
         },
       })
     )
@@ -124,7 +144,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.apiTipoBaja.updateTipoBaja(tipoBaja, tipoBaja.codTipoBaja).subscribe({
         next: (response) => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal,'Tipo de baja actualizado correctamente');
+          this.okNotification('Tipo de baja actualizado correctamente');
           const index = this.editElementIndex + (this.paginaActual > 0 ? this.indiceAuxRegistro : 0);
           this.tiposBaja[index] = response.body;
           this.tiposBaja = [...this.tiposBaja];
@@ -133,7 +153,7 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.errorResponseNotification(errorResponse);
         },
       })
     )
@@ -151,14 +171,14 @@ export class TipoBajaComponent extends ComponenteBase implements OnInit {
     this.subscriptions.push(
       this.apiTipoBaja.deleteTipoBaja(this.codigo).subscribe({
         next: () => {
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal,'Tipo de baja eliminado correctamente');
+          this.okNotification('Tipo de baja eliminado correctamente');
           this.showLoading = false;
           const index = this.tiposBaja.findIndex(tipoBaja => tipoBaja.codTipoBaja === this.codigo);
           this.tiposBaja.splice(index, 1);
           this.tiposBaja = [...this.tiposBaja];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          this.errorResponseNotification(errorResponse);
         },
       })
     )

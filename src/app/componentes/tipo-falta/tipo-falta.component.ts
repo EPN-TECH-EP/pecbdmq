@@ -44,20 +44,6 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Falta'];
 
-  /**
-    * Inicializa un nuevo objeto "TipoFalta" con valores por defecto.
-    * 
-    * @returns {ITipoFalta} Un objeto "TipoFalta" con valores predeterminados.
-  */
-  initializeTipoFalta(): ITipoFalta {
-    return {
-      codTipoFalta: 0,
-      nombreFalta: '',
-      estado: 'ACTIVO',
-    };
-  }
-
-
   constructor(private apiTipoFalta: TipoFaltaService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
@@ -65,17 +51,23 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
       super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposFalta = [];
-    
-    this.tipoFalta = this.initializeTipoFalta();// Llamada al método initializeTipoFalta
-    this.tipoFaltaEditForm = this.initializeTipoFalta();// Llamada al método initializeTipoFalta
+    this.subscriptions = [];
+    this.tipoFalta = {
+      codTipoFalta: 0,
+      nombreFalta: '',
+      estado: 'ACTIVO'
+    }
+    this.tipoFaltaEditForm = {
+      codTipoFalta: 0,
+      estado: 'ACTIVO',
+      nombreFalta: ''
+    }
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.apiTipoFalta.getTiposFalta().subscribe(data => {
       this.tiposFalta = data;
-      })
-    );
+    });
   }
 
  
@@ -98,7 +90,11 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de falta creado correctamente');
 
           this.showLoading = false;
-          this.tipoFalta = this.initializeTipoFalta();// Llamada al método initializeTipoFalta
+          this.tipoFalta = {
+            codTipoFalta: 0,
+            estado: 'ACTIVO',
+            nombreFalta: ''
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
@@ -113,7 +109,11 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.tipoFaltaEditForm = this.initializeTipoFalta();// Llamada al método initializeTipoFalta
+    this.tipoFaltaEditForm = {
+      codTipoFalta: 0,
+      estado: 'ACTIVO',
+      nombreFalta: ''
+    }
     this.editElementIndex = -1;
   }
 
@@ -134,7 +134,11 @@ export class TipoFaltaComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de falta actualizada correctamente');
           this.showLoading = false;
           this.tiposFalta[this.editElementIndex] = response.body
-          this.tipoFalta = this.initializeTipoFalta();// Llamada al método initializeTipoFalta
+          this.tipoFalta = {
+            codTipoFalta: 0,
+            estado: 'ACTIVO',
+            nombreFalta: ''
+          }
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {

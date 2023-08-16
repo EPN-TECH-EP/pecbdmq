@@ -30,7 +30,7 @@ import { Curso } from 'src/app/modelo/flujos/especializacion/curso';
    }
 
    public actualizar(curso: Curso): Observable<HttpResponse<Curso>> {
-     return this.http.put<Curso>(`${this.host}/${this.nombreServicio}/${curso.codCursoEspecializacion}`, curso, { observe: 'response' });
+     return this.http.put<Curso>(`${this.host}/catalogoCurso/${curso.codCursoEspecializacion}`, curso, { observe: 'response' });
    }
 
    public eliminar(codigo: any): Observable<string> {
@@ -46,11 +46,4 @@ import { Curso } from 'src/app/modelo/flujos/especializacion/curso';
     public crear(formData: FormData): Observable<HttpResponse<Curso>> {
       return this.http.post<Curso>(`${this.host}/${this.nombreServicio}/crear`, formData, { observe: 'response' });
     }
-
-    // actualizar requisitos del curso
-     // endpoint: /curso/updateRequisitos/{id}
-     // parámetros: listaRequisitos: Requisito[]
-        public actualizarRequisitos(listaRequisitos: any[], idCurso: number): Observable<HttpResponse<Curso>> {
-          return this.http.post<Curso>(`${this.host}/${this.nombreServicio}/updateRequisitos/${idCurso}`, listaRequisitos, { observe: 'response' });
-        }
  }

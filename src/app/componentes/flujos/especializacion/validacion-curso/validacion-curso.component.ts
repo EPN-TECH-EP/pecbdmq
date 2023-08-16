@@ -9,15 +9,13 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { Usuario } from "../../../../modelo/admin/usuario";
 import { AutenticacionService } from "../../../../servicios/autenticacion.service";
 import { ArchivoService } from "../../../../servicios/archivo.service";
-import {ComponenteBase} from "../../../../util/componente-base";
-import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-validacion-curso',
   templateUrl: './validacion-curso.component.html',
   styleUrls: ['./validacion-curso.component.scss']
 })
-export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
+export class ValidacionCursoComponent implements OnInit {
 
   usuario: Usuario;
   cursoSeleccionado: Curso;
@@ -31,20 +29,16 @@ export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
   constructor(
     private cursosService: CursosService,
     private builder: FormBuilder,
-    private notificationServiceLocal: MdbNotificationService,
-    private mdbPopconfirmService: MdbPopconfirmService,
+    private ns: MdbNotificationService,
     private auth: AutenticacionService,
     private archivoService: ArchivoService) {
-
-    super(notificationServiceLocal, mdbPopconfirmService);
-
     this.cursoSeleccionado = null;
     this.usuario = null
     this.estaCargando = true;
     this.esVistaListaCursos = true;
     this.esVistaValidacionCurso = false;
     this.aprobarCursoForm = new FormGroup({});
-    this.cursos = [];
+    this.cursos = []
     this.construirFormulario();
     this.showLoading = false;
   }
@@ -82,7 +76,6 @@ export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, err);
       }
     });
   }
@@ -95,7 +88,6 @@ export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, err);
       }
     });
   }
@@ -122,15 +114,13 @@ export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
         this.notificar('Hubo un error al guardar el estado del curso', TipoAlerta.ALERTA_ERROR);
         console.error(err)
 
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, err);
-
         this.showLoading = false;
       }
     });
   }
 
   private notificar(mensaje: string, tipo: TipoAlerta) {
-    Notificacion.notificar(this.notificationServiceLocal, mensaje, tipo);
+    Notificacion.notificar(this.ns, mensaje, tipo);
   }
 
   cursoSeleccionadoEvent($event: Curso) {
@@ -164,10 +154,6 @@ export class ValidacionCursoComponent extends ComponenteBase implements OnInit {
       next: (archivo) => {
         const url = window.URL.createObjectURL(archivo);
         window.open(url);
-      },
-      error: (err) => {
-        console.error(err);
-        Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, err);
       }
     })
   }

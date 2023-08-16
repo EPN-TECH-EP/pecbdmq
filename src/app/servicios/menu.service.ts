@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { Usuario } from '../modelo/admin/usuario';
 import { Observable } from 'rxjs';
 import { Menu } from '../modelo/admin/menu';
-import {AutenticacionService} from "./autenticacion.service";
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +16,7 @@ export class MenuService {
 
   private menu: Menu[];
 
-  constructor(private http: HttpClient, private autenticacionService: AutenticacionService) {}
+  constructor(private http: HttpClient) {}
 
   public obtenerMenuPorUsuario(usuario: Usuario) : Observable<Menu[]>{
     //console.log(usuario);
@@ -25,12 +24,7 @@ export class MenuService {
   }
 
   public getMenu(){
-    if(this.menu == null || this.menu == undefined){
-      this.menu = this.autenticacionService.obtieneMenuDeCache();
-    }
-
     return this.menu;
-
   }
 
   public setMenu(pMenu: Menu[]){

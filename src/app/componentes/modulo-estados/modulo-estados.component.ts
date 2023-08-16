@@ -56,21 +56,6 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     'Orden'
   ];
 
-  /**
-    * Inicializa un nuevo objeto "ModuloEstados" con valores por defecto.
-    * 
-    * @returns {ModuloEstado} Un objeto "ModuloEstados" con valores predeterminados.
-  */
-  initializeModuloEstados(): ModuloEstado {
-    return {
-        codigo: 0,
-        estadoCatalogo: '',
-        orden: '' as any,
-        modulo: '',
-        estado: 'ACTIVO'
-    };
-  }
-
 
   constructor(
     private Api: ModuloEstadosService,
@@ -83,29 +68,35 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.modulosEstados = [];
+    this.subscriptions = [];
+    this.moduloEstados = {
+      codigo: 0,
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
 
-    this.moduloEstados = this.initializeModuloEstados();// Llamada al método initializeModuloEstados 
-    this.moduloEstadosEditForm = this.initializeModuloEstados(); // Llamada al método initializeModuloEstados 
+    }
+    this.moduloEstadosEditForm = {
+      codigo: 0,
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
+
+    }
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.Api.getAll().subscribe(data => {
       this.modulosEstados = data;
-      })
-    );
-
-    this.subscriptions.push(
+    });
     this.ApiModulo.getModulo().subscribe(data => {
       this.modulos = data;
-      })
-    );
-
-    this.subscriptions.push(
+    });
     this.ApiEstadosCatalogo.getCatalogo().subscribe(data => {
       this.estadosCatalogo = data;
-      })
-    );
+    });
   }
 
   search(event: Event): void {
@@ -113,7 +104,9 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
 /*
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -168,7 +161,14 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
           this.Api.getAll().subscribe(data => {
             this.modulosEstados = data;
           });
-          this.moduloEstados = this.initializeModuloEstados();// Llamada al método initializeModuloEstados 
+          this.moduloEstados = {
+            codigo: 0,
+            estadoCatalogo: '',
+            orden: '' as any,
+            modulo: '',
+            estado: 'ACTIVO'
+
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -187,7 +187,13 @@ export class ModuloEstadosComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.moduloEstadosEditForm = this.initializeModuloEstados(); // Llamada al método initializeModuloEstados 
+    this.moduloEstadosEditForm = {
+      codigo: 0,
+      estadoCatalogo: '',
+      orden: '' as any,
+      modulo: '',
+      estado: 'ACTIVO'
+    };
     this.editElementIndex = -1;
   }
 

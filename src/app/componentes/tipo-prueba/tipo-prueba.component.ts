@@ -39,20 +39,6 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Tipo Prueba'];
 
-  /**
-    * Inicializa un nuevo objeto "TipoPrueba" con valores por defecto.
-    * 
-    * @returns {TipoPrueba} Un objeto "TipoPrueba" con valores predeterminados.
-  */
-  initializeTipoPrueba(): TipoPrueba {
-    return {
-      codTipoPrueba: 0,
-      tipoPrueba: '',
-      estado: 'ACTIVO',
-    };
-  }
-
-
 
   constructor(
     private Api: TipoPruebaService,
@@ -62,19 +48,25 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposprueba = [];
-    
-    this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
-    this.tipoPruebaEditForm = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
+    this.subscriptions = [];
+    this.tipoPrueba = {
+      codTipoPrueba: 0,
+      tipoPrueba: '',
+      estado: 'ACTIVO'
+    };
+    this.tipoPruebaEditForm = {
+      codTipoPrueba: 0,
+      tipoPrueba: '',
+      estado: 'ACTIVO'
+    };
   }
 
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.Api.getTipoPrueba().subscribe(data => {
       this.tiposprueba = data;
 
     })
-    );
   }
 
   search(event: Event): void {
@@ -101,7 +93,11 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
           this.addRow = false;
 
-          this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
+          this.tipoPrueba = {
+            codTipoPrueba: 0,
+            tipoPrueba: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -116,7 +112,11 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.tipoPruebaEditForm = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
+    this.tipoPruebaEditForm = {
+      codTipoPrueba: 0,
+      tipoPrueba: '',
+      estado: 'ACTIVO'
+    };
     this.editElementIndex = -1;
   }
 
@@ -139,7 +139,11 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
           this.tiposprueba[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
+          this.tipoPrueba = {
+            codTipoPrueba: 0,
+            tipoPrueba: '',
+            estado: 'ACTIVO'
+          }
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {

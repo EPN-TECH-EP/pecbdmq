@@ -23,7 +23,6 @@ import { catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
 import { Router } from "@angular/router";
-import {ValidacionUtil} from "../../../../util/validacion-util";
 
 @Component({
   selector: 'app-convocatoria',
@@ -93,7 +92,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.existeProcesoActivo = false;
     this.estaActulizando = false;
     this.estaCreando = false;
-    this.correo = new FormControl('', [Validators.required]);
+    this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
     this.codigoUnicoConvocatoria = '';
     this.fechaActual = new Date();
@@ -223,7 +222,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   subirArchivo(event: any, tipo: string): void {
-    //const extension = '.pdf';
+    const extension = '.pdf';
     const archivo: File = event.target.files[0];
     if (!archivo) {
       return;
@@ -239,7 +238,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    /*if (!archivo.name.endsWith(extension)) {
+    if (!archivo.name.endsWith(extension)) {
       Notificacion.notificacion(
         this.notificationRef,
         this.notificationServiceLocal,
@@ -247,8 +246,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         'El archivo debe tener extensión .pdf'
       );
       return;
-    }*/
-
+    }
     if (tipo === 'convocatoria') {
       this.documentoConvocatoria = archivo;
     } else {
@@ -281,26 +279,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   crearConvocatoria() {
-
-    // acepta lista de emails en campo de correo, valida que sean válidos
-    if (this.correo.value) {
-
-      this.correo.setValue(this.correo.value.trim().replace(' ', '' ));
-      this.correo.setValue(this.correo.value.trim().replace(',', ';' ));
-
-      const emails = this.correo.value.split(/[,;]/);
-      const emailsInvalidos = emails.filter((email) => !ValidacionUtil.validateEmail(email));
-      if (emailsInvalidos.length > 0) {
-        Notificacion.notificacion(
-          this.notificationRef,
-          this.notificationServiceLocal,
-          null,
-          'Los siguientes correos no son válidos: ' + emailsInvalidos.join(', ')
-        );
-        return;
-      }
-    }
-
 
 
     this.showLoading = true;
@@ -453,7 +431,7 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
         this.documentosFormacionService.descargar(idDocumento).subscribe({
           next: (documento: any) => {
             console.log(documento);
-            const blob = new Blob([documento]/*, { type: 'application/pdf' }*/);
+            const blob = new Blob([documento], { type: 'application/pdf' });
             const url = window.URL.createObjectURL(blob);
             window.open(url);
           },

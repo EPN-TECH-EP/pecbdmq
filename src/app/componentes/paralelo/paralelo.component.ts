@@ -35,20 +35,6 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   estaEditando = false;
   codigoParaleloEditando = 0;
 
-  /**
-    * Inicializa un nuevo objeto "Paralelo" con valores por defecto.
-    * 
-    * @returns {Paralelo} Un objeto "Paralelo" con valores predeterminados.
-  */
-  initializeParalelo(): Paralelo {
-    return {
-        codParalelo: 0,
-        nombreParalelo: '',
-        estado: 'ACTIVO'
-    };
-  }
-
-
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
@@ -58,10 +44,18 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
     this.paralelos = [];
-    
+    this.subscriptions = [];
     this.notificationRef = null;
-    this.paralelo = this.initializeParalelo();// Llamada al método initializeParalelo
-    this.paraleloEdit = this.initializeParalelo();// Llamada al método initializeParalelo 
+    this.paralelo = {
+      codParalelo: 0,
+      nombreParalelo: '',
+      estado: 'ACTIVO'
+    }
+    this.paraleloEdit = {
+      codParalelo: 0,
+      nombreParalelo: '',
+      estado: 'ACTIVO'
+    }
   }
 
   ngOnInit(): void {
@@ -69,11 +63,9 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
   }
 
   cargarRegistros(): void {
-    this.subscriptions.push(
     this.paraleloService.getParalelos().subscribe(paralelos => {
       this.paralelos = paralelos;
-      })
-    );
+    });
   }
 
   editRow(paralelo: Paralelo) {
@@ -83,7 +75,11 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
 
   undoRow() {
     this.estaEditando = false;
-    this.paraleloEdit = this.initializeParalelo();// Llamada al método initializeParalelo 
+    this.paraleloEdit = {
+      codParalelo: 0,
+      nombreParalelo: '',
+      estado: 'ACTIVO'
+    };
   }
 
   crear(paralelo: Paralelo): void {
@@ -103,7 +99,11 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Paralelo creado con éxito');
 
           this.showLoading = false;
-          this.paralelo = this.initializeParalelo();// Llamada al método initializeParalelo
+          this.paralelo = {
+            codParalelo: 0,
+            nombreParalelo: '',
+            estado: '',
+          }
           this.cargarRegistros();
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -171,7 +171,9 @@ export class ParaleloComponent extends ComponenteBase implements OnInit {
     this.table.search(searchTerm);
   }
 
-  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }
 
 

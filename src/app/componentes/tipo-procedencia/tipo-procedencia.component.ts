@@ -48,20 +48,6 @@ validacionUtil = ValidacionUtil;
   addRow = false;
   headers = ['Tipo Procedencia'];
 
-  /**
-    * Inicializa un nuevo objeto "TipoProcedencia" con valores por defecto.
-    * 
-    * @returns {TipoProcedencia} Un objeto "TipoProcedencia" con valores predeterminados.
-  */
-  initializeTipoProcedencia(): TipoProcedencia {
-    return {
-      codigo: 0,
-      nombre: '',
-      estado: 'ACTIVO',
-    };
-  }
-
-
   constructor(
     private ApiTipoProcedencia: TipoProcedenciaService,
     private notificationServiceLocal: MdbNotificationService,
@@ -70,18 +56,24 @@ validacionUtil = ValidacionUtil;
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposProcedencia = [];
-    
-    this.tipoProcedencia = this.initializeTipoProcedencia();// Llamada al método initializeTipoProcedencia
-    this.tipoProcedenciaEditForm = this.initializeTipoProcedencia();// Llamada al método initializeTipoProcedencia
+    this.subscriptions = [];
+    this.tipoProcedencia = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    }
+    this.tipoProcedenciaEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
   }
 
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.ApiTipoProcedencia.listar().subscribe(data => {
       this.tiposProcedencia = data;
     })
-    );
   }
 
 /*
@@ -141,7 +133,11 @@ validacionUtil = ValidacionUtil;
           this.tiposProcedencia.push(nuevoTipoProcedencia);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo procedencia creado con éxito');
 
-          this.tipoProcedencia = this.initializeTipoProcedencia();// Llamada al método initializeTipoProcedencia
+          this.tipoProcedencia = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -157,7 +153,11 @@ validacionUtil = ValidacionUtil;
   }
 
   undoRow() {
-    this.tipoProcedenciaEditForm = this.initializeTipoProcedencia();// Llamada al método initializeTipoProcedencia
+    this.tipoProcedenciaEditForm = {
+      codigo: 0,
+      nombre: '',
+      estado: 'ACTIVO'
+    };
     this.editElementIndex = -1;
   }
 
@@ -180,7 +180,11 @@ validacionUtil = ValidacionUtil;
 
           this.tiposProcedencia[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.tipoProcedencia = this.initializeTipoProcedencia();// Llamada al método initializeTipoProcedencia
+          this.tipoProcedencia = {
+            codigo: 0,
+            nombre: '',
+            estado: 'ACTIVO'
+          }
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {

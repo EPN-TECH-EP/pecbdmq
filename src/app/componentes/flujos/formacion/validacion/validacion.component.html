@@ -11,7 +11,7 @@
   <div class="col">
     <p class="badge badge-success py-3 fs-6">
       <i class="fas fa-calendar-check me-3"></i>
-      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaPostulacion | date: 'dd/MM/yyyy hh:mm' }}</p>
+      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaPostulacion | date: 'dd/MM/yyyy' }}</p>
   </div>
 
   <div class="row" *ngIf="loadInformation">
@@ -39,7 +39,7 @@
               <div class="col">
                 <p><b>Nombre:</b> {{ inscripcion?.nombre }} {{ inscripcion?.apellido }}</p>
                 <p><b>Fecha de nacimiento:</b> {{ inscripcion?.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
-                <p><b>Edad:</b> {{ calcularEdad(inscripcion?.edadPostulacion}}</p>
+                <p><b>Edad:</b> {{ inscripcion?.edadPostulacion}}</p>
               </div>
               <div class="col">
                 <p><b>Teléfono celular:</b> {{ inscripcion?.numTelefCelular }}</p>

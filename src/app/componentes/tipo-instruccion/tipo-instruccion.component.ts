@@ -44,19 +44,6 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     //'Estado',
   ];
 
-  /**
-    * Inicializa un nuevo objeto "TipoInstruccion" con valores por defecto.
-    * 
-    * @returns {TipoInstruccion} Un objeto "TipoInstruccion" con valores predeterminados.
-  */
-  initializeTipoInstruccion(): TipoInstruccion {
-    return {
-      codigoTipoInstruccion: 0,
-      tipoInstruccion: '',
-      estado: 'ACTIVO',
-    };
-  }
-
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
@@ -66,22 +53,32 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposInstruccion=[];
-
+    this.subscriptions = [];
     this.notificationRef=null;
-    this.tipoInstruccion = this.initializeTipoInstruccion();// Llamada al método initializeTipoInstruccion
-    this.tipoInstruccionEdit = this.initializeTipoInstruccion();// Llamada al método initializeTipoInstruccion
+    this.tipoInstruccion={
+      codigoTipoInstruccion: 0,
+      tipoInstruccion:'',
+      estado:'ACTIVO'
+    }
+    this.tipoInstruccionEdit={
+      codigoTipoInstruccion: 0,
+      tipoInstruccion:'',
+      estado:'ACTIVO'
+    }
   }
   ngOnInit(): void {
-    this.subscriptions.push(
     this.Api.listar().subscribe(data => {
       this.tiposInstruccion = data;
-      })
-    );
+    });
   }
   addNewRow() {
     const newRow: TipoInstruccion = this.tipoInstruccion;
     this.tiposInstruccion=[...this.tiposInstruccion,{...newRow}]
-    this.tipoInstruccion = this.initializeTipoInstruccion();// Llamada al método initializeTipoInstruccion
+    this.tipoInstruccion={
+      codigoTipoInstruccion: 0,
+      tipoInstruccion:'',
+      estado:'',
+    }
 
   }
 /*
@@ -143,7 +140,11 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
           this.addRow = false;
 
           this.showLoading = false;
-          this.tipoInstruccion = this.initializeTipoInstruccion();// Llamada al método initializeTipoInstruccion
+          this.tipoInstruccion={
+            codigoTipoInstruccion: 0,
+            tipoInstruccion:'',
+            estado:''
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -158,7 +159,11 @@ export class TipoInstruccionComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.tipoInstruccionEdit = this.initializeTipoInstruccion();// Llamada al método initializeTipoInstruccion
+    this.tipoInstruccionEdit={
+      codigoTipoInstruccion: 0,
+      tipoInstruccion:'',
+      estado:'',
+    }
     this.editElementIndex = -1;
   }
   public actualizar(tipoInstruccion: TipoInstruccion, formValue): void {
@@ -223,5 +228,7 @@ public confirmaEliminar(event: Event, codigo: number): void {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
-  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }

@@ -262,7 +262,6 @@ import { RegistroNotasEspecializacionComponent } from './componentes/flujos/espe
 import { MenuReportesEspComponent } from './componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component';
 import { CursosCerradosComponent } from './componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component';
 import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component';
-import { EditarCursoComponent } from './componentes/flujos/especializacion/editar-curso/editar-curso.component';
 
 
 @NgModule({
@@ -381,7 +380,6 @@ import { EditarCursoComponent } from './componentes/flujos/especializacion/edita
     MenuReportesEspComponent,
     CursosCerradosComponent,
     MenuCalculoNotaFinalComponent,
-    EditarCursoComponent,
 
     ],
   imports: [

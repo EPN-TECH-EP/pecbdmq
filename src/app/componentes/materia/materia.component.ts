@@ -49,7 +49,7 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
     this.showLoading = false;
 
     this.materias = [];
-   
+    this.subscriptions = [];
     this.materia = this.initObject(); /*{
       codMateria: 0,
       nombre: '',
@@ -73,11 +73,9 @@ export class MateriaComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.materiaService.listar().subscribe((data) => {
       this.materias = data;
-      })
-    );
+    });
   }
 
   search(event: Event): void {

@@ -7,7 +7,6 @@ import {Usuario} from '../modelo/admin/usuario';
 import {Materia} from '../modelo/admin/materias';
 import {LocalDataService} from './util/local-data.service';
 import {CustomHttpResponse} from '../modelo/admin/custom-http-response';
-import {Menu} from "../modelo/admin/menu";
 
 
 @Injectable({providedIn: 'root'})
@@ -64,15 +63,6 @@ export class AutenticacionService {
     const usuario: Usuario = JSON.parse(this.lds.getData('usuario'));
     this.user.next(usuario);
     return usuario;
-  }
-
-  public agregaMenuACache(menu: Menu[]): void {
-    this.lds.saveData('data', JSON.stringify(menu));
-  }
-
-  public obtieneMenuDeCache(): Menu[] {
-    const menu: Menu[] = JSON.parse(this.lds.getData('data'));
-    return menu;
   }
 
   public cargaToken(): void {

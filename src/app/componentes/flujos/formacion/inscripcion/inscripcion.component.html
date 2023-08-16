@@ -98,7 +98,7 @@
         <!---------------------------->
         <div>
           <!-- Datos iniciales -->
-
+          
           <div class="row">
             <div class="col-md"><h5>Datos iniciales:</h5></div>
             <div class="col-md"><p class="text-primary">Ingrese una cédula válida para iniciar la inscripción</p></div>
@@ -159,7 +159,7 @@
                     </div>
                   </mdb-error -->
                   <mdb-success *ngIf="cedulaField?.valid && (cedulaField?.dirty || cedulaField?.touched)">
-                    <!--
+                    <!-- 
                     -->
                   </mdb-success>
                 </mdb-form-control>
@@ -229,7 +229,7 @@
                     <mdb-option value="MASCULINO">Masculino</mdb-option>
                     <mdb-option value="FEMENINO">Femenino</mdb-option>
                   </mdb-select>
-                  <label mdbLabel class="form-label mb-2x" for="sexo">
+                  <label mdbLabel class="form-label mb-2x" for="sexo"> 
                     <span class="text-primary">*</span>
                     Sexo</label>
                   <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
@@ -822,7 +822,7 @@
           <!-- Carga de documentos -->
           <h5>Carga de expediente:</h5>
           <div class="alert alert-info" role="alert">
-            <p>Indicaciones: <span class="text-danger">Subir el expediente en un solo archivo, en formato pdf, que incluya:</span> </p>
+            <p>Indicaciones: Subir el expediente en un solo archivo, en formato pdf, que incluya:</p>
             <ul class="list-unstyled">
               <li class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>1. Cargar título de Bachiller</li>
               <li class="mb-1">
@@ -994,7 +994,7 @@
         <p>
           Se envió un correo con su CÓDIGO ÚNICO:
           <span class="text-primary">{{ idPostulante }}</span
-          >. Este código de identificación se usará en futuros comunicados de la Academia de Bomberos CBDMQ.
+          >. Este código de identificación se usará en futuros comunicados de la academia.
         </p>
         <br />
         <p>Puede cerrar esta ventana de forma segura.</p>
@@ -1012,9 +1012,9 @@
 </div>
 <ng-component>
   <mdb-loading [show]="showLoadingFull" [fullscreen]="true">
-    <div class="loading-spinner">
-      <div class="spinner-border loading-icon text-light" role="status"></div>
-      <span class="loading-text text-light">Espere...</span>
+    <div class="loading-spinner bg-light">
+      <div class="spinner-border loading-icon" role="status"></div>
+      <span class="loading-text">Espere...</span>
     </div>
   </mdb-loading>
 </ng-component>

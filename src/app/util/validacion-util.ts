@@ -1,4 +1,4 @@
-import {NgModel} from '@angular/forms';
+import { NgModel } from '@angular/forms';
 
 export class ValidacionUtil {
   // valores permitidos de tipo: 'catalogo', 'entero', 'decimal' 'alfanumerico'
@@ -55,13 +55,13 @@ export class ValidacionUtil {
 
   // validación campos vacíos
   public static isNullOrEmpty(value: string): boolean {
-    return value === undefined || value === null
-      || (typeof value === 'string' ? value.trim() === '' : false);
+    return  value === undefined || value === null 
+    || ( typeof value === 'string' ? value.trim() === '' : false);
   }
 
   public static isNullOrEmptyNumber(value: number): boolean {
-    return value === undefined || value === null || isNaN(value)
-      || this.isNullOrEmpty(value.toString()) || value.toString() === '.';
+    return value === undefined || value === null || isNaN(value) 
+    || this.isNullOrEmpty(value.toString()) || value.toString() === '.';
   }
 
   public static isNullOrEmptyObject(value: any): boolean {
@@ -95,11 +95,4 @@ export class ValidacionUtil {
 
     return retval;
   }
-
-  public static validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email));
-
-  }
-
 }

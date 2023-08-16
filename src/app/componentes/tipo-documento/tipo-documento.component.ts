@@ -49,20 +49,6 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   addRow = false;
   headers = ['Tipo Documento'];
 
-  /**
-    * Inicializa un nuevo objeto "TipoDocumento" con valores por defecto.
-    * 
-    * @returns {TipoDocumento} Un objeto "TipoDocumento" con valores predeterminados.
-  */
-  initializeTipoDocumento(): TipoDocumento {
-    return {
-      codigoDocumento: 0,
-      tipoDocumento: '',
-      estado: 'ACTIVO',
-    };
-  }
-
-
   constructor(
     private ApiTipoDocumento: TipoDocumentoService,
     private notificationServiceLocal: MdbNotificationService,
@@ -71,17 +57,23 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposDocumento = [];
-    
-    this.tipoDocumento = this.initializeTipoDocumento();// Llamada al método initializeTipoDocumento
-    this.tipoDocumentoEditForm = this.initializeTipoDocumento();// Llamada al método initializeTipoDocumento
+    this.subscriptions = [];
+    this.tipoDocumento = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
+    }
+    this.tipoDocumentoEditForm = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
+    };
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
     this.ApiTipoDocumento.getTipoDocumento().subscribe(data => {
       this.tiposDocumento = data;
     })
-    );
   }
 /*
   private notificacion(errorResponse: HttpErrorResponse) {
@@ -140,7 +132,11 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           this.tiposDocumento.push(nuevoTipoDocumento);
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento creado con éxito');
 
-          this.tipoDocumento = this.initializeTipoDocumento();// Llamada al método initializeTipoDocumento
+          this.tipoDocumento = {
+            codigoDocumento: 0,
+            tipoDocumento: '',
+            estado: 'ACTIVO'
+          }
         },
         error: (errorResponse: HttpErrorResponse) => {
           Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
@@ -156,7 +152,11 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
   }
 
   undoRow() {
-    this.tipoDocumentoEditForm = this.initializeTipoDocumento();// Llamada al método initializeTipoDocumento
+    this.tipoDocumentoEditForm = {
+      codigoDocumento: 0,
+      tipoDocumento: '',
+      estado: 'ACTIVO'
+    }
     this.editElementIndex = -1;
   }
 
@@ -178,7 +178,11 @@ export class TipoDocumentoComponent extends ComponenteBase implements OnInit {
           Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Tipo de documento actualizado con éxito');
           this.tiposDocumento[this.editElementIndex] = response.body;
           this.showLoading = false;
-          this.tipoDocumento = this.initializeTipoDocumento();// Llamada al método initializeTipoDocumento
+          this.tipoDocumento = {
+            codigoDocumento: 0,
+            tipoDocumento: '',
+            estado: 'ACTIVO'
+          }
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
