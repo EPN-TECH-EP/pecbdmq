@@ -1,0 +1,213 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+  <div></div>
+  <div>
+    <h4 class="modal-title" id="exampleModalLabel">
+      Validación de la inscripción
+      <span class="badge badge-info">
+        {{ inscripcion?.codInscripcion }}
+      </span>
+    </h4>
+  </div>
+  <div>
+    <button
+      type="button"
+      class="btn btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col">
+    <p class="badge badge-success py-3 fs-6">
+      <i class="fas fa-calendar-check me-3"></i>
+      <b>Fecha de inscripción: </b>{{ inscripcion?.fechaInscripcion | date: 'dd/MM/yyyy' }}</p>
+  </div>
+
+  <div class="row" *ngIf="loadInformation">
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-primary btn-floating btn-lg mb-3"
+        [mdbTooltip]="mensajeBtnListaRequisitos"
+        (click)="toggleListaRequisitos()"
+      >
+        <i class="fas fa-list-ul"></i>
+      </button>
+    </div>
+    <!-- Start datos de la inscripción -->
+    <section class="col">
+      <mdb-accordion [flush]="true" [multiple]="true">
+        <mdb-accordion-item [collapsed]="false">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Datos del solicitante</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <h5 class="mb-4 fw-bolder">Datos personales</h5>
+            <p><b>Cédula de ciudadanía:</b> {{ inscripcion?.cedula }}</p>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre:</b> {{ inscripcion?.nombre }} {{ inscripcion?.apellido }}</p>
+                <p><b>Fecha de nacimiento:</b> {{ inscripcion?.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
+                <p><b>Edad:</b> {{ inscripcion?.edadPostulacion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Teléfono celular:</b> {{ inscripcion?.numTelefCelular }}</p>
+                <p><b>Sexo:</b> {{ inscripcion?.sexo || '-'}}</p>
+                <p><b>Tipo sangre:</b> {{ inscripcion?.tipoSangre}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Nacionalidad</h5>
+            <p><b>Nacionalidad:</b> {{ inscripcion?.tipoNacionalidad}}</p>
+            <p><b>Provincia de nacimiento:</b> {{ inscripcion?.provinciaNacimiento}}</p>
+            <p><b>Cantón de nacimiento:</b> {{ inscripcion?.cantonNacimiento}}</p>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos de Residencia</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Calle principal:</b> {{ inscripcion?.callePrincipalResidencia}}</p>
+                <p><b>Calle secundaria:</b> {{ inscripcion?.calleSecundariaResidencia}}</p>
+                <p><b>Número de casa:</b> {{ inscripcion?.numeroCasa}}</p>
+              </div>
+              <div class="col">
+                <p><b>Provincia de residencia:</b> {{ inscripcion?.provinciaResidencia}}</p>
+                <p><b>Cantón de residencia:</b> {{ inscripcion?.cantonResidencia}}</p>
+              </div>
+            </div>
+
+            <hr class="hr hr-blurry">
+            <h5 class="mb-4 fw-bolder">Datos Académicos</h5>
+            <div class="row">
+              <div class="col">
+                <p><b>Nombre del título:</b> {{ inscripcion?.nombreTituloSegundoNivel}}</p>
+                <p *ngIf="inscripcion?.meritoAcademicoDescripcion"><b>Mérito
+                  Académico:</b> {{ inscripcion?.meritoAcademicoDescripcion}}</p>
+                <p *ngIf="inscripcion?.meritoDeportivoDescripcion"><b>Mérito
+                  Deportivo:</b> {{ inscripcion?.meritoDeportivoDescripcion}}</p>
+              </div>
+              <div class="col">
+                <p><b>Nombre del colegio:</b> {{ inscripcion?.colegio}}</p>
+                <p><b>País:</b> {{ inscripcion?.paisTituloSegundoNivel}}</p>
+                <p><b>Cuidad:</b> {{ inscripcion?.ciudadTituloSegundoNivel}}</p>
+              </div>
+            </div>
+          </ng-template>
+        </mdb-accordion-item>
+        <mdb-accordion-item [collapsed]="true">
+          <ng-template mdbAccordionItemHeader>
+            <h5 class="mb-4">Documentos asociados</h5>
+          </ng-template>
+          <ng-template mdbAccordionItemBody>
+            <div *ngIf="urlsArchivo; else errorArchivo">
+              <div *ngFor="let url of urlsArchivo">
+                <p class="badge badge-primary p-2"><b>Nombre del archivo: </b>{{url.nombreArchivo}}</p>
+                <embed
+                  [src]="url.urlSafe"
+                  [width]="'100%'"
+                  [height]="600"
+                >
+              </div>
+            </div>
+            <ng-template #errorArchivo>
+              <span>Error al cargar el archivo</span>
+            </ng-template>
+          </ng-template>
+        </mdb-accordion-item>
+      </mdb-accordion>
+
+    </section>
+    <!-- End datos de la inscripción -->
+    <div *ngIf="!estaExpandidoListaRequisitos" class="vr p-0"></div>
+    <!-- Start lista de requisitos -->
+    <section class="col" [ngClass]="{'expanded': estaExpandidoListaRequisitos}">
+      <h4 class="text-center mb-3">Lista de requisitos</h4>
+      <div class="datatable table-editor datatable-striped datatable-hover datatable-sm overflow-auto">
+        <table
+          class="table table-sm"
+          mdbTable
+          mdbTableSort
+          #tableRequisitos="mdbTable"
+          [dataSource]="formularioRequisitos"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+            >
+              <b>{{ header}}</b>
+            </th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngFor="let formulario of tableRequisitos.data; let i = index">
+            <td class="text-wrap">{{ formulario?.get('nombre')?.value }}</td>
+            <td>
+              <form [formGroup]="formulario">
+                <ng-container>
+                  <div class="form-check form-check-inline">
+                    <input
+                      formControlName="cumple"
+                      class="form-check-input"
+                      type="radio"
+                      name="cumple"
+                      [id]="'cumple-' + i"
+                      [value]="true"
+                      [checked]="formulario?.controls?.cumple?.value === true"
+                    />
+                    <label class="form-check-label" [for]="'ciumple-' + i">Sí</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      formControlName="cumple"
+                      class="form-check-input"
+                      type="radio"
+                      name="cumple"
+                      [id]="'cumple-' + i"
+                      [value]="false"
+                      [checked]="formulario?.controls?.cumple?.value === false"
+                    />
+                    <label class="form-check-label" [for]="'cumple-' + i">No</label>
+                  </div>
+                  <mdb-error
+                    *ngIf="formulario?.controls?.cumple?.invalid && formulario?.controls?.cumple?.touched"                  >
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Este campo es requerido, seleccione una opción
+                  </mdb-error>
+                </ng-container>
+              </form>
+            </td>
+            <td>
+              <form [formGroup]="formulario">
+                <mdb-form-control>
+                  <textarea
+                    mdbValidate
+                    mdbInput
+                    formControlName="observaciones"
+                    type="text"
+                    class="form-control">
+                  </textarea>
+                </mdb-form-control>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <ng-container *ngIf="tableRequisitos.data?.length === 0">
+          <div class="alert alert-warning my-3 py-2">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            No se encontraron requisitos para esta inscripción
+          </div>
+        </ng-container>
+        <div class="d-flex justify-content-center" *ngIf="tableRequisitos.data?.length !== 0">
+          <button class="btn btn-primary mt-3" (click)="guardarRequisitos()">Guardar validación</button>
+        </div>
+      </div>
+    </section>
+    <!-- End lista de requisitos -->
+  </div>
+</div>
+

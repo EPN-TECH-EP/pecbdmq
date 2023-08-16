@@ -1,0 +1,345 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Asignación Materias a Nivel</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10 m-3">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="container">
+            <div class="col-md-6">
+              <label for="periodoSelect">Seleccione un Cohorte</label>
+              <mdb-select id="periodoSelect" [(ngModel)]="seletedItemPeriodo" (ngModelChange)="onSelectChange($event)">
+                <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
+                  {{ item.nombrePeriodo }}
+                </mdb-option>
+              </mdb-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="container">
+            <div class="col-md-6">
+              <label for="semestreSelect">Seleccione un Nivel</label>
+              <mdb-select id="semestreSelect" [(ngModel)]="seletedItemSemestre"
+                          (ngModelChange)="onSelectChangeMateriaSemestre($event)">
+                <mdb-option *ngFor="let item of selectedListSemestres" [value]="item.codPeriodoSemestre">
+                  {{ item.nombreSemestre }}
+                </mdb-option>
+              </mdb-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row justify-content-center">
+    <div class="col-10">.
+      <button class="btn btn-primary mb-1" (click)="onAgregarItem()">
+        <i class="fa-solid fa-circle-plus me-2"></i>
+        Asignar Materia
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngIf="listadoAsignacion.length === 0"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron materias
+    </div>
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+      <form [formGroup]="formGroup">
+        <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable"
+               [dataSource]="listadoAsignacion" [pagination]="pagination">
+          <thead class="datatable-header">
+          <tr>
+            <th *ngFor="let header of headers" class="fw-bold fs-6">
+              {{ header.label | titlecase }}
+            </th>
+            <th class="text-center fw-bold fs-6">Acciones</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngIf="estaAgregandoItem">
+            <td>
+              {{ selectedItem?.nombrePeriodo }}
+            </td>
+            <td>
+              {{ selectedItem?.nombreSemestre }}
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select mdbValidate id="codMateria" formControlName="codMateria" class="mb-5">
+                  <mdb-option
+                    *ngFor="let itemSemestre of materiasList" class="text-wrap"
+                    [label]="itemSemestre.nombre"
+                    [value]="itemSemestre.codMateria">
+                    {{ itemSemestre.nombre }}
+                  </mdb-option>
+                </mdb-select>
+                <mdb-error *ngIf="codMateria?.touched || codMateria?.dirty">
+                  <span *ngIf="codMateria?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <mdb-select mdbValidate id="codAula" formControlName="codAula" class="mb-5">
+                  <mdb-option
+                    *ngFor="let itemSemestre of aulaList" class="text-wrap"
+                    [label]="itemSemestre.nombreAula"
+                    [value]="itemSemestre.codAula">
+                    {{ itemSemestre.nombreAula }}
+                  </mdb-option>
+                </mdb-select>
+                <mdb-error *ngIf="codAula?.touched || codAula?.dirty">
+                  <span *ngIf="codAula?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input mdbInput mdbValidate type="number" class="form-control" id="numeroHoras" required
+                       formControlName="numeroHoras" [maxLength]="10" [minLength]="10">
+                <mdb-error *ngIf="numeroHoras?.dirty || numeroHoras?.touched">
+                <span *ngIf="numeroHoras?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                </mdb-error>
+                <mdb-error *ngIf="numeroHoras?.touched || numeroHoras?.dirty">
+                  <span *ngIf="numeroHoras?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input mdbInput mdbValidate type="number" class="form-control" id="notaMinima" required
+                       formControlName="notaMinima" [maxLength]="10" [minLength]="10">
+                <mdb-error *ngIf="notaMinima?.dirty || notaMinima?.touched">
+                <span *ngIf="notaMinima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                </mdb-error>
+                <mdb-error *ngIf="notaMinima?.touched || notaMinima?.dirty">
+                  <span *ngIf="notaMinima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td>
+              <mdb-form-control>
+                <input mdbInput mdbValidate type="number" class="form-control" id="notaMaxima"
+                       formControlName="notaMaxima" [maxLength]="10" [minLength]="10">
+                <mdb-error *ngIf="notaMaxima?.dirty || notaMaxima?.touched">
+                <span *ngIf="notaMaxima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                </mdb-error>
+                <mdb-error *ngIf="notaMaxima?.touched || notaMaxima?.dirty">
+                  <span *ngIf="notaMaxima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td class="text-center">
+            </td>
+            <td class="text-center">
+              <button
+                class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit" (click)="onGuardarCambios()" [disabled]="formGroup.invalid">
+                <i class="fa fa-check"></i>Agregar
+              </button>
+              <!-- Cancelar -->
+              <button
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="this.estaAgregandoItem = false; selectedItem = defaultMateriaSemestre;">
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+
+          </tr>
+          <tr *ngFor="let item of table.data;">
+            <td>
+              {{ item?.nombrePeriodo }}
+            </td>
+            <td>
+              {{ item?.nombreSemestre }}
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.nombreMateria }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <mdb-select mdbValidate id="codMateriaEditar" formControlName="codMateria" class="mb-5">
+                    <mdb-option
+                      *ngFor="let itemSemestre of materiasList" class="text-wrap"
+                      [label]="itemSemestre.nombre"
+                      [value]="itemSemestre.codMateria">
+                      {{ itemSemestre.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <mdb-error *ngIf="codMateria?.touched || codMateria?.dirty">
+                  <span *ngIf="codMateria?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.nombreAula }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <mdb-select mdbValidate id="codAulaEditar" formControlName="codAula" class="mb-5">
+                    <mdb-option
+                      *ngFor="let itemSemestre of aulaList" class="text-wrap"
+                      [label]="itemSemestre.nombreAula"
+                      [value]="itemSemestre.codAula">
+                      {{ itemSemestre.nombreAula }}
+                    </mdb-option>
+                  </mdb-select>
+                  <mdb-error *ngIf="codAula?.touched || codAula?.dirty">
+                  <span *ngIf="codAula?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.numeroHoras }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <input mdbInput mdbValidate type="number" class="form-control" id="numeroHorasEditar" required
+                         formControlName="numeroHoras" [maxLength]="10" [minLength]="10">
+                  <mdb-error *ngIf="numeroHoras?.dirty || numeroHoras?.touched">
+                <span *ngIf="numeroHoras?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                  </mdb-error>
+                  <mdb-error *ngIf="numeroHoras?.touched || numeroHoras?.dirty">
+                  <span *ngIf="numeroHoras?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.notaMinima }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <input mdbInput mdbValidate type="number" class="form-control" id="notaMinimaEditar" required
+                         formControlName="notaMinima" [maxLength]="10" [minLength]="10">
+                  <mdb-error *ngIf="notaMinima?.dirty || notaMinima?.touched">
+                <span *ngIf="notaMinima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                  </mdb-error>
+                  <mdb-error *ngIf="notaMinima?.touched || notaMinima?.dirty">
+                  <span *ngIf="notaMinima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.notaMaxima }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <input mdbInput mdbValidate type="number" class="form-control" id="notaMaximaEditar"
+                         formControlName="notaMaxima" [maxLength]="10" [minLength]="10">
+                  <mdb-error *ngIf="notaMaxima?.dirty || notaMaxima?.touched">
+                <span *ngIf="notaMaxima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                  </mdb-error>
+                  <mdb-error *ngIf="notaMaxima?.touched || notaMaxima?.dirty">
+                  <span *ngIf="notaMaxima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td class="text-center">
+                {{ item?.esProyecto ? 'Si': 'No'}}
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="!estaEditandoItem || codigoItemEditando !== item?.codMateriaSemestre">
+                <button
+                  mdbTooltip="Editar datos del instructor" class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="estaEditandoItem" (click)="onEditarRegistroInstructor(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro" class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  [disabled]="estaEditandoItem" (click)="onEliminarRegistro(item)">
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && codigoItemEditando === item.codMateriaSemestre">
+                <button
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success" type="submit" (click)="onGuardarCambios()">
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="onCancelarEdicion()">
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </div>
+</div>

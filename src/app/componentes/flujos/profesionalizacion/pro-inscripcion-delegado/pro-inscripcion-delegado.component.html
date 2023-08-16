@@ -1,0 +1,97 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Asignación de Delegados a Inscripciones </p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-8">
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Convocatoria</label>
+      <mdb-select id="semestreSelect" [(ngModel)]="selectedConvocatoria"
+                  (ngModelChange)="onSelectConvocatoriaChange()">
+        <mdb-option *ngFor="let item of convocatorias" [value]="item">
+          {{ item.nombre }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <hr/>
+
+    <div class="datatable table-editor mt-4">
+      <form>
+        <table
+          class="table table-sm datatable-table"
+          id="proyectoTbl"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="inscripciones"
+          [pagination]="pagination"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="text-wrap"
+            >
+              {{ header | titlecase }}
+            </th>
+          </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+          <tr *ngFor="let inscripcion of table.data; let index = index">
+            <td>
+              <div class="text-wrap">
+                {{ inscripcion.nombre }} {{ inscripcion.apellido }}
+              </div>
+            </td>
+            <td>
+              <div class="text-wrap">
+                {{ inscripcion.cedula }}
+              </div>
+            </td>
+            <td>
+              <div class="text-wrap">
+                {{ inscripcion.correoPersonal }}
+              </div>
+            </td>
+            <td style="min-width: 50px">
+              <mdb-select mdbValidate id="delegado" class="mb-5" [value]="obtenerValorParaSelect(inscripcion)">
+                <mdb-option
+                  (selectionChange)="onchangeInscripcionSelect($event, inscripcion)"
+                  *ngFor="let delegado of delegadosList" class="text-wrap"
+                  [value]="delegado.codDelegado">
+                  {{ delegado.nombre }} {{ delegado.apellido }}
+                </mdb-option>
+              </mdb-select>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+          (paginationChange)="onPaginationChange($event)"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<app-boton-volver></app-boton-volver>
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Listado de Inscripción de Delegado</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10 m-3">
+      <!-- Seleccionar Items from select data -->
+      <div class="col-md-12">
+        <div class="container">
+          <div class="col-md-6">
+            <label for="periodoSelect">Seleccione Convocatoria</label>
+            <mdb-select id="periodoSelect" [(ngModel)]="selectedItemConvocatoria"
+                        (ngModelChange)="onSelectChange($event)">
+              <mdb-option *ngFor="let item of listadoConvocatoria" [value]="item">
+                {{ item.nombre }}
+              </mdb-option>
+            </mdb-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="mt-4">
+    <div *ngIf="listadoAsignacion?.length === 0"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      No se encontraron inscritos
+    </div>
+    <div *ngIf="selectedItemConvocatoria!=null && selectedItemConvocatoria?.estado!=='VALIDACION'"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      La convocatoria no esta en estado de Validacion de aspirantes
+    </div>
+
+    <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm table-responsive">
+      <form>
+        <table
+          class="table datatable-table"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="listadoAsignacion"
+          [pagination]="pagination">
+          <thead class="datatable-header">
+          <tr>
+            <th *ngFor="let header of headers"
+                class="fw-bold fs-6">
+              {{ header.label | titlecase }}
+            </th>
+            <th class="text-center fw-bold fs-6">Acciones</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr *ngFor="let asignacion of table.data">
+            <td>
+              {{ asignacion.cedulaEstudiante}}
+            </td>
+            <td>
+              <div class="fw-bold">{{ asignacion.nombreEstudiante }} {{ asignacion.apellidoEstudiante }}</div>
+              <div class="text-muted">{{ asignacion.correoPersonalEstudiante }}</div>
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="!estaValidandoRequisitos">
+                <button *ngIf="selectedItemConvocatoria?.estado==='VALIDACION'"
+                        mdbTooltip="Validar Requisitos Estudiante"
+                        class="m-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        [disabled]="estaValidandoRequisitos"
+                        (click)="abrirModalValidarRequisitos(asignacion)"
+                >
+                  <i class="fa fa-user-check"></i>
+                </button>
+              </ng-container>
+            </td>
+
+          </tr>
+
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </form>
+    </div>
+  </section>
+</div>

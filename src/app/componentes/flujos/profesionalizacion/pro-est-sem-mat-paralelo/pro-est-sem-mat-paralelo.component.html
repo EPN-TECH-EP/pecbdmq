@@ -1,0 +1,34 @@
+<app-boton-volver></app-boton-volver>
+<!-- Título de componente-->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <div class="row m-3">
+        <div class="column text-center">
+          <p class="fs-4 fw-bolder">Asignación de estudiantes a paralelos</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="col-md-6">
+          <label for="semestreSelect">Seleccione un nivel</label>
+          <mdb-select id="semestreSelect" [(ngModel)]="selectedSemestre">
+            <mdb-option *ngFor="let item of semestres" [value]="item.codSemestre">
+              {{ item.semestre }}
+            </mdb-option>
+          </mdb-select>
+        </div>
+        <div class="col-md-6">
+          <label for="semestreSelect">Seleccione una materia </label>
+          <mdb-select id="materiaSelect" [(ngModel)]="selectedMateria">
+            <mdb-option *ngFor="let item of materias" [value]="item.codMateria">
+              {{ item.nombre }}
+            </mdb-option>
+          </mdb-select>
+        </div>
+      </div>
+
+      <app-assign-data [type]="type" title="Estudiantes" [overrideGetListItems]="overrideFnList"></app-assign-data>
+    </div>
+  </div>
+</div>

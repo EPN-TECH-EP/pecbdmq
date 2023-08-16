@@ -149,4 +149,9 @@ export class EstudianteService {
   esEstudiante(nombreUsuario: string) {
     return this.http.post<Estudiante>(`${ this.host }/estudiante/esEstudiante/${ nombreUsuario }`, {});
   }
+
+  getEstudianteByUser(user: number) {
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUser?codUsuario=${ user }`);
+  }
+  
 }

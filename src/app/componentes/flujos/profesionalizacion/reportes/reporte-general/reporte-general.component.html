@@ -1,0 +1,87 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Listado Materias por Nivel/Cohorte</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-8">
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Cohorte</label>
+      <mdb-select id="periodoSelect" [(ngModel)]="selectedPeriodo"
+                  (ngModelChange)="onSelectPeriodoChange()">
+        <mdb-option *ngFor="let item of periodos" [value]="item">
+          {{ item.nombrePeriodo }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Nivel</label>
+      <mdb-select id="semestreSelect" [(ngModel)]="selectedSemestre"
+                  (ngModelChange)="onSelectSemestreoChange()">
+        <mdb-option *ngFor="let item of semestres" [value]="item">
+          {{ item.semestre }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <hr/>
+
+    <div class="datatable table-editor mt-4">
+      <div class='exportExcel' *ngIf="listado?.length>0">
+        <button class="btn btn-primary" (click)="onClickMe()"><i class="fa fa-file-excel"></i> Descargar</button>
+      </div>
+      <form>
+        <table
+          class="table table-sm datatable-table"
+          id="proyectoTbl"
+          mdbTable
+          mdbTableSort
+          #table="mdbTable"
+          [dataSource]="listado"
+          [pagination]="pagination">
+          <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              [mdbTableSortHeader]="header"
+              scope="col"
+              class="text-wrap">
+              {{ header | titlecase }}
+            </th>
+          </tr>
+          </thead>
+
+          <tbody class="datatable-body">
+          <tr *ngFor="let materiaSemestreDto of table.data; let index = index">
+            <td>{{materiaSemestreDto.nombrePeriodo}}</td>
+            <td>{{materiaSemestreDto.nombreSemestre}}</td>
+            <td>{{materiaSemestreDto.nombreMateria}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #pagination
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+          (paginationChange)="onPaginationChange($event)"></mdb-table-pagination>
+      </form>
+
+    </div>
+  </div>
+</div>

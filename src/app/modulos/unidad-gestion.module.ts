@@ -10,6 +10,7 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CambiosPendientesGuard } from '../guard/cambios-pendientes.guard';
 import {PrincipalModuleModule} from "./principal-module/principal-module.module";
 import {MdbTooltipModule} from "mdb-angular-ui-kit/tooltip";
+import { UtilModule } from '../componentes/util/util.module';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import {MdbTooltipModule} from "mdb-angular-ui-kit/tooltip";
         MdbFormsModule,
         PrincipalModuleModule,
         MdbTooltipModule,
+        UtilModule
     ],
   declarations: [UnidadGestionComponent],
   providers: [CambiosPendientesGuard]

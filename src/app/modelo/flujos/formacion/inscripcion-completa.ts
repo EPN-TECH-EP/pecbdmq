@@ -2,6 +2,7 @@ import {DocumentoFormacion} from "./documento";
 
 export interface InscripcionCompleta {
   apellido:                   string;
+  codInscripcion:             number;
   callePrincipalResidencia:   string;
   calleSecundariaResidencia:  string;
   cantonNacimiento:           string;
@@ -15,6 +16,7 @@ export interface InscripcionCompleta {
   edadPostulacion:            number;
   fechaNacimiento:            Date;
   fechaPostulacion:           Date;
+  fechaInscripcion:           Date;
   idPostulante:               string;
   meritoAcademicoDescripcion: string;
   meritoDeportivoDescripcion: string;

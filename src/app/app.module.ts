@@ -263,6 +263,8 @@ import { MenuReportesEspComponent } from './componentes/flujos/especializacion/m
 import { CursosCerradosComponent } from './componentes/flujos/especializacion/cursos-cerrados/cursos-cerrados.component';
 import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component';
 import { EditarCursoComponent } from './componentes/flujos/especializacion/editar-curso/editar-curso.component';
+import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacion/profesionalizacion.module';
+import { UtilModule } from './componentes/util/util.module';
 
 
 @NgModule({
@@ -288,7 +290,6 @@ import { EditarCursoComponent } from './componentes/flujos/especializacion/edita
     TipoBajaComponent,
     TipoFaltaComponent,
     PopconfirmComponent,
-    MenuProfesionalizacionComponent,
     MenuFormacionComponent,
     MenuAdminComponent,
     BienvenidaComponent,
@@ -304,13 +305,13 @@ import { EditarCursoComponent } from './componentes/flujos/especializacion/edita
     CatalogoEstadosComponent,
     ConvocatoriaComponent,
     RequisitoComponent,
-    MenuItemComponent,
+    //MenuItemComponent,
     EstadoPeriodoAcademicoComponent,
     InscripcionComponent,
     RolComponent,
     MenuRolComponent,
     ProcesoEspecializacionComponent,
-    ProcesoProfesionalizacionComponent,
+    //ProcesoProfesionalizacionComponent,
     ProcesoFormacionComponent,
     InputValidationDirective,
     PerfilComponent,
@@ -327,7 +328,7 @@ import { EditarCursoComponent } from './componentes/flujos/especializacion/edita
     MenuFormacionAcademiaComponent,
     FaGestionDocumentosComponent,
     InstructoresComponent,
-    BusquedaUsuarioComponent,
+    //BusquedaUsuarioComponent,
     MateriasComponent,
     PruebasComponent,
     SubtipoPruebaComponent,
@@ -428,6 +429,8 @@ import { EditarCursoComponent } from './componentes/flujos/especializacion/edita
     MdbMultiRangeModule,
     //
     PrincipalModuleModule,
+    ProfesionalizacionModule,
+    UtilModule,
   ],
   providers: [
     AutenticacionGuard,

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Submenu } from 'src/app/modelo/util/submenu';
-import { MenuService } from 'src/app/servicios/menu.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Submenu} from 'src/app/modelo/util/submenu';
+import {MenuService} from 'src/app/servicios/menu.service';
 
 @Component({
   selector: 'app-menu-profesionalizacion',

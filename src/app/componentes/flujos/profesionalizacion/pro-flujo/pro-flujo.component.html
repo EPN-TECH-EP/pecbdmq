@@ -1,0 +1,127 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Flujo de las convocatorias </p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-8">
+
+    <div class="col-md-12 ">
+      <label for="semestreSelect">Convocatoria</label>
+      <mdb-select id="semestreSelect" [(ngModel)]="selectedPeriodo"
+                  (ngModelChange)="onSelectPeriodoChange()">
+        <mdb-option *ngFor="let item of periodos" [value]="item">
+          {{ item.nombrePeriodo }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="col-md-12 ">
+      <mdb-stepper #stepper [linear]="true" [stepperHeadClick]="false">
+        <mdb-step [stepForm]="form" [name]="'Convocatoria'">
+          <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
+          <div *ngIf="selectedConvocatoria!= null">
+            La convocatoria "{{ selectedConvocatoria?.codigoUnicoConvocatoria}}" se encuentra en estado:
+            <b>{{ selectedConvocatoria?.estado }}</b>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button *ngIf="selectedConvocatoria!= null"
+                    id="next-step-1"
+                    class="btn btn-primary"
+                    (click)="siguientepaso1()">
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+        <mdb-step [stepForm]="form" [name]="'Inscripción'">
+          <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
+          <div>
+            La convocatoria "{{ selectedConvocatoria?.codigoUnicoConvocatoria}}" se encuentra en estado:
+            <b>{{ selectedConvocatoria?.estado }}</b>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-2"
+              class="btn btn-primary"
+              (click)="anteriorPaso2()">
+              Anterior
+            </button>
+            <button
+              id="next-step-2"
+              class="btn btn-primary"
+              (click)="siguientepaso2()">
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+        <mdb-step [stepForm]="form" [name]="'Validación'">
+          <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
+          <div>
+            La convocatoria "{{ selectedConvocatoria?.codigoUnicoConvocatoria}}" se encuentra en estado:
+            <b>{{ selectedConvocatoria?.estado }}</b>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-4"
+              class="btn btn-primary"
+              (click)="anteriorPaso3()">
+              Anterior
+            </button>
+            <button
+              id="next-step-4"
+              class="btn btn-primary"
+              (click)="siguientepaso3()">
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+        <mdb-step [stepForm]="form" [name]="'Registro de Notas'">
+          <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
+          <div>
+            La convocatoria "{{ selectedConvocatoria?.codigoUnicoConvocatoria}}" se encuentra en estado:
+            <b>{{ selectedConvocatoria?.estado }}</b>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-5"
+              class="btn btn-primary"
+              (click)="anteriorPaso4()">
+              Anterior
+            </button>
+            <button
+              id="next-step-5"
+              class="btn btn-primary"
+              (click)="siguientepaso4()">
+              Siguiente
+            </button>
+          </div>
+        </mdb-step>
+        <mdb-step [stepForm]="form" [name]="'Graduación'">
+          <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
+          <div>
+            La convocatoria "{{ selectedConvocatoria?.codigoUnicoConvocatoria}}" se encuentra en estado:
+            <b>{{ selectedConvocatoria?.estado }}</b>
+          </div>
+          <div class="d-md-flex gap-5 d-md-block justify-content-center">
+            <button
+              id="previous-step-6"
+              class="btn btn-primary"
+              (click)="anteriorPaso5()">
+              Anterior
+            </button>
+            <button *ngIf="selectedConvocatoria?.estado!='FINALIZADO'"
+                    id="next-step-6"
+                    class="btn btn-primary"
+                    (click)="siguientepaso5()">
+              Finalizar
+            </button>
+          </div>
+        </mdb-step>
+      </mdb-stepper>
+    </div>
+
+  </div>
+</div>
