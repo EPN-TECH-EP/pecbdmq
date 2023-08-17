@@ -9,7 +9,7 @@ import {
   ProNotaProfesionalizacionDto
 } from "../../../../../modelo/flujos/profesionalizacion/pro-nota-profesionalizacion-general.models";
 import {ProNotaService} from "../../../../../servicios/profesionalizacion/pro-nota.service";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 
 
 @Component({

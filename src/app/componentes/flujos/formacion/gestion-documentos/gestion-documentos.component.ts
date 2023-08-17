@@ -78,7 +78,7 @@ export class GestionDocumentosComponent extends ComponenteBase implements OnInit
     this.documentosService.descargar(documento.codDocumento).subscribe(
       {
         next: (data) => {
-          const blob = new Blob([data], {type: 'application/pdf'});
+          const blob = new Blob([data]/*, {type: 'application/pdf'}*/);
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
