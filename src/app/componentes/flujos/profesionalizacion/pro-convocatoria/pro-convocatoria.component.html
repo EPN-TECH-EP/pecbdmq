@@ -259,7 +259,7 @@
                 <button
                   id="next-step-2"
                   class="btn btn-primary col-4"
-                  (click)="stepper.next()"
+                  (click)="stepper.next(); fijarNombreCohorte()"
                   [disabled]="form.invalid"
                 >
                   Siguiente
@@ -400,7 +400,7 @@
         <hr/>
         <div class="row">
           <div class="col-md-12">
-            <p><b>Semestre: </b> {{ selectedData?.semestre?.semestre }}</p>
+            <p><b>Cohorte: </b> {{ nombrePeriodo }}</p>
           </div>          <hr/>
           <div class="col-md-6">
             <p><b>Código Único: </b> {{ codigoUnicoConvocatoria }}</p>

@@ -16,7 +16,7 @@ import {FormacionService} from '../../../../servicios/formacion/formacion.servic
 import {PROFESIONALIZACION} from '../../../../util/constantes/profesionalizacion.const';
 import {ComponenteBase} from '../../../../util/componente-base';
 import {catchError, finalize} from 'rxjs/operators';
-import {forkJoin, of, switchMap} from 'rxjs';
+import {forkJoin, from, of, switchMap} from 'rxjs';
 import {DocumentosService} from '../../../../servicios/formacion/documentos.service';
 import {Router} from '@angular/router';
 import {ProConvocatoriaService} from '../../../../servicios/profesionalizacion/pro-convocatoria.service';
@@ -54,6 +54,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   convocatoria: ProConvocatoria;
   fechaActual: Date;
   codigoUnicoConvocatoria: string;
+  nombrePeriodo: string;
   minDate: Date;
   existeProcesoActivo: boolean;
   tieneEstadoConvocatoria: boolean;
@@ -104,7 +105,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 1);
     this.codigoUnicoConvocatoria = '';
-
+    this.nombrePeriodo = '';
   }
 
   ngOnInit() {
@@ -169,7 +170,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
         });
       }
 
-      if (customResponse.mensaje === PROFESIONALIZACION.SIN_PERIODO) this.handleNotFoundConvocatoria();
+      if (customResponse.mensaje === PROFESIONALIZACION.SIN_PERIODO || customResponse.mensaje === PROFESIONALIZACION.INACTIVO) this.handleNotFoundConvocatoria();
     });
   }
 
@@ -396,7 +397,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     forkJoin(requests)
       .pipe(finalize(() => this.reloadPage()))
       .subscribe(responses => {
-        console.log(responses)
+        this.onEnviarNotificacion();
       });
   }
 
@@ -443,6 +444,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   private successUpdated() {
+    this.onEnviarNotificacion();
     Notificacion.notificacionOK(
       this.notificationRef,
       this.notificationServiceLocal,
@@ -451,5 +453,13 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.seCreoConExito = true;
     this.showLoading = false;
     this.reloadPage();
+  }
+
+  fijarNombreCohorte() {
+    this.nombrePeriodo = this.periodos.find(periodo => periodo.codigoPeriodo === this.form.get('codPeriodo').value).nombrePeriodo;
+  }
+
+  private onEnviarNotificacion() {
+    const notificationObservable = this.proConvocatoriaService.enviarNotificacion(this.convocatoria.codigo);
   }
 }
