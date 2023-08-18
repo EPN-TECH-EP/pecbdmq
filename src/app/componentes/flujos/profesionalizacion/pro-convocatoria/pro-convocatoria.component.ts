@@ -13,7 +13,7 @@ import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 import {ArchivoService} from '../../../../servicios/archivo.service';
 import {MyValidators} from '../../../../util/validators';
 import {FormacionService} from '../../../../servicios/formacion/formacion.service';
-import {FORMACION} from '../../../../util/constantes/fomacion.const';
+import {PROFESIONALIZACION} from '../../../../util/constantes/profesionalizacion.const';
 import {ComponenteBase} from '../../../../util/componente-base';
 import {catchError, finalize} from 'rxjs/operators';
 import {forkJoin, of, switchMap} from 'rxjs';
@@ -121,7 +121,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),
     ).pipe(switchMap((periodos) => {
         this.periodos = periodos;
-        return this.formacionService.getEstadoActual();
+        return this.proConvocatoriaService.getEstadoActual();
       }),
       catchError((errorResponse: HttpErrorResponse) => {
         Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
@@ -129,7 +129,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),).subscribe((response) => {
 
       const customResponse: CustomHttpResponse = response;
-
+      console.log(customResponse);
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.ocurrioErrorInicioProceso = true;
         return;
@@ -137,7 +137,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
       this.existeProcesoActivo = true;
 
-      if (customResponse.mensaje === FORMACION.estadoConvocatoria) {
+      if (customResponse.mensaje === PROFESIONALIZACION.ACTIVO) {
         this.tieneEstadoConvocatoria = true;
         this.estaCreando = false;
         this.proConvocatoriaService.getConvocatoriaActiva().subscribe({
@@ -169,7 +169,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
         });
       }
 
-      if (customResponse.mensaje === FORMACION.estadoInicial) this.handleNotFoundConvocatoria();
+      if (customResponse.mensaje === PROFESIONALIZACION.SIN_PERIODO) this.handleNotFoundConvocatoria();
     });
   }
 
@@ -372,6 +372,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   private handleNotFoundConvocatoria() {
+    console.log('Aquí');
     this.existeProcesoActivo = false;
     this.estaCreando = true;
 

@@ -52,4 +52,8 @@ export class ProConvocatoriaService {
     return this.http.post<ProConvocatoria>(`${this.host}/proConvocatoria/${convocatoria}/actualizaEstado`,estado);
   }
 
+  getEstadoActual(): Observable<CustomHttpResponse> {
+    return this.http.get<CustomHttpResponse>(`${ this.host }/proConvocatoria/validaEstado`);
+  }
+
 }

@@ -4,7 +4,7 @@
   <div class="alert alert-danger mt-3" role="alert">
     <h4 class="alert-heading">Error al iniciar el proceso</h4>
     <p>
-      No se pudo iniciar el proceso de formación, por favor intente de nuevo.
+      No se pudo iniciar el proceso de profesionalización, por favor intente de nuevo.
     </p>
     <hr/>
     <p class="mb-0">
@@ -17,9 +17,9 @@
 <ng-container *ngIf="!tieneEstadoConvocatoria && existeProcesoActivo">
   <div class="card rounded-7 mt-3">
     <div class="card-body">
-      <h5 class="card-title text-primary">Proceso de Formación abierto</h5>
+      <h5 class="card-title text-primary">Proceso de Profesionalización abierto</h5>
       <p class="card-text">
-        Existe un proceso de formación que está en curso, por lo que no se puede
+        Existe un proceso de profesionalización que está en curso, por lo que no se puede
         crear una nueva convocatoria.
       </p>
     </div>
@@ -30,9 +30,9 @@
   <div class="col-md-10">
     <div *ngIf="!estaCreando" class="card rounded-7 my-4">
       <div class="card-body">
-        <h5 class="card-title text-primary">Proceso de Formación abierto</h5>
+        <h5 class="card-title text-primary">Proceso de Profesionalización abierto</h5>
         <p class="card-text">
-          Existe un proceso de formación ya creado, por lo que solo
+          Existe un proceso de profesionalización ya creado, por lo que solo
           se puede <b>actualizar</b> la convocatoria.
         </p>
       </div>
