@@ -49,6 +49,7 @@ export class AutenticacionService {
     localStorage.removeItem('usuario');
     localStorage.removeItem('token');
     localStorage.removeItem('Usuarios');
+    localStorage.removeItem('data');
   }
 
   public guardaToken(token: string): void {

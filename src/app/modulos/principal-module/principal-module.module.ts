@@ -206,6 +206,22 @@ import {
 } from "../../componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component";
 import {EditarCursoComponent} from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
 import { UtilModule } from '../../componentes/util/util.module';
+import {
+  MenuAdmProComponent
+} from "../../componentes/flujos/profesionalizacion/menus/menu-adm-pro/menu-adm-pro.component";
+import {
+  MenuConvocatoriaProComponent
+} from "../../componentes/flujos/profesionalizacion/menus/menu-convocatoria-pro/menu-convocatoria-pro.component";
+import {
+  MenuRegistroNotasProComponent
+} from "../../componentes/flujos/profesionalizacion/menus/menu-registro-notas-pro/menu-registro-notas-pro.component";
+import {
+  MenuReportesProComponent
+} from "../../componentes/flujos/profesionalizacion/menus/menu-reportes-pro/menu-reportes-pro.component";
+import {
+  MenuValidacionProComponent
+} from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
+import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
 
 
 const routes: Routes = [
@@ -327,6 +343,15 @@ const routes: Routes = [
       { path: 'especializacion/menu-notas', component: MenuNotasComponent },
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
       { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
+
+
+      /* Profesionalizacion */
+      { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},
+      { path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent},
+      { path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent},
+      { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent},
+      { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
+      { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent},
 
     ],
   },
