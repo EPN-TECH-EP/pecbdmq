@@ -97,6 +97,11 @@ import { ProFlujoComponent } from './pro-flujo/pro-flujo.component';
 import { ReporteGeneralComponent } from './reportes/reporte-general/reporte-general.component';
 import { ReporteNotasComponent } from './reportes/reporte-notas/reporte-notas.component';
 import { UtilModule } from '../../util/util.module';
+import { MenuAdmProComponent } from './menus/menu-adm-pro/menu-adm-pro.component';
+import { MenuConvocatoriaProComponent } from './menus/menu-convocatoria-pro/menu-convocatoria-pro.component';
+import { MenuRegistroNotasProComponent } from './menus/menu-registro-notas-pro/menu-registro-notas-pro.component';
+import { MenuValidacionProComponent } from './menus/menu-validacion-pro/menu-validacion-pro.component';
+import { MenuReportesProComponent } from './menus/menu-reportes-pro/menu-reportes-pro.component';
 
 
 @NgModule({
@@ -138,7 +143,12 @@ import { UtilModule } from '../../util/util.module';
     ProListadoInscripcionDelegadoComponent,
     ProFlujoComponent,
     ReporteGeneralComponent,
-    ReporteNotasComponent
+    ReporteNotasComponent,
+    MenuAdmProComponent,
+    MenuConvocatoriaProComponent,
+    MenuRegistroNotasProComponent,
+    MenuValidacionProComponent,
+    MenuReportesProComponent
   ],
   imports: [
     CommonModule,
