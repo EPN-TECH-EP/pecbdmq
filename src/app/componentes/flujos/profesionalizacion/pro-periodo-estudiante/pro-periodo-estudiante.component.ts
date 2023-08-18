@@ -173,17 +173,11 @@ export class ProPeriodoEstudianteComponent implements OnInit {
       this.existenCoincidencias = false;
       this.usuarios = [];
       return;
-    }
-    if (usuario.codPeriodo == this.selectedItemPeriodo) {
+    } else {
       this.usuarios[0] = usuario;
       this.usuarios.splice(1);
       this.existenCoincidencias = true;
-    } else {
-      this.existenCoincidencias = false;
-      this.usuarios = [];
-      return;
     }
-
   }
 
   estudiantesEncontrados(usuarios: UsuarioDatoPersonalDto[]) {
