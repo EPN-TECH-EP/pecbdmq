@@ -150,8 +150,8 @@ export class EstudianteService {
     return this.http.post<Estudiante>(`${ this.host }/estudiante/esEstudiante/${ nombreUsuario }`, {});
   }
 
-  getEstudianteByUser(user: string) {
-    return this.http.get<Estudiante>(`${ this.host }/estudiante/ByUser?codUsuario=${ user }`);
+  getEstudianteByUser(user: number) {
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUser?codUsuario=${ user }`);
   }
   
 }

@@ -310,7 +310,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   private getEstudiante() {
-    this.estudianteService.getEstudianteByUser(this.userData.nombreUsuario).subscribe({
+    this.estudianteService.getEstudianteByUser(this.userData.codUsuario).subscribe({
       next: (resp) => {
         this.userData.codEstudiante = resp.codEstudiante;
       },
