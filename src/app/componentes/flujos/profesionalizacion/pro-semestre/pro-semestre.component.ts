@@ -55,11 +55,17 @@ export class ProSemestreComponent extends ComponenteBase implements OnInit {
     this.semestre = {
       codSemestre: 0,
       semestre: '',
+      fechaFinSemestre: new Date(),
+      fechaInicioSemestre: new Date(),
+      descripcion: '',
       estado: 'ACTIVO'
     }
     this.semestreEditForm = {
       codSemestre: 0,
       semestre: '',
+      fechaFinSemestre: new Date(),
+      fechaInicioSemestre: new Date(),
+      descripcion: '',
       estado: 'ACTIVO'
     };
   }
@@ -99,6 +105,7 @@ export class ProSemestreComponent extends ComponenteBase implements OnInit {
   editRow(index: number) {
     this.editElementIndex = index;
     this.semestreEditForm = {...this.semestres[index]};
+    console.log(this.semestreEditForm);
   }
 
   undoRow() {
@@ -127,6 +134,8 @@ export class ProSemestreComponent extends ComponenteBase implements OnInit {
       this.errorNotification('Todos los campos son obligatorios');
       return;
     }
+
+    console.log(semestre);
 
 
     this.showLoading = true;
