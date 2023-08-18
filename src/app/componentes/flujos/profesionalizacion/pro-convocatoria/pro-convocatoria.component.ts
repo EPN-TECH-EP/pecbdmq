@@ -129,7 +129,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),).subscribe((response) => {
 
       const customResponse: CustomHttpResponse = response;
-      console.log(customResponse);
+      
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.ocurrioErrorInicioProceso = true;
         return;

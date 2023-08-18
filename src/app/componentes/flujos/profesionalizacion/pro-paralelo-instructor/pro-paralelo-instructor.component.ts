@@ -50,7 +50,7 @@ export class ProParaleloInstructorComponent implements OnInit {
 
   headers: { key: string, label: string }[];
   formGroup: FormGroup;
-  S
+  
   codigoItemEditando: number;
   estaEditandoItem: boolean;
   estaAgregandoItem: boolean;
@@ -66,7 +66,7 @@ export class ProParaleloInstructorComponent implements OnInit {
   seletedItemMateria: ProMateriaSemestreDto;
   seletedItemParalelo: number;
   tipoMateriaLabel: TipoMateria = TipoMateria.Materia;
-  public shouldRender = true;
+  public shouldRender = false;
 
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
 
@@ -236,6 +236,7 @@ export class ProParaleloInstructorComponent implements OnInit {
     this.proParaleloInstructorService.getAllByCodMateriaParalelo(this.seletedItemParalelo).subscribe({
       next: (result) => {
         this.listadoAsignacion = result;
+        this.shouldRender = true;
       }
     });
   }
