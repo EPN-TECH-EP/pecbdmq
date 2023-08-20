@@ -58,19 +58,6 @@
           <tr *ngIf="addRow">
             <td>
               <mdb-form-control>
-                <input
-                  formControlName="nombreCatalogo"
-                  mdbInput="mdbInput"
-                  id="nombreCatalogo"
-                  name="nombreCatalogo"
-                  type="text"
-                  class="form-control"
-                  required
-                />
-              </mdb-form-control>
-            </td>
-            <td>
-              <mdb-form-control>
                 <mdb-select mdbValidate id="codigo" formControlName="codigoTipoProyecto" class="mb-5">
                   <mdb-option
                     *ngFor="let itemTipoProyecto of tipoProyectoList" class="text-wrap"
@@ -87,6 +74,21 @@
                 <!--                </mdb-error>-->
               </mdb-form-control>
             </td>
+            
+            <td>
+              <mdb-form-control>
+                <input
+                  formControlName="nombreCatalogo"
+                  mdbInput="mdbInput"
+                  id="nombreCatalogo"
+                  name="nombreCatalogo"
+                  type="text"
+                  class="form-control"
+                  required
+                />
+              </mdb-form-control>
+            </td>
+            
             <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
@@ -107,27 +109,6 @@
           </tr>
 
           <tr *ngFor="let proyecto of table.data; let index = index">
-            <td style="min-width: 50px">
-              <ng-container *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo">
-                <div class="text-wrap">
-                  {{ proyecto.nombreCatalogo }}
-                </div>
-              </ng-container>
-              <ng-container *ngIf="estaEditando && codigoProyectoEditando === proyecto.codigo">
-                <mdb-form-control>
-                  <input
-                    mdbInput
-                    formControlName="nombreCatalogo"
-                    id="nombreCatalogoedit"
-                    name="nombreCatalogo"
-                    type="text"
-                    class="form-control"
-                    required
-                  />
-                </mdb-form-control>
-              </ng-container>
-            </td>
-
             <td>
               <ng-container *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo">
                 <div class="text-wrap">
@@ -150,6 +131,27 @@
                   <!--                    Este campo es requerido-->
                   <!--                  </span>-->
                   <!--                </mdb-error>-->
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 50px">
+              <ng-container *ngIf="!estaEditando || codigoProyectoEditando !== proyecto.codigo">
+                <div class="text-wrap">
+                  {{ proyecto.nombreCatalogo }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="estaEditando && codigoProyectoEditando === proyecto.codigo">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    formControlName="nombreCatalogo"
+                    id="nombreCatalogoedit"
+                    name="nombreCatalogo"
+                    type="text"
+                    class="form-control"
+                    required
+                  />
                 </mdb-form-control>
               </ng-container>
             </td>

@@ -40,7 +40,7 @@ export class FormacionHistoricoService {
   esEstudiante(codUsuario: string) {
     const params = new HttpParams()
       .set('codUsuario', codUsuario);
-    return this.http.get<Estudiante>(`${ this.host }/estudiante/ByUser`, { params });
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUser`, { params });
 
   }
 
