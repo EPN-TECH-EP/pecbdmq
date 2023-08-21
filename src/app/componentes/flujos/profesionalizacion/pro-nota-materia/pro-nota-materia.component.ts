@@ -214,10 +214,10 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
 
       if (customResponse.mensaje !== PROFESIONALIZACION.REGISTRO_NOTAS) {
         this.noHayConvocatoria = false;
-        return;
       }
     });
     
+    this.noHayConvocatoria = true;
     this.cargaArchivoService.maxArchivo().subscribe({
       next: (result) => {
         this.tamMaxArchivo = result;
