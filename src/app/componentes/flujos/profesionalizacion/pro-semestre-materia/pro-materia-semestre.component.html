@@ -188,7 +188,7 @@
             <td>
               {{ item?.nombreSemestre }}
             </td>
-            <td>
+            <td style="min-width: 250px; max-width: 250px">
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.nombreMateria }}
               </ng-container>
@@ -211,7 +211,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td style="min-width: 220px; max-width: 220px">
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.nombreAula }}
               </ng-container>
@@ -234,7 +234,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.numeroHoras }}
               </ng-container>
@@ -257,7 +257,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.notaMinima }}
               </ng-container>
@@ -280,7 +280,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.notaMaxima }}
               </ng-container>
@@ -303,7 +303,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td class="text-center">
+            <td class="text-center" style="min-width: 60px; max-width: 60px">
                 {{ item?.esProyecto ? 'Si': 'No'}}
             </td>
             <td class="text-center">

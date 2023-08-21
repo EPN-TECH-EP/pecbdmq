@@ -127,6 +127,13 @@ export class ProPeriodoSemestreComponent extends ComponenteBase implements OnIni
           this.notificationServiceLocal,
           'Asignación actualizada con éxito'
         );
+      },
+      error: err => {
+        Notificacion.notificacion(
+          this.notificationRef,
+          this.notificationServiceLocal,
+          err
+        );
       }
     })
   }
