@@ -243,7 +243,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.fechaNacimiento = this.fechaNacimientoField.value;
     this.inscripcion.estado = 'ACTIVO';
 
-    this.mensajeConfirmacion = '¿Deseas inscribirte a profesionalización?';
+    this.mensajeConfirmacion = '¿Deseas inscribirte a TSCIOR?';
     super.openPopconfirm(event, this.crearInscripcion.bind(this));
   }
 
