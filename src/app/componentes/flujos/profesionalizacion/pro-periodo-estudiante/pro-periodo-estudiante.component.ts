@@ -172,15 +172,17 @@ export class ProPeriodoEstudianteComponent implements OnInit {
       console.log('no hay usuario');
       this.existenCoincidencias = false;
       this.usuarios = [];
-      return;
     } else {
-      this.usuarios[0] = usuario;
-      this.usuarios.splice(1);
+      if (usuario.codPeriodo == this.selectedItemPeriodo){
+        this.usuarios[0] = usuario;
+        this.usuarios.splice(1);
+      }
       this.existenCoincidencias = true;
     }
   }
 
   estudiantesEncontrados(usuarios: UsuarioDatoPersonalDto[]) {
+    console.log(this.selectedItemPeriodo);
     const temp =[];
     usuarios.forEach(value => {
       if (value.codPeriodo == this.selectedItemPeriodo){
@@ -188,6 +190,7 @@ export class ProPeriodoEstudianteComponent implements OnInit {
       }
     })
     this.usuarios = temp;
+    console.log(this.usuarios);
     this.existenCoincidencias = true;
   }
 

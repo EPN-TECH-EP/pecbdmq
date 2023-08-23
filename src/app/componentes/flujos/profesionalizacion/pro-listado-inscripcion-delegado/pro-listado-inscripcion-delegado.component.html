@@ -1,7 +1,7 @@
 <app-boton-volver></app-boton-volver>
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Listado de Inscripción de Delegado</p>
+    <p class="fs-4 fw-bolder">Listado de inscripción de delegado</p>
   </div>
 </div>
 <div class="container">
@@ -11,7 +11,7 @@
       <div class="col-md-12">
         <div class="container">
           <div class="col-md-6">
-            <label for="periodoSelect">Seleccione Convocatoria</label>
+            <label for="periodoSelect">Seleccione convocatoria</label>
             <mdb-select id="periodoSelect" [(ngModel)]="selectedItemConvocatoria"
                         (ngModelChange)="onSelectChange($event)">
               <mdb-option *ngFor="let item of listadoConvocatoria" [value]="item">

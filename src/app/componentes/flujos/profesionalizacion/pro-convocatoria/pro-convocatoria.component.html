@@ -17,7 +17,7 @@
 <ng-container *ngIf="!tieneEstadoConvocatoria && existeProcesoActivo">
   <div class="card rounded-7 mt-3">
     <div class="card-body">
-      <h5 class="card-title text-primary">Proceso de Profesionalización abierto</h5>
+      <h5 class="card-title text-primary">Proceso de profesionalización abierto</h5>
       <p class="card-text">
         Existe un proceso de profesionalización que está en curso, por lo que no se puede
         crear una nueva convocatoria.
@@ -31,7 +31,7 @@
   <div class="col-md-10">
     <div *ngIf="!estaCreando" class="card rounded-7 my-4">
       <div class="card-body">
-        <h5 class="card-title text-primary">Proceso de Profesionalización abierto</h5>
+        <h5 class="card-title text-primary">Proceso de profesionalización abierto</h5>
         <p class="card-text">
           Existe un proceso de profesionalización ya creado, por lo que solo
           se puede <b>actualizar</b> la convocatoria.
@@ -42,7 +42,7 @@
       <!-- PASO UNO -->
       <mdb-step
         [stepForm]="form"
-        [name]="'Crear Convocatoria'"
+        [name]="'Crear convocatoria'"
       >
         <ng-template mdbStepIcon><i class="fas fa-user"></i></ng-template>
         <div>
