@@ -30,7 +30,7 @@ export class ReporteNotasComponent implements OnInit {
   listado: ProNotaProfesionalizacionDto[];
   @ViewChild('table') table!: MdbTableDirective<ProPeriodo>;
   headers = [
-    'Cohorte',
+    'Promoción',
     'Nivel',
     'Materia',
     'Paralelo/Proyecto',

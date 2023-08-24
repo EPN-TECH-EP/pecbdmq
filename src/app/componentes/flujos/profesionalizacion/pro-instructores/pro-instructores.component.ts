@@ -102,7 +102,7 @@ export class ProInstructoresComponent extends ComponenteBase implements OnInit {
         this.unidadesGestion = unidadesGestion;
       },
       error: () => {
-        console.error('error al listar unidades de gesti�n');
+        console.error('error al listar unidades de gestión');
       }
     })
     this.estacionTrabajoService.listar().subscribe({

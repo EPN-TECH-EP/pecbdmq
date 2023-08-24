@@ -43,7 +43,7 @@ export class ProPeriodoSemestreComponent extends ComponenteBase implements OnIni
 
     super(notificationServiceLocal, popconfirmServiceLocal);
     this.headers = [
-      {key: 'nombrePeriodo', label: 'Cohorte'},
+      {key: 'nombrePeriodo', label: 'Promoción'},
       {key: 'nombreSemestre', label: 'Nivel'},
 
     ]

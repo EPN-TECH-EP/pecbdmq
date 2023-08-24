@@ -52,7 +52,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       estado: '',
       nombreAula: '',
       capacidad: '' as any,
-      tipo: '' as any,
+      tipoAula: '' as any,
       pcs: '',
       impresoras: '',
       internet: '',
@@ -65,7 +65,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       estado: '',
       nombreAula: '',
       capacidad: '' as any,
-      tipo: '' as any,
+      tipoAula: '' as any,
       pcs: '',
       impresoras: '',
       internet: '',
@@ -107,7 +107,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
     if (
       aula.nombreAula == '' ||
       ValidacionUtil.isNullOrEmptyNumber(aula.capacidad) ||
-      aula.tipo == 0
+      aula.tipoAula == 0
     ) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
@@ -127,7 +127,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
             estado: '',
             nombreAula: '',
             capacidad: '' as any,
-            tipo: '' as any,
+            tipoAula: '' as any,
             pcs: '',
             impresoras: '',
             internet: '',
@@ -155,7 +155,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       estado: '',
       nombreAula: '',
       capacidad: '' as any,
-      tipo: '' as any,
+      tipoAula: '' as any,
       pcs: '',
       impresoras: '',
       internet: '',
@@ -180,7 +180,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
       ...aula,
       nombreAula: formValue.nombre,
       capacidad: formValue.capacidad,
-      tipo: formValue.tipo,
+      tipoAula: formValue.tipo,
       pcs: formValue.pcs,
       impresoras: formValue.impresoras,
       internet: formValue.internet,
