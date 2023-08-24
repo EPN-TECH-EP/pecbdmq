@@ -205,6 +205,9 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     convocatoria.fechaInicio = fechaInicioOriginal;
     convocatoria.fechaFin = fechaFinOriginal;
 
+    this.onDataSelectChange(convocatoria.codigoParametro, 'msj1');
+    this.onDataSelectChange(convocatoria.codigoParametro2, 'msj2');
+
     this.form.patchValue({
       codigoParametro: convocatoria?.codigoParametro,
       codigoParametro2: convocatoria?.codigoParametro2,
