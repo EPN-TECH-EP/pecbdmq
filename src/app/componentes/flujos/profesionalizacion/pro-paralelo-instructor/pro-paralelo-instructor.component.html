@@ -70,7 +70,7 @@
 
         <div class="row justify-content-center">
             <div class="col-10">.
-                <button class="btn btn-primary mb-1" (click)="onAgregarItem()" *ngIf="listadoAsignacion.length<1 && seletedItemParalelo != null">
+                <button class="btn btn-primary mb-1" (click)="onAgregarItem()" *ngIf="seletedItemParalelo != null">
                     <i class="fa-solid fa-circle-plus me-2"></i>
                     Asignar Instructor
                 </button>
@@ -166,7 +166,7 @@
                                     </button>
                                     <button
                                             mdbTooltip="Eliminar registro" class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                                            [disabled]="estaEditandoItem" (click)="onEliminarRegistro(item)">
+                                            [disabled]="estaEditandoItem" (click)="confirmaEliminar($event, item)">
                                         <i class="fa fa-trash-alt"></i>
                                     </button>
                                 </ng-container>
