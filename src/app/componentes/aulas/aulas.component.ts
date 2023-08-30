@@ -31,7 +31,6 @@ export class AulasComponent extends ComponenteBase implements OnInit {
   headers = [
     'Nombre',
     'Capacidad',
-    'Tipo',
     'Sala Ocupada',
   ];
 
@@ -84,6 +83,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
         delete aula.internet;
         delete aula.proyectores;
         delete aula.instructor;
+        delete aula.tipoAula;
       })
     });
   }
@@ -169,8 +169,7 @@ export class AulasComponent extends ComponenteBase implements OnInit {
 
     if (
       formValue.nombre == '' ||
-      ValidacionUtil.isNullOrEmptyNumber(formValue.capacidad) ||
-      formValue.tipo == 0
+      ValidacionUtil.isNullOrEmptyNumber(formValue.capacidad)
     ) {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;

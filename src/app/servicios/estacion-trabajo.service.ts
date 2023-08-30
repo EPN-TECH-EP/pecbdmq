@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { UnidadGestion } from "../modelo/admin/unidad-gestion";
 
 export interface EstacionTrabajo {
   codigo: number;
   nombre: string;
+  nombreCanton: string;
+  nombreProvincia: string;
+  provincia: number;
   canton: number;
+  estado: string;
 }
 
 
@@ -16,11 +19,24 @@ export interface EstacionTrabajo {
 })
 export class EstacionTrabajoService {
 
-  private host = environment.apiUrl;
+  private host = environment.apiUrl + '/estacionTrabajo';
 
   constructor(private http: HttpClient) {}
 
   listar(): Observable<EstacionTrabajo[]> {
-    return this.http.get<EstacionTrabajo[]>(`${ this.host }/estaciontrabajo/listar`);
+    return this.http.get<EstacionTrabajo[]>(`${ this.host }/listar`);
   }
+
+  crear(estacion: EstacionTrabajo): Observable<HttpResponse<EstacionTrabajo>> {
+    return this.http.post<EstacionTrabajo>(`${ this.host }/crear`, estacion, { observe: 'response' });
+  }
+
+  actualizar(estacion: EstacionTrabajo, estacionId: any): Observable<HttpResponse<EstacionTrabajo>> {
+    return this.http.put<EstacionTrabajo>(`${ this.host }/${ estacionId }`, estacion, { observe: 'response' });
+  }
+
+  eliminar(estacionId: any): Observable<string> {
+    return this.http.delete<string>(`${ this.host }/${ estacionId }`);
+  }
+
 }

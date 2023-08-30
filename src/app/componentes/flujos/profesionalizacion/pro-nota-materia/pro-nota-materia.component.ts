@@ -109,6 +109,8 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
       formControls[String(nota.codEstudiante)] = fm;
       this.notasForm.push(fm);
     }
+    console.log(this.notasForm.length);
+    console.log(this.estudiantesNotas);
   }
 
   loadModifiedNotas() {

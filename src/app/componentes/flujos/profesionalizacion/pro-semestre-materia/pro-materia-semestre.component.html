@@ -74,7 +74,7 @@
             <td>
               {{ selectedItem?.nombreSemestre }}
             </td>
-            <td>
+            <td style="min-width: 250px; max-width: 250px">
               <mdb-form-control>
                 <mdb-select mdbValidate id="codMateria" formControlName="codMateria" class="mb-5">
                   <mdb-option
@@ -92,7 +92,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 220px; max-width: 220px">
               <mdb-form-control>
                 <mdb-select mdbValidate id="codAula" formControlName="codAula" class="mb-5">
                   <mdb-option
@@ -110,7 +110,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="numeroHoras" required
                        formControlName="numeroHoras" [maxLength]="10" [minLength]="10">
@@ -128,7 +128,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="notaMinima" required
                        formControlName="notaMinima" [maxLength]="10" [minLength]="10">
@@ -146,7 +146,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 70px; max-width: 70px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="notaMaxima"
                        formControlName="notaMaxima" [maxLength]="10" [minLength]="10">
