@@ -13,7 +13,7 @@
   <button
     class="btn btn-primary btn-sm ms-3"
     [disabled]="editElementIndex !== -1"
-    (click)="addRow = true; "
+    (click)="nuevaEstacion();"
   >
     <i class="fa fa-plus"></i> &nbsp;Agregar
   </button>
@@ -46,7 +46,7 @@
         </thead>
         <tbody class="datatable-body">
           <tr *ngIf="addRow">
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -60,13 +60,14 @@
 
             </td>
 
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <mdb-form-control>
                 <mdb-select
                   mdbValidate
                   id="codProvincia"
                   formControlName="codProvincia"
                   class="mb-5"
+                  (valueChange)="onChangeCanton($event)"
                 >
                   <mdb-option
                     *ngFor="let provincia of provincias"
@@ -85,7 +86,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <mdb-form-control>
                 <mdb-form-control>
                   <mdb-select
@@ -133,7 +134,7 @@
           </tr>
             <!-- Edit row -->
           <tr *ngFor="let estacion of table.data; let index = index">
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <!--Nombre-->
               <ng-container *ngIf="editElementIndex !== index">
                 {{ estacion.nombre }}
@@ -153,7 +154,7 @@
               </ng-container>
             </td>
 
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <!-- Provincia -->
               <ng-container *ngIf="editElementIndex !== index">
                 {{ estacion?.nombreProvincia }}
@@ -185,7 +186,7 @@
               </ng-container>
             </td>
 
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <!-- Canton -->
               <ng-container *ngIf="editElementIndex !== index">
                 {{ estacion?.nombreCanton }}

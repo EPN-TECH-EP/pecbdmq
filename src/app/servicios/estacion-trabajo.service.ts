@@ -6,6 +6,13 @@ import { Observable } from "rxjs";
 export interface EstacionTrabajo {
   codigo: number;
   nombre: string;
+  canton: number;
+  estado: string;
+}
+
+export interface EstacionTrabajoDto {
+  codigo: number;
+  nombre: string;
   nombreCanton: string;
   nombreProvincia: string;
   provincia: number;
@@ -23,16 +30,16 @@ export class EstacionTrabajoService {
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<EstacionTrabajo[]> {
-    return this.http.get<EstacionTrabajo[]>(`${ this.host }/listar`);
+  listar(): Observable<EstacionTrabajoDto[]> {
+    return this.http.get<EstacionTrabajoDto[]>(`${ this.host }/listar`);
   }
 
-  crear(estacion: EstacionTrabajo): Observable<HttpResponse<EstacionTrabajo>> {
-    return this.http.post<EstacionTrabajo>(`${ this.host }/crear`, estacion, { observe: 'response' });
+  crear(estacion: EstacionTrabajo): Observable<HttpResponse<EstacionTrabajoDto>> {
+    return this.http.post<EstacionTrabajoDto>(`${ this.host }/crear`, estacion, { observe: 'response' });
   }
 
-  actualizar(estacion: EstacionTrabajo, estacionId: any): Observable<HttpResponse<EstacionTrabajo>> {
-    return this.http.put<EstacionTrabajo>(`${ this.host }/${ estacionId }`, estacion, { observe: 'response' });
+  actualizar(estacion: EstacionTrabajo, estacionId: any): Observable<HttpResponse<EstacionTrabajoDto>> {
+    return this.http.put<EstacionTrabajoDto>(`${ this.host }/${ estacionId }`, estacion, { observe: 'response' });
   }
 
   eliminar(estacionId: any): Observable<string> {
