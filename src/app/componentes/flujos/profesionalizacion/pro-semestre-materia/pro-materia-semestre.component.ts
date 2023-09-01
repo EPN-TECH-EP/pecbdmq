@@ -53,7 +53,7 @@ export class ProMateriaSemestreComponent implements OnInit {
   constructor(private periodoSemestreService: ProPeriodoSemestreService, private periododService: ProPeriodoService, private materiaSemestreService: ProMateriaSemestreService, private builder: FormBuilder,
               private materiasService: ProMateriaService, private aulaService: AulaService, private notificationServiceLocal: MdbNotificationService) {
     this.headers = [
-      {key: 'nombrePeriodo', label: 'Cohorte'},
+      {key: 'nombrePeriodo', label: 'Promoción'},
       {key: 'nombreSemestre', label: 'Nivel'},
       {key: 'nombreMateria', label: 'Materia'},
       {key: 'nombreAula', label: 'Aula'},

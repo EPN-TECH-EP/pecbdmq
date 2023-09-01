@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { CursosService } from "../../../../servicios/especializacion/cursos.service";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { Notificacion } from "../../../../util/notificacion";
-import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
-import { OPCIONES_DATEPICKER } from "../../../../util/constantes/opciones-datepicker.const";
+import {Component, OnInit} from '@angular/core';
+import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {CursosService} from "../../../../servicios/especializacion/cursos.service";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {Notificacion} from "../../../../util/notificacion";
+import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import {OPCIONES_DATEPICKER} from "../../../../util/constantes/opciones-datepicker.const";
 import {
   ConvocatoriaEspecializacion,
   EspConvocatoriaService
 } from "../../../../servicios/especializacion/esp-convocatoria.service";
-import { Convocatoria } from "../../../../modelo/admin/convocatoria";
+import {Convocatoria} from "../../../../modelo/admin/convocatoria";
 import {ComponenteBase} from "../../../../util/componente-base";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
@@ -34,6 +34,7 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
 
   seCreoConvocatoria: boolean;
   codConvocatoriaCreada: number;
+  fechaMinima: Date = new Date();
 
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
   showLoading: boolean = false;
@@ -46,6 +47,10 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
     private convocatoriaService: EspConvocatoriaService
   ) {
     super(ns, popConfirmServiceLocal);
+
+    this.fechaMinima = new Date();
+    this.fechaMinima.setDate(this.fechaMinima.getDate() -1);
+
     this.cursoSeleccionado = null;
     this.estaCargando = true;
     this.codConvocatoriaCreada = 0
@@ -103,10 +108,11 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
     const fechaFinDate: Date = this.fechaFinField.value;
     return {
       correo: this.correoField.value,
-      nombreConvocatoria: `Convocatoria: ${ this.cursoSeleccionado.nombre }`,
+      nombreConvocatoria: `Convocatoria: ${this.cursoSeleccionado.nombre}`,
       fechaInicioConvocatoria: fechaInicioDate,
       fechaFinConvocatoria: fechaFinDate,
       codCursoEspecializacion: this.cursoSeleccionado.codCursoEspecializacion,
+      fechaActual: this.fechaActual
     };
   }
 
@@ -142,7 +148,7 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
 
     this.convocatoriaService.actualizar(convocatoria, this.codConvocatoriaCreada).subscribe({
       next: (convocatoria) => {
-        this.notificar('Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
+        this.notificar(this.seCreoConvocatoria ? 'Convocatoria actualizada correctamente' : 'Convocatoria creada correctamente', TipoAlerta.ALERTA_OK);
         this.seCreoConvocatoria = true;
         this.codConvocatoriaCreada = convocatoria.codConvocatoria;
 
@@ -159,11 +165,24 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
   }
 
   private matchDatosConvocatoriaEnFormulario(convocatoria: Convocatoria) {
-    const fechaInicio = new Date(convocatoria.fechaInicioConvocatoria);
-    const fechaFin = new Date(convocatoria.fechaFinConvocatoria);
+
+    const fechaInicioOriginal = new Date(convocatoria.fechaInicioConvocatoria);
+    const fechaFinOriginal = new Date(convocatoria.fechaFinConvocatoria);
+
+    fechaInicioOriginal.setMinutes(fechaInicioOriginal.getMinutes() + fechaInicioOriginal.getTimezoneOffset());
+    fechaFinOriginal.setMinutes(fechaFinOriginal.getMinutes() + fechaFinOriginal.getTimezoneOffset());
+
+    convocatoria.fechaInicioConvocatoria = fechaInicioOriginal;
+    convocatoria.fechaFinConvocatoria = fechaFinOriginal;
+
+    const fechaInicio = fechaInicioOriginal;
+    const fechaFin = fechaFinOriginal;
     this.fechaInicioField.setValue(fechaInicio);
     this.fechaFinField.setValue(fechaFin);
     this.correoField.setValue(convocatoria.correo);
+
+    this.fechaActual = convocatoria.fechaActual;
+
   }
 
   private validarActualizacionCurso() {
@@ -175,11 +194,14 @@ export class ConvocatoriaEspecializacionComponent extends ComponenteBase impleme
           this.matchDatosConvocatoriaEnFormulario(convocatoria);
           this.codConvocatoriaCreada = convocatoria.codConvocatoria;
           this.seCreoConvocatoria = true;
+          this.fechaMinima.setDate(this.fechaMinima.getDate() - 30);
+
         }
 
       },
       error: (err) => {
-        console.error('Error al traer datos',err);
+        console.error('Error al traer datos', err);
+        Notificacion.notificacion(this.notificationRef, this.ns, err);
       }
     });
   }

@@ -114,7 +114,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
   private obtenerDatos(cedula: string) {
     this.esInscripcionCompletada = false;
     this.loading = true;
-    this.inscripcionService.obtenerDatosDelPostulante(cedula).subscribe({
+    this.inscripcionService.obtenerDatosDelPostulante(cedula, this.curso.codCursoEspecializacion).subscribe({
       next: (datos) => {
         this.datoPersonal = datos.datoPersonal;
         this.estudiante = datos.estudiante;
@@ -185,7 +185,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
       error: (err) => {
         this.mostrarNotificacion(err.error.mensaje, TipoAlerta.ALERTA_ERROR);
         if (err.error.httpStatusCode === 400) {
-          this.esInscripcionCompletada = true;
+          this.esInscripcionCompletada = false;
         }
       }
     });

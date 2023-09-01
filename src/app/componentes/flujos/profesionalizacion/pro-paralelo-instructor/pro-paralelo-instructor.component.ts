@@ -31,13 +31,15 @@ import {MdbTabChange} from "mdb-angular-ui-kit/tabs/tabs.component";
 import {Notificacion} from "../../../../util/notificacion";
 import {MdbNotificationRef, MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {AlertaComponent} from "../../../util/alerta/alerta.component";
+import { ComponenteBase } from 'src/app/util/componente-base';
+import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 @Component({
   selector: 'app-pro-paralelo-instructor',
   templateUrl: './pro-paralelo-instructor.component.html',
   styleUrls: ['./pro-paralelo-instructor.component.scss']
 })
-export class ProParaleloInstructorComponent implements OnInit {
+export class ProParaleloInstructorComponent extends ComponenteBase implements OnInit {
   selectedItem: ProParaleloInsructorDto;
 
   seletedItemPeriodo: number;
@@ -71,9 +73,19 @@ export class ProParaleloInstructorComponent implements OnInit {
   notificationRef: MdbNotificationRef<AlertaComponent> | null;
 
 
-  constructor(private periodoSemestreService: ProPeriodoSemestreService, private periododService: ProPeriodoService, private materiaSemestreService: ProMateriaSemestreService, private proMateriaParaleloService: ProMateriaParaleloService, private builder: FormBuilder,
-              private materiasService: ProMateriaService, private paraleloService: ProParaleloService, private proParaleloInstructorService: ProParaleloInstructorService, private instructorService: ProInstructorService,
-              private notificationServiceLocal: MdbNotificationService) {
+  constructor(
+    private periodoSemestreService: ProPeriodoSemestreService, 
+    private periododService: ProPeriodoService, 
+    private materiaSemestreService: ProMateriaSemestreService, 
+    private proMateriaParaleloService: ProMateriaParaleloService, 
+    private builder: FormBuilder,
+    private materiasService: ProMateriaService, 
+    private paraleloService: ProParaleloService, 
+    private proParaleloInstructorService: ProParaleloInstructorService, 
+    private instructorService: ProInstructorService,
+    private notificationServiceLocal: MdbNotificationService,
+    private popConfirmServiceLocal: MdbPopconfirmService) {
+    super(notificationServiceLocal, popConfirmServiceLocal);
     this.headers = [
       {key: 'nombreInstructor', label: 'Instructor'},
 
@@ -125,7 +137,7 @@ export class ProParaleloInstructorComponent implements OnInit {
       codPeriodoSemestreMateriaParalelo: this.seletedItemParalelo,
     };
     this.estaAgregandoItem = true;
-
+    this.construirFormulario();
   }
 
 
@@ -166,6 +178,11 @@ export class ProParaleloInstructorComponent implements OnInit {
         })
       }
     })
+  }
+
+  public confirmaEliminar(event: Event, dato: ProParaleloInsructorDto): void {
+    super.confirmaEliminarMensaje();
+    super.openPopconfirm(event, () => this.onEliminarRegistro(dato));
   }
 
   onEliminarRegistro(dato: ProParaleloInsructorDto) {

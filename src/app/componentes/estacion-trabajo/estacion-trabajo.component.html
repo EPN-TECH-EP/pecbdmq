@@ -1,0 +1,276 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+ <div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Estación de trabajo</p>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+  <!-- Button for  add a register-->
+  <button
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="editElementIndex !== -1"
+    (click)="nuevaEstacion();"
+  >
+    <i class="fa fa-plus"></i> &nbsp;Agregar
+  </button>
+
+  <hr />
+   <!-- Table -->
+   <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <form [formGroup]="estacionForm">
+      <table
+        class="table table-sm datatable-table text-center"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="estaciones"
+        [sort]="sort"
+      >
+      <!-- Table head -->
+        <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              class="fw-bold"
+            >
+              <b class="text-start"> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" class="text-center fw-bold"><b >Acciones</b></th>
+          </tr>
+        </thead>
+        <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td style="min-width: 200px; max-width: 200px">
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  name="nombre"
+                  class="form-control"
+                  formControlName="nombre"
+                  required
+                  type="text"
+                />
+              </mdb-form-control>
+
+            </td>
+
+            <td style="min-width: 200px; max-width: 200px">
+              <mdb-form-control>
+                <mdb-select
+                  mdbValidate
+                  id="codProvincia"
+                  formControlName="codProvincia"
+                  class="mb-5"
+                  (valueChange)="onChangeCanton($event)"
+                >
+                  <mdb-option
+                    *ngFor="let provincia of provincias"
+                    [label]="provincia.nombre"
+                    [value]="provincia.codigo"
+                    class="text-wrap"
+                  >
+                    {{ provincia.nombre }}
+                  </mdb-option>
+                </mdb-select>
+                <mdb-error *ngIf="codProvincia?.touched || codProvincia?.dirty">
+                  <span *ngIf="codProvincia?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td style="min-width: 200px; max-width: 200px">
+              <mdb-form-control>
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codCanton"
+                    formControlName="codCanton"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let canton of cantones"
+                      class="text-wrap"
+                      [label]="canton.nombre"
+                      [value]="canton.codigo"
+                    >
+                      {{ canton.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <mdb-error *ngIf="codCanton?.touched || codCanton?.dirty">
+                    <span *ngIf="codCanton?.hasError('required')">
+                      <i class="fa-solid fa-circle-exclamation me-1"></i>
+                      Este campo es requerido
+                    </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </mdb-form-control>
+            </td>
+
+          <!-- Buttons for add or cancel a register -->
+            <td class="text-start">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit"
+                (click)="registro(); addRow = false"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+            <!-- Edit row -->
+          <tr *ngFor="let estacion of table.data; let index = index">
+            <td style="min-width: 200px; max-width: 200px">
+              <!--Nombre-->
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ estacion.nombre }}
+              </ng-container>
+              <!--Edit nombre-->
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    class="form-control"
+                    formControlName="nombre"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 200px; max-width: 200px">
+              <!-- Provincia -->
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ estacion?.nombreProvincia }}
+              </ng-container>
+              <!--Edit provincia-->
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    id="codProvincia"
+                    formControlName="codProvincia"
+                    class="mb-5"
+                    (valueChange)="onChangeCanton($event)"
+                  >
+                    <mdb-option
+                      *ngFor="let provincia of provincias"
+                      [value]="provincia.codigo"
+                    >{{ provincia.nombre}}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label" for="provincia">Provincia</label>
+                  <mdb-error *ngIf="(codProvincia?.dirty || codProvincia?.touched)">
+                    <span *ngIf="codProvincia?.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td style="min-width: 200px; max-width: 200px">
+              <!-- Canton -->
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ estacion?.nombreCanton }}
+              </ng-container>
+              <!--Edit canton-->
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    size="1"
+                    id="codCanton"
+                    formControlName="codCanton"
+                    class="mb-5"
+                  >
+                    <mdb-option
+                      *ngFor="let canton of cantones"
+                      [value]="canton.codigo"
+                    >{{ canton.nombre }}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="canton">Cantón</label>
+                  <mdb-error *ngIf="!cantones.length">
+                    <span class="text-muted">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Primero seleccione una provincia
+                    </span>
+                  </mdb-error>
+                  <mdb-error *ngIf="(codCanton?.dirty || codCanton?.touched)">
+                    <span *ngIf="codCanton?.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <!--Buttons to delete -->
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(index);"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmaEliminar($event, estacion.codigo, estacion)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(estacion);"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+</div>

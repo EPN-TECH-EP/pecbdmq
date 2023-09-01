@@ -192,7 +192,7 @@
               </div>
 
               <!-- cargar nuevos resultados -->
-              <ng-container *ngIf="pruebaDetalleSeleccionada.estado !== FORMACION.estadoPruebasCierre">
+              <ng-container *ngIf="pruebaDetalleSeleccionada?.estado !== FORMACION.estadoPruebasCierre">
                 <mdb-accordion borderless="true">
                   <mdb-accordion-item>
                     <ng-template mdbAccordionItemHeader>Cargar resultados</ng-template>

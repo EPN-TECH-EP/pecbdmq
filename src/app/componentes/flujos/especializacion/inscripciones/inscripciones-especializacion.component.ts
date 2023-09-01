@@ -1,26 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { Usuario } from "../../../../modelo/admin/usuario";
-import { AutenticacionService } from "../../../../servicios/autenticacion.service";
-import { Notificacion } from "../../../../util/notificacion";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { TipoAlerta } from "../../../../enum/tipo-alerta";
-import { concatMap, map } from "rxjs/operators";
-import { forkJoin, of } from "rxjs";
-import { InscripcionEsp } from '../../../../modelo/flujos/especializacion/inscripcion-esp';
-import { EspInscripcionService } from '../../../../servicios/especializacion/esp-inscripcion.service';
-import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
-import { CursosService } from '../../../../servicios/especializacion/cursos.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {Usuario} from "../../../../modelo/admin/usuario";
+import {AutenticacionService} from "../../../../servicios/autenticacion.service";
+import {Notificacion} from "../../../../util/notificacion";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
+import {concatMap, map} from "rxjs/operators";
+import {forkJoin, of} from "rxjs";
+import {InscripcionEsp} from '../../../../modelo/flujos/especializacion/inscripcion-esp';
+import {EspInscripcionService} from '../../../../servicios/especializacion/esp-inscripcion.service';
+import {Curso} from '../../../../modelo/flujos/especializacion/Curso';
+import {CursosService} from '../../../../servicios/especializacion/cursos.service';
 
-import { EspDelegadoService } from '../../../../servicios/especializacion/esp-delegado.service';
+import {EspDelegadoService} from '../../../../servicios/especializacion/esp-delegado.service';
 import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import {ComponenteBase} from "../../../../util/componente-base";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
 
 @Component({
   selector: 'app-inscripciones-especializacion',
   templateUrl: './inscripciones-especializacion.component.html',
   styleUrls: ['./inscripciones-especializacion.component.scss']
 })
-export class InscripcionesEspecializacionComponent implements OnInit {
+export class InscripcionesEspecializacionComponent extends ComponenteBase implements OnInit {
 
   usuario: Usuario = null
   inscripciones: InscripcionEsp[]
@@ -37,10 +39,10 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   estaCargando: boolean;
 
   headers = [
-    { key: 'id', label: 'ID' },
-    { key: 'cedula', label: 'Cédula' },
-    { key: 'nombre', label: 'Nombre' },
-    { key: 'apellido', label: 'Apellido' },
+    {key: 'id', label: 'ID'},
+    {key: 'cedula', label: 'Cédula'},
+    {key: 'nombre', label: 'Nombre'},
+    {key: 'apellido', label: 'Apellido'},
   ]
 
   constructor(
@@ -51,7 +53,11 @@ export class InscripcionesEspecializacionComponent implements OnInit {
     private mdbNotificationService: MdbNotificationService,
     private delegadoService: EspDelegadoService,
     private cursosService: CursosService,
+    private popupService: MdbPopconfirmService
   ) {
+
+    super(mdbNotificationService, popupService);
+
     this.inscripcionesAsignadas = []
     this.inscripciones = []
     this.autenticacionService.user$.subscribe({
@@ -73,11 +79,12 @@ export class InscripcionesEspecializacionComponent implements OnInit {
   }
 
   private consultarCursos() {
+    this.estaCargando = true;
     this.cursosService.listarCursosPorEstado(CURSO_COMPLETO_ESTADO.VALIDACION_REQUISITOS).pipe(
       concatMap((cursos) => {
         const cursosWithTipoCurso$ = cursos.map((curso) => {
           return this.cursosService.getTipoCurso(curso.codCatalogoCursos).pipe(
-            map((tipoCurso) => ({ ...curso, tipoCurso }))
+            map((tipoCurso) => ({...curso, tipoCurso}))
           );
         });
 
@@ -86,7 +93,7 @@ export class InscripcionesEspecializacionComponent implements OnInit {
       concatMap((cursosConTipo) => {
         const estadosObservables = cursosConTipo.map((curso) => {
           return this.cursosService.listarEstadosPorCurso(curso.tipoCurso.codTipoCurso).pipe(
-            map((estados) => ({ ...curso, estados }))
+            map((estados) => ({...curso, estados}))
           );
         });
 
@@ -95,10 +102,12 @@ export class InscripcionesEspecializacionComponent implements OnInit {
     ).subscribe({
       next: (cursosConEstados) => {
         this.cursos = cursosConEstados;
-        this.estaCargando = true;
+        this.estaCargando = false;
       },
       error: (error) => {
+        Notificacion.notificacion(this.notificationRef, this.mdbNotificationService, error);
         console.error(error);
+        this.estaCargando = false;
       }
     });
   }

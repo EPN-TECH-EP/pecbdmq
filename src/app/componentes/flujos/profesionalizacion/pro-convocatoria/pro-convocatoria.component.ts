@@ -60,6 +60,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   tieneEstadoConvocatoria: boolean;
   ocurrioErrorInicioProceso: boolean;
   estaCreando: boolean;
+  estaEditandoOCreando: boolean;
   seCreoConExito = false;
   periodos: ProPeriodo[];
 
@@ -97,13 +98,16 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.ocurrioErrorInicioProceso = false;
     this.existeProcesoActivo = false;
     this.estaCreando = false;
+    this.estaEditandoOCreando = false;
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
     this.getSemestres();
     this.getParametros();
     this.fechaActual = new Date();
+
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 1);
+
     this.codigoUnicoConvocatoria = '';
     this.nombrePeriodo = '';
   }
@@ -130,7 +134,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),).subscribe((response) => {
 
       const customResponse: CustomHttpResponse = response;
-      
+
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.ocurrioErrorInicioProceso = true;
         return;
@@ -141,6 +145,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       if (customResponse.mensaje === PROFESIONALIZACION.ACTIVO) {
         this.tieneEstadoConvocatoria = true;
         this.estaCreando = false;
+        this.estaEditandoOCreando = true;
         this.proConvocatoriaService.getConvocatoriaActiva().subscribe({
           next: (convocatoria) => {
             if (!convocatoria) {
@@ -201,6 +206,9 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     convocatoria.fechaInicio = fechaInicioOriginal;
     convocatoria.fechaFin = fechaFinOriginal;
+
+    this.onDataSelectChange(convocatoria.codigoParametro, 'msj1');
+    this.onDataSelectChange(convocatoria.codigoParametro2, 'msj2');
 
     this.form.patchValue({
       codigoParametro: convocatoria?.codigoParametro,
@@ -282,7 +290,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.seCreoConExito = true;
           this.showLoading = false;
-          this.router.navigate(['/principal/profesionalizacion/proceso']);
+          this.router.navigate(['/principal/profesionalizacion/menu-convocatoria']);
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -373,9 +381,9 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   private handleNotFoundConvocatoria() {
-    console.log('Aquí');
     this.existeProcesoActivo = false;
     this.estaCreando = true;
+    this.estaEditandoOCreando = true;
 
     this.proConvocatoriaService.getCodigoUnicoCreacion().subscribe(
       (codigoUnico) => {
@@ -428,7 +436,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     forkJoin([...createRequests, ...deleteRequests])
       .subscribe({
         next: (responses) => {
-          console.log(responses);
           this.successUpdated();
         },
         error: (error) => {

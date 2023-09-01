@@ -2,7 +2,7 @@
 <!-- Título de componente-->
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Asignación de niveles a Cohortes</p>
+    <p class="fs-4 fw-bolder">Asignación de niveles a promoción</p>
   </div>
 </div>
 <div class="container">
@@ -12,7 +12,7 @@
       <div class="col-md-12">
         <div class="container">
           <div class="col-md-6">
-            <label for="periodoSelect">Seleccione un Cohorte</label>
+            <label for="periodoSelect">Seleccione una promoción</label>
             <mdb-select id="periodoSelect" [(ngModel)]="seletedItemPeriodo" (ngModelChange)="onSelectChange($event)">
               <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
                 {{ item.nombrePeriodo }}

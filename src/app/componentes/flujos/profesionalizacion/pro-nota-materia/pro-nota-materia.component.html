@@ -6,14 +6,20 @@
   </div>
 </div>
 
-<div class="container">
+<div *ngIf="!noHayConvocatoria"
+         class="alert alert-info" role="alert">
+      <i class="fa-solid fa-info-circle me-2"></i>
+      Ho hay convocatoria en estado REGISTRO DE NOTAS
+</div>
+
+<div class="container" *ngIf="noHayConvocatoria">
   <div class="row justify-content-center">
     <div class="col-12 m-3">
       <div class="row">
         <div class="col-md-8 mt-2">
           <div class="container">
             <div class="col-md-6">
-              <label for="periodoSelect">Seleccione un Cohorte</label>
+              <label for="periodoSelect">Seleccione una promoción</label>
               <mdb-select id="periodoSelect" [(ngModel)]="seletedItemPeriodo" (ngModelChange)="onSelectChange()">
                 <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
                   {{ item.nombrePeriodo }}
@@ -89,7 +95,7 @@
           <tr>
             <th>Cod.</th>
             <th>Estudiante</th>
-            <th>Asistencia</th>
+            <th>Asistencia %</th>
             <th>Fase teórica - Nota</th>
             <th>Fase práctica - Nota</th>
             <th>Nota Final</th>

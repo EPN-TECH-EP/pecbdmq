@@ -82,6 +82,8 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
     this.fechaActual = new Date();
+    this.fechaActual.setDate(this.fechaActual.getDate() -1);
+
     this.itemRequisito = null;
     this.tamMaxArchivo = 0;
     this.subscriptions = [];

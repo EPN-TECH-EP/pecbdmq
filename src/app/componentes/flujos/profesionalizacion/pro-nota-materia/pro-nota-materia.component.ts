@@ -8,6 +8,7 @@ import {ProPeriodoSemestreService} from '../../../../servicios/profesionalizacio
 import {ProPeriodoService} from '../../../../servicios/profesionalizacion/pro-periodo.service';
 import {ProMateriaSemestreService} from '../../../../servicios/profesionalizacion/pro-materia-semestre.service';
 import {ProMateriaService} from '../../../../servicios/profesionalizacion/pro-materia.service';
+import {TipoAlerta} from "../../../../enum/tipo-alerta";
 import {
   defaultParaleloMateria,
   ProMateriaParaleloDto
@@ -33,6 +34,9 @@ import {
 } from "../../../../servicios/profesionalizacion/pro-nota-profesionalizacion-general.service";
 import {DocumentosService} from "../../../../servicios/formacion/documentos.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import { ProConvocatoriaService } from '../../../../servicios/profesionalizacion/pro-convocatoria.service';
+import { CustomHttpResponse } from 'src/app/modelo/admin/custom-http-response';
+import { PROFESIONALIZACION } from 'src/app/util/constantes/profesionalizacion.const';
 
 @Component({
   selector: 'app-pro-nota-materia',
@@ -55,12 +59,14 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
   selectedInstructor: ProParaleloInsructorDto;
   tamMaxArchivo = 0;
   showServicioNoDisponible = false;
+  noHayConvocatoria = false;
   docNotas: File[];
   urlsArchivo: { urlSafe: SafeResourceUrl, nombreArchivo: string }[];
   constructor(
     private cargaArchivoService: CargaArchivoService,
     private builder: FormBuilder,
     private materiaSemestreService: ProMateriaSemestreService,
+    private proConvocatoriaService: ProConvocatoriaService,
     private materiasService: ProMateriaService,
     private proNotaService: ProNotaService,
     private paraleloService: ProParaleloService,
@@ -197,6 +203,21 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
+    this.proConvocatoriaService.getEstadoActual().subscribe((response) => {
+
+      const customResponse: CustomHttpResponse = response;
+      
+      if (!customResponse || customResponse.httpStatusCode !== 200) {
+        this.noHayConvocatoria = false;
+        return;
+      }
+
+      if (customResponse.mensaje !== PROFESIONALIZACION.REGISTRO_NOTAS) {
+        this.noHayConvocatoria = false;
+      }
+    });
+    
+    this.noHayConvocatoria = true;
     this.cargaArchivoService.maxArchivo().subscribe({
       next: (result) => {
         this.tamMaxArchivo = result;

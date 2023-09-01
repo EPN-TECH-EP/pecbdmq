@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { ArchivoService } from "../archivo.service";
-import { InscripcionItem } from "../../modelo/flujos/formacion/inscripcion-item";
-import { InscripcionCompleta } from "../../modelo/flujos/formacion/inscripcion-completa";
-import { Estudiante } from "../../modelo/flujos/Estudiante";
+import { Estudiante, UsuarioEstudiante } from "../../modelo/flujos/Estudiante";
 import { Paralelo } from "../../modelo/admin/paralelo";
 import { DatoPersonal } from "../../modelo/admin/dato-personal";
-import {
-  NotasEstudiantesComponent
-} from "../../componentes/flujos/formacion/formacion-academica/notas-estudiantes/notas-estudiantes.component";
 import { FaltaPeriodo } from "../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 
 
@@ -150,8 +144,12 @@ export class EstudianteService {
     return this.http.post<Estudiante>(`${ this.host }/estudiante/esEstudiante/${ nombreUsuario }`, {});
   }
 
-  getEstudianteByUser(user: string) {
-    return this.http.get<Estudiante>(`${ this.host }/estudiante/ByUser?codUsuario=${ user }`);
+  getEstudianteByUser(user: number) {
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUser?codUsuario=${ user }`);
+  }
+
+  getEstudianteByCodUser(user: number) {
+    return this.http.get<UsuarioEstudiante>(`${ this.host }/estudiante/byCodUsuario?codUsuario=${ user }`);
   }
   
 }

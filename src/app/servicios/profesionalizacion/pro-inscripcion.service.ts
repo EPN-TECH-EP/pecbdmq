@@ -64,7 +64,7 @@ export class ProInscripcionService {
 
   public crearInscripcionConDocumentos(formData: FormData): Observable<CustomHttpResponse> {
     return this.http.post<CustomHttpResponse>(
-      `${this.host}/proInscripcion/crearcondocumentos`,
+      `${this.host}/proInscripcion/crearConDocumentos`,
       formData
     );
   }
