@@ -9,6 +9,7 @@ export interface ConvocatoriaEspecializacion {
   fechaFinConvocatoria: Date;
   codCursoEspecializacion: number;
   correo: string;
+  fechaActual: Date;
 }
 
 @Injectable({

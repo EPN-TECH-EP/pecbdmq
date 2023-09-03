@@ -104,8 +104,10 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.getSemestres();
     this.getParametros();
     this.fechaActual = new Date();
+
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 1);
+
     this.codigoUnicoConvocatoria = '';
     this.nombrePeriodo = '';
   }
@@ -132,7 +134,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),).subscribe((response) => {
 
       const customResponse: CustomHttpResponse = response;
-      
+
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.ocurrioErrorInicioProceso = true;
         return;

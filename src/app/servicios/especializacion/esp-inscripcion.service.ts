@@ -26,8 +26,8 @@ export class EspInscripcionService {
     this.idInscripcion = null
   }
 
-  obtenerDatosDelPostulante(cedula: string) {
-    return this.http.get<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/informacion/${ cedula }`);
+  obtenerDatosDelPostulante(cedula: string, codCurso: number) {
+    return this.http.get<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/informacion/${ cedula }/curso/${ codCurso }`);
   }
 
   // obtener lista de inscritos por curso
