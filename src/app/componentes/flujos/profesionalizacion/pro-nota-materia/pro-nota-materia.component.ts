@@ -104,7 +104,8 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
         [`notaParcial1`]: [nota.notaParcial1, Validators.min(0)],
         [`notaParcial2`]: [nota.notaParcial2, Validators.min(0)],
         [`notaPractica`]: [nota.notaPractica, Validators.min(0)],
-        [`notaAsistencia`]: [nota.notaAsistencia, Validators.min(0)]
+        [`notaAsistencia`]: [nota.notaAsistencia, Validators.min(0)],
+        [`aprobado`]: [nota.aprobado]
       });
       formControls[String(nota.codEstudiante)] = fm;
       this.notasForm.push(fm);
@@ -117,14 +118,16 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
     const observables = [];
     this.showLoading = true;
     for (const notaForm of this.notasForm) {
+      console.log(notaForm.get('notaParcial1').value);
       const codigoEstudiante = notaForm.get('codEstudiante').value;
       const notaEstudiante = this.estudiantesNotas.find(nota => nota.codEstudiante === codigoEstudiante);
 
       if (this.hasNotasChange(notaForm.value, notaEstudiante)) {
+        const promedio = (notaForm.get('notaParcial2').value + notaForm.get('notaPractica').value) / 2;
         const request: ProNotaDtoModels = {
           estado: 'ACTIVO',
           codEstudianteSemestreMateriaParalelo: notaForm.get('codMateriaParalelo').value,
-          notaParcial1: notaForm.get('notaParcial1').value || undefined,
+          notaParcial1: promedio.toFixed(2) || undefined,
           notaParcial2: notaForm.get('notaParcial2').value || undefined,
           notaPractica: notaForm.get('notaPractica').value || undefined,
           notaAsistencia: notaForm.get('notaAsistencia').value || undefined,
@@ -132,13 +135,15 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
           codEstudiante: notaForm.get('codEstudiante').value,
           codMateria: this.seletedItemMateria.codMateria,
           codSemestre: this.seletedItemSemestre.codSemestre,
-          notaMinima: 0,
+          notaMinima: this.seletedItemMateria.notaMinima,
           pesoMateria: 0,
-          numeroHoras: 0,
+          numeroHoras: this.seletedItemMateria.numeroHoras,
           notaMateria: 0,
           notaPonderacion: 0,
           notaDisciplina: 0,
-          notaSupletorio: 0
+          notaSupletorio: 0,
+          asistenciaMinima: this.seletedItemMateria.asistenciaMinima,
+          aprobado: promedio >= this.seletedItemMateria.notaMinima && notaForm.get('notaAsistencia').value >= this.seletedItemMateria.asistenciaMinima,
         };
 
         const observable = notaEstudiante.codNotaProfesionalizacion ?
@@ -362,5 +367,13 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
 
   get docSoporteField() {
     return this.generalForm.get('docSoporte');
+  }
+
+  calcularPromedio(notaForm: FormGroup): string {
+    const notaParcial2 = notaForm.get('notaParcial2')?.value || 0;
+    const notaPractica = notaForm.get('notaPractica')?.value || 0;
+    const promedio = (notaParcial2 + notaPractica) / 2;
+    notaForm.get('aprobado')?.setValue(promedio >= this.seletedItemMateria.notaMinima && notaForm.get('notaAsistencia').value >= this.seletedItemMateria.asistenciaMinima, { emitEvent: false }); // El { emitEvent: false } evita un bucle infinito de eventos
+    return promedio.toFixed(2); // Redondeamos a dos decimales y convertimos a cadena
   }
 }

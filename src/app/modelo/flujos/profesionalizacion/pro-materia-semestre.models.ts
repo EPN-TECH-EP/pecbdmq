@@ -11,6 +11,7 @@ export interface ProMateriaSemestreDto {
   notaMinima: number
   notaMaxima: number
   esProyecto: boolean
+  asistenciaMinima: number
 }
 
 export interface ProMateriaSemestreCreateUpdateDto {
@@ -21,6 +22,7 @@ export interface ProMateriaSemestreCreateUpdateDto {
   numeroHoras: number
   notaMinima: number
   notaMaxima: number
+  asistenciaMinima: number
 }
 
 export const defaultMateriaSemestre: ProMateriaSemestreDto = {
@@ -35,5 +37,6 @@ export const defaultMateriaSemestre: ProMateriaSemestreDto = {
   numeroHoras: 0,
   notaMinima: 0,
   notaMaxima: 0,
-  esProyecto: false
+  esProyecto: false,
+  asistenciaMinima: 0,
 }

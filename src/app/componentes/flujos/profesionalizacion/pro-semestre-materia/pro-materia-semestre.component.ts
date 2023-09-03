@@ -60,6 +60,7 @@ export class ProMateriaSemestreComponent implements OnInit {
       {key: 'numeroHoras', label: 'Número Horas'},
       {key: 'notaMinima', label: 'Nota Mínima'},
       {key: 'notaMaxima', label: 'Nota Máxima'},
+      {key: 'asistenciaMinima', label: 'Asistencia Mínima %'},
       {key: 'esProyecto', label: 'Es Proyecto?'},
 
     ]
@@ -121,6 +122,7 @@ export class ProMateriaSemestreComponent implements OnInit {
       numeroHoras: ['', Validators.required],
       notaMinima: ['', Validators.required],
       notaMaxima: ['', Validators.required],
+      asistenciaMinima: ['', Validators.required],
     })
   }
 
@@ -131,7 +133,8 @@ export class ProMateriaSemestreComponent implements OnInit {
       codAula: this.codAula?.value,
       numeroHoras: this.numeroHoras?.value,
       notaMinima: this.notaMinima?.value,
-      notaMaxima: this.notaMaxima?.value
+      notaMaxima: this.notaMaxima?.value,
+      asistenciaMinima: this.asistenciaMinima?.value
     }
     const itemRequest: ProMateriaSemestreCreateUpdateDto = {
       codMateria: this.codMateria?.value,
@@ -140,7 +143,8 @@ export class ProMateriaSemestreComponent implements OnInit {
       codAula: this.codAula?.value,
       numeroHoras: this.numeroHoras?.value,
       notaMinima: this.notaMinima?.value,
-      notaMaxima: this.notaMaxima?.value
+      notaMaxima: this.notaMaxima?.value,
+      asistenciaMinima: this.asistenciaMinima?.value
     }
     const request = itemRequest.codMateriaSemestre === 0 ?
       this.materiaSemestreService.crear(itemRequest) : this.materiaSemestreService.actualizar(itemRequest, itemRequest.codMateriaSemestre);
@@ -197,6 +201,10 @@ export class ProMateriaSemestreComponent implements OnInit {
     return this.formGroup.get('notaMaxima');
   }
 
+  get asistenciaMinima() {
+    return this.formGroup.get('asistenciaMinima');
+  }
+
   private matchDatosItemEnFormulario() {
     this.formGroup.patchValue({
       codMateria: this.selectedItem.codMateria,
@@ -205,7 +213,8 @@ export class ProMateriaSemestreComponent implements OnInit {
       codAula: this.selectedItem.codAula,
       numeroHoras: this.selectedItem.numeroHoras,
       notaMinima: this.selectedItem.notaMinima,
-      notaMaxima: this.selectedItem.notaMaxima
+      notaMaxima: this.selectedItem.notaMaxima,
+      asistenciaMinima: this.selectedItem.asistenciaMinima
     })
   }
 

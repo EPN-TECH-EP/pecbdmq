@@ -7,7 +7,7 @@ export interface ProNotaDtoModels {
   apellido?: string
   correoPersonal?: string
   codDatosPersonales?: number
-  notaParcial1: number
+  notaParcial1: any
   notaParcial2: any
   notaPractica: any
   notaAsistencia: any
@@ -21,5 +21,7 @@ export interface ProNotaDtoModels {
   notaPonderacion: number
   notaDisciplina: number
   notaSupletorio: number
+  aprobado: boolean
   estado?: string
+  asistenciaMinima: number
 }
