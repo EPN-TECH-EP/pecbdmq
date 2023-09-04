@@ -222,6 +222,7 @@ import {
   MenuValidacionProComponent
 } from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
 import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
+import { EstacionTrabajoComponent } from '../../componentes/estacion-trabajo/estacion-trabajo.component';
 
 
 const routes: Routes = [
@@ -352,6 +353,7 @@ const routes: Routes = [
       { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent},
       { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
       { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent},
+      { path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent},
 
     ],
   },

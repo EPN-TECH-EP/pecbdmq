@@ -102,6 +102,7 @@ import { MenuConvocatoriaProComponent } from './menus/menu-convocatoria-pro/menu
 import { MenuRegistroNotasProComponent } from './menus/menu-registro-notas-pro/menu-registro-notas-pro.component';
 import { MenuValidacionProComponent } from './menus/menu-validacion-pro/menu-validacion-pro.component';
 import { MenuReportesProComponent } from './menus/menu-reportes-pro/menu-reportes-pro.component';
+import { EstacionTrabajoComponent } from '../../estacion-trabajo/estacion-trabajo.component';
 
 
 @NgModule({
@@ -148,7 +149,8 @@ import { MenuReportesProComponent } from './menus/menu-reportes-pro/menu-reporte
     MenuConvocatoriaProComponent,
     MenuRegistroNotasProComponent,
     MenuValidacionProComponent,
-    MenuReportesProComponent
+    MenuReportesProComponent,
+    EstacionTrabajoComponent,
   ],
   imports: [
     CommonModule,

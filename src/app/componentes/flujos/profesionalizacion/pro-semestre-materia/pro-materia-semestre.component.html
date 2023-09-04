@@ -74,7 +74,7 @@
             <td>
               {{ selectedItem?.nombreSemestre }}
             </td>
-            <td>
+            <td style="min-width: 250px; max-width: 250px">
               <mdb-form-control>
                 <mdb-select mdbValidate id="codMateria" formControlName="codMateria" class="mb-5">
                   <mdb-option
@@ -92,7 +92,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 220px; max-width: 220px">
               <mdb-form-control>
                 <mdb-select mdbValidate id="codAula" formControlName="codAula" class="mb-5">
                   <mdb-option
@@ -110,7 +110,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 40px; max-width: 40px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="numeroHoras" required
                        formControlName="numeroHoras" [maxLength]="10" [minLength]="10">
@@ -128,7 +128,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 40px; max-width: 40px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="notaMinima" required
                        formControlName="notaMinima" [maxLength]="10" [minLength]="10">
@@ -146,7 +146,7 @@
                 </mdb-error>
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 40px; max-width: 40px">
               <mdb-form-control>
                 <input mdbInput mdbValidate type="number" class="form-control" id="notaMaxima"
                        formControlName="notaMaxima" [maxLength]="10" [minLength]="10">
@@ -158,6 +158,24 @@
                 </mdb-error>
                 <mdb-error *ngIf="notaMaxima?.touched || notaMaxima?.dirty">
                   <span *ngIf="notaMaxima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                </mdb-error>
+              </mdb-form-control>
+            </td>
+            <td style="min-width: 40px; max-width: 40px">
+              <mdb-form-control>
+                <input mdbInput mdbValidate type="number" class="form-control" id="asistenciaMinima"
+                       formControlName="asistenciaMinima" [maxLength]="10" [minLength]="10">
+                <mdb-error *ngIf="asistenciaMinima?.dirty || asistenciaMinima?.touched">
+                <span *ngIf="asistenciaMinima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                </mdb-error>
+                <mdb-error *ngIf="asistenciaMinima?.touched || asistenciaMinima?.dirty">
+                  <span *ngIf="asistenciaMinima?.hasError('required')">
                     <i class="fa-solid fa-circle-exclamation me-1"></i>
                     Este campo es requerido
                   </span>
@@ -234,7 +252,11 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+<<<<<<< HEAD
+            <td style="min-width: 40px; max-width: 40px">
+=======
             <td style="min-width: 70px; max-width: 70px">
+>>>>>>> b3ada09a2def754a6f397970fc399766883064f0
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.numeroHoras }}
               </ng-container>
@@ -257,7 +279,11 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+<<<<<<< HEAD
+            <td style="min-width: 40px; max-width: 40px">
+=======
             <td style="min-width: 70px; max-width: 70px">
+>>>>>>> b3ada09a2def754a6f397970fc399766883064f0
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.notaMinima }}
               </ng-container>
@@ -280,7 +306,11 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+<<<<<<< HEAD
+            <td style="min-width: 40px; max-width: 40px">
+=======
             <td style="min-width: 70px; max-width: 70px">
+>>>>>>> b3ada09a2def754a6f397970fc399766883064f0
               <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
                 {{ item?.notaMaxima }}
               </ng-container>
@@ -303,7 +333,34 @@
                 </mdb-form-control>
               </ng-container>
             </td>
+<<<<<<< HEAD
+            <td style="min-width: 40px; max-width: 40px">
+              <ng-container *ngIf="!estaEditandoItem || item?.codMateriaSemestre!== codigoItemEditando">
+                {{ item?.asistenciaMinima }}
+              </ng-container>
+              <ng-container *ngIf="estaEditandoItem && item?.codMateriaSemestre === codigoItemEditando">
+                <mdb-form-control>
+                  <input mdbInput mdbValidate type="number" class="form-control" id="asistenciaMinimaEditar"
+                         formControlName="asistenciaMinima" [maxLength]="10" [minLength]="10">
+                  <mdb-error *ngIf="asistenciaMinima?.dirty || asistenciaMinima?.touched">
+                <span *ngIf="asistenciaMinima?.hasError('invalid_numbers')">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  Este campo solo acepta números
+                </span>
+                  </mdb-error>
+                  <mdb-error *ngIf="asistenciaMinima?.touched || asistenciaMinima?.dirty">
+                  <span *ngIf="asistenciaMinima?.hasError('required')">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    Este campo es requerido
+                  </span>
+                  </mdb-error>
+                </mdb-form-control>
+              </ng-container>
+            </td>
+            <td class="text-center" style="min-width: 40px; max-width: 40px">
+=======
             <td class="text-center" style="min-width: 60px; max-width: 60px">
+>>>>>>> b3ada09a2def754a6f397970fc399766883064f0
                 {{ item?.esProyecto ? 'Si': 'No'}}
             </td>
             <td class="text-center">
