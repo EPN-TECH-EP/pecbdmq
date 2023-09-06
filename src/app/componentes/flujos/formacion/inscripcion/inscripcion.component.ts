@@ -143,23 +143,23 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
             this.subscriptions.push(
               this.inscripcionService.validarFechas().subscribe({
                 next: (result) => {
-                  this.esFechaValida = true;
+                  this.esFechaValida = result;
                   this.validaFechas = true;
 
-                  if (true) {
+                  if (this.esFechaValida) {
                     this.cargarCatalogos();
                   }
 
                 },
                 error: (errorResponse) => {
-                  this.showServicioNoDisponible = false;
+                  this.showServicioNoDisponible = true;
                   console.log(errorResponse);
                 },
               })
             );
 
           } else {
-            this.esEstadoInscripcion = 'T';
+            this.esEstadoInscripcion = 'F';
           }
         },
       });
