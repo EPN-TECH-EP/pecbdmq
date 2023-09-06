@@ -637,7 +637,7 @@
           <!-- Título bachiller -->
 
           <div class="row">
-            <div class="col-md"><h5>Título bachiller:</h5></div>
+            <div class="col-md"><h5>Título Segundo Nivel:</h5></div>
             <div class="col-md"><p class="text-primary">
               Nota: Adjuntar título</p></div>
           </div>
@@ -826,6 +826,103 @@
             </div>
           </div>
           <hr class="hr hr-blurry" />
+
+          <!-- Título tercer nivel -->
+
+          <div class="row">
+            <div class="col-md"><h5>Título Tercer Nivel (opcional):</h5></div>
+            <div class="col-md"><p class="text-primary">
+              Nota: Adjuntar título</p></div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md">
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="paisTituloTercerNivel"/>
+                  <label mdbLabel class="form-label mb-2x" for="paisTitulo"
+                  >
+                    País donde obtuvo el título</label
+                  >
+                  <mdb-success *ngIf="paisTituloTercerNivelField?.valid && (paisTituloTercerNivelField?.dirty || paisTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+                <!-- Ciudad Título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="ciudadTituloTercerNivel" />
+                  <label mdbLabel class="form-label mb-2x" for="cuidadTitulo"
+                  >
+                    Ciudad donde obtuvo el título</label
+                  >
+                  <mdb-error
+                    *ngIf="ciudadTituloTercerNivelField?.invalid && (ciudadTituloTercerNivelField?.dirty || ciudadTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="ciudadTituloTercerNivelField?.valid && (ciudadTituloTercerNivelField?.dirty || ciudadTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+              </div>
+              <!-- Columna 2 -->
+              <div class="col-md">
+                <!-- Nombre del título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="nombreTituloTercerNivel" />
+                  <label mdbLabel class="form-label mb-2x" for="nombreTitulo"
+                  >
+                    Nombre del título</label
+                  >
+                  <mdb-error
+                    *ngIf="nombreTituloTercerNivelField?.invalid && (nombreTituloTercerNivelField?.dirty || nombreTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="nombreTituloTercerNivelField?.valid && (nombreTituloTercerNivelField?.dirty || nombreTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+
+                <!-- Colegio título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="institucionTituloTercerNivel" />
+                  <label mdbLabel class="form-label mb-2x" for="colegioTitulo"
+                  >
+                    Institución donde obtuvo el título</label
+                  >
+                  <mdb-error
+                    *ngIf="institucionTituloTercerNivelField?.invalid && (institucionTituloTercerNivelField?.dirty || institucionTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="institucionTituloTercerNivelField?.valid && (institucionTituloTercerNivelField?.dirty || institucionTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+          <hr class="hr hr-blurry" />
+
           <!-- Carga de documentos -->
           <h5>Carga de expediente:</h5>
           <div class="alert alert-info" role="alert">
