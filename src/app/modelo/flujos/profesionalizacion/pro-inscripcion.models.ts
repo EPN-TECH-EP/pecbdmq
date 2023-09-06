@@ -36,6 +36,7 @@ export interface ProInscripcionCreateUpdateDto {
   codInscripcion: number
   codEstudiante: number
   codConvocatoria: number
+  codDatosPersonales: number
   adjunto: string
   fechaInscripcion: string
   aceptado: boolean,

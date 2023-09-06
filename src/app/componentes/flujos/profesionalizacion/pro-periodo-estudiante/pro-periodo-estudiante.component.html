@@ -2,7 +2,7 @@
 <!-- Título de componente-->
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Asignación de Estudiante a Cohorte</p>
+    <p class="fs-4 fw-bolder">Asignación de estudiante a promoción</p>
   </div>
 </div>
 <div class="container">
@@ -12,7 +12,7 @@
       <div class="col-md-12">
         <div class="container">
           <div class="col-md-6">
-            <label for="periodoSelect">Seleccione un Cohorte</label>
+            <label for="periodoSelect">Seleccione una promoción</label>
             <mdb-select id="periodoSelect" [(ngModel)]="selectedItemPeriodo" (ngModelChange)="onSelectChange($event)">
               <mdb-option *ngFor="let item of selectListPeriodos" [value]="item.codigoPeriodo">
                 {{ item.nombrePeriodo }}
@@ -48,7 +48,7 @@
     </div>
     <div class="alert alert-success py-2" role="alert" style="width: fit-content">
       <i class="fa-solid fa-info-circle me-2"></i>
-      <span>Para crear un instructor, primero debe buscar un usuario en el sistema</span>
+      <span>Para asignar un estudiante, primero debe buscar un usuario en el sistema</span>
     </div>
     <app-generic-search [service]="periodoEstudianteService"
                         (usuarioEncontrados)="estudianteEncontrado($event)"

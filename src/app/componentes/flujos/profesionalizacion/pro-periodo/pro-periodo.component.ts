@@ -39,7 +39,7 @@ export class ProPeriodoComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<ProPeriodo>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Nombre periodo', 'Fecha Inicio', 'Fecha Fin'];
+  headers = ['Nombre promoción', 'Fecha Inicio', 'Fecha Fin'];
 
   constructor(
     private proPeriodoService: ProPeriodoService,

@@ -48,3 +48,16 @@ export interface NotaDisciplina {
   codParalelo: number;
 }
 
+export interface UsuarioEstudiante {
+  codUsuario: number;
+  nombreUsuario: string;
+  codDatosPersonales: number;
+  nombre: string;
+  apellido: string;
+  correoPersonal: string;
+  cedula: string;
+  fechaNacimiento: Date;
+  codEstudiante?: number;
+  codUnicoEstudiante?: string;
+}
+

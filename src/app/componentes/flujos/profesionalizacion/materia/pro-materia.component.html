@@ -2,7 +2,7 @@
 
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Gestión de Materias</p>
+    <p class="fs-4 fw-bolder">Gestión de materias</p>
   </div>
 </div>
 
@@ -56,7 +56,7 @@
 
           <tbody class="datatable-body">
           <tr *ngIf="addRow">
-            <td>
+            <td style="min-width: 20px; max-width: 200px">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
@@ -71,7 +71,7 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td style="min-width: 200px; max-width: 200px">
               <mdb-form-control>
                 <mdb-select mdbValidate id="codEjeMateriaEditar" class="mb-5" name="codEjeMateria"
                             [(ngModel)]="materiaEditForm.codEjeMateria">
@@ -136,7 +136,7 @@
           </tr>
 
           <tr *ngFor="let materia of table.data; let index = index">
-            <td style="min-width: 50px">
+            <td style="min-width: 200px; max-width: 200px">
               <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                 <div class="text-wrap">
                   {{ materia.nombre }}
@@ -160,7 +160,7 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-            <td style="min-width: 50px; max-width: 50px">
+            <td style="min-width: 200px; max-width: 200px">
               <ng-container *ngIf="!estaEditando || codigoMateriaEditando !== materia.codMateria">
                 <div class="text-wrap">
                   {{ getEjeMateria(materia.codEjeMateria) }}

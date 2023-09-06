@@ -50,7 +50,6 @@ export class AutenticacionService {
     localStorage.removeItem('token');
     localStorage.removeItem('Usuarios');
     localStorage.removeItem('data');
-
   }
 
   public guardaToken(token: string): void {

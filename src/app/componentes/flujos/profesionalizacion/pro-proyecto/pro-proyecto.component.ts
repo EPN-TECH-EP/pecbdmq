@@ -35,8 +35,8 @@ export class ProyectoComponent extends ComponenteBase implements OnInit {
   addRow = false;
 
   headers = [
-    'Nombre de Proyecto',
     'Tipo de Proyecto',
+    'Nombre de Proyecto',
   ];
 
   estaEditando = false;

@@ -1,31 +1,31 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
-import { catchError, of, first, tap, throwError } from 'rxjs';
-import { SubtipoPrueba } from 'src/app/modelo/admin/subtipo-prueba';
-import { PaginacionPostulantesValidos } from 'src/app/modelo/flujos/formacion/paginacion-postulantes-validos';
-import { PostulanteValido } from 'src/app/modelo/flujos/formacion/postulante-valido';
-import { PruebaDetalle } from 'src/app/modelo/flujos/formacion/prueba-detalle';
-import { PruebaDetalleDatos } from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
-import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
-import { PruebaDetalleService } from 'src/app/servicios/formacion/prueba-detalle.service';
-import { SubtipoPruebaService } from 'src/app/servicios/subtipo-prueba.service';
-import { ComponenteBase } from 'src/app/util/componente-base';
-import { FORMACION } from 'src/app/util/constantes/fomacion.const';
-import { Notificacion } from 'src/app/util/notificacion';
-import { PostulantesValidosService } from '../../../../servicios/formacion/postulantes-validos.service';
-import { ResultadosPruebasService } from '../../../../servicios/formacion/resultados-prueba.service';
-import { PaginacionResultadosPruebasDatos } from 'src/app/modelo/flujos/formacion/paginacion-resultados-pruebas-datos';
-import { ResultadosPruebasDatos } from 'src/app/modelo/flujos/formacion/resultados-pruebas-datos';
-import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
-import { Usuario } from 'src/app/modelo/admin/usuario';
-import { DocumentoFormacion } from 'src/app/modelo/flujos/formacion/documento';
-import { FormGroup } from '@angular/forms';
-import { DocumentoPruebaService } from 'src/app/servicios/formacion/documento-prueba.service';
-import { TipoAlerta } from 'src/app/enum/tipo-alerta';
-import { EstudianteService } from '../../../../servicios/formacion/estudiante.service';
-import { TipoFiltroPostulantesValidosEnum } from '../../../../enum/tipo-filtro-postulantes-validos';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MdbNotificationService} from 'mdb-angular-ui-kit/notification';
+import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
+import {catchError, of, first, tap, throwError} from 'rxjs';
+import {SubtipoPrueba} from 'src/app/modelo/admin/subtipo-prueba';
+import {PaginacionPostulantesValidos} from 'src/app/modelo/flujos/formacion/paginacion-postulantes-validos';
+import {PostulanteValido} from 'src/app/modelo/flujos/formacion/postulante-valido';
+import {PruebaDetalle} from 'src/app/modelo/flujos/formacion/prueba-detalle';
+import {PruebaDetalleDatos} from 'src/app/modelo/flujos/formacion/prueba-detalle-datos';
+import {FormacionService} from 'src/app/servicios/formacion/formacion.service';
+import {PruebaDetalleService} from 'src/app/servicios/formacion/prueba-detalle.service';
+import {SubtipoPruebaService} from 'src/app/servicios/subtipo-prueba.service';
+import {ComponenteBase} from 'src/app/util/componente-base';
+import {FORMACION} from 'src/app/util/constantes/fomacion.const';
+import {Notificacion} from 'src/app/util/notificacion';
+import {PostulantesValidosService} from '../../../../servicios/formacion/postulantes-validos.service';
+import {ResultadosPruebasService} from '../../../../servicios/formacion/resultados-prueba.service';
+import {PaginacionResultadosPruebasDatos} from 'src/app/modelo/flujos/formacion/paginacion-resultados-pruebas-datos';
+import {ResultadosPruebasDatos} from 'src/app/modelo/flujos/formacion/resultados-pruebas-datos';
+import {AutenticacionService} from 'src/app/servicios/autenticacion.service';
+import {Usuario} from 'src/app/modelo/admin/usuario';
+import {DocumentoFormacion} from 'src/app/modelo/flujos/formacion/documento';
+import {FormGroup} from '@angular/forms';
+import {DocumentoPruebaService} from 'src/app/servicios/formacion/documento-prueba.service';
+import {TipoAlerta} from 'src/app/enum/tipo-alerta';
+import {EstudianteService} from '../../../../servicios/formacion/estudiante.service';
+import {TipoFiltroPostulantesValidosEnum} from '../../../../enum/tipo-filtro-postulantes-validos';
 
 @Component({
   selector: 'app-resultados-pruebas',
@@ -131,8 +131,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   documentos: DocumentoFormacion[] = [];
   archivoPrueba: File = null;
   headersArchivos = [
-    { key: 'nombre', label: 'Nombre' },
-    { key: 'descripcion', label: 'Descripción' },
+    {key: 'nombre', label: 'Nombre'},
+    {key: 'descripcion', label: 'Descripción'},
   ];
 
   constructor(
@@ -307,16 +307,35 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
 
           // establecer la prueba seleccionada a la primera activa
           for (let index = 0; index < this.listaPruebaDetalleDatos.length; index++) {
-            if (this.listaPruebaDetalleDatos[index].estado !== FORMACION.estadoPruebasCierre) {
+
+            // si no es la última, verifica el estado
+            if (index < this.listaPruebaDetalleDatos.length - 1) {
+
+
+              if (this.listaPruebaDetalleDatos[index].estado !== FORMACION.estadoPruebasCierre) {
+                this.pruebaDetalleSeleccionada = this.listaPruebaDetalleDatos[index];
+
+                // filtra solo las pruebas que no tengan codCursoEspecializacion
+                this.listaPruebaDetalleDatos = this.listaPruebaDetalleDatos.filter(
+                  (prueba) => prueba.codCursoEspecializacion === null
+                );
+
+                this.listaPruebaDetalleDatos = [...this.listaPruebaDetalleDatos];
+
+
+                this.cargarResultadosPrueba();
+
+                this.obtenerTipoResultado();
+
+                this.listarArchivosPrueba();
+
+                this.showLoading = false;
+
+                break;
+
+              }
+            } else {
               this.pruebaDetalleSeleccionada = this.listaPruebaDetalleDatos[index];
-
-              // filtra solo las pruebas que no tengan codCursoEspecializacion
-              this.listaPruebaDetalleDatos = this.listaPruebaDetalleDatos.filter(
-                (prueba) => prueba.codCursoEspecializacion === null
-              );
-
-              this.listaPruebaDetalleDatos = [...this.listaPruebaDetalleDatos];
-
 
               this.cargarResultadosPrueba();
 
@@ -325,8 +344,6 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
               this.listarArchivosPrueba();
 
               this.showLoading = false;
-
-              break;
 
             }
           }
@@ -571,7 +588,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba,
       this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
       next: (data) => {
-        const blob = new Blob([data] , { type: contentType });
+        const blob = new Blob([data], {type: contentType});
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -590,24 +607,24 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     });
   }
 
-/*  descargarLista(tipo: string) {
-    // descargar mediante servicio ResultadosPruebasService
-    this.subscriptions.push(
-      this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codPruebaDetalle,
-        this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
-        next: () => {
-          Notificacion.notificacionOK(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            'Archivo descargado correctamente'
-          );
-        },
-        error: (errorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-        }
-      })
-    );
-  }*/
+  /*  descargarLista(tipo: string) {
+      // descargar mediante servicio ResultadosPruebasService
+      this.subscriptions.push(
+        this.resultadosPruebasService.descargar(tipo, this.pruebaDetalleSeleccionada.codPruebaDetalle,
+          this.pruebaDetalleSeleccionada.descripcionPrueba).subscribe({
+          next: () => {
+            Notificacion.notificacionOK(
+              this.notificationRef,
+              this.notificationServiceLocal,
+              'Archivo descargado correctamente'
+            );
+          },
+          error: (errorResponse) => {
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          }
+        })
+      );
+    }*/
 
   public confirmaCerrarRegistro(event: Event): void {
 

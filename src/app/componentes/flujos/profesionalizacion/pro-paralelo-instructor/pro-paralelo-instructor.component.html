@@ -2,7 +2,7 @@
 <!-- Título de componente-->
 <div class="row m-3">
     <div class="column text-center">
-        <p class="fs-4 fw-bolder">Asignación instructor a {{tipoMateriaLabel}}</p>
+        <p class="fs-4 fw-bolder">Asignación instructor a {{tipoMateriaLabel | lowercase}}</p>
     </div>
 </div>
 <mdb-tabs (activeTabChange)="changeType($event)">
@@ -16,7 +16,7 @@
                 <div class="col-md-3">
                     <div class="container">
                         <div class="col-md-12">
-                            <label for="periodoSelect">Seleccione un Cohorte</label>
+                            <label for="periodoSelect">Seleccione una promoción</label>
                             <mdb-select id="periodoSelect" [(ngModel)]="seletedItemPeriodo" (ngModelChange)="onSelectChange($event)">
                                 <mdb-option *ngFor="let item of selectedListPeriodos" [value]="item.codigoPeriodo">
                                     {{ item.nombrePeriodo }}
@@ -70,7 +70,7 @@
 
         <div class="row justify-content-center">
             <div class="col-10">.
-                <button class="btn btn-primary mb-1" (click)="onAgregarItem()" *ngIf="listadoAsignacion.length<1 && seletedItemParalelo != null">
+                <button class="btn btn-primary mb-1" (click)="onAgregarItem()" *ngIf="seletedItemParalelo != null">
                     <i class="fa-solid fa-circle-plus me-2"></i>
                     Asignar Instructor
                 </button>
@@ -166,7 +166,7 @@
                                     </button>
                                     <button
                                             mdbTooltip="Eliminar registro" class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                                            [disabled]="estaEditandoItem" (click)="onEliminarRegistro(item)">
+                                            [disabled]="estaEditandoItem" (click)="confirmaEliminar($event, item)">
                                         <i class="fa fa-trash-alt"></i>
                                     </button>
                                 </ng-container>

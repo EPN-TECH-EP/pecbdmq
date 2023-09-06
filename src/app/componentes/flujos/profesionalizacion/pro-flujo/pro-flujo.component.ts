@@ -44,7 +44,7 @@ export class ProFlujoComponent implements OnInit {
           Notificacion.notificacionOK(
             this.notificationRef,
             this.notificationServiceLocal,
-            "No existe convocatoia para el cohorte seleccionado"
+            "No existe convocatoria para la promoción seleccionada"
           );
           this.stepper.resetAll();
         }

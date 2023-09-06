@@ -5,7 +5,7 @@ export class Aula {
   public codAula: number;
   public nombreAula: string;
   public capacidad?: number;
-  public tipo?: number;
+  public tipoAula?: number;
   public pcs?: string;
   public impresoras?: string;
   public internet?: string;

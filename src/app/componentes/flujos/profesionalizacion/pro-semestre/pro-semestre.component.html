@@ -3,7 +3,7 @@
 <!-- Título de componente-->
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Gestión de Nivel</p>
+    <p class="fs-4 fw-bolder">Gestión de nivel</p>
   </div>
 </div>
 
@@ -142,7 +142,7 @@
           </tr>
 
           <tr *ngFor="let semestre of table.data; let index = index">
-            <td style="min-width: 10px; max-width: 10px">
+            <td style="min-width: 120px; max-width: 120px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ semestre.semestre }}
               </ng-container>
@@ -163,7 +163,7 @@
               </ng-container>
             </td>
 
-            <td>
+            <td style="min-width: 120px; max-width: 120px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ semestre.fechaInicioSemestre | date:'dd-MM-yyyy' }}
               </ng-container>
@@ -181,7 +181,7 @@
                     #fechaInicioSemestreActualizacion="ngModel"
                     (change)="validacionUtil.onInputChange($event, 'catalogo', fechaInicioSemestreActualizacion)"
                   />
-                  <label mdbLabel for="fechaInicioSemestre" class="form-label">Fecha de inicio del semestre</label>
+                  <label mdbLabel for="fechaInicioSemestre" class="form-label">Fecha inicio del semestre</label>
                   <mdb-datepicker-toggle
                     [mdbDatepicker]="datepickerInicio"
                   ></mdb-datepicker-toggle>
@@ -194,7 +194,7 @@
               </ng-container>
             </td>
 
-            <td>
+            <td style="min-width: 120px; max-width: 120px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ semestre.fechaFinSemestre | date:'dd-MM-yyyy' }}
               </ng-container>
@@ -213,14 +213,14 @@
                     #fechaFinSemestreActualizacion="ngModel"
                     (change)="validacionUtil.onInputChange($event, 'catalogo', fechaFinSemestreActualizacion)"
                   />
-                  <label mdbLabel for="fechaFinSemestre" class="form-label">Fecha de fin del semestre</label>
+                  <label mdbLabel for="fechaFinSemestre" class="form-label">Fecha fin del semestre</label>
                   <mdb-datepicker-toggle [mdbDatepicker]="datepickerFin"></mdb-datepicker-toggle>
                   <mdb-datepicker [inline]="true" #datepickerFin></mdb-datepicker>
                 </mdb-form-control>
               </ng-container>
             </td>
 
-            <td style="min-width: 10px; max-width: 10px">
+            <td style="min-width: 160px; max-width: 160px">
               <ng-container *ngIf="editElementIndex !== index">
                 {{ semestre.descripcion }}
               </ng-container>

@@ -206,6 +206,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
       adjunto: '',
       codEstudiante: this.userData.codEstudiante,
       codConvocatoria: this.currentConvocatoria.codigo,
+      codDatosPersonales: this.userData.codDatosPersonales.codDatosPersonales,
       fechaInscripcion: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       codInscripcion: 0,
       email: this.formularioInscripcion.get('email').value
@@ -242,7 +243,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.fechaNacimiento = this.fechaNacimientoField.value;
     this.inscripcion.estado = 'ACTIVO';
 
-    this.mensajeConfirmacion = '¿Deseas inscribirte a profesionalización?';
+    this.mensajeConfirmacion = '¿Deseas inscribirte a TSCIOR?';
     super.openPopconfirm(event, this.crearInscripcion.bind(this));
   }
 
@@ -310,9 +311,18 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   private getEstudiante() {
-    this.estudianteService.getEstudianteByUser(this.userData.codUsuario).subscribe({
+    this.estudianteService.getEstudianteByCodUser(this.userData.codUsuario).subscribe({
       next: (resp) => {
         this.userData.codEstudiante = resp.codEstudiante;
+        this.nombresField.setValue(resp.nombre);
+        this.apellidosField.setValue(resp.apellido);
+
+        // Convertir la cadena de fecha en un objeto Date ajustando la zona horaria
+        const fechaAjustada = new Date(resp.fechaNacimiento + 'T00:00:00Z');
+        // Ajustar la zona horaria a UTC (puede ser necesario ajustar a la zona horaria correcta)
+        fechaAjustada.setMinutes(fechaAjustada.getMinutes() + fechaAjustada.getTimezoneOffset());
+        //Fijar fecha ajustada
+        this.fechaNacimientoField.setValue(fechaAjustada);
       },
       error: () => {
         Notificacion.notificacion(

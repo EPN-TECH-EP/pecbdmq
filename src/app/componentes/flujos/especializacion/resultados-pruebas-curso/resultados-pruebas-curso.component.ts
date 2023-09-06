@@ -203,9 +203,29 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
         next: (lista: PruebaDetalleDatos[]) => {
           this.listaPruebaDetalleDatos = lista;
 
+          console.log('listaPruebaDetalleDatos', lista);
+
           // establecer la prueba seleccionada a la primera activa
           for (let index = 0; index < this.listaPruebaDetalleDatos.length; index++) {
-            if (this.listaPruebaDetalleDatos[index].estado !== FORMACION.estadoPruebasCierre) {
+
+            // si no es la última, verifica el estado
+            if (index < this.listaPruebaDetalleDatos.length - 1) {
+
+              if (this.listaPruebaDetalleDatos[index].estado !== FORMACION.estadoPruebasCierre) {
+                this.pruebaDetalleSeleccionada = this.listaPruebaDetalleDatos[index];
+
+                this.cargarResultadosPrueba();
+
+                this.obtenerTipoResultado();
+
+                this.listarArchivosPrueba();
+
+                this.showLoading = false;
+
+                break;
+
+              }
+            } else {
               this.pruebaDetalleSeleccionada = this.listaPruebaDetalleDatos[index];
 
               this.cargarResultadosPrueba();
@@ -215,8 +235,6 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
               this.listarArchivosPrueba();
 
               this.showLoading = false;
-
-              break;
 
             }
           }
@@ -465,7 +483,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
       tipo, this.pruebaDetalleSeleccionada.codSubtipoPrueba,
       this.pruebaDetalleSeleccionada.descripcionPrueba,
       this.cursoSeleccionado.codCursoEspecializacion,
-      ).subscribe({
+    ).subscribe({
       next: (data) => {
         const blob = new Blob([data], {type: contentType});
         const url = window.URL.createObjectURL(blob);
@@ -554,7 +572,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion ).subscribe({
+      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (resultado) => {
           Notificacion.notificacionOK(
             this.notificationRef,
@@ -622,7 +640,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
             this.listarArchivosPrueba();
 
             // en caso de cierre se actualiza la prueba
-            if(this.pruebaDetalleSeleccionada.estado === FORMACION.estadoPruebasCierre) {
+            if (this.pruebaDetalleSeleccionada.estado === FORMACION.estadoPruebasCierre) {
               // actualiza el estado de pruebaDetalle a cerrado con servicio PruebaDetalleService
               this.subscriptions.push(
                 this.pruebaDetalleService

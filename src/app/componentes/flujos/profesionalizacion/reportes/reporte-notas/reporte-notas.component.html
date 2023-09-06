@@ -2,7 +2,7 @@
 
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Listado Materias por Nivel/Cohorte</p>
+    <p class="fs-4 fw-bolder">Listado materias por nivel/promoción</p>
   </div>
 </div>
 
@@ -11,7 +11,7 @@
   <div class="col-8">
 
     <div class="col-md-6 mb-3">
-      <label for="semestreSelect">Cohorte</label>
+      <label for="semestreSelect">Promoción</label>
       <mdb-select id="periodoSelect" [(ngModel)]="selectedPeriodo"
                   (ngModelChange)="onSelectPeriodoChange()">
         <mdb-option *ngFor="let item of periodos" [value]="item">

@@ -13,10 +13,10 @@ import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
 import {ArchivoService} from '../../../../servicios/archivo.service';
 import {MyValidators} from '../../../../util/validators';
 import {FormacionService} from '../../../../servicios/formacion/formacion.service';
-import {FORMACION} from '../../../../util/constantes/fomacion.const';
+import {PROFESIONALIZACION} from '../../../../util/constantes/profesionalizacion.const';
 import {ComponenteBase} from '../../../../util/componente-base';
 import {catchError, finalize} from 'rxjs/operators';
-import {forkJoin, of, switchMap} from 'rxjs';
+import {forkJoin, from, of, switchMap} from 'rxjs';
 import {DocumentosService} from '../../../../servicios/formacion/documentos.service';
 import {Router} from '@angular/router';
 import {ProConvocatoriaService} from '../../../../servicios/profesionalizacion/pro-convocatoria.service';
@@ -54,11 +54,13 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   convocatoria: ProConvocatoria;
   fechaActual: Date;
   codigoUnicoConvocatoria: string;
+  nombrePeriodo: string;
   minDate: Date;
   existeProcesoActivo: boolean;
   tieneEstadoConvocatoria: boolean;
   ocurrioErrorInicioProceso: boolean;
   estaCreando: boolean;
+  estaEditandoOCreando: boolean;
   seCreoConExito = false;
   periodos: ProPeriodo[];
 
@@ -96,15 +98,18 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.ocurrioErrorInicioProceso = false;
     this.existeProcesoActivo = false;
     this.estaCreando = false;
+    this.estaEditandoOCreando = false;
     this.correo = new FormControl('', [Validators.required, Validators.email]);
     this.construirFormulario();
     this.getSemestres();
     this.getParametros();
     this.fechaActual = new Date();
+
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 1);
-    this.codigoUnicoConvocatoria = '';
 
+    this.codigoUnicoConvocatoria = '';
+    this.nombrePeriodo = '';
   }
 
   ngOnInit() {
@@ -121,7 +126,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       }),
     ).pipe(switchMap((periodos) => {
         this.periodos = periodos;
-        return this.formacionService.getEstadoActual();
+        return this.proConvocatoriaService.getEstadoActual();
       }),
       catchError((errorResponse: HttpErrorResponse) => {
         Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
@@ -137,9 +142,10 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
       this.existeProcesoActivo = true;
 
-      if (customResponse.mensaje === FORMACION.estadoConvocatoria) {
+      if (customResponse.mensaje === PROFESIONALIZACION.ACTIVO) {
         this.tieneEstadoConvocatoria = true;
         this.estaCreando = false;
+        this.estaEditandoOCreando = true;
         this.proConvocatoriaService.getConvocatoriaActiva().subscribe({
           next: (convocatoria) => {
             if (!convocatoria) {
@@ -169,7 +175,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
         });
       }
 
-      if (customResponse.mensaje === FORMACION.estadoInicial) this.handleNotFoundConvocatoria();
+      if (customResponse.mensaje === PROFESIONALIZACION.SIN_PERIODO || customResponse.mensaje === PROFESIONALIZACION.INACTIVO) this.handleNotFoundConvocatoria();
     });
   }
 
@@ -200,6 +206,9 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
     convocatoria.fechaInicio = fechaInicioOriginal;
     convocatoria.fechaFin = fechaFinOriginal;
+
+    this.onDataSelectChange(convocatoria.codigoParametro, 'msj1');
+    this.onDataSelectChange(convocatoria.codigoParametro2, 'msj2');
 
     this.form.patchValue({
       codigoParametro: convocatoria?.codigoParametro,
@@ -281,7 +290,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
 
           this.seCreoConExito = true;
           this.showLoading = false;
-          this.router.navigate(['/principal/profesionalizacion/proceso']);
+          this.router.navigate(['/principal/profesionalizacion/menu-convocatoria']);
 
         },
         error: (errorResponse: HttpErrorResponse) => {
@@ -374,6 +383,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   private handleNotFoundConvocatoria() {
     this.existeProcesoActivo = false;
     this.estaCreando = true;
+    this.estaEditandoOCreando = true;
 
     this.proConvocatoriaService.getCodigoUnicoCreacion().subscribe(
       (codigoUnico) => {
@@ -395,7 +405,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     forkJoin(requests)
       .pipe(finalize(() => this.reloadPage()))
       .subscribe(responses => {
-        console.log(responses)
+        this.onEnviarNotificacion();
       });
   }
 
@@ -426,7 +436,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     forkJoin([...createRequests, ...deleteRequests])
       .subscribe({
         next: (responses) => {
-          console.log(responses);
           this.successUpdated();
         },
         error: (error) => {
@@ -442,6 +451,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   private successUpdated() {
+    this.onEnviarNotificacion();
     Notificacion.notificacionOK(
       this.notificationRef,
       this.notificationServiceLocal,
@@ -450,5 +460,13 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.seCreoConExito = true;
     this.showLoading = false;
     this.reloadPage();
+  }
+
+  fijarNombreCohorte() {
+    this.nombrePeriodo = this.periodos.find(periodo => periodo.codigoPeriodo === this.form.get('codPeriodo').value).nombrePeriodo;
+  }
+
+  private onEnviarNotificacion() {
+    const notificationObservable = this.proConvocatoriaService.enviarNotificacion(this.convocatoria.codigo);
   }
 }

@@ -36,7 +36,7 @@ export class ReporteGeneralComponent implements OnInit {
   listado: ProMateriaSemestreDto[];
   @ViewChild('table') table!: MdbTableDirective<ProPeriodo>;
   headers = [
-    'Cohorte',
+    'Promoción',
     'Nivel',
     'Materia',
   ];

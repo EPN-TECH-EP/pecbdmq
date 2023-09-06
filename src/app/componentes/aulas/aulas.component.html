@@ -62,8 +62,8 @@
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="nombre"
-                  name="nombre"
+                  id="nombreAula"
+                  name="nombreAula"
                   type="text"
                   class="form-control"
                   [(ngModel)]="aula.nombreAula"
@@ -98,15 +98,15 @@
                 />
               </mdb-form-control>
             </td>
-            <td>
+            <td *ngIf="aula.tipoAula">
               <mdb-form-control>
                 <input
                   mdbInput="mdbInput"
-                  id="tipo"
-                  name="tipo"
+                  id="tipoAula"
+                  name="tipoAula"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="aula.tipo"
+                  [(ngModel)]="aula.tipoAula"
                   #tipo="ngModel"
                   required
                   (change)="
@@ -212,8 +212,8 @@
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="active"
-                    name="active"
+                    id="salaOcupada"
+                    name="salaOcupada"
                     [checked]="aula.salaOcupada"
                     [(ngModel)]="aula.salaOcupada"
                   />
@@ -298,11 +298,11 @@
               </ng-container>
             </td>
 
-            <td style="min-width: 50px">
+            <td *ngIf="aula.tipoAula" style="min-width: 50px">
               <ng-container
                 *ngIf="!estaEditando || codigoAulaEditando !== aula.codAula"
               >
-                {{ aula.tipo }}
+                {{ aula.tipoAula }}
               </ng-container>
               <ng-container
                 *ngIf="estaEditando && codigoAulaEditando === aula.codAula"
@@ -314,7 +314,7 @@
                     name="tipo"
                     type="text"
                     class="form-control"
-                    [(ngModel)]="aulaEditForm.tipo"
+                    [(ngModel)]="aulaEditForm.tipoAula"
                     #tipo="ngModel"
                     (change)="
                       validacionUtil.onInputChange($event, 'catalogo', tipo)

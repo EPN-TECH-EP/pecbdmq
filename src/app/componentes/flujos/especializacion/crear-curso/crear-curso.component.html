@@ -217,7 +217,7 @@
                         mdbLabel
                         class="form-label mb-2x"
                         for="porcentajeAceptacionCurso"
-                      >% de estudiantes</label
+                      >% mínimo de estudiantes</label
                       >
                       <mdb-error
                         *ngIf="porcentajeAceptacionCursoField?.invalid && porcentajeAceptacionCursoField?.touched"
@@ -501,7 +501,7 @@
           <h3 class="text-center">Lista Requisitos</h3>
 
           <div class="row d-flex justify-content-center">
-            <div class="datatable table-editor mt-3 col-10">
+            <div class="datatable table-editor mt-3 col-12">
               <button
                 class="btn btn-primary btn-sm ms-3"
                 id="btnAgregarFila"
@@ -530,7 +530,7 @@
                 >
                 <tr>
                   <th>
-                    <b> Requerimiento </b>
+                    <b> Requisito </b>
                   </th>
                   <th scope="col" class="text-center"><b>Acciones</b></th>
                 </tr>
@@ -542,11 +542,12 @@
                       <mdb-select
                         [(ngModel)]="itemRequisito"
                         name="nevoRequisito"
+                        [visibleOptions]=10
                       >
                         <mdb-option
                           *ngFor="let requisito of listaRequisitos"
                           [value]="requisito"
-                          class="text-wrap"
+                          class="text-wrap option-secondary-text"
                         >
                           {{ requisito.nombre }}
                         </mdb-option>

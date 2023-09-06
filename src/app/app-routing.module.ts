@@ -11,6 +11,7 @@ import { AutenticacionChildGuard } from './guard/autenticacion-child.guard';
 import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
+import { ProInscripcionComponent } from './componentes/flujos/profesionalizacion/pro-inscripcion/pro-inscripcion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'cargaArchivo', component: CargaArchivoComponent },
   { path: 'inscripcion', component: InscripcionComponent },
   { path: 'especializacion/inscripcion/:codCurso', component: InscripcionEspecializacionComponent },
+  { path: 'profesionalizacion/inscripcion', component: ProInscripcionComponent },
 
   {
     path: 'principal',
