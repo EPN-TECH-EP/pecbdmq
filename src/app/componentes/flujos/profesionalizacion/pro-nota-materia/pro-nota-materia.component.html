@@ -125,11 +125,7 @@
                   <input mdbInput type="number" min="0" formControlName="notaParcial1" class="form-control" [value]="calcularPromedio(notaForm)" readonly="true">
                 </mdb-form-control>
               </td>
-              <td>
-                <mdb-form-control>
-                  <input mdbCheckbox type="checkbox" formControlName="aprobado" class="form-check-input" [disabled]="true">
-                </mdb-form-control>
-              </td>
+              <td>{{ notaForm?.get('aprobado').value ? 'SI' : 'NO' }}</td>
             </tr>
           </ng-container>
 
