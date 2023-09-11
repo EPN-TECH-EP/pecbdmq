@@ -33,6 +33,17 @@ import {ProRequisitoConvocatoria} from '../../../../modelo/admin/pro-requisito-c
 import {ProPeriodoService} from "../../../../servicios/profesionalizacion/pro-periodo.service";
 import {ProPeriodo} from "../../../../modelo/admin/profesionalizacion/pro-periodo";
 
+function validateEmailList(control) {
+  const emailList = control.value.split(','); // Divide la cadena en una lista de correos electrónicos
+
+  // Expresión regular para validar un correo electrónico
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  // Itera a través de la lista de correos electrónicos y verifica cada uno
+  const isValid = emailList.every(email => emailPattern.test(email.trim()));
+
+  return isValid ? null : { invalidEmailList: true };
+}
 @Component({
   selector: 'app-convocatoria',
   templateUrl: './pro-convocatoria.component.html',
@@ -99,7 +110,7 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.existeProcesoActivo = false;
     this.estaCreando = false;
     this.estaEditandoOCreando = false;
-    this.correo = new FormControl('', [Validators.required, Validators.email]);
+    this.correo = new FormControl('', [Validators.required, validateEmailList]);
     this.construirFormulario();
     this.getSemestres();
     this.getParametros();
@@ -178,7 +189,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
       if (customResponse.mensaje === PROFESIONALIZACION.SIN_PERIODO || customResponse.mensaje === PROFESIONALIZACION.INACTIVO) this.handleNotFoundConvocatoria();
     });
   }
-
 
   private construirFormulario() {
     this.form = this.formBuilder.group(
@@ -287,7 +297,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
             this.notificationServiceLocal,
             'Convocatoria creada exitosamente'
           );
-
           this.seCreoConExito = true;
           this.showLoading = false;
           this.router.navigate(['/principal/profesionalizacion/menu-convocatoria']);
@@ -405,7 +414,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     forkJoin(requests)
       .pipe(finalize(() => this.reloadPage()))
       .subscribe(responses => {
-        this.onEnviarNotificacion();
       });
   }
 
@@ -451,7 +459,6 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
   }
 
   private successUpdated() {
-    this.onEnviarNotificacion();
     Notificacion.notificacionOK(
       this.notificationRef,
       this.notificationServiceLocal,
@@ -466,7 +473,4 @@ export class ProConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.nombrePeriodo = this.periodos.find(periodo => periodo.codigoPeriodo === this.form.get('codPeriodo').value).nombrePeriodo;
   }
 
-  private onEnviarNotificacion() {
-    const notificationObservable = this.proConvocatoriaService.enviarNotificacion(this.convocatoria.codigo);
-  }
 }
