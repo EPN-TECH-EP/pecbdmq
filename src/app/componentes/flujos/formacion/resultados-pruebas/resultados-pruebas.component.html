@@ -376,10 +376,14 @@
               <i class="fa-solid fa-list-ul me-2"></i>
               Generar listas de aprobados
             </button>
+            <button class="btn btn-danger mb-3 ms-1" (click)="generarListaReprobados()" [disabled]="addRow">
+              <i class="fa-solid fa-x me-2"></i>
+              Generar  listas de reprobados
+            </button>
 
             <button class="btn btn-light mb-3 ms-1" (click)="enviarNotificacion()" [disabled]="addRow">
               <i class="fa-solid fa-envelope me-2"></i>
-              Reenviar notificación aprobados
+              Reenviar notificación de postulantes
             </button>
 
             <!-- Add new row -->

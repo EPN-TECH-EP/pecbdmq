@@ -809,4 +809,8 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
       return false;
     }
   }
+
+  generarListaReprobados() {
+
+  }
 }

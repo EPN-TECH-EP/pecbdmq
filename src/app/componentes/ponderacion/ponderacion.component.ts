@@ -5,7 +5,6 @@ import { ModuloService } from 'src/app/servicios/modulo.service';
 import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
 import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
 import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
-import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
 import { Periodo } from 'src/app/modelo/admin/periodo-academico';
 import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -81,7 +80,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     private ApiPonderacion: PonderacionService,
     private ApiModulo: ModuloService,
     private ApiComponente: ComponenteNotaService,
-    private ApiTipoNota: TipoNotaService,
     private ApiPeriodoAcademico: PeriodoAcademicoService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService
@@ -153,8 +151,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
- 
-  
+
+
   //registro
   public registro(ponderacion: Ponderacion): void {
     ponderacion = { ...ponderacion, estado: 'ACTIVO' };
@@ -168,7 +166,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
       // busca la etiqueta a mostrar
       let index = 0;
-      for (let key in ponderacion) {        
+      for (let key in ponderacion) {
         if (key === vacios[0]) {
           break;
         }
@@ -186,7 +184,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     if (
       ValidacionUtil.isNullOrEmptyNumber(
         ponderacion.porcentajeFinalPonderacion
-      ) 
+      )
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -212,7 +210,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,            
+            ).nombre,
             periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
@@ -308,7 +306,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
       // busca la etiqueta a mostrar
       let index = 0;
-      for (let key in ponderacion) {        
+      for (let key in ponderacion) {
         if (key === vacios[0]) {
           break;
         }
@@ -326,7 +324,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     if (
       ValidacionUtil.isNullOrEmptyNumber(
         ponderacion.porcentajeFinalPonderacion
-      ) 
+      )
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -359,7 +357,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,            
+            ).nombre,
             periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,

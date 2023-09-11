@@ -75,7 +75,6 @@ import { ModuloComponent } from './componentes/modulo/modulo.component';
 import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
-import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import {
@@ -286,7 +285,6 @@ import { UtilModule } from './componentes/util/util.module';
     TipoFuncionarioComponent,
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
-    TipoNotaComponent,
     TipoBajaComponent,
     TipoFaltaComponent,
     PopconfirmComponent,
