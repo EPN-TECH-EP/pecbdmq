@@ -189,7 +189,7 @@ export class ProParaleloInstructorComponent extends ComponenteBase implements On
     this.proParaleloInstructorService.eliminar(dato.codPeriodoSemestreMateriaParaleloInstructor).subscribe({
       next: (instructor) => {
         this.formGroup.reset();
-        this.proParaleloInstructorService.getAllByCodMateriaParalelo(dato.codPeriodoSemestreMateriaParaleloInstructor).subscribe({
+        this.proParaleloInstructorService.getAllByCodMateriaParalelo(this.seletedItemParalelo).subscribe({
           next: (result) => {
             this.listadoAsignacion = result;
           }
