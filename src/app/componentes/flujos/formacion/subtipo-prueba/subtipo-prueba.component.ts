@@ -112,12 +112,12 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
   // crear subtipo prueba
-  onAgregarSubtipoPrueba(){
+  onAgregarSubtipoPrueba() {
     this.addRow = true;
     this.initSubtipoPrueba();
   }
 
-  crear(subtipoPrueba: SubtipoPrueba){
+  crear(subtipoPrueba: SubtipoPrueba) {
 
     this.subtipoPruebaEdit = {
       codSubtipoPrueba: null,
@@ -134,31 +134,32 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
 
-    //objeto para crear    
+    //objeto para crear
 
     this.subscriptions.push(
       this.subtipoPruebaService.crear(this.subtipoPruebaEdit).subscribe({
-        next: (response: HttpResponse<SubtipoPrueba>) => {
-          let nuevo: SubtipoPrueba = response.body;
-          this.listaSubtipoPrueba.push(nuevo);
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Subtipo de Prueba creado con éxito');
+          next: (response: HttpResponse<SubtipoPrueba>) => {
+            let nuevo: SubtipoPrueba = response.body;
+            this.listaSubtipoPrueba.push(nuevo);
+            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Subtipo de Prueba creado con éxito');
 
-          this.addRow = false;
-          this.initSubtipoPrueba();
-          this.showLoading = false;
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
-          this.showLoading = false;
+            this.addRow = false;
+            this.initSubtipoPrueba();
+            this.showLoading = false;
+          },
+          error: (errorResponse: HttpErrorResponse) => {
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+            this.showLoading = false;
+          }
         }
-      }
-    ));    
+      ));
   }
 
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
-    this.estaEditando = true;    
+    this.estaEditando = true;
     this.editIndex = index;
-    this.subtipoPruebaEdit = {...subtipoPrueba};
+    this.subtipoPruebaEdit = { ...subtipoPrueba };
+    console.log(this.subtipoPruebaEdit);
   }
 
   undoRow() {
@@ -169,16 +170,17 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(subtipoPrueba: SubtipoPrueba, formValue: SubtipoPrueba): void {
 
-    this.subtipoPruebaEdit = {//...this.subtipoPruebaEdit, 
-    codSubtipoPrueba: formValue.codSubtipoPrueba,
-    codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
-    nombre: formValue.nombre,
-    estado: formValue.estado
+    this.subtipoPruebaEdit = {...this.subtipoPruebaEdit,
+      codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
+      nombre: formValue.nombre,
+      estado: 'ACTIVO'
     };
-    
+
+    console.log(this.subtipoPruebaEdit);
+
     // validación vacios
     if (formValue.nombre === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
@@ -196,15 +198,16 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.editIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           this.showLoading = false;
+          console.error(errorResponse);
         },
       })
     )
   }
 
 
-//eliminar
+  //eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
@@ -224,7 +227,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.listaSubtipoPrueba = [...this.listaSubtipoPrueba];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )
