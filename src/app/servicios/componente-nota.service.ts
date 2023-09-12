@@ -18,18 +18,18 @@ export class ComponenteNotaService {
 
   constructor(private http: HttpClient) {}
   public getComponenteNota(): Observable<ComponenteNota[]> {
-    return this.http.get<ComponenteNota[]>(`${this.host}/gen_componente_nota/listar`);
+    return this.http.get<ComponenteNota[]>(`${this.host}/componenteNota/listar`);
   }
 
   public crearComponenteNota(componenteNota: ComponenteNota): Observable<HttpResponse<ComponenteNota>> {
-    return this.http.post<ComponenteNota>(`${this.host}/gen_componente_nota/crear`, componenteNota, { observe: 'response' });
+    return this.http.post<ComponenteNota>(`${this.host}/componenteNota/crear`, componenteNota, { observe: 'response' });
   }
 
   public actualizarComponenteNota(componenteNota: ComponenteNota, componenteNotaId:any): Observable<HttpResponse<ComponenteNota>> {
-    return this.http.put<ComponenteNota>(`${this.host}/gen_componente_nota/${componenteNotaId}`, componenteNota, { observe: 'response' });
+    return this.http.put<ComponenteNota>(`${this.host}/componenteNota/${componenteNotaId}`, componenteNota, { observe: 'response' });
   }
 
   public eliminarComponenteNota(componenteNotaId: any): Observable<string> {
-    return this.http.delete<string>(`${this.host}/gen_componente_nota/${componenteNotaId}`);
+    return this.http.delete<string>(`${this.host}/componenteNota/${componenteNotaId}`);
     }
 }

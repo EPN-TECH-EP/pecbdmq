@@ -112,12 +112,12 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
   // crear subtipo prueba
-  onAgregarSubtipoPrueba(){
+  onAgregarSubtipoPrueba() {
     this.addRow = true;
     this.initSubtipoPrueba();
   }
 
-  crear(subtipoPrueba: SubtipoPrueba){
+  crear(subtipoPrueba: SubtipoPrueba) {
 
     this.subtipoPruebaEdit = {
       codSubtipoPrueba: null,
@@ -148,7 +148,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+            Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           this.showLoading = false;
         }
       }
@@ -158,7 +158,8 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
     this.estaEditando = true;    
     this.editIndex = index;
-    this.subtipoPruebaEdit = {...subtipoPrueba};
+    this.subtipoPruebaEdit = { ...subtipoPrueba };
+    console.log(this.subtipoPruebaEdit);
   }
 
   undoRow() {
@@ -169,13 +170,14 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(subtipoPrueba: SubtipoPrueba, formValue: SubtipoPrueba): void {
 
-    this.subtipoPruebaEdit = {//...this.subtipoPruebaEdit, 
-    codSubtipoPrueba: formValue.codSubtipoPrueba,
+    this.subtipoPruebaEdit = {...this.subtipoPruebaEdit,
     codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
     nombre: formValue.nombre,
-    estado: formValue.estado
+      estado: 'ACTIVO'
     };
     
+    console.log(this.subtipoPruebaEdit);
+
     // validación vacios
     if (formValue.nombre === '') {
       Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
@@ -196,15 +198,16 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.editIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
           this.showLoading = false;
+          console.error(errorResponse);
         },
       })
     )
   }
 
 
-//eliminar
+  //eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
@@ -224,7 +227,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.listaSubtipoPrueba = [...this.listaSubtipoPrueba];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )

@@ -89,7 +89,16 @@
           <p class="m-0"><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
         </div>
         <div class="mb-3">
-          <p class="text-primary"><i class="fas fa-info-circle me-2"></i> Por favor, suba su documento asociado </p>
+          <div class="alert alert-info" role="alert">
+            <p><i class="fas fa-info-circle me-1"></i> Indicaciones: <b> Subir el expediente en un solo archivo, en formato pdf, que incluya:</b>
+            </p>
+            <ul class="list-group list-unstyled">
+              <li class="mb-1" *ngFor="let requisito of curso.requisitos">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                {{ requisito.nombre }}
+              </li>
+            </ul>
+          </div>
           <mdb-form-control [style.width.px]="400">
             <input
               mdbValidate
@@ -104,7 +113,7 @@
         </div>
         <div class="card">
           <h5 class="card-header text-success">
-            <i class="fa-solid fa-check-circle me-2"></i>
+            <i class="fa-solid fa-check-square me-2"></i>
             Confirmar inscripción
           </h5>
           <div class="card-body text-center">

@@ -5,7 +5,6 @@ import { ModuloService } from 'src/app/servicios/modulo.service';
 import { ComponenteNota } from 'src/app/modelo/admin/componente-nota';
 import { ComponenteNotaService } from 'src/app/servicios/componente-nota.service';
 import { TipoNota } from 'src/app/modelo/admin/tipo-nota';
-import { TipoNotaService } from 'src/app/servicios/tipo-nota.service';
 import { Periodo } from 'src/app/modelo/admin/periodo-academico';
 import { PeriodoAcademicoService } from 'src/app/servicios/periodo-academico.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -81,7 +80,6 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     private ApiPonderacion: PonderacionService,
     private ApiModulo: ModuloService,
     private ApiComponente: ComponenteNotaService,
-    private ApiTipoNota: TipoNotaService,
     private ApiPeriodoAcademico: PeriodoAcademicoService,
     private notificationServiceLocal: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService

@@ -46,7 +46,16 @@
       class="text-muted">{{ cursoSeleccionado?.aprobadoPor?.nombre}} {{cursoSeleccionado?.aprobadoPor?.apellido}}</span>
     </h6>
   </div>
-
+  <hr class="hr">
+  <div>
+    <h1 class="fs-4 fw-bolder">REACTIVAR CURSO</h1>
+    <p>¿Está seguro que desea reactivar el curso?</p>
+    <button
+      class="btn btn-success mb-3"
+      (click)="reactivarCurso()"
+    >Reactivar curso
+    </button>
+  </div>
 </section>
 
 <div
