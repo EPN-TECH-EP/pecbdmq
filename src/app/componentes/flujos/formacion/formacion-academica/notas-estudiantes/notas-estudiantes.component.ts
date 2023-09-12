@@ -50,9 +50,9 @@ export class NotasEstudiantesComponent implements OnInit {
     ];
     this.headersNotasPorEstudiante = [
       { key: 'nombre', label: 'Materia' },
-      { key: 'nombre', label: 'Nota Final' },
       { key: 'noFinal', label: 'Nota Final Disciplinaria' },
       { key: 'notaDisciplinaria', label: 'Nota Supletorio' },
+      { key: 'nombre', label: 'Nota Final' },
     ];
     this.estudianteSeleccionado = {} as DatoPersonal;
     this.notasMateriaPorEstudiante = [];
