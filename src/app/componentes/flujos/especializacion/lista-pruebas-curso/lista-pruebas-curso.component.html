@@ -35,7 +35,7 @@
     <hr class="hr">
     <div class="d-flex gap-2">
       <h1 class="fs-4 fw-bolder">CURSO: </h1>
-      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.tipoCurso?.nombreCatalogoCurso | uppercase}}</h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado.nombre + " - " + cursoSeleccionado?.tipoCurso?.nombreCatalogoCurso | uppercase}}</h1>
     </div>
     <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
     <hr class="hr">
@@ -384,10 +384,17 @@
                         [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
                         <i class="fa fa-trash-alt"></i>
                       </button>
+                      <button
+                        mdbTooltip="Enviar notificación informativa"
+                        class="mx-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        (click)="confirmaNotificar($event, pruebaDetalle.codPruebaDetalle)"
+                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
+                        <i class="fa fa-paper-plane"></i>
+                      </button>
 
                       <button
                         mdbTooltip="Orden anterior"
-                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        class="mx-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
                         (click)="moverAntes(pruebaDetalle, index)"
                         [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow">
                         <i class="fa fa-arrow-up text-primary"></i>

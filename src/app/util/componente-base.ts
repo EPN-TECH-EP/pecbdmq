@@ -53,6 +53,10 @@ export class ComponenteBase implements OnDestroy {
     this.mensajeConfirmacion = '¿Eliminar el registro? Esta acción es irreversible';
   }
 
+  confirmaEnvioNotificacion(){
+    this.mensajeConfirmacion = '¿Desea enviar la notificación?';
+  }
+
   confirmarReasignacionMensaje(){
     this.mensajeConfirmacion = '¿Reasignar la inscripción?';
   }
