@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CursosService } from "../../../../servicios/especializacion/cursos.service";
 import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
-import { switchMap } from "rxjs";
+import { of, switchMap } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
 import { Notificacion } from "../../../../util/notificacion";
@@ -20,6 +20,8 @@ export class EstadoProcesoCursoComponent implements OnInit {
   esVistaCurso: boolean;
   esVistaListaCursos: boolean;
   estaCargando: boolean;
+  estadoActualCurso: string;
+  esEstadoCierre: boolean;
 
   constructor(
     private cursosService: CursosService,
@@ -30,6 +32,8 @@ export class EstadoProcesoCursoComponent implements OnInit {
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
     this.estaCargando = true;
+    this.estadoActualCurso = '';
+    this.esEstadoCierre = false;
   }
 
   ngOnInit(): void {
@@ -90,7 +94,10 @@ export class EstadoProcesoCursoComponent implements OnInit {
         estado.estadoActual = 'siguiente';
       }
     });
+    this.estadoActualCurso = estadoActualCurso.estadoCatalogo;
+    console.log({ estadoActualCurso });
   }
+
 
   cursoSeleccionadoEvent($event: Curso) {
     if ($event !== null) {
@@ -108,26 +115,41 @@ export class EstadoProcesoCursoComponent implements OnInit {
   }
 
   actualizarEstado($estado: any) {
-    console.log("Curso: ", this.cursoSeleccionado, "Codigo estado", $estado);
+    const codCurso = this.cursoSeleccionado.codCursoEspecializacion;
 
-    this.cursosService.actualizarEstadoCurso(this.cursoSeleccionado.codCursoEspecializacion, $estado?.codigo).subscribe({
+    this.cursosService.actualizarEstadoCurso(codCurso, $estado?.codigo).subscribe({
       next: () => {
         this.notificar("Estado del curso actualizado correctamente", TipoAlerta.ALERTA_OK);
-        this.cursosService.comprobarMininoEstudiantes(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
-          next: (comprobacion) => {
-            console.log(comprobacion);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        })
-        this.listarCursos();
+        this.actualizarEstadoActualCurso(codCurso);
       },
       error: (error) => {
         console.error(error);
         this.notificar("Error al actualizar el estado del curso", TipoAlerta.ALERTA_ERROR);
       }
     });
+  }
+
+  private actualizarEstadoActualCurso(codCurso: number) {
+    this.cursosService.comprobarMininoEstudiantes(codCurso)
+      .pipe(switchMap((comprobacion) => {
+          return this.cursosService.obtenerEstadoActual(codCurso)
+            .pipe(catchError((error) => {
+              console.error(error);
+              return of(null);
+            }));
+        }),
+        catchError((error) => {
+          console.error(error);
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        if (res !== null) {
+          this.estadoActualCurso = res.mensaje;
+          this.esEstadoCierre = this.estadoActualCurso === "SIN ESTADO";
+          this.listarCursos();
+        }
+      });
   }
 
 }
