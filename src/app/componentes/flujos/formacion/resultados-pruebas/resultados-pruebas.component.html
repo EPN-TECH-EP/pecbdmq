@@ -50,7 +50,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio1"
                       [value]="TipoFiltroPostulantesValidosEnum.CEDULA"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio1">Cédula</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -61,7 +61,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio2"
                       [value]="TipoFiltroPostulantesValidosEnum.ID_POSTULANTE"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio2">ID</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -72,7 +72,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio3"
                       [value]="TipoFiltroPostulantesValidosEnum.APELLIDO"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio3">Apellido</label>
                   </div>
                 </div>
@@ -111,7 +111,7 @@
                 id="inlineRadio1"
                 value="ID"
                 [(ngModel)]="orden"
-                (change)="onOrdenChange(orden)" />
+                (change)="onOrdenChange(orden)"/>
               <label class="form-check-label" for="inlineRadio1">ID</label>
             </div>
             <div class="form-check form-check-inline">
@@ -123,7 +123,7 @@
                 id="inlineRadio2"
                 value="APELLIDO"
                 [(ngModel)]="orden"
-                (change)="onOrdenChange(orden)" />
+                (change)="onOrdenChange(orden)"/>
               <label class="form-check-label" for="inlineRadio2">Apellido</label>
             </div>
           </div>
@@ -140,36 +140,36 @@
                 #table="mdbTable"
                 [dataSource]="listaPostulantesValidos">
                 <thead>
-                  <tr>
-                    <th *ngFor="let header of headers">
-                      <div class="fw-bold">{{ header.label | titlecase }}</div>
-                    </th>
-                  </tr>
+                <tr>
+                  <th *ngFor="let header of headers">
+                    <div class="fw-bold">{{ header.label | titlecase }}</div>
+                  </th>
+                </tr>
                 </thead>
 
                 <tbody class="datatable-body">
-                  <!-- datos -->
-                  <tr *ngFor="let postulanteValidos of table.data; let index = index">
-                    <td>
-                      {{ postulanteValidos.idPostulante }}
-                    </td>
+                <!-- datos -->
+                <tr *ngFor="let postulanteValidos of table.data; let index = index">
+                  <td>
+                    {{ postulanteValidos.idPostulante }}
+                  </td>
 
-                    <td>
-                      <div class="text-wrap">{{ postulanteValidos.apellido }} {{ postulanteValidos.nombre }}</div>
-                    </td>
+                  <td>
+                    <div class="text-wrap">{{ postulanteValidos.apellido }} {{ postulanteValidos.nombre }}</div>
+                  </td>
 
-                    <td>
-                      <div class="text-wrap">
-                        {{ postulanteValidos.cedula }}
-                      </div>
-                    </td>
+                  <td>
+                    <div class="text-wrap">
+                      {{ postulanteValidos.cedula }}
+                    </div>
+                  </td>
 
-                    <td>
-                      <div>
-                        {{ postulanteValidos.correoPersonal }}
-                      </div>
-                    </td>
-                  </tr>
+                  <td>
+                    <div>
+                      {{ postulanteValidos.correoPersonal }}
+                    </div>
+                  </td>
+                </tr>
                 </tbody>
               </table>
             </div>
@@ -197,7 +197,7 @@
                 <div class="jumbotron">
                   <h1 class="display-4">Registro cerrado</h1>
                   <p class="lead">El registro de resultados se encuentra cerrado</p>
-                  <hr class="my-4" />
+                  <hr class="my-4"/>
                   <p>Se ha terminado de registrar los resultados para todas las pruebas de Formación</p>
                 </div>
               </ng-container>
@@ -210,13 +210,13 @@
                   [(ngModel)]="pruebaDetalleSeleccionada"
                   [visibleOptions]="20">
                   <mdb-option *ngFor="let pruebaItem of listaPruebaDetalleDatos" [value]="pruebaItem"
-                    ><span class="text-primary me-2">{{ pruebaItem.ordenTipoPrueba }}</span>
+                  ><span class="text-primary me-2">{{ pruebaItem.ordenTipoPrueba }}</span>
                     {{ pruebaItem.descripcionPrueba }}
                     <span class="text-muted"
-                      ><small>{{ pruebaItem.subTipoPruebaNombre }} - {{ pruebaItem.tipoPruebaNombre }} </small>
+                    ><small>{{ pruebaItem.subTipoPruebaNombre }} - {{ pruebaItem.tipoPruebaNombre }} </small>
                     </span>
                     <span class="text-primary ms-4"
-                      ><small>({{ pruebaItem.estado }})</small></span
+                    ><small>({{ pruebaItem.estado }})</small></span
                     >
                   </mdb-option>
                 </mdb-select>
@@ -278,7 +278,7 @@
                       mdbInput
                       type="file"
                       class="form-control"
-                      (change)="cargarArchivo($event)" />
+                      (change)="cargarArchivo($event)"/>
                   </ng-template>
                 </mdb-accordion-item>
               </mdb-accordion>
@@ -307,51 +307,57 @@
                   #table="mdbTable"
                   [dataSource]="listaResultadosPruebas">
                   <thead>
-                    <tr>
-                      <th *ngFor="let header of headersResultadosPruebas">
-                        <div class="fw-bold">{{ header.label | titlecase }}</div>
-                      </th>
-                    </tr>
+                  <tr>
+                    <th *ngFor="let header of headersResultadosPruebas">
+                      <div class="fw-bold">{{ header.label | titlecase }}</div>
+                    </th>
+                  </tr>
                   </thead>
 
                   <tbody class="datatable-body">
-                    <!-- datos -->
-                    <tr *ngFor="let resultado of table.data; let index = index">
+                  <!-- datos -->
+                  <tr *ngFor="let resultado of table.data; let index = index">
+                    <td>
+                      {{ resultado.idPostulante }}
+                    </td>
+                    <td>
+                      {{ resultado.cedula }}
+                    </td>
+                    <td>
+                      {{ resultado.nombre }} {{resultado.apellido}}
+                    </td>
+
+                    <ng-container *ngIf="resultado.resultado">
                       <td>
-                        {{ resultado.idPostulante }}
+                        <div class="text-wrap">{{ resultado.resultado }}</div>
                       </td>
+                    </ng-container>
 
-                      <ng-container *ngIf="resultado.resultado">
-                        <td>
-                          <div class="text-wrap">{{ resultado.resultado }}</div>
-                        </td>
-                      </ng-container>
+                    <ng-container *ngIf="!resultado.resultado && resultado.resultadoTiempo">
+                      <td>
+                        <div class="text-wrap">{{ resultado.resultadoTiempo }}</div>
+                      </td>
+                    </ng-container>
 
-                      <ng-container *ngIf="!resultado.resultado && resultado.resultadoTiempo">
-                        <td>
-                          <div class="text-wrap">{{ resultado.resultadoTiempo }}</div>
-                        </td>
-                      </ng-container>
+                    <ng-container
+                      *ngIf="!resultado.resultado && !resultado.resultadoTiempo && resultado.cumplePrueba !== null">
+                      <td>
+                        <div class="text-wrap">{{ resultado.cumplePrueba === true ? 'CUMPLE' : 'NO CUMPLE' }}</div>
+                      </td>
+                    </ng-container>
 
-                      <ng-container
-                        *ngIf="!resultado.resultado && !resultado.resultadoTiempo && resultado.cumplePrueba !== null">
-                        <td>
-                          <div class="text-wrap">{{ resultado.cumplePrueba === true ? 'CUMPLE' : 'NO CUMPLE' }}</div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container
-                        *ngIf="
+                    <ng-container
+                      *ngIf="
                           !resultado.resultado &&
                           !resultado.resultadoTiempo &&
                           !resultado.cumplePrueba &&
                           resultado.notaPromedioFinal
                         ">
-                        <td>
-                          <div class="text-wrap">{{ resultado.notaPromedioFinal }}</div>
-                        </td>
-                      </ng-container>
-                    </tr>
+                      <td>
+                        <div class="text-wrap">{{ resultado.notaPromedioFinal }}</div>
+                      </td>
+                    </ng-container>
+                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -378,7 +384,7 @@
             </button>
             <button class="btn btn-danger mb-3 ms-1" (click)="generarListaReprobados()" [disabled]="addRow">
               <i class="fa-solid fa-x me-2"></i>
-              Generar  listas de reprobados
+              Generar listas de reprobados
             </button>
 
             <button class="btn btn-light mb-3 ms-1" (click)="enviarNotificacion()" [disabled]="addRow">
@@ -396,7 +402,7 @@
                     mdbInput
                     type="file"
                     class="form-control"
-                    (change)="cargarArchivoPrueba($event)" />
+                    (change)="cargarArchivoPrueba($event)"/>
                 </mdb-form-control>
               </div>
 
@@ -423,46 +429,46 @@
               <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
                 <table class="table datatable-table" mdbTable mdbTableSort #table="mdbTable" [dataSource]="documentos">
                   <thead class="datatable-header">
-                    <tr>
-                      <th
-                        *ngFor="let header of headersArchivos"
-                        scope="col"
-                        class="fw-bold"
-                        [mdbTableSortHeader]="header.key">
-                        <b> {{ header.label | titlecase }}</b>
-                      </th>
-                      <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
-                    </tr>
+                  <tr>
+                    <th
+                      *ngFor="let header of headersArchivos"
+                      scope="col"
+                      class="fw-bold"
+                      [mdbTableSortHeader]="header.key">
+                      <b> {{ header.label | titlecase }}</b>
+                    </th>
+                    <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+                  </tr>
                   </thead>
                   <tbody class="datatable-body">
-                    <!-- Data -->
-                    <tr *ngFor="let documento of table.data">
-                      <td>
-                        {{ documento.nombre }}
-                      </td>
-                      <td>
-                        {{ documento.descripcion }}
-                      </td>
+                  <!-- Data -->
+                  <tr *ngFor="let documento of table.data">
+                    <td>
+                      {{ documento.nombre }}
+                    </td>
+                    <td>
+                      {{ documento.descripcion }}
+                    </td>
 
-                      <td class="text-center">
-                        <ng-container *ngIf="!addRow">
-                          <button
-                            mdbTooltip="Descargar documento"
-                            class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                            [disabled]="estaEditando"
-                            (click)="descargarArchivo(documento)">
-                            <i class="fa fa-download"></i>
-                          </button>
-                          <button
-                            mdbTooltip="Eliminar registro"
-                            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                            [disabled]="estaEditando"
-                            (click)="eliminar(documento.codDocumento)">
-                            <i class="fa fa-trash-alt"></i>
-                          </button>
-                        </ng-container>
-                      </td>
-                    </tr>
+                    <td class="text-center">
+                      <ng-container *ngIf="!addRow">
+                        <button
+                          mdbTooltip="Descargar documento"
+                          class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditando"
+                          (click)="descargarArchivo(documento)">
+                          <i class="fa fa-download"></i>
+                        </button>
+                        <button
+                          mdbTooltip="Eliminar registro"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditando"
+                          (click)="eliminar(documento.codDocumento)">
+                          <i class="fa fa-trash-alt"></i>
+                        </button>
+                      </ng-container>
+                    </td>
+                  </tr>
                   </tbody>
                 </table>
               </div>

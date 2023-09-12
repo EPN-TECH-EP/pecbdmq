@@ -118,6 +118,14 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
       label: 'ID',
     },
     {
+      key: 'cedula',
+      label: 'Cédula',
+    },
+    {
+      key: 'nombre',
+      label: 'Nombre',
+    },
+    {
       key: 'resultado',
       label: 'Resultado',
     },
