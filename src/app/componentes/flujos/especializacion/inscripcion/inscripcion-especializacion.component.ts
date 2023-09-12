@@ -140,6 +140,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
     this.cursosService.obtenerCurso(codigo).subscribe({
       next: (curso) => {
         this.curso = curso;
+        console.log(this.curso);
         this.verificarEstadoInscripcion();
       },
       error: (err) => {

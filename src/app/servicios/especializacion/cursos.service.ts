@@ -67,4 +67,9 @@ export class CursosService {
   generarListaAprobados(codCursoEspecializacion: number) {
     return this.http.get(`${this.host}/antiguedades/generaArchivosAntiguedadesEspecializacion/${codCursoEspecializacion}`);
   }
+
+  reactivarCurso(codCurso: number) {
+    return this.http.get(`${this.host}/curso/reactivar/${codCurso}`);
+  }
+
 }
