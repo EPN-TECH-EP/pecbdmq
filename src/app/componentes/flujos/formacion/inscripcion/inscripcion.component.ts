@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdbNotificationRef, MdbNotificationService } from 'mdb-angular-ui-kit/notification';
-import { Subscription, catchError, of, switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { Notificacion } from 'src/app/util/notificacion';
 import { AlertaComponent } from '../../../util/alerta/alerta.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,10 +25,7 @@ import { CiudadanoService } from '../../../../servicios/api-bomberos/ciudadano.s
 import { FormacionService } from 'src/app/servicios/formacion/formacion.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FORMACION } from 'src/app/util/constantes/fomacion.const';
-import { ThisReceiver } from '@angular/compiler';
 import { debounceTime } from 'rxjs/operators';
-import { ValidacionInscripcionService } from "../../../../servicios/formacion/validacion-inscripcion.service";
-import { ValidacionRequisito } from "../../../../modelo/flujos/formacion/requisito";
 import { ConvocatoriaService } from "../../../../servicios/formacion/convocatoria.service";
 import { Convocatoria } from "../../../../modelo/admin/convocatoria";
 
@@ -249,6 +246,11 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         ciudadTitulo: ['', [Validators.required]],
         colegioTitulo: ['', [Validators.required]],
         nombreTitulo: ['', [Validators.required]],
+        // Datos titulo tercer nivel
+        paisTituloTercerNivel: ['',],
+        ciudadTituloTercerNivel: ['',],
+        institucionTituloTercerNivel: ['',],
+        nombreTituloTercerNivel: ['',],
         // Datos merito
         meritoAcademico: ['', [Validators.minLength(10)]],
         meritoDeportivo: ['', [Validators.minLength(10)]],
@@ -306,6 +308,12 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['meritoAcademico'].disable();
       this.formularioInscripcion.controls['meritoDeportivo'].disable();
       this.formularioInscripcion.controls['docSoporte'].disable();
+
+      this.formularioInscripcion.controls['paisTituloTercerNivel'].disable();
+      this.formularioInscripcion.controls['ciudadTituloTercerNivel'].disable();
+      this.formularioInscripcion.controls['institucionTituloTercerNivel'].disable();
+      this.formularioInscripcion.controls['nombreTituloTercerNivel'].disable();
+
     } else {
       this.formularioInscripcion.controls['nombres'].enable();
       this.formularioInscripcion.controls['apellidos'].enable();
@@ -329,6 +337,12 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['meritoAcademico'].enable();
       this.formularioInscripcion.controls['meritoDeportivo'].enable();
       this.formularioInscripcion.controls['docSoporte'].enable();
+
+      this.formularioInscripcion.controls['paisTituloTercerNivel'].enable();
+      this.formularioInscripcion.controls['ciudadTituloTercerNivel'].enable();
+      this.formularioInscripcion.controls['institucionTituloTercerNivel'].enable();
+      this.formularioInscripcion.controls['nombreTituloTercerNivel'].enable();
+
     }
   }
 
@@ -410,6 +424,22 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
 
   get nombreTituloField() {
     return this.formularioInscripcion.get('nombreTitulo');
+  }
+
+  get nombreTituloTercerNivelField() {
+    return this.formularioInscripcion.get('nombreTituloTercerNivel');
+  }
+
+  get paisTituloTercerNivelField() {
+    return this.formularioInscripcion.get('paisTituloTercerNivel');
+  }
+
+  get ciudadTituloTercerNivelField() {
+    return this.formularioInscripcion.get('ciudadTituloTercerNivel');
+  }
+
+  get institucionTituloTercerNivelField() {
+    return this.formularioInscripcion.get('institucionTituloTercerNivel');
   }
 
   get meritoAcademicoField() {
@@ -554,10 +584,17 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
     this.inscripcion.nombreTituloSegundoNivel = this.nombreTituloField.value;
     //
     this.inscripcion.meritoAcademicoDescripcion = this.meritoAcademicoField.value;
-    this.inscripcion.meritoDeportivoDescripcion = this.meritoDeportivoField.value;
+    this.inscripcion.meritoDeportivoDescripcion = this.meritoDeportivoField.value;//
+    //
+    this.inscripcion.nombreTituloTercerNivel = this.nombreTituloTercerNivelField.value;
+    this.inscripcion.ciudadTituloTercerNivel = this.ciudadTituloTercerNivelField.value;
+    this.inscripcion.paisTituloTercerNivel = this.paisTituloTercerNivelField.value;
+    this.inscripcion.institucionTituloTercerNivel = this.institucionTituloTercerNivelField.value;
 
     // establece estado inicial de la inscripcion
     this.inscripcion.estado = 'ACTIVO';
+
+    console.log(JSON.stringify(this.inscripcion));
   }
 
   public stepChange(event: any, stepper: MdbStepperComponent, elemento: string) {
@@ -706,9 +743,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.subscriptions.push(
         this.inscripcionService.buscarInscripcionPorCedula(this.cedulaField.value).subscribe({
           next: (response: any) => {
-            let existeInscripcion = response;
-
-            if (existeInscripcion) {
+            if (response) {
               Notificacion.notificacion(
                 this.notificationRef,
                 this.notificationServiceLocal,
@@ -800,11 +835,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           this.subscriptions.push(
             this.ciudadanoService.getEducacionMedia(this.cedulaField.value).subscribe({
               next: (response: any) => {
-                datosEM = response;
+                datosEM = response[0];
                 this.existenDatosEducacionMedia = true;
 
                 // establece valores con los datos de educación media
-                this.nombreTituloField.setValue(datosEM.titulo);
                 this.colegioTituloField.setValue(datosEM.institucion);
               },
               error: (errorResponse: any) => {
@@ -815,9 +849,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           );
 
           // consulta datos educación superior
-          /* this.subscriptions.push(
+          this.subscriptions.push(
             this.ciudadanoService.getEducacionSuperior(this.cedulaField.value).subscribe({
               next: (response: any) => {
+                console.log(response);
                 datosES = response;
                 this.existenDatosEducacionSuperior = true;
               },
@@ -826,7 +861,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
                 console.log(errorResponse);
               },
             })
-          ); */
+          );
         } else {
           this.showEdadInvalida = true;
         }

@@ -2,9 +2,9 @@
 <div class="alert alert-danger d-grid col-9 mx-auto" role="alert" *ngIf="showServicioNoDisponible">
   <i class="far fa-rectangle-xmark fa-5x"></i>
   <h4 class="alert-heading">ERROR</h4>
-  <hr />
+  <hr/>
   <p>El servicio no está disponible</p>
-  <br />
+  <br/>
 </div>
 
 <!-- Estado del proceso-->
@@ -31,9 +31,9 @@
 <div class="alert alert-danger d-grid col-9 mx-auto" role="alert" *ngIf="!showServicioNoDisponible && showEdadInvalida">
   <i class="far fa-rectangle-xmark fa-5x"></i>
   <h4 class="alert-heading">ERROR EN INSCRIPCIÓN</h4>
-  <hr />
+  <hr/>
   <p>No cumple con la edad requerida para postular a la academia.</p>
-  <br />
+  <br/>
   <p>Puede cerrar esta ventana de forma segura.</p>
 </div>
 
@@ -44,7 +44,7 @@
   *ngIf="!showServicioNoDisponible && esEstadoInscripcion === 'T' && !showEdadInvalida && esFechaValida">
   <div class="row mt-3">
     <div class="column col-3">
-      <img src="assets/logo-bomberos.svg" alt="" />
+      <img src="assets/logo-bomberos.svg" alt=""/>
     </div>
     <div class="column col-9 text-end">
       <h4 class="ms-5">
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <hr class="hr hr-blurry" />
+  <hr class="hr hr-blurry"/>
 
   <div class="row">
     <div class="column text-center">
@@ -137,7 +137,7 @@
                     type="text"
                     class="form-control mb-3"
                     formControlName="cedula"
-                    [maxlength]="10" />
+                    [maxlength]="10"/>
                   <label mdbLabel class="form-label mb-2x" for="cedula">
                     <span class="text-primary">*</span>
                     Cédula</label
@@ -171,7 +171,7 @@
                     type="text"
                     id="apellidos"
                     class="form-control mb-3"
-                    formControlName="apellidos" />
+                    formControlName="apellidos"/>
                   <label mdbLabel class="form-label mb-2x" for="apellidos">
                     <span class="text-primary">*</span>
                     Apellidos</label
@@ -191,7 +191,7 @@
                     type="text"
                     id="nombres"
                     class="form-control mb-3"
-                    formControlName="nombres" />
+                    formControlName="nombres"/>
                   <label mdbLabel class="form-label mb-2x" for="nombres">
                     <span class="text-primary">*</span>
                     Nombres</label
@@ -214,14 +214,14 @@
                     type="email"
                     id="email"
                     class="form-control mb-3"
-                    formControlName="email" />
+                    formControlName="email"/>
                   <label mdbLabel class="form-label mb-2x" for="email"> <span class="text-primary">*</span>
                     Email</label>
                   <mdb-error *ngIf="emailField?.invalid && (emailField?.dirty || emailField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="emailField?.valid && (emailField?.dirty || emailField?.touched)"> </mdb-success>
+                  <mdb-success *ngIf="emailField?.valid && (emailField?.dirty || emailField?.touched)"></mdb-success>
                 </mdb-form-control>
                 <!-- Sexo -->
                 <mdb-form-control>
@@ -236,7 +236,7 @@
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="sexoField?.valid && (sexoField?.dirty || sexoField?.touched)"> </mdb-success>
+                  <mdb-success *ngIf="sexoField?.valid && (sexoField?.dirty || sexoField?.touched)"></mdb-success>
                 </mdb-form-control>
                 <!-- Fecha de nacimiento -->
                 <mdb-form-control>
@@ -249,7 +249,7 @@
                     class="form-control mb-3"
                     formControlName="fechaNacimiento"
                     (click)="cedulaValida ? dpFechaNacimiento.open() : null"
-                    [readonly]="true" />
+                    [readonly]="true"/>
                   <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">
                     <span class="text-primary">*</span>
                     Fecha de nacimiento:</label
@@ -275,7 +275,7 @@
                       La edad requerida es entre 18 y 28 años
                     </div> -->
                   </mdb-error>
-                  <mdb-success *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched"> </mdb-success>
+                  <mdb-success *ngIf="fechaNacimientoField?.valid && fechaNacimientoField?.touched"></mdb-success>
                 </mdb-form-control>
               </div>
               <!-- Columna 3 -->
@@ -289,7 +289,7 @@
                     id="telCelular"
                     class="form-control mb-3"
                     formControlName="telCelular"
-                    [maxLength]="10" />
+                    [maxLength]="10"/>
                   <label mdbLabel class="form-label mb-2x" for="telCelular">
                     <span class="text-primary">*</span>
                     Teléfono Celular</label
@@ -316,7 +316,7 @@
                     id="telConvencional"
                     class="form-control mb-3"
                     formControlName="telConvencional"
-                    [maxLength]="9" />
+                    [maxLength]="9"/>
                   <label mdbLabel class="form-label mb-2x" for="telConvencional">
                     <span class="text-primary">*</span>
                     Teléfono Convencional</label
@@ -344,7 +344,7 @@
             </div>
           </div>
 
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
 
           <!-- Datos Nacionalidad -->
           <h5><span class="text-primary">*</span>
@@ -360,7 +360,7 @@
                     id="nacionalidadEcuatoriana"
                     formControlName="nacionalidad"
                     value="Ecuatoriana"
-                    (change)="toggleValidationsNacionalidad()" />
+                    (change)="toggleValidationsNacionalidad()"/>
                   <label class="form-check-label" for="nacionalidadEcuatoriana"> Nacido en Ecuador </label>
                 </div>
 
@@ -475,7 +475,7 @@
           </div>
 
           <!-- Residencia -->
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <div class="row">
             <div class="col-md"><h5>Dirección actual de residencia:</h5></div>
             <div class="col-md"><p class="text-primary">Nota: Adjuntar planilla agua/luz</p></div>
@@ -564,7 +564,7 @@
                     type="text"
                     id="callePrincipal"
                     class="form-control mb-3"
-                    formControlName="callePrincipal" />
+                    formControlName="callePrincipal"/>
                   <label mdbLabel class="form-label mb-2x" for="callePrincipal"
                     ><span class="text-primary">*</span>
                     Calle Principal</label
@@ -588,7 +588,7 @@
                     type="text"
                     id="calleSecundaria"
                     class="form-control mb-3"
-                    formControlName="calleSecundaria" />
+                    formControlName="calleSecundaria"/>
                   <label mdbLabel class="form-label mb-2x" for="calleSecundaria"
                     ><span class="text-primary">*</span>
                     Calle secundaria</label
@@ -617,7 +617,7 @@
                     type="text"
                     id="numeroCasa"
                     class="form-control mb-3"
-                    formControlName="numeroCasa" />
+                    formControlName="numeroCasa"/>
                   <label mdbLabel class="form-label mb-2x" for="numeroCasa"
                     ><span class="text-primary">*</span>
                     Número de Casa o Lote</label
@@ -633,11 +633,11 @@
             </div>
           </div>
 
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Título bachiller -->
 
           <div class="row">
-            <div class="col-md"><h5>Título bachiller:</h5></div>
+            <div class="col-md"><h5>Título Segundo Nivel:</h5></div>
             <div class="col-md"><p class="text-primary">
               Nota: Adjuntar título</p></div>
           </div>
@@ -655,7 +655,7 @@
                     id="paisTitulo"
                     class="form-control mb-3"
                     formControlName="paisTitulo"
-                    required />
+                    required/>
                   <label mdbLabel class="form-label mb-2x" for="paisTitulo"
                     ><span class="text-primary">*</span>
                     País donde obtuvo el título</label
@@ -675,7 +675,7 @@
                     type="text"
                     id="cuidadTitulo"
                     class="form-control mb-3"
-                    formControlName="ciudadTitulo" />
+                    formControlName="ciudadTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="cuidadTitulo"
                     ><span class="text-primary">*</span>
                     Ciudad donde obtuvo el título</label
@@ -700,7 +700,7 @@
                     type="text"
                     id="nombreTitulo"
                     class="form-control mb-3"
-                    formControlName="nombreTitulo" />
+                    formControlName="nombreTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="nombreTitulo"
                     ><span class="text-primary">*</span>
                     Nombre del título</label
@@ -723,7 +723,7 @@
                     type="text"
                     id="colegioTitulo"
                     class="form-control mb-3"
-                    formControlName="colegioTitulo" />
+                    formControlName="colegioTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="colegioTitulo"
                     ><span class="text-primary">*</span>
                     Colegio donde obtuvo el título</label
@@ -743,7 +743,7 @@
               <div class="col-md"></div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
           <!-- Méritos -->
           <h5>Méritos (opcional):</h5>
           <div class="container">
@@ -757,7 +757,7 @@
                     type="checkbox"
                     value="true"
                     id="meritoDeportivoCheck"
-                    (change)="onMeritoDeportivoChange($event)" />
+                    (change)="onMeritoDeportivoChange($event)"/>
                   <label class="form-check-label fs-6" for="meritoDeportivoCheck"> Deportivo </label>
                 </div>
                 <!-- Mérito deportivo -->
@@ -768,7 +768,7 @@
                     type="text"
                     id="meritoDeportivo"
                     class="form-control mb-3"
-                    formControlName="meritoDeportivo" />
+                    formControlName="meritoDeportivo"/>
                   <label mdbLabel class="form-label mb-2x" for="meritoDeportivoCheck">Mérito deportivo</label>
                   <mdb-error
                     *ngIf="
@@ -793,7 +793,7 @@
                     type="checkbox"
                     value="true"
                     id="meritoAcademicoCheck"
-                    (change)="onMeritoAcademicoChange($event)" />
+                    (change)="onMeritoAcademicoChange($event)"/>
                   <label class="form-check-label fs-6" for="meritoAcademicoCheck"> Académico </label>
                 </div>
 
@@ -805,7 +805,7 @@
                     type="text"
                     id="meritoAcademico"
                     class="form-control mb-3"
-                    formControlName="meritoAcademico" />
+                    formControlName="meritoAcademico"/>
                   <label mdbLabel class="form-label mb-2x" for="meritoAcademico">Mérito académico</label>
                   <mdb-error
                     *ngIf="
@@ -825,11 +825,110 @@
               <div class="col-md"></div>
             </div>
           </div>
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
+
+          <!-- Título tercer nivel -->
+
+          <div class="row">
+            <div class="col-md"><h5>Título Tercer Nivel (opcional):</h5></div>
+            <div class="col-md"><p class="text-primary">
+              Nota: Adjuntar título</p></div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md">
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="paisTituloTercerNivel"/>
+                  <label mdbLabel class="form-label mb-2x" for="paisTitulo"
+                  >
+                    País donde obtuvo el título</label
+                  >
+                  <mdb-success
+                    *ngIf="paisTituloTercerNivelField?.valid && (paisTituloTercerNivelField?.dirty || paisTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+                <!-- Ciudad Título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="ciudadTituloTercerNivel"/>
+                  <label mdbLabel class="form-label mb-2x" for="cuidadTitulo"
+                  >
+                    Ciudad donde obtuvo el título</label
+                  >
+                  <mdb-error
+                    *ngIf="ciudadTituloTercerNivelField?.invalid && (ciudadTituloTercerNivelField?.dirty || ciudadTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="ciudadTituloTercerNivelField?.valid && (ciudadTituloTercerNivelField?.dirty || ciudadTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+              </div>
+              <!-- Columna 2 -->
+              <div class="col-md">
+                <!-- Nombre del título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="nombreTituloTercerNivel"/>
+                  <label mdbLabel class="form-label mb-2x" for="nombreTitulo"
+                  >
+                    Nombre del título</label
+                  >
+                  <mdb-error
+                    *ngIf="nombreTituloTercerNivelField?.invalid && (nombreTituloTercerNivelField?.dirty || nombreTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="nombreTituloTercerNivelField?.valid && (nombreTituloTercerNivelField?.dirty || nombreTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+
+                <!-- Colegio título -->
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    mdbInput
+                    type="text"
+                    class="form-control mb-3"
+                    formControlName="institucionTituloTercerNivel"/>
+                  <label mdbLabel class="form-label mb-2x" for="colegioTitulo"
+                  >
+                    Institución donde obtuvo el título</label
+                  >
+                  <mdb-error
+                    *ngIf="institucionTituloTercerNivelField?.invalid && (institucionTituloTercerNivelField?.dirty || institucionTituloTercerNivelField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success
+                    *ngIf="institucionTituloTercerNivelField?.valid && (institucionTituloTercerNivelField?.dirty || institucionTituloTercerNivelField?.touched)">
+                  </mdb-success>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+          <hr class="hr hr-blurry"/>
+
           <!-- Carga de documentos -->
           <h5>Carga de expediente:</h5>
           <div class="alert alert-info" role="alert">
-            <p>Indicaciones: <span class="text-danger">Subir el expediente en un solo archivo, en formato pdf, que incluya:</span> </p>
+            <p>Indicaciones: <span class="text-danger">Subir el expediente en un solo archivo, en formato pdf, que incluya:</span>
+            </p>
           <ul class="list-group list-unstyled">
               <li class="mb-1" *ngFor="let requisito of convocatoria.requisitos">
                 <i class="fas fa-check-circle me-2 text-success"></i>
@@ -865,12 +964,12 @@
                     class="form-control"
                     id="customFile"
                     formControlName="docSoporte"
-                    (change)="subirArchivo($event)" />
+                    (change)="subirArchivo($event)"/>
                   <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
                     <i class="fas fa-exclamation-circle mb-1"></i>
                     Este campo es requerido
                   </mdb-error>
-                  <mdb-success *ngIf="docSoporteField?.valid && docSoporteField?.touched"> </mdb-success>
+                  <mdb-success *ngIf="docSoporteField?.valid && docSoporteField?.touched"></mdb-success>
                 </mdb-form-control>
               </div>
               <!-- Columna 2 -->
@@ -915,7 +1014,7 @@
       <div class="alert alert-light col-9 mx-auto" role="alert">
         <i class="far fa-envelope fa-5x"></i>
         <h4 class="alert-heading">CONFIRMA TU CORREO ELECTRÓNICO</h4>
-        <hr />
+        <hr/>
         <p>Para poder confirmar tu inscripción digita el PIN de seguridad enviado a tu email</p>
         <form [formGroup]="formularioPinSeguridad">
           <mdb-form-control>
@@ -927,7 +1026,7 @@
               class="form-control mb-3"
               placeholder="Ingrese su PIN"
               formControlName="pin"
-              [maxlength]="6" />
+              [maxlength]="6"/>
             <label mdbLabel class="form-label mb-2x" for="pinSeguridad">PIN de seguridad</label>
             <mdb-error *ngIf="pinField?.invalid && (pinField?.dirty || pinField?.touched)">
               <div *ngIf="pinField?.hasError('required')">
@@ -943,7 +1042,7 @@
                 Este campo debe tener al menos 6 caracteres
               </div>
             </mdb-error>
-            <mdb-success *ngIf="pinField?.valid && (pinField?.dirty || pinField?.touched)"> </mdb-success>
+            <mdb-success *ngIf="pinField?.valid && (pinField?.dirty || pinField?.touched)"></mdb-success>
           </mdb-form-control>
           <button
             type="button"
@@ -961,7 +1060,7 @@
         </form>
 
         <ng-container *ngIf="pinIncorrecto">
-          <hr class="hr hr-blurry" />
+          <hr class="hr hr-blurry"/>
 
           <form [formGroup]="formularioReenvioPin">
             <mdb-form-control>
@@ -972,7 +1071,7 @@
                 id="correoPin"
                 class="form-control mb-3"
                 placeholder="Ingrese un correo electrónico válido"
-                formControlName="correoPin" />
+                formControlName="correoPin"/>
               <label mdbLabel class="form-label mb-2x" for="correoPin">Correo para reenvío de PIN</label>
             </mdb-form-control>
 
@@ -1005,13 +1104,13 @@
       <div class="alert alert-success d-grid col-9 mx-auto" role="alert">
         <i class="far fa-check-circle fa-5x"></i>
         <h4 class="alert-heading">REGISTRO COMPLETADO EXITOSAMENTE</h4>
-        <hr />
+        <hr/>
         <p>
           Se envió un correo con su CÓDIGO ÚNICO:
           <span class="text-primary">{{ idPostulante }}</span
           >. Este código de identificación se usará en futuros comunicados de la Academia de Bomberos CBDMQ.
         </p>
-        <br />
+        <br/>
         <p>Puede cerrar esta ventana de forma segura.</p>
         <!-- <p></p>
         <button

@@ -33,7 +33,7 @@ export class ResultadosPruebasService {
       sort: sort.toString(),
     };
     return this.http.get<PaginacionResultadosPruebasDatos>(
-      `${this.host}/${this.nombreServicioTodo}/resultadosPaginado`,
+      `${ this.host }/${ this.nombreServicioTodo }/resultadosPaginado`,
       {
         params,
       }
@@ -59,9 +59,9 @@ export class ResultadosPruebasService {
     formData.append('tipoResultado', tipoResultado);
 
     if (esFisica) {
-      return this.http.post(`${this.host}/${this.nombreServicioFisicas}/cargarPlantilla`, formData);
+      return this.http.post(`${ this.host }/${ this.nombreServicioFisicas }/cargarPlantilla`, formData);
     } else {
-      return this.http.post(`${this.host}/${this.nombreServicioNoFisicas}/cargarPlantilla`, formData);
+      return this.http.post(`${ this.host }/${ this.nombreServicioNoFisicas }/cargarPlantilla`, formData);
     }
   }
 
@@ -72,9 +72,12 @@ export class ResultadosPruebasService {
   public generarDocumentosAprobados(subTipoPrueba: number): Observable<any> {
     const formData = new FormData();
     formData.append('subTipoPrueba', subTipoPrueba.toString());
-    return this.http.post(`${this.host}/${this.nombreServicioTodo}/generar`, formData);
+    return this.http.post(`${ this.host }/${ this.nombreServicioTodo }/generar`, formData);
   }
 
+  generarDocumentosReprobados(subTipoPrueba: number) {
+    return this.http.post(`${ this.host }/resultadoPruebaTodo/generarReprobados?subTipoPrueba=${ subTipoPrueba }`, null);
+  }
 
   // tipo: Excel o Pdf
   // params: id, nombreArchivo
@@ -86,7 +89,7 @@ export class ResultadosPruebasService {
       id: id.toString(),
       nombre: 'resultadosRegistrados' + nombrePrueba,
     };
-    return this.http.get(`${this.host}/${this.nombreServicioTodo}/descargar${tipo}`, {
+    return this.http.get(`${ this.host }/${ this.nombreServicioTodo }/descargar${ tipo }`, {
       responseType: 'blob',
       params,
     });
@@ -101,7 +104,7 @@ export class ResultadosPruebasService {
     const params = {
       codSubTipoPrueba: codSubTipoPrueba.toString(),
     };
-    return this.http.get(`${this.host}/${this.nombreServicioNotificacionPruebas}/aprobadosPorPrueba`, {
+    return this.http.get(`${ this.host }/${ this.nombreServicioNotificacionPruebas }/aprobadosPorPrueba`, {
       params,
     });
   }
@@ -115,7 +118,7 @@ export class ResultadosPruebasService {
     const formData = new FormData();
     formData.append('subTipoPrueba', subTipoPrueba.toString());
     formData.append('codCurso', codCurso.toString());
-    return this.http.post(`${this.host}/${this.nombreServicioTodo}/generarParaCurso`, formData);
+    return this.http.post(`${ this.host }/${ this.nombreServicioTodo }/generarParaCurso`, formData);
   }
 
   // notificar a los postulantes que aprobaron
@@ -127,7 +130,7 @@ export class ResultadosPruebasService {
       codSubTipoPrueba: codSubTipoPrueba.toString(),
       codCurso: codCurso.toString(),
     };
-    return this.http.get(`${this.host}/${this.nombreServicioNotificacionPruebas}/aprobadosPorPruebaCurso`, {
+    return this.http.get(`${ this.host }/${ this.nombreServicioNotificacionPruebas }/aprobadosPorPruebaCurso`, {
       params,
     });
   }
@@ -151,7 +154,7 @@ export class ResultadosPruebasService {
       codCurso: codCurso.toString(),
     };
     return this.http.get<PaginacionResultadosPruebasDatos>(
-      `${this.host}/${this.nombreServicioTodo}/resultadosPaginadoCurso`,
+      `${ this.host }/${ this.nombreServicioTodo }/resultadosPaginadoCurso`,
       {
         params,
       }
@@ -169,7 +172,7 @@ export class ResultadosPruebasService {
       nombre: 'resultadosRegistrados' + nombrePrueba,
       codCurso: codCurso.toString(),
     };
-    return this.http.get(`${this.host}/${this.nombreServicioTodo}/descargar${tipo}Curso`, {
+    return this.http.get(`${ this.host }/${ this.nombreServicioTodo }/descargar${ tipo }Curso`, {
       responseType: 'blob',
       params,
     });

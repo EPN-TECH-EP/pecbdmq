@@ -26,7 +26,7 @@
 
     -->
 
-    <mdb-tab title="Postulantes válidos">
+    <mdb-tab title="Postulantes inscritos válidos">
       <ng-template mdbTabContent>
         <!-- lista postulantes válidos -->
 
@@ -50,7 +50,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio1"
                       [value]="TipoFiltroPostulantesValidosEnum.CEDULA"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio1">Cédula</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -61,7 +61,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio2"
                       [value]="TipoFiltroPostulantesValidosEnum.ID_POSTULANTE"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio2">ID</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -72,7 +72,7 @@
                       name="inlineRadioOptions"
                       id="inlineRadio3"
                       [value]="TipoFiltroPostulantesValidosEnum.APELLIDO"
-                      [(ngModel)]="tipoFiltroPostulantesValidos" />
+                      [(ngModel)]="tipoFiltroPostulantesValidos"/>
                     <label class="form-check-label" for="inlineRadio3">Apellido</label>
                   </div>
                 </div>
@@ -111,7 +111,7 @@
                 id="inlineRadio1"
                 value="ID"
                 [(ngModel)]="orden"
-                (change)="onOrdenChange(orden)" />
+                (change)="onOrdenChange(orden)"/>
               <label class="form-check-label" for="inlineRadio1">ID</label>
             </div>
             <div class="form-check form-check-inline">
@@ -123,7 +123,7 @@
                 id="inlineRadio2"
                 value="APELLIDO"
                 [(ngModel)]="orden"
-                (change)="onOrdenChange(orden)" />
+                (change)="onOrdenChange(orden)"/>
               <label class="form-check-label" for="inlineRadio2">Apellido</label>
             </div>
           </div>
@@ -197,7 +197,7 @@
                 <div class="jumbotron">
                   <h1 class="display-4">Registro cerrado</h1>
                   <p class="lead">El registro de resultados se encuentra cerrado</p>
-                  <hr class="my-4" />
+                  <hr class="my-4"/>
                   <p>Se ha terminado de registrar los resultados para todas las pruebas de Formación</p>
                 </div>
               </ng-container>
@@ -278,7 +278,7 @@
                       mdbInput
                       type="file"
                       class="form-control"
-                      (change)="cargarArchivo($event)" />
+                      (change)="cargarArchivo($event)"/>
                   </ng-template>
                 </mdb-accordion-item>
               </mdb-accordion>
@@ -320,6 +320,12 @@
                       <td>
                         {{ resultado.idPostulante }}
                       </td>
+                    <td>
+                      {{ resultado.cedula }}
+                    </td>
+                    <td>
+                      {{ resultado.nombre }} {{resultado.apellido}}
+                    </td>
 
                       <ng-container *ngIf="resultado.resultado">
                         <td>
@@ -376,10 +382,14 @@
               <i class="fa-solid fa-list-ul me-2"></i>
               Generar listas de aprobados
             </button>
+            <button class="btn btn-danger mb-3 ms-1" (click)="generarListaReprobados()" [disabled]="addRow">
+              <i class="fa-solid fa-x me-2"></i>
+              Generar listas de reprobados
+            </button>
 
             <button class="btn btn-light mb-3 ms-1" (click)="enviarNotificacion()" [disabled]="addRow">
               <i class="fa-solid fa-envelope me-2"></i>
-              Reenviar notificación aprobados
+              Reenviar notificación de postulantes
             </button>
 
             <!-- Add new row -->
@@ -392,7 +402,7 @@
                     mdbInput
                     type="file"
                     class="form-control"
-                    (change)="cargarArchivoPrueba($event)" />
+                    (change)="cargarArchivoPrueba($event)"/>
                 </mdb-form-control>
               </div>
 
