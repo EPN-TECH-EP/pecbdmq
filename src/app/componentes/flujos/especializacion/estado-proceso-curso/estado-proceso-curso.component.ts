@@ -98,7 +98,6 @@ export class EstadoProcesoCursoComponent implements OnInit {
     console.log({ estadoActualCurso });
   }
 
-
   cursoSeleccionadoEvent($event: Curso) {
     if ($event !== null) {
       this.cursoSeleccionado = $event;
@@ -121,11 +120,11 @@ export class EstadoProcesoCursoComponent implements OnInit {
       next: () => {
         this.notificar("Estado del curso actualizado correctamente", TipoAlerta.ALERTA_OK);
         this.actualizarEstadoActualCurso(codCurso);
-      },
-      error: (error) => {
-        console.error(error);
+          },
+          error: (error) => {
+            console.error(error);
         this.notificar("Error al actualizar el estado del curso", TipoAlerta.ALERTA_ERROR);
-      }
+          }
     });
   }
 
@@ -147,9 +146,9 @@ export class EstadoProcesoCursoComponent implements OnInit {
         if (res !== null) {
           this.estadoActualCurso = res.mensaje;
           this.esEstadoCierre = this.estadoActualCurso === "SIN ESTADO";
-          this.listarCursos();
-        }
-      });
+        this.listarCursos();
+      }
+    });
   }
 
 }

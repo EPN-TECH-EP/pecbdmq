@@ -103,6 +103,8 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
   ) {
     super(notificationServiceLocal, popConfirmServiceLocal);
 
+    this.fechaActual.setDate(this.fechaActual.getDate() -1);
+
     this.subscriptions = [];
     this.listaTipoCurso = [];
     this.listaCatalogoCurso = [];

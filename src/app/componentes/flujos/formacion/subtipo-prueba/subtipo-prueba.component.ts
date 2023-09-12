@@ -143,23 +143,22 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
             this.listaSubtipoPrueba.push(nuevo);
             Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Subtipo de Prueba creado con éxito');
 
-            this.addRow = false;
-            this.initSubtipoPrueba();
-            this.showLoading = false;
-          },
-          error: (errorResponse: HttpErrorResponse) => {
+          this.addRow = false;
+          this.initSubtipoPrueba();
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
             Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
-            this.showLoading = false;
-          }
+          this.showLoading = false;
         }
-      ));
+      }
+    ));
   }
 
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
     this.estaEditando = true;
     this.editIndex = index;
-    this.subtipoPruebaEdit = { ...subtipoPrueba };
-    console.log(this.subtipoPruebaEdit);
+    this.subtipoPruebaEdit = {...subtipoPrueba};
   }
 
   undoRow() {
@@ -171,8 +170,8 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   public actualizar(subtipoPrueba: SubtipoPrueba, formValue: SubtipoPrueba): void {
 
     this.subtipoPruebaEdit = {...this.subtipoPruebaEdit,
-      codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
-      nombre: formValue.nombre,
+    codTipoPrueba: this.tipoPruebaSeleccionado.codTipoPrueba,
+    nombre: formValue.nombre,
       estado: 'ACTIVO'
     };
 
@@ -207,7 +206,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
 
-  //eliminar
+//eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();

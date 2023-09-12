@@ -411,11 +411,11 @@
                     class="mb-3"
                     (ngModelChange)="onChangeCantonNacimiento($event)">
                     <mdb-option *ngFor="let provincia of provincias" [value]="provincia.codigo"
-                    >{{ provincia.nombre }}
+                      >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label" for="provinciaNacimiento"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Seleccione una provincia</label
                   >
                   <mdb-error
@@ -442,11 +442,11 @@
                     formControlName="cantonNacimiento"
                     class="mb-3">
                     <mdb-option *ngFor="let canton of cantonesNacimiento" [value]="canton.codigo"
-                    >{{ canton.nombre }}
+                      >{{ canton.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label mb-2x" for="cantonNacimiento"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Cantón de nacimiento</label
                   >
                   <mdb-error *ngIf="cantonNacimientoField?.dirty || cantonNacimientoField?.touched">
@@ -496,11 +496,11 @@
                     class="mb-3"
                     (ngModelChange)="onChangeCantonResidencia($event)">
                     <mdb-option *ngFor="let provincia of provincias" [value]="provincia.codigo"
-                    >{{ provincia.nombre }}
+                      >{{ provincia.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label mb-2x" for="provinciaResidencia"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Seleccione una provincia</label
                   >
                   <mdb-error
@@ -528,11 +528,11 @@
                     formControlName="cantonResidencia"
                     class="mb-3">
                     <mdb-option *ngFor="let canton of cantonesResidencia" [value]="canton.codigo"
-                    >{{ canton.nombre }}
+                      >{{ canton.nombre }}
                     </mdb-option>
                   </mdb-select>
                   <label mdbLabel class="form-label mb-2x" for="cantonResidencia"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Cantón de residencia</label
                   >
                   <mdb-error *ngIf="cantonResidenciaField?.dirty || cantonResidenciaField?.touched">
@@ -566,7 +566,7 @@
                     class="form-control mb-3"
                     formControlName="callePrincipal"/>
                   <label mdbLabel class="form-label mb-2x" for="callePrincipal"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Calle Principal</label
                   >
                   <mdb-error
@@ -590,7 +590,7 @@
                     class="form-control mb-3"
                     formControlName="calleSecundaria"/>
                   <label mdbLabel class="form-label mb-2x" for="calleSecundaria"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Calle secundaria</label
                   >
                   <mdb-error
@@ -619,7 +619,7 @@
                     class="form-control mb-3"
                     formControlName="numeroCasa"/>
                   <label mdbLabel class="form-label mb-2x" for="numeroCasa"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Número de Casa o Lote</label
                   >
                   <mdb-error *ngIf="numeroCasaField?.invalid && (numeroCasaField?.dirty || numeroCasaField?.touched)">
@@ -657,7 +657,7 @@
                     formControlName="paisTitulo"
                     required/>
                   <label mdbLabel class="form-label mb-2x" for="paisTitulo"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     País donde obtuvo el título</label
                   >
                   <mdb-error *ngIf="paisTituloField?.invalid && (paisTituloField?.dirty || paisTituloField?.touched)">
@@ -677,7 +677,7 @@
                     class="form-control mb-3"
                     formControlName="ciudadTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="cuidadTitulo"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Ciudad donde obtuvo el título</label
                   >
                   <mdb-error
@@ -702,7 +702,7 @@
                     class="form-control mb-3"
                     formControlName="nombreTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="nombreTitulo"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Nombre del título</label
                   >
                   <mdb-error
@@ -725,7 +725,7 @@
                     class="form-control mb-3"
                     formControlName="colegioTitulo"/>
                   <label mdbLabel class="form-label mb-2x" for="colegioTitulo"
-                  ><span class="text-primary">*</span>
+                    ><span class="text-primary">*</span>
                     Colegio donde obtuvo el título</label
                   >
                   <mdb-error
@@ -929,7 +929,7 @@
           <div class="alert alert-info" role="alert">
             <p>Indicaciones: <span class="text-danger">Subir el expediente en un solo archivo, en formato pdf, que incluya:</span>
             </p>
-            <ul class="list-group list-unstyled">
+          <ul class="list-group list-unstyled">
               <li class="mb-1" *ngFor="let requisito of convocatoria.requisitos">
                 <i class="fas fa-check-circle me-2 text-success"></i>
                 {{ requisito.nombre }}

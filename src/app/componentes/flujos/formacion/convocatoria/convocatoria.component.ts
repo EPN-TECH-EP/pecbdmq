@@ -98,7 +98,6 @@ export class ConvocatoriaComponent extends ComponenteBase implements OnInit {
     this.correo = new FormControl('', [Validators.required]);
     this.construirFormulario();
     this.codigoUnicoConvocatoria = '';
-    this.fechaActual = new Date();
 
   }
 
