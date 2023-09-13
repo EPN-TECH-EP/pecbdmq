@@ -114,6 +114,7 @@ export class EstadoProcesoCursoComponent implements OnInit {
   }
 
   actualizarEstado($estado: any) {
+    console.log('estado que manda',$estado)
     const codCurso = this.cursoSeleccionado.codCursoEspecializacion;
 
     this.cursosService.actualizarEstadoCurso(codCurso, $estado?.codigo).subscribe({
@@ -130,7 +131,7 @@ export class EstadoProcesoCursoComponent implements OnInit {
 
   private actualizarEstadoActualCurso(codCurso: number) {
     this.cursosService.comprobarMininoEstudiantes(codCurso)
-      .pipe(switchMap((comprobacion) => {
+      .pipe(switchMap(() => {
           return this.cursosService.obtenerEstadoActual(codCurso)
             .pipe(catchError((error) => {
               console.error(error);
@@ -143,11 +144,16 @@ export class EstadoProcesoCursoComponent implements OnInit {
         })
       )
       .subscribe((res) => {
+        this.cursosService.obtenerEstadoPrevioPorCurso(codCurso).subscribe({
+          next: resEstadoPrevio => {
+            console.log(resEstadoPrevio.mensaje);
         if (res !== null) {
           this.estadoActualCurso = res.mensaje;
           this.esEstadoCierre = this.estadoActualCurso === "SIN ESTADO";
         this.listarCursos();
       }
+          }
+        });
     });
   }
 

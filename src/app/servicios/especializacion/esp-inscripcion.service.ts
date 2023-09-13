@@ -11,6 +11,7 @@ import {InscripcionDatosEspecializacion} from "../../modelo/flujos/especializaci
 export interface PostulanteEspecializacion {
   datoPersonal: DatoPersonal;
   estudiante: Estudiante;
+  esCiudadano: boolean;
 }
 
 @Injectable({
@@ -36,7 +37,7 @@ export class EspInscripcionService {
     return this.http.get<InscripcionDatosEspecializacion[]>(`${ this.host }/inscripcionEsp/inscripcionesValidas/${ codCurso }`);
   }
 
-  colocarCorreoPersonal(datoPersonal: DatoPersonal) {
+  guardarDatos(datoPersonal: DatoPersonal) {
     return this.http.put<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/colocarCorreo`, datoPersonal);
   }
 
