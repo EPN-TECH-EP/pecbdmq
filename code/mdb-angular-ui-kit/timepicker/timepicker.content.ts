@@ -287,9 +287,7 @@ export class MdbTimepickerContentComponent implements OnInit, AfterViewInit, OnD
         this.format12 && !this.format24 ? `${h}:${m} ${ampm}` : `${h}:${m} ${ampm}`;
 
       this.renderer.addClass(this.picker.input, 'active');
-      this.picker._selectionChange$.next(
-        this.format12 && !this.format24 ? `${h}:${m} ${ampm}` : `${h}:${m}`
-      );
+      this.picker._selectionChange$.next(this.format12 && !this.format24 ? `${ h }:${ m } ${ ampm }` : `${ h }:${ m }`);
 
       this.picker._setValue(this._returnHours);
       this.picker.onChangeCb(this._returnHours);

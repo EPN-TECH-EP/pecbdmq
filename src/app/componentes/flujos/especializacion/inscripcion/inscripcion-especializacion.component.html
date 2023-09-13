@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <hr class="hr hr-blurry"/>
+    <hr class="hr"/>
     <div class="row justify-content-center">
       <div class="col-4">
         <p class="fw-bold text-muted">Por favor, ingrese su cédula para continuar</p>
@@ -81,16 +81,184 @@
     </div>
 
     <div *ngIf="datoPersonal !== null" class="mt-5 row justify-content-center">
-      <hr class="hr hr-blurry"/>
+      <hr class="hr"/>
       <div class="col-7">
-        <h5 class="fw-bold mb-4 text-center">Datos personales</h5>
-        <div class="d-flex gap-5 justify-content-center mb-3 align-items-center">
-          <p class="m-0"><b>Nombre: </b> {{datoPersonal?.nombre | titlecase}} {{datoPersonal?.apellido | titlecase}}</p>
-          <p class="m-0"><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
+        <h5 class="fw-bold mb-4">Datos personales</h5>
+        <div class="alert alert-info" role="alert">
+          <span><i class="fas fa-info-circle me-1"></i> Revisar si su información personal es correcta, de lo contrario,
+            contactar con el administrador.
+          </span>
         </div>
+
+        <form [formGroup]="datosPersonalesForm">
+          <div class="row">
+            <div class="col">
+              <p><b>Nombre: </b> {{datoPersonal?.nombre | titlecase}} {{datoPersonal?.apellido | titlecase}} </p>
+              <p *ngIf="!esCiuadano"><b>Fecha de nacimiento: </b> {{datoPersonal?.fechaNacimiento | date:'dd-MM-yyy' }} </p>
+              <mdb-form-control  *ngIf="esCiuadano">
+                <input
+                  mdbInput
+                  mdbValidate
+                  [readonly]="true"
+                  [mdbDatepicker]="dpFechaNacimiento"
+                  type="text"
+                  id="fechaNacimiento"
+                  class="form-control mb-4"
+                  formControlName="fechaNacimiento"
+                  (click)="dpFechaNacimiento.open()"
+                />
+                <label mdbLabel class="form-label mb-2x" for="fechaNacimiento">Fecha de nacimiento:</label>
+                <mdb-datepicker-toggle
+                  [mdbDatepicker]="dpFechaNacimiento"
+                  (click)="fechaNacimientoField.markAsTouched()"
+                ></mdb-datepicker-toggle>
+                <mdb-datepicker
+                  #dpFechaNacimiento="mdbDatepicker"
+                  [options]="OPCIONES_DATEPICKER"
+                  [inline]="true"
+                  [maxDate]="OPCIONES_DATEPICKER.today"
+                ></mdb-datepicker>
+                <mdb-error
+                  *ngIf="fechaNacimientoField.invalid && (fechaNacimientoField?.dirty || fechaNacimientoField?.touched)">
+                    <span *ngIf="fechaNacimientoField?.hasError('required')">
+                      <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                    </span>
+                </mdb-error>
+              </mdb-form-control>
+            </div>
+            <div class="col">
+              <p><b>Correo: </b> {{datoPersonal?.correoPersonal || '-'}}</p>
+              <p *ngIf="!esCiuadano"><b>Sexo: </b> {{datoPersonal?.sexo | titlecase}}</p>
+              <mdb-form-control class="col" *ngIf="esCiuadano">
+                <mdb-select
+                  mdbValidate
+                  id="sexo"
+                  class="mb-4"
+                  data-mdb-placeholder="Sexo"
+                  formControlName="sexo"
+                >
+                  <mdb-option value="MASCULINO">Masculino</mdb-option>
+                  <mdb-option value="FEMENINO">Femenino</mdb-option>
+                </mdb-select>
+                <label mdbLabel class="form-label mb-2x" for="sexo">Sexo
+                  <span class="text-danger">*</span>
+                </label>
+                <mdb-error *ngIf="sexoField?.invalid && (sexoField?.dirty || sexoField?.touched)">
+                   <span *ngIf="sexoField?.hasError('required')">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                      Este campo es requerido
+                   </span>
+                </mdb-error>
+              </mdb-form-control>
+            </div>
+          </div>
+        </form>
+        <button
+          class="btn btn-primary"
+          *ngIf="esCiuadano"
+          (click)="onGuardarDatosPersonales()"
+          [disabled]="datosPersonalesForm.invalid"
+        >Guardar datos
+        </button>
+
+        <div class="my-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" (click)="toggleRadioEsFuncionario()" id="flexCheckDefault"/>
+            <label class="form-check-label" for="flexCheckDefault">¿Es funcionario?</label>
+          </div>
+        </div>
+
+        <div *ngIf="esFuncionario">
+          <form [formGroup]="funcionarioForm">
+            <div class="row">
+              <h5>Datos Institucionales</h5>
+              <hr class="hr hr-blurry">
+              <div class="col">
+                <!-- Cargo -->
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    formControlName="cargo"
+                    id="cargo"
+                    class="mb-4"
+                  >
+                    <mdb-option
+                      *ngFor="let cargo of cargos"
+                      [value]="cargo.codCargo">
+                      {{cargo.nombre}}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="cargo">Cargo</label>
+                </mdb-form-control>
+                <!-- Estacion trabajo -->
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    formControlName="estacionTrabajo"
+                    id="estacionTrabajo"
+                    class="mb-4"
+                  >
+                    <mdb-option
+                      *ngFor="let estacion of estacionesTrabajo"
+                      [value]="estacion.codigo">
+                      {{estacion.nombre}}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="estacionTrabajo">Estación de trabajo</label>
+                </mdb-form-control>
+              </div>
+              <div class="col">
+                <!-- Grado -->
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    formControlName="grado"
+                    id="grado"
+                    class="mb-4"
+                    (valueChange)="onChangeGrado($event)"
+                  >
+                    <mdb-option *ngFor="let grado of grados" [value]="grado.codGrado">
+                      {{grado.nombre}}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="grado">Grado</label>
+                </mdb-form-control>
+                <!-- Rango -->
+                <mdb-form-control>
+                  <mdb-select
+                    mdbValidate
+                    formControlName="rango"
+                    id="rango"
+                    class="mb-4"
+                  >
+                    <mdb-option *ngFor="let rango of rangos" [value]="rango.codRango">
+                      {{rango.nombre}}
+                    </mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="rango">Rango</label>
+                  <mdb-error *ngIf="!rangos?.length" class="text-muted">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Para seleccionar un rango primero debe seleccionar un grado
+                  </mdb-error>
+                </mdb-form-control>
+              </div>
+            </div>
+          </form>
+          <button
+            class="btn btn-primary"
+            (click)="onGuardarDatosFuncionario()"
+            [disabled]="funcionarioForm.invalid"
+          >Guardar datos
+          </button>
+        </div>
+
+        <hr class="hr"/>
+
         <div class="mb-3">
           <div class="alert alert-info" role="alert">
-            <p><i class="fas fa-info-circle me-1"></i> Indicaciones: <b> Subir el expediente en un solo archivo, en formato pdf, que incluya:</b>
+            <p><i class="fas fa-info-circle me-1"></i> Indicaciones: <b> Subir el expediente en un solo archivo, en
+              formato pdf, que incluya:</b>
             </p>
             <ul class="list-group list-unstyled">
               <li class="mb-1" *ngFor="let requisito of curso.requisitos">

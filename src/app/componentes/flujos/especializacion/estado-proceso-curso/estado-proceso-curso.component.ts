@@ -114,23 +114,24 @@ export class EstadoProcesoCursoComponent implements OnInit {
   }
 
   actualizarEstado($estado: any) {
+    console.log('estado que manda',$estado)
     const codCurso = this.cursoSeleccionado.codCursoEspecializacion;
 
     this.cursosService.actualizarEstadoCurso(codCurso, $estado?.codigo).subscribe({
       next: () => {
         this.notificar("Estado del curso actualizado correctamente", TipoAlerta.ALERTA_OK);
         this.actualizarEstadoActualCurso(codCurso);
-          },
-          error: (error) => {
-            console.error(error);
+      },
+      error: (error) => {
+        console.error(error);
         this.notificar("Error al actualizar el estado del curso", TipoAlerta.ALERTA_ERROR);
-          }
+      }
     });
   }
 
   private actualizarEstadoActualCurso(codCurso: number) {
     this.cursosService.comprobarMininoEstudiantes(codCurso)
-      .pipe(switchMap((comprobacion) => {
+      .pipe(switchMap(() => {
           return this.cursosService.obtenerEstadoActual(codCurso)
             .pipe(catchError((error) => {
               console.error(error);
@@ -143,12 +144,17 @@ export class EstadoProcesoCursoComponent implements OnInit {
         })
       )
       .subscribe((res) => {
-        if (res !== null) {
-          this.estadoActualCurso = res.mensaje;
-          this.esEstadoCierre = this.estadoActualCurso === "SIN ESTADO";
-        this.listarCursos();
-      }
-    });
+        this.cursosService.obtenerEstadoPrevioPorCurso(codCurso).subscribe({
+          next: resEstadoPrevio => {
+            console.log(resEstadoPrevio.mensaje);
+            if (res !== null) {
+              this.estadoActualCurso = res.mensaje;
+              this.esEstadoCierre = this.estadoActualCurso === "SIN ESTADO";
+              this.listarCursos();
+            }
+          }
+        });
+      });
   }
 
 }
