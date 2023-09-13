@@ -68,4 +68,11 @@ export class PruebaDetalleService {
     return this.http.get<PruebaDetalle[]>(`${this.host}/${this.nombreServicio}/listarConDatos/${codCurso}`);
   }
 
+  enviarNotificacion(codPruebaDetalle: number) {
+    const formData = new FormData();
+    formData.append('codPruebaDetalle', `${codPruebaDetalle}`);
+    return this.http.post(`${this.host}/${this.nombreServicio}/notificarPrueba/${codPruebaDetalle}`, formData);
+    //return this.http.get<PruebaDetalle[]>(`${this.host}/${this.nombreServicio}/notificarPrueba/${codPruebaDetalle}`);
+  }
+
 }

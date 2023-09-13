@@ -442,6 +442,32 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
     this.matchDatosPruebaDetalleFormulario(pruebaDetalle);
   }
 
+  public confirmaNotificar(event: Event, codigo: number): void {
+    super.confirmaEnvioNotificacion();
+    this.codigo = codigo;
+    super.openPopconfirm(event, this.notificar.bind(this));
+  }
+
+  public notificar(): void {
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.pruebaDetalleService.enviarNotificacion(this.codigo).subscribe({
+        next: () => {
+          Notificacion.notificacionOK(
+            this.notificationRef,
+            this.notificationServiceLocal,
+            'La notificación fue eviada con éxito'
+          );
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
+          console.log(errorResponse);
+        },
+      })
+    );
+  }
+
   undoRow() {
     this.editElementIndex = -1;
     this.addRow = false;
@@ -622,7 +648,7 @@ export class ListaPruebasCursoComponent extends ComponenteBase implements OnInit
   }
 
   private async cargarInformacionCurso(curso: Curso) {
-    await this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
+    this.cursosService.getTipoCurso(curso.codCatalogoCursos).subscribe({
       next: (tipoCurso) => {
         this.cursoSeleccionado.tipoCurso = tipoCurso;
       },
