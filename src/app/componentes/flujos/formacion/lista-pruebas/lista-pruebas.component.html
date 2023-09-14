@@ -126,7 +126,7 @@
                 #dpFechaInicio="mdbDatepicker"
                 [options]="opcionesDatepicker"
                 [inline]="true"
-                [minDate]="opcionesDatepicker.minDate"
+                [minDate]="opcionesDatepicker.previousDay"
               ></mdb-datepicker>
               <mdb-error *ngIf="fechaInicioField?.invalid && fechaInicioField?.touched"> </mdb-error>
               <mdb-success *ngIf="fechaInicioField?.valid && fechaInicioField?.touched"> </mdb-success>
@@ -154,7 +154,7 @@
                 #dpFechaFin="mdbDatepicker"
                 [options]="opcionesDatepicker"
                 [inline]="true"
-                [minDate]="opcionesDatepicker.minDate"
+                [minDate]="opcionesDatepicker.previousDay"
               ></mdb-datepicker>
               <mdb-error *ngIf="fechaFinField?.invalid && fechaFinField?.touched"> </mdb-error>
               <mdb-success *ngIf="fechaFinField?.valid && fechaFinField?.touched"> </mdb-success>
