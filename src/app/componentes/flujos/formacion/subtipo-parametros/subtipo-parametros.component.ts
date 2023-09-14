@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MdbNotificationService } from 'mdb-angular-ui-kit/notification';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import { catchError, of } from 'rxjs';
@@ -14,6 +14,7 @@ import { FORMACION } from 'src/app/util/constantes/fomacion.const';
 import { OPCIONES_DATEPICKER } from 'src/app/util/constantes/opciones-datepicker.const';
 import { Notificacion } from 'src/app/util/notificacion';
 import { ValidacionUtil } from 'src/app/util/validacion-util';
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
 
 @Component({
   selector: 'app-subtipo-parametros',
@@ -55,6 +56,7 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
     { key: 'fechaCreacion', label: 'Fecha Creación', width: '100px', wrap: true, start: true },
     { key: 'fechaInicio', label: 'Fecha Inicio', width: '100px', wrap: true, start: true },
     { key: 'fechaFin', label: 'Fecha Fin', width: '100px', wrap: true, start: true },
+    { key: 'ponderacion', label: 'Ponderación', width: '100px', wrap: true, start: true },
   ];
 
   // columnas detalle campos de ParametrizaPruebaDetalle
@@ -125,12 +127,19 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
         .subscribe({
           next: (listaParametrizaPruebaResumenDatos) => {
             this.showLoading = false;
+            console.log(listaParametrizaPruebaResumenDatos);
 
             if (!listaParametrizaPruebaResumenDatos) {
               return;
             }
 
             this.listaParametrizaPruebaResumenDatos = listaParametrizaPruebaResumenDatos;
+
+            // sumo de la lista todas las ponderaciones y las almaceno en totalPonderacion
+            this.totalPonderacion = this.listaParametrizaPruebaResumenDatos.reduce(
+              (total, parametrizaPruebaResumenDatos) => total + parametrizaPruebaResumenDatos.ponderacion, 0);
+            this.totalPonderacion = Number.parseFloat(this.totalPonderacion.toFixed(2));
+
           },
         })
     );
@@ -140,11 +149,13 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
   // modificación de valores de parametrización
   /////////////////////////////////////////////////
 
-  undoRow(index) {
+  undoRow() {
     this.editElementIndex = -1;
     this.addRow = false;
     this.codigo = null;
     this.parametrizaPruebaDetalleEdit = null;
+    this.codParametrizaPruebaEditando = 0
+    this.estaEditandoParametrizaPrueba = false;
   }
 
   editRow(parametriza: ParametrizaPruebaDetalle, index) {
@@ -272,11 +283,59 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
 
   // estructura cadena HH:MM:SS a partir de horas, minutos y segundos. cada número debe tener dos dígitos
   estructurarHoraMinutosSegundos(horas: number, minutos: number, segundos: number) {
-    return `${this.completarCeros(horas)}:${this.completarCeros(minutos)}:${this.completarCeros(segundos)}`;
+    return `${ this.completarCeros(horas) }:${ this.completarCeros(minutos) }:${ this.completarCeros(segundos) }`;
   }
 
   // completa con ceros a la izquierda hasta que el número tenga dos dígitos
   completarCeros(numero: number) {
     return numero.toString().padStart(2, '0');
   }
+
+  onEditarParametrizaPrueba(parametrizacion: ParametrizaPruebaResumenDatos) {
+    this.estaEditandoParametrizaPrueba = true;
+    this.codParametrizaPruebaEditando = parametrizacion.codParametrizaPruebaResumen;
+    this.ponderacion.setValue(parametrizacion.ponderacion);
+  }
+
+  onActualizarPonderacion(data: ParametrizaPruebaResumen) {
+    const parametrizacion = {
+      codParametrizaPruebaResumen: data.codParametrizaPruebaResumen,
+      fechaCreacion: data.fechaCreacion,
+      fechaInicio: data.fechaInicio,
+      fechaFin: data.fechaFin,
+      descripcion: data.descripcion,
+      estado: "ACTIVO",
+      ponderacion: this.ponderacion.value,
+      codSubtipoPrueba: data.codSubTipoPrueba,
+    }
+    this.parametrizaPruebaService.actualizarPonderacion(data.codParametrizaPruebaResumen, parametrizacion).subscribe({
+      next: (response) => {
+        Notificacion.notificar(this.notificationServiceLocal, 'Ponderación actualizada con éxito', TipoAlerta.ALERTA_OK);
+        console.log('response', response);
+
+        this.listaParametrizaPruebaResumenDatos = this.listaParametrizaPruebaResumenDatos.map((parametrizacion) => {
+          if (parametrizacion.codParametrizaPruebaResumen === data.codParametrizaPruebaResumen) {
+            parametrizacion.ponderacion = this.ponderacion.value;
+          }
+          return parametrizacion;
+        });
+
+        this.listaParametrizaPruebaResumenDatos = [...this.listaParametrizaPruebaResumenDatos];
+
+        this.estaEditandoParametrizaPrueba = false;
+        this.codParametrizaPruebaEditando = 0;
+        this.ponderacion.setValue('');
+
+        this.totalPonderacion = this.listaParametrizaPruebaResumenDatos.reduce(
+          (total, parametrizaPruebaResumenDatos) => total + parametrizaPruebaResumenDatos.ponderacion, 0);
+        this.totalPonderacion = Number.parseFloat(this.totalPonderacion.toFixed(2));
+      }
+    })
+
+  }
+
+  estaEditandoParametrizaPrueba: boolean = false;
+  codParametrizaPruebaEditando: number = 0;
+  ponderacion: FormControl = new FormControl('', [Validators.required, Validators.min(0), Validators.max(1)]);
+  totalPonderacion: number = 0;
 }

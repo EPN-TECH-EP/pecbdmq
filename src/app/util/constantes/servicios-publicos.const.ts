@@ -20,5 +20,6 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
     '/cursoEstado/',
     '/inscripcionEsp/informacion/',
     '/inscripcionEsp/crear',
-    '/inscripcionEsp/colocarCorreo'
+    '/inscripcionEsp/colocarCorreo',
+    '/convocatoria/activa'
   ];

@@ -772,7 +772,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     }
   }
 
-  // generar dociumentos de aprobados. Servicio resultadosPruebaService método generarDocumentosAprobados
+  // generar documentos de aprobados. Servicio resultadosPruebaService método generarDocumentosAprobados
   generarDocumentosAprobados() {
     this.subscriptions.push(
       this.resultadosPruebasService
