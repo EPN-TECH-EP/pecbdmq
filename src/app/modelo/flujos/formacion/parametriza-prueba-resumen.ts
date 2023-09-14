@@ -5,5 +5,6 @@ export interface ParametrizaPruebaResumen {
     fechaFin: Date;
     descripcion: string;
     estado: string;
-    codSubTipoPrueba: number;    
+    codSubTipoPrueba: number;
+    ponderacion?: number
 }

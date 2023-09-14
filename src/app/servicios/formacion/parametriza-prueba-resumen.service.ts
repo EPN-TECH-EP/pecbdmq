@@ -43,4 +43,8 @@ export class ParametrizaPruebaService {
     });
   }
 
+  actualizarPonderacion(cod: number, data: any ){
+    return this.http.put(`${this.host}/parametrizaPruebaResumen/${cod}`, data);
+  }
+
 }
