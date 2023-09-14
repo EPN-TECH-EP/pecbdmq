@@ -158,8 +158,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
     this.estaEditando = true;    
     this.editIndex = index;
-    this.subtipoPruebaEdit = { ...subtipoPrueba };
-    console.log(this.subtipoPruebaEdit);
+    this.subtipoPruebaEdit = {...subtipoPrueba};
   }
 
   undoRow() {
@@ -207,7 +206,7 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
 
-  //eliminar
+//eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();

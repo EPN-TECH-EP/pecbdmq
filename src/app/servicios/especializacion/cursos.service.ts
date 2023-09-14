@@ -72,4 +72,8 @@ export class CursosService {
     return this.http.get(`${this.host}/curso/reactivar/${codCurso}`);
   }
 
+  obtenerEstadoPrevioPorCurso(codCurso: number) {
+    return this.http.get<CustomHttpResponse>(`${this.host}/cursoEstado/estadoPrevio/${codCurso}`);
+  }
+
 }

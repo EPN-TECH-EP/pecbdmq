@@ -38,7 +38,8 @@
         <h4 class="card-title text-white">Curso en estado Cerrado</h4>
       </div>
       <div class="card-body">
-        <i class="fa-solid fa-right-to-bracket fa-2xl mb-4"></i>
+        <i class="fa-solid fa-info-circle fa-2xl mb-4"></i>
+        <p class="card-text">El curso se encuentra en estado cerrado al no cumplir con el porcentaje mínimo de inscritos.</p>
         <p class="card-text">Por favor, si quiere reabrir el curso, haga click en el botón de abajo.</p>
       </div>
       <div class="card-footer">
@@ -51,7 +52,7 @@
     <hr class="hr">
   </div>
 
-  <div class="row my-4">
+  <div *ngIf="!esEstadoCierre" class="row my-4">
     <hr class="hr">
     <div class="d-flex gap-2">
       <h1 class="fs-4 fw-bolder">CURSO: </h1>

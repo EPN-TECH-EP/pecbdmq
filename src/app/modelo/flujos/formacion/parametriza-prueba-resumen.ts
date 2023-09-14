@@ -6,4 +6,5 @@ export interface ParametrizaPruebaResumen {
     descripcion: string;
     estado: string;
     codSubTipoPrueba: number;    
+    ponderacion?: number
 }

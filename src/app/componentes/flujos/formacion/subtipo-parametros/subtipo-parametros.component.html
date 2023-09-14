@@ -38,6 +38,9 @@
                   [ngClass]="{ 'text-wrap': header.wrap, 'text-start': header.start }">
                   <div class="fw-bold">{{ header.label | titlecase }}</div>
                 </th>
+              <th>
+                <div class="fw-bold">{{ 'Acciones'| titlecase }}</div>
+              </th>
               </tr>
             </thead>
 
@@ -50,7 +53,7 @@
                     name="selection"
                     [checked]="parametrizaSeleccionado == parametriza"
                     (click)="onSelectRow(parametriza)"
-                    [disabled]="editElementIndex !== -1 && editElementIndex !== index" />
+                  [disabled]="editElementIndex !== -1 && editElementIndex !== index"/>
                 </td>
 
                 <td>
@@ -84,36 +87,80 @@
                   </div>
                 </td>
 
-                <!-- td>
-                  <ng-container *ngIf="editElementIndex === -1 || editElementIndex !== index">
-                    <div class="text-center">
+              <td>
+                <div
+                  *ngIf="!estaEditandoParametrizaPrueba || codParametrizaPruebaEditando !== parametriza.codParametrizaPruebaResumen">
+                  {{ parametriza.ponderacion }}
+                </div>
+                <div
+                  *ngIf="estaEditandoParametrizaPrueba && codParametrizaPruebaEditando === parametriza.codParametrizaPruebaResumen">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      type="number"
+                      class="form-control form-control-sm"
+                      [formControl]="ponderacion"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                    />
+                  </mdb-form-control>
+                </div>
+              </td>
+
+              <td>
+                <ng-container *ngIf="!estaEditandoParametrizaPrueba">
+                  <div>
                       <button
                         mdbTooltip="Editar registro"
+                      (click)="onEditarParametrizaPrueba(parametriza)"
                         class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="editRow(parametriza, index)"
                         [disabled]="editElementIndex !== -1 && editElementIndex !== index">
                         <i class="fa fa-edit"></i>
                       </button>
-                      < button
-                        mdbTooltip="Eliminar registro"
-                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
-                        (click)="confirmaEliminar($event, parametriza.codPruebaDetalle)"
-                        [disabled]="(editElementIndex !== -1 && editElementIndex !== index) || addRow || reordenar">
-                        <i class="fa fa-trash-alt"></i>
-                      </button >
                     </div>
                   </ng-container>
-                </td -->
+                <ng-container
+                  *ngIf="estaEditandoParametrizaPrueba && codParametrizaPruebaEditando === parametriza.codParametrizaPruebaResumen">
+                  <button
+                    mdbTooltip="Guardar registro"
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                    (click)="onActualizarPonderacion(parametriza)"
+                  >
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Cancelar edición"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="undoRow()"
+                  >
+                    <i class="fa fa-ban"></i>
+                  </button>
+                </ng-container>
+              </td>
               </tr>
             </tbody>
           </table>
         </form>
       </div>
     </div>
+    <div class="d-flex justify-content-end pe-5">
+      <div class="d-flex flex-column mb-5">
+        <div class="my-2"
+             [ngClass]="{'text-danger': totalPonderacion !== 1, 'text-success': totalPonderacion === 1}">
+          <b>Total Ponderación:</b> {{ totalPonderacion }}
+        </div>
+        <div *ngIf="totalPonderacion !== 1" class="text-muted">
+          <i class="fas fa-exclamation-circle"></i>
+          La suma de la ponderación debe ser 1, <br> por favor corregir para evitar errores.
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Tabla Detalle -->
-  <ng-container *ngIf="listaParametrizaPruebaDetalle">
+  <ng-container *ngIf="listaParametrizaPruebaDetalle" class="my-3">
     <div class="row d-flex align-items-center">
       <div class="col-12">
         <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
@@ -172,7 +219,7 @@
                           min="1"
                           max="100"
                           inputValidation="entero"
-                          mdbTooltip="Rango: 1 - 100" />
+                        mdbTooltip="Rango: 1 - 100"/>
                       </mdb-form-control>
                     </ng-container>
                   </td>
@@ -196,7 +243,7 @@
                           min="1"
                           max="100"
                           inputValidation="entero"
-                          mdbTooltip="Rango: 1 - 100" />
+                        mdbTooltip="Rango: 1 - 100"/>
                       </mdb-form-control>
                     </ng-container>
                   </td>
@@ -222,7 +269,7 @@
                             min="0"
                             max="59"
                             inputValidation="entero"
-                            mdbTooltip="Rango: 0 - 59" />
+                          mdbTooltip="Rango: 0 - 59"/>
                         </mdb-form-control>
 
                         <div class="text-dark h6 mx-1">:</div>
@@ -238,7 +285,7 @@
                             min="0"
                             max="59"
                             inputValidation="entero"
-                            mdbTooltip="Rango: 0 - 59" />
+                          mdbTooltip="Rango: 0 - 59"/>
                         </mdb-form-control>
                       </div>
                     </ng-container>
@@ -269,7 +316,7 @@
                         (click)="actualizarParametrizaPruebaDetalle(detalle)">
                         <i class="fa fa-check"></i> Guardar
                       </button>
-                      <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="undoRow(index)">
+                    <button class="m-0 p-0 shadow-0 btn btn-lg text-danger" (click)="undoRow()">
                         <i class="fa fa-ban"></i> Cancelar
                       </button>
                     </ng-container>
