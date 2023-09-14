@@ -681,6 +681,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             this.enviarNotificacion();
 
             this.generarDocumentosAprobados();
+            this.generarListaReprobados();
 
             // en caso de que corresponda a la última prueba, se realiza la creación de estudiantes
             if (this.verificarUltimaPrueba()) {

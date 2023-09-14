@@ -37,13 +37,13 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Tipo Prueba'];
+  headers = ['Tipo Prueba', '¿Es física?'];
 
   /**
-    * Inicializa un nuevo objeto "TipoPrueba" con valores por defecto.
-    * 
-    * @returns {TipoPrueba} Un objeto "TipoPrueba" con valores predeterminados.
-  */
+   * Inicializa un nuevo objeto "TipoPrueba" con valores por defecto.
+   *
+   * @returns {TipoPrueba} Un objeto "TipoPrueba" con valores predeterminados.
+   */
   initializeTipoPrueba(): TipoPrueba {
     return {
       codTipoPrueba: 0,
@@ -51,7 +51,6 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       estado: 'ACTIVO',
     };
   }
-
 
 
   constructor(
@@ -62,7 +61,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposprueba = [];
-    
+
     this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
     this.tipoPruebaEditForm = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
   }
@@ -70,10 +69,10 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   ngOnInit(): void {
     this.subscriptions.push(
-    this.Api.getTipoPrueba().subscribe(data => {
-      this.tiposprueba = data;
+      this.Api.getTipoPrueba().subscribe(data => {
+        this.tiposprueba = data;
 
-    })
+      })
     );
   }
 
@@ -90,7 +89,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
       return;
     }
 
-    tipoPrueba = {...tipoPrueba, estado: 'ACTIVO'};
+    tipoPrueba = { ...tipoPrueba, estado: 'ACTIVO' };
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.crearTipoPrueba(tipoPrueba).subscribe({
@@ -104,7 +103,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     );
@@ -112,7 +111,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   editRow(index: number) {
     this.editElementIndex = index;
-    this.tipoPruebaEditForm = {...this.tiposprueba[index]};
+    this.tipoPruebaEditForm = { ...this.tiposprueba[index] };
   }
 
   undoRow() {
@@ -123,14 +122,15 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   public actualizar(tipoPrueba: TipoPrueba, formValue: TipoPrueba): void {
 
-    tipoPrueba = {...tipoPrueba, tipoPrueba: formValue.tipoPrueba, estado: 'ACTIVO'};
-    
+    tipoPrueba = { ...tipoPrueba, tipoPrueba: formValue.tipoPrueba, estado: 'ACTIVO', esFisica: this.tipoPruebaEditForm.esFisica };
+
     if (formValue.tipoPrueba === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
-    
+    console.log(tipoPrueba);
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.codTipoPrueba).subscribe({
@@ -143,14 +143,14 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.editElementIndex = -1;
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )
   }
 
 
-//eliminar
+  //eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
@@ -170,7 +170,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
           this.tiposprueba = [...this.tiposprueba];
         },
         error: (errorResponse: HttpErrorResponse) => {
-          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal,errorResponse);
+          Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, errorResponse);
         },
       })
     )

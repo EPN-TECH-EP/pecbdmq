@@ -16,17 +16,17 @@
     >
       <i class="fa fa-plus"></i> &nbsp;Agregar
     </button>
-<!--    <mdb-form-control>-->
-<!--      <input-->
-<!--        mdbInput-->
-<!--        type="text"-->
-<!--        class="form-control"-->
-<!--        id="search-input"-->
-<!--        [disabled]="editElementIndex !== -1"-->
-<!--        (keyup)="search($event)"-->
-<!--      />-->
-<!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
-<!--    </mdb-form-control>-->
+    <!--    <mdb-form-control>-->
+    <!--      <input-->
+    <!--        mdbInput-->
+    <!--        type="text"-->
+    <!--        class="form-control"-->
+    <!--        id="search-input"-->
+    <!--        [disabled]="editElementIndex !== -1"-->
+    <!--        (keyup)="search($event)"-->
+    <!--      />-->
+    <!--      <label mdbLabel class="form-label" for="search-input">Buscar</label>-->
+    <!--    </mdb-form-control>-->
     <hr>
     <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
       <form #form="ngForm">
@@ -68,7 +68,6 @@
               </mdb-form-control>
             </td>
 
-
             <td>
               <button
                 class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
@@ -108,7 +107,35 @@
                 </mdb-form-control>
               </ng-container>
             </td>
-
+            <td>
+              <ng-container *ngIf="editElementIndex !== index">
+                <div class="form-check">
+                  <input
+                    mdbCheckbox
+                    [disabled]="true"
+                    class="form-check-input"
+                    type="checkbox"
+                    [checked]="item.esFisica"
+                    [value]="item.esFisica"
+                    id="flexCheckDefault"
+                  />
+                </div>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <div class="form-check">
+                    <input
+                      mdbCheckbox
+                      class="form-check-input"
+                      type="checkbox"
+                      [checked]="item.esFisica"
+                      (click)="tipoPruebaEditForm.esFisica = !tipoPruebaEditForm.esFisica"
+                      [value]="tipoPruebaEditForm.esFisica"
+                    />
+                  </div>
+                </mdb-form-control>
+              </ng-container>
+            </td>
 
             <td class="text-center">
               <ng-container

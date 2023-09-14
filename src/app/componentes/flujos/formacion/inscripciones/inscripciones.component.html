@@ -22,6 +22,26 @@
 
 <!-- VALIDACIÓN -->
 <div class="container" *ngIf="inscripcionesLoaded && esEstadoValidacion">
+  <div class="my-3">
+    <mdb-accordion>
+      <mdb-accordion-item>
+        <ng-template mdbAccordionItemHeader><i class="fas fa-info-circle me-2"></i> Guía de validación de inscripciones
+        </ng-template>
+        <ng-template mdbAccordionItemBody>
+          1. En la sección de <b>Inscripciones asignadas</b> se encuentran las inscripciones que han sido asignadas a un
+          delegado.<br>
+          2. En la sección de <b>Inscripciones pendientes</b> se encuentran las inscripciones que no han sido asignadas
+          a un delegado.<br>
+          3. Para pasar de estado <b>pendiente</b> a <b>asignado</b> se debe hacer click en el botón <i
+          class="fa-regular fa-check-square"></i> de la inscripción que se desea asignar.<br>
+          4. Esta inscripción se moverá a la sección de <b>Inscripciones asignadas</b>. Y el usuario actual es el
+          delegado.<br>
+          5. Para pasar de estado <b>asignado</b> a <b>validado</b> se debe hacer click en el botón <i
+          class="fa-regular fa-check-square"></i> de la inscripción que se desea validar.<br>
+        </ng-template>
+      </mdb-accordion-item>
+    </mdb-accordion>
+  </div>
   <div class="row m-3 text-center">
     <p class="fs-4 fw-bolder mb-3">
       Lista de Inscritos
