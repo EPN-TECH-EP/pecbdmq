@@ -26,6 +26,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 import { FormacionService } from "../../../../../servicios/formacion/formacion.service";
 import { Router } from "@angular/router";
+import { MdbStepperComponent } from "mdb-angular-ui-kit/stepper";
 
 @Component({
   selector: 'app-materias',
@@ -144,7 +145,6 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.tabs.setActiveTab(0);
   }
 
   private construirFormularios() {
@@ -381,6 +381,13 @@ export class MateriasComponent implements OnInit, AfterViewInit {
       next: (res) => {
         if (res) {
           Notificacion.notificar(this.mdbNotificationService, 'Materias creadas correctamente', TipoAlerta.ALERTA_OK);
+          this.actualizarMateriasFormacion();
+          this.paralelosSeleccionados = [];
+          this.paralelosFormArray.clear();
+          this.materiaAulaFormArray.clear();
+          this.selectElementParalelos.writeValue([]);
+          this.materiasSeleccionadas = [];
+          this.stepper.resetAll();
           this.loading = false;
         }
       },
@@ -413,7 +420,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
         if (res) {
           Notificacion.notificar(this.mdbNotificationService, 'Materia actualizada correctamente', TipoAlerta.ALERTA_OK);
           this.onCancelarEdicionMateria()
-          this.actualizarMateriasFormacion()
+          this.actualizarMateriasFormacion();
           this.loading = false;
           this.materiasFormacionFormGroup.reset();
         }
@@ -463,7 +470,7 @@ export class MateriasComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('mdbSelectParalelos') selectElementParalelos: MdbSelectComponent;
-  @ViewChild('tabs') tabs: MdbTabsComponent;
+  @ViewChild('stepper') stepper: MdbStepperComponent;
 
   getColorClass() {
     return this.totalPonderacion === 1 ? 'text-success' : 'text-danger';
