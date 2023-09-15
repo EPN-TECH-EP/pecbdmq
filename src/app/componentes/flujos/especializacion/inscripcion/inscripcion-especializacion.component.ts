@@ -165,7 +165,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
         this.datoPersonal = datos.datoPersonal;
         this.estudiante = datos.estudiante;
 
-        this.esCiuadano = true;
+        this.esCiuadano = datos.esCiudadano;
 
         if (this.datoPersonal.correoPersonal !== null && this.datoPersonal.correoPersonal !== '') {
           this.correoPersonal.clearValidators();

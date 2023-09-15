@@ -160,7 +160,7 @@ export class ValidacionComponent implements OnInit {
     const fechaInscripcionDate = new Date(fechaInscripcion);
     const anios = fechaInscripcionDate.getFullYear() - fechaNacimientoDate.getFullYear();
     const meses = fechaInscripcionDate.getMonth() - fechaNacimientoDate.getMonth();
-    return `${anios} años y ${meses} meses`;
+    return `${anios} años y ${meses} mes|es`;
   }
 
 }

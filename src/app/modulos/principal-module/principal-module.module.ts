@@ -26,7 +26,6 @@ import {
   RolUsuarioComponent
 } from '../../componentes/admin/administracion-plataforma/rol-usuario/rol-usuario.component';
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
-import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 import {
@@ -258,7 +257,6 @@ const routes: Routes = [
       { path: 'tipoFuncionario', component: TipoFuncionarioComponent },
       { path: 'tipoDocumento', component: TipoDocumentoComponent },
       { path: 'tipoProcedencia', component: TipoProcedenciaComponent },
-      { path: 'tipoNota', component: TipoNotaComponent },
       { path: 'tipoBaja', component: TipoBajaComponent },
       { path: 'tipoFalta', component: TipoFaltaComponent },
       { path: 'componenteNota', component: ComponenteNotaComponent },

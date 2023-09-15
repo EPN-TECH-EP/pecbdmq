@@ -21,5 +21,8 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
     '/inscripcionEsp/informacion/',
     '/inscripcionEsp/crear',
     '/inscripcionEsp/colocarCorreo',
-    '/convocatoria/activa'
+    '/convocatoria/activa',
+    '/estacionTrabajo/listar',
+    '/cargo/listar',
+    '/grado/listar'
   ];
