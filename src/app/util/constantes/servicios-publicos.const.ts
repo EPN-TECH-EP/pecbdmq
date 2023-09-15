@@ -24,5 +24,6 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
     '/convocatoria/activa',
     '/estacionTrabajo/listar',
     '/cargo/listar',
-    '/grado/listar'
+    '/grado/listar',
+    '/grado/listarRangos'
   ];

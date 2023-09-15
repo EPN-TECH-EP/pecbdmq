@@ -87,7 +87,8 @@
         </tbody>
       </table>
       <div [ngClass]="getColorClass()" class="fw-bold mb-2" *ngIf="estaEditando">
-        TOTAL: {{ totalPonderacionEditando }}
+        <span> TOTAL: {{ totalPonderacionEditando }}</span>
+        <p class="text-muted"><i class="fas fa-info-circle"></i> El total de la ponderación debe ser 1</p>
       </div>
       <div *ngIf="estaEditando">
         <button
@@ -147,7 +148,8 @@
         </mdb-form-control>
       </div>
       <div [ngClass]="getColorClass()" class="fw-bold mb-2">
-        TOTAL: {{ totalPonderacion }}
+        <span> TOTAL: {{ totalPonderacionEditando }}</span>
+        <p class="text-muted"><i class="fas fa-info-circle"></i> El total de la ponderación debe ser 1</p>
       </div>
       <div>
         <button
