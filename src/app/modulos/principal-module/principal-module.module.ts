@@ -191,15 +191,9 @@ import {
 import { MenuNotasComponent } from "../../componentes/flujos/especializacion/menus/menu-notas/menu-notas.component";
 
 
-import {
-  MenuEspecializacionAcademiaComponent
-} from '../../componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
-import {
-  InstructoresEspecializacionComponent
-} from '../../componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
-import {
-  RegistroNotasEspecializacionComponent
-} from '../../componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
+import { MenuEspecializacionAcademiaComponent } from '../../componentes/flujos/especializacion/academia/menu-academia/menu-especializacion-academia.component';
+import { InstructoresEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/instructores/instructores-especializacion.component';
+import { RegistroNotasEspecializacionComponent } from '../../componentes/flujos/especializacion/academia/registro-notas/registro-notas-especializacion.component';
 import {
   MenuReportesEspComponent
 } from "../../componentes/flujos/especializacion/menus/menu-reportes-esp/menu-reportes-esp.component";
@@ -209,6 +203,7 @@ import {
 import {
   MenuCalculoNotaFinalComponent
 } from "../../componentes/flujos/especializacion/menus/menu-calculo-nota-final/menu-calculo-nota-final.component";
+import {EditarCursoComponent} from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
 import { UtilModule } from '../../componentes/util/util.module';
 import {
   MenuAdmProComponent
@@ -225,9 +220,14 @@ import {
 import {
   MenuValidacionProComponent
 } from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
-import { UnidadGestionComponent } from "../../componentes/unidad-gestion/unidad-gestion.component";
+import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
 import { EstacionTrabajoComponent } from '../../componentes/estacion-trabajo/estacion-trabajo.component';
-import { EditarCursoComponent } from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
+import {
+  MonitorInscripcionesComponent
+} from "../../componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component";
+import {
+  MonitorInscripcionesCursoComponent
+} from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
 
 
 const routes: Routes = [
@@ -270,6 +270,7 @@ const routes: Routes = [
       { path: 'formacion/gestion-documentos', component: GestionDocumentosComponent },
       { path: 'formacion/estado', component: EstadoProcesoFormacionComponent },
       { path: 'formacion/inscripciones', component: InscripcionesComponent },
+      { path: 'formacion/monitor-inscripciones', component: MonitorInscripcionesComponent},
       { path: 'formacion/validacion', component: ValidacionComponent },
       { path: 'formacion/muestra', component: MuestraComponent },
       { path: 'formacion/gestion-delegados', component: GestionDelegadosComponent },
@@ -319,6 +320,7 @@ const routes: Routes = [
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
       { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
       { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
+      { path: 'especializacion/monitor-inscripciones-curso', component: MonitorInscripcionesCursoComponent },
       {
         path: 'especializacion/reasignacion-inscripciones',
         component: ReasignacionInscripcionEspecializacionComponent
@@ -351,13 +353,13 @@ const routes: Routes = [
 
 
       /* Profesionalizacion */
-      { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent },
-      { path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent },
-      { path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent },
-      { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent },
-      { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent },
-      { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent },
-      { path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent },
+      { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},
+      { path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent},
+      { path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent},
+      { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent},
+      { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
+      { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent},
+      { path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent},
 
     ],
   },

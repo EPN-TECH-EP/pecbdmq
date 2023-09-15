@@ -1,0 +1,92 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Selección de curso -->
+<section *ngIf="esVistaListaCursos" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Seleccionar un curso</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<!-- Lista de pruebas de curso -->
+<section *ngIf="esVistaCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="container-fluid">
+    <!-- Título -->
+    <div class="row mt-3 d-flex justify-content-center">
+      <div class="col-9 text-center">
+        <p class="fs-4 fw-bolder mb-3">Lista de inscritos curso: <span class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</span></p>
+      </div>
+    </div>
+
+    <!-- lista Inscripciones válidas -->
+
+    <!-- tabla -->
+    <div class="row d-flex align-items-center">
+      <div class="col-12">
+        <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #table="mdbTable"
+            [dataSource]="listaInscripcionesValidas">
+            <thead>
+            <tr>
+              <th *ngFor="let header of headers">
+                <div class="fw-bold">{{ header.label | titlecase }}</div>
+              </th>
+            </tr>
+            </thead>
+
+            <tbody class="datatable-body">
+            <!-- datos -->
+            <tr *ngFor="let inscripcionValida of table.data; let index = index">
+              <td>
+                {{ inscripcionValida.codigoUnicoEstudiante }}
+              </td>
+
+              <td>
+                <div class="text-wrap">{{ inscripcionValida.apellido }} {{ inscripcionValida.nombre }}</div>
+              </td>
+
+              <td>
+                <div class="text-wrap">
+                  {{ inscripcionValida.cedula }}
+                </div>
+              </td>
+
+              <td>
+                <div>
+                  {{ inscripcionValida.correoPersonal }}
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Fin Tabla -->
+
+  </div>
+</section>

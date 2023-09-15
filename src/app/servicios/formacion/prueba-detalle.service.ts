@@ -56,7 +56,7 @@ export class PruebaDetalleService {
   }
 
   // tipo de resultado que se debe registrar en la prueba
-  // endpóint tipoResultado
+  // endpoint tipoResultado
   public tipoResultadoPorPrueba(codPrueba: number): Observable<string> {
     let response = this.http.get<string>(`${this.host}/${this.nombreServicio}/tipoResultado/${codPrueba}`, {responseType: 'text' as 'json'});
 
@@ -73,6 +73,14 @@ export class PruebaDetalleService {
     formData.append('codPruebaDetalle', `${codPruebaDetalle}`);
     return this.http.post(`${this.host}/${this.nombreServicio}/notificarPrueba/${codPruebaDetalle}`, formData);
     //return this.http.get<PruebaDetalle[]>(`${this.host}/${this.nombreServicio}/notificarPrueba/${codPruebaDetalle}`);
+  }
+
+  // tipo de resultado que se debe registrar en la prueba del curso
+  // endpoint tipoResultado
+  public tipoResultadoPorPruebaPorCurso(codPrueba: number, codCurso): Observable<string> {
+    let response = this.http.get<string>(`${this.host}/${this.nombreServicio}/tipoResultadoCurso/${codPrueba}/curso/${codCurso}`, {responseType: 'text' as 'json'});
+
+    return response;
   }
 
 }
