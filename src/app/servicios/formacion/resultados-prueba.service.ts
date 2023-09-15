@@ -100,9 +100,10 @@ export class ResultadosPruebasService {
   // url notificacionprueba/notificacionAprobados?codSubTipoPrueba=7
   // params: codSubTipoPrueba
   // retorna: OK o HttpErrorResponse
-  public notificarAprobados(codSubTipoPrueba: number): Observable<any> {
+  public notificarAprobados(codSubTipoPrueba: number, esUltimo: boolean): Observable<any> {
     const params = {
       codSubTipoPrueba: codSubTipoPrueba.toString(),
+      esUltimo: esUltimo.toString()
     };
     return this.http.get(`${ this.host }/${ this.nombreServicioNotificacionPruebas }/aprobadosPorPrueba`, {
       params,
@@ -125,10 +126,11 @@ export class ResultadosPruebasService {
   // url notificacionprueba/notificacionAprobados?codSubTipoPrueba=7
   // params: codSubTipoPrueba
   // retorna: OK o HttpErrorResponse
-  public notificarAprobadosPruebasCurso(codSubTipoPrueba: number, codCurso: number): Observable<any> {
+  public notificarAprobadosPruebasCurso(codSubTipoPrueba: number, codCurso: number, esUltimo: boolean): Observable<any> {
     const params = {
       codSubTipoPrueba: codSubTipoPrueba.toString(),
       codCurso: codCurso.toString(),
+      esUltimo: esUltimo.toString()
     };
     return this.http.get(`${ this.host }/${ this.nombreServicioNotificacionPruebas }/aprobadosPorPruebaCurso`, {
       params,

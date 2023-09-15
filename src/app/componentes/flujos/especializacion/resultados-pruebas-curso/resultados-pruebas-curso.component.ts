@@ -572,7 +572,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion, this.verificarUltimaPrueba()).subscribe({
         next: (resultado) => {
           Notificacion.notificacionOK(
             this.notificationRef,
