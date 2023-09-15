@@ -223,6 +223,12 @@ import {
 } from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
 import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
 import { EstacionTrabajoComponent } from '../../componentes/estacion-trabajo/estacion-trabajo.component';
+import {
+  MonitorInscripcionesComponent
+} from "../../componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component";
+import {
+  MonitorInscripcionesCursoComponent
+} from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
 
 
 const routes: Routes = [
@@ -266,6 +272,7 @@ const routes: Routes = [
       { path: 'formacion/gestion-documentos', component: GestionDocumentosComponent },
       { path: 'formacion/estado', component: EstadoProcesoFormacionComponent },
       { path: 'formacion/inscripciones', component: InscripcionesComponent },
+      { path: 'formacion/monitor-inscripciones', component: MonitorInscripcionesComponent},
       { path: 'formacion/validacion', component: ValidacionComponent },
       { path: 'formacion/muestra', component: MuestraComponent },
       { path: 'formacion/gestion-delegados', component: GestionDelegadosComponent },
@@ -315,6 +322,7 @@ const routes: Routes = [
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
       { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
       { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
+      { path: 'especializacion/monitor-inscripciones-curso', component: MonitorInscripcionesCursoComponent },
       {
         path: 'especializacion/reasignacion-inscripciones',
         component: ReasignacionInscripcionEspecializacionComponent

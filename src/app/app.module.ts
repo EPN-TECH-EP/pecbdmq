@@ -265,6 +265,8 @@ import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializac
 import { EditarCursoComponent } from './componentes/flujos/especializacion/editar-curso/editar-curso.component';
 import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacion/profesionalizacion.module';
 import { UtilModule } from './componentes/util/util.module';
+import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
+import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
 
 
 @NgModule({
@@ -383,6 +385,8 @@ import { UtilModule } from './componentes/util/util.module';
     CursosCerradosComponent,
     MenuCalculoNotaFinalComponent,
     EditarCursoComponent,
+    MonitorInscripcionesComponent,
+    MonitorInscripcionesCursoComponent,
 
     ],
   imports: [
