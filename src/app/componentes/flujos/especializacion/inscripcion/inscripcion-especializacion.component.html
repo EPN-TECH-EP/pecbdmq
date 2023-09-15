@@ -154,17 +154,17 @@
             </div>
           </div>
         </form>
-        <button
-          class="btn btn-primary"
-          *ngIf="esCiuadano"
-          (click)="onGuardarDatosPersonales()"
-          [disabled]="datosPersonalesForm.invalid"
-        >Guardar datos
-        </button>
+<!--        <button-->
+<!--          class="btn btn-primary"-->
+<!--          *ngIf="esCiuadano"-->
+<!--          (click)="onGuardarDatosPersonales()"-->
+<!--          [disabled]="datosPersonalesForm.invalid"-->
+<!--        >Guardar datos-->
+<!--        </button>-->
 
         <div class="my-4">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" (click)="toggleRadioEsFuncionario()" id="flexCheckDefault"/>
+            <input class="form-check-input"[checked]="esFuncionario" type="checkbox" (click)="toggleRadioEsFuncionario()" id="flexCheckDefault"/>
             <label class="form-check-label" for="flexCheckDefault">¿Es funcionario?</label>
           </div>
         </div>

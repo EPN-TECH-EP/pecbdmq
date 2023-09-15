@@ -12,6 +12,7 @@ export interface PostulanteEspecializacion {
   datoPersonal: DatoPersonal;
   estudiante: Estudiante;
   esCiudadano: boolean;
+  esFuncionario: boolean;
 }
 
 @Injectable({
