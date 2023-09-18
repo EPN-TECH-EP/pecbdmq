@@ -114,6 +114,7 @@ export class InstructoresComponent implements OnInit {
     this.instructorService.crear(instructorRequest).subscribe({
       next: () => {
         this.estaEditandoInstructor = false;
+        this.estaAgregandoInstructor = false;
         this.instructor = defaultInstructor;
         this.instructorForm.reset();
         this.instructorService.listar().subscribe({

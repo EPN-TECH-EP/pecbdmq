@@ -26,7 +26,6 @@ import {
   RolUsuarioComponent
 } from '../../componentes/admin/administracion-plataforma/rol-usuario/rol-usuario.component';
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
-import { TipoNotaComponent } from 'src/app/componentes/tipo-nota/tipo-nota.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
 import {
@@ -223,6 +222,12 @@ import {
 } from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
 import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
 import { EstacionTrabajoComponent } from '../../componentes/estacion-trabajo/estacion-trabajo.component';
+import {
+  MonitorInscripcionesComponent
+} from "../../componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component";
+import {
+  MonitorInscripcionesCursoComponent
+} from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
 
 
 const routes: Routes = [
@@ -252,7 +257,6 @@ const routes: Routes = [
       { path: 'tipoFuncionario', component: TipoFuncionarioComponent },
       { path: 'tipoDocumento', component: TipoDocumentoComponent },
       { path: 'tipoProcedencia', component: TipoProcedenciaComponent },
-      { path: 'tipoNota', component: TipoNotaComponent },
       { path: 'tipoBaja', component: TipoBajaComponent },
       { path: 'tipoFalta', component: TipoFaltaComponent },
       { path: 'componenteNota', component: ComponenteNotaComponent },
@@ -266,6 +270,7 @@ const routes: Routes = [
       { path: 'formacion/gestion-documentos', component: GestionDocumentosComponent },
       { path: 'formacion/estado', component: EstadoProcesoFormacionComponent },
       { path: 'formacion/inscripciones', component: InscripcionesComponent },
+      { path: 'formacion/monitor-inscripciones', component: MonitorInscripcionesComponent},
       { path: 'formacion/validacion', component: ValidacionComponent },
       { path: 'formacion/muestra', component: MuestraComponent },
       { path: 'formacion/gestion-delegados', component: GestionDelegadosComponent },
@@ -315,6 +320,7 @@ const routes: Routes = [
       { path: 'especializacion/validacion', component: ValidacionEspecializacionComponent },
       { path: 'especializacion/gestion-delegados', component: GestionDelegadosEspecializacionComponent },
       { path: 'especializacion/inscripciones', component: InscripcionesEspecializacionComponent },
+      { path: 'especializacion/monitor-inscripciones-curso', component: MonitorInscripcionesCursoComponent },
       {
         path: 'especializacion/reasignacion-inscripciones',
         component: ReasignacionInscripcionEspecializacionComponent

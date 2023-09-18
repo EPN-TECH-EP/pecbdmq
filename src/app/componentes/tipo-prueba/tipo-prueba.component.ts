@@ -37,7 +37,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   @ViewChild('table') table!: MdbTableDirective<TipoPrueba>;
   editElementIndex = -1;
   addRow = false;
-  headers = ['Tipo Prueba'];
+  headers = ['Tipo Prueba', '¿Es física?'];
 
   /**
     * Inicializa un nuevo objeto "TipoPrueba" con valores por defecto.

@@ -12,6 +12,7 @@ export interface PostulanteEspecializacion {
   datoPersonal: DatoPersonal;
   estudiante: Estudiante;
   esCiudadano: boolean;
+  esFuncionario: boolean;
 }
 
 @Injectable({
@@ -31,10 +32,16 @@ export class EspInscripcionService {
     return this.http.get<PostulanteEspecializacion>(`${ this.host }/inscripcionEsp/informacion/${ cedula }/curso/${ codCurso }`);
   }
 
-  // obtener lista de inscritos por curso
+  // obtener lista de inscritos válidos por curso
   // endpoint: inscripcionEsp/inscripcionesVaidas/{codCurso}
-  obtenerInscritosVaidosPorCurso(codCurso: number) {
+  obtenerInscritosValidosPorCurso(codCurso: number) {
     return this.http.get<InscripcionDatosEspecializacion[]>(`${ this.host }/inscripcionEsp/inscripcionesValidas/${ codCurso }`);
+  }
+
+  // obtener lista de todos los inscritos por curso
+  // endpoint: inscripcionEsp/inscripcionesTodo/{codCurso}
+  obtenerInscritosTodoPorCurso(codCurso: number) {
+    return this.http.get<InscripcionDatosEspecializacion[]>(`${ this.host }/inscripcionEsp/inscripcionesTodo/${ codCurso }`);
   }
 
   guardarDatos(datoPersonal: DatoPersonal) {

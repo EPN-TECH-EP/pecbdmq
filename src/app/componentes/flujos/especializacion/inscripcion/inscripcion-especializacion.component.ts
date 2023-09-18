@@ -162,10 +162,12 @@ export class InscripcionEspecializacionComponent implements OnInit {
     this.loading = true;
     this.inscripcionService.obtenerDatosDelPostulante(cedula, this.curso.codCursoEspecializacion).subscribe({
       next: (datos) => {
+        console.log(datos);
         this.datoPersonal = datos.datoPersonal;
         this.estudiante = datos.estudiante;
 
-        this.esCiuadano = true;
+        this.esCiuadano = datos.esCiudadano;
+        this.esFuncionario = datos.esFuncionario;
 
         if (this.datoPersonal.correoPersonal !== null && this.datoPersonal.correoPersonal !== '') {
           this.correoPersonal.clearValidators();
@@ -277,8 +279,9 @@ export class InscripcionEspecializacionComponent implements OnInit {
   }
 
   onActualizarCorreoPersonal() {
-    if (this.correoPersonal.invalid) {
+    if (this.correoPersonal.invalid || this.datosPersonalesForm.invalid) {
       this.correoPersonal.markAllAsTouched();
+      this.datosPersonalesForm.markAllAsTouched();
       this.mostrarNotificacion('Ingrese un correo válido', TipoAlerta.ALERTA_WARNING);
       return;
     }

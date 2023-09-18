@@ -75,7 +75,6 @@ import { ModuloComponent } from './componentes/modulo/modulo.component';
 import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
-import { TipoNotaComponent } from './componentes/tipo-nota/tipo-nota.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 import {
@@ -265,6 +264,8 @@ import { MenuCalculoNotaFinalComponent } from './componentes/flujos/especializac
 import { EditarCursoComponent } from './componentes/flujos/especializacion/editar-curso/editar-curso.component';
 import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacion/profesionalizacion.module';
 import { UtilModule } from './componentes/util/util.module';
+import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
+import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
 
 
 @NgModule({
@@ -286,7 +287,6 @@ import { UtilModule } from './componentes/util/util.module';
     TipoFuncionarioComponent,
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
-    TipoNotaComponent,
     TipoBajaComponent,
     TipoFaltaComponent,
     PopconfirmComponent,
@@ -383,6 +383,8 @@ import { UtilModule } from './componentes/util/util.module';
     CursosCerradosComponent,
     MenuCalculoNotaFinalComponent,
     EditarCursoComponent,
+    MonitorInscripcionesComponent,
+    MonitorInscripcionesCursoComponent,
 
     ],
   imports: [

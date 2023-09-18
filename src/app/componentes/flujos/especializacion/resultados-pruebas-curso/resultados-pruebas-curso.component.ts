@@ -179,7 +179,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   cargarInscripcionesValidas() {
     this.showLoading = true;
     this.subscriptions.push(
-      this.espInscripcionService.obtenerInscritosVaidosPorCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      this.espInscripcionService.obtenerInscritosValidosPorCurso(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (inscripciones) => {
           this.listaInscripcionesValidas = inscripciones;
           this.listaInscripcionesValidas = [...this.listaInscripcionesValidas];
@@ -311,7 +311,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   // obtiene el tipo de resultado de la prueba seleccionada. servicio pruebaDetalleService
   private obtenerTipoResultado() {
     this.subscriptions.push(
-      this.pruebaDetalleService.tipoResultadoPorPrueba(this.pruebaDetalleSeleccionada.codSubtipoPrueba).subscribe({
+      this.pruebaDetalleService.tipoResultadoPorPruebaPorCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
         next: (tipoResultado) => {
           //console.log(tipoResultado);
           this.tipoResultado = tipoResultado;
@@ -572,7 +572,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      this.resultadosPruebasService.notificarAprobadosPruebasCurso(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.cursoSeleccionado.codCursoEspecializacion, this.verificarUltimaPrueba()).subscribe({
         next: (resultado) => {
           Notificacion.notificacionOK(
             this.notificationRef,

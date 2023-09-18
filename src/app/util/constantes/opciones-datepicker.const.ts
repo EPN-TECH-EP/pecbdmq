@@ -36,4 +36,6 @@ export const OPCIONES_DATEPICKER = {
   cancelBtnText: 'Cancelar',
   minDate: new Date(),
   today: new Date(),
+  // ayer
+  previousDay: new Date(new Date().setDate(new Date().getDate() - 1)),
 }

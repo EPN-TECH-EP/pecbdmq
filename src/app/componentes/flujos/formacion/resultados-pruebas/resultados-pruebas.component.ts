@@ -681,6 +681,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             this.enviarNotificacion();
 
             this.generarDocumentosAprobados();
+            this.generarListaReprobados();
 
             // en caso de que corresponda a la última prueba, se realiza la creación de estudiantes
             if (this.verificarUltimaPrueba()) {
@@ -727,7 +728,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     this.showLoading = true;
 
     this.subscriptions.push(
-      this.resultadosPruebasService.notificarAprobados(this.pruebaDetalleSeleccionada.codSubtipoPrueba).subscribe({
+      this.resultadosPruebasService.notificarAprobados(this.pruebaDetalleSeleccionada.codSubtipoPrueba, this.verificarUltimaPrueba()).subscribe({
         next: (resultado) => {
           Notificacion.notificacionOK(
             this.notificationRef,
