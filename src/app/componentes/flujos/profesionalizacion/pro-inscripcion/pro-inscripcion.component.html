@@ -6,11 +6,19 @@
     </div>
   </div>
 </ng-container>
+<ng-container *ngIf="showUsuarioNoDisponible">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Error datos de usuario</h5>
+      <p class="card-text">No fue posible encontrar los datos del usuario, recuerde que necesita haber ingresado al sistema.</p>
+    </div>
+  </div>
+</ng-container>
 <!-- Formulario de inscripción-->
 <div
   class="container"
   xmlns="http://www.w3.org/1999/html"
-  *ngIf="!showServicioNoDisponible">
+  *ngIf="!showServicioNoDisponible && !showUsuarioNoDisponible">
   <div class="row mt-3">
     <div class="column col-3">
       <img src="assets/logo-bomberos.svg" alt=""/>
