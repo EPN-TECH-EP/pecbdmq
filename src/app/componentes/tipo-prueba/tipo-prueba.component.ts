@@ -150,7 +150,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
 
-//eliminar
+  //eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
