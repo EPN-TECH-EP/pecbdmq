@@ -31,8 +31,7 @@ export class InstructorService {
     return this.http.delete<CustomHttpResponse>(`${ this.host }/instructor/${ codInstructor }`);
   }
 
-
-  actualizar(codInstructor: number, instructorRequest: InstructorRequest) {
+  actualizar(codInstructor: number, instructorRequest: Instructor) {
     return this.http.put<InstructorRequest>(`${ this.host }/instructor/${ codInstructor }`, instructorRequest);
   }
 }
