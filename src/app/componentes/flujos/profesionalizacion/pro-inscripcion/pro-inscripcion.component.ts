@@ -52,6 +52,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   existenDatosCiudadano = false;
   cedulaValida = false;
   showServicioNoDisponible = false;
+  showUsuarioNoDisponible = false;
   private currentConvocatoria: ProConvocatoria;
   public requisitos: ProRequisitoConvocatoriaDto[];
 
@@ -102,6 +103,10 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   private construirFormularios() {
+    if (this.userData == null) {
+      this.showUsuarioNoDisponible = true;
+      return;
+    }
     this.formularioInscripcion = this.builder.group(
       {
         cedula: [defaultTo(this.userData.codDatosPersonales.cedula, '')],
@@ -293,6 +298,10 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   private getConvocatoria() {
+    if (this.userData == null) {
+      this.showUsuarioNoDisponible = true;
+      return;
+    }
     this.proConvocatoriaService.listarActiva().subscribe({
       next: (resp) => {
         const data = resp.filter(item => item.estado === 'INSCRIPCION')
@@ -311,6 +320,10 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   private getEstudiante() {
+    if (this.userData == null) {
+      this.showUsuarioNoDisponible = true;
+      return;
+    }
     this.estudianteService.getEstudianteByCodUser(this.userData.codUsuario).subscribe({
       next: (resp) => {
         this.userData.codEstudiante = resp.codEstudiante;
