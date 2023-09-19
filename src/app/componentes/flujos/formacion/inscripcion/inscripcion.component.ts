@@ -804,6 +804,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
           this.apellidosField.setValue(apellidos);
           this.nombreTituloField.setValue(ciudadano.profesion);
 
+
           this.validarEdad(ciudadano.fechaNacimiento);
         },
         error: (errorResponse: any) => {

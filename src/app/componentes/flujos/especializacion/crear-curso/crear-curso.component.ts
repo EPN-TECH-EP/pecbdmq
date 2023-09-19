@@ -24,6 +24,7 @@ import {AulaService} from "../../../../servicios/aula.service";
 import {DescargaArchivoUtil} from "../../../../util/descarga";
 import {MdbStepChangeEvent, MdbStepperComponent} from "mdb-angular-ui-kit/stepper";
 import {CursoService} from "../../../../servicios/especializacion/curso.service";
+import { MyValidators } from "../../../../util/validators";
 
 @Component({
   selector: 'app-crear-curso',
@@ -278,7 +279,7 @@ export class CrearCursoComponent extends ComponenteBase implements OnInit {
       //estado: ['', Validators.required],
       emailNotificacion: ['', [Validators.required, Validators.email]],
       tieneModulos: [''],
-      porcentajeAceptacionCurso: ['', Validators.required],
+      porcentajeAceptacionCurso: ['', [Validators.required, MyValidators.onlyWhole()]],
       //codUsuarioCreacion: ['', Validators.required],
       //codUsuarioValidacion: ['', Validators.required],
       nombre: ['', Validators.required]

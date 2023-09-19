@@ -41,7 +41,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
 
   /**
     * Inicializa un nuevo objeto "TipoPrueba" con valores por defecto.
-    * 
+    *
     * @returns {TipoPrueba} Un objeto "TipoPrueba" con valores predeterminados.
   */
   initializeTipoPrueba(): TipoPrueba {
@@ -62,7 +62,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
     super(notificationServiceLocal, popconfirmServiceLocal);
 
     this.tiposprueba = [];
-    
+
     this.tipoPrueba = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
     this.tipoPruebaEditForm = this.initializeTipoPrueba();// Llamada al método initializeTipoPrueba
   }
@@ -124,13 +124,13 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   public actualizar(tipoPrueba: TipoPrueba, formValue: TipoPrueba): void {
 
     tipoPrueba = {...tipoPrueba, tipoPrueba: formValue.tipoPrueba, estado: 'ACTIVO'};
-    
+
     if (formValue.tipoPrueba === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 
-    
+
     this.showLoading = true;
     this.subscriptions.push(
       this.Api.actualizarTipoPrueba(tipoPrueba, tipoPrueba.codTipoPrueba).subscribe({
@@ -150,7 +150,7 @@ export class TipoPruebaComponent extends ComponenteBase implements OnInit {
   }
 
 
-//eliminar
+  //eliminar
 
   public confirmaEliminar(event: Event, codigo: number): void {
     super.confirmaEliminarMensaje();
