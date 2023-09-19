@@ -9,6 +9,11 @@ import { UnidadGestionService } from "../../../../../servicios/unidad-gestion.se
 import { UnidadGestion } from "../../../../../modelo/admin/unidad-gestion";
 import { EstacionTrabajo, EstacionTrabajoService } from "../../../../../servicios/estacion-trabajo.service";
 import { forkJoin } from "rxjs";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { TipoAlerta } from "../../../../../enum/tipo-alerta";
+import { Notificacion } from "../../../../../util/notificacion";
+import { CustomHttpResponse } from "../../../../../modelo/admin/custom-http-response";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-instructores',
@@ -39,6 +44,7 @@ export class InstructoresComponent implements OnInit {
     private tipoProcedenciaService: TipoProcedenciaService,
     private unidadGestionService: UnidadGestionService,
     private estacionTrabajoService: EstacionTrabajoService,
+    private ns: MdbNotificationService
   ) {
     this.instructor = defaultInstructor;
     this.usuarios = [];
@@ -78,6 +84,8 @@ export class InstructoresComponent implements OnInit {
         this.tiposProcedencia = procedencias;
         this.unidadesGestion = unidades;
         this.estacionesTrabajo = estaciones;
+
+        console.log(this.instructores);
       },
       error: () => {
         console.error('Error en una o más peticiones');
@@ -96,8 +104,8 @@ export class InstructoresComponent implements OnInit {
     })
   }
 
-  private editarInstructor(instructor: Instructor) {
-    instructor = {
+  onAgregarInstructorService() {
+    const instructor: InstructorRequest = {
       ...this.instructor,
       codTipoProcedencia: this.codTipoProcedencia?.value,
       codUnidadGestion: this.codUnidadGestion?.value,
@@ -120,6 +128,7 @@ export class InstructoresComponent implements OnInit {
         this.instructorService.listar().subscribe({
           next: (instructores) => {
             this.instructores = instructores;
+            console.log(this.instructores);
           }
         })
       }
@@ -203,6 +212,7 @@ export class InstructoresComponent implements OnInit {
     this.estaEditandoInstructor = true;
     this.instructor = instructor;
     this.codigoInstructorEditando = instructor.codInstructor;
+    console.log(instructor);
     this.matchDatosInstructorEnFormulario();
   }
 
@@ -213,8 +223,56 @@ export class InstructoresComponent implements OnInit {
     this.instructorForm.reset();
   }
 
-  onGuardarCambiosInstructor() {
-    this.editarInstructor(this.instructor);
+  onGuardarCambiosInstructor(instructor: Instructor) {
+
+
+    const instructorRequest: InstructorRequest = {
+      codUnidadGestion: this.codUnidadGestion?.value,
+      codEstacion: this.codZona?.value,
+      codTipoContrato: 1,
+      codTipoProcedencia: this.codTipoProcedencia?.value,
+      estado: 'ACTIVO',
+      codDatosPersonales: instructor.codDatosPersonales,
+    }
+
+    console.log(instructorRequest);
+
+    this.instructorService.actualizar(instructor.codInstructor, instructorRequest).subscribe({
+      next: () => {
+        Notificacion.notificar(this.ns, 'Instructor actualizado correctamente', TipoAlerta.ALERTA_OK)
+        // this.instructores = this.instructores.map((instructor) => {
+        //   if (instructor.codInstructor === this.codigoInstructorEditando) {
+        //     return {
+        //       ...instructor,
+        //       codTipoProcedencia: this.codTipoProcedencia?.value,
+        //       codUnidadGestion: this.codUnidadGestion?.value,
+        //       codEstacion: this.codZona?.value,
+        //     }
+        //   }
+        //   return instructor;
+        // });
+        this.instructores = [...this.instructores];
+        this.instructorForm.reset();
+        this.codigoInstructorEditando = 0;
+        this.estaEditandoInstructor = false;
+      }
+    });
+  }
+
+  onEliminarRegistroInstructor(inst: Instructor) {
+    this.instructorService.eliminar(inst.codInstructor).subscribe({
+      next: () => {
+        Notificacion.notificar(this.ns, 'Instructor eliminado correctamente', TipoAlerta.ALERTA_OK)
+        // filtrar instructores
+        this.instructores = this.instructores.filter((instructor) => {
+          return instructor.codInstructor !== inst.codInstructor;
+        });
+        this.instructores = [...this.instructores];
+      },
+      error: (res: HttpErrorResponse) => {
+        Notificacion.notificar(this.ns, res.error.mensaje, TipoAlerta.ALERTA_ERROR)
+      }
+    });
   }
 
   get codTipoProcedencia() {
@@ -230,4 +288,6 @@ export class InstructoresComponent implements OnInit {
   }
 
   protected readonly defaultInstructor = defaultInstructor;
+
+
 }
