@@ -226,31 +226,27 @@ export class InstructoresComponent implements OnInit {
   onGuardarCambiosInstructor(instructor: Instructor) {
 
 
-    const instructorRequest: InstructorRequest = {
+    this.instructor = {
+      ...this.instructor,
       codUnidadGestion: this.codUnidadGestion?.value,
       codEstacion: this.codZona?.value,
-      codTipoContrato: 1,
       codTipoProcedencia: this.codTipoProcedencia?.value,
-      estado: 'ACTIVO',
-      codDatosPersonales: instructor.codDatosPersonales,
     }
 
-    console.log(instructorRequest);
-
-    this.instructorService.actualizar(instructor.codInstructor, instructorRequest).subscribe({
+    this.instructorService.actualizar(instructor.codInstructor, instructor).subscribe({
       next: () => {
         Notificacion.notificar(this.ns, 'Instructor actualizado correctamente', TipoAlerta.ALERTA_OK)
-        // this.instructores = this.instructores.map((instructor) => {
-        //   if (instructor.codInstructor === this.codigoInstructorEditando) {
-        //     return {
-        //       ...instructor,
-        //       codTipoProcedencia: this.codTipoProcedencia?.value,
-        //       codUnidadGestion: this.codUnidadGestion?.value,
-        //       codEstacion: this.codZona?.value,
-        //     }
-        //   }
-        //   return instructor;
-        // });
+        this.instructores = this.instructores.map((instructor) => {
+          if (instructor.codInstructor === this.codigoInstructorEditando) {
+            return {
+              ...instructor,
+              codTipoProcedencia: this.codTipoProcedencia?.value,
+              codUnidadGestion: this.codUnidadGestion?.value,
+              codEstacion: this.codZona?.value,
+            }
+          }
+          return instructor;
+        });
         this.instructores = [...this.instructores];
         this.instructorForm.reset();
         this.codigoInstructorEditando = 0;
