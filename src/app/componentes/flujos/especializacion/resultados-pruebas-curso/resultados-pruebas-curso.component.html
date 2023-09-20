@@ -73,7 +73,6 @@
                     <td>
                       {{ inscripcionValida.codigoUnicoEstudiante }}
                     </td>
-
                     <td>
                       <div class="text-wrap">{{ inscripcionValida.apellido }} {{ inscripcionValida.nombre }}</div>
                     </td>
@@ -249,6 +248,14 @@
                     <tr *ngFor="let resultado of table.data; let index = index">
                       <td>
                         {{ resultado.idPostulante }}
+                      </td>
+
+                      <td>
+                        {{ resultado.cedula}}
+                      </td>
+
+                      <td>
+                        {{ resultado.nombre }} {{ resultado.apellido }}
                       </td>
 
                       <ng-container *ngIf="resultado.resultado">

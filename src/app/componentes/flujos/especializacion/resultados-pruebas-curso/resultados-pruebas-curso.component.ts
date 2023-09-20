@@ -119,9 +119,18 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
       label: 'ID',
     },
     {
+      key: 'cedula',
+      label: 'Cédula',
+    },
+    {
+      Key: 'nombre',
+      label: 'Nombre',
+    },
+    {
       key: 'resultado',
       label: 'Resultado',
     },
+
   ];
 
   // archivo de resultados
