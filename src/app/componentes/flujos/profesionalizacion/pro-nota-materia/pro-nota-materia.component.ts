@@ -213,7 +213,7 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
     this.proConvocatoriaService.getEstadoActual().subscribe((response) => {
 
       const customResponse: CustomHttpResponse = response;
-      
+
       if (!customResponse || customResponse.httpStatusCode !== 200) {
         this.noHayConvocatoria = false;
         return;
@@ -223,7 +223,7 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
         this.noHayConvocatoria = false;
       }
     });
-    
+
     this.noHayConvocatoria = true;
     this.cargaArchivoService.maxArchivo().subscribe({
       next: (result) => {
@@ -370,10 +370,13 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
   }
 
   calcularPromedio(notaForm: FormGroup): string {
-    const notaParcial2 = notaForm.get('notaParcial2')?.value || 0;
-    const notaPractica = notaForm.get('notaPractica')?.value || 0;
-    const promedio = (notaParcial2 + notaPractica) / 2;
-    notaForm.get('aprobado')?.setValue(promedio >= this.seletedItemMateria.notaMinima && notaForm.get('notaAsistencia').value >= this.seletedItemMateria.asistenciaMinima, { emitEvent: false }); // El { emitEvent: false } evita un bucle infinito de eventos
-    return promedio.toFixed(2); // Redondeamos a dos decimales y convertimos a cadena
+    // const notaParcial2 = notaForm.get('notaParcial2')?.value || 0;
+    // const notaPractica = notaForm.get('notaPractica')?.value || 0;
+    // const promedio = (notaParcial2 + notaPractica) / 2;
+
+    const notaFinal = notaForm.get('notaParcial1')?.value || 0;
+
+    notaForm.get('aprobado')?.setValue(notaFinal >= this.seletedItemMateria.notaMinima && notaForm.get('notaAsistencia').value >= this.seletedItemMateria.asistenciaMinima, { emitEvent: false }); // El { emitEvent: false } evita un bucle infinito de eventos
+    return notaFinal.toFixed(2); // Redondeamos a dos decimales y convertimos a cadena
   }
 }

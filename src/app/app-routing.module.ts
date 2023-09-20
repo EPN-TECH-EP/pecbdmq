@@ -22,6 +22,8 @@ const routes: Routes = [
   { path: 'especializacion/inscripcion/:codCurso', component: InscripcionEspecializacionComponent },
   { path: 'profesionalizacion/inscripcion', component: ProInscripcionComponent },
 
+
+
   {
     path: 'principal',
     component: PrincipalComponent,

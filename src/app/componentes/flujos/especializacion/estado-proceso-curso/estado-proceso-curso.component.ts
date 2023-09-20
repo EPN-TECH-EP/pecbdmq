@@ -7,6 +7,7 @@ import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializaci
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-estado-proceso-curso',
@@ -26,6 +27,7 @@ export class EstadoProcesoCursoComponent implements OnInit {
   constructor(
     private cursosService: CursosService,
     private mdbNotificationService: MdbNotificationService,
+    private route: ActivatedRoute
   ) {
     this.cursos = [];
     this.cursoSeleccionado = null;
@@ -38,6 +40,30 @@ export class EstadoProcesoCursoComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarCursos();
+    this.route.queryParams.subscribe((params) => {
+      if (params.codCatalogoCurso) {
+        this.esVistaCurso = true;
+        this.esVistaListaCursos = false;
+        this.cursosService.getTipoCurso(params.codCatalogoCurso).pipe(
+          switchMap((tipoCurso) => {
+            return this.cursosService.listarEstadosPorCurso(tipoCurso.codTipoCurso).pipe(
+              tap((estados) => {
+                this.cursoSeleccionado.tipoCurso = tipoCurso;
+                console.log({ estados })
+                this.cursoSeleccionado.estados = estados;
+              }),
+              catchError((err) => {
+                this.notificar('Error al obtener los estados del curso', TipoAlerta.ALERTA_ERROR);
+                console.error(err);
+                throw err;
+              })
+            );
+          })
+        ).subscribe(() => {
+          this.ordenarEstadosPorCurso(this.cursoSeleccionado);
+        });
+      }
+    });
   }
 
   private listarCursos() {

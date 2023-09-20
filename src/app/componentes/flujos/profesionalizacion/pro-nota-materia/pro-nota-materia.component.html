@@ -122,7 +122,7 @@
               </td>
               <td>
                 <mdb-form-control>
-                  <input mdbInput type="number" min="0" formControlName="notaParcial1" class="form-control">
+                  <input mdbInput type="number" min="0" formControlName="notaParcial1" class="form-control" (change)="calcularPromedio(notaForm)">
                 </mdb-form-control>
               </td>
               <td>{{ notaForm?.get('aprobado').value ? 'SI' : 'NO' }}</td>
