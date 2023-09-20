@@ -241,6 +241,9 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     this.esVistaApelaciones = !this.esVistaApelaciones;
   }
 
+  verCronogramaCursos() {
+
+  }
 }
 
 // cargarEspecializacion(codUnico: string): void {

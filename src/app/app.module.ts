@@ -266,6 +266,8 @@ import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacio
 import { UtilModule } from './componentes/util/util.module';
 import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
 import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
+import { CronogramaComponent } from './componentes/flujos/especializacion/cronograma/cronograma.component';
+import { CronogramaAdminComponent } from './componentes/flujos/especializacion/cronograma-admin/cronograma-admin.component';
 
 
 @NgModule({
@@ -385,6 +387,8 @@ import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especia
     EditarCursoComponent,
     MonitorInscripcionesComponent,
     MonitorInscripcionesCursoComponent,
+    CronogramaComponent,
+    CronogramaAdminComponent,
 
     ],
   imports: [

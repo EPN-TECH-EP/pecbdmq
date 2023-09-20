@@ -228,6 +228,7 @@ import {
 import {
   MonitorInscripcionesCursoComponent
 } from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
+import { CronogramaComponent } from "../../componentes/flujos/especializacion/cronograma/cronograma.component";
 
 
 const routes: Routes = [
@@ -350,7 +351,7 @@ const routes: Routes = [
       { path: 'especializacion/menu-notas', component: MenuNotasComponent },
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
       { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
-
+      { path: 'especializacion/cronograma', component: CronogramaComponent },
 
       /* Profesionalizacion */
       { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},
