@@ -1,0 +1,40 @@
+<!-- calendar.component.html -->
+<!--<div class="container mt-5">-->
+<!--  <h1 class="mb-4">{{ currentMonthName }} {{ currentYear }}</h1>-->
+<!--  <div class="row">-->
+<!--    <div class="col-3" *ngFor="let day of calendarData">-->
+<!--      <div [ngClass]="{ 'card': true, 'mb-3': true, 'border border-primary': isToday(day.date) }">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">{{ day.day }}</h5>-->
+<!--          <p class="card-text">{{ day.date | date: 'fullDate' | titlecase }}</p>-->
+<!--          <hr class="hr hr-blurry">-->
+<!--          <div class="my-2">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!-- calendar.component.html -->
+<!-- calendar.component.html -->
+
+
+<!-- calendar.component.html -->
+<div class="container mt-5">
+  <h1 class="mb-4">{{ currentYear }}</h1>
+  <!-- Cuadrícula del calendario -->
+  <div class="calendar-grid">
+    <!-- Encabezados de los meses -->
+    <ng-container *ngFor="let month of months">
+      <div class="calendar-header">{{ month }}</div>
+    </ng-container>
+
+    <!-- Itera por los días del año -->
+    <div *ngFor="let day of calendarData" class="calendar-cell">
+      {{ day.day }} - {{ day.month }}
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,68 @@
+<header>
+  <div class="m-4">
+    <img
+      class="mx-4"
+      [style.width.px]="300"
+      src="https://www.bomberosquito.gob.ec/wp-content/themes/bomberosuio/images/logo-bomberos.svg"
+      alt="Logo de la postulación">
+  </div>
+</header>
+
+<hr class="hr">
+
+<section>
+  <div class="container">
+    <h1 class="my-4 py-4">Resultados de Pruebas Académicas</h1>
+    <mdb-form-control>
+      <input
+        mdbInput
+        type="text"
+        class="form-control"
+        id="search-input"
+        (keyup)="search($event)"
+      />
+      <label mdbLabel class="form-label" for="search-input">Buscar</label>
+    </mdb-form-control>
+    <div class="datatable mt-4">
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="dataSource"
+        [sort]="sort"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col" class="fs-5 fw-bold">
+            {{ header | titlecase }}
+          </th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        <tr *ngFor="let data of table.data" scope="row">
+          <td>
+            {{ data.codigoUnico }}
+          </td>
+          <td>
+            <span [ngClass]="data.aprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+              {{ data.aprobado ? 'Aprobado' : 'Rechazado' }}
+            </span>
+          </td>
+          <td>
+            <button (click)="openModal()" class="btn btn-primary">Apelar Nota</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination #pagination></mdb-table-pagination>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center p-3">
+  <!-- Información relevante en el footer -->
+  <p>&copy; 2023 Resultados de Postulación - Cuerpo de Bomberos de Quito</p>
+</footer>

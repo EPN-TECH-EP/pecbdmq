@@ -13,7 +13,7 @@
             </ng-template>
             <div
               class="row row-cols-1 row-cols-md-3 g-4"
-              *ngIf="!esVistaTablaDeNotas && !esVistaApelaciones"
+              *ngIf="esVistaMenu"
             >
               <a class="col link-dark" (click)="verTablaNotasPorMateria()">
                 <div class="card h-100 text-center hover-shadow border">
@@ -37,11 +37,36 @@
                   </div>
                 </div>
               </a>
+
+              <a class="col link-dark" (click)="verSubidaDocumentos()">
+                <div class="card h-100 text-center hover-shadow border">
+                  <i class="fas fa-file fa-5x mt-5 text-primary"></i>
+                  <div class="card-body">
+                    <h5 class="card-title">Subida de archivos</h5>
+                    <p class="card-text">
+                      Subida de archivos, sube tus archivos
+                    </p>
+                  </div>
+                </div>
+              </a>
+
+              <a class="col link-dark" (click)="verCalendario()">
+                <div class="card h-100 text-center hover-shadow border">
+                  <i class="fas fa-calendar fa-5x mt-5 text-info"></i>
+                  <div class="card-body">
+                    <h5 class="card-title">Calendario</h5>
+                    <p class="card-text">
+                      Calendario de actividades
+                    </p>
+                  </div>
+                </div>
+              </a>
+
             </div>
             <div *ngIf="esVistaTablaDeNotas">
               <button
                 class="btn btn-primary my-4"
-                (click)="verTablaNotasPorMateria()"
+                (click)="regresarVistaMenu()"
               >
                 <i class="fa fa-arrow-left fa-fw me-2"></i>Regresar
               </button>
@@ -104,7 +129,7 @@
             <div *ngIf="esVistaApelaciones">
               <button
                 class="btn btn-primary my-4"
-                (click)="verApelaciones()"
+                (click)="regresarVistaMenu()"
               >
                 <i class="fa fa-arrow-left fa-fw me-2"></i>Regresar
               </button>
@@ -178,6 +203,99 @@
                   <i class="fa-solid fa-info-circle me-2"></i>
                   No se encontraron apelaciones
                 </div>
+              </div>
+            </div>
+            <div *ngIf="esVistaSubidaDocumentos">
+              <button
+                class="btn btn-primary my-4"
+                (click)="regresarVistaMenu()"
+              >
+                <i class="fa fa-arrow-left fa-fw me-2"></i>Regresar
+              </button>
+              <div
+                *ngIf="apelaciones?.length > 0"
+                class="datatable datatable-hover datatable-sm datatable-striped">
+                <form>
+                  <table
+                    class="tabla datatable-table"
+                    mdbTable
+                    #apelacionesTabla="mdbTable"
+                    [responsive]="true"
+                    [dataSource]="apelaciones"
+                    [pagination]="pagination"
+                  >
+                    <thead class="datatable-header">
+                    <tr>
+                      <th
+                        *ngFor="let head of headers"
+                        class="fw-bold fs-6"
+                      >
+                        {{ head.label }}
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody class="datatable-body">
+                    <tr *ngFor="let apelacion of apelacionesTabla.data">
+                      <td [style.width.px]="75">
+                        {{ apelacion?.fechaSolicitud | date: 'dd-MM-yyyy' }}
+                      </td>
+                      <td class="text-primary text-wrap" [style.width.px]="150">
+                        {{ apelacion?.nombreMateria | uppercase }}
+                      </td>
+                      <td>
+                        <div>
+                          <p class="p-0 m-0"><b class="fw-bold">Nota anterior: </b> {{ apelacion.notaActual}}</p>
+                          <p><b class="fw-bold">Nota nueva: </b> {{ apelacion.notaNueva || 'N/A'}}</p>
+                        </div>
+                      </td>
+                      <td>
+                        {{ apelacion?.observacionEstudiante }}
+                        <div>
+                          <p class="p-0 m-0"><b class="fw-bold">Observación
+                            instructor: </b> {{ apelacion.observacionInstructor || 'N/A'}}</p>
+                        </div>
+                      </td>
+                      <td>
+                          <span *ngIf="apelacion.aprobacion && true" class="badge rounded-pill badge-success">
+                            Aprobada
+                          </span>
+                        <span *ngIf="apelacion.aprobacion === false" class="badge rounded-pill badge-danger">
+                            Rechazada
+                          </span>
+                        <span *ngIf="apelacion.aprobacion === null"
+                              class="badge rounded-pill badge-warning">
+                            Pendiente
+                          </span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <mdb-table-pagination
+                    #pagination
+                    [entries]="10"
+                    [rowsPerPageText]="'Registros por página'"
+                  ></mdb-table-pagination>
+                </form>
+              </div>
+              <div *ngIf="apelaciones?.length === 0">
+                <div class="alert alert-info" role="alert">
+                  <i class="fa-solid fa-info-circle me-2"></i>
+                  No se encontraron apelaciones
+                </div>
+              </div>
+            </div>
+            <div *ngIf="esVistaCalendario">
+              <button
+                class="btn btn-primary my-4"
+                (click)="regresarVistaMenu()"
+              >
+                <i class="fa fa-arrow-left fa-fw me-2"></i>Regresar
+              </button>
+              <div>
+                <p class="text-primary">
+                  <i class="fas fa-calendar me-2"></i>
+                  Calendario de actividades</p>
+                <app-calendario-formacion></app-calendario-formacion>
               </div>
             </div>
           </mdb-tab>
