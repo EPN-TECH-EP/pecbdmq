@@ -23,6 +23,7 @@ import {
 import { ModalApelacionComponent } from "../../util/modal-apelacion/modal-apelacion.component";
 import { catchError, map, mergeMap } from "rxjs/operators";
 
+
 @Component({
   selector: 'app-ficha-personal',
   templateUrl: './ficha-personal.component.html',
@@ -43,6 +44,10 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   esVistaTablaDeNotas: boolean = false;
   esVistaApelaciones: boolean = false;
+  esVistaSubidaDocumentos: boolean = false;
+  esVistaCalendario: boolean = false;
+
+  esVistaMenu: boolean = true;
 
   // formacionEstudiante: FormacionEstudiante[];
   // espEstudiante: EspecializacionEstudiante[];
@@ -235,15 +240,36 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   verTablaNotasPorMateria() {
     this.esVistaTablaDeNotas = !this.esVistaTablaDeNotas;
+    this.esVistaMenu = false;
   }
 
   verApelaciones() {
     this.esVistaApelaciones = !this.esVistaApelaciones;
-  }
-
-  verCronogramaCursos() {
+    this.esVistaMenu = false;
 
   }
+
+  verSubidaDocumentos() {
+    this.esVistaSubidaDocumentos = !this.esVistaSubidaDocumentos;
+    this.esVistaMenu = false;
+
+  }
+
+  regresarVistaMenu() {
+    this.esVistaMenu = true;
+    this.esVistaCalendario = false;
+    this.esVistaApelaciones = false;
+    this.esVistaSubidaDocumentos = false;
+    this.esVistaTablaDeNotas = false;
+  }
+
+  verCalendario() {
+    this.esVistaCalendario = !this.esVistaCalendario;
+    this.esVistaMenu = false;
+
+  }
+
+
 }
 
 // cargarEspecializacion(codUnico: string): void {

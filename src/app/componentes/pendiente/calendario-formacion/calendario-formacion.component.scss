@@ -1,0 +1,27 @@
+/* Estilos CSS para la cuadrícula del calendario */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columnas para los días de la semana */
+  grid-gap: 10px; /* Espacio entre las celdas */
+}
+
+/* Estilos CSS para los días de la semana */
+.day-of-week {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Estilos CSS para las celdas del calendario */
+.calendar-cell {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 100px; /* Altura mínima de las celdas */
+}
+
+/* Estilos CSS para el espacio en blanco */
+.calendar-cell:empty {
+  border: none;
+  background-color: white;
+}
