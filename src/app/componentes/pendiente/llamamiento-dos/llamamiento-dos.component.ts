@@ -5,6 +5,9 @@ import {
   ModalLlamamientoRequisitosComponent
 } from "../llamamiento/modal-llamamiento-requisitos/modal-llamamiento-requisitos.component";
 import { Router } from "@angular/router";
+import {
+  ModalLlamamientoSancionComponent
+} from "../llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component";
 
 @Component({
   selector: 'app-llamamiento-dos',
@@ -14,6 +17,7 @@ import { Router } from "@angular/router";
 export class LlamamientoDosComponent implements OnInit {
 
   modalRef: MdbModalRef<ModalLlamamientoRequisitosComponent> | null = null;
+  modalRefSancion: MdbModalRef<ModalLlamamientoSancionComponent> | null = null;
 
   datosSincronizados: DatosSincronizados[] = []
   constructor(
@@ -35,5 +39,9 @@ export class LlamamientoDosComponent implements OnInit {
 
   verNotasFicha() {
     this.router.navigate(['/principal/llamamiento-dos/notas-ficha']).then()
+  }
+
+  openModalSancion() {
+    this.modalRefSancion = this.modalService.open(ModalLlamamientoSancionComponent)
   }
 }
