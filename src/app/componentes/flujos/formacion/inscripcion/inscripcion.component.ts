@@ -222,6 +222,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
         ],
         email: ['', [Validators.required, Validators.email]],
         sexo: ['', [Validators.required]],
+        area: ['', [Validators.required]],
         fechaNacimiento: [null, [Validators.required /*, MyValidators.validAge()*/]],
         telCelular: [
           '',
@@ -290,6 +291,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['apellidos'].disable();
       this.formularioInscripcion.controls['email'].disable();
       this.formularioInscripcion.controls['sexo'].disable();
+      this.formularioInscripcion.controls['area'].disable();
       this.formularioInscripcion.controls['fechaNacimiento'].disable();
       this.formularioInscripcion.controls['telCelular'].disable();
       this.formularioInscripcion.controls['telConvencional'].disable();
@@ -319,6 +321,7 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
       this.formularioInscripcion.controls['apellidos'].enable();
       this.formularioInscripcion.controls['email'].enable();
       this.formularioInscripcion.controls['sexo'].enable();
+      this.formularioInscripcion.controls['area'].enable();
       this.formularioInscripcion.controls['fechaNacimiento'].enable();
       this.formularioInscripcion.controls['telCelular'].enable();
       this.formularioInscripcion.controls['telConvencional'].enable();
@@ -364,6 +367,10 @@ export class InscripcionComponent extends ComponenteBase implements OnInit {
 
   get sexoField() {
     return this.formularioInscripcion.get('sexo');
+  }
+
+  get areaField() {
+    return this.formularioInscripcion.get('area');
   }
 
   get fechaNacimientoField() {

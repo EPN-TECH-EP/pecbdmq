@@ -340,6 +340,22 @@
                     ">
                   </mdb-success>
                 </mdb-form-control>
+                <!-- Area -->
+                <mdb-form-control>
+                  <mdb-select mdbValidate id="area" data-mdb-placeholder="Área" formControlName="area" class="mb-3">
+                    <mdb-option value="area1">AREA 1</mdb-option>
+                    <mdb-option value="area2">AREA 2</mdb-option>
+                    <mdb-option value="area3">AREA 3</mdb-option>
+                  </mdb-select>
+                  <label mdbLabel class="form-label mb-2x" for="sexo">
+                    <span class="text-primary">*</span>
+                    Área</label>
+                  <mdb-error *ngIf="areaField?.invalid && (areaField?.dirty || areaField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success *ngIf="areaField?.valid && (areaField?.dirty || areaField?.touched)"></mdb-success>
+                </mdb-form-control>
               </div>
             </div>
           </div>
