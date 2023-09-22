@@ -6,7 +6,6 @@ import { Paralelo } from "../../modelo/admin/paralelo";
 import { DatoPersonal } from "../../modelo/admin/dato-personal";
 import { FaltaPeriodo } from "../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 
-
 export interface EstudianteParaleloRequest {
   lista: {
     codUnico: string;
@@ -61,15 +60,12 @@ export interface FaltaEstudiante {
   faltaPeriodo?: FaltaPeriodo
 }
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class EstudianteService {
 
   private host = environment.apiUrl
-
 
   constructor(private http: HttpClient) {
   }
