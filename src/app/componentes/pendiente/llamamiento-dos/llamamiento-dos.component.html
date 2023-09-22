@@ -1,0 +1,48 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Llamamiento II</h1>
+  </div>
+
+  <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
+    <table
+      class="tabla datatable-table"
+      mdbTable
+      #table
+      [dataSource]="datosSincronizados"
+    >
+      <thead class="datatable-header">
+      <tr>
+        <th class="fw-bold fs-6">Nombre</th>
+        <th class="fw-bold fs-6">Apellido</th>
+        <th class="fw-bold fs-6">Cédula</th>
+        <th class="fw-bold fs-6">Acciones</th>
+      </tr>
+      </thead>
+      <tbody class="datatable-body">
+      <tr *ngFor="let data of table.data">
+        <td>{{data.datoPersonal.nombre}}</td>
+        <td>{{data.datoPersonal.apellido}}</td>
+        <td>{{data.datoPersonal.cedula}}</td>
+        <td>
+          <button
+            mdbTooltip="ver notas"
+            class="m-0 p-0 me-2 shadow-0 btn btn-lg text-dark"
+          >
+            <i class="fa fa-eye"></i>
+          </button>
+          <button
+            mdbTooltip="Verificar historico de requisitos"
+            class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+          >
+            <i class="fa fa-file-edit"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>

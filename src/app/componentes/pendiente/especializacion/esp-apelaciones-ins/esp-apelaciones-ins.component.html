@@ -1,0 +1,71 @@
+<app-boton-volver
+></app-boton-volver>
+
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder mb-4">Apelaciones de la materia </h1>
+  </div>
+
+  <div class="d-flex gap-2 my-4">
+    <button
+      class="btn btn-primary btn-rounded"
+    >
+      <i class="fa fa-filter"></i>
+      Todos
+    </button>
+    <button
+      class="btn btn-warning btn-rounded"
+
+    >
+      <i class="fa fa-filter"></i>
+      Filtrar pendientes
+    </button>
+    <button
+      class="btn btn-success btn-rounded"
+
+    >
+      <i class="fa fa-filter "></i>
+      Filtrar aprobados
+    </button>
+    <button
+      class="btn btn-danger btn-rounded"
+    >
+      <i class="fa fa-filter"></i>
+      Filtrar rechazados
+    </button>
+  </div>
+
+  <div
+    class="datatable datatable-hover datatable-sm datatable-striped">
+    <form>
+      <table
+        class="tabla datatable-table"
+        mdbTable
+        #apelacionesTabla="mdbTable"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let head of headers"
+            class="fw-bold fs-6"
+          >
+            {{ head.label }}
+          </th>
+          <th class="fw-bold fs-6 text-center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody class="datatable-body">
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </form>
+  </div>
+
+
+</div>
