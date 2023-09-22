@@ -77,6 +77,34 @@
         ></mdb-datepicker>
       </mdb-form-control>
 
+      <div class="form-check">
+        <input
+          mdbCheckbox
+          class="form-check-input"
+          type="checkbox"
+          [value]="esTarea"
+          id="flexCheckDefault"
+          (change)="onChangeEsTarea($event)"
+        />
+        <label class="form-check-label" for="flexCheckDefault">
+          Es tarea
+        </label>
+      </div>
+
+      <div *ngIf="esTarea">
+        <p class="text-primary">Suba un archivo detallando la tarea</p>
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="file"
+            formControlName="archivo"
+            id="archivo"
+            class="form-control mb-4"
+          >
+        </mdb-form-control>
+      </div>
+
       <button class="btn btn-success my-4" (click)="onGuardarActividad()">Guardar</button>
 
     </form>

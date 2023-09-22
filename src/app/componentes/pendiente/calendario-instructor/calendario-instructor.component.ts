@@ -13,6 +13,7 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 export class CalendarioInstructorComponent implements OnInit {
   esVistaAgregarActividad: boolean = false;
   actividadForm: FormGroup = new FormGroup({});
+  esTarea: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private ns: MdbNotificationService) {
@@ -47,4 +48,15 @@ export class CalendarioInstructorComponent implements OnInit {
   }
 
   protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
+
+  protected readonly onchange = onchange;
+
+  onChangeEsTarea($event: any) {
+    this.esTarea = $event.target.checked;
+    if (this.esTarea) {
+      this.actividadForm.addControl('archivo', this.formBuilder.control('', Validators.required));
+    } else {
+      this.actividadForm.removeControl('archivo');
+    }
+  }
 }

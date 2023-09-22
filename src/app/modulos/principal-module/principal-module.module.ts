@@ -235,6 +235,7 @@ import {
 import {
   CalendarioInstructorComponent
 } from "../../componentes/pendiente/calendario-instructor/calendario-instructor.component";
+import { ChatInstructorComponent } from "../../componentes/pendiente/chat-instructor/chat-instructor.component";
 
 
 const routes: Routes = [
@@ -318,6 +319,7 @@ const routes: Routes = [
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
       { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
+      { path: 'formacion/academia/chat', component: ChatInstructorComponent },
 
       // especialización
 

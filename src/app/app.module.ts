@@ -278,6 +278,7 @@ import localeEs from '@angular/common/locales/es';
 import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular";
 import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
 import { CalendarioInstructorComponent } from './componentes/pendiente/calendario-instructor/calendario-instructor.component';
+import { ChatInstructorComponent } from './componentes/pendiente/chat-instructor/chat-instructor.component';
 
 registerLocaleData(localeEs);
 
@@ -406,6 +407,7 @@ registerLocaleData(localeEs);
     CalendarioFormacionComponent,
     RepositorioMateriaEstudianteComponent,
     CalendarioInstructorComponent,
+    ChatInstructorComponent,
 
     ],
   imports: [
