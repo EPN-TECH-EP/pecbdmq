@@ -5,7 +5,7 @@ import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
 import { AutenticacionService } from "../../../servicios/autenticacion.service";
 import { UsuarioService } from "../../../servicios/usuario.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { TipoAlerta } from "../../../enum/tipo-alerta";
 import { Notificacion } from "../../../util/notificacion";
 import { FormacionHistoricoService } from "../../../servicios/consultaHistoricas/formacion-historico.service";
@@ -23,6 +23,7 @@ import {
 import { ModalApelacionComponent } from "../../util/modal-apelacion/modal-apelacion.component";
 import { catchError, map, mergeMap } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
 
 @Component({
@@ -137,6 +138,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   constructor(
     private autenticacionService: AutenticacionService,
+    private sanitizer: DomSanitizer,
     private modalService: MdbModalService,
     private ns: MdbNotificationService,
     private popconfirmServiceLocal: MdbPopconfirmService,
@@ -146,6 +148,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     private apelacionService: ApelacionesService,
     private estudianteService: EstudianteService,
     private router: Router,
+    private httpClient: HttpClient,
   ) {
     super(ns, popconfirmServiceLocal);
     this.subscriptions = [];
@@ -277,6 +280,25 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     this.estudianteService.estudiante = this.estudiante
     this.formacionHistoricoService.nota = nota;
     this.router.navigate(['principal/formacion/estudiante/repositorio']).then();
+  }
+
+  descargarCertificado(): void {
+    const archivoUrl = 'assets/docs/certificado.pdf'; // Ruta relativa al archivo en la carpeta 'assets'
+
+    // Realizar una solicitud GET para obtener el archivo
+    this.httpClient.get(archivoUrl, { responseType: 'blob' }).subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+
+      // Crear un enlace de descarga seguro
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'certificado.pdf'; // Nombre del archivo para descargar
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    });
   }
 }
 

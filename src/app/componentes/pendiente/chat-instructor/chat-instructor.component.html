@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Chat en el que puede participar el instructor y los alumnos</h1>
+    <h2 class="fs-4 fw-bolder text-primary my-3"></h2>
+    <hr class="hr hr-blurry">
+  </div>
+  <div class="chat-container my-4">
+    <div class="chat-header">
+      <h3>Chat del instructor</h3>
+    </div>
+    <div class="chat-messages">
+      <div class="message incoming">
+        <p>Hola, me ayudaria con el ejercicio 1?</p>
+      </div>
+      <div *ngIf="mensajesEnviados.length > 0">
+        <div class="message outgoing" *ngFor="let mensajeEnviado of mensajesEnviados">
+          <p>{{mensajeEnviado.mensaje}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"/>
+      <button class="btn btn-primary" (click)="enviarMensaje()">
+        <i class="fas fa-paper-plane me-2"></i>
+        Enviar
+      </button>
+    </div>
+  </div>
+</div>
