@@ -26,8 +26,8 @@ export const SERVICIOS_PUBLICOS_URLS: string[] =
     '/cargo/listar',
     '/grado/listar',
     '/grado/listarRangos',
-    "/postulantesValidos/resultadoPostulantes",
-    "/pruebadetalle/listarConDatos",
-    "/postulantesValidos/resultadoPostulantes/**",
-    "/postulantesValidos/resultadoPostulantes",
+    '/postulantesValidos/resultadoPostulantes',
+    '/pruebadetalle/listarConDatos',
+    '/postulantesValidos/resultadoPostulantes/**',
+    '/postulantesValidos/resultadoPostulantes',
   ];
