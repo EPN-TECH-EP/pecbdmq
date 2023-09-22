@@ -250,6 +250,9 @@ import {
 import {
   EspApelacionesInsComponent
 } from "../../componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component";
+import {
+  LlamamientoFichaComponent
+} from "../../componentes/pendiente/llamamiento/llamamiento-ficha/llamamiento-ficha.component";
 
 
 const routes: Routes = [
@@ -338,6 +341,7 @@ const routes: Routes = [
 
       // llamamiento
       { path: 'formacion/llamamiento', component: LlamamientoDosComponent },
+      { path: 'llamamiento-dos/notas-ficha', component: LlamamientoFichaComponent },
 
       // especialización
 

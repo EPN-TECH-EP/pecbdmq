@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DatosSincronizados, LlamamientoDosService } from "../servicios/llamamiento-dos.service";
+import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import {
+  ModalLlamamientoRequisitosComponent
+} from "../llamamiento/modal-llamamiento-requisitos/modal-llamamiento-requisitos.component";
+import { Router } from "@angular/router";
+import {
+  ModalLlamamientoSancionComponent
+} from "../llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component";
 
 @Component({
   selector: 'app-llamamiento-dos',
@@ -8,8 +16,13 @@ import { DatosSincronizados, LlamamientoDosService } from "../servicios/llamamie
 })
 export class LlamamientoDosComponent implements OnInit {
 
+  modalRef: MdbModalRef<ModalLlamamientoRequisitosComponent> | null = null;
+  modalRefSancion: MdbModalRef<ModalLlamamientoSancionComponent> | null = null;
+
   datosSincronizados: DatosSincronizados[] = []
-  constructor(private llamamientoService: LlamamientoDosService) { }
+  constructor(
+    private router: Router,
+    private llamamientoService: LlamamientoDosService, private modalService: MdbModalService) { }
 
   ngOnInit(): void {
     this.llamamientoService.listarFuncionarios().subscribe({
@@ -20,4 +33,15 @@ export class LlamamientoDosComponent implements OnInit {
     })
   }
 
+  openModal() {
+    this.modalRef = this.modalService.open(ModalLlamamientoRequisitosComponent)
+  }
+
+  verNotasFicha() {
+    this.router.navigate(['/principal/llamamiento-dos/notas-ficha']).then()
+  }
+
+  openModalSancion() {
+    this.modalRefSancion = this.modalService.open(ModalLlamamientoSancionComponent)
+  }
 }

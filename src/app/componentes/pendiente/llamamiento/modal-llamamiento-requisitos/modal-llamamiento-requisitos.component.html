@@ -1,1 +1,38 @@
-<p>modal-llamamiento-requisitos works!</p>
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Historial de requisitos</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body">
+
+  <!-- lista de requisitos -->
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Requisito</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let requisito of requisitos">
+              <td>{{ requisito.requisito }}</td>
+              <td>{{ requisito.fecha | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ requisito.estado }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+</div>
+<div class="modal-footer">
+</div>
