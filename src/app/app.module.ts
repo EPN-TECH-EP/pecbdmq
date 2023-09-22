@@ -280,6 +280,7 @@ import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular
 import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
 import { CalendarioInstructorComponent } from './componentes/pendiente/calendario-instructor/calendario-instructor.component';
 import { ChatInstructorComponent } from './componentes/pendiente/chat-instructor/chat-instructor.component';
+import { CursosTomadosComponent } from './componentes/pendiente/especializacion/cursos-tomados/cursos-tomados.component';
 
 registerLocaleData(localeEs);
 
@@ -410,6 +411,7 @@ registerLocaleData(localeEs);
     RepositorioMateriaEstudianteComponent,
     CalendarioInstructorComponent,
     ChatInstructorComponent,
+    CursosTomadosComponent,
 
     ],
   imports: [

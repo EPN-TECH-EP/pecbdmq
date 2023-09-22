@@ -5,6 +5,9 @@ import {Observable, throwError} from "rxjs";
 import {DocumentoFormacion} from "../../modelo/flujos/formacion/documento";
 import {catchError, map} from "rxjs/operators";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {
+  EstudianteCursoDocumentoItemDto, EstudianteMateriaDocumentoItemDto
+} from "../../componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component";
 
 @Injectable({
   providedIn: 'root'
@@ -68,4 +71,8 @@ export class DocumentosService {
     );
   }
 
+
+  listarDocumentosEsp(codEstudiante: number, codCurso: number) {
+    return this.http.get<EstudianteCursoDocumentoItemDto[]>(`${this.host}/estudianteCursoDocumento/listar/documentos/estudiante/${codEstudiante}/curso/${codCurso}`);
+  }
 }

@@ -237,6 +237,9 @@ import {
   CalendarioInstructorComponent
 } from "../../componentes/pendiente/calendario-instructor/calendario-instructor.component";
 import { ChatInstructorComponent } from "../../componentes/pendiente/chat-instructor/chat-instructor.component";
+import {
+  CursosTomadosComponent
+} from "../../componentes/pendiente/especializacion/cursos-tomados/cursos-tomados.component";
 
 
 const routes: Routes = [
@@ -365,6 +368,7 @@ const routes: Routes = [
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
       { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
       { path: 'especializacion/cronograma', component: CronogramaComponent },
+      { path: 'formacion/estudiante/cursos-tomados', component: CursosTomadosComponent },
 
       /* Profesionalizacion */
       { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},

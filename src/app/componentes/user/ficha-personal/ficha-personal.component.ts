@@ -300,6 +300,11 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
       window.URL.revokeObjectURL(url);
     });
   }
+
+  verCursosTomados() {
+    this.estudianteService.estudiante = this.estudiante;
+    this.router.navigate(['principal/formacion/estudiante/cursos-tomados']).then();
+  }
 }
 
 // cargarEspecializacion(codUnico: string): void {
