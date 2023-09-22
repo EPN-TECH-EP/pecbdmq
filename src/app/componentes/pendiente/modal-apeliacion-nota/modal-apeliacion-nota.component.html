@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">
+    Ingresa una observación para apelar su calificación
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <mdb-form-control>
+    <textarea
+      mdbInput
+      mdbValidate
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="3"
+    ></textarea>
+  </mdb-form-control>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="apelarNota()">Apelar</button>
+</div>

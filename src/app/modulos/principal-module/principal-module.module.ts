@@ -228,6 +228,15 @@ import {
 import {
   MonitorInscripcionesCursoComponent
 } from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
+import { ReportesComponent } from 'src/app/componentes/reportes/reportes.component';
+import { CronogramaComponent } from "../../componentes/flujos/especializacion/cronograma/cronograma.component";
+import {
+  RepositorioMateriaEstudianteComponent
+} from "../../componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component";
+import {
+  CalendarioInstructorComponent
+} from "../../componentes/pendiente/calendario-instructor/calendario-instructor.component";
+import { ChatInstructorComponent } from "../../componentes/pendiente/chat-instructor/chat-instructor.component";
 
 
 const routes: Routes = [
@@ -309,6 +318,10 @@ const routes: Routes = [
       { path: 'formacion/menu-graduacion', component: MenuGraduacionComponent },
       { path: 'formacion/menu-consultas', component: MenuConsultasComponent },
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
+      { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
+      { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
+      { path: 'formacion/academia/chat', component: ChatInstructorComponent },
+      { path: 'formacion/reportes', component: ReportesComponent, data: { title: 'Reportes general formación' } },
 
       // especialización
 
@@ -331,6 +344,7 @@ const routes: Routes = [
 
       { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
       { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },
+      { path: 'especializacion/reportes', component: ReportesComponent, data: { title: 'Reportes general especialización' } },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },
@@ -350,7 +364,7 @@ const routes: Routes = [
       { path: 'especializacion/menu-notas', component: MenuNotasComponent },
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
       { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
-
+      { path: 'especializacion/cronograma', component: CronogramaComponent },
 
       /* Profesionalizacion */
       { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},

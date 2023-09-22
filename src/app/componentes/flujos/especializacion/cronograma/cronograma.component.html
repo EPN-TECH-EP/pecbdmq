@@ -1,0 +1,41 @@
+<app-boton-volver
+  [texto]="'Regresar al menú de academia'"
+></app-boton-volver>
+
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Cronograma de un cursos</h1>
+  </div>
+</div>
+
+
+<section>
+  <div class="row">
+    <div class="col">
+      <ng-container *ngFor="let mesKey of Object.keys(cursosPorMes)">
+        <h2 class="my-3">{{ meses[+mesKey.split('-')[1] - 1] }}</h2>
+        <hr/>
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+          <div class="col" *ngFor="let curso of cursosPorMes[mesKey]">
+            <div class="card hover-shadow border">
+              <div class="card-header">
+                <span class="text-primary">
+                  <i class="fas fa-calendar"></i>
+                  {{ curso.fechaInicioCurso | date: 'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-start">{{ curso.nombre }}</h5>
+                <p class="card-text">
+                  <!-- Puedes agregar más detalles del curso aquí si lo deseas -->
+                </p>
+              </div>
+<!--              <div class="card-footer">-->
+<!--                <span>{{ curso.fechaFinCurso.getTime() < hoy.getTime() ? 'Terminado' : 'Por empezar'}}</span>-->
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>

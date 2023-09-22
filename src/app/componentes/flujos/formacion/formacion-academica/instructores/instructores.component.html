@@ -213,7 +213,7 @@
                 class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
                 type="submit"
                 [disabled]="instructorForm.invalid"
-                (click)="onGuardarCambiosInstructor()"
+                (click)="onAgregarInstructorService()"
               >
                 <i class="fa fa-check"></i>Agregar
 
@@ -324,6 +324,7 @@
                   mdbTooltip="Eliminar registro"
                   class="m-0 p-0 shadow-0 btn btn-lg text-dark"
                   [disabled]="estaEditandoInstructor"
+                  (click)="onEliminarRegistroInstructor(instructor)"
                 >
                   <i class="fa fa-trash-alt"></i>
                 </button>
@@ -332,7 +333,7 @@
                 <button
                   class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
                   type="submit"
-                  (click)="onGuardarCambiosInstructor()"
+                  (click)="onGuardarCambiosInstructor(instructor)"
                 >
                   <i class="fa fa-check"></i> Guardar
                 </button>

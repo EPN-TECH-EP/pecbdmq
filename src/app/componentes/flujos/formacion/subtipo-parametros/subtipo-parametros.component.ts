@@ -181,7 +181,7 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
         this.notificationServiceLocal,
         null,
         'Ingrese una calificación'
-      );   
+      );
 
       return;
     }
@@ -265,6 +265,7 @@ export class SubtipoParametrosComponent extends ComponenteBase implements OnInit
             }
 
             this.listaParametrizaPruebaDetalle = listaParametrizaPruebaDetalle;
+
           },
         })
     );

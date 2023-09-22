@@ -5,7 +5,7 @@ import { TipoPrueba } from './modelo/admin/tipo-prueba';
 import { Semestre } from 'src/app/modelo/admin/semestre';
 import { Periodo } from './modelo/admin/periodo-academico';
 
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -266,7 +266,22 @@ import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacio
 import { UtilModule } from './componentes/util/util.module';
 import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
 import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
+import { ReportesComponent } from './componentes/reportes/reportes.component';
+import { CronogramaComponent } from './componentes/flujos/especializacion/cronograma/cronograma.component';
+import { CronogramaAdminComponent } from './componentes/flujos/especializacion/cronograma-admin/cronograma-admin.component';
+import { InfoCursoComponent } from './componentes/flujos/especializacion/info-curso/info-curso.component';
+import { ResultadosInscripcionesComponent } from './componentes/pendiente/resultados-inscripciones/resultados-inscripciones.component';
+import { ModalApeliacionNotaComponent } from './componentes/pendiente/modal-apeliacion-nota/modal-apeliacion-nota.component';
+import { CalendarioFormacionComponent } from './componentes/pendiente/calendario-formacion/calendario-formacion.component';
+import { registerLocaleData } from "@angular/common";
 
+import localeEs from '@angular/common/locales/es';
+import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular";
+import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
+import { CalendarioInstructorComponent } from './componentes/pendiente/calendario-instructor/calendario-instructor.component';
+import { ChatInstructorComponent } from './componentes/pendiente/chat-instructor/chat-instructor.component';
+
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -385,6 +400,16 @@ import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especia
     EditarCursoComponent,
     MonitorInscripcionesComponent,
     MonitorInscripcionesCursoComponent,
+    ReportesComponent,
+    CronogramaComponent,
+    CronogramaAdminComponent,
+    InfoCursoComponent,
+    ResultadosInscripcionesComponent,
+    ModalApeliacionNotaComponent,
+    CalendarioFormacionComponent,
+    RepositorioMateriaEstudianteComponent,
+    CalendarioInstructorComponent,
+    ChatInstructorComponent,
 
     ],
   imports: [
@@ -433,8 +458,10 @@ import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especia
     PrincipalModuleModule,
     ProfesionalizacionModule,
     UtilModule,
+    FullCalendarModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
     AutenticacionGuard,
     AutenticacionService,
     //{provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true},

@@ -134,14 +134,14 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
 
     this.showLoading = true;
 
-    //objeto para crear    
+    //objeto para crear
 
     this.subscriptions.push(
       this.subtipoPruebaService.crear(this.subtipoPruebaEdit).subscribe({
-        next: (response: HttpResponse<SubtipoPrueba>) => {
-          let nuevo: SubtipoPrueba = response.body;
-          this.listaSubtipoPrueba.push(nuevo);
-          Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Subtipo de Prueba creado con éxito');
+          next: (response: HttpResponse<SubtipoPrueba>) => {
+            let nuevo: SubtipoPrueba = response.body;
+            this.listaSubtipoPrueba.push(nuevo);
+            Notificacion.notificacionOK(this.notificationRef, this.notificationServiceLocal, 'Subtipo de Prueba creado con éxito');
 
           this.addRow = false;
           this.initSubtipoPrueba();
@@ -152,11 +152,11 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
           this.showLoading = false;
         }
       }
-    ));    
+    ));
   }
 
   editRow(subtipoPrueba: SubtipoPrueba, index: number) {
-    this.estaEditando = true;    
+    this.estaEditando = true;
     this.editIndex = index;
     this.subtipoPruebaEdit = {...subtipoPrueba};
   }
@@ -174,12 +174,12 @@ export class SubtipoPruebaComponent extends ComponenteBase implements OnInit {
     nombre: formValue.nombre,
       estado: 'ACTIVO'
     };
-    
+
     console.log(this.subtipoPruebaEdit);
 
     // validación vacios
     if (formValue.nombre === '') {
-      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');      
+      Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, 'Todos los campos deben estar llenos');
       return;
     }
 

@@ -23,6 +23,7 @@ export interface InstructorRequest {
   codEstacion       : number;
   codUnidadGestion  : number;
   codTipoContrato   : number;
+  estado?           : string;
 }
 
 export const defaultInstructor: Instructor = {

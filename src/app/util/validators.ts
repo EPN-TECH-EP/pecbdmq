@@ -11,7 +11,7 @@ export class MyValidators {
     const end = new Date(control.get('fechaFin')?.value);
 
     if (start && end && start > end) {
-      return {invalid_date: true};
+      return { invalid_date: true };
     }
 
     return null;
@@ -25,7 +25,7 @@ export class MyValidators {
       if (!regex.test(value)) {
         console.log('invalid_letters');
         console.log(value);
-        return {invalid_letters: true};
+        return { invalid_letters: true };
       }
 
       return null;
@@ -38,7 +38,7 @@ export class MyValidators {
       const regex = new RegExp('^[0-9]*$');
 
       if (!regex.test(value)) {
-        return {invalid_numbers: true};
+        return { invalid_numbers: true };
       }
 
       return null;
@@ -59,10 +59,10 @@ export class MyValidators {
             function (valorPrevio, valorActual, indice) {
               return valorPrevio - ((valorActual * (2 - indice % 2)) % 9) - ((valorActual === 9) ? 9 : 0);
             }, 1000) % 10;
-          return digito_calculado === digito_verificador ? null : {invalid_identification: true}
+          return digito_calculado === digito_verificador ? null : { invalid_identification: true }
         }
       }
-      return {invalid_identification: true};
+      return { invalid_identification: true };
     }
   }
 
@@ -74,7 +74,7 @@ export class MyValidators {
       const age = now.getFullYear() - date.getFullYear();
 
       if (age < 18 || age > 28) {
-        return {invalid_age: true};
+        return { invalid_age: true };
       }
 
       return null;
@@ -87,7 +87,7 @@ export class MyValidators {
       return usuarioService.buscarPorIdentificacion(value).pipe(
         map((usuario: Usuario) => {
             if (usuario) {
-              return {value_found: true};
+              return { value_found: true };
             } else {
               return null;
             }
@@ -109,7 +109,7 @@ export class MyValidators {
             console.log(usuarios);
 
             if (usuarios !== null && usuarios.length > 0) {
-              return {value_found: true};
+              return { value_found: true };
             } else {
               return null;
             }
@@ -119,4 +119,16 @@ export class MyValidators {
     };
   }
 
+  static onlyWhole() {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      const regex = new RegExp('^[0-9]*$');
+
+      if (!regex.test(value)) {
+        return { invalid_whole: true };
+      }
+
+      return null;
+    }
+  }
 }

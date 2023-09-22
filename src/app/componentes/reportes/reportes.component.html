@@ -1,0 +1,59 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">{{title}}</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-8">
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Tipo reporte</label>
+      <mdb-select id="periodoSelect" [(ngModel)]="selectedTipoReporte"
+                  (ngModelChange)="onSelectTipoReporte()">
+        <mdb-option *ngFor="let item of tiposReporte" [value]="item">
+          {{ item }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Periodo</label>
+      <mdb-select id="periodoSelect" [(ngModel)]="selectedPeriodo"
+                  (ngModelChange)="onSelectTipoReporte()">
+        <mdb-option *ngFor="let item of periodos" [value]="item">
+          {{ item }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Aula</label>
+      <mdb-select id="periodoSelect" [(ngModel)]="selectedAula"
+                  (ngModelChange)="onSelectTipoReporte()">
+        <mdb-option *ngFor="let item of aulas" [value]="item">
+          {{ item }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="semestreSelect">Paralelo</label>
+      <mdb-select id="periodoSelect" [(ngModel)]="selectedParalelo"
+                  (ngModelChange)="onSelectTipoReporte()">
+        <mdb-option *ngFor="let item of paralelos" [value]="item">
+          {{ item }}
+        </mdb-option>
+      </mdb-select>
+    </div>
+
+    <div class="datatable table-editor mt-4">
+      <div class='exportExcel'>
+        <button class="btn btn-primary" (click)="onClickMe()"><i class="fa fa-file-excel"></i> Descargar</button>
+      </div>
+    </div>
+  </div>
+</div>

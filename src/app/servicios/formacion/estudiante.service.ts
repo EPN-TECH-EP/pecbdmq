@@ -5,7 +5,10 @@ import { Estudiante, UsuarioEstudiante } from "../../modelo/flujos/Estudiante";
 import { Paralelo } from "../../modelo/admin/paralelo";
 import { DatoPersonal } from "../../modelo/admin/dato-personal";
 import { FaltaPeriodo } from "../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
-
+import { DocumentoFormacion } from "../../modelo/flujos/formacion/documento";
+import {
+  EstudianteMateriaDocumentoDto, EstudianteMateriaDocumentoItemDto
+} from "../../componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component";
 
 export interface EstudianteParaleloRequest {
   lista: {
@@ -45,6 +48,7 @@ export interface NotaMateriaPorEstudiante {
   notaSupletorio: number;
   codInstructor: number;
   nombreCompletoInstructor: string;
+  codMateriaCurso?: number;
 }
 
 export interface FaltaEstudiante {
@@ -61,17 +65,17 @@ export interface FaltaEstudiante {
   faltaPeriodo?: FaltaPeriodo
 }
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class EstudianteService {
 
   private host = environment.apiUrl
-
+  codEstudiante: number;
+  estudiante: Estudiante;
 
   constructor(private http: HttpClient) {
+    this.estudiante = null;
   }
 
   listar() {
@@ -151,5 +155,17 @@ export class EstudianteService {
   getEstudianteByCodUser(user: number) {
     return this.http.get<UsuarioEstudiante>(`${ this.host }/estudiante/byCodUsuario?codUsuario=${ user }`);
   }
-  
+
+  listarDocumentosPorMateriaYEstudiante(idEstudiante: number, idMateria: number) {
+    return this.http.get<EstudianteMateriaDocumentoItemDto[]>(`${ this.host }/estudianteMateriaDocumento/listar/documentos/estudiante/${ idEstudiante }/materia/${ idMateria }`);
+  }
+
+  guardarDocumentoMateriaEstudiante(data: FormData) {
+    return this.http.post(`${ this.host }/estudianteMateriaDocumento/crearFully`, data);
+  }
+
+  eliminarDocumento(codDocumento: number) {
+    return this.http.delete(`${ this.host }/estudianteMateriaDocumento/${ codDocumento }`);
+
+  }
 }

@@ -1,0 +1,269 @@
+<header>
+  <div class="m-4">
+    <img
+      class="mx-4"
+      [style.width.px]="300"
+      src="https://www.bomberosquito.gob.ec/wp-content/themes/bomberosuio/images/logo-bomberos.svg"
+      alt="Logo de la postulación">
+  </div>
+</header>
+
+<hr class="hr">
+
+<section>
+  <div class="container">
+    <mdb-tabs [fill]="true">
+      <mdb-tab>
+        <ng-template mdbTabTitle
+        ><span><i class="fas fa-file-circle-check fa-fw me-2"></i>Resultado Validación de Requisitos</span>
+        </ng-template
+        >
+        <div class="datatable mt-4">
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #tableValidacionRequisitos="mdbTable"
+            #sort="mdbTableSort"
+            [dataSource]="postulantesValidacionRequisitos"
+            [sort]="sort"
+            [pagination]="pagination"
+          >
+            <thead class="datatable-header">
+            <tr>
+              <th *ngFor="let header of headersValidacionRequisitos" [mdbTableSortHeader]="header" scope="col"
+                  class="fs-5 fw-bold">
+                {{ header | titlecase }}
+              </th>
+            </tr>
+            </thead>
+            <tbody class="datatable-body">
+            <tr *ngFor="let data of tableValidacionRequisitos.data" scope="row">
+              <td>
+                {{ data.idPostulante }}
+              </td>
+              <td>
+            <span
+              [ngClass]="data.esAprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+              {{ data.esAprobado ? 'Aprobado' : 'Rechazado' }}
+            </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <mdb-table-pagination #pagination></mdb-table-pagination>
+        </div>
+
+      </mdb-tab>
+
+
+      <mdb-tab>
+        <ng-template mdbTabTitle
+        ><span><i class="fas fa-calendar fa-fw me-2"></i>Calendario de Pruebas</span>
+        </ng-template
+        >
+        <div>
+          <full-calendar [options]="calendarOptions" [events]="events">
+            <ng-template #eventContent let-arg>
+              <p class="m-2"><b class="text-wrap">{{ arg.event.title }}</b></p>
+            </ng-template>
+          </full-calendar>
+        </div>
+
+      </mdb-tab>
+
+      <mdb-tab>
+        <ng-template mdbTabTitle
+        ><span><i class="fas fa-cogs fa-fw me-2"></i>Resultados de pruebas</span></ng-template
+        >
+
+        <mdb-tabs [fill]="true">
+          <mdb-tab>
+            <ng-template mdbTabTitle
+            ><span><i class="fas fa-cogs fa-fw me-2"></i>Resultados de pruebas físicas</span></ng-template
+            >
+
+            <div class="datatable mt-4">
+              <table
+                class="table datatable-table"
+                mdbTable
+                mdbTableSort
+                #tableResultadosFisicas="mdbTable"
+                #sort="mdbTableSort"
+                [dataSource]="resultadosPruebasFisicas"
+                [sort]="sort"
+                [pagination]="paginationFisicas"
+              >
+                <thead class="datatable-header">
+                <tr>
+                  <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col" class="fs-5 fw-bold">
+                    {{ header | titlecase }}
+                  </th>
+                </tr>
+                </thead>
+                <tbody class="datatable-body">
+                <tr *ngFor="let data of tableResultadosAcademicas.data" scope="row">
+                  <td>
+                    {{ data.codigoUnico }}
+                  </td>
+                  <td>
+                      <span
+                        [ngClass]="data.aprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+                        {{ data.aprobado ? 'Aprobado' : 'Rechazado' }}
+                      </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <mdb-table-pagination #paginationFisicas></mdb-table-pagination>
+            </div>
+
+          </mdb-tab>
+          <mdb-tab>
+            <ng-template mdbTabTitle
+            ><span><i class="fas fa-cogs fa-fw me-2"></i>Resultados de pruebas psicométricas</span></ng-template
+            >
+
+            <div class="datatable mt-4">
+              <table
+                class="table datatable-table"
+                mdbTable
+                mdbTableSort
+                #tableResultadosPsicologicas="mdbTable"
+                #sort="mdbTableSort"
+                [dataSource]="resultadosPruebasPsicologicas"
+                [sort]="sort"
+                [pagination]="paginationPsicologicas"
+              >
+                <thead class="datatable-header">
+                <tr>
+                  <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col" class="fs-5 fw-bold">
+                    {{ header | titlecase }}
+                  </th>
+                </tr>
+                </thead>
+                <tbody class="datatable-body">
+                <tr *ngFor="let data of tableResultadosAcademicas.data" scope="row">
+                  <td>
+                    {{ data.codigoUnico }}
+                  </td>
+                  <td>
+                      <span
+                        [ngClass]="data.aprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+                        {{ data.aprobado ? 'Aprobado' : 'Rechazado' }}
+                      </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <mdb-table-pagination #paginationPsicologicas></mdb-table-pagination>
+            </div>
+
+          </mdb-tab>
+          <mdb-tab>
+            <ng-template mdbTabTitle
+            ><span><i class="fas fa-cogs fa-fw me-2"></i>Resultados de pruebas académicas</span></ng-template
+            >
+            <hr class="hr hr-blurry">
+            <div class="my-4">
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  type="text"
+                  class="form-control"
+                  id="search-input"
+                  (keyup)="searchTableResultadosAcademicas($event)"
+                />
+                <label mdbLabel class="form-label" for="search-input">Buscar</label>
+              </mdb-form-control>
+              <div class="datatable mt-4">
+                <table
+                  class="table datatable-table"
+                  mdbTable
+                  mdbTableSort
+                  #tableResultadosAcademicas="mdbTable"
+                  #sort="mdbTableSort"
+                  [dataSource]="resultadosPruebasAcademicas"
+                  [sort]="sort"
+                  [pagination]="paginationAcademicas"
+                >
+                  <thead class="datatable-header">
+                  <tr>
+                    <th *ngFor="let header of headersAcademicas" [mdbTableSortHeader]="header" scope="col" class="fs-5 fw-bold">
+                      {{ header | titlecase }}
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody class="datatable-body">
+                  <tr *ngFor="let data of tableResultadosAcademicas.data" scope="row">
+                    <td>
+                      {{ data.codigoUnico }}
+                    </td>
+                    <td>
+                      <span
+                        [ngClass]="data.aprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+                        {{ data.aprobado ? 'Aprobado' : 'Rechazado' }}
+                      </span>
+                    </td>
+                    <td>
+                      <button (click)="openModal()" class="btn btn-primary">Apelar Nota</button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <mdb-table-pagination #paginationAcademicas></mdb-table-pagination>
+              </div>
+            </div>
+          </mdb-tab>
+          <mdb-tab>
+            <ng-template mdbTabTitle
+            ><span><i class="fas fa-cogs fa-fw me-2"></i>Resultados de pruebas médicas</span></ng-template
+            >
+            <div class="datatable mt-4">
+              <table
+                class="table datatable-table"
+                mdbTable
+                mdbTableSort
+                #tableResultadosMedicas="mdbTable"
+                #sort="mdbTableSort"
+                [dataSource]="resultadosPruebasMedicas"
+                [sort]="sort"
+                [pagination]="paginationMedicas"
+              >
+                <thead class="datatable-header">
+                <tr>
+                  <th *ngFor="let header of headers" [mdbTableSortHeader]="header" scope="col" class="fs-5 fw-bold">
+                    {{ header | titlecase }}
+                  </th>
+                </tr>
+                </thead>
+                <tbody class="datatable-body">
+                <tr *ngFor="let data of tableResultadosAcademicas.data" scope="row">
+                  <td>
+                    {{ data.codigoUnico }}
+                  </td>
+                  <td>
+                      <span
+                        [ngClass]="data.aprobado ? 'fs-6 badge rounded-pill badge-success' : 'fs-6 badge rounded-pill badge-danger'">
+                        {{ data.aprobado ? 'Aprobado' : 'Rechazado' }}
+                      </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <mdb-table-pagination #paginationMedicas></mdb-table-pagination>
+            </div>
+          </mdb-tab>
+        </mdb-tabs>
+
+      </mdb-tab>
+    </mdb-tabs>
+
+
+  </div>
+</section>
+
+<footer class="text-center p-3">
+  <!-- Información relevante en el footer -->
+  <p>&copy; 2023 Resultados de Postulación - Cuerpo de Bomberos de Quito</p>
+</footer>

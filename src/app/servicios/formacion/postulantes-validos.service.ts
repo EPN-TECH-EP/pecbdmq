@@ -5,6 +5,37 @@ import { PaginacionPostulantesValidos } from 'src/app/modelo/flujos/formacion/pa
 import { PostulanteValido } from 'src/app/modelo/flujos/formacion/postulante-valido';
 import { environment } from 'src/environments/environment';
 
+
+export interface PostulanteItem {
+  codPostulante: number;
+  idPostulante: string;
+  cedula: string;
+  correoPersonal: string;
+  nombre: string;
+  apellido: string;
+  esAprobado: boolean;
+}
+
+
+export interface PruebaDetalleDatos {
+  codPruebaDetalle: number;
+  descripcionPrueba: string;
+  fechaInicio: string;
+  fechaFin: string;
+  hora: string;
+  estado: string;
+  codPeriodoAcademico: number;
+  codCursoEspecializacion: number;
+  codSubtipoPrueba: number;
+  ordenTipoPrueba: number;
+  puntajeMinimo: number;
+  puntajeMaximo: number;
+  tienePuntaje: boolean;
+  subTipoPruebaNombre: string;
+  tipoPruebaNombre: string;
+  esFisica: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,9 +66,9 @@ export class PostulantesValidosService {
     const params = { page: page.toString(), size: size.toString() }
 
     if (orden == 'ID') {
-    return this.http.get<PaginacionPostulantesValidos>(`${this.host}/${this.nombreServicio}/postulantesValidosPaginado`, { params });
+      return this.http.get<PaginacionPostulantesValidos>(`${ this.host }/${ this.nombreServicio }/postulantesValidosPaginado`, { params });
     } else {
-      return this.http.get<PaginacionPostulantesValidos>(`${this.host}/${this.nombreServicio}/postulantesValidosPaginadoOrderApellido`, { params });
+      return this.http.get<PaginacionPostulantesValidos>(`${ this.host }/${ this.nombreServicio }/postulantesValidosPaginadoOrderApellido`, { params });
     }
   }
 
@@ -47,7 +78,7 @@ export class PostulantesValidosService {
   // retorna: lista de PostulanteValido
   public buscarPorFiltro(tipoFiltro: string, valorFiltro: string): Observable<PostulanteValido[]> {
     const params = { tipoFiltro: tipoFiltro, valorFiltro: valorFiltro }
-    return this.http.get<PostulanteValido[]>(`${this.host}/${this.nombreServicio}/postulantesValidosFiltro`, { params });
+    return this.http.get<PostulanteValido[]>(`${ this.host }/${ this.nombreServicio }/postulantesValidosFiltro`, { params });
   }
 
 
@@ -61,9 +92,9 @@ export class PostulantesValidosService {
     const params = { page: page.toString(), size: size.toString() }
 
     if (orden == 'ID') {
-      return this.http.get<PaginacionPostulantesValidos>(`${this.host}/${this.nombreServicio}/postulantesTodoPaginado`, { params });
+      return this.http.get<PaginacionPostulantesValidos>(`${ this.host }/${ this.nombreServicio }/postulantesTodoPaginado`, { params });
     } else {
-      return this.http.get<PaginacionPostulantesValidos>(`${this.host}/${this.nombreServicio}/postulantesTodoPaginadoOrderApellido`, { params });
+      return this.http.get<PaginacionPostulantesValidos>(`${ this.host }/${ this.nombreServicio }/postulantesTodoPaginadoOrderApellido`, { params });
     }
   }
 
@@ -73,7 +104,17 @@ export class PostulantesValidosService {
   // retorna: lista de PostulanteValido
   public buscarTodoPorFiltro(tipoFiltro: string, valorFiltro: string): Observable<PostulanteValido[]> {
     const params = { tipoFiltro: tipoFiltro, valorFiltro: valorFiltro }
-    return this.http.get<PostulanteValido[]>(`${this.host}/${this.nombreServicio}/postulantesTodoFiltro`, { params });
+    return this.http.get<PostulanteValido[]>(`${ this.host }/${ this.nombreServicio }/postulantesTodoFiltro`, { params });
+  }
+
+
+  // postulatesValidosEInvalidos
+  listarPostulantesValidosEInvalidos() {
+    return this.http.get<PostulanteItem[]>(`${ this.host }/postulantesValidos/resultadoPostulantes`);
+  }
+
+  listarPruebas() {
+    return this.http.get<PruebaDetalleDatos[]>(`${ this.host }/pruebadetalle/listarConDatos`);
   }
 
 

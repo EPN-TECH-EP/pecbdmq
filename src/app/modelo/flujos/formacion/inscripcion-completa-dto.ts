@@ -11,6 +11,7 @@ export class InscripcionCompletaDto {
   public nombre: string;
   public correoPersonal: string;
   public sexo: string;
+  public area: string;
   public fechaNacimiento: string;
   public numTelefCelular: string;
   public numTelefConvencional: string;

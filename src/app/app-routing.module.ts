@@ -12,6 +12,9 @@ import {
   InscripcionEspecializacionComponent
 } from "./componentes/flujos/especializacion/inscripcion/inscripcion-especializacion.component";
 import { ProInscripcionComponent } from './componentes/flujos/profesionalizacion/pro-inscripcion/pro-inscripcion.component';
+import {
+  ResultadosInscripcionesComponent
+} from "./componentes/pendiente/resultados-inscripciones/resultados-inscripciones.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,6 +24,9 @@ const routes: Routes = [
   { path: 'inscripcion', component: InscripcionComponent },
   { path: 'especializacion/inscripcion/:codCurso', component: InscripcionEspecializacionComponent },
   { path: 'profesionalizacion/inscripcion', component: ProInscripcionComponent },
+  { path: 'formacion/inscripcion/resultados', component: ResultadosInscripcionesComponent },
+
+
 
   {
     path: 'principal',

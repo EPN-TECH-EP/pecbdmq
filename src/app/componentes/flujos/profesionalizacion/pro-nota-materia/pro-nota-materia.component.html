@@ -2,14 +2,14 @@
 <!-- Título de componente-->
 <div class="row m-3">
   <div class="column text-center">
-    <p class="fs-4 fw-bolder">Asignación de notas a materia</p>
+    <p class="fs-4 fw-bolder">Registro de notas</p>
   </div>
 </div>
 
 <div *ngIf="!noHayConvocatoria"
-         class="alert alert-info" role="alert">
-      <i class="fa-solid fa-info-circle me-2"></i>
-      Ho hay convocatoria en estado REGISTRO DE NOTAS
+     class="alert alert-info" role="alert">
+  <i class="fa-solid fa-info-circle me-2"></i>
+  Ho hay convocatoria en estado REGISTRO DE NOTAS
 </div>
 
 <div class="container" *ngIf="noHayConvocatoria">
@@ -122,7 +122,14 @@
               </td>
               <td>
                 <mdb-form-control>
-                  <input mdbInput type="number" min="0" formControlName="notaParcial1" class="form-control" [value]="calcularPromedio(notaForm)" readonly="true">
+                  <input
+                    mdbInput
+                    type="number"
+                    min="0"
+                    formControlName="notaParcial1"
+                    class="form-control"
+                    (change)="calcularPromedio(notaForm)"
+                  >
                 </mdb-form-control>
               </td>
               <td>{{ notaForm?.get('aprobado').value ? 'SI' : 'NO' }}</td>
@@ -136,24 +143,24 @@
             <!-- Columna 1 -->
             <div class="col-md">
               <form [formGroup]="generalForm">
-              <h5><span class="text-primary">*</span>
-                Documentos soporte:</h5>
-              <!-- Documentos de soporte -->
-              <mdb-form-control>
-                <input
-                  mdbInput
-                  mdbValidate
-                  type="file"
-                  [multiple]="true"
-                  class="form-control"
-                  id="customFile"
-                  (change)="subirArchivo($event)"/>
-                <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
-                  <i class="fas fa-exclamation-circle mb-1"></i>
-                  Este campo es requerido
-                </mdb-error>
-                <mdb-success *ngIf="docSoporteField?.valid && docSoporteField?.touched"></mdb-success>
-              </mdb-form-control>
+                <h5><span class="text-primary">*</span>
+                  Documentos soporte:</h5>
+                <!-- Documentos de soporte -->
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    mdbValidate
+                    type="file"
+                    [multiple]="true"
+                    class="form-control"
+                    id="customFile"
+                    (change)="subirArchivo($event)"/>
+                  <mdb-error *ngIf="docSoporteField?.invalid && (docSoporteField?.dirty || docSoporteField?.touched)">
+                    <i class="fas fa-exclamation-circle mb-1"></i>
+                    Este campo es requerido
+                  </mdb-error>
+                  <mdb-success *ngIf="docSoporteField?.valid && docSoporteField?.touched"></mdb-success>
+                </mdb-form-control>
               </form>
             </div>
             <!-- Columna 2 -->

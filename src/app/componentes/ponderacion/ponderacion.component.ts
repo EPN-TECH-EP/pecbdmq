@@ -151,8 +151,8 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     const searchTerm = (event.target as HTMLInputElement).value;
     this.table.search(searchTerm);
   }
- 
-  
+
+
   //registro
   public registro(ponderacion: Ponderacion): void {
     ponderacion = { ...ponderacion, estado: 'ACTIVO' };
@@ -166,7 +166,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
       // busca la etiqueta a mostrar
       let index = 0;
-      for (let key in ponderacion) {        
+      for (let key in ponderacion) {
         if (key === vacios[0]) {
           break;
         }
@@ -184,7 +184,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     if (
       ValidacionUtil.isNullOrEmptyNumber(
         ponderacion.porcentajeFinalPonderacion
-      ) 
+      )
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -210,7 +210,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,            
+            ).nombre,
             periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,
@@ -306,7 +306,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
 
       // busca la etiqueta a mostrar
       let index = 0;
-      for (let key in ponderacion) {        
+      for (let key in ponderacion) {
         if (key === vacios[0]) {
           break;
         }
@@ -324,7 +324,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
     if (
       ValidacionUtil.isNullOrEmptyNumber(
         ponderacion.porcentajeFinalPonderacion
-      ) 
+      )
     ) {
       this.showLoading = false;
       Notificacion.notificar(
@@ -357,7 +357,7 @@ export class PonderacionComponent extends ComponenteBase implements OnInit {
               (componente) =>
                 componente.codComponenteNota ===
                 ponderacion.codComponenteNota
-            ).nombre,            
+            ).nombre,
             periodoAcademicoDesc: this.periodos.find(
               (periodo) => periodo.codigo === ponderacion.codPeriodoAcademico
             ).descripcion,

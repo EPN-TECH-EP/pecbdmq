@@ -175,6 +175,7 @@ export class InscripcionEspecializacionComponent implements OnInit {
           this.loading = false;
           return;
         }
+
         this.esBotonDeshabilitado = true;
         this.loading = false;
       },
