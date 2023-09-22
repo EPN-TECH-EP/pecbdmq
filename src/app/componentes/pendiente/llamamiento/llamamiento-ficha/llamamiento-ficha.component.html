@@ -1,0 +1,145 @@
+<app-boton-volver></app-boton-volver>
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Ficha histórica</h1>
+  </div>
+  <mdb-tabs [fill]="true">
+    <mdb-tab title="Formación">
+      <ng-template mdbTabTitle><span>Formación</span></ng-template>
+
+      <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
+        <table
+          class="tabla datatable-table"
+          mdbTable
+          #datatableNotasPorMateria
+          [pagination]="paginationNotas"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th class=" fw-bold fs-6">Materia</th>
+            <th class=" fw-bold fs-6">Disciplina</th>
+            <th class=" fw-bold fs-6">Nota Final</th>
+            <th class=" fw-bold fs-6">Supletorio</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr>
+            <th>Incendiología</th>
+            <th>19</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ciencias de la Conducta</th>
+            <th>19</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ingeniería de Incendios</th>
+            <th>16</th>
+            <th>17</th>
+            <th>-</th>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #paginationNotas
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </div>
+
+    </mdb-tab>
+
+    <mdb-tab title="Especialización">
+      <ng-template mdbTabTitle><span>Especialización</span></ng-template>
+
+      <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
+        <table
+          class="tabla datatable-table"
+          mdbTable
+          #datatableNotasPorMateria
+          [pagination]="paginationNotas"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th class=" fw-bold fs-6">Curso</th>
+            <th class=" fw-bold fs-6">Nota Final</th>
+            <th class=" fw-bold fs-6">Supletorio</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr>
+            <th>Incendiología</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ciencias de la Conducta</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ingeniería de Incendios</th>
+            <th>16</th>
+            <th>-</th>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #paginationNotas
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </div>
+
+    </mdb-tab>
+    <mdb-tab title="Profesionalización">
+      <ng-template mdbTabTitle><span>Profesionalización</span></ng-template>
+      <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
+        <table
+          class="tabla datatable-table"
+          mdbTable
+          #datatableNotasPro
+          [pagination]="paginationNotasPro"
+        >
+          <thead class="datatable-header">
+          <tr>
+            <th class=" fw-bold fs-6">Materia</th>
+            <th class=" fw-bold fs-6">Disciplina</th>
+            <th class=" fw-bold fs-6">Nota Final</th>
+            <th class=" fw-bold fs-6">Supletorio</th>
+          </tr>
+          </thead>
+          <tbody class="datatable-body">
+          <tr>
+            <th>Incendiología</th>
+            <th>19</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ciencias de la Conducta</th>
+            <th>19</th>
+            <th>19</th>
+            <th>19</th>
+          </tr>
+          <tr>
+            <th>Ingeniería de Incendios</th>
+            <th>16</th>
+            <th>17</th>
+            <th>-</th>
+          </tr>
+          </tbody>
+        </table>
+        <mdb-table-pagination
+          #paginationNotasPro
+          [entries]="10"
+          [rowsPerPageText]="'Registros por página'"
+        ></mdb-table-pagination>
+      </div>
+
+    </mdb-tab>
+  </mdb-tabs>
+</div>

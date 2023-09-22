@@ -237,6 +237,22 @@ import {
   CalendarioInstructorComponent
 } from "../../componentes/pendiente/calendario-instructor/calendario-instructor.component";
 import { ChatInstructorComponent } from "../../componentes/pendiente/chat-instructor/chat-instructor.component";
+import {
+  CursosTomadosComponent
+} from "../../componentes/pendiente/especializacion/cursos-tomados/cursos-tomados.component";
+import { LlamamientoDosComponent } from "../../componentes/pendiente/llamamiento-dos/llamamiento-dos.component";
+import {
+  EpsInstructorChatComponent
+} from "../../componentes/pendiente/especializacion/eps-instructor-chat/eps-instructor-chat.component";
+import {
+  EspInsCalendarioComponent
+} from "../../componentes/pendiente/especializacion/esp-ins-calendario/esp-ins-calendario.component";
+import {
+  EspApelacionesInsComponent
+} from "../../componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component";
+import {
+  LlamamientoFichaComponent
+} from "../../componentes/pendiente/llamamiento/llamamiento-ficha/llamamiento-ficha.component";
 
 
 const routes: Routes = [
@@ -323,6 +339,10 @@ const routes: Routes = [
       { path: 'formacion/academia/chat', component: ChatInstructorComponent },
       { path: 'formacion/reportes', component: ReportesComponent, data: { title: 'Reportes general formación' } },
 
+      // llamamiento
+      { path: 'formacion/llamamiento', component: LlamamientoDosComponent },
+      { path: 'llamamiento-dos/notas-ficha', component: LlamamientoFichaComponent },
+
       // especialización
 
       { path: 'especializacion/proceso', component: ProcesoEspecializacionComponent },
@@ -365,6 +385,12 @@ const routes: Routes = [
       { path: 'especializacion/menu-reportes', component: MenuReportesEspComponent },
       { path: 'especializacion/menu-nota-final', component: MenuCalculoNotaFinalComponent },
       { path: 'especializacion/cronograma', component: CronogramaComponent },
+      { path: 'especializacion/chat', component: EpsInstructorChatComponent},
+      { path: 'especializacion/calendario', component: EspInsCalendarioComponent },
+      { path: 'especializacion/apelaciones-ins', component: EspApelacionesInsComponent },
+
+
+      { path: 'formacion/estudiante/cursos-tomados', component: CursosTomadosComponent },
 
       /* Profesionalizacion */
       { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},

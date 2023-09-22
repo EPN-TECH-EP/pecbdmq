@@ -280,6 +280,14 @@ import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular
 import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
 import { CalendarioInstructorComponent } from './componentes/pendiente/calendario-instructor/calendario-instructor.component';
 import { ChatInstructorComponent } from './componentes/pendiente/chat-instructor/chat-instructor.component';
+import { CursosTomadosComponent } from './componentes/pendiente/especializacion/cursos-tomados/cursos-tomados.component';
+import { LlamamientoDosComponent } from './componentes/pendiente/llamamiento-dos/llamamiento-dos.component';
+import { LlamamientoFichaComponent } from './componentes/pendiente/llamamiento/llamamiento-ficha/llamamiento-ficha.component';
+import { ModalLlamamientoRequisitosComponent } from './componentes/pendiente/llamamiento/modal-llamamiento-requisitos/modal-llamamiento-requisitos.component';
+import { EpsInstructorChatComponent } from './componentes/pendiente/especializacion/eps-instructor-chat/eps-instructor-chat.component';
+import { EspInsCalendarioComponent } from './componentes/pendiente/especializacion/esp-ins-calendario/esp-ins-calendario.component';
+import { EspApelacionesInsComponent } from './componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component';
+import { ModalLlamamientoSancionComponent } from './componentes/pendiente/llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component';
 
 registerLocaleData(localeEs);
 
@@ -410,6 +418,14 @@ registerLocaleData(localeEs);
     RepositorioMateriaEstudianteComponent,
     CalendarioInstructorComponent,
     ChatInstructorComponent,
+    CursosTomadosComponent,
+    LlamamientoDosComponent,
+    LlamamientoFichaComponent,
+    ModalLlamamientoRequisitosComponent,
+    EpsInstructorChatComponent,
+    EspInsCalendarioComponent,
+    EspApelacionesInsComponent,
+    ModalLlamamientoSancionComponent,
 
     ],
   imports: [

@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Calendario del periodo de formación</h1>
+    <h2 class="fs-4 fw-bolder text-primary my-3"></h2>
+    <hr class="hr hr-blurry">
+  </div>
+  <div>
+    <button class="btn btn-primary my-4" (click)="onAgregarActividad()">Agregar actividad</button>
+  </div>
+  <div *ngIf="esVistaAgregarActividad">
+    <form [formGroup]="actividadForm" class="m-4 p-4">
+      <mdb-form-control>
+        <input
+          mdbInput
+          mdbValidate
+          formControlName="nombre"
+          type="text"
+          id="nombre"
+          class="form-control mb-4"
+        >
+        <label mdbLabel class="form-label mb-2x">Nombre de la actividad:</label>
+      </mdb-form-control>
+      <mdb-form-control>
+        <input
+          mdbInput
+          mdbValidate
+          type="text"
+          formControlName="descripcion"
+          id="descripcion"
+          class="form-control mb-4"
+        >
+        <label mdbLabel class="form-label mb-2x">Descripción de la actividad:</label>
+      </mdb-form-control>
+      <mdb-form-control>
+        <input
+          mdbInput
+          mdbValidate
+          [readonly]="true"
+          [mdbDatepicker]="dpFechaInicio"
+          type="text"
+          id="fechaInicio"
+          formControlName="fechaInicio"
+          class="form-control mb-4"
+          (click)="dpFechaInicio.open()"
+        />
+        <label mdbLabel class="form-label mb-2x" for="fechaInicio">Fecha de inicio:</label>
+        <mdb-datepicker-toggle
+          [mdbDatepicker]="dpFechaInicio"
+        ></mdb-datepicker-toggle>
+        <mdb-datepicker
+          #dpFechaInicio="mdbDatepicker"
+          [options]="OPCIONES_DATEPICKER"
+          [inline]="true"
+        ></mdb-datepicker>
+      </mdb-form-control>
+
+      <mdb-form-control>
+        <input
+          mdbInput
+          mdbValidate
+          [readonly]="true"
+          [mdbDatepicker]="depFechaFin"
+          type="text"
+          formControlName="fechaFin"
+          id="fechaFin"
+          class="form-control mb-4"
+          (click)="depFechaFin.open()"
+        />
+        <label mdbLabel class="form-label mb-2x" for="fechaFin">Fecha de fin:</label>
+        <mdb-datepicker-toggle
+          [mdbDatepicker]="depFechaFin"
+        ></mdb-datepicker-toggle>
+        <mdb-datepicker
+          #depFechaFin="mdbDatepicker"
+          [options]="OPCIONES_DATEPICKER"
+          [inline]="true"
+        ></mdb-datepicker>
+      </mdb-form-control>
+
+      <div class="form-check">
+        <input
+          mdbCheckbox
+          class="form-check-input"
+          type="checkbox"
+          [value]="esTarea"
+          id="flexCheckDefault"
+          (change)="onChangeEsTarea($event)"
+        />
+        <label class="form-check-label" for="flexCheckDefault">
+          Es tarea
+        </label>
+      </div>
+
+      <div *ngIf="esTarea">
+        <p class="text-primary">Suba un archivo detallando la tarea</p>
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            type="file"
+            formControlName="archivo"
+            id="archivo"
+            class="form-control mb-4"
+          >
+        </mdb-form-control>
+      </div>
+
+      <button class="btn btn-success my-4" (click)="onGuardarActividad()">Guardar</button>
+
+    </form>
+
+  </div>
+  <app-calendario-formacion></app-calendario-formacion>
+</div>
