@@ -232,6 +232,9 @@ import { CronogramaComponent } from "../../componentes/flujos/especializacion/cr
 import {
   RepositorioMateriaEstudianteComponent
 } from "../../componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component";
+import {
+  CalendarioInstructorComponent
+} from "../../componentes/pendiente/calendario-instructor/calendario-instructor.component";
 
 
 const routes: Routes = [
@@ -314,6 +317,7 @@ const routes: Routes = [
       { path: 'formacion/menu-consultas', component: MenuConsultasComponent },
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
+      { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
 
       // especialización
 

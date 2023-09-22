@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Repositorio de la materia</h1>
-    <h2 class="fs-4 fw-bolder text-primary my-3">{{nota.nombreMateria}}</h2>
+    <h2 class="fs-4 fw-bolder text-primary my-3">{{nota?.nombreMateria}}</h2>
     <hr class="hr hr-blurry">
   </div>
   <div>
@@ -11,7 +11,7 @@
         ><span><i class="fas fa-info-circle fa-fw me-2"></i>Información de la materia</span></ng-template
         >
         <div class="my-4 pt-4">
-          <span class="text-primary">Instructor: </span> <span>{{nota.nombreCompletoInstructor}}</span>
+          <span class="text-primary">Instructor: </span> <span>{{nota?.nombreCompletoInstructor}}</span>
         </div>
         <div class="datatable datatable-striped datatable-hover datatable-sm table-responsive">
           <table
@@ -29,13 +29,13 @@
             <!-- Lista de estudiantes -->
             <tr>
               <td class="text-center">
-                {{ nota.notaMateria }}
+                {{ nota?.notaMateria }}
               </td>
               <td class="text-center">
-                {{ nota.notaDisciplina }}
+                {{ nota?.notaDisciplina }}
               </td>
               <td class="text-center">
-                {{ nota.notaSupletorio || ' - '}}
+                {{ nota?.notaSupletorio || ' - '}}
               </td>
             </tr>
             </tbody>
