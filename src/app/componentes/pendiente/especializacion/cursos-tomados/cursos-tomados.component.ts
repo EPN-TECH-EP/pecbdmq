@@ -67,6 +67,7 @@ export class CursosTomadosComponent implements OnInit {
     '¿El docente cumple con el plan de actividades?',
   ];
   esEncuestaFinalizada: boolean = false;
+  apelacionForm: FormGroup = new FormGroup({})
 
   constructor(private estudianteService: EstudianteService,
               private router: Router,
@@ -75,6 +76,9 @@ export class CursosTomadosComponent implements OnInit {
               private formBuilder: FormBuilder,
               private httpClient: HttpClient) {
     this.estudiante = null;
+    this.apelacionForm = this.formBuilder.group({
+      observacionEstudiante: ['', Validators.required],
+    });
     this.construirFormulario()
     this.construirFormulariosEncuesta()
   }
@@ -252,4 +256,12 @@ export class CursosTomadosComponent implements OnInit {
     });
   }
 
+  crearApelacion() {
+    if(this.apelacionForm.invalid) {
+      this.apelacionForm.markAllAsTouched();
+      return;
+    }
+    Notificacion.notificar(this.ns, 'Apelación creada correctamente', TipoAlerta.ALERTA_OK);
+    this.apelacionForm.reset();
+  }
 }
