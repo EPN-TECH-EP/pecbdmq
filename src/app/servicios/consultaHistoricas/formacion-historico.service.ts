@@ -14,8 +14,10 @@ import { NotaMateriaPorEstudiante } from "../formacion/estudiante.service";
 export class FormacionHistoricoService {
 
   private host = environment.apiUrl;
+  nota: NotaMateriaPorEstudiante;
 
   constructor(private http: HttpClient) {
+    this.nota = null
   }
 
   listarNotasPorMateria(idEstudiante: number){

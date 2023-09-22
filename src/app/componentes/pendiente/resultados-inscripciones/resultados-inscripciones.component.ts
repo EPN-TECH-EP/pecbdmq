@@ -27,7 +27,7 @@ export class ResultadosInscripcionesComponent implements OnInit {
 
   dataSource: Person[] = [
     { codigoUnico: '123456789', aprobado: true },
-    { codigoUnico: '987654321', aprobado: false },
+    { codigoUnico: '1725664641', aprobado: false },
     { codigoUnico: '123456789', aprobado: true },
     { codigoUnico: '987654321', aprobado: false },
     { codigoUnico: '123456789', aprobado: true },

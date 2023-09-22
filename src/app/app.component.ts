@@ -4,6 +4,8 @@ import { AutenticacionGuard } from './guard/autenticacion.guard';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MyValidators } from "./util/validators";
+import { CalendarOptions } from "@fullcalendar/core";
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,8 @@ export class AppComponent implements OnInit, OnChanges {
       console.log(val)
       });*/
   }
+
+
 
   public isLoggedIn() : boolean {
     return this.autenticacionService.isUsuarioLoggedIn();

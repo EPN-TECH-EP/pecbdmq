@@ -21,6 +21,9 @@
     "@angular/router": "^14.2.3",
     "@auth0/angular-jwt": "^5.1.2",
     "@fortawesome/fontawesome-free": "^6.0.0",
+    "@fullcalendar/angular": "^6.1.9",
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
     "@grapecity/spread-excelio": "^16.1.4",
     "@grapecity/spread-sheets": "^16.1.4",
     "@grapecity/spread-sheets-angular": "^16.1.4",
@@ -35,7 +38,7 @@
     "tslib": "^2.1.0",
     "underscore.string": "^3.3.6",
     "xlsx": "^0.18.5",
-    "zone.js": "~0.11.4"    
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.3",

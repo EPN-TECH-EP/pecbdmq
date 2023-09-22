@@ -38,17 +38,17 @@
                 </div>
               </a>
 
-              <a class="col link-dark" (click)="verSubidaDocumentos()">
-                <div class="card h-100 text-center hover-shadow border">
-                  <i class="fas fa-file fa-5x mt-5 text-primary"></i>
-                  <div class="card-body">
-                    <h5 class="card-title">Subida de archivos</h5>
-                    <p class="card-text">
-                      Subida de archivos, sube tus archivos
-                    </p>
-                  </div>
-                </div>
-              </a>
+<!--              <a class="col link-dark" (click)="verSubidaDocumentos()">-->
+<!--                <div class="card h-100 text-center hover-shadow border">-->
+<!--                  <i class="fas fa-file fa-5x mt-5 text-primary"></i>-->
+<!--                  <div class="card-body">-->
+<!--                    <h5 class="card-title">Subida de archivos</h5>-->
+<!--                    <p class="card-text">-->
+<!--                      Subida de archivos, sube tus archivos-->
+<!--                    </p>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </a>-->
 
               <a class="col link-dark" (click)="verCalendario()">
                 <div class="card h-100 text-center hover-shadow border">
@@ -114,8 +114,50 @@
                       >
                         <i class="fa fa-file-edit"></i>
                       </button>
+
+                      <button
+                        [mdbTooltip]="'Ver repositorio de materia'"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                        (click)="abrirRepositorioMateria(nota)"
+                      >
+                        <i class="fa fa-eye"></i>
+                      </button>
+
                     </td>
 
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="fw-bold text-primary">
+                        {{ 'Matematicas' | uppercase }}
+                      </div>
+                      <div class="text-muted text-wrap">
+                        <b class="fw-bold">COORDINADOR:</b> {{ "Timoteo Camuendo" | uppercase }}
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      {{ '19' }}
+                    </td>
+                    <td class="text-center">
+                      {{ '19' }}
+                    </td>
+                    <td class="text-center">
+                      {{ '' }}
+                    </td>
+                    <td class="text-center">
+                      <button
+                        [mdbTooltip]="'Apelar Nota'"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                      >
+                        <i class="fa fa-file-edit"></i>
+                      </button>
+                      <button
+                        [mdbTooltip]="'Ver repositorio de materia'"
+                        class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                      >
+                        <i class="fa fa-eye"></i>
+                      </button>
+                    </td>
                   </tr>
                   </tbody>
                 </table>
