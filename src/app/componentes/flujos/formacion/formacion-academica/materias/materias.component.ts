@@ -35,6 +35,9 @@ import { MdbStepperComponent } from "mdb-angular-ui-kit/stepper";
 })
 export class MateriasComponent implements OnInit, AfterViewInit {
 
+  fileToUpload: File | null = null;
+  uploadSuccessMessage: string | null = null;
+
   materiasPorParalelo: {paralelo: Paralelo, materias: MateriaFormacion[]}[];
 
   itemMateria: Materia
@@ -474,6 +477,14 @@ export class MateriasComponent implements OnInit, AfterViewInit {
 
   getColorClass() {
     return this.totalPonderacion === 1 ? 'text-success' : 'text-danger';
+  }
+
+  onFileSelected(event: any) {
+    this.fileToUpload = event.target.files[0];
+  }
+
+  onUpload() {
+    Notificacion.notificar(this.mdbNotificationService, 'Archivo subido con éxito', TipoAlerta.ALERTA_OK);
   }
 
 }
