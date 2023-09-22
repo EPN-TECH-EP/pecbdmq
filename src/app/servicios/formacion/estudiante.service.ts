@@ -65,6 +65,50 @@ export interface FaltaEstudiante {
   faltaPeriodo?: FaltaPeriodo
 }
 
+
+export interface CursoTomado {
+  codCursoEspecializacion: number
+  codAula: number
+  numeroCupo: number
+  fechaInicioCurso: string
+  fechaFinCurso: string
+  fechaInicioCargaNota: string
+  fechaFinCargaNota: string
+  notaMinima: number
+  apruebaCreacionCurso: boolean
+  codCatalogoCursos: number
+  estado: string
+  emailNotificacion: string
+  tieneModulos: boolean
+  porcentajeAceptacionCurso: number
+  codUsuarioCreacion: number
+  codUsuarioValidacion: number
+  nombre: string
+  observacionesValidacion: any
+  documentos: Documento[]
+  requisitos: Requisito[]
+}
+
+export interface Documento {
+  codigoDocumento: number
+  codTipoDocumento: any
+  descripcion?: string
+  nombreDocumento: string
+  observaciones: any
+  ruta: string
+  estado: string
+}
+
+export interface Requisito {
+  codigoRequisito: number
+  nombre: string
+  descripcion: string
+  esDocumento?: boolean
+  estado: string
+}
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -167,5 +211,21 @@ export class EstudianteService {
   eliminarDocumento(codDocumento: number) {
     return this.http.delete(`${ this.host }/estudianteMateriaDocumento/${ codDocumento }`);
 
+  }
+
+  obtenerCursosTomados(codEstudiante: number) {
+    return this.http.get<CursoTomado[]>(`${ this.host }/curso/listarAllPorEstudiante?codigoEstudiante=${ codEstudiante }`);
+  }
+
+  obtenerNotasPorCurso(codEstudiante: number, codCursoEspecializacion: number) {
+   return this.http.get<NotaMateriaPorEstudiante>(`${ this.host }/notasEspecializacion/listarNotasPorEstudianteAndCurso?codEstudiante=${codEstudiante}&codCurso=${codCursoEspecializacion}`);
+  }
+
+  guardarDocumentoCursoEstudiante(formData: FormData) {
+    return this.http.post(`${ this.host }/estudianteCursoDocumento/crearFully`, formData);
+  }
+
+  eliminarDocumentoEsp(codDocumento: number) {
+    return this.http.delete(`${ this.host }/estudianteCursoDocumento/${ codDocumento }`);
   }
 }

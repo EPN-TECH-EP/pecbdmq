@@ -329,18 +329,33 @@
             ><span><i class="fas fa-chart-line fa-fw me-2"></i>ESPECIALIZACIÓN</span></ng-template
             >
 
-            <a class="col link-dark" routerLink="/principal/especializacion/cronograma">
-              <div class="card h-100 text-center hover-shadow border">
-                <i class="fa-solid fa-calendar fa-5x mt-5 text-success"></i>
-                <div class="card-body">
-                  <h5 class="card-title">Cronograma de cursos</h5>
-                  <p class="card-text">
-                    Ver el cronograma de cursos de la especialización
-                  </p>
+            <div
+              class="row row-cols-1 row-cols-md-3 g-4"
+            >
+              <a class="col link-dark" routerLink="/principal/especializacion/cronograma">
+                <div class="card h-100 text-center hover-shadow border">
+                  <i class="fa-solid fa-calendar fa-5x mt-5 text-success"></i>
+                  <div class="card-body">
+                    <h5 class="card-title">Cronograma de cursos</h5>
+                    <p class="card-text">
+                      Ver el cronograma de cursos de la especialización
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </a>
+              </a>
 
+              <a class="col link-dark" (click)="verCursosTomados()">
+                <div class="card h-100 text-center hover-shadow border">
+                  <i class="fa-solid fa-user-circle fa-5x mt-5 text-muted"></i>
+                  <div class="card-body">
+                    <h5 class="card-title">Cursos tomados</h5>
+                    <p class="card-text">
+                      Ver los cursos tomados en la especialización
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
           </mdb-tab>
           <mdb-tab>

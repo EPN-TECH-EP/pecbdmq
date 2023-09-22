@@ -35,6 +35,18 @@ export interface EstudianteMateriaDocumentoItemDto {
 
 }
 
+export interface EstudianteCursoDocumentoItemDto {
+
+  codEstudianteMateriaDocumento: number;
+  codDocumento: number;
+  codEstudianteMateriaParalelo: number;
+  estado: string;
+  descripcion: string;
+  nombre?: string;
+
+}
+
+
 @Component({
   selector: 'app-repositorio-materia-estudiante',
   templateUrl: './repositorio-materia-estudiante.component.html',
