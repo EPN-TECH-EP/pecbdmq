@@ -228,6 +228,7 @@ import {
 import {
   MonitorInscripcionesCursoComponent
 } from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
+import { ReportesComponent } from 'src/app/componentes/reportes/reportes.component';
 import { CronogramaComponent } from "../../componentes/flujos/especializacion/cronograma/cronograma.component";
 import {
   RepositorioMateriaEstudianteComponent
@@ -314,6 +315,7 @@ const routes: Routes = [
       { path: 'formacion/menu-consultas', component: MenuConsultasComponent },
       { path: 'formacion/periodo-academico', component: PeriodoAcademicoComponent },
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
+      { path: 'formacion/reportes', component: ReportesComponent, data: { title: 'Reportes general formación' } },
 
       // especialización
 
@@ -336,6 +338,7 @@ const routes: Routes = [
 
       { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
       { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },
+      { path: 'especializacion/reportes', component: ReportesComponent, data: { title: 'Reportes general especialización' } },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },

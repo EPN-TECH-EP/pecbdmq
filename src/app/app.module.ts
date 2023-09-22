@@ -266,6 +266,7 @@ import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacio
 import { UtilModule } from './componentes/util/util.module';
 import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
 import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
+import { ReportesComponent } from './componentes/reportes/reportes.component';
 import { CronogramaComponent } from './componentes/flujos/especializacion/cronograma/cronograma.component';
 import { CronogramaAdminComponent } from './componentes/flujos/especializacion/cronograma-admin/cronograma-admin.component';
 import { InfoCursoComponent } from './componentes/flujos/especializacion/info-curso/info-curso.component';
@@ -397,6 +398,7 @@ registerLocaleData(localeEs);
     EditarCursoComponent,
     MonitorInscripcionesComponent,
     MonitorInscripcionesCursoComponent,
+    ReportesComponent,
     CronogramaComponent,
     CronogramaAdminComponent,
     InfoCursoComponent,
