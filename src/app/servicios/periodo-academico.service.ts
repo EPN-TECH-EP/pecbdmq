@@ -66,4 +66,8 @@ export class PeriodoAcademicoService {
     return this.http.get<PeriodoAcademico[]>(`${ this.host }/periodoacademico/formacion/listar`);
   }
 
+  obtenerPeriodoAcademicoActivo() {
+    return this.http.get<PeriodoAcademico>(`${ this.host }/periodoacademico/traerPeriodoActivo`);
+  }
+
 }

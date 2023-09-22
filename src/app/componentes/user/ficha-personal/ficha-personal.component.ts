@@ -14,7 +14,7 @@ import {
 } from "../../../servicios/consultaHistoricas/especializacion-historico.service";
 import { Usuario } from "../../../modelo/admin/usuario";
 import { Estudiante } from "../../../modelo/flujos/Estudiante";
-import { NotaMateriaPorEstudiante } from "../../../servicios/formacion/estudiante.service";
+import { EstudianteService, NotaMateriaPorEstudiante } from "../../../servicios/formacion/estudiante.service";
 import { ApelacionesService, ApelacionResponse } from "../../../servicios/formacion/apelaciones.service";
 import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
 import {
@@ -22,6 +22,7 @@ import {
 } from "../../flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component";
 import { ModalApelacionComponent } from "../../util/modal-apelacion/modal-apelacion.component";
 import { catchError, map, mergeMap } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -143,6 +144,8 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     private especializacionHistoricoService: EspecializacionHistoricoService,
     private formacionHistoricoService: FormacionHistoricoService,
     private apelacionService: ApelacionesService,
+    private estudianteService: EstudianteService,
+    private router: Router,
   ) {
     super(ns, popconfirmServiceLocal);
     this.subscriptions = [];
@@ -270,6 +273,11 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
   }
 
 
+  abrirRepositorioMateria(nota: NotaMateriaPorEstudiante) {
+    this.estudianteService.estudiante = this.estudiante
+    this.formacionHistoricoService.nota = nota;
+    this.router.navigate(['principal/formacion/estudiante/repositorio']).then();
+  }
 }
 
 // cargarEspecializacion(codUnico: string): void {

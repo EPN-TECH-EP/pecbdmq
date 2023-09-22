@@ -275,6 +275,8 @@ import { CalendarioFormacionComponent } from './componentes/pendiente/calendario
 import { registerLocaleData } from "@angular/common";
 
 import localeEs from '@angular/common/locales/es';
+import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular";
+import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
 
 registerLocaleData(localeEs);
 
@@ -401,6 +403,7 @@ registerLocaleData(localeEs);
     ResultadosInscripcionesComponent,
     ModalApeliacionNotaComponent,
     CalendarioFormacionComponent,
+    RepositorioMateriaEstudianteComponent,
 
     ],
   imports: [
@@ -449,6 +452,7 @@ registerLocaleData(localeEs);
     PrincipalModuleModule,
     ProfesionalizacionModule,
     UtilModule,
+    FullCalendarModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es' },

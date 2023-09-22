@@ -54,4 +54,8 @@ export class FormacionService {
     return this.http.get<Boolean>(`${ this.host }/periodoacademico/cerrarPeriodo`);
   }
 
+  getPeriodoAcademicoActivo() {
+    return this.http.get<any>(`${ this.host }/periodoacademico/traerPeriodoActivo`);
+  }
+
 }
