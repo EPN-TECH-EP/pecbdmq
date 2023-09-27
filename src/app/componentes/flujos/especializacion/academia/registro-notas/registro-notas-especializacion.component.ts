@@ -106,7 +106,7 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
         }
       },
       error: () => {
-        Notificacion.notificar(this.mdbNotificationService, "Ocurrió un error, inténtelo nuevamente", TipoAlerta.ALERTA_ERROR)
+        Notificacion.notificar(this.mdbNotificationService, "No es instructor de ningún curso", TipoAlerta.ALERTA_WARNING)
       }
     })
   }
