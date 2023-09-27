@@ -3,7 +3,7 @@
   [link]="'/principal/especializacion/menu-notas'"
 ></app-boton-volver>
 
-<ng-container *ngIf="cursos.length === 0">
+<ng-container *ngIf="cursos.length === 0 && esInstructor">
   <div class="card rounded-7 mt-3">
     <div class="card-body">
       <h5 class="card-title text-primary">No existen cursos</h5>
@@ -17,7 +17,7 @@
 <ng-container *ngIf="!esInstructor">
   <div class="card rounded-7 mt-3">
     <div class="card-body">
-      <h5 class="card-title text-danger">No tiene permisos</h5>
+      <h5 class="card-title text-danger">No es instructor</h5>
     </div>
   </div>
 </ng-container>
