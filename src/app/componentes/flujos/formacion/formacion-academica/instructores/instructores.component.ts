@@ -226,28 +226,21 @@ export class InstructoresComponent implements OnInit {
   onGuardarCambiosInstructor(instructor: Instructor) {
 
 
-    this.instructor = {
-      ...this.instructor,
+    instructor = {
+      ...instructor,
       codUnidadGestion: this.codUnidadGestion?.value,
       codEstacion: this.codZona?.value,
       codTipoProcedencia: this.codTipoProcedencia?.value,
     }
 
+    console.log(instructor);
+
     this.instructorService.actualizar(instructor.codInstructor, instructor).subscribe({
       next: () => {
         Notificacion.notificar(this.ns, 'Instructor actualizado correctamente', TipoAlerta.ALERTA_OK)
-        this.instructores = this.instructores.map((instructor) => {
-          if (instructor.codInstructor === this.codigoInstructorEditando) {
-            return {
-              ...instructor,
-              codTipoProcedencia: this.codTipoProcedencia?.value,
-              codUnidadGestion: this.codUnidadGestion?.value,
-              codEstacion: this.codZona?.value,
-            }
-          }
-          return instructor;
-        });
-        this.instructores = [...this.instructores];
+
+        this.instructorService.listar().subscribe( instructores => this.instructores = instructores)
+
         this.instructorForm.reset();
         this.codigoInstructorEditando = 0;
         this.estaEditandoInstructor = false;
