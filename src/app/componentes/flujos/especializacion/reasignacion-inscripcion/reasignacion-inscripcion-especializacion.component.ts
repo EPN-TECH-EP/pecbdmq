@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CursosService } from '../../../../servicios/especializacion/cursos.service';
 import { Curso } from '../../../../modelo/flujos/especializacion/Curso';
 import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import {EspDelegado, EspDelegadoService} from "../../../../servicios/especializacion/esp-delegado.service";
 
 
 @Component({
@@ -29,7 +30,7 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
   estaReasignando: boolean
   codigoInscripcionReasignando: number
   codigoUsuarioReasignado: FormControl<number>
-  delegados: Delegado[]
+  delegados: EspDelegado[]
   esEstadoValidacion = false
 
   cursos: Curso[];
@@ -50,7 +51,7 @@ export class ReasignacionInscripcionEspecializacionComponent extends ComponenteB
     private route: ActivatedRoute,
     private inscripcionService: EspInscripcionService,
     private mdbNotificationService: MdbNotificationService,
-    private delegadoService: DelegadoService,
+    private delegadoService: EspDelegadoService,
     private popConfirmServiceLocal: MdbPopconfirmService,
     private cursosService: CursosService,
   ) {
