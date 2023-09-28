@@ -289,6 +289,7 @@ import { EspInsCalendarioComponent } from './componentes/pendiente/especializaci
 import { EspApelacionesInsComponent } from './componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component';
 import { ModalLlamamientoSancionComponent } from './componentes/pendiente/llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component';
 import { CursoEvaluacionesComponent } from './componentes/pendiente/especializacion/evaluaciones/curso-evaluaciones/curso-evaluaciones.component';
+import { EstudianteEvalucionCursoComponent } from './componentes/pendiente/especializacion/evaluaciones/estudiante-evalucion-curso/estudiante-evalucion-curso.component';
 
 registerLocaleData(localeEs);
 
@@ -428,6 +429,7 @@ registerLocaleData(localeEs);
     EspApelacionesInsComponent,
     ModalLlamamientoSancionComponent,
     CursoEvaluacionesComponent,
+    EstudianteEvalucionCursoComponent,
 
     ],
   imports: [
