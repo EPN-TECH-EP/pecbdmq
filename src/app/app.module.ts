@@ -288,6 +288,7 @@ import { EpsInstructorChatComponent } from './componentes/pendiente/especializac
 import { EspInsCalendarioComponent } from './componentes/pendiente/especializacion/esp-ins-calendario/esp-ins-calendario.component';
 import { EspApelacionesInsComponent } from './componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component';
 import { ModalLlamamientoSancionComponent } from './componentes/pendiente/llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component';
+import { CursoEvaluacionesComponent } from './componentes/pendiente/especializacion/evaluaciones/curso-evaluaciones/curso-evaluaciones.component';
 
 registerLocaleData(localeEs);
 
@@ -426,6 +427,7 @@ registerLocaleData(localeEs);
     EspInsCalendarioComponent,
     EspApelacionesInsComponent,
     ModalLlamamientoSancionComponent,
+    CursoEvaluacionesComponent,
 
     ],
   imports: [

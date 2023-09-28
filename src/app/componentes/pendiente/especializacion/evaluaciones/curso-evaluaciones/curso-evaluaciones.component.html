@@ -1,0 +1,158 @@
+<app-boton-volver
+></app-boton-volver>
+
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de Evaluaciones por Curso</h1>
+  </div>
+</div>
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="!estaCargando && esVistaEvaluacionCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row my-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+    <h6>Realizado por: <span
+      class="text-muted">{{ cursoSeleccionado?.creadoPor?.nombre}} {{cursoSeleccionado?.creadoPor?.apellido}}</span>
+    </h6>
+    <h6>Aprobado por: <span
+      class="text-muted">{{ cursoSeleccionado?.aprobadoPor?.nombre}} {{cursoSeleccionado?.aprobadoPor?.apellido}}</span>
+    </h6>
+    <h6>Porcentaje mínimo de estudiantes inscritos para aprobación: <span
+      class="text-muted">{{ cursoSeleccionado?.porcentajeAceptacionCurso }} </span>
+    </h6>
+    <h6>Cupos: <span
+      class="text-muted">{{ cursoSeleccionado?.numeroCupo }}</span>
+    </h6>
+    <div class="d-flex gap-3 my-3">
+      <h6>Fecha de inicio: <span
+        class="text-muted">{{ cursoSeleccionado?.fechaInicioCurso}}</span>
+      </h6>
+      <h6>Fecha de fin: <span
+        class="text-muted">{{ cursoSeleccionado?.fechaFinCurso}}</span>
+      </h6>
+    </div>
+  </div>
+  <hr class="hr">
+
+  <div *ngIf="!seCreoEvaluacion">
+    <h4>Crea una evaluación para este curso</h4>
+    <mdb-form-control>
+      <mdb-select
+        [(ngModel)]="tipoEvaluacionSeleccionada"
+        (ngModelChange)="mostrarPreguntasSegunTipoEvaluacion($event)"
+        data-mdb-placeholder="Tipo de Evaluacion"
+        class="mb-3"
+      >
+        <mdb-option
+          *ngFor="let tipo of tiposEvaluacion"
+          [value]="tipo"
+        >{{tipo.nombre}}</mdb-option>
+      </mdb-select>
+      <label mdbLabel class="form-label mb-2x">
+        <span class="text-primary">*</span>
+        Tipo de Evaluacion
+      </label>
+    </mdb-form-control>
+
+    <div *ngIf="preguntasTipoEvaluacion.length !== 0">
+      <p><b>Autor:</b> {{usuario.codDatosPersonales.nombre}} {{usuario.codDatosPersonales.apellido}}</p>
+      <p><b>Fecha Creacion:</b> {{fechaActual | date: 'dd-MM-yyyy'}}</p>
+
+      <form
+        [formGroup]="formularioEvaluacion"
+        class="mb-3"
+      >
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            formControlName="nombre"
+            type="text"
+            class="form-control"
+          />
+          <label mdbLabel class="form-label mb-2x">
+            <span class="text-primary">*</span>
+            Nombre de la Evaluación
+          </label>
+        </mdb-form-control>
+      </form>
+
+      <ul class="list-group list-unstyled">
+        <p><b>Preguntas:</b></p>
+        <li class="mb-1" *ngFor="let pregunta of preguntasTipoEvaluacion">
+          <i class="fas fa-check-circle me-2 text-success"></i>
+          {{ pregunta.pregunta }}
+        </li>
+      </ul>
+
+      <button
+        class="btn btn-primary mt-3"
+        (click)="onGuardarEvaluacion()"
+      >
+        <i class="fas fa-save me-2"></i>
+        Guardar Evaluación
+      </button>
+    </div>
+
+
+  </div>
+  <div *ngIf="seCreoEvaluacion">
+    <div class="alert alert-success" role="alert">
+      <i class="fas fa-check-circle me-2"></i>
+      Evaluación creada con éxito
+    </div>
+    <p><b>Nombre de la Evaluación:</b> {{evaluacionCreada?.nombre}}</p>
+    <p><b>Fecha de Creación:</b> {{evaluacionCreada?.fechaCreacion | date: 'dd-MM-yyyy'}}</p>
+    <p><b>Autor:</b> {{evaluacionCreada?.autor}}</p>
+    <p><b>Preguntas</b></p>
+    <ul class="list-group list-unstyled">
+      <li class="mb-1" *ngFor="let pregunta of evaluacionCreada?.preguntas">
+        <i class="fas fa-check-circle me-2 text-success"></i>
+        {{ pregunta?.pregunta }}
+      </li>
+    </ul>
+
+
+  </div>
+
+
+</section>
+
+<div
+  *ngIf="estaCargando"
+  class="d-flex justify-content-center align-items-center m-5 p-5"
+>
+  <div class="spinner-border text-info" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span class="ms-3 text-info">Cargando información...</span>
+</div>
+
+
+
