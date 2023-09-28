@@ -253,6 +253,9 @@ import {
 import {
   LlamamientoFichaComponent
 } from "../../componentes/pendiente/llamamiento/llamamiento-ficha/llamamiento-ficha.component";
+import {
+  CursoEvaluacionesComponent
+} from "../../componentes/pendiente/especializacion/evaluaciones/curso-evaluaciones/curso-evaluaciones.component";
 
 
 const routes: Routes = [
@@ -374,6 +377,7 @@ const routes: Routes = [
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
       { path: 'especializacion/cursos/documentos/:estado', component: DocumentosCursoComponent },
       { path: 'especializacion/cursos/cerrados', component: CursosCerradosComponent },
+      { path: 'especializacion/cursos/evaluaciones', component: CursoEvaluacionesComponent },
 
       { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
