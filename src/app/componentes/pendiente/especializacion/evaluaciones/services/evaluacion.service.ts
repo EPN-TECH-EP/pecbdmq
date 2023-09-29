@@ -41,7 +41,7 @@ export class EvaluacionService {
     return this.http.post<CursoInstructorEvaluacion>(`${ this.host }/intructorCursoEvaluacion`, data);
   }
 
-  existeEvaluacionCurso(codCursoInstructor: number) {
+   existeEvaluacionCurso(codCursoInstructor: number) {
     return this.http.get<Evaluacion>(`${ this.host }/intructorCursoEvaluacion/${ codCursoInstructor }`);
   }
 }

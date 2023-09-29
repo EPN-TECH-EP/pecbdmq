@@ -10,6 +10,7 @@ import { Notificacion } from "../../../../../util/notificacion";
 import { TipoAlerta } from "../../../../../enum/tipo-alerta";
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { Estudiante } from "../../../../../modelo/flujos/Estudiante";
+import { CursoTomado } from "../../../../../servicios/formacion/estudiante.service";
 
 @Component({
   selector: 'app-estudiante-evalucion-curso',
@@ -18,12 +19,15 @@ import { Estudiante } from "../../../../../modelo/flujos/Estudiante";
 })
 export class EstudianteEvalucionCursoComponent implements OnInit {
 
-  @Input("curso") set cursoInput(curso: Curso) {
+  existeEvaluacion: boolean = true;
+
+  @Input("curso") set cursoInput(curso: CursoTomado) {
     // if (curso === null || curso === undefined) {
     //   return;
     // }
     this.curso = curso;
   }
+
   @Input("estudiante") set estudianteInput(estudiante: Estudiante) {
     // if (curso === null || curso === undefined) {
     //   return;
@@ -31,7 +35,7 @@ export class EstudianteEvalucionCursoComponent implements OnInit {
     this.estudiante = estudiante;
   }
 
-  curso: Curso;
+  curso: CursoTomado;
   estudiante: Estudiante;
   evaluacion: Evaluacion;
   esEncuestaFinalizada: boolean = false;
@@ -51,41 +55,47 @@ export class EstudianteEvalucionCursoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Obtener el curso por ID (74 en este ejemplo)
-    this.cursosService.getCursoPorId(74).pipe(
+    console.log(this.curso.codCursoEspecializacion);
+    this.cursosService.getCursoInstructorPorId(this.curso?.codCursoEspecializacion).pipe(
       switchMap((cursoInstructor) => {
-        // Verificar si existe una evaluación para el curso (69 en este ejemplo)
-        return this.evaluacionService.existeEvaluacionCurso(69).pipe(
+        console.log(cursoInstructor);
+        return this.evaluacionService.existeEvaluacionCurso(cursoInstructor?.codInstructorCurso).pipe(
           switchMap((evaluacion) => {
             if (evaluacion) {
+              console.log("evaluacion", evaluacion);
               this.evaluacion = evaluacion;
-              // Verificar si la encuesta está finalizada para el estudiante (113 en este ejemplo)
-              return this.respuestasEstudianteService.esEncuestaFinalizada(113, evaluacion.codEvaluacion);
+              console.log(this.estudiante?.codEstudiante, evaluacion.codEvaluacion);
+              return this.respuestasEstudianteService.esEncuestaFinalizada(this.estudiante?.codEstudiante, evaluacion.codEvaluacion);
             }
             // Si no hay evaluación, retornamos un observable vacío
-            return of(false);
+            this.existeEvaluacion = false;
+            return
           }),
           // Continuar con la obtención de preguntas según el tipo de evaluación (en este caso, tipo 1)
           switchMap((esEncuestaFinalizada) => {
+            console.log("esEncuestaFinalizada", esEncuestaFinalizada);
             this.esEncuestaFinalizada = esEncuestaFinalizada;
-            // Obtener preguntas por tipo de evaluación
-            return this.preguntaService.listarPorTipoEvaluacion(1);
+            if (!esEncuestaFinalizada) {
+              // Obtener preguntas por tipo de evaluación
+              return this.preguntaService.listarPorTipoEvaluacion(this.evaluacion?.codTipoEvaluacion);
+            }
+            // Si no hay preguntas, retornamos un observable vacío
+            return of([]);
           })
         );
       })
     ).subscribe((preguntas: PreguntaTipoEvaluacion[]) => {
       if (preguntas && preguntas.length > 0) {
+        console.log(preguntas);
         this.evaluacion.preguntas = preguntas;
         console.log(this.evaluacion);
         this.construirFormulariosEncuesta();
-      } else {
-        this.evaluacion.preguntas = [];
       }
     });
   }
 
   private construirFormulariosEncuesta() {
-    this.evaluacion.preguntas.forEach((pregunta, index) => {
+    this.evaluacion.preguntas.forEach((pregunta) => {
       this.listaPreguntasFormulario.push(this.formBuilder.group({
         pregunta: [pregunta.pregunta, [Validators.required]],
         estado: ['', [Validators.required]],
@@ -105,7 +115,7 @@ export class EstudianteEvalucionCursoComponent implements OnInit {
       const respuesta: RespuestaEstudiante = {
         codEvaluacion: this.evaluacion.codEvaluacion,
         codPreguntaTipoEvaluacion: this.evaluacion.preguntas[index].codPregunta,
-        codEstudiante: 113,
+        codEstudiante: this.estudiante.codEstudiante,
         respuesta: formulario.value.estado,
         estado: "ACTIVO",
         fechaRespuesta: new Date()
