@@ -49,7 +49,7 @@
     </div>
     <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
   </div>
-  
+
 </section>
 
 <div class="container" *ngIf="esVistaCurso">
@@ -101,7 +101,7 @@
                   <mdb-option
                     *ngFor="let delegado of delegados"
                     [label]="delegado.nombre + ' ' + delegado.apellido"
-                    [value]="delegado.cod_usuario">
+                    [value]="delegado.codUsuario">
                     {{ delegado.nombre }} {{ delegado.apellido}}
                     <span class="option-secondary-text">{{delegado.cedula}}</span>
                   </mdb-option>

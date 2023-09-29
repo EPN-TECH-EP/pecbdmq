@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Curso, TipoCurso} from "../../modelo/flujos/especializacion/Curso";
 import {EstadoEspecializacion} from "../../modelo/flujos/especializacion/EstadoEspecializacion";
 import {CustomHttpResponse} from "../../modelo/admin/custom-http-response";
+import { CursoInstructor } from "./curso.service";
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,10 @@ export class CursosService {
 
   obtenerEstadoPrevioPorCurso(codCurso: number) {
     return this.http.get<CustomHttpResponse>(`${this.host}/cursoEstado/estadoPrevio/${codCurso}`);
+  }
+
+  getCursoInstructorPorId(id: number) {
+    return this.http.get<CursoInstructor>(`${ this.host }/cursoInstructor/getCoordinadorCurso/${ id }`);
   }
 
 }

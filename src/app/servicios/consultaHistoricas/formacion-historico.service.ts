@@ -39,11 +39,26 @@ export class FormacionHistoricoService {
     return this.http.get<Array<unknown>>(`${ this.host }/historicoFor/materias`);
   }
 
-  esEstudiante(codUsuario: string) {
+  esEstudiante(codUsuario: number) {
     const params = new HttpParams()
       .set('codUsuario', codUsuario);
     return this.http.get<Estudiante>(`${ this.host }/estudiante/byUser`, { params });
-
   }
+
+  obtenerEstudianteFormacion(codUsuario: number) {
+    const params = new HttpParams()
+      .set('codUsuario', codUsuario);
+    return this.http.get<FormacionEstudiante>(`${ this.host }/estudiante/byUserFor`, { params });
+  }
+
+
+
+  obtenerEstudianteProfesionalizacion(codUsuario: number) {
+    const params = new HttpParams()
+      .set('codUsuario', codUsuario);
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUserPro`, { params });
+  }
+
+
 
 }

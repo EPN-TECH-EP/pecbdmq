@@ -7,7 +7,7 @@
       <ng-template mdbTabTitle><span>Estudiante</span></ng-template>
 
       <div>
-        <mdb-tabs>
+        <mdb-tabs (activeTabChange)="onTabChange($event)">
           <mdb-tab>
             <ng-template mdbTabTitle><span><i class="fas fa-file-circle-check fa-fw me-2"></i>FORMACIÓN</span>
             </ng-template>
@@ -373,3 +373,4 @@
     </mdb-tab>
   </mdb-tabs>
 </div>
+

@@ -253,6 +253,39 @@ import {
 import {
   LlamamientoFichaComponent
 } from "../../componentes/pendiente/llamamiento/llamamiento-ficha/llamamiento-ficha.component";
+import {
+  CursoEvaluacionesComponent
+} from "../../componentes/pendiente/especializacion/evaluaciones/curso-evaluaciones/curso-evaluaciones.component";
+import {
+  IntMenuPrincipalComponent
+} from "../../componentes/pendiente/integracion-bomberil/menus/int-menu-principal/int-menu-principal.component";
+import {
+  IntInformacionComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-informacion/int-informacion.component";
+import {
+  IntCapacitacionEmpresarialComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-capacitacion-empresarial/int-capacitacion-empresarial.component";
+import {
+  IntListaHonorComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-lista-honor/int-lista-honor.component";
+import {
+  IntVisualizacionBomberosComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-visualizacion-bomberos/int-visualizacion-bomberos.component";
+import {
+  IntSubidaReconocimientosComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-subida-reconocimientos/int-subida-reconocimientos.component";
+import {
+  IntAscensosComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-ascensos/int-ascensos.component";
+import {
+  IntNotificacionLlamamientoComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-notificacion-llamamiento/int-notificacion-llamamiento.component";
+import {
+  IntSancionesComponent
+} from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
+import {
+  MenuPrincipalComponent
+} from "../../componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component";
 
 
 const routes: Routes = [
@@ -374,6 +407,7 @@ const routes: Routes = [
       { path: 'especializacion/convocatoria', component: ConvocatoriaEspecializacionComponent },
       { path: 'especializacion/cursos/documentos/:estado', component: DocumentosCursoComponent },
       { path: 'especializacion/cursos/cerrados', component: CursosCerradosComponent },
+      { path: 'especializacion/cursos/evaluaciones', component: CursoEvaluacionesComponent },
 
       { path: 'especializacion/menu-administracion', component: MenuAdministracionEspecializacionComponent },
       { path: 'especializacion/menu-pruebas-esp', component: MenuPruebasEspecializacionComponent },
@@ -400,6 +434,23 @@ const routes: Routes = [
       { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
       { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent},
       { path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent},
+
+      /* Integracion bomberil */
+
+      { path: 'integracion-bomberil/menu', component: IntMenuPrincipalComponent},
+      { path: 'integracion-bomberil/capacitacion-empresarial', component: IntCapacitacionEmpresarialComponent},
+      { path: 'integracion-bomberil/informacion', component: IntInformacionComponent},
+      { path: 'integracion-bomberil/mencion-honorifica', component: IntSubidaReconocimientosComponent},
+      { path: 'integracion-bomberil/bomberos', component: IntVisualizacionBomberosComponent},
+      { path: 'integracion-bomberil/mejores', component: IntListaHonorComponent},
+      { path: 'integracion-bomberil/notificacion/ascensos', component: IntAscensosComponent},
+      { path: 'integracion-bomberil/notificacion/llamamiento', component: IntNotificacionLlamamientoComponent},
+      { path: 'integracion-bomberil/sanciones', component: IntSancionesComponent},
+
+
+      /* Reporteria */
+      { path: 'reporteria/menu', component: MenuPrincipalComponent},
+
 
     ],
   },

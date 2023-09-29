@@ -288,6 +288,18 @@ import { EpsInstructorChatComponent } from './componentes/pendiente/especializac
 import { EspInsCalendarioComponent } from './componentes/pendiente/especializacion/esp-ins-calendario/esp-ins-calendario.component';
 import { EspApelacionesInsComponent } from './componentes/pendiente/especializacion/esp-apelaciones-ins/esp-apelaciones-ins.component';
 import { ModalLlamamientoSancionComponent } from './componentes/pendiente/llamamiento/modal-llamamiento-sancion/modal-llamamiento-sancion.component';
+import { CursoEvaluacionesComponent } from './componentes/pendiente/especializacion/evaluaciones/curso-evaluaciones/curso-evaluaciones.component';
+import { EstudianteEvalucionCursoComponent } from './componentes/pendiente/especializacion/evaluaciones/estudiante-evalucion-curso/estudiante-evalucion-curso.component';
+import { IntMenuPrincipalComponent } from './componentes/pendiente/integracion-bomberil/menus/int-menu-principal/int-menu-principal.component';
+import { IntCapacitacionEmpresarialComponent } from './componentes/pendiente/integracion-bomberil/int-capacitacion-empresarial/int-capacitacion-empresarial.component';
+import { IntInformacionComponent } from './componentes/pendiente/integracion-bomberil/int-informacion/int-informacion.component';
+import { IntSubidaReconocimientosComponent } from './componentes/pendiente/integracion-bomberil/int-subida-reconocimientos/int-subida-reconocimientos.component';
+import { IntVisualizacionBomberosComponent } from './componentes/pendiente/integracion-bomberil/int-visualizacion-bomberos/int-visualizacion-bomberos.component';
+import { IntListaHonorComponent } from './componentes/pendiente/integracion-bomberil/int-lista-honor/int-lista-honor.component';
+import { IntAscensosComponent } from './componentes/pendiente/integracion-bomberil/int-ascensos/int-ascensos.component';
+import { IntNotificacionLlamamientoComponent } from './componentes/pendiente/integracion-bomberil/int-notificacion-llamamiento/int-notificacion-llamamiento.component';
+import { IntSancionesComponent } from './componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component';
+import { MenuPrincipalComponent } from './componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component';
 
 registerLocaleData(localeEs);
 
@@ -426,6 +438,18 @@ registerLocaleData(localeEs);
     EspInsCalendarioComponent,
     EspApelacionesInsComponent,
     ModalLlamamientoSancionComponent,
+    CursoEvaluacionesComponent,
+    EstudianteEvalucionCursoComponent,
+    IntMenuPrincipalComponent,
+    IntCapacitacionEmpresarialComponent,
+    IntInformacionComponent,
+    IntSubidaReconocimientosComponent,
+    IntVisualizacionBomberosComponent,
+    IntListaHonorComponent,
+    IntAscensosComponent,
+    IntNotificacionLlamamientoComponent,
+    IntSancionesComponent,
+    MenuPrincipalComponent,
 
     ],
   imports: [

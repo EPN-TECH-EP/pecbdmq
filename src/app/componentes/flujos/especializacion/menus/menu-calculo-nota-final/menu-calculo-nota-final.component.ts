@@ -67,7 +67,7 @@ export class MenuCalculoNotaFinalComponent implements OnInit {
     this.cursosService.generarListaAprobados(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
       next: (res) => {
         console.log(res);
-        this.mostrarNotificacion("Se generó la lista de aprobados", TipoAlerta.ALERTA_OK);
+        this.mostrarNotificacion("Se generó la lista de aprobados. Revísalo en la documentación del curso", TipoAlerta.ALERTA_OK);
         this.seGeneroLista = true;
       },
       error: (err) => {

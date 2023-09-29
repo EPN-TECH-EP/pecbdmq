@@ -89,17 +89,6 @@ export class UsuarioService {
     );
   }
 
-  buscarUsuarioInfo(codUser: number): Observable<UsuarioInfoDto> {
-    const params = new HttpParams()
-      .set('codUser', codUser);
-    return this.http.post<UsuarioInfoDto>(
-      `${ this.host }/usuario/buscarUsuarioInfo?`,
-      {},
-      { params }
-    );
-  }
-
-
   /*public crearUsuarioFormData(nombreUsuarioLogueado: string, usuario: Usuario, imagenPerfil: File): FormData {
     const formData = new FormData();
     formData.append('currentUsuarioname', nombreUsuarioLogueado);

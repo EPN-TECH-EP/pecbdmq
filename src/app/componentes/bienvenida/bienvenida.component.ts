@@ -16,20 +16,6 @@ export class BienvenidaComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const iframe: HTMLIFrameElement = this.miIframe.nativeElement;
-
-    // Esperar un segundo antes de intentar ocultar el elemento
-    setTimeout(() => {
-      // Acceder al documento dentro del iframe
-      const iframeDocument = iframe.contentDocument;
-      console.log(iframeDocument)
-
-      // Obtener el elemento dentro del iframe por su id y ocultarlo
-      const elementoOculto = iframeDocument?.getElementById('masthead');
-      if (elementoOculto) {
-        elementoOculto.style.display = 'none';
-      }
-    }, 1000); // 1000 ms = 1 segundo
 
   }
 
