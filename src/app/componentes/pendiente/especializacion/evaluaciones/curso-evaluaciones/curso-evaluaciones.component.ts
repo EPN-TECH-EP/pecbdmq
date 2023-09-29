@@ -128,7 +128,7 @@ export class CursoEvaluacionesComponent implements OnInit {
       this.cursoSeleccionado = $event;
       console.log(this.cursoSeleccionado);
 
-      this.cursosService.getCursoPorId(this.cursoSeleccionado?.codCursoEspecializacion)
+      this.cursosService.getCursoInstructorPorId(this.cursoSeleccionado?.codCursoEspecializacion)
         .pipe(
           switchMap((cursoInstructor) => {
             this.cursoInstructor = cursoInstructor;

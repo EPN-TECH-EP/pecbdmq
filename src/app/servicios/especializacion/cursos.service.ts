@@ -77,7 +77,7 @@ export class CursosService {
     return this.http.get<CustomHttpResponse>(`${this.host}/cursoEstado/estadoPrevio/${codCurso}`);
   }
 
-  getCursoPorId(id: number) {
+  getCursoInstructorPorId(id: number) {
     return this.http.get<CursoInstructor>(`${ this.host }/cursoInstructor/getCoordinadorCurso/${ id }`);
   }
 

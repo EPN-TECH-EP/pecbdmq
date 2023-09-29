@@ -88,6 +88,7 @@ export class CursosTomadosComponent implements OnInit {
 
     if (this.estudiante == null) {
       this.router.navigate(['/principal/fichaPersonal']).then();
+      Notificacion.notificar(this.ns, 'No se ha cargado la información del estudiante', TipoAlerta.ALERTA_WARNING)
       return;
     }
 
