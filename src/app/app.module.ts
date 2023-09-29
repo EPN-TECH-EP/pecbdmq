@@ -299,6 +299,7 @@ import { IntListaHonorComponent } from './componentes/pendiente/integracion-bomb
 import { IntAscensosComponent } from './componentes/pendiente/integracion-bomberil/int-ascensos/int-ascensos.component';
 import { IntNotificacionLlamamientoComponent } from './componentes/pendiente/integracion-bomberil/int-notificacion-llamamiento/int-notificacion-llamamiento.component';
 import { IntSancionesComponent } from './componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component';
+import { MenuPrincipalComponent } from './componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component';
 
 registerLocaleData(localeEs);
 
@@ -448,6 +449,7 @@ registerLocaleData(localeEs);
     IntAscensosComponent,
     IntNotificacionLlamamientoComponent,
     IntSancionesComponent,
+    MenuPrincipalComponent,
 
     ],
   imports: [

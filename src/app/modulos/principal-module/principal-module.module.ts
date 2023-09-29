@@ -283,6 +283,9 @@ import {
 import {
   IntSancionesComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
+import {
+  MenuPrincipalComponent
+} from "../../componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component";
 
 
 const routes: Routes = [
@@ -444,6 +447,9 @@ const routes: Routes = [
       { path: 'integracion-bomberil/notificacion/llamamiento', component: IntNotificacionLlamamientoComponent},
       { path: 'integracion-bomberil/sanciones', component: IntSancionesComponent},
 
+
+      /* Reporteria */
+      { path: 'reporteria/menu', component: MenuPrincipalComponent},
 
 
     ],
