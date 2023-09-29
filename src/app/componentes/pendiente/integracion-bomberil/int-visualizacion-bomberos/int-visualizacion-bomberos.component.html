@@ -4,5 +4,65 @@
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Lista de Bomberos</h1>
   </div>
+
+  <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm overflow-auto">
+    <form>
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        [dataSource]="funcionarios"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+            scope="col"
+            class="fw-bold fs-6"
+          >
+            {{ header.label | titlecase }}
+          </th>
+        </tr>
+        </thead>
+
+        <tbody class="datatable-body">
+
+        <tr *ngFor="let funcionario of table.data;">
+          <td>
+            {{ funcionario?.nombres }}
+          </td>
+          <td>
+            {{ funcionario?.apellidos }}
+          </td>
+          <td>
+            {{ funcionario?.email }}
+          </td>
+          <td>
+            {{ funcionario?.operativo? 'Si' : 'No' }}
+          </td>
+          <td>
+            {{ funcionario?.fechaIngreso | date:'yyyy-MM-dd' }}
+          </td>
+          <td>
+            {{ funcionario?.agrupacion}}
+          </td>
+          <td>
+            {{ funcionario?.type }}
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </form>
+  </div>
+
 </div>
 

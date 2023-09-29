@@ -301,6 +301,7 @@ import { IntNotificacionLlamamientoComponent } from './componentes/pendiente/int
 import { IntSancionesComponent } from './componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component';
 import { MenuPrincipalComponent } from './componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component';
 import { ModalCargaReconocimientoComponent } from './componentes/pendiente/integracion-bomberil/util/modal-carga-reconocimiento/modal-carga-reconocimiento.component';
+import { ModalSancionesBomberosComponent } from './componentes/pendiente/integracion-bomberil/util/modal-sanciones-bomberos/modal-sanciones-bomberos.component';
 
 registerLocaleData(localeEs);
 
@@ -452,6 +453,7 @@ registerLocaleData(localeEs);
     IntSancionesComponent,
     MenuPrincipalComponent,
     ModalCargaReconocimientoComponent,
+    ModalSancionesBomberosComponent,
 
     ],
   imports: [

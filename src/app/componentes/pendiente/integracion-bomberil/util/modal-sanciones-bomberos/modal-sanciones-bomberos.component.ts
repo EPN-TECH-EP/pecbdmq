@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {MdbModalRef} from "mdb-angular-ui-kit/modal";
+import { Component, OnInit } from '@angular/core';
 import {Funcionario, FuncionarioService} from "../../services/funcionario.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MdbModalRef} from "mdb-angular-ui-kit/modal";
 import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {DocumentosService} from "../../../../../servicios/formacion/documentos.service";
 import {TipoAlerta} from "../../../../../enum/tipo-alerta";
 import {Notificacion} from "../../../../../util/notificacion";
-import {DocumentosService} from "../../../../../servicios/formacion/documentos.service";
 
 @Component({
-  selector: 'app-modal-carga-reconocimiento',
-  templateUrl: './modal-carga-reconocimiento.component.html',
-  styleUrls: ['./modal-carga-reconocimiento.component.scss']
+  selector: 'app-modal-sanciones-bomberos',
+  templateUrl: './modal-sanciones-bomberos.component.html',
+  styleUrls: ['./modal-sanciones-bomberos.component.scss']
 })
-export class ModalCargaReconocimientoComponent implements OnInit {
+export class ModalSancionesBomberosComponent implements OnInit {
 
   documentos: any[];
   archivo: File | null = null;
@@ -22,7 +22,7 @@ export class ModalCargaReconocimientoComponent implements OnInit {
   headers: { label: string; key: string; }[]
 
   constructor(
-    public modalRef: MdbModalRef<ModalCargaReconocimientoComponent>,
+    public modalRef: MdbModalRef<ModalSancionesBomberosComponent>,
     private formBuilder: FormBuilder,
     private funcionariosService: FuncionarioService,
     private ns: MdbNotificationService,
@@ -41,10 +41,11 @@ export class ModalCargaReconocimientoComponent implements OnInit {
   private listarDocumentosReconocimiento(codFuncionario: number) {
     this.funcionariosService.listarDocumentosReconocimiento(this.funcionario.codFuncionario).subscribe({
       next: documentos => {
+        console.log(documentos);
         this.documentos = documentos;
-        //filtramos solo los reconocimientos
-        this.documentos = this.documentos.filter(documento => documento.esReconocimiento === true);
-        console.log(this.documentos);
+        // filtramos por si son sancciones
+        this.documentos = this.documentos.filter(documento => documento.esSancion === true);
+        console.log('sanciones', this.documentos);
       }
     })
   }
@@ -74,9 +75,12 @@ export class ModalCargaReconocimientoComponent implements OnInit {
 
     const data = {
       codFuncionario: this.funcionario.codFuncionario,
-      esReconocimiento: true,
+      esReconocimiento: false,
+      esSancion: true,
       observacion: this.documentoForm.get('observacion')?.value
     }
+
+    console.log(data);
 
     formData.append('datosFuncionarioDocumento', JSON.stringify(data));
     formData.append('docs', this.archivo);
@@ -120,4 +124,5 @@ export class ModalCargaReconocimientoComponent implements OnInit {
       }
     });
   }
+
 }

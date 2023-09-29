@@ -50,4 +50,8 @@ export class FuncionarioService {
     return this.http.delete(`${this.host}/funcionarioDocumento/${codDocumentoFuncionario}`);
   }
 
+  enviarNotificacionMejoresProspectos(cantidad: number) {
+    return this.http.post(`${this.host}/funcionario/enviarNotificacionProspecto?limiteProspectos=${cantidad}`, {});
+
+  }
 }

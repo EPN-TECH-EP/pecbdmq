@@ -442,7 +442,7 @@ const routes: Routes = [
       { path: 'integracion-bomberil/informacion', component: IntInformacionComponent},
       { path: 'integracion-bomberil/mencion-honorifica', component: IntSubidaReconocimientosComponent},
       { path: 'integracion-bomberil/bomberos', component: IntVisualizacionBomberosComponent},
-      { path: 'integracion-bomberil/mejores', component: IntListaHonorComponent},
+      { path: 'integracion-bomberil/mejores', component: IntSubidaReconocimientosComponent},
       { path: 'integracion-bomberil/notificacion/ascensos', component: IntAscensosComponent},
       { path: 'integracion-bomberil/notificacion/llamamiento', component: IntNotificacionLlamamientoComponent},
       { path: 'integracion-bomberil/sanciones', component: IntSancionesComponent},
