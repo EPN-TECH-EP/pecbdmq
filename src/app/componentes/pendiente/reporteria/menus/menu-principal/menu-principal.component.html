@@ -1,0 +1,53 @@
+<div class="container">
+
+  <p class="fs-4 fw-bolder">Menú de Reportería</p>
+  <mdb-tabs (activeTabChange)="onTabChange($event)" [fill]="true">
+    <mdb-tab>
+      <ng-template mdbTabTitle><span><i class="fas fa-server me-2"></i>GENERAL</span></ng-template>
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+      >
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border">
+            <i class="fa-solid fa-calendar fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte cierre por bimestre</h5>
+              <p class="card-text">
+                Ver el cronograma de cursos de la especialización
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border">
+            <i class="fa-solid fa-user-circle fa-5x mt-5 text-muted"></i>
+            <div class="card-body">
+              <h5 class="card-title">Cursos tomados</h5>
+              <p class="card-text">
+                Ver los cursos tomados en la especialización
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </mdb-tab>
+    <mdb-tab>
+      <ng-template mdbTabTitle><span><i class="fas fa-file-circle-check fa-fw me-2"></i>FORMACIÓN</span>
+      </ng-template>
+    </mdb-tab>
+    <mdb-tab>
+      <ng-template mdbTabTitle
+      ><span><i class="fas fa-chart-line fa-fw me-2"></i>ESPECIALIZACIÓN</span></ng-template
+      >
+
+
+    </mdb-tab>
+    <mdb-tab>
+      <ng-template mdbTabTitle
+      ><span><i class="fas fa-cogs fa-fw me-2"></i>PROFECIONALIZACIÓN</span></ng-template
+      >
+    </mdb-tab>
+  </mdb-tabs>
+
+</div>
