@@ -4,4 +4,96 @@
   <div class="row m-3 text-center">
     <h1 class="fs-4 fw-bolder">Gestión de Notificación para Llamamiento II</h1>
   </div>
+
+  <div>
+    <p class="text-primary"><i class="fas fa-info-circle me-2"></i>Escriba el cantidad de notificaciones de prospectos
+      para ascenso que desea enviar</p>
+    <div class="d-flex gap-4">
+      <mdb-form-control>
+        <input
+          mdbInput
+          type="number"
+          class="form-control"
+          [(ngModel)]="cantidad"
+        >
+        <label mdbLabel class="form-label">Cantidad de notificaciones</label>
+      </mdb-form-control>
+      <button
+        class="btn btn-primary"
+        type="button"
+        [disabled]="cantidad <= 0"
+        (click)="enviarNotificacionesLlamamientoII()"
+      >
+        Enviar notificaciones
+      </button>
+    </div>
+  </div>
+
+  <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm overflow-auto">
+    <form>
+      <table
+        class="table datatable-table"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        [dataSource]="funcionarios"
+        [pagination]="pagination"
+      >
+        <thead class="datatable-header">
+        <tr>
+          <th
+            *ngFor="let header of headers"
+            [mdbTableSortHeader]="header.key"
+            scope="col"
+            class="fw-bold fs-6"
+          >
+            {{ header.label | titlecase }}
+          </th>
+        </tr>
+        </thead>
+
+        <tbody class="datatable-body">
+
+        <tr *ngFor="let funcionario of table.data;">
+          <td>
+            {{ funcionario?.nombres }}
+          </td>
+          <td>
+            {{ funcionario?.apellidos }}
+          </td>
+          <td>
+            {{ funcionario?.email }}
+          </td>
+          <td>
+            {{ funcionario?.operativo ? 'Si' : 'No' }}
+          </td>
+          <td>
+            {{ funcionario?.fechaIngreso | date:'yyyy-MM-dd' }}
+          </td>
+          <td>
+            {{ funcionario?.agrupacion}}
+          </td>
+          <td>
+            {{ funcionario?.type }}
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+      <mdb-table-pagination
+        #pagination
+        [entries]="10"
+        [rowsPerPageText]="'Registros por página'"
+      ></mdb-table-pagination>
+    </form>
+  </div>
+
 </div>
+
+<mdb-loading [show]="esNotificaionEnviada" [fullscreen]="true">
+  <div class="loading-spinner">
+    <div class="spinner-border loading-icon text-light" role="status"></div>
+    <span class="loading-text text-light">Enviando notificaciones...</span>
+
+  </div>
+</mdb-loading>
