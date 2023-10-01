@@ -1,0 +1,185 @@
+<app-boton-volver></app-boton-volver>
+
+<div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">{{reporteResponse.descripcion}}</p>
+  </div>
+</div>
+
+
+<div class="row justify-content-center">
+  <div class="col-6">
+
+    <!-- Dropdown Formacion-->
+    <div class="row mb-4" *ngIf="reporteResponse?.verSelectPeriodo">
+      <div class="col">
+        <mdb-form-control>
+          <mdb-select id="periodoSelect" [(ngModel)]="selectedPeriodoAcademico">
+            <mdb-option *ngFor="let item of periodosAcademicos" [value]="item">
+            {{ item.descripcion }}
+            </mdb-option>
+          </mdb-select>
+          <label
+            mdbLabel
+            class="form-label mb-2x"
+            for="periodoSelect"
+          >Seleccionar periodo</label
+          >
+        </mdb-form-control>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <!-- Dropdown Especializacion-->
+    <div class="row mb-4" *ngIf="reporteResponse?.verSelectCurso">
+      <div class="col">
+        <mdb-form-control>
+          <mdb-select id="cursoSelect" [(ngModel)]="selectedCurso">
+            <mdb-option *ngFor="let item of cursos" [value]="item">
+            {{ item.nombre }}
+            </mdb-option>
+          </mdb-select>
+          <label
+            mdbLabel
+            class="form-label mb-2x"
+            for="cursoSelect"
+          >Seleccionar curso</label
+          >
+        </mdb-form-control>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <!-- Dropdown Profesionalizacion-->
+    <div class="row mb-4" *ngIf="reporteResponse?.verSelectPromocion">
+      <div class="col">
+        <mdb-form-control>
+          <mdb-select id="proPeriodoSelect" [(ngModel)]="selectedProPeriodo">
+            <mdb-option *ngFor="let item of proPeriodos" [value]="item">
+            {{ item.nombrePeriodo }}
+            </mdb-option>
+          </mdb-select>
+          <label
+            mdbLabel
+            class="form-label mb-2x"
+            for="proPeriodoSelect"
+          >Seleccionar promoción</label
+          >
+        </mdb-form-control>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <!-- Rango de fechas-->
+    <div class="row" *ngIf="reporteResponse?.verFechas">
+      <div class="col">
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            [mdbDatepicker]="dpFechaInicio"
+            type="text"
+            id="fechaInicio"
+            class="form-control mb-5"
+            [(ngModel)]="fechaInicio"
+            (click)="dpFechaInicio.open()"
+            readonly="true"
+          />
+          <label
+            mdbLabel
+            class="form-label mb-2x"
+            for="fechaInicio"
+          >Seleccionar Fecha Inicio</label
+          >
+          <mdb-datepicker-toggle
+            [mdbDatepicker]="dpFechaInicio"
+          ></mdb-datepicker-toggle>
+          <mdb-datepicker
+            #dpFechaInicio="mdbDatepicker"
+            [options]="opcionesDatepicker"
+            [inline]="true"
+            [minDate]="minDate"
+          ></mdb-datepicker>
+        </mdb-form-control>
+          
+      </div>
+      <div class="col">
+        <mdb-form-control>
+          <input
+            mdbInput
+            mdbValidate
+            [mdbDatepicker]="dpFechaFin"
+            type="text"
+            id="fechaFin"
+            class="form-control mb-5"
+            [(ngModel)]="fechaFin"
+            (click)="dpFechaFin.open()"
+            readonly="true"
+          />
+          <label
+            mdbLabel
+            class="form-label mb-2x"
+            for="fechaFin"
+          >Seleccionar fecha fin</label
+          >
+          <mdb-datepicker-toggle
+            [mdbDatepicker]="dpFechaFin"
+          ></mdb-datepicker-toggle>
+          <mdb-datepicker
+            #dpFechaFin="mdbDatepicker"
+            [options]="opcionesDatepicker"
+            [inline]="true"
+            [minDate]="opcionesDatepicker.minDate"
+          ></mdb-datepicker>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <!-- Descargar PDF y Excel-->
+    <div class="row">
+      <div class="col">
+        <div class="datatable table-editor mt-4">
+          <div class='exportExcel'>
+            <button
+              id="down-pdf"
+              (click)="downloadPdf()"
+              class="btn btn-primary float end"
+              [disabled]="showLoading"
+            >
+                    <span
+                      *ngIf="showLoading"
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"></span>
+              <span *ngIf="showLoading">Espere...</span>
+              <span *ngIf="!showLoading" class="fa fa-file-pdf">Descargar PDF</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div class="col">
+        <div class="datatable table-editor mt-4">
+          <div class='exportExcel'>
+            <button
+              id="down-excel"
+              (click)="downloadExcel()"
+              class="btn btn-primary float end"
+              [disabled]="showLoading"
+            >
+                    <span
+                      *ngIf="showLoading"
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"></span>
+              <span *ngIf="showLoading">Espere...</span>
+              <span *ngIf="!showLoading" class="fa fa-file-excel">Descargar Excel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
