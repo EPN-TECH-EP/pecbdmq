@@ -70,13 +70,16 @@ import { ReporteGeneralComponent } from '../../flujos/profesionalizacion/reporte
 import { ReporteNotasComponent } from '../../flujos/profesionalizacion/reportes/reporte-notas/reporte-notas.component';
 import { MenuPrincipalComponent } from './menus/menu-principal/menu-principal.component';
 import { ReporteGenericoComponent } from './generico/reporte-generico.component';
+import { MallaComponent } from './malla/malla.component';
+
 
 @NgModule({
   declarations: [
     ReporteGeneralComponent,
     ReporteNotasComponent,
     ReporteGenericoComponent,
-    MenuPrincipalComponent
+    MenuPrincipalComponent,
+    MallaComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ import { ReporteNotasComponent } from '../../flujos/profesionalizacion/reportes/
 import { MenuPrincipalComponent } from "../reporteria/menus/menu-principal/menu-principal.component";
 import { ESPECIALIZACION, FORMACION, GENERAL, PROFESIONALIZACION } from 'src/app/modelo/dto/reporte.dto';
 import { ReporteGenericoComponent } from './generico/reporte-generico.component';
+import {MallaComponent} from "./malla/malla.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,12 @@ const routes: Routes = [
       //GENERAL
       {
         path: 'general/cierre-bimestre', component: ReporteGenericoComponent, data: { codigo: GENERAL.CIERRE_BIMESTRE }
+      },      {
+        path: 'general/malla-curricular', component: MallaComponent, data: { codigo: GENERAL.GENERAL_MALLA }
+      },      {
+        path: 'general/reporte-general', component: MallaComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
+      },      {
+        path: 'general/antiguedades', component: MallaComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
       },
 
       //FORMACION
@@ -50,7 +57,7 @@ const routes: Routes = [
       {
         path: 'especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
       },
-      
+
       //PROFESIONALIZACION
       {
         path: 'profesionalizacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.CALIFICACIONES }

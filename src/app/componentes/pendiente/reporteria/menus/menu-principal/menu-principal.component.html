@@ -8,12 +8,48 @@
         class="row row-cols-1 row-cols-md-3 g-4"
       >
         <a class="col link-dark">
-          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/general/cierre-bimestre']">
-            <i class="fa-solid fa-calendar fa-5x mt-5 text-success"></i>
+          <div class="card h-100 text-center hover-shadow border"  [routerLink]="['/principal/reporteria/general/cierre-bimestre']">
+            <i class="fa-solid fa-book fa-5x mt-5 text-danger"></i>
             <div class="card-body">
               <h5 class="card-title">Reporte cierre</h5>
               <p class="card-text">
                 Ver reporte cierre
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/general/malla-curricular']">
+            <i class="fa-solid fa-file-circle-check fa-5x mt-5 text-warning"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte malla curricular</h5>
+              <p class="card-text">
+                Ver reporte malla curricular
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/general/reporte-general']">
+            <i class="fa-solid fa-shield fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte general</h5>
+              <p class="card-text">
+                Ver reporte periodos y cursos
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/general/antiguedades']">
+            <i class="fa-solid fa-users fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte antiguedades</h5>
+              <p class="card-text">
+                Ver reporte de antiguedades
               </p>
             </div>
           </div>
@@ -203,7 +239,7 @@
               <h5 class="card-title">Reporte materia por nivel/promoción</h5>
               <p class="card-text">Reporte materia por nivel/cohorte</p>
             </div>
-          </div>          
+          </div>
         </a>
 
         <a class="col link-dark">
