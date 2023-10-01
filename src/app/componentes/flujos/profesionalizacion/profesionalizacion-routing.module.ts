@@ -29,8 +29,6 @@ import {ProSemestreEstudianteComponent} from "./pro-semestre-estudiante/pro-seme
 import {ProListadoInscripcionDelegadoComponent} from "./pro-listado-inscripcion-delegado/pro-listado-inscripcion-delegado.component";
 import {ProNotaFinalComponent} from './pro-nota-final/pro-nota-final.component';
 import {ProFlujoComponent} from "./pro-flujo/pro-flujo.component";
-import {ReporteGeneralComponent} from "./reportes/reporte-general/reporte-general.component";
-import {ReporteNotasComponent} from "./reportes/reporte-notas/reporte-notas.component";
 
 const routes: Routes = [
   {
@@ -128,14 +126,7 @@ const routes: Routes = [
       },
       {
         path: 'profesionalizacion/pro-flujo', component: ProFlujoComponent,
-      },
-      {
-        path: 'profesionalizacion/reportes/rep-periodo-semestre-materia', component: ReporteGeneralComponent,
-      },
-      {
-        path: 'profesionalizacion/reportes/rep-notas', component: ReporteNotasComponent,
       }
-
 
     ],
   },
