@@ -228,7 +228,6 @@ import {
 import {
   MonitorInscripcionesCursoComponent
 } from "../../componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component";
-import { ReportesComponent } from 'src/app/componentes/reportes/reportes.component';
 import { CronogramaComponent } from "../../componentes/flujos/especializacion/cronograma/cronograma.component";
 import {
   RepositorioMateriaEstudianteComponent
@@ -283,10 +282,6 @@ import {
 import {
   IntSancionesComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
-import {
-  MenuPrincipalComponent
-} from "../../componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component";
-
 
 const routes: Routes = [
   {
@@ -370,7 +365,6 @@ const routes: Routes = [
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
       { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
       { path: 'formacion/academia/chat', component: ChatInstructorComponent },
-      { path: 'formacion/reportes', component: ReportesComponent, data: { title: 'Reportes general formación' } },
 
       // llamamiento
       { path: 'formacion/llamamiento', component: LlamamientoDosComponent },
@@ -397,7 +391,6 @@ const routes: Routes = [
 
       { path: 'especializacion/lista-pruebas-curso', component: ListaPruebasCursoComponent },
       { path: 'especializacion/resultado-pruebas-curso', component: ResultadosPruebasCursoComponent },
-      { path: 'especializacion/reportes', component: ReportesComponent, data: { title: 'Reportes general especialización' } },
 
       { path: 'fichaPersonal', component: FichaPersonalComponent },
       { path: 'historicoModulo', component: HistoricoModuloComponent },
@@ -446,11 +439,6 @@ const routes: Routes = [
       { path: 'integracion-bomberil/notificacion/ascensos', component: IntAscensosComponent},
       { path: 'integracion-bomberil/notificacion/llamamiento', component: IntNotificacionLlamamientoComponent},
       { path: 'integracion-bomberil/sanciones', component: IntSancionesComponent},
-
-
-      /* Reporteria */
-      { path: 'reporteria/menu', component: MenuPrincipalComponent},
-
 
     ],
   },

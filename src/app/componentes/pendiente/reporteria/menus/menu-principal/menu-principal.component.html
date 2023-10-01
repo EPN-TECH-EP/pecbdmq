@@ -8,45 +8,214 @@
         class="row row-cols-1 row-cols-md-3 g-4"
       >
         <a class="col link-dark">
-          <div class="card h-100 text-center hover-shadow border">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/general/cierre-bimestre']">
             <i class="fa-solid fa-calendar fa-5x mt-5 text-success"></i>
             <div class="card-body">
-              <h5 class="card-title">Reporte cierre por bimestre</h5>
+              <h5 class="card-title">Reporte cierre</h5>
               <p class="card-text">
-                Ver el cronograma de cursos de la especialización
-              </p>
-            </div>
-          </div>
-        </a>
-
-        <a class="col link-dark">
-          <div class="card h-100 text-center hover-shadow border">
-            <i class="fa-solid fa-user-circle fa-5x mt-5 text-muted"></i>
-            <div class="card-body">
-              <h5 class="card-title">Cursos tomados</h5>
-              <p class="card-text">
-                Ver los cursos tomados en la especialización
+                Ver reporte cierre
               </p>
             </div>
           </div>
         </a>
       </div>
     </mdb-tab>
-    <mdb-tab>
-      <ng-template mdbTabTitle><span><i class="fas fa-file-circle-check fa-fw me-2"></i>FORMACIÓN</span>
-      </ng-template>
-    </mdb-tab>
-    <mdb-tab>
-      <ng-template mdbTabTitle
-      ><span><i class="fas fa-chart-line fa-fw me-2"></i>ESPECIALIZACIÓN</span></ng-template
-      >
 
-
-    </mdb-tab>
     <mdb-tab>
-      <ng-template mdbTabTitle
-      ><span><i class="fas fa-cogs fa-fw me-2"></i>PROFECIONALIZACIÓN</span></ng-template
+      <ng-template mdbTabTitle><span><i class="fas fa-file-circle-check fa-fw me-2"></i>FORMACIÓN</span></ng-template>
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
       >
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/formacion/calificaciones']">
+            <i class="fa-solid fa-book fa-5x mt-5 text-danger"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte calificaciones</h5>
+              <p class="card-text">
+                Ver reporte calificaciones
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/formacion/promedio']">
+            <i class="fa-solid fa-file-circle-check fa-5x mt-5 text-warning"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte promedio</h5>
+              <p class="card-text">
+                Ver reporte promedio de notas
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/formacion/equivalencia']">
+            <i class="fa-solid fa-shield fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte equivalencia</h5>
+              <p class="card-text">
+                Ver reporte promedio y equivalencia
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/formacion/participantes']">
+            <i class="fa-solid fa-users fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte participantes</h5>
+              <p class="card-text">
+                Ver reporte participantes
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </mdb-tab>
+
+    <mdb-tab>
+      <ng-template mdbTabTitle><span><i class="fas fa-chart-line fa-fw me-2"></i>ESPECIALIZACIÓN</span></ng-template>
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+      >
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/especializacion/calificaciones']">
+            <i class="fa-solid fa-book fa-5x mt-5 text-danger"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte calificaciones</h5>
+              <p class="card-text">
+                Ver reporte calificaciones
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/especializacion/promedio']">
+            <i class="fa-solid fa-file-circle-check fa-5x mt-5 text-warning"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte promedio</h5>
+              <p class="card-text">
+                Ver reporte promedio de notas
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/especializacion/equivalencia']">
+            <i class="fa-solid fa-shield fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte equivalencia</h5>
+              <p class="card-text">
+                Ver reporte promedio y equivalencia
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/especializacion/participantes']">
+            <i class="fa-solid fa-users fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte participantes</h5>
+              <p class="card-text">
+                Ver reporte participantes
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/especializacion/cursos']">
+            <i class="fa-solid fa-calendar fa-5x mt-5 text-info"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte total cursos</h5>
+              <p class="card-text">
+                Ver reporte total cursos
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </mdb-tab>
+
+    <mdb-tab>
+      <ng-template mdbTabTitle><span><i class="fas fa-cogs fa-fw me-2"></i>PROFESIONALIZACIÓN</span></ng-template>
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+      >
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/calificaciones']">
+            <i class="fa-solid fa-book fa-5x mt-5 text-danger"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte calificaciones</h5>
+              <p class="card-text">
+                Ver reporte calificaciones
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/promedio']">
+            <i class="fa-solid fa-file-circle-check fa-5x mt-5 text-warning"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte promedio</h5>
+              <p class="card-text">
+                Ver reporte promedio de notas
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/equivalencia']">
+            <i class="fa-solid fa-shield fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte equivalencia</h5>
+              <p class="card-text">
+                Ver reporte promedio y equivalencia
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/participantes']">
+            <i class="fa-solid fa-users fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte participantes</h5>
+              <p class="card-text">
+                Ver reporte participantes
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/reporte-materia-promocion']">
+            <i class="fa-solid fa-book-open fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte materia por nivel/promoción</h5>
+              <p class="card-text">Reporte materia por nivel/cohorte</p>
+            </div>
+          </div>          
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/profesionalizacion/reporte-notas']">
+            <i class="fa-solid fa-file fa-5x mt-5 text-success"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte notas</h5>
+              <p class="card-text">Reporte de notas</p>
+            </div>
+          </div>
+        </a>
+      </div>
     </mdb-tab>
   </mdb-tabs>
 

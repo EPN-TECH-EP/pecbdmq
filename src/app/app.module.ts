@@ -266,7 +266,6 @@ import { ProfesionalizacionModule } from './componentes/flujos/profesionalizacio
 import { UtilModule } from './componentes/util/util.module';
 import { MonitorInscripcionesComponent } from './componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component';
 import { MonitorInscripcionesCursoComponent } from './componentes/flujos/especializacion/monitor-inscripciones-curso/monitor-inscripciones-curso.component';
-import { ReportesComponent } from './componentes/reportes/reportes.component';
 import { CronogramaComponent } from './componentes/flujos/especializacion/cronograma/cronograma.component';
 import { CronogramaAdminComponent } from './componentes/flujos/especializacion/cronograma-admin/cronograma-admin.component';
 import { InfoCursoComponent } from './componentes/flujos/especializacion/info-curso/info-curso.component';
@@ -276,7 +275,7 @@ import { CalendarioFormacionComponent } from './componentes/pendiente/calendario
 import { registerLocaleData } from "@angular/common";
 
 import localeEs from '@angular/common/locales/es';
-import { FullCalendarComponent, FullCalendarModule } from "@fullcalendar/angular";
+import { FullCalendarModule } from "@fullcalendar/angular";
 import { RepositorioMateriaEstudianteComponent } from './componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component';
 import { CalendarioInstructorComponent } from './componentes/pendiente/calendario-instructor/calendario-instructor.component';
 import { ChatInstructorComponent } from './componentes/pendiente/chat-instructor/chat-instructor.component';
@@ -302,6 +301,7 @@ import { IntSancionesComponent } from './componentes/pendiente/integracion-bombe
 import { MenuPrincipalComponent } from './componentes/pendiente/reporteria/menus/menu-principal/menu-principal.component';
 import { ModalCargaReconocimientoComponent } from './componentes/pendiente/integracion-bomberil/util/modal-carga-reconocimiento/modal-carga-reconocimiento.component';
 import { ModalSancionesBomberosComponent } from './componentes/pendiente/integracion-bomberil/util/modal-sanciones-bomberos/modal-sanciones-bomberos.component';
+import { ReporteriaModule } from './componentes/pendiente/reporteria/reporteria.module';
 
 registerLocaleData(localeEs);
 
@@ -422,7 +422,6 @@ registerLocaleData(localeEs);
     EditarCursoComponent,
     MonitorInscripcionesComponent,
     MonitorInscripcionesCursoComponent,
-    ReportesComponent,
     CronogramaComponent,
     CronogramaAdminComponent,
     InfoCursoComponent,
@@ -501,6 +500,7 @@ registerLocaleData(localeEs);
     //
     PrincipalModuleModule,
     ProfesionalizacionModule,
+    ReporteriaModule,
     UtilModule,
     FullCalendarModule
   ],

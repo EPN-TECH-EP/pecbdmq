@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {ProfesionalizacionRoutingModule} from './profesionalizacion-routing.module';
 import {AutenticacionGuard} from '../../../guard/autenticacion.guard';
 import {AutenticacionService} from '../../../servicios/autenticacion.service';
 import {UsuarioService} from '../../../servicios/usuario.service';
@@ -26,9 +25,6 @@ import {Semestre} from '../../../modelo/admin/semestre';
 import {TipoPrueba} from '../../../modelo/admin/tipo-prueba';
 import {ModuloEstado} from '../../../modelo/admin/modulo-estado';
 import {CatalogoEstados} from '../../../modelo/admin/catalogo-estados';
-import {ProParaleloComponent} from './paralelo/pro-paralelo.component';
-import {MenuProfesionalizacionComponent} from './menu-profesionalizacion/menu-profesionalizacion.component';
-import {ProcesoProfesionalizacionComponent} from './proceso-profesionalizacion/proceso-profesionalizacion.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from '../../../app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -66,91 +62,25 @@ import {MdbTimepickerModule} from 'mdb-angular-ui-kit/timepicker';
 import {MdbTooltipModule} from 'mdb-angular-ui-kit/tooltip';
 import {MdbValidationModule} from 'mdb-angular-ui-kit/validation';
 import {MdbMultiRangeModule} from 'mdb-angular-ui-kit/multi-range';
-import {ProMateriaComponent} from './materia/pro-materia.component';
-import {ProInstructoresComponent} from './pro-instructores/pro-instructores.component';
-import {ProDelegadosComponent} from './pro-delegados/pro-delegados.component';
-import {ProSemestreComponent} from './pro-semestre/pro-semestre.component';
 import {CommonComponentsModule} from '../../../common/common-components.module';
 import {CommonModule} from '@angular/common';
-import {ProMateriaSemestreComponent} from './pro-semestre-materia/pro-materia-semestre.component';
-import {ProEstudianteSemestreComponent} from './pro-estudiante-semestre/pro-estudiante-semestre.component';
-import {ProEstSemMatComponent} from './pro-est-sem-mat/pro-est-sem-mat.component';
-import {ProEstSemMatParaleloComponent} from './pro-est-sem-mat-paralelo/pro-est-sem-mat-paralelo.component';
-import {ProConvocatoriaComponent} from './pro-convocatoria/pro-convocatoria.component';
-import { ProPeriodoSemestreComponent } from './pro-periodo-semestre/pro-periodo-semestre.component';
-import {ProyectoComponent} from './pro-proyecto/pro-proyecto.component';
-import {TipoProyectoComponent} from './tipo-proyecto/tipo-proyecto.component';
-import { ProPeriodoComponent } from './pro-periodo/pro-periodo.component';
-import {EtapasComponent} from './pro-etapas/pro-etapas.component';
-import { ProInscripcionComponent } from './pro-inscripcion/pro-inscripcion.component';
-import { ProInscripcionDelegadoComponent } from './pro-inscripcion-delegado/pro-inscripcion-delegado.component';
-import { ProParaleloMateriaComponent } from './pro-paralelo-materia/pro-paralelo-materia.component';
-import { ProEstudiantesParaleloComponent } from './pro-estudiantes-paralelo/pro-estudiantes-paralelo.component';
-import { ProParaleloInstructorComponent } from './pro-paralelo-instructor/pro-paralelo-instructor.component';
-import {ProNotaMateriaComponent} from './pro-nota-materia/pro-nota-materia.component';
-import { ProPeriodoEstudianteComponent } from './pro-periodo-estudiante/pro-periodo-estudiante.component';
-import { ProSemestreEstudianteComponent } from './pro-semestre-estudiante/pro-semestre-estudiante.component';
-import {ProValidacionRequisitosComponent} from "./pro-validacion-requisitos/pro-validacion-requisitos.component";
-import { ProNotaFinalComponent } from './pro-nota-final/pro-nota-final.component';
-import { ProListadoInscripcionDelegadoComponent } from './pro-listado-inscripcion-delegado/pro-listado-inscripcion-delegado.component';
-import { ProFlujoComponent } from './pro-flujo/pro-flujo.component';
 import { UtilModule } from '../../util/util.module';
-import { MenuAdmProComponent } from './menus/menu-adm-pro/menu-adm-pro.component';
-import { MenuConvocatoriaProComponent } from './menus/menu-convocatoria-pro/menu-convocatoria-pro.component';
-import { MenuRegistroNotasProComponent } from './menus/menu-registro-notas-pro/menu-registro-notas-pro.component';
-import { MenuValidacionProComponent } from './menus/menu-validacion-pro/menu-validacion-pro.component';
-import { MenuReportesProComponent } from './menus/menu-reportes-pro/menu-reportes-pro.component';
-import { EstacionTrabajoComponent } from '../../estacion-trabajo/estacion-trabajo.component';
-
+import { ReporteriaRoutingModule } from './reporteria-routing.module';
+import { ReporteGeneralComponent } from '../../flujos/profesionalizacion/reportes/reporte-general/reporte-general.component';
+import { ReporteNotasComponent } from '../../flujos/profesionalizacion/reportes/reporte-notas/reporte-notas.component';
+import { MenuPrincipalComponent } from './menus/menu-principal/menu-principal.component';
+import { ReporteGenericoComponent } from './generico/reporte-generico.component';
 
 @NgModule({
   declarations: [
-    MenuProfesionalizacionComponent,
-    ProInstructoresComponent,
-    ProDelegadosComponent,
-    ProMateriaComponent,
-    ProParaleloComponent,
-    ProSemestreComponent,
-    ProcesoProfesionalizacionComponent,
-    ProMateriaSemestreComponent,
-    ProEstudianteSemestreComponent,
-    ProEstSemMatComponent,
-    ProConvocatoriaComponent,
-    ProyectoComponent,
-    ProEstSemMatParaleloComponent,
-    TipoProyectoComponent,
-    ProPeriodoComponent,
-    ProNotaMateriaComponent,
-    ProPeriodoSemestreComponent,
-    ProPeriodoEstudianteComponent,
-    ProSemestreEstudianteComponent,
-    TipoProyectoComponent,
-    EtapasComponent,
-    ProMateriaSemestreComponent,
-    ProParaleloMateriaComponent,
-    ProEstudiantesParaleloComponent,
-    ProParaleloInstructorComponent,
-    EtapasComponent,
-    ProInscripcionComponent,
-    ProInscripcionDelegadoComponent,
-    ProMateriaSemestreComponent,
-    EtapasComponent,
-    ProPeriodoEstudianteComponent,
-    ProSemestreEstudianteComponent,
-    ProValidacionRequisitosComponent,
-    ProNotaFinalComponent,
-    ProListadoInscripcionDelegadoComponent,
-    ProFlujoComponent,
-    MenuAdmProComponent,
-    MenuConvocatoriaProComponent,
-    MenuRegistroNotasProComponent,
-    MenuValidacionProComponent,
-    MenuReportesProComponent,
-    EstacionTrabajoComponent,
+    ReporteGeneralComponent,
+    ReporteNotasComponent,
+    ReporteGenericoComponent,
+    MenuPrincipalComponent
   ],
   imports: [
     CommonModule,
-    ProfesionalizacionRoutingModule,
+    ReporteriaRoutingModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -231,5 +161,5 @@ import { EstacionTrabajoComponent } from '../../estacion-trabajo/estacion-trabaj
     CatalogoEstados
   ]
 })
-export class ProfesionalizacionModule {
+export class ReporteriaModule {
 }
