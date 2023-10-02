@@ -19,6 +19,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FORMACION } from "../../../../../util/constantes/fomacion.const";
 import { ApelacionesService } from "../../../../../servicios/formacion/apelaciones.service";
 import { Instructor } from "../../../../../modelo/flujos/instructor";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-registro-notas',
@@ -38,11 +39,13 @@ export class RegistroNotasComponent implements OnInit {
 
   estaEnVistaListaMaterias: boolean;
   estaEnVistaRegistroNotas: boolean;
-  headers: {key: string, label: string}[];
+  headers: {key: string, label: string, selected: boolean}[];
 
   notaPorEstudianteForm: FormGroup;
   esEstadoRegistroNotas: boolean;
 
+  esVistaReportes: boolean
+  listado: any[];
 
   constructor(
     private registroNotasService: RegistroNotasService,
@@ -59,17 +62,18 @@ export class RegistroNotasComponent implements OnInit {
     this.estaEnVistaListaMaterias = true;
     this.estaEnVistaRegistroNotas = false;
     this.headers = [
-      { key: 'nombre', label: 'Código único' },
-      { key: 'nombre', label: 'Estudiante' },
-      { key: 'noFinal', label: 'Nota Final' },
-      { key: 'notaDisciplinaria', label: 'Nota Final Disciplinaria' },
-      { key: 'notaDisciplinaria', label: 'Nota Final Supletorio' },
+      { key: 'nombre', label: 'Código único', selected: true },
+      { key: 'nombre', label: 'Estudiante', selected: true },
+      { key: 'noFinal', label: 'Nota Final', selected: true },
+      { key: 'notaDisciplinaria', label: 'Nota Final Disciplinaria', selected: true },
+      { key: 'notaDisciplinaria', label: 'Nota Final Supletorio', selected: true },
     ];
     this.estudiantesPorParalelo = [];
     this.estudianteNotaEditando = null;
     this.materias = [];
     this.notaPorEstudianteForm = new FormGroup({});
     this.esEstadoRegistroNotas = false;
+    this.esVistaReportes = false;
     this.construirFormulario();
   }
 
@@ -137,6 +141,11 @@ export class RegistroNotasComponent implements OnInit {
         console.log(data);
         const paralelos = data.paralelos;
         this.estudiantesPorParalelo = paralelos.map(paralelo => {
+          const estudiantes = data.estudianteDatos.filter(estudiante =>
+            estudiante.codParalelo === paralelo.codParalelo);
+          return { paralelo, estudiantes }
+        });
+        this.listado = paralelos.map(paralelo => {
           const estudiantes = data.estudianteDatos.filter(estudiante =>
             estudiante.codParalelo === paralelo.codParalelo);
           return { paralelo, estudiantes }
@@ -213,5 +222,30 @@ export class RegistroNotasComponent implements OnInit {
     this.apelaconService.materia = materia;
     this.apelaconService.instructor = this.instructor;
     this.router.navigate(['/principal/formacion/academia/apelaciones']).then();
+  }
+
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+  descargarReporte() {
+    let element = document.getElementById('registroNotasTbl');
+
+    // Clona la tabla
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Encuentra la columna "Acciones" y la elimina del clon
+    clonedTable.querySelectorAll('th, td').forEach(cell => {
+      if (cell.textContent.trim() === 'Acciones') {
+        cell.remove();
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, 'Reportes de registro de notas.xlsx');
   }
 }

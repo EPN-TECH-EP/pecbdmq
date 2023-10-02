@@ -9,6 +9,7 @@ import {PruebaDetalleService} from "../../../../servicios/formacion/prueba-detal
 import {EspInscripcionService} from "../../../../servicios/especializacion/esp-inscripcion.service";
 import {Notificacion} from "../../../../util/notificacion";
 import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-monitor-inscripciones-curso',
@@ -23,6 +24,9 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
 
   esVistaCurso: boolean;
   esVistaListaCursos: boolean;
+  esVistaReportes: boolean;
+
+  listado: any;
 
   listaInscripcionesValidas: InscripcionDatosEspecializacion[];
 
@@ -30,18 +34,24 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
     {
       key: 'idPostulante',
       label: 'ID',
+      selected: true,
     },
     {
       key: 'nombre',
       label: 'Nombre',
+      selected: true,
+
     },
     {
       key: 'cedula',
       label: 'Cédula',
+      selected: true,
+
     },
     {
       key: 'correoPersonal',
       label: 'Correo Personal',
+      selected: true,
     },
   ];
 
@@ -56,6 +66,7 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
     this.cursoSeleccionado = null;
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
+    this.esVistaReportes = false;
 
     this.listaInscripcionesValidas = [];
 
@@ -80,6 +91,7 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
         next: (inscripciones) => {
           this.listaInscripcionesValidas = inscripciones;
           this.listaInscripcionesValidas = [...this.listaInscripcionesValidas];
+          this.listado = this.listaInscripcionesValidas;
 
           this.showLoading = false;
         },
@@ -125,6 +137,7 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
     this.cursoSeleccionado = null;
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
+    this.listado = []
   }
 
   private async cargarInformacionCurso(curso: Curso) {
@@ -138,4 +151,28 @@ export class MonitorInscripcionesCursoComponent extends ComponenteBase implement
     });
   }
 
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+  descargarReporte() {
+    let element = document.getElementById('inscripcionesCursoTbl');
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Filtramos las columnas no deseadas
+    this.headers.forEach((header, index) => {
+      if (!header.selected) {
+        // Eliminamos la columna del clon
+        clonedTable.querySelectorAll(`td:nth-child(${index + 1}), th:nth-child(${index + 1})`).forEach(cell => {
+          cell.remove();
+        });
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, `Reportes de inscripciones en el curso - ${this.cursoSeleccionado.nombre}.xlsx`);
+  }
 }
