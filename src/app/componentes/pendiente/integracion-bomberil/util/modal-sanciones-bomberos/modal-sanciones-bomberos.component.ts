@@ -43,6 +43,7 @@ export class ModalSancionesBomberosComponent implements OnInit {
       next: documentos => {
         console.log(documentos);
         this.documentos = documentos;
+        console.log('documentos', this.documentos)
         // filtramos por si son sancciones
         this.documentos = this.documentos.filter(documento => documento.esSancion === true);
         console.log('sanciones', this.documentos);
