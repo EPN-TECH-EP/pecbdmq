@@ -18,6 +18,12 @@ const routes: Routes = [
       //GENERAL
       {
         path: 'general/cierre-bimestre', component: ReporteGenericoComponent, data: { codigo: GENERAL.CIERRE_BIMESTRE }
+      },      {
+        path: 'general/malla-curricular', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_MALLA }
+      },      {
+        path: 'general/reporte-general', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
+      },      {
+        path: 'general/antiguedades', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
       },
 
       //FORMACION
@@ -32,6 +38,9 @@ const routes: Routes = [
       },
       {
         path: 'formacion/participantes', component: ReporteGenericoComponent, data: { codigo: FORMACION.PARTICIPANTES }
+      },
+      {
+        path: 'formacion/aprobados', component: ReporteGenericoComponent, data: { codigo: FORMACION.APROBADOS }
       },
 
       //ESPECIALIZACION
@@ -50,7 +59,12 @@ const routes: Routes = [
       {
         path: 'especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
       },
-      
+      {
+        path: 'especializacion/aprobados', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
+      },      {
+        path: 'especializacion/evaluaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
+      },
+
       //PROFESIONALIZACION
       {
         path: 'profesionalizacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.CALIFICACIONES }

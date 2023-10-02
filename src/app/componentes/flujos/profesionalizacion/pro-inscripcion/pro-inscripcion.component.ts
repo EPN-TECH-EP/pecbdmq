@@ -324,7 +324,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
       this.showUsuarioNoDisponible = true;
       return;
     }
-    this.estudianteService.getEstudianteByCodUser(this.userData.codUsuario).subscribe({
+    this.estudianteService.getEstudianteProByCodUser(this.userData.nombreUsuario).subscribe({
       next: (resp) => {
         this.userData.codEstudiante = resp.codEstudiante;
         this.nombresField.setValue(resp.nombre);

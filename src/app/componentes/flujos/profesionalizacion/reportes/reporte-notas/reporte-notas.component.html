@@ -46,6 +46,11 @@
       <div class='exportExcel' *ngIf="listado?.length>0">
         <button class="btn btn-primary" (click)="onClickMe()"><i class="fa fa-file-excel"></i> Descargar</button>
       </div>
+      <div *ngFor="let header of headers">
+        <input type="checkbox" [(ngModel)]="header.selected" /> {{ header.name | titlecase }}
+      </div>
+
+
       <form>
         <table
           class="table table-sm datatable-table"
@@ -59,10 +64,10 @@
           <tr>
             <th
               *ngFor="let header of headers"
-              [mdbTableSortHeader]="header"
+              [mdbTableSortHeader]="header.name"
               scope="col"
               class="text-wrap">
-              {{ header | titlecase }}
+              {{ header.name | titlecase }}
             </th>
           </tr>
           </thead>

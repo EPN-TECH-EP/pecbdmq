@@ -30,17 +30,20 @@ export class ReporteNotasComponent implements OnInit {
   listado: ProNotaProfesionalizacionDto[];
   @ViewChild('table') table!: MdbTableDirective<ProPeriodo>;
   headers = [
-    'Promoción',
-    'Nivel',
-    'Materia',
-    'Paralelo/Proyecto',
-    'Nombres',
-    'Apellidos',
-    'Nota Parcial 1',
-    'Nota Parcial 2',
-    'Nota Practica',
-    'Nota Asistencia',
+    { name: 'Promoción', selected: true },
+    { name: 'Nivel', selected: true },
+    { name: 'Materia', selected: true },
+    { name: 'Paralelo/Proyecto', selected: true },
+    { name: 'Nombres', selected: true },
+    { name: 'Apellidos', selected: true },
+    { name: 'Nota Parcial 1', selected: true },
+    { name: 'Nota Parcial 2', selected: true },
+    { name: 'Nota Parcial 2', selected: true },
+    { name: 'Nota Practica', selected: true },
+    { name: 'Nota Asistencia', selected: true },
+    // ... (y así sucesivamente para las demás columnas)
   ];
+
 
   constructor(private periodoService: ProPeriodoService, private notasService: ProNotaService,
               private semestreService: ProSemestreService) {
@@ -94,11 +97,24 @@ export class ReporteNotasComponent implements OnInit {
   name = 'ReporteNotas.xlsx';
   onClickMe(): void {
     let element = document.getElementById('proyectoTbl');
-    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
 
+    // Filtramos las columnas no deseadas
+    this.headers.forEach((header, index) => {
+      if (!header.selected) {
+        // Eliminamos la columna del clon
+        clonedTable.querySelectorAll(`td:nth-child(${index + 1}), th:nth-child(${index + 1})`).forEach(cell => {
+          cell.remove();
+        });
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
     const book: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
-
     XLSX.writeFile(book, this.name);
   }
+
+
 }

@@ -71,12 +71,13 @@ import { ReporteNotasComponent } from '../../flujos/profesionalizacion/reportes/
 import { MenuPrincipalComponent } from './menus/menu-principal/menu-principal.component';
 import { ReporteGenericoComponent } from './generico/reporte-generico.component';
 
+
 @NgModule({
   declarations: [
     ReporteGeneralComponent,
     ReporteNotasComponent,
     ReporteGenericoComponent,
-    MenuPrincipalComponent
+    MenuPrincipalComponent,
   ],
   imports: [
     CommonModule,
