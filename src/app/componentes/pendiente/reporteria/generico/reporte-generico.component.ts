@@ -105,208 +105,87 @@ export class ReporteGenericoComponent extends ComponenteBase implements OnInit {
     this.reporteRequest.fechaFin = this.fechaFin;
   }
 
-  downloadPdf() {
+
+  downloadFile(fileType: string) {
     this.showLoading = true;
     this.fijarDatos();
-    console.log(this.reporteRequest.codigoReporte);
-    if (this.reporteRequest.codigoReporte == 'GENERAL_MALLA') {
-      this.reporteriaService.generarMallaCurricular('pdf').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/pdf'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'Malla.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
+
+    const fileExtension = fileType === 'pdf' ? 'pdf' : 'xlsx';
+    const mimeType = fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+    const reporteMap = {
+      'GENERAL_MALLA': {
+        serviceFn: () => this.reporteriaService.generarMallaCurricular(fileType),
+        fileName: `Malla.${fileExtension}`
+      },
+      'GENERAL_GENERAL': {
+        serviceFn: () => this.reporteriaService.generarReporteGeneral(this.selectedYear, fileType),
+        fileName: `reporteGeneral.${fileExtension}`
+      },
+      'GENERAL_ANTIGUEDADES': {
+        serviceFn: () => this.reporteriaService.generarAntiguedades(fileType),
+        fileName: `Antigüedades.${fileExtension}`
+      },
+      'FORMACION_APROBADOS': {
+        serviceFn: () => this.reporteriaService.generarAprobadosFormacion(fileType),
+        fileName: `aprobados.${fileExtension}`
+      },
+      'ESPECIALIZACION_APROBADOS': {
+        serviceFn: () => this.reporteriaService.generarAprobadosEspecializacion(this.selectedCurso.codCursoEspecializacion, fileType),
+        fileName: `aprobadosEspecializacion.${fileExtension}`
+      },
+      'ESPECIALIZACION_EVALUACIONES': {
+        serviceFn: () => this.reporteriaService.generarEvaluaciones(this.selectedCurso.codCursoEspecializacion, fileType),
+        fileName: `evaluacionesEspecializacion.${fileExtension}`
+      }
+    };
+
+    if (reporteMap[this.reporteRequest.codigoReporte]) {
+      const {serviceFn, fileName} = reporteMap[this.reporteRequest.codigoReporte];
+      serviceFn().subscribe(data => {
+        this.processResponse(data, mimeType, fileName);
+      }, error => {
+        this.handleError(fileType, error);
       });
-    } else if (this.reporteRequest.codigoReporte == 'GENERAL_GENERAL') {
-      this.reporteriaService.generarReporteGeneral(this.selectedYear, 'pdf').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/pdf'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'reporteGeneral.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'GENERAL_ANTIGUEDADES') {
-      this.reporteriaService.generarAntiguedades('pdf').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/pdf'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'Antigüedades.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'FORMACION_APROBADOS') {
-      this.reporteriaService.generarAprobadosFormacion('pdf').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/pdf'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'aprobados.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-    } else if (this.reporteRequest.codigoReporte == 'ESPECIALIZACION_APROBADOS') {
-      this.reporteriaService.generarAprobadosEspecializacion(this.selectedCurso.codCursoEspecializacion, 'pdf').subscribe(data => {
-          const blob = new Blob([data], {type: 'application/pdf'});
-          const url = window.URL.createObjectURL(blob);
-          const anchor = document.createElement('a');
-          anchor.href = url;
-          anchor.download = 'aprobadosEspecializacion.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-          anchor.click();
-          window.URL.revokeObjectURL(url);
-          this.showLoading = false;
-        }
-      );
-
-    } else if (this.reporteRequest.codigoReporte == 'ESPECIALIZACION_EVALUACIONES') {
-
-      this.reporteriaService.generarEvaluaciones(this.selectedCurso.codCursoEspecializacion, 'pdf').subscribe(data => {
-          const blob = new Blob([data], {type: 'application/pdf'});
-          const url = window.URL.createObjectURL(blob);
-          const anchor = document.createElement('a');
-          anchor.href = url;
-          anchor.download = 'evaluacionesEspecializacion.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
-          anchor.click();
-          window.URL.revokeObjectURL(url);
-          this.showLoading = false;
-        }
-      );
-
-
     } else {
-      this.reporteriaService.generarPdf(this.reporteRequest).subscribe(data => {
-          const url = window.URL.createObjectURL(data);
-          const a = document.createElement('a');
-          a.setAttribute('style', 'display:none');
-          document.body.appendChild(a);
-          a.href = url;
-          a.download = this.reporteResponse.nombre + '.pdf';
-          a.click();
-          this.showLoading = false;
-          return url;
-        },
-        error => {
-          this.showLoading = false;
-          console.error('Error al descargar el PDF:', error);
-          Notificacion.notificacion(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            null,
-            'No se logró descargar el archivo en formato PDF'
-          );
-        });
+      const serviceFn = fileType === 'pdf' ?
+        () => this.reporteriaService.generarPdf(this.reporteRequest) :
+        () => this.reporteriaService.generarExcel(this.reporteRequest);
+
+      serviceFn().subscribe(data => {
+        const fileName = `${this.reporteResponse.nombre}.${fileExtension}`;
+        this.processResponse(data, mimeType, fileName);
+      }, error => {
+        this.handleError(fileType, error);
+      });
     }
+  }
+
+  processResponse(data: any, mimeType: string, fileName: string) {
+    const blob = new Blob([data], {type: mimeType});
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+    window.URL.revokeObjectURL(url);
+    this.showLoading = false;
+  }
+
+  handleError(fileType: string, error: any) {
+    this.showLoading = false;
+    console.error(`Error al descargar el ${fileType}:`, error);
+    const errorMsg = `No se logró descargar el archivo en formato ${fileType.toUpperCase()}`;
+    Notificacion.notificacion(this.notificationRef, this.notificationServiceLocal, null, errorMsg);
+  }
+
+  downloadPdf() {
+    this.downloadFile('pdf');
   }
 
   downloadExcel() {
-    this.showLoading = true;
-    this.fijarDatos();
-    if (this.reporteRequest.codigoReporte == 'GENERAL_MALLA') {
-      this.reporteriaService.generarMallaCurricular('excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'Malla.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'GENERAL_GENERAL') {
-      this.reporteriaService.generarReporteGeneral(this.selectedYear, 'excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'reporteGeneral.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'GENERAL_ANTIGUEDADES') {
-      this.reporteriaService.generarAntiguedades('excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'Antigüedades.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-    } else if (this.reporteRequest.codigoReporte == 'FORMACION_APROBADOS') {
-      this.reporteriaService.generarAprobadosFormacion('excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'AprobadosFormacion.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'ESPECIALIZACION_APROBADOS') {
-      this.reporteriaService.generarAprobadosEspecializacion(this.selectedCurso.codCursoEspecializacion, 'excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'AprobadosEsp.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-    } else if (this.reporteRequest.codigoReporte == 'ESPECIALIZACION_EVALUACIONES') {
-
-      this.reporteriaService.generarEvaluaciones(this.selectedCurso.codCursoEspecializacion, 'excel').subscribe(data => {
-        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = 'EvaluacionesEsp.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        this.showLoading = false;
-      });
-
-
-    } else {
-      this.reporteriaService.generarExcel(this.reporteRequest).subscribe(data => {
-          const url = window.URL.createObjectURL(data);
-          const a = document.createElement('a');
-          a.setAttribute('style', 'display:none');
-          document.body.appendChild(a);
-          a.href = url;
-          a.download = this.reporteResponse.nombre + '.xlsx';
-          a.click();
-          this.showLoading = false;
-          return url;
-        },
-        error => {
-          this.showLoading = false;
-          console.error('Error al descargar el excel:', error);
-          Notificacion.notificacion(
-            this.notificationRef,
-            this.notificationServiceLocal,
-            null,
-            'No se logró descargar el archivo en formato Excel'
-          );
-        });
-    }
+    this.downloadFile('excel');
   }
+
 
 }
