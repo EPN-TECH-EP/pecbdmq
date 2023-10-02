@@ -37,6 +37,9 @@ export class FuncionarioService {
   listar() {
     return this.http.get<Funcionario[]>(`${this.host}/funcionario/listar`);
   }
+  listarDocumentosSanciones(codFuncionario) {
+    return this.http.get<DocumentoFuncionario[]>(`${this.host}/funcionarioDocumento/listarSancionesByFuncionario/${codFuncionario}`);
+  }
 
   listarDocumentosReconocimiento(codFuncionario) {
     return this.http.get<DocumentoFuncionario[]>(`${this.host}/funcionarioDocumento/listarReconocimientosByFuncionario/${codFuncionario}`);

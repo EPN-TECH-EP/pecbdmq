@@ -39,13 +39,10 @@ export class ModalSancionesBomberosComponent implements OnInit {
   }
 
   private listarDocumentosReconocimiento(codFuncionario: number) {
-    this.funcionariosService.listarDocumentosReconocimiento(this.funcionario.codFuncionario).subscribe({
+    this.funcionariosService.listarDocumentosSanciones(this.funcionario.codFuncionario).subscribe({
       next: documentos => {
         console.log(documentos);
         this.documentos = documentos;
-        // filtramos por si son sancciones
-        this.documentos = this.documentos.filter(documento => documento.esSancion === true);
-        console.log('sanciones', this.documentos);
       }
     })
   }
