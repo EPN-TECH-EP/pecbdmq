@@ -7,7 +7,6 @@ import { ReporteNotasComponent } from '../../flujos/profesionalizacion/reportes/
 import { MenuPrincipalComponent } from "../reporteria/menus/menu-principal/menu-principal.component";
 import { ESPECIALIZACION, FORMACION, GENERAL, PROFESIONALIZACION } from 'src/app/modelo/dto/reporte.dto';
 import { ReporteGenericoComponent } from './generico/reporte-generico.component';
-import {MallaComponent} from "./malla/malla.component";
 
 const routes: Routes = [
   {
@@ -20,11 +19,11 @@ const routes: Routes = [
       {
         path: 'general/cierre-bimestre', component: ReporteGenericoComponent, data: { codigo: GENERAL.CIERRE_BIMESTRE }
       },      {
-        path: 'general/malla-curricular', component: MallaComponent, data: { codigo: GENERAL.GENERAL_MALLA }
+        path: 'general/malla-curricular', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_MALLA }
       },      {
-        path: 'general/reporte-general', component: MallaComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
+        path: 'general/reporte-general', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
       },      {
-        path: 'general/antiguedades', component: MallaComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
+        path: 'general/antiguedades', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
       },
 
       //FORMACION
@@ -41,7 +40,7 @@ const routes: Routes = [
         path: 'formacion/participantes', component: ReporteGenericoComponent, data: { codigo: FORMACION.PARTICIPANTES }
       },
       {
-        path: 'formacion/aprobados', component: MallaComponent, data: { codigo: FORMACION.APROBADOS }
+        path: 'formacion/aprobados', component: ReporteGenericoComponent, data: { codigo: FORMACION.APROBADOS }
       },
 
       //ESPECIALIZACION
@@ -61,9 +60,9 @@ const routes: Routes = [
         path: 'especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
       },
       {
-        path: 'especializacion/aprobados', component: MallaComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
+        path: 'especializacion/aprobados', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
       },      {
-        path: 'especializacion/evaluaciones', component: MallaComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
+        path: 'especializacion/evaluaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
       },
 
       //PROFESIONALIZACION
