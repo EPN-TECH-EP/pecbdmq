@@ -40,6 +40,9 @@ const routes: Routes = [
       {
         path: 'formacion/participantes', component: ReporteGenericoComponent, data: { codigo: FORMACION.PARTICIPANTES }
       },
+      {
+        path: 'formacion/aprobados', component: MallaComponent, data: { codigo: FORMACION.APROBADOS }
+      },
 
       //ESPECIALIZACION
       {
@@ -56,6 +59,11 @@ const routes: Routes = [
       },
       {
         path: 'especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
+      },
+      {
+        path: 'especializacion/aprobados', component: MallaComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
+      },      {
+        path: 'especializacion/evaluaciones', component: MallaComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
       },
 
       //PROFESIONALIZACION

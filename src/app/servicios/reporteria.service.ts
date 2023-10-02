@@ -66,6 +66,34 @@ export class ReporteriaService {
         }
       ));
   }
+  generarAprobadosFormacion( fileType: string) {
+    return this.http.post(`${this.url}/generarReporteAprobadosReprobados/aprobadosFormacion/${fileType}`, {}, {
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+          return throwError(() => error);
+        }
+      ));
+  }
+
+  generarAprobadosEspecializacion( codCursoEsp:number,fileType: string) {
+    return this.http.post(`${this.url}/generarReporteAprobadosReprobados/${codCursoEsp}/aprobadosEsp/${fileType}`, {}, {
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+          return throwError(() => error);
+        }
+      ));
+  }
+  generarEvaluaciones( codCursoEsp:number,fileType: string) {
+    return this.http.post(`${this.url}/generarEvaluacion/${codCursoEsp}/encuestasEsp/${fileType}`, {}, {
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+          return throwError(() => error);
+        }
+      ));
+  }
 
 
 
