@@ -94,6 +94,15 @@ export class ReporteriaService {
         }
       ));
   }
+  generarNotaFichaPersonal( fileType: string, codEstudianteFor: number, codEstudiantePro: number) {
+    return this.http.post(`${this.url}/generarNotas/${codEstudianteFor}/${codEstudiantePro}/notas/${fileType}`, {}, {
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+          return throwError(() => error);
+        }
+      ));
+  }
 
 
 

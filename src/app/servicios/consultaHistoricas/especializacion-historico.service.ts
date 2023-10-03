@@ -37,6 +37,11 @@ export class EspecializacionHistoricoService {
       .set('codUsuario', codUsuario);
     return this.http.get<Estudiante>(`${ this.host }/estudiante/byUserEsp`, { params });
   }
+  obtenerEstudianteFormacion(codUsuario: string) {
+    const params = new HttpParams()
+      .set('codUsuario', codUsuario);
+    return this.http.get<Estudiante>(`${ this.host }/estudiante/byUserFor`, { params });
+  }
 
 
 }
