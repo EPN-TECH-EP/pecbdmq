@@ -75,10 +75,35 @@
           </ng-template>
 
           <section>
+            <div class="my-4">
+              <button
+                class="btn btn-primary"
+                (click)="onGenerarReportes()"
+              >Generar reportes
+              </button>
+              <div *ngIf="esVistaReportes">
+                <hr class="hr">
+                <p class="text-primary"><i class="fas fa-info-circle me-2"></i> Para generar reportes, seleccione los campos que desea
+                  exportar.</p>
+                <div class="my-2">
+                  <div *ngFor="let header of headers">
+                    <input type="checkbox" [(ngModel)]="header.selected"/> {{ header.label| titlecase }}
+                  </div>
+                </div>
+                <div class='exportExcel' *ngIf="listado?.length>0">
+                  <button class="btn btn-success" (click)="descargarReporte()"><i class="fa fa-file-excel me-2"></i> Descargar
+                    Reporte
+                  </button>
+                </div>
+                <hr class="hr">
+              </div>
+            </div>
+
             <div class="datatable datatable-hover datatable-sm table-responsive">
               <form [formGroup]="notaPorEstudianteForm">
                 <table
                   class="tabla datatable-table"
+                  id="registroNotasTbl"
                   mdbTable
                   #datatableEstudiante
                   [dataSource]="estudiantePorParalelo.estudiantes"

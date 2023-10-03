@@ -13,6 +13,7 @@ import {EstudianteService} from "../../../../servicios/formacion/estudiante.serv
 import {PostulanteValido} from "../../../../modelo/flujos/formacion/postulante-valido";
 import {PaginacionPostulantesValidos} from "../../../../modelo/flujos/formacion/paginacion-postulantes-validos";
 import {Notificacion} from "../../../../util/notificacion";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-monitor-inscripciones',
@@ -27,6 +28,9 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
   paginacionPostulantes: PaginacionPostulantesValidos;
   tipoFiltroPostulantes: string;
   valorFiltroPostulantes: string;
+  esVistaReportes: boolean;
+
+  listado: any;
 
   // paginación
   currentPage = 1;
@@ -42,18 +46,25 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
     {
       key: 'idPostulante',
       label: 'ID',
+      selected: true,
     },
     {
       key: 'nombre',
       label: 'Nombre',
+      selected: true,
+
     },
     {
       key: 'cedula',
       label: 'Cédula',
+      selected: true,
+
     },
     {
       key: 'correoPersonal',
       label: 'Correo Personal',
+      selected: true,
+
     },
   ];
 
@@ -62,6 +73,9 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
               private postulantesValidosService: PostulantesValidosService,
   ) {
     super(notificationServiceLocal, mdbPopconfirmServiceLocal);
+    this.esVistaReportes = false;
+    this.valorFiltroPostulantes = '';
+    this.tipoFiltroPostulantes = '';
 
     this.showLoading = false;
   }
@@ -84,6 +98,7 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
           this.paginacionPostulantes = paginacion;
           this.listaPostulantes = paginacion.content;
           this.listaPostulantes = [...this.listaPostulantes];
+          this.listado = this.listaPostulantes;
 
           this.first = paginacion.first;
           this.last = paginacion.last;
@@ -118,6 +133,7 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
   }
 
   // buscar postulantes válidos por filtro con servicio postulantesValidosService
+
   buscarPostulantesValidos() {
     this.showLoading = true;
     // verifica vacíos en tipo filtro y valor filtro
@@ -155,6 +171,7 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
           next: (lista: PostulanteValido[]) => {
             this.listaPostulantes = lista;
             this.listaPostulantes = [...this.listaPostulantes];
+            this.listado = lista;
 
             this.showLoading = false;
           },
@@ -181,4 +198,30 @@ export class MonitorInscripcionesComponent extends ComponenteBase implements OnI
   }
 
 
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+
+
+  descargarReporte() {
+    let element = document.getElementById('inscripcionesTbl');
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Filtramos las columnas no deseadas
+    this.headers.forEach((header, index) => {
+      if (!header.selected) {
+        // Eliminamos la columna del clon
+        clonedTable.querySelectorAll(`td:nth-child(${index + 1}), th:nth-child(${index + 1})`).forEach(cell => {
+          cell.remove();
+        });
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, 'Reportes de inscripciones en formacion.xlsx');
+  }
 }

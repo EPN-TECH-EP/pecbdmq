@@ -109,6 +109,34 @@
         <ng-template mdbTabContent>
           <!-- selección de prueba -->
           <div class="container">
+            <div class="my-4 ">
+              <button
+                class="btn btn-primary"
+                (click)="onGenerarReportes()"
+              >Generar reportes
+              </button>
+              <div *ngIf="esVistaReportes">
+                <hr class="hr">
+                <p class="text-primary"><i class="fas fa-info-circle me-2"></i> Para generar reportes, seleccione
+                  los campos que desea
+                  exportar.</p>
+                <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Si realiza una búsqueda, los reportes
+                  se generarán con
+                  los datos filtrados y prueba seleccionada.</p>
+                <div class="my-2">
+                  <div *ngFor="let header of headersResultadosPruebas">
+                    <input type="checkbox" [(ngModel)]="header.selected"/> {{ header.label| titlecase }}
+                  </div>
+                </div>
+                <div class='exportExcel' *ngIf="listado?.length>0">
+                  <button class="btn btn-success" (click)="descargarReporte()"><i class="fa fa-file-excel me-2"></i>
+                    Descargar
+                    Reporte
+                  </button>
+                </div>
+                <hr class="hr">
+              </div>
+            </div>
             <div class="row mt-3 d-flex justify-content-center">
               <div class="col-9 text-center">
 
@@ -234,6 +262,7 @@
                     mdbTable
                     mdbTableSort
                     #table="mdbTable"
+                    id="resultadosCursoTbl"
                     [dataSource]="listaResultadosPruebas">
                     <thead>
                     <tr>

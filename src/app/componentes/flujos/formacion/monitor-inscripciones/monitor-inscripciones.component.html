@@ -8,6 +8,32 @@
     </div>
   </div>
 
+  <div class="my-4">
+    <button
+      class="btn btn-primary"
+      (click)="onGenerarReportes()"
+    >Generar reportes
+    </button>
+    <div *ngIf="esVistaReportes">
+      <hr class="hr">
+      <p class="text-primary"><i class="fas fa-info-circle me-2"></i> Para generar reportes, seleccione los campos que desea
+        exportar.</p>
+      <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Si realiza una búsqueda, los reportes se generarán con
+        los datos filtrados y las pruebas seleccionadas.</p>
+      <div class="my-2">
+        <div *ngFor="let header of headers">
+          <input type="checkbox" [(ngModel)]="header.selected"/> {{ header.label| titlecase }}
+        </div>
+      </div>
+      <div class='exportExcel' *ngIf="listado?.length>0">
+        <button class="btn btn-success" (click)="descargarReporte()"><i class="fa fa-file-excel me-2"></i> Descargar
+          Reporte
+        </button>
+      </div>
+      <hr class="hr">
+    </div>
+  </div>
+
   <div class="row d-flex align-items-middle">
     <div class="col-12">
       <!-------------------------------
@@ -99,7 +125,7 @@
           id="inlineRadio5"
           value="APELLIDO"
           [(ngModel)]="orden"
-          (change)="onOrdenChange(orden)" />
+          (change)="onOrdenChange(orden)"/>
         <label class="form-check-label" for="inlineRadio2">Apellido</label>
       </div>
     </div>
@@ -111,6 +137,7 @@
       <div class="datatable table-editor datatable-striped datatable-hover datatable-sm">
         <table
           class="table datatable-table"
+          id="inscripcionesTbl"
           mdbTable
           mdbTableSort
           #table="mdbTable"
