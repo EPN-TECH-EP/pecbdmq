@@ -29,7 +29,7 @@ export class ReporteriaService {
   }
 
   generarExcel(request: ReporteRequest) {
-    return this.http.post(`${this.url}/generarMallaCurricular/malla/`, request, {
+    return this.http.post(`${this.url}/generar-excel`, request, {
       responseType: 'blob',
     }).pipe(
       catchError(error => {
