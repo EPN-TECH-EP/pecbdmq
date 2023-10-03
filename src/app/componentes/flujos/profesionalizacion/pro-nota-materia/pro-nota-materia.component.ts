@@ -173,6 +173,8 @@ export class ProNotaMateriaComponent extends ComponenteBase implements OnInit {
         this.notificationServiceLocal,
         'Actualización de notas realizada con éxito'
       );
+      this.showLoading=false;
+      window.location.reload();
     });
 
     let formData = new FormData();
