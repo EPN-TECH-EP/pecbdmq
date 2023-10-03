@@ -72,7 +72,6 @@ import { AulasComponent } from './componentes/aulas/aulas.component';
 import { SemestreComponent } from './componentes/semestre/semestre.component';
 import { SemestreTbl } from './modelo/util/semestre-tbl';
 import { ModuloComponent } from './componentes/modulo/modulo.component';
-import { TipoFuncionarioComponent } from './componentes/tipo-funcionario/tipo-funcionario.component';
 import { TipoDocumentoComponent } from './componentes/tipo-documento/tipo-documento.component';
 import { TipoProcedenciaComponent } from './componentes/tipo-procedencia/tipo-procedencia.component';
 import { PopconfirmComponent } from './componentes/util/popconfirm/popconfirm.component';
@@ -320,7 +319,6 @@ registerLocaleData(localeEs);
     AulasComponent,
     SemestreComponent,
     ModuloComponent,
-    TipoFuncionarioComponent,
     TipoDocumentoComponent,
     TipoProcedenciaComponent,
     TipoBajaComponent,
@@ -523,7 +521,6 @@ registerLocaleData(localeEs);
     SemestreTbl,
     TipoDocumento,
     //UnidadGestion,
-    TipoFuncionario,
     Aula,
     Materia,
     TipoNota,

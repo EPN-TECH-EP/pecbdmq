@@ -8,7 +8,6 @@ import { SemestreComponent } from '../../componentes/semestre/semestre.component
 import { AulasComponent } from '../../componentes/aulas/aulas.component';
 import { TipoPruebaComponent } from '../../componentes/tipo-prueba/tipo-prueba.component';
 import { TipoProcedenciaComponent } from '../../componentes/tipo-procedencia/tipo-procedencia.component';
-import { TipoFuncionarioComponent } from '../../componentes/tipo-funcionario/tipo-funcionario.component';
 import { ModuloComponent } from '../../componentes/modulo/modulo.component';
 //import {UnidadGestionComponent} from './../../componentes/unidad-gestion/unidad-gestion.component';
 //import {UnidadGestion} from '../../modelo/unidad-gestion';
@@ -284,7 +283,6 @@ const routes: Routes = [
       { path: 'aula', component: AulasComponent },
       { path: 'semestre', component: SemestreComponent },
       { path: 'modulo', component: ModuloComponent },
-      { path: 'tipoFuncionario', component: TipoFuncionarioComponent },
       { path: 'tipoDocumento', component: TipoDocumentoComponent },
       { path: 'tipoProcedencia', component: TipoProcedenciaComponent },
       { path: 'tipoBaja', component: TipoBajaComponent },

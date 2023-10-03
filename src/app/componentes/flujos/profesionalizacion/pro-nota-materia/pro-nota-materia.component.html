@@ -109,7 +109,9 @@
               <td>{{ notaForm?.get('nombreLabel')?.value }}</td>
               <td>
                 <mdb-form-control>
-                  <input mdbInput type="number" min="0" formControlName="notaAsistencia" class="form-control">
+                  (change)="calcularPromedio(notaForm)"
+                  <input mdbInput type="number" min="0" formControlName="notaAsistencia" class="form-control"
+                         (change)="calcularPromedio(notaForm)">
                 </mdb-form-control>
               </td>
               <td>
@@ -145,6 +147,9 @@
               <form [formGroup]="generalForm">
                 <h5><span class="text-primary">*</span>
                   Documentos soporte:</h5>
+                <p class="alert alert-info" role="alert">Indicaciones: Subir el registro de notas en un solo archivo, en
+                  formato pdf.</p>
+
                 <!-- Documentos de soporte -->
                 <mdb-form-control>
                   <input
