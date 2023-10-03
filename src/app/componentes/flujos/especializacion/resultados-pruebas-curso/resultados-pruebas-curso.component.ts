@@ -1,31 +1,32 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ComponenteBase} from "../../../../util/componente-base";
-import {PruebaDetalleDatos} from "../../../../modelo/flujos/formacion/prueba-detalle-datos";
-import {ResultadosPruebasDatos} from "../../../../modelo/flujos/formacion/resultados-pruebas-datos";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ComponenteBase } from "../../../../util/componente-base";
+import { PruebaDetalleDatos } from "../../../../modelo/flujos/formacion/prueba-detalle-datos";
+import { ResultadosPruebasDatos } from "../../../../modelo/flujos/formacion/resultados-pruebas-datos";
 import {
   PaginacionResultadosPruebasDatos
 } from "../../../../modelo/flujos/formacion/paginacion-resultados-pruebas-datos";
-import {Usuario} from "../../../../modelo/admin/usuario";
-import {DocumentoFormacion} from "../../../../modelo/flujos/formacion/documento";
-import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
-import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
-import {FormacionService} from "../../../../servicios/formacion/formacion.service";
-import {PruebaDetalleService} from "../../../../servicios/formacion/prueba-detalle.service";
-import {ResultadosPruebasService} from "../../../../servicios/formacion/resultados-prueba.service";
-import {AutenticacionService} from "../../../../servicios/autenticacion.service";
-import {DocumentoPruebaService} from "../../../../servicios/formacion/documento-prueba.service";
-import {EstudianteService} from "../../../../servicios/formacion/estudiante.service";
-import {catchError, of, tap, throwError} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Notificacion} from "../../../../util/notificacion";
-import {TipoAlerta} from "../../../../enum/tipo-alerta";
-import {Curso} from "../../../../modelo/flujos/especializacion/Curso";
-import {CursosService} from "../../../../servicios/especializacion/cursos.service";
-import {InscripcionEsp} from "../../../../modelo/flujos/especializacion/inscripcion-esp";
-import {EspInscripcionService} from "../../../../servicios/especializacion/esp-inscripcion.service";
-import {FORMACION} from "../../../../util/constantes/fomacion.const";
-import {InscripcionDatosEspecializacion} from "../../../../modelo/flujos/especializacion/inscripcion-datos-esp";
-import {CURSO_COMPLETO_ESTADO} from "../../../../util/constantes/especializacion.const";
+import { Usuario } from "../../../../modelo/admin/usuario";
+import { DocumentoFormacion } from "../../../../modelo/flujos/formacion/documento";
+import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
+import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
+import { FormacionService } from "../../../../servicios/formacion/formacion.service";
+import { PruebaDetalleService } from "../../../../servicios/formacion/prueba-detalle.service";
+import { ResultadosPruebasService } from "../../../../servicios/formacion/resultados-prueba.service";
+import { AutenticacionService } from "../../../../servicios/autenticacion.service";
+import { DocumentoPruebaService } from "../../../../servicios/formacion/documento-prueba.service";
+import { EstudianteService } from "../../../../servicios/formacion/estudiante.service";
+import { catchError, of, tap, throwError } from "rxjs";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Notificacion } from "../../../../util/notificacion";
+import { TipoAlerta } from "../../../../enum/tipo-alerta";
+import { Curso } from "../../../../modelo/flujos/especializacion/Curso";
+import { CursosService } from "../../../../servicios/especializacion/cursos.service";
+import { InscripcionEsp } from "../../../../modelo/flujos/especializacion/inscripcion-esp";
+import { EspInscripcionService } from "../../../../servicios/especializacion/esp-inscripcion.service";
+import { FORMACION } from "../../../../util/constantes/fomacion.const";
+import { InscripcionDatosEspecializacion } from "../../../../modelo/flujos/especializacion/inscripcion-datos-esp";
+import { CURSO_COMPLETO_ESTADO } from "../../../../util/constantes/especializacion.const";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-resultados-pruebas-curso',
@@ -117,18 +118,25 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     {
       key: 'idPostulante',
       label: 'ID',
+      selected: true,
     },
     {
       key: 'cedula',
       label: 'Cédula',
+      selected: true,
+
     },
     {
       Key: 'nombre',
       label: 'Nombre',
+      selected: true,
+
     },
     {
       key: 'resultado',
       label: 'Resultado',
+      selected: true,
+
     },
 
   ];
@@ -141,9 +149,13 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
   documentos: DocumentoFormacion[] = [];
   archivoPrueba: File = null;
   headersArchivos = [
-    {key: 'nombre', label: 'Nombre'},
-    {key: 'descripcion', label: 'Descripción'},
+    { key: 'nombre', label: 'Nombre' },
+    { key: 'descripcion', label: 'Descripción' },
   ];
+
+  esVistaReportes = false;
+  listado: any;
+
 
   constructor(
     private notificationServiceLocal: MdbNotificationService,
@@ -163,6 +175,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.cursoSeleccionado = null;
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
+    this.esVistaReportes = false;
 
     this.listaInscripcionesValidas = [];
 
@@ -275,6 +288,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
             this.paginacionResultadosPruebas = paginacion;
             this.listaResultadosPruebas = paginacion.content;
             this.listaResultadosPruebas = [...this.listaResultadosPruebas];
+            this.listado = paginacion.content;
 
             this.firstResultados = paginacion.first;
             this.lastResultados = paginacion.last;
@@ -409,7 +423,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${documento.nombre}`;
+        link.download = `${ documento.nombre }`;
         link.click();
         window.URL.revokeObjectURL(url);
       },
@@ -494,7 +508,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
       this.cursoSeleccionado.codCursoEspecializacion,
     ).subscribe({
       next: (data) => {
-        const blob = new Blob([data], {type: contentType});
+        const blob = new Blob([data], { type: contentType });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -766,6 +780,7 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
     this.cursoSeleccionado = null;
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
+    this.listado = [];
   }
 
   private async cargarInformacionCurso(curso: Curso) {
@@ -777,5 +792,30 @@ export class ResultadosPruebasCursoComponent extends ComponenteBase implements O
         console.error(err);
       }
     });
+  }
+
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+  descargarReporte() {
+    let element = document.getElementById('resultadosCursoTbl');
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Filtramos las columnas no deseadas
+    this.headersResultadosPruebas.forEach((header, index) => {
+      if (!header.selected) {
+        // Eliminamos la columna del clon
+        clonedTable.querySelectorAll(`td:nth-child(${ index + 1 }), th:nth-child(${ index + 1 })`).forEach(cell => {
+          cell.remove();
+        });
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, `Reportes de resultados de pruebas en el curso - ${this.cursoSeleccionado.nombre}.xlsx`);
   }
 }

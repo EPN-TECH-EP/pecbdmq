@@ -21,6 +21,7 @@ import {EspRegistroNotasService} from 'src/app/servicios/especializacion/esp-reg
 import {NotaEspecializacion} from 'src/app/modelo/flujos/especializacion/nota-especializacion';
 import {ComponenteBase} from "../../../../../util/componente-base";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-registro-notas-especializacion',
@@ -37,7 +38,7 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
   estudianteNotaEditando: NotaEspecializacion;
   codEstudianteNotaEditando: number;
 
-  headers: { key: string, label: string }[];
+  headers: { key: string, label: string, selected: boolean }[];
 
   notaPorEstudianteForm: FormGroup;
   esEstadoRegistroNotas: boolean;
@@ -51,6 +52,9 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
   listaCursoInstructor: EspInstructorResponse[];
 
   esInstructor: boolean;
+
+  esVistaReportes: boolean;
+  listado: any[];
 
   constructor(
     private registroNotasService: EspRegistroNotasService,
@@ -66,10 +70,10 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
     this.estaEditandoNota = false;
     this.codEstudianteNotaEditando = 0;
     this.headers = [
-      {key: 'codUnicoEstudiante', label: 'Código único'},
-      {key: 'nombre', label: 'Estudiante'},
-      {key: 'noFinal', label: 'Nota Final'},
-      {key: 'notaSupletorio', label: 'Nota Final Supletorio'},
+      {key: 'codUnicoEstudiante', label: 'Código único', selected: true},
+      {key: 'nombre', label: 'Estudiante', selected: true},
+      {key: 'noFinal', label: 'Nota Final', selected: true},
+      {key: 'notaSupletorio', label: 'Nota Final Supletorio', selected: true},
     ];
     this.notasEstudiantes = [];
     this.estudianteNotaEditando = null;
@@ -89,6 +93,7 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
     this.estaCargando = false;
+    this.esVistaReportes = false;
   }
 
   ngOnInit(): void {
@@ -164,6 +169,7 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
       next: notas => {
         console.log(notas)
         this.notasEstudiantes = notas
+        this.listado = notas
       },
       error: err => console.log(err)
     });
@@ -173,6 +179,7 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
     this.cursoSeleccionado = null;
     this.esVistaCurso = false;
     this.esVistaListaCursos = true;
+    this.listado = [];
   }
 
   private construirFormulario() {
@@ -247,4 +254,28 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
 
   }
 
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+  descargarReporte() {
+    let element = document.getElementById('registroNotasCursoTbl');
+
+    // Clona la tabla
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Encuentra la columna "Acciones" y la elimina del clon
+    clonedTable.querySelectorAll('th, td').forEach(cell => {
+      if (cell.textContent.trim() === 'Acciones') {
+        cell.remove();
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, `Reportes de registro de notas del curso de ${this.cursoSeleccionado.nombre}.xlsx`);
+  }
 }

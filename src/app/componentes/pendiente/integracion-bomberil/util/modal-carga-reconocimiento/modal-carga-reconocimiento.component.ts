@@ -42,6 +42,7 @@ export class ModalCargaReconocimientoComponent implements OnInit {
     this.funcionariosService.listarDocumentosReconocimiento(this.funcionario.codFuncionario).subscribe({
       next: documentos => {
         this.documentos = documentos;
+        console.log(this.documentos);
         //filtramos solo los reconocimientos
         this.documentos = this.documentos.filter(documento => documento.esReconocimiento === true);
         console.log(this.documentos);

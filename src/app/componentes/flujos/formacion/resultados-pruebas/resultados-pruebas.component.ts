@@ -26,6 +26,7 @@ import { DocumentoPruebaService } from 'src/app/servicios/formacion/documento-pr
 import { TipoAlerta } from 'src/app/enum/tipo-alerta';
 import { EstudianteService } from '../../../../servicios/formacion/estudiante.service';
 import { TipoFiltroPostulantesValidosEnum } from '../../../../enum/tipo-filtro-postulantes-validos';
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-resultados-pruebas',
@@ -81,6 +82,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
   lastResultados = false;
   totalPagesResultados = 0;
 
+
   // usuario actual (funcionario)
   usuario: Usuario;
 
@@ -116,20 +118,32 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
     {
       key: 'idPostulante',
       label: 'ID',
+      selected: true,
+
     },
     {
       key: 'cedula',
       label: 'Cédula',
+      selected: true,
+
     },
     {
       key: 'nombre',
       label: 'Nombre',
+      selected: true,
+
     },
     {
       key: 'resultado',
       label: 'Resultado',
+      selected: true,
+
     },
   ];
+
+  esVistaReportes = false;
+  listado: any;
+
 
   // archivo de resultados
   archivo: File;
@@ -380,6 +394,7 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
             this.paginacionResultadosPruebas = paginacion;
             this.listaResultadosPruebas = paginacion.content;
             this.listaResultadosPruebas = [...this.listaResultadosPruebas];
+            this.listado = paginacion.content;
 
             this.firstResultados = paginacion.first;
             this.lastResultados = paginacion.last;
@@ -840,5 +855,30 @@ export class ResultadosPruebasComponent extends ComponenteBase implements OnInit
           },
         })
     );
+  }
+
+  onGenerarReportes() {
+    this.esVistaReportes = !this.esVistaReportes;
+  }
+
+  descargarReporte() {
+    let element = document.getElementById('resultadosTbl');
+    let clonedTable = element.cloneNode(true) as HTMLTableElement;
+
+    // Filtramos las columnas no deseadas
+    this.headersResultadosPruebas.forEach((header, index) => {
+      if (!header.selected) {
+        // Eliminamos la columna del clon
+        clonedTable.querySelectorAll(`td:nth-child(${ index + 1 }), th:nth-child(${ index + 1 })`).forEach(cell => {
+          cell.remove();
+        });
+      }
+    });
+
+    // Convertimos la tabla clonada a Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+    XLSX.writeFile(book, 'Reportes de resultados de pruebas formacion.xlsx');
   }
 }
