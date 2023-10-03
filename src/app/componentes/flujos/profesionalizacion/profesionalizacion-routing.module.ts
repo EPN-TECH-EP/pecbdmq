@@ -141,11 +141,21 @@ const routes: Routes = [
       { 
         path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent
       },
-      { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},
-      { path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent},
-      { path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent},
-      { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent},
-      { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
+      { 
+        path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent
+      },
 
     ],
   },
