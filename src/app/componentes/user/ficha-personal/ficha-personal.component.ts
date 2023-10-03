@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { forkJoin, switchMap, throwError } from "rxjs";
-import { ComponenteBase } from "../../../util/componente-base";
-import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
-import { MdbPopconfirmService } from "mdb-angular-ui-kit/popconfirm";
-import { AutenticacionService } from "../../../servicios/autenticacion.service";
-import { UsuarioService } from "../../../servicios/usuario.service";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { TipoAlerta } from "../../../enum/tipo-alerta";
-import { Notificacion } from "../../../util/notificacion";
-import { FormacionHistoricoService } from "../../../servicios/consultaHistoricas/formacion-historico.service";
+import {Component, OnInit} from '@angular/core';
+import {forkJoin, switchMap, throwError} from "rxjs";
+import {ComponenteBase} from "../../../util/componente-base";
+import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
+import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
+import {AutenticacionService} from "../../../servicios/autenticacion.service";
+import {UsuarioService} from "../../../servicios/usuario.service";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {TipoAlerta} from "../../../enum/tipo-alerta";
+import {Notificacion} from "../../../util/notificacion";
+import {FormacionHistoricoService} from "../../../servicios/consultaHistoricas/formacion-historico.service";
 import {
   EspecializacionHistoricoService
 } from "../../../servicios/consultaHistoricas/especializacion-historico.service";
-import { Usuario } from "../../../modelo/admin/usuario";
-import { Estudiante } from "../../../modelo/flujos/Estudiante";
-import { EstudianteService, NotaMateriaPorEstudiante } from "../../../servicios/formacion/estudiante.service";
-import { ApelacionesService, ApelacionResponse } from "../../../servicios/formacion/apelaciones.service";
-import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import {Usuario} from "../../../modelo/admin/usuario";
+import {Estudiante} from "../../../modelo/flujos/Estudiante";
+import {EstudianteService, NotaMateriaPorEstudiante} from "../../../servicios/formacion/estudiante.service";
+import {ApelacionesService, ApelacionResponse} from "../../../servicios/formacion/apelaciones.service";
+import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {
   ModalSansionComponent
 } from "../../flujos/formacion/formacion-academica/modal-sansion/modal-sansion.component";
-import { ModalApelacionComponent } from "../../util/modal-apelacion/modal-apelacion.component";
-import { catchError, map, mergeMap } from "rxjs/operators";
-import { Router } from "@angular/router";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { MdbTabChange } from "mdb-angular-ui-kit/tabs/tabs.component";
-import { FormacionEstudiante } from "../../../modelo/dto/formacion-usuario.dto";
+import {ModalApelacionComponent} from "../../util/modal-apelacion/modal-apelacion.component";
+import {catchError, map, mergeMap} from "rxjs/operators";
+import {Router} from "@angular/router";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {MdbTabChange} from "mdb-angular-ui-kit/tabs/tabs.component";
+import {FormacionEstudiante} from "../../../modelo/dto/formacion-usuario.dto";
+import {ReporteriaService} from "../../../servicios/reporteria.service";
 
 
 @Component({
@@ -42,10 +43,12 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   notasMateriaPorEstudiante: NotaMateriaPorEstudiante[];
   notaMateriaPorEstudiante: NotaMateriaPorEstudiante;
-  headersNotasPorEstudiante: {key: string, label: string}[];
+  headersNotasPorEstudiante: { key: string, label: string }[];
 
   modalRef: MdbModalRef<ModalSansionComponent> | null = null;
-  headers: {key: string, label: string}[];
+  headers: { key: string, label: string }[];
+  codEstudianteFormacion: number = 0;
+  codEstudianteEspecializacion: number = 0;
 
   esVistaTablaDeNotas: boolean = false;
   esVistaApelaciones: boolean = false;
@@ -67,6 +70,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     private estudianteService: EstudianteService,
     private router: Router,
     private httpClient: HttpClient,
+    private reporteriaService: ReporteriaService,
   ) {
     super(ns, popconfirmServiceLocal);
     this.subscriptions = [];
@@ -74,18 +78,18 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     this.usuario = null;
     this.estudiante = null;
     this.headersNotasPorEstudiante = [
-      { key: 'nombre', label: 'Materia' },
-      { key: 'nombre', label: 'Nota Final' },
-      { key: 'noFinal', label: 'Nota Final Disciplinaria' },
-      { key: 'notaDisciplinaria', label: 'Nota Supletorio' },
+      {key: 'nombre', label: 'Materia'},
+      {key: 'nombre', label: 'Nota Final'},
+      {key: 'noFinal', label: 'Nota Final Disciplinaria'},
+      {key: 'notaDisciplinaria', label: 'Nota Supletorio'},
     ];
 
     this.headers = [
-      { key: 'fecha', label: 'Fecha' },
-      { key: 'materia', label: 'Materia' },
-      { key: 'nota', label: 'Nota Actual' },
-      { key: 'observacionEstudiante', label: 'Observación' },
-      { key: 'estado', label: 'Estado' },
+      {key: 'fecha', label: 'Fecha'},
+      {key: 'materia', label: 'Materia'},
+      {key: 'nota', label: 'Nota Actual'},
+      {key: 'observacionEstudiante', label: 'Observación'},
+      {key: 'estado', label: 'Estado'},
     ];
     this.notaMateriaPorEstudiante = null;
   }
@@ -142,15 +146,28 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     });
   }
 
-  private cargarDatosEstudianteFormacion(codUsuario: number) {
+  private cargarDatosEstudianteFormacion(codUsuario: string) {
+    this.especializacionHistoricoService.obtenerEstudianteFormacion(codUsuario).subscribe({
+      next: (estudiante) => {
+        console.log('estudiante Formacion', estudiante);
+        this.estudiante = estudiante;
+        this.codEstudianteFormacion = estudiante ? estudiante.codEstudiante : 0;
+
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        console.log('Error checking if user is estudiante:', errorResponse);
+        this.mostrarNotificacion('Error al cargar el usuario', TipoAlerta.ALERTA_ERROR)
+      }
+    });
 
   }
 
   private cargarDatosEstudianteEspecializacion(codUsuario: string) {
     this.especializacionHistoricoService.obtenerEstudianteEspecializacion(codUsuario).subscribe({
       next: (estudiante) => {
-        console.log('estudiante', estudiante);
+        console.log('estudiante Especializacion', estudiante);
         this.estudiante = estudiante;
+        this.codEstudianteEspecializacion = estudiante ? estudiante.codEstudiante : 0;
       },
       error: (errorResponse: HttpErrorResponse) => {
         console.log('Error checking if user is estudiante:', errorResponse);
@@ -214,7 +231,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     const archivoUrl = 'assets/docs/certificado.pdf'; // Ruta relativa al archivo en la carpeta 'assets'
 
     // Realizar una solicitud GET para obtener el archivo
-    this.httpClient.get(archivoUrl, { responseType: 'blob' }).subscribe((blob: Blob) => {
+    this.httpClient.get(archivoUrl, {responseType: 'blob'}).subscribe((blob: Blob) => {
       const url = window.URL.createObjectURL(blob);
 
       // Crear un enlace de descarga seguro
@@ -247,6 +264,41 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
     if (event.index === 2) {
       console.log('Profesionalizacion');
     }
+    if (event.index === 3) {
+      console.log('Reporte');
+      this.cargarDatosEstudianteEspecializacion(this.usuario.nombreUsuario);
+      this.cargarDatosEstudianteFormacion(this.usuario.nombreUsuario);
+
+    }
   }
 
+  downloadPdf() {
+    this.showLoading = true;
+    this.reporteriaService.generarNotaFichaPersonal('pdf', this.codEstudianteFormacion, this.codEstudianteEspecializacion).subscribe(data => {
+      const blob = new Blob([data], {type: 'application/pdf'});
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'Mis Notas.pdf';  // Aquí puedes colocar el nombre de archivo que prefieras
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+      this.showLoading = false;
+    });
+
+  }
+
+  downloadExcel() {
+    this.reporteriaService.generarNotaFichaPersonal('excel', this.codEstudianteFormacion, this.codEstudianteEspecializacion).subscribe(data => {
+      const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'Mis notas.xlsx';  // Aquí puedes colocar el nombre de archivo que prefieras
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+      this.showLoading = false;
+    });
+
+
+  }
 }

@@ -360,9 +360,56 @@
           </mdb-tab>
           <mdb-tab>
             <ng-template mdbTabTitle
-            ><span><i class="fas fa-cogs fa-fw me-2"></i>PROFECIONALIZACIÓN</span></ng-template
+            ><span><i class="fas fa-cogs fa-fw me-2"></i>PROFESIONALIZACIÓN</span></ng-template
             >
-            Tab content 3
+            Históricos de profesionalización
+          </mdb-tab>
+          <mdb-tab>
+            <ng-template mdbTabTitle
+            ><span><i class="fas fa-book fa-fw me-2"></i>REPORTE</span></ng-template
+            >
+            <div class="row">
+              <div class="col">
+                <div class="datatable table-editor mt-4">
+                  <div class='exportExcel'>
+                    <button
+                      id="down-pdf"
+                      (click)="downloadPdf()"
+                      class="btn btn-primary float end"
+                      [disabled]="showLoading"
+                    >
+                    <span
+                      *ngIf="showLoading"
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"></span>
+                      <span *ngIf="showLoading">Espere...</span>
+                      <span *ngIf="!showLoading" class="fa fa-file-pdf">Descargar PDF</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="datatable table-editor mt-4">
+                  <div class='exportExcel'>
+                    <button
+                      id="down-excel"
+                      (click)="downloadExcel()"
+                      class="btn btn-primary float end"
+                      [disabled]="showLoading"
+                    >
+                    <span
+                      *ngIf="showLoading"
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"></span>
+                      <span *ngIf="showLoading">Espere...</span>
+                      <span *ngIf="!showLoading" class="fa fa-file-excel">Descargar Excel</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              </div>
           </mdb-tab>
         </mdb-tabs>
       </div>
