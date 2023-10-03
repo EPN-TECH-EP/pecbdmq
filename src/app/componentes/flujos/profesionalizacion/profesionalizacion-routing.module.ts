@@ -29,6 +29,13 @@ import {ProSemestreEstudianteComponent} from "./pro-semestre-estudiante/pro-seme
 import {ProListadoInscripcionDelegadoComponent} from "./pro-listado-inscripcion-delegado/pro-listado-inscripcion-delegado.component";
 import {ProNotaFinalComponent} from './pro-nota-final/pro-nota-final.component';
 import {ProFlujoComponent} from "./pro-flujo/pro-flujo.component";
+import { EstacionTrabajoComponent } from '../../estacion-trabajo/estacion-trabajo.component';
+import { UnidadGestionComponent } from '../../unidad-gestion/unidad-gestion.component';
+import { MenuAdmProComponent } from './menus/menu-adm-pro/menu-adm-pro.component';
+import { MenuConvocatoriaProComponent } from './menus/menu-convocatoria-pro/menu-convocatoria-pro.component';
+import { MenuValidacionProComponent } from './menus/menu-validacion-pro/menu-validacion-pro.component';
+import { MenuRegistroNotasProComponent } from './menus/menu-registro-notas-pro/menu-registro-notas-pro.component';
+import { MenuReportesProComponent } from './menus/menu-reportes-pro/menu-reportes-pro.component';
 
 const routes: Routes = [
   {
@@ -42,7 +49,7 @@ const routes: Routes = [
         path: 'profesionalizacion/materia', component: ProMateriaComponent,
       },
       {
-        path: 'profesionalizacion/academia/instructores', component: ProInstructoresComponent, // TODO fix new endpoints
+        path: 'profesionalizacion/academia/instructores', component: ProInstructoresComponent,
       },
       {
         path: 'profesionalizacion/paralelo', component: ProParaleloComponent,
@@ -70,7 +77,8 @@ const routes: Routes = [
       },
       {
         path: 'profesionalizacion/pro-proyecto', component: ProyectoComponent,
-      },{
+      },
+      {
         path: 'profesionalizacion/pro-delegados', component: ProDelegadosComponent,
       },
       {
@@ -126,7 +134,28 @@ const routes: Routes = [
       },
       {
         path: 'profesionalizacion/pro-flujo', component: ProFlujoComponent,
-      }
+      },
+      { 
+        path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent
+      },
+      { 
+        path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent
+      },
+      { 
+        path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent
+      },
 
     ],
   },

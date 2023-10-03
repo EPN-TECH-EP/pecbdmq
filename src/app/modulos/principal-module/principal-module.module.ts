@@ -27,9 +27,6 @@ import {
 import { TipoDocumentoComponent } from 'src/app/componentes/tipo-documento/tipo-documento.component';
 import { MdbPopconfirmService } from 'mdb-angular-ui-kit/popconfirm';
 
-import {
-  MenuProfesionalizacionComponent
-} from '../../componentes/flujos/profesionalizacion/menu-profesionalizacion/menu-profesionalizacion.component';
 import { BienvenidaComponent } from '../../componentes/bienvenida/bienvenida.component';
 import { ValidacionComponent } from '../../componentes/flujos/formacion/validacion/validacion.component';
 
@@ -205,23 +202,6 @@ import {
 import {EditarCursoComponent} from "../../componentes/flujos/especializacion/editar-curso/editar-curso.component";
 import { UtilModule } from '../../componentes/util/util.module';
 import {
-  MenuAdmProComponent
-} from "../../componentes/flujos/profesionalizacion/menus/menu-adm-pro/menu-adm-pro.component";
-import {
-  MenuConvocatoriaProComponent
-} from "../../componentes/flujos/profesionalizacion/menus/menu-convocatoria-pro/menu-convocatoria-pro.component";
-import {
-  MenuRegistroNotasProComponent
-} from "../../componentes/flujos/profesionalizacion/menus/menu-registro-notas-pro/menu-registro-notas-pro.component";
-import {
-  MenuReportesProComponent
-} from "../../componentes/flujos/profesionalizacion/menus/menu-reportes-pro/menu-reportes-pro.component";
-import {
-  MenuValidacionProComponent
-} from "../../componentes/flujos/profesionalizacion/menus/menu-validacion-pro/menu-validacion-pro.component";
-import {UnidadGestionComponent} from "../../componentes/unidad-gestion/unidad-gestion.component";
-import { EstacionTrabajoComponent } from '../../componentes/estacion-trabajo/estacion-trabajo.component';
-import {
   MonitorInscripcionesComponent
 } from "../../componentes/flujos/formacion/monitor-inscripciones/monitor-inscripciones.component";
 import {
@@ -263,9 +243,6 @@ import {
 import {
   IntCapacitacionEmpresarialComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-capacitacion-empresarial/int-capacitacion-empresarial.component";
-import {
-  IntListaHonorComponent
-} from "../../componentes/pendiente/integracion-bomberil/int-lista-honor/int-lista-honor.component";
 import {
   IntVisualizacionBomberosComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-visualizacion-bomberos/int-visualizacion-bomberos.component";
@@ -416,15 +393,6 @@ const routes: Routes = [
 
 
       { path: 'formacion/estudiante/cursos-tomados', component: CursosTomadosComponent },
-
-      /* Profesionalizacion */
-      { path: 'profesionalizacion/menu-administracion', component: MenuAdmProComponent},
-      { path: 'profesionalizacion/menu-convocatoria', component: MenuConvocatoriaProComponent},
-      { path: 'profesionalizacion/menu-validacion', component: MenuValidacionProComponent},
-      { path: 'profesionalizacion/menu-academia', component: MenuRegistroNotasProComponent},
-      { path: 'profesionalizacion/menu-reportes', component: MenuReportesProComponent},
-      { path: 'profesionalizacion/unidad-gestion', component: UnidadGestionComponent},
-      { path: 'profesionalizacion/estacion-trabajo', component: EstacionTrabajoComponent},
 
       /* Integracion bomberil */
 
