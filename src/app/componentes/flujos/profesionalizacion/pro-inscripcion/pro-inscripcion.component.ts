@@ -107,13 +107,14 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
       this.showUsuarioNoDisponible = true;
       return;
     }
+    const fechaNacimientoAjustada = new Date(defaultTo(this.userData.codDatosPersonales.fechaNacimiento, ''));
     this.formularioInscripcion = this.builder.group(
       {
         cedula: [defaultTo(this.userData.codDatosPersonales.cedula, '')],
-        nombres: [''],
-        apellidos: [''],
+        nombres: [defaultTo(this.userData.codDatosPersonales.nombre, '')],
+        apellidos: [defaultTo(this.userData.codDatosPersonales.apellido, '')],
         email: [defaultTo(this.userData.codDatosPersonales.correoPersonal, '')],
-        fechaNacimiento: [null],
+        fechaNacimiento: [fechaNacimientoAjustada],
         docSoporte: ['', [Validators.required]],
       },
       {
@@ -199,6 +200,7 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
   }
 
   crearInscripcion() {
+    this.showLoading=true;
     /*let file;
     if (this.docInscripcion) {
       const reader = new FileReader();
@@ -229,6 +231,8 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
           this.notificationServiceLocal,
           'Inscripción realizada con éxito'
         );
+        this.showLoading=false;
+
       },
       error: (errorResponse: HttpErrorResponse) => {
         Notificacion.notificacion(
@@ -236,8 +240,12 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
           this.notificationServiceLocal,
           errorResponse
         );
+        this.showLoading=false;
+
       }
+
     })
+
   }
 
   public onSubmit(event: any) {
@@ -324,18 +332,9 @@ export class ProInscripcionComponent extends ComponenteBase implements OnInit {
       this.showUsuarioNoDisponible = true;
       return;
     }
-    this.estudianteService.getEstudianteProByCodUser(this.userData.nombreUsuario).subscribe({
+    this.estudianteService.getEstudianteProByCodUser(this.userData.codUsuario).subscribe({
       next: (resp) => {
-        this.userData.codEstudiante = resp.codEstudiante;
-        this.nombresField.setValue(resp.nombre);
-        this.apellidosField.setValue(resp.apellido);
-
-        // Convertir la cadena de fecha en un objeto Date ajustando la zona horaria
-        const fechaAjustada = new Date(resp.fechaNacimiento + 'T00:00:00Z');
-        // Ajustar la zona horaria a UTC (puede ser necesario ajustar a la zona horaria correcta)
-        fechaAjustada.setMinutes(fechaAjustada.getMinutes() + fechaAjustada.getTimezoneOffset());
-        //Fijar fecha ajustada
-        this.fechaNacimientoField.setValue(fechaAjustada);
+        this.userData.codEstudiante = resp?.codEstudiante;
       },
       error: () => {
         Notificacion.notificacion(

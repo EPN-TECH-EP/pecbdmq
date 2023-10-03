@@ -191,8 +191,8 @@ export class EstudianteService {
     return this.http.post<Estudiante>(`${this.host}/estudiante/esEstudiante/${nombreUsuario}`, {});
   }
 
-  getEstudianteProByCodUser(user: String) {
-    return this.http.get<UsuarioEstudiante>(`${this.host}/estudiante/byUserPro?codUsuario=${user}`);
+  getEstudianteProByCodUser(user: number) {
+    return this.http.get<UsuarioEstudiante>(`${this.host}/estudiante/byCodUsuario?codUsuario=${user}`);
   }
 
   listarDocumentosPorMateriaYEstudiante(idEstudiante: number, idMateria: number) {
