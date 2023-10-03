@@ -54,22 +54,25 @@ export class ReporteGenericoComponent extends ComponenteBase implements OnInit {
   }
 
   ngOnInit(): void {
+    this.showLoading = true;
+
+    this.listarPeriodosAcademicos();
+    this.listarCursos();
+    this.listarProPeriodos();
 
     this.route.data.subscribe(data => {
       this.reporteRequest.codigoReporte = data.codigo;
       this.reporteriaService.getReporte(data.codigo).subscribe(response => {
         this.reporteResponse = response;
+        this.showLoading = false;
       }, (error) => {
+        this.showLoading = false;
         this.router.navigate(['/principal/reporteria/menu']);
       });
     });
     for (let i = this.currentYear - 100; i <= this.currentYear; i++) {
       this.yearsArray.push(i);
     }
-
-    this.listarPeriodosAcademicos();
-    this.listarCursos();
-    this.listarProPeriodos();
   }
 
   private listarPeriodosAcademicos() {
