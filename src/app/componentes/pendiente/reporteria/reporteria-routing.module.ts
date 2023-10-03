@@ -10,79 +10,80 @@ import { ReporteGenericoComponent } from './generico/reporte-generico.component'
 
 const routes: Routes = [
   {
-    path: 'principal/reporteria', component: PrincipalComponent, canActivateChild: [AutenticacionChildGuard],
+    path: 'principal', component: PrincipalComponent, canActivateChild: [AutenticacionChildGuard],
     children: [
       //MENU
-      { path: 'menu', component: MenuPrincipalComponent},
+      { path: 'reporteria/menu', component: MenuPrincipalComponent},
 
       //GENERAL
       {
-        path: 'general/cierre-bimestre', component: ReporteGenericoComponent, data: { codigo: GENERAL.CIERRE_BIMESTRE }
+        path: 'reporteria/general/cierre-bimestre', component: ReporteGenericoComponent, data: { codigo: GENERAL.CIERRE_BIMESTRE }
       },      {
-        path: 'general/malla-curricular', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_MALLA }
+        path: 'reporteria/general/malla-curricular', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_MALLA }
       },      {
-        path: 'general/reporte-general', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
+        path: 'reporteria/general/reporte-general', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_GENERAL }
       },      {
-        path: 'general/antiguedades', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
+        path: 'reporteria/general/antiguedades', component: ReporteGenericoComponent, data: { codigo: GENERAL.GENERAL_ANTIGUEDADES }
       },
 
       //FORMACION
       {
-        path: 'formacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: FORMACION.CALIFICACIONES }
+        path: 'reporteria/formacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: FORMACION.CALIFICACIONES }
       },
       {
-        path: 'formacion/promedio', component: ReporteGenericoComponent, data: { codigo: FORMACION.PROMEDIO }
+        path: 'reporteria/formacion/promedio', component: ReporteGenericoComponent, data: { codigo: FORMACION.PROMEDIO }
       },
       {
-        path: 'formacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: FORMACION.EQUIVALENCIA }
+        path: 'reporteria/formacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: FORMACION.EQUIVALENCIA }
       },
       {
-        path: 'formacion/participantes', component: ReporteGenericoComponent, data: { codigo: FORMACION.PARTICIPANTES }
+        path: 'reporteria/formacion/participantes', component: ReporteGenericoComponent, data: { codigo: FORMACION.PARTICIPANTES }
       },
       {
-        path: 'formacion/aprobados', component: ReporteGenericoComponent, data: { codigo: FORMACION.APROBADOS }
+        path: 'reporteria/formacion/aprobados', component: ReporteGenericoComponent, data: { codigo: FORMACION.APROBADOS }
       },
 
       //ESPECIALIZACION
       {
-        path: 'especializacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CALIFICACIONES }
+        path: 'reporteria/especializacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CALIFICACIONES }
       },
       {
-        path: 'especializacion/promedio', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.PROMEDIO }
+        path: 'reporteria/especializacion/promedio', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.PROMEDIO }
       },
       {
-        path: 'especializacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EQUIVALENCIA }
+        path: 'reporteria/especializacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EQUIVALENCIA }
       },
       {
-        path: 'especializacion/participantes', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.PARTICIPANTES }
+        path: 'reporteria/especializacion/participantes', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.PARTICIPANTES }
       },
       {
-        path: 'especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
+        path: 'reporteria/especializacion/cursos', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
       },
       {
-        path: 'especializacion/aprobados', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
-      },      {
-        path: 'especializacion/evaluaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
+        path: 'reporteria/especializacion/aprobados', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
+      },      
+      {
+        path: 'reporteria/especializacion/evaluaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
       },
 
       //PROFESIONALIZACION
       {
-        path: 'profesionalizacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.CALIFICACIONES }
+        path: 'reporteria/profesionalizacion/calificaciones', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.CALIFICACIONES }
       },
       {
-        path: 'profesionalizacion/promedio', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.PROMEDIO }
+        path: 'reporteria/profesionalizacion/promedio', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.PROMEDIO }
       },
       {
-        path: 'profesionalizacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.EQUIVALENCIA }
+        path: 'reporteria/profesionalizacion/equivalencia', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.EQUIVALENCIA }
       },
       {
-        path: 'profesionalizacion/participantes', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.PARTICIPANTES }
+        path: 'reporteria/profesionalizacion/participantes', component: ReporteGenericoComponent, data: { codigo: PROFESIONALIZACION.PARTICIPANTES }
       },
       {
-        path: 'profesionalizacion/reporte-materia-promocion', component: ReporteGeneralComponent,
+        path: 'reporteria/profesionalizacion/reporte-materia-promocion', component: ReporteGeneralComponent,
       },
       {
-        path: 'profesionalizacion/reporte-notas', component: ReporteNotasComponent,
+        path: 'reporteria/profesionalizacion/reporte-notas', component: ReporteNotasComponent,
       }
     ],
   },
