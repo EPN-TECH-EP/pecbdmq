@@ -2,17 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MdbNotificationService} from 'mdb-angular-ui-kit/notification';
 import {MdbPopconfirmService} from 'mdb-angular-ui-kit/popconfirm';
-import {ProPeriodo} from 'src/app/modelo/admin/profesionalizacion/pro-periodo';
+import {ProPeriodo} from '../../../../modelo/admin/profesionalizacion/pro-periodo';
 import {ReporteRequest, ReporteResponse} from 'src/app/modelo/dto/reporte.dto';
-import {Curso} from 'src/app/modelo/flujos/especializacion/Curso';
-import {CursosService} from 'src/app/servicios/especializacion/cursos.service';
-import {PeriodoAcademico, PeriodoAcademicoService} from 'src/app/servicios/periodo-academico.service';
-import {ProPeriodoService} from 'src/app/servicios/profesionalizacion/pro-periodo.service';
-import {ReporteriaService} from 'src/app/servicios/reporteria.service';
-import {ComponenteBase} from 'src/app/util/componente-base';
-import {CURSO_COMPLETO_ESTADO} from 'src/app/util/constantes/especializacion.const';
-import {OPCIONES_DATEPICKER} from 'src/app/util/constantes/opciones-datepicker.const';
-import {Notificacion} from 'src/app/util/notificacion';
+import {Curso} from '../../../../modelo/flujos/especializacion/Curso';
+import {CursosService} from '../../../../servicios/especializacion/cursos.service';
+import {PeriodoAcademico, PeriodoAcademicoService} from '../../../../servicios/periodo-academico.service';
+import {ProPeriodoService} from '../../../../servicios/profesionalizacion/pro-periodo.service';
+import {ReporteriaService} from '../../../../servicios/reporteria.service';
+import {ComponenteBase} from '../../../../util/componente-base';
+import {CURSO_COMPLETO_ESTADO} from '../../../../util/constantes/especializacion.const';
+import {OPCIONES_DATEPICKER} from '../../../../util/constantes/opciones-datepicker.const';
+import {Notificacion} from '../../../../util/notificacion';
 
 
 @Component({
