@@ -166,10 +166,18 @@
                   <button
                     mdbTooltip="Editar notas del estudiante"
                     [disabled]="estaEditandoNota"
-                    class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
                     (click)="editarNota(estudiante)"
                   >
                     <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Ver repositorio de estudiante"
+                    [disabled]="estaEditandoNota"
+                    class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                    (click)="verRepositorioEstudiante(estudiante)"
+                  >
+                    <i class="fa fa-eye"></i>
                   </button>
                 </ng-container>
                 <ng-container

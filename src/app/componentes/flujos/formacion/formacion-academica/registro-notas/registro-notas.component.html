@@ -193,11 +193,20 @@
                         </button>
                         <button
                           mdbTooltip="Eliminar registro"
-                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          class="m-0 p-0 shadow-0 me-2 btn btn-lg text-dark"
                           [disabled]="estaEditandoNota"
                         >
                           <i class="fa fa-trash-alt"></i>
                         </button>
+                        <button
+                          mdbTooltip="Ver repositorio estudiante"
+                          class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                          [disabled]="estaEditandoNota"
+                          (click)="verRepositorioEstudiante(estudiante)"
+                        >
+                          <i class="fa fa-eye"></i>
+                        </button>
+
                       </ng-container>
                       <ng-container *ngIf="estaEditandoNota &&  estudiante.codNota === codEstudianteNotaEditando">
                         <button

@@ -21,7 +21,6 @@ export interface EstudianteMateriaDocumentoDto {
   codEstudiante: number;
   estado: string;
   descripcion: string;
-
 }
 
 export interface EstudianteMateriaDocumentoItemDto {

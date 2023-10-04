@@ -9,6 +9,7 @@ import { DocumentosCursoService } from "../../../../servicios/especializacion/do
 import { Notificacion } from "../../../../util/notificacion";
 import { TipoAlerta } from "../../../../enum/tipo-alerta";
 import { ActivatedRoute, Router } from "@angular/router";
+import { OPCIONES_DATEPICKER } from "../../../../util/constantes/opciones-datepicker.const";
 
 @Component({
   selector: 'app-documentos-curso',
@@ -32,6 +33,16 @@ export class DocumentosCursoComponent implements OnInit {
 
   estado: string;
 
+  protected readonly CURSO_COMPLETO_ESTADO = CURSO_COMPLETO_ESTADO;
+  addRowEstudiante: boolean;
+  headersRepo = [
+    { key: 'nombre', label: 'Nombre' },
+    { key: 'descripcion', label: 'Descripción' },
+  ]
+
+  documentoFormRepo: FormGroup;
+  esTarea: boolean = false;
+
   constructor(
     private cursosService: CursosService,
     private formBuilder: FormBuilder,
@@ -51,6 +62,8 @@ export class DocumentosCursoComponent implements OnInit {
     this.codigoDocumentoEditando = 0;
     this.archivo = new File([], '');
     this.estado = '';
+    this.addRowEstudiante = false;
+    this.documentoFormRepo = new FormGroup({});
     this.construirFormulario();
   }
 
@@ -92,6 +105,28 @@ export class DocumentosCursoComponent implements OnInit {
     this.documentoForm = this.formBuilder.group({
       archivo: ['', [Validators.required,]],
     });
+
+    this.documentoFormRepo = this.formBuilder.group({
+      descripcion: ['', Validators.required],
+      archivo: ['', Validators.required],
+      esTarea: [false]
+    });
+
+    this.documentoFormRepo.controls['esTarea'].valueChanges.subscribe(value => {
+      if (value) {
+        this.documentoFormRepo.addControl('fechaEntrega', this.formBuilder.control('', Validators.required));
+        this.esTarea = value;
+        this.documentoFormRepo.controls['fechaEntrega'].valueChanges.subscribe(value => {
+          const dia = value.getDate();
+          const mes = value.getMonth() + 1;
+          const anio = value.getFullYear();
+          const fecha = `${ dia < 10 ? '0' + dia : dia }/${ mes < 10 ? '0' + mes : mes }/${ anio }`;
+
+          this.documentoFormRepo.controls['descripcion'].setValue(`Tarea para el ${ fecha }`);
+        });
+      }
+    });
+
   }
 
   private listarDocumentosCurso() {
@@ -110,6 +145,15 @@ export class DocumentosCursoComponent implements OnInit {
     });
   }
 
+  private listarDocumentosRepo(codCurso) {
+    this.cursosService.litarDocumentosRepo(codCurso).subscribe({
+      next: (documentos) => {
+        this.documentosRepo = documentos
+        console.log('documentos repo',this.documentosRepo);
+      }
+    })
+  }
+
   cursoSeleccionadoEvent($event: Curso) {
     if ($event) {
       console.log($event);
@@ -117,6 +161,7 @@ export class DocumentosCursoComponent implements OnInit {
       this.esVistaListaCursos = false;
       this.esVistaValidacionCurso = true;
       this.listarDocumentosCurso();
+      this.listarDocumentosRepo(this.cursoSeleccionado.codCursoEspecializacion);
     }
   }
 
@@ -194,5 +239,76 @@ export class DocumentosCursoComponent implements OnInit {
     });
   }
 
-  protected readonly CURSO_COMPLETO_ESTADO = CURSO_COMPLETO_ESTADO;
+
+  protected readonly OPCIONES_DATEPICKER = OPCIONES_DATEPICKER;
+  documentosRepo: any;
+
+  cargarArchivoRepo(event: any) {
+    this.archivo = event.target.files[0];
+  }
+
+  guardarArchivo() {
+
+    if (this.documentoForm.invalid) {
+      this.documentoForm.markAllAsTouched();
+    }
+
+    const formData = new FormData();
+
+    formData.append('archivos', this.archivo);
+    formData.append('codCursoEspecializacion', this.cursoSeleccionado.codCursoEspecializacion.toString());
+    formData.append('esTarea', this.esTarea.toString());
+    formData.append('descripcion', this.documentoFormRepo.controls['descripcion'].value);
+
+    // Convertir FormData en un objeto JavaScript regular
+    const formObject = {};
+    formData.forEach((valor, clave) => {
+      formObject[clave] = valor;
+    });
+
+    // los imprimo en un mismo objeto
+    const objeto = {
+      ...formObject,
+    }
+
+    console.log(objeto);
+    this.cursosService.guardarDocumentoRepo(formData).subscribe({
+      next: () => {
+        Notificacion.notificar(this.ns, 'Documento cargado correctamente', TipoAlerta.ALERTA_OK);
+        this.addRowEstudiante = false;
+        this.listarDocumentosRepo(this.cursoSeleccionado.codCursoEspecializacion);
+      }
+    });
+  }
+
+
+  descargarArchivoRepo(documento: any) {
+    this.documentosCursoService.descargar(documento.codDocumento).subscribe(
+      {
+        next: (data) => {
+          const blob = new Blob([data]);
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${ documento.nombre }`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.log('Error al descargar documento', error);
+          Notificacion.notificar(this.ns, 'Error al descargar documento', TipoAlerta.ALERTA_ERROR)
+        }
+      });
+  }
+
+  eliminarRepo(documento: any) {
+    this.cursosService.eliminarDocumentoRepo(documento.codDocumento, this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      next: () => {
+        let index = this.documentosRepo.findIndex((documento) => documento.codDocumento == documento.codDocumento);
+        this.documentosRepo.splice(index, 1);
+        this.documentosRepo = [...this.documentosRepo];
+        Notificacion.notificar(this.ns, 'Documento eliminado correctamente', TipoAlerta.ALERTA_OK);
+      }
+    });
+  }
 }
