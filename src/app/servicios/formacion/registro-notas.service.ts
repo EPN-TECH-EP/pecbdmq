@@ -19,6 +19,7 @@ export interface MateriaPorInstructor {
   nombre: string;
   codEjeMateria: number;
   estado: string;
+  codMateriaParalelo? : number;
 }
 
 export interface NotaOficialSemana {

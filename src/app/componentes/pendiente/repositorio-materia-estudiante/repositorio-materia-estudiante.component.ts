@@ -142,6 +142,7 @@ export class RepositorioMateriaEstudianteComponent implements OnInit {
   private listarDocumentos() {
     this.estudianteService.listarDocumentosPorMateriaYEstudiante(this.estudiante.codEstudiante, this.nota.codMateriaCurso).subscribe({
       next: (documentos) => {
+        console.log("codMateriaCurso", this.nota.codMateriaCurso, "codEstudiante", this.estudiante.codEstudiante)
         this.documentos = documentos
       },
       error: (error) => {

@@ -252,6 +252,7 @@ export class RegistroNotasComponent implements OnInit {
   verRepositorioEstudiante(estudiante: NotaPorEstudiante) {
     this.registroNotasService.estudiante = estudiante;
     this.registroNotasService.materia = this.materiaSeleccionada;
+    console.log(this.materiaSeleccionada);
     this.registroNotasService.estudiantesPorParalelo = this.estudiantesPorParalelo;
     this.router.navigate(['/principal/formacion/materia/estudiante/repositorio']).then();
     console.log(estudiante);

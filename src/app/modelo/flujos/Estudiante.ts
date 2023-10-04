@@ -37,6 +37,7 @@ export interface NotaPorEstudiante {
   notaSupletorio: number;
   codParalelo: number;
   nombreParalelo: string;
+  codEstudiante?: number;
 }
 
 export interface NotaDisciplina {
