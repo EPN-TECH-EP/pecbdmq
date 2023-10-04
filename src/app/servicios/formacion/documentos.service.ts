@@ -75,4 +75,8 @@ export class DocumentosService {
   listarDocumentosEsp(codEstudiante: number, codCurso: number) {
     return this.http.get<EstudianteCursoDocumentoItemDto[]>(`${this.host}/estudianteCursoDocumento/listar/documentos/estudiante/${codEstudiante}/curso/${codCurso}`);
   }
+
+  listarDocumentosFor(codEstudiante: number, codMateria: number) {
+    return this.http.get<EstudianteCursoDocumentoItemDto[]>(`${this.host}/estudianteCursoDocumento/listar/documentos/estudiante/${codEstudiante}/materia/${codMateria}`);
+  }
 }
