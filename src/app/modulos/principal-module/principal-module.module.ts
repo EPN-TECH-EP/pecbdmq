@@ -258,6 +258,9 @@ import {
 import {
   IntSancionesComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
+import { 
+  ParametroComponent } 
+  from '../../componentes/parametro/parametro.component';
 import {
   ForRepoMateriaComponent
 } from "../../componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component";
@@ -289,6 +292,7 @@ const routes: Routes = [
         loadChildren: () => import('./../../modulos/unidad-gestion.module').then((m) => m.UnidadGestionModule),
         //canDeactivate: [CambiosPendientesGuard],
       },
+      { path: 'parametro', component: ParametroComponent },
       { path: 'tipoPrueba', component: TipoPruebaComponent },
       { path: 'aula', component: AulasComponent },
       { path: 'semestre', component: SemestreComponent },
