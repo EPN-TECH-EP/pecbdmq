@@ -300,6 +300,7 @@ import { IntSancionesComponent } from './componentes/pendiente/integracion-bombe
 import { ModalCargaReconocimientoComponent } from './componentes/pendiente/integracion-bomberil/util/modal-carga-reconocimiento/modal-carga-reconocimiento.component';
 import { ModalSancionesBomberosComponent } from './componentes/pendiente/integracion-bomberil/util/modal-sanciones-bomberos/modal-sanciones-bomberos.component';
 import { ReporteriaModule } from './componentes/pendiente/reporteria/reporteria.module';
+import { ParametroComponent } from './componentes/parametro/parametro.component';
 import { ForRepoMateriaComponent } from './componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component';
 import { ForRepoEstudianteComponent } from './componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component';
 import { EpsRepoEstudianteComponent } from './componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component';
@@ -452,6 +453,7 @@ registerLocaleData(localeEs);
     IntSancionesComponent,
     ModalCargaReconocimientoComponent,
     ModalSancionesBomberosComponent,
+    ParametroComponent,
     ForRepoMateriaComponent,
     ForRepoEstudianteComponent,
     EpsRepoEstudianteComponent,
