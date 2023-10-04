@@ -25,4 +25,8 @@ export class ParametroService {
     return this.http.delete<any>(`${this.host}/parametro/${codSemestre}`);
   }
 
+  public actualizar(semestre: Parametro): Observable<HttpResponse<Parametro>> {
+    return this.http.put<Parametro>(`${this.host}/parametro/${semestre.codParametro}`, semestre, {observe: 'response'});
+  }
+
 }

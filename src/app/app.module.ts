@@ -300,6 +300,7 @@ import { IntSancionesComponent } from './componentes/pendiente/integracion-bombe
 import { ModalCargaReconocimientoComponent } from './componentes/pendiente/integracion-bomberil/util/modal-carga-reconocimiento/modal-carga-reconocimiento.component';
 import { ModalSancionesBomberosComponent } from './componentes/pendiente/integracion-bomberil/util/modal-sanciones-bomberos/modal-sanciones-bomberos.component';
 import { ReporteriaModule } from './componentes/pendiente/reporteria/reporteria.module';
+import { ParametroComponent } from './componentes/parametro/parametro.component';
 
 registerLocaleData(localeEs);
 
@@ -449,6 +450,7 @@ registerLocaleData(localeEs);
     IntSancionesComponent,
     ModalCargaReconocimientoComponent,
     ModalSancionesBomberosComponent,
+    ParametroComponent,
 
     ],
   imports: [

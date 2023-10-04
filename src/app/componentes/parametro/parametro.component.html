@@ -1,0 +1,196 @@
+<app-boton-volver></app-boton-volver>
+
+<!-- Título de componente-->
+ <div class="row m-3">
+  <div class="column text-center">
+    <p class="fs-4 fw-bolder">Administración de parámetros</p>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-6 ">
+
+  <!-- Button for  add a register-->
+  <button
+    class="btn btn-primary btn-sm ms-3"
+    [disabled]="editElementIndex !== -1"
+    (click)="addRow = true; "
+  >
+    <i class="fa fa-plus"></i> &nbsp;Agregar
+  </button>
+
+  <hr />
+   <!-- Table -->
+   <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+    <form #form="ngForm" >
+      <table
+        class="table table-sm datatable-table text-center"
+        mdbTable
+        mdbTableSort
+        #table="mdbTable"
+        #sort="mdbTableSort"
+        [dataSource]="parametros"
+        [sort]="sort"
+      >
+      <!-- Table head -->
+        <thead class="datatable-header">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              class="fw-bold"
+            >
+              <b class="text-start"> {{ header | titlecase }}</b>
+            </th>
+            <th scope="col" class="text-center fw-bold"><b >Acciones</b></th>
+          </tr>
+        </thead>
+        <tbody class="datatable-body">
+          <tr *ngIf="addRow">
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  name="nombreParametro"
+                  class="form-control"
+                  [(ngModel)]="parametro.nombreParametro"
+                  required
+                  type="text"
+                  #nombreParametro="ngModel"                  
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParametro)"
+                />
+              </mdb-form-control>
+
+            </td>
+
+            <td>
+              <mdb-form-control>
+                <input
+                  mdbInput="mdbInput"
+                  name="valor"
+                  class="form-control"
+                  [(ngModel)]="parametro.valor"
+                  required
+                  type="text"
+                  #valor="ngModel"                  
+                  (change)="validacionUtil.onInputChange($event, 'catalogo', valor)"
+                />
+              </mdb-form-control>
+
+            </td>
+
+          <!-- Buttons for add or cancel a register -->
+            <td class="text-start">
+              <button
+                class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                type="submit"
+                (click)="registro(form.value); addRow = false"
+              >
+                <i class="fa fa-check"></i> Agregar
+              </button>
+              <button
+                name="eliminar"
+                class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                (click)="addRow = false"
+              >
+                <i class="fa fa-ban"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+            <!-- Edit row -->
+          <tr *ngFor="let parametro of table.data; let index = index">
+            <td>
+              <!--Show nombre parametro-->
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ parametro.nombreParametro }}
+              </ng-container>
+              <!--Edit nombre parametro-->
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="nombreParametro"
+                    name="nombreParametro"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="parametroEditForm.nombreParametro"
+                    #nombreParametro="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', nombreParametro)"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <!--Show valor parametro-->
+              <ng-container *ngIf="editElementIndex !== index">
+                {{ parametro.valor }}
+              </ng-container>
+              <!--Edit valor parametro-->
+              <ng-container *ngIf="editElementIndex === index">
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    id="valor"
+                    name="valor"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="parametroEditForm.valor"
+                    #valor="ngModel"
+                    required
+                    (change)="validacionUtil.onInputChange($event, 'catalogo', valor)"
+                  />
+                </mdb-form-control>
+              </ng-container>
+            </td>
+
+            <td>
+              <!--Buttons to delete -->
+              <ng-container
+                *ngIf="editElementIndex === -1 || editElementIndex !== index"
+              >
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="editRow(index);"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                  (click)="confirmaEliminar($event, parametro.codParametro, parametro)"
+                  [disabled]="
+                    editElementIndex !== -1 && editElementIndex !== index
+                  "
+                >
+                  <i class="fa fa-trash-alt"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editElementIndex === index">
+                <button
+                  mdbTooltip="Editar registro"
+                  class="me-2 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  (click)="actualizar(parametro, form.value);"
+                >
+                  <i class="fa fa-check"></i> Guardar
+                </button>
+                <button
+                  mdbTooltip="Eliminar registro"
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="undoRow()"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+</div>
