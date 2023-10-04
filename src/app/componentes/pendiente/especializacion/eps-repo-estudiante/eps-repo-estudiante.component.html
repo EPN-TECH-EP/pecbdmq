@@ -1,0 +1,120 @@
+<app-boton-volver
+></app-boton-volver>
+
+<div class="container">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Repositorio del estudiante</h1>
+  </div>
+  <h5 class="text-primary my-2"><b>Estudiante: </b>{{estudiante?.nombre}} {{estudiante?.apellido}}</h5>
+
+  <!-- Lista de estudiantes del curso -->
+  <section>
+
+      <button
+        class="btn btn-primary mb-3"
+        (click)="addRow = true"
+        [disabled]="estaEditando"
+      >
+        <i class="fa-solid fa-circle-plus me-2"></i>
+        Cargar documento
+      </button>
+
+      <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+        <form [formGroup]="documentoForm">
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #table="mdbTable"
+            [dataSource]="documentos"
+          >
+            <thead class="datatable-header">
+            <tr>
+              <th *ngFor="let header of headers" scope="col" class="fw-bold" [mdbTableSortHeader]="header.key">
+                <b> {{ header.label | titlecase }}</b>
+              </th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            </tr>
+            </thead>
+            <tbody class="datatable-body">
+            <!-- Add new row -->
+            <tr *ngIf="addRow">
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    accept="application/pdf"
+                    mdbInput
+                    type="file"
+                    class="form-control"
+                    formControlName="archivo"
+                    (change)="cargarArchivo($event)"
+                  />
+                </mdb-form-control>
+              </td>
+              <td>
+                <mdb-form-control>
+              <textarea
+                mdbValidate
+                mdbInput
+                type="text"
+                class="form-control"
+                formControlName="descripcion"
+              ></textarea>
+                </mdb-form-control>
+              </td>
+              <td class="text-center">
+                <button
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  id="btnRegistrar"
+                  type="submit"
+                  [disabled]="documentoForm.invalid"
+                  (click)="guardarArchivo()"
+                >
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="addRow = false"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </td>
+            </tr>
+            <!-- Data -->
+            <tr *ngFor="let documento of table.data; let i = index">
+              <td>
+                {{ documento.nombre? documento.nombre : 'Documento' }}
+              </td>
+              <td>
+                  {{ documento.descripcion }}
+              </td>
+              <td class="text-center">
+                <ng-container>
+                  <button
+                    mdbTooltip="Descargar documento"
+                    class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    [disabled]="estaEditando"
+                    (click)="descargarArchivoEsp(documento)"
+                  >
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    [disabled]="estaEditando"
+                    (click)="eliminar(documento.codEstudianteMateriaDocumento)"
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+
+  </section>
+</div>

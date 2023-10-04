@@ -278,4 +278,10 @@ export class RegistroNotasEspecializacionComponent extends ComponenteBase implem
     XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
     XLSX.writeFile(book, `Reportes de registro de notas del curso de ${this.cursoSeleccionado.nombre}.xlsx`);
   }
+
+  verRepositorioEstudiante(estudiante: NotaEspecializacion) {
+    this.cursosService.estudiante = estudiante;
+    this.cursosService.curso = this.cursoSeleccionado;
+    this.router.navigate(['principal/especializacion/estudiante/repositorio']);
+  }
 }

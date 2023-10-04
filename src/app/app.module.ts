@@ -303,6 +303,7 @@ import { ModalSancionesBomberosComponent } from './componentes/pendiente/integra
 import { ReporteriaModule } from './componentes/pendiente/reporteria/reporteria.module';
 import { ForRepoMateriaComponent } from './componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component';
 import { ForRepoEstudianteComponent } from './componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component';
+import { EpsRepoEstudianteComponent } from './componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component';
 
 registerLocaleData(localeEs);
 
@@ -455,6 +456,7 @@ registerLocaleData(localeEs);
     ModalSancionesBomberosComponent,
     ForRepoMateriaComponent,
     ForRepoEstudianteComponent,
+    EpsRepoEstudianteComponent,
 
     ],
   imports: [
