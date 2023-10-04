@@ -264,6 +264,10 @@ import {
 import {
   ForRepoEstudianteComponent
 } from "../../componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component";
+import { EspRegistroNotasService } from "../../servicios/especializacion/esp-registro-notas.service";
+import {
+  EpsRepoEstudianteComponent
+} from "../../componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component";
 
 const routes: Routes = [
   {
@@ -399,6 +403,7 @@ const routes: Routes = [
       { path: 'especializacion/chat', component: EpsInstructorChatComponent},
       { path: 'especializacion/calendario', component: EspInsCalendarioComponent },
       { path: 'especializacion/apelaciones-ins', component: EspApelacionesInsComponent },
+      { path: 'especializacion/estudiante/repositorio', component: EpsRepoEstudianteComponent },
 
 
       { path: 'formacion/estudiante/cursos-tomados', component: CursosTomadosComponent },

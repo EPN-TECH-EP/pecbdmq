@@ -5,6 +5,7 @@ import { Curso, TipoCurso } from "../../modelo/flujos/especializacion/Curso";
 import { EstadoEspecializacion } from "../../modelo/flujos/especializacion/EstadoEspecializacion";
 import { CustomHttpResponse } from "../../modelo/admin/custom-http-response";
 import { CursoInstructor } from "./curso.service";
+import { NotaEspecializacion } from "../../modelo/flujos/especializacion/nota-especializacion";
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,11 @@ export class CursosService {
   private host = environment.apiUrl;
 
   curso: Curso;
+  estudiante: NotaEspecializacion;
 
   constructor(private http: HttpClient) {
     this.curso = null;
+    this.estudiante = null;
   }
 
   listarCursosPorEstado(estado: string) {
