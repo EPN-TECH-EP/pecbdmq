@@ -26,7 +26,7 @@
       <tbody class="datatable-body">
       <!-- Data -->
       <tr *ngFor="let documento of table.data; let i = index">
-        <td>{{ documento.nombre }}</td>
+        <td>{{ documento.nombre ? documento.nombre : 'Documento' }}</td>
         <td>{{ documento.descripcion }}</td>
         <td class="text-center">
           <button

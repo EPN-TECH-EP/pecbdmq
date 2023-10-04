@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {forkJoin, switchMap, throwError} from "rxjs";
+import {forkJoin, throwError} from "rxjs";
 import {ComponenteBase} from "../../../util/componente-base";
 import {MdbNotificationService} from "mdb-angular-ui-kit/notification";
 import {MdbPopconfirmService} from "mdb-angular-ui-kit/popconfirm";
@@ -23,7 +23,7 @@ import {
 import {ModalApelacionComponent} from "../../util/modal-apelacion/modal-apelacion.component";
 import {catchError, map, mergeMap} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {DomSanitizer} from "@angular/platform-browser";
 import {MdbTabChange} from "mdb-angular-ui-kit/tabs/tabs.component";
 import {FormacionEstudiante} from "../../../modelo/dto/formacion-usuario.dto";
 import {ReporteriaService} from "../../../servicios/reporteria.service";
@@ -152,6 +152,8 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
         console.log('estudiante Formacion', estudiante);
         this.estudiante = estudiante;
         this.codEstudianteFormacion = estudiante ? estudiante.codEstudiante : 0;
+        this.cargarFormacion(this.codEstudianteFormacion);
+        this.cargarApelaciones(this.codEstudianteFormacion);
 
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -201,11 +203,11 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
 
   }
 
-  verSubidaDocumentos() {
-    this.esVistaSubidaDocumentos = !this.esVistaSubidaDocumentos;
-    this.esVistaMenu = false;
-
-  }
+  // verSubidaDocumentos() {
+  //   this.esVistaSubidaDocumentos = !this.esVistaSubidaDocumentos;
+  //   this.esVistaMenu = false;
+  //
+  // }
 
   regresarVistaMenu() {
     this.esVistaMenu = true;
@@ -254,6 +256,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
   onTabChange(event: MdbTabChange): void {
     if (event.index === 0) {
       console.log('Formacion');
+      this.cargarDatosEstudianteFormacion(this.usuario.nombreUsuario);
     }
 
     if (event.index === 1) {
