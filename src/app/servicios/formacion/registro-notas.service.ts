@@ -32,9 +32,15 @@ export interface NotaOficialSemana {
 export class RegistroNotasService {
 
   private host = environment.apiUrl
+  estudiante: NotaPorEstudiante;
+  materia: MateriaPorInstructor;
+  estudiantesPorParalelo: {paralelo: Paralelo; estudiantes: NotaPorEstudiante[]}[];
 
 
   constructor(private http: HttpClient) {
+    this.estudiante  = null
+    this.materia = null
+    this.estudiantesPorParalelo = null
   }
 
 

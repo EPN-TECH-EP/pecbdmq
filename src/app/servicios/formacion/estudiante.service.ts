@@ -6,8 +6,7 @@ import {Paralelo} from "../../modelo/admin/paralelo";
 import {DatoPersonal} from "../../modelo/admin/dato-personal";
 import {FaltaPeriodo} from "../../modelo/flujos/formacion/api-bomberos/faltaPeriodo";
 import {DocumentoFormacion} from "../../modelo/flujos/formacion/documento";
-import {
-  EstudianteMateriaDocumentoDto, EstudianteMateriaDocumentoItemDto
+import {  EstudianteMateriaDocumentoItemDto
 } from "../../componentes/pendiente/repositorio-materia-estudiante/repositorio-materia-estudiante.component";
 
 export interface EstudianteParaleloRequest {

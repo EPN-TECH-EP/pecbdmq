@@ -20,6 +20,7 @@ import { DocumentoFormacion } from "../../../../modelo/flujos/formacion/document
 import { MdbNotificationService } from "mdb-angular-ui-kit/notification";
 import { DocumentosService } from "../../../../servicios/formacion/documentos.service";
 import { HttpClient } from "@angular/common/http";
+import { CursosService } from "../../../../servicios/especializacion/cursos.service";
 
 @Component({
   selector: 'app-cursos-tomados',
@@ -68,13 +69,15 @@ export class CursosTomadosComponent implements OnInit {
   ];
   esEncuestaFinalizada: boolean = false;
   apelacionForm: FormGroup = new FormGroup({})
+  documentosRepo: any;
 
   constructor(private estudianteService: EstudianteService,
               private router: Router,
               private ns: MdbNotificationService,
               private documentosService: DocumentosService,
               private formBuilder: FormBuilder,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private cursosService: CursosService) {
     this.estudiante = null;
     this.apelacionForm = this.formBuilder.group({
       observacionEstudiante: ['', Validators.required],
@@ -138,7 +141,15 @@ export class CursosTomadosComponent implements OnInit {
         this.documentos = documentos;
         console.log(this.documentos);
       }
+    });
+
+    this.cursosService.litarDocumentosRepo(this.cursoSeleccionado.codCursoEspecializacion).subscribe({
+      next: (documentos) => {
+        this.documentosRepo = documentos
+        console.log('documentos repo',this.documentosRepo);
+      }
     })
+
   }
 
   verCursoSeleccionado(curso: CursoTomado) {

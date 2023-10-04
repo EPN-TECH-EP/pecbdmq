@@ -254,6 +254,7 @@ export class FichaPersonalComponent extends ComponenteBase implements OnInit {
   onTabChange(event: MdbTabChange): void {
     if (event.index === 0) {
       console.log('Formacion');
+      this.cargarDatosEstudianteFormacion(this.usuario.nombreUsuario);
     }
 
     if (event.index === 1) {

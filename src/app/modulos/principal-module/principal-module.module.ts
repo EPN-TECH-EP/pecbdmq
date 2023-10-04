@@ -258,6 +258,16 @@ import {
 import {
   IntSancionesComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
+import {
+  ForRepoMateriaComponent
+} from "../../componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component";
+import {
+  ForRepoEstudianteComponent
+} from "../../componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component";
+import { EspRegistroNotasService } from "../../servicios/especializacion/esp-registro-notas.service";
+import {
+  EpsRepoEstudianteComponent
+} from "../../componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component";
 
 const routes: Routes = [
   {
@@ -340,6 +350,9 @@ const routes: Routes = [
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
       { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
       { path: 'formacion/academia/chat', component: ChatInstructorComponent },
+      { path: 'formacion/curso/repositorio', component: ForRepoMateriaComponent },
+      { path: 'formacion/materia/estudiante/repositorio', component: ForRepoEstudianteComponent },
+
 
       // llamamiento
       { path: 'formacion/llamamiento', component: LlamamientoDosComponent },
@@ -390,6 +403,7 @@ const routes: Routes = [
       { path: 'especializacion/chat', component: EpsInstructorChatComponent},
       { path: 'especializacion/calendario', component: EspInsCalendarioComponent },
       { path: 'especializacion/apelaciones-ins', component: EspApelacionesInsComponent },
+      { path: 'especializacion/estudiante/repositorio', component: EpsRepoEstudianteComponent },
 
 
       { path: 'formacion/estudiante/cursos-tomados', component: CursosTomadosComponent },

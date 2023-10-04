@@ -487,4 +487,8 @@ export class MateriasComponent implements OnInit, AfterViewInit {
     Notificacion.notificar(this.mdbNotificationService, 'Archivo subido con éxito', TipoAlerta.ALERTA_OK);
   }
 
+  verRespositorioMateria(materia: MateriaFormacion) {
+    this.materiasService.materia = materia;
+    this.router.navigate(['/principal/formacion/curso/repositorio']).then();
+  }
 }
