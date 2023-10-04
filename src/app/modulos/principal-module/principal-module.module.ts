@@ -282,6 +282,12 @@ import {
 import {
   IntSancionesComponent
 } from "../../componentes/pendiente/integracion-bomberil/int-sanciones/int-sanciones.component";
+import {
+  ForRepoMateriaComponent
+} from "../../componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component";
+import {
+  ForRepoEstudianteComponent
+} from "../../componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component";
 
 const routes: Routes = [
   {
@@ -365,6 +371,9 @@ const routes: Routes = [
       { path: 'formacion/estudiante/repositorio', component: RepositorioMateriaEstudianteComponent },
       { path: 'formacion/academia/calendario', component: CalendarioInstructorComponent },
       { path: 'formacion/academia/chat', component: ChatInstructorComponent },
+      { path: 'formacion/curso/repositorio', component: ForRepoMateriaComponent },
+      { path: 'formacion/materia/estudiante/repositorio', component: ForRepoEstudianteComponent },
+
 
       // llamamiento
       { path: 'formacion/llamamiento', component: LlamamientoDosComponent },

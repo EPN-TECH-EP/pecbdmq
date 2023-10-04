@@ -248,4 +248,12 @@ export class RegistroNotasComponent implements OnInit {
     XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
     XLSX.writeFile(book, 'Reportes de registro de notas.xlsx');
   }
+
+  verRepositorioEstudiante(estudiante: NotaPorEstudiante) {
+    this.registroNotasService.estudiante = estudiante;
+    this.registroNotasService.materia = this.materiaSeleccionada;
+    this.registroNotasService.estudiantesPorParalelo = this.estudiantesPorParalelo;
+    this.router.navigate(['/principal/formacion/materia/estudiante/repositorio']).then();
+    console.log(estudiante);
+  }
 }

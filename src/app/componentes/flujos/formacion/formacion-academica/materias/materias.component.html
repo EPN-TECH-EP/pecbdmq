@@ -397,10 +397,18 @@
                       </button>
                       <button
                         mdbTooltip="Eliminar registro"
-                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark me-2"
                         [disabled]="estaEditandoMateria"
                       >
                         <i class="fa fa-trash-alt"></i>
+                      </button>
+                      <button
+                        mdbTooltip="Ver repositorio de materia"
+                        class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                        [disabled]="estaEditandoMateria"
+                        (click)="verRespositorioMateria(materia)"
+                      >
+                        <i class="fa fa-eye"></i>
                       </button>
                     </ng-container>
                     <ng-container *ngIf="estaEditandoMateria && materia.codMateriaPeriodo === codMateriaEditando">

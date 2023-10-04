@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Instructor } from "../../modelo/flujos/instructor";
 import { Paralelo } from "../../modelo/admin/paralelo";
+import { DocumentoMateria } from "../../componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component";
 
 export interface MateriaFormacionResponse {
   paralelos: Paralelo[];
@@ -56,8 +57,10 @@ export class MateriasFormacionService {
   private host = environment.apiUrl
 
   // private cache: {[key: string]: HttpResponse<any>} = {};
+  materia: MateriaFormacion;
 
   constructor(private http: HttpClient) {
+    this.materia = null;
   }
 
   asignarInstructores(materia: MateriaFormacionRequest): Observable<MateriaFormacionRequest> {
@@ -70,6 +73,14 @@ export class MateriasFormacionService {
 
   listarMateriasParalelos(): Observable<MateriaFormacionResponse> {
     return this.http.get<MateriaFormacionResponse>(`${ this.host }/instructorMateriaParalelo/listarMateriasGroupByParalelos`);
+  }
+
+  guardarArchivosPorMateria(data: FormData) {
+    return this.http.post(`${ this.host }/materiaParaleloDocumento/guardarArchivo`, data);
+  }
+
+  listarDocumentosPorMateria(codMateriaPeriodo:number, codParalelo: number){
+    return this.http.get<DocumentoMateria[]>(`${ this.host }/materiaParaleloDocumento/listarByCodMateriaParalelo/${ codMateriaPeriodo }/${ codParalelo }`);
   }
 
 }
