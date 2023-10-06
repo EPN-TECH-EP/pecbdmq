@@ -1,0 +1,309 @@
+<app-boton-volver
+></app-boton-volver>
+
+<div class="row m-3">
+  <div class="col text-center">
+    <h1 class="fs-4 fw-bolder">Gestión de Documentos por Curso</h1>
+  </div>
+</div>
+
+
+<section *ngIf="!estaCargando && esVistaListaCursos" class="container">
+  <p>Número total de cursos: {{cursos.length}}</p>
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="!estaCargando && esVistaValidacionCurso" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row mt-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre | uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+    <h6>Realizado por: <span
+      class="text-muted">{{ cursoSeleccionado?.creadoPor?.nombre}} {{cursoSeleccionado?.creadoPor?.apellido}}</span>
+    </h6>
+    <hr class="hr">
+  </div>
+
+  <div class="row">
+    <h2 class="fs-4 fw-bolder"> Documentos del curso</h2>
+    <hr class="hr">
+    <section>
+      <button
+        *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
+        class="btn btn-primary mb-3"
+        (click)="addRow = true"
+      >
+        <i class="fa-solid fa-circle-plus me-2"></i>
+        Cargar documento
+      </button>
+      <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+        <form [formGroup]="documentoForm">
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #table="mdbTable"
+            [dataSource]="documentos"
+          >
+            <thead class="datatable-header">
+            <tr>
+              <th *ngFor="let header of headers" scope="col" class="fw-bold" [mdbTableSortHeader]="header.key">
+                <b> {{ header.label | titlecase }}</b>
+              </th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            </tr>
+            </thead>
+            <tbody class="datatable-body">
+            <!-- Add new row -->
+            <tr *ngIf="addRow">
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    accept="application/pdf"
+                    mdbInput
+                    type="file"
+                    class="form-control"
+                    formControlName="archivo"
+                    (change)="cargarArchivo($event)"
+                  />
+                </mdb-form-control>
+              </td>
+              <td class="text-center">
+                <button
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  type="submit"
+                  [disabled]="documentoForm.invalid"
+                  (click)="cargar()"
+                >
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="addRow = false"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </td>
+            </tr>
+            <!-- Data -->
+            <tr *ngFor="let documento of table.data;">
+              <td>
+                <ng-container *ngIf="codigoDocumentoEditando !== documento.codDocumento">
+                  {{ documento.nombre }}
+                </ng-container>
+              </td>
+
+              <td class="text-center">
+                <ng-container *ngIf="codigoDocumentoEditando !== documento.codDocumento">
+                  <button
+                    mdbTooltip="Descargar documento"
+                    class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="descargarArchivo(documento)"
+                  >
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button
+                    *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="eliminar(documento.codDocumento)"
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+    </section>
+  </div>
+
+
+  <!-- Documentos del repositorio -->
+
+  <div class="row">
+    <h2 class="fs-4 fw-bolder"> Documentos y tareas que puede ver el estudiante</h2>
+    <hr class="hr">
+    <section>
+      <button
+        *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
+        class="btn btn-primary mb-3"
+        (click)="addRowEstudiante = true"
+      >
+        <i class="fa-solid fa-circle-plus me-2"></i>
+        Cargar documento
+      </button>
+      <div class="datatable table-editor mt-4 datatable-striped datatable-hover datatable-sm">
+        <form [formGroup]="documentoFormRepo">
+          <table
+            class="table datatable-table"
+            mdbTable
+            mdbTableSort
+            #tableRepo="mdbTable"
+            [dataSource]="documentosRepo"
+          >
+            <thead class="datatable-header">
+            <tr>
+              <th *ngFor="let header of headersRepo" scope="col" class="fw-bold" [mdbTableSortHeader]="header.key">
+                <b> {{ header.label | titlecase }}</b>
+              </th>
+              <th scope="col" class="text-center fw-bold"><b>Acciones</b></th>
+            </tr>
+            </thead>
+            <tbody class="datatable-body">
+            <!-- Add new row -->
+            <tr *ngIf="addRowEstudiante">
+              <td>
+                <mdb-form-control>
+                  <input
+                    mdbValidate
+                    accept="application/pdf"
+                    mdbInput
+                    type="file"
+                    class="form-control"
+                    formControlName="archivo"
+                    (change)="cargarArchivoRepo($event)"
+                  />
+                </mdb-form-control>
+              </td>
+              <td>
+                <div>
+                  <div class="form-check mb-2">
+                    <input
+                      mdbCheckbox
+                      class="form-check-input"
+                      type="checkbox"
+                      formControlName="esTarea"
+                    />
+                    <label class="form-check-label">
+                      ¿Es tarea?
+                    </label>
+                  </div>
+                  <div *ngIf="esTarea">
+                    <mdb-form-control>
+                      <input
+                        mdbInput
+                        mdbValidate
+                        [readonly]="true"
+                        [mdbDatepicker]="dpFechaEntrega"
+                        type="text"
+                        class="form-control mb-2"
+                        formControlName="fechaEntrega"
+
+                        (click)="dpFechaEntrega.open()"
+                      />
+                      <label mdbLabel class="form-label mb-2x">Fecha de entrega:</label>
+                      <mdb-datepicker-toggle
+                        [mdbDatepicker]="dpFechaEntrega"
+                      ></mdb-datepicker-toggle>
+                      <mdb-datepicker
+                        #dpFechaEntrega="mdbDatepicker"
+                        [options]="OPCIONES_DATEPICKER"
+                        [inline]="true"
+                      ></mdb-datepicker>
+                    </mdb-form-control>
+                  </div>
+                </div>
+                <mdb-form-control>
+              <textarea
+                mdbValidate
+                mdbInput
+                type="text"
+                class="form-control"
+                formControlName="descripcion"
+                cols="30"
+                rows="6"
+              ></textarea>
+                </mdb-form-control>
+              </td>
+              <td class="text-center">
+                <button
+                  class="me-3 m-0 p-0 shadow-0 btn btn-lg text-success"
+                  type="submit"
+                  [disabled]="documentoFormRepo.invalid"
+                  (click)=" guardarArchivo()"
+                >
+                  <i class="fa fa-check"></i> Agregar
+                </button>
+                <button
+                  class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                  (click)="addRowEstudiante = false"
+                >
+                  <i class="fa fa-ban"></i> Cancelar
+                </button>
+              </td>
+            </tr>
+            <!-- Data -->
+            <tr *ngFor="let documento of tableRepo.data, let i = index">
+              <td>
+                <ng-container>
+                  {{  documento?.nombre? documento.nombre : 'Documento ' + (i + 1) }}
+                </ng-container>
+              </td>
+              <td>
+                <ng-container>
+                  {{ documento.descripcion }}
+                </ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container>
+                  <button
+                    mdbTooltip="Descargar documento"
+                    class="me-3 m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="descargarArchivoRepo(documento)"
+                  >
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button
+                    *ngIf="estado === CURSO_COMPLETO_ESTADO.ABIERTOS"
+                    mdbTooltip="Eliminar registro"
+                    class="m-0 p-0 shadow-0 btn btn-lg text-dark"
+                    (click)="eliminarRepo(documento)"
+                  >
+                    <i class="fa fa-trash-alt"></i>
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+    </section>
+  </div>
+
+</section>
+
+<div
+  *ngIf="estaCargando"
+  class="d-flex justify-content-center align-items-center m-5 p-5"
+>
+  <div class="spinner-border text-info" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span class="ms-3 text-info">Cargando información...</span>
+</div>

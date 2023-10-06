@@ -15,6 +15,9 @@ import { ProInscripcionComponent } from './componentes/flujos/profesionalizacion
 import {
   ResultadosInscripcionesComponent
 } from "./componentes/pendiente/resultados-inscripciones/resultados-inscripciones.component";
+import {
+  CapacitacionExternaSolicitudComponent
+} from "./componentes/pendiente/capacitacion-externa/capacitacion-externa-solicitud/capacitacion-externa-solicitud.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -25,6 +28,7 @@ const routes: Routes = [
   { path: 'especializacion/inscripcion/:codCurso', component: InscripcionEspecializacionComponent },
   { path: 'profesionalizacion/inscripcion', component: ProInscripcionComponent },
   { path: 'formacion/inscripcion/resultados', component: ResultadosInscripcionesComponent },
+  { path: 'capacitacion-externa/solicitud', component: CapacitacionExternaSolicitudComponent},
 
 
 
