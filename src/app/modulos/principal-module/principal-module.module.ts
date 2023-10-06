@@ -271,6 +271,22 @@ import { EspRegistroNotasService } from "../../servicios/especializacion/esp-reg
 import {
   EpsRepoEstudianteComponent
 } from "../../componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component";
+import {
+  CapMenuPrincipalComponent
+} from "../../componentes/pendiente/capacitacion-externa/menus/cap-menu-principal/cap-menu-principal.component";
+import { CapNotasComponent } from "../../componentes/pendiente/capacitacion-externa/cap-notas/cap-notas.component";
+import {
+  CapArchivosComponent
+} from "../../componentes/pendiente/capacitacion-externa/cap-archivos/cap-archivos.component";
+import {
+  CapValidacionComponent
+} from "../../componentes/pendiente/capacitacion-externa/cap-validacion/cap-validacion.component";
+import {
+  FlujoCapacitacionComponent
+} from "../../componentes/pendiente/capacitacion-externa/flujo-capacitacion/flujo-capacitacion.component";
+import {
+  CapacitacionExternaSolicitudComponent
+} from "../../componentes/pendiente/capacitacion-externa/capacitacion-externa-solicitud/capacitacion-externa-solicitud.component";
 
 const routes: Routes = [
   {
@@ -423,6 +439,12 @@ const routes: Routes = [
       { path: 'integracion-bomberil/notificacion/ascensos', component: IntAscensosComponent},
       { path: 'integracion-bomberil/notificacion/llamamiento', component: IntNotificacionLlamamientoComponent},
       { path: 'integracion-bomberil/sanciones', component: IntSancionesComponent},
+
+      { path: 'capacitacion-externa/menu', component: CapMenuPrincipalComponent},
+      { path: 'capacitacion-externa/notas', component: CapNotasComponent},
+      { path: 'capacitacion-externa/archivos', component: CapArchivosComponent},
+      { path: 'capacitacion-externa-verificacion', component: CapValidacionComponent},
+      { path: 'capacitacion-externa/flujo', component: FlujoCapacitacionComponent},
 
     ],
   },

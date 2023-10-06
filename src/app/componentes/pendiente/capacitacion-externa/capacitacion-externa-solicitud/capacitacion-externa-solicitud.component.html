@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-3">
+      <img src="assets/logo-bomberos.svg" alt=""/>
+    </div>
+    <div class="col-9 text-end">
+      <h4 class="ms-5">
+        <i class="fa-solid fa-user-graduate"></i>
+        Plataforma Educativa
+      </h4>
+    </div>
+  </div>
+  <hr class="hr hr-blurry"/>
+
+  <h4 class="text-center text-primary my-4 py-4">Solicitud de Capacitación</h4>
+
+  <div *ngIf="!esSolictudEnviada">
+
+    <div class="container mt-4">
+      <h4 class="mb-4">Selecciona un tipo de capacitación:</h4>
+      <div>
+        <mdb-form-control>
+          <mdb-select [(ngModel)]="selectedTrainingType">
+            <mdb-option *ngFor="let trainingType of trainingTypes" [value]="trainingType.name">
+              {{ trainingType.name }}
+            </mdb-option>
+          </mdb-select>
+          <label mdbLabel class="form-label mb-2x">Tipo de capacitación</label>
+        </mdb-form-control>
+      </div>
+
+      <!-- Mostrar subítems si se selecciona un tipo de capacitación -->
+      <div *ngIf="selectedTrainingType">
+        <h5 class="my-3 pt-3 text-primary">Subítems para {{ selectedTrainingType }}:</h5>
+        <p class="text-primary"><i class="fa-solid fa-info-circle"></i> Selecciona los subítems que deseas solicitar.
+        </p>
+        <ul class="list-group list-group-light">
+          <li class="list-group-item"
+              *ngFor="let subItem of getSubItems(selectedTrainingType)">
+            <input mdbCheckbox class="form-check-input me-1"
+                   type="checkbox"
+                   [value]="subItem"
+                   (change)="toggleSubItem(subItem)"/>
+            {{ subItem }}
+          </li>
+        </ul>
+
+        <button class="btn btn-primary mt-4"
+                (click)="submitRequest()">
+          Solicitar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="esSolictudEnviada">
+
+    <button class="btn btn-primary my-4"
+            (click)="solicitarOtro()">
+      Nueva solicitud
+    </button>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="text-center text-success my-4 py-4">Solicitud enviada</h4>
+        <p class="text-center">
+          <i class="fa-solid fa-check"></i>
+          Tu solicitud ha sido enviada con éxito.
+        </p>
+        <p class="text-center">
+          <i class="fa-solid fa-info-circle"></i>
+          Te contactaremos a la brevedad.
+        </p>
+      </div>
+      <div class="card-footer">
+      </div>
+    </div>
+  </div>
+
+
+</div>
+

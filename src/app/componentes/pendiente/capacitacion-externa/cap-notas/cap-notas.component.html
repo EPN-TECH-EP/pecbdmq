@@ -1,0 +1,182 @@
+<app-boton-volver
+></app-boton-volver>
+
+<ng-container *ngIf="cursos.length === 0 && esInstructor">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">No existen cursos</h5>
+      <p class="card-text">
+        No existen cursos en estado Registro de Notas, por lo tanto no hay datos para mostrar.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!esInstructor">
+  <div class="card rounded-7 mt-3">
+    <div class="card-body">
+      <h5 class="card-title text-danger">No es instructor</h5>
+    </div>
+  </div>
+</ng-container>
+
+<section *ngIf="estaCargando && esVistaListaCursos && esInstructor" class="container">
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Listado de cursos</h1>
+    </div>
+  </div>
+  <p>Número total de cursos: {{cursos.length}}</p>
+
+  <div class="row justify-content-center">
+    <app-lista-cursos
+      [cursos]="cursos"
+      class="col-md-7"
+      (cursoSeleccionado)="cursoSeleccionadoEvent($event)"
+    >
+    </app-lista-cursos>
+  </div>
+</section>
+
+<section *ngIf="estaCargando && esVistaCurso && esInstructor" class="container my-5">
+
+  <button
+    class="btn btn-primary"
+    (click)="volverAListaCursos()"
+  >
+    <i class="fas fa-arrow-left me-2"></i>
+    Volver a lista de cursos
+  </button>
+
+  <div class="row my-4">
+    <hr class="hr">
+    <div class="d-flex gap-2">
+      <h1 class="fs-4 fw-bolder">CURSO: </h1>
+      <h1 class="fs-4 fw-bolder text-primary">{{ cursoSeleccionado?.nombre| uppercase}}</h1>
+    </div>
+    <h6>Descripción: <span class="text-muted">{{ cursoSeleccionado?.tipoCurso?.descripcionCatalogoCurso}}</span></h6>
+  </div>
+</section>
+
+<div class="container" *ngIf="esVistaCurso">
+  <div class="row m-3 text-center">
+    <h1 class="fs-4 fw-bolder">Registro de notas</h1>
+  </div>
+
+
+  <section>
+
+    <!-- Lista de estudiantes del curso -->
+    <section>
+      <div class="datatable datatable-hover datatable-sm table-responsive">
+        <form [formGroup]="notaPorEstudianteForm">
+          <table
+            class="tabla datatable-table"
+            mdbTable
+            #datatableEstudiante
+            [dataSource]="notasEstudiantes"
+            id="registroNotasCursoTbl"
+          >
+            <thead class="datatable-header">
+            <tr>
+              <th *ngFor="let head of headers; let i = index" class="fw-bold fs-6"
+                  [ngClass]="{ 'text-center': i >= headers.length - 3 }">
+                {{ head.label }}
+              </th>
+              <th class="text-center fw-bold fs-6">Acciones</th>
+            </tr>
+            </thead>
+            <tbody class="datatable-body">
+            <!-- Lista de estudiantes -->
+            <tr *ngFor="let estudiante of datatableEstudiante.data">
+              <td>
+                {{ estudiante.codigoUnicoEstudiante}}
+              </td>
+              <td>
+                {{ estudiante.nombre }} {{ estudiante.apellido }}
+              </td>
+              <td class="text-center">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                  {{ estudiante?.notaFinalEspecializacion || '-'}}
+                </ng-container>
+                <ng-container
+                  *ngIf="estaEditandoNota && estudiante.codEstudiante === codEstudianteNotaEditando">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      min="0"
+                      type="number"
+                      class="form-control"
+                      formControlName="notaFinal"
+                      required
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                  {{ estudiante?.notaSupletorio || '-' }}
+                </ng-container>
+                <ng-container
+                  *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
+                  <mdb-form-control>
+                    <input
+                      mdbInput
+                      mdbValidate
+                      min="0"
+                      type="number"
+                      class="form-control"
+                      formControlName="notaSupletorio"
+                      required
+                    />
+                  </mdb-form-control>
+                </ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container
+                  *ngIf="!estaEditandoNota || estudiante.codEstudiante !== codEstudianteNotaEditando">
+                  <button
+                    mdbTooltip="Editar notas del estudiante"
+                    [disabled]="estaEditandoNota"
+                    class="me-2 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                    (click)="editarNota(estudiante)"
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    mdbTooltip="Ver repositorio de estudiante"
+                    [disabled]="estaEditandoNota"
+                    class="me-1 m-0 p-0 shadow-0 btn btn-lg text-dark "
+                    (click)="verRepositorioEstudiante(estudiante)"
+                  >
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </ng-container>
+                <ng-container
+                  *ngIf="estaEditandoNota &&  estudiante.codEstudiante === codEstudianteNotaEditando">
+                  <button
+                    class="me-2 p-0 shadow-0 btn btn-lg text-success"
+                    (click)="onGuardarNota()"
+                  >
+                    <i class="fa fa-check"></i> &nbsp;Guardar
+                  </button>
+                  <button
+                    class="m-0 p-0 shadow-0 btn btn-lg text-danger"
+                    (click)="onCancelarEdicionNota()"
+                  >
+                    <i class="fa fa-ban"></i> &nbsp;Cancelar
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </form>
+      </div>
+    </section>
+  </section>
+</div>

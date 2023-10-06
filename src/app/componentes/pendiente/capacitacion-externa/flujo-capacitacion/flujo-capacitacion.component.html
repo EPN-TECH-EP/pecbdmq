@@ -1,0 +1,127 @@
+<app-boton-volver
+></app-boton-volver>
+
+
+<section class="container">
+
+  <div class="row m-3">
+    <div class="col text-center">
+      <h1 class="fs-4 fw-bolder">Flujo de Capacitaciones</h1>
+    </div>
+  </div>
+
+  <mdb-tabs [fill]="true" (activeTabChange)="change($event)">
+
+    <mdb-tab title="Jefe de Formación">
+      <ng-template mdbTabTitle><span>Jefe de Formación</span></ng-template>
+
+      <div>
+        <!-- app.component.html -->
+
+        <div class="container mt-4">
+          <h4 class="mb-4">Lista de solicitudes</h4>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let item of items">
+              <div class="card mb-3">
+                <div class="card-header">
+                  {{ item.type }}
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Subítems:</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let subItem of item.subItems">
+                      {{ subItem }}
+                    </li>
+                  </ul>
+                  <hr class="hr">
+                  <p class="text-primary">Instructores</p>
+                  <div class="text-muted pb-1"><i class="fas fa-user me-2"></i>Debe solicitar un instructor</div>
+                  <mdb-form-control>
+                    <mdb-select
+                      [(ngModel)]="item.instructor"
+
+                    >
+                      <mdb-option *ngFor="let instructor of instructores" [value]="instructor">
+                        {{ instructor.nombre }} {{ instructor.apellido }}
+                      </mdb-option>
+                    </mdb-select>
+                    <label mdbLabel class="form-label mb-2x">Seleccionar instructor</label>
+                  </mdb-form-control>
+                  <div class="my-4" *ngIf="item.instructor">
+                    <button class="btn btn-primary me-2" (click)="solicitarInstructor(item.instructor)">Solcitar
+                      instructor
+                    </button>
+                  </div>
+                </div>
+                <div class="card-footer text-muted">
+                  <button class="btn btn-primary me-2" (click)="item.status = 'Aprobado'; aprobarCurso()">Aprobar</button>
+                  <button class="btn btn-danger" (click)="item.status = 'Rechazado'">Rechazar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </mdb-tab>
+
+    <mdb-tab title="Instructor">
+      <ng-template mdbTabTitle><span>Instructor</span></ng-template>
+
+      <div class="my-3">
+        <h5>Realizar solicitud de requerimientos para capacitación</h5>
+        <div class="container mt-4">
+          <div class="row">
+            <div class="col">
+              <div class="card mb-3" *ngFor="let item of items">
+                <div class="card-header">
+                  <h4>
+                    {{ item.type }}
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Subítems:</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let subItem of item.subItems">
+                      {{ subItem }}
+                    </li>
+                  </ul>
+                  <hr class="hr">
+                  <mdb-form-control>
+                    <mdb-select [multiple]="true">
+                      <mdb-option
+                        *ngFor="let requisito of requisitosCurso"
+                        [value]="requisito"
+                        (change)="toggleSubItem(requisito)"
+                      >
+                        {{ requisito.nombre }}
+                      </mdb-option>
+                    </mdb-select>
+                    <label mdbLabel class="form-label mb-2x">Tipo de capacitación</label>
+                  </mdb-form-control>
+                  <hr class="hr">
+                  <p class="text-primary">Requisitos seleccionados</p>
+                  <ul class="list-unstyled" *ngIf="requisitosCursoSeleccionados.length > 0">
+                    <li *ngFor="let req of requisitosCursoSeleccionados; let index = index" class="mb-1">
+                      <i class="fas fa-check-circle me-2 text-success"></i>{{index + 1}}. {{req.nombre}}
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-footer text-muted">
+                  <button class="btn btn-primary me-2" (click)="realizarSolicitud(item)">Realizar solicitud</button>
+                  <button class="btn btn-success me-2" (click)="generarCertificados()">Generar certificados</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </mdb-tab>
+
+  </mdb-tabs>
+
+</section>

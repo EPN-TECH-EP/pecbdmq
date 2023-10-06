@@ -304,6 +304,12 @@ import { ParametroComponent } from './componentes/parametro/parametro.component'
 import { ForRepoMateriaComponent } from './componentes/pendiente/formacion/for-repo-materia/for-repo-materia.component';
 import { ForRepoEstudianteComponent } from './componentes/pendiente/formacion/for-repo-estudiante/for-repo-estudiante.component';
 import { EpsRepoEstudianteComponent } from './componentes/pendiente/especializacion/eps-repo-estudiante/eps-repo-estudiante.component';
+import { CapMenuPrincipalComponent } from './componentes/pendiente/capacitacion-externa/menus/cap-menu-principal/cap-menu-principal.component';
+import { CapNotasComponent } from './componentes/pendiente/capacitacion-externa/cap-notas/cap-notas.component';
+import { CapArchivosComponent } from './componentes/pendiente/capacitacion-externa/cap-archivos/cap-archivos.component';
+import { CapValidacionComponent } from './componentes/pendiente/capacitacion-externa/cap-validacion/cap-validacion.component';
+import { FlujoCapacitacionComponent } from './componentes/pendiente/capacitacion-externa/flujo-capacitacion/flujo-capacitacion.component';
+import { CapacitacionExternaSolicitudComponent } from './componentes/pendiente/capacitacion-externa/capacitacion-externa-solicitud/capacitacion-externa-solicitud.component';
 
 registerLocaleData(localeEs);
 
@@ -457,6 +463,12 @@ registerLocaleData(localeEs);
     ForRepoMateriaComponent,
     ForRepoEstudianteComponent,
     EpsRepoEstudianteComponent,
+    CapMenuPrincipalComponent,
+    CapNotasComponent,
+    CapArchivosComponent,
+    CapValidacionComponent,
+    FlujoCapacitacionComponent,
+    CapacitacionExternaSolicitudComponent,
 
     ],
   imports: [
