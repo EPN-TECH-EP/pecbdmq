@@ -286,6 +286,47 @@
         </a>
       </div>
     </mdb-tab>
+    <mdb-tab>
+      <ng-template mdbTabTitle><span><i class="fas fa-glasses fa-fw me-2"></i>CAPACITACIÓN</span></ng-template>
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+      >
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/capacitacion/total-capacitaciones']">
+            <i class="fa-solid fa-book fa-5x mt-5 text-danger"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte total capacitaciones</h5>
+              <p class="card-text">
+                Ver total capacitaciones por rango de fechas
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/capacitacion/participantes']">
+            <i class="fa-solid fa-file-circle-check fa-5x mt-5 text-warning"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte participantes por capacitación</h5>
+              <p class="card-text">
+                Ver participantes por capacitación
+              </p>
+            </div>
+          </div>
+        </a>
+        <a class="col link-dark">
+          <div class="card h-100 text-center hover-shadow border" [routerLink]="['/principal/reporteria/capacitacion/empresas']">
+            <i class="fa-solid fa-building-circle-arrow-right fa-5x mt-5 text-primary"></i>
+            <div class="card-body">
+              <h5 class="card-title">Reporte de empresas capacitadas</h5>
+              <p class="card-text">
+                Ver reporte de empresas capacitadas
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </mdb-tab>
   </mdb-tabs>
 
 </div>

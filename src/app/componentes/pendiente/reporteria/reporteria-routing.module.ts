@@ -61,7 +61,7 @@ const routes: Routes = [
       },
       {
         path: 'reporteria/especializacion/aprobados', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.APROBADOS }
-      },      
+      },
       {
         path: 'reporteria/especializacion/evaluaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EVALUACIONES }
       },
@@ -84,7 +84,17 @@ const routes: Routes = [
       },
       {
         path: 'reporteria/profesionalizacion/reporte-notas', component: ReporteNotasComponent,
-      }
+      },
+      //CAPACITACION
+      {
+        path: 'reporteria/capacitacion/total-capacitaciones', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.CURSOS_TOTAL }
+      },
+      {
+        path: 'reporteria/capacitacion/participantes', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.PARTICIPANTES }
+      },
+      {
+        path: 'reporteria/capacitacion/empresas', component: ReporteGenericoComponent, data: { codigo: ESPECIALIZACION.EMPRESAS }
+      },
     ],
   },
 ];
